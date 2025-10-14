@@ -1,145 +1,61 @@
-# IT Center E-commerce Website
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-Modern Arabic e-commerce website for technology and electronics products.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## Features
+## About Laravel
 
-### Design
-- ✅ Clean, professional tech look with white backgrounds and modern shadows
-- ✅ Full RTL (Right-to-Left) support for Arabic content
-- ✅ Cairo Arabic font family
-- ✅ Responsive design (desktop, tablet, mobile)
-- ✅ Smooth animations and hover effects
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-### Sections
-1. **Fixed Header**
-   - Logo (right side)
-   - Centered search bar
-   - Account, wishlist, and cart icons (left side)
-   - Navigation menu (Home, Categories, Brands, Offers, Products, About, Contact)
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-2. **Hero Section**
-   - Large banner with featured tech products
-   - Call-to-action button
-   - Gradient background
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-3. **Main Categories**
-   - Grid layout with 8 categories
-   - Icon-based design
-   - Hover effects with elevation
-   - Categories: Computers, Laptops, Keyboards, Mice, Headphones, Processors, RAM, Printers
+## Learning Laravel
 
-4. **Featured Products**
-   - Horizontal carousel/slider
-   - Product cards with images, names, descriptions, and prices
-   - Add to cart and wishlist buttons
-   - Auto-slide with manual controls
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-5. **New Arrivals**
-   - Grid layout (3-4 products per row)
-   - Product cards with hover zoom effect
-   - Clean white background with shadows
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-6. **Category Blocks**
-   - Section for keyboards (expandable to other categories)
-   - Compact product cards in row layout
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-7. **Dark Footer**
-   - About section with logo and social media links
-   - Quick links (About, Terms, Privacy, Returns)
-   - Customer service links
-   - Payment methods section
-   - Copyright notice
+## Laravel Sponsors
 
-### Interactive Features
-- 🛒 Add to cart functionality with badge counter
-- ❤️ Wishlist toggle (filled/unfilled heart icon)
-- 🔍 Search functionality
-- 📱 Mobile-responsive hamburger menu
-- 🎠 Auto-sliding carousel
-- 🔔 Toast notifications for actions
-- 🖱️ Smooth scrolling
-- 🎨 Hover effects on all interactive elements
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-## File Structure
+### Premium Partners
 
-```
-ITCenter-Ecommerce/
-├── index.html          # Main HTML file
-├── styles.css          # All styling (RTL, responsive, animations)
-├── script.js           # JavaScript for interactions
-└── README.md           # This file
-```
+- **[Vehikl](https://vehikl.com)**
+- **[Tighten Co.](https://tighten.co)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Redberry](https://redberry.international/laravel-development)**
+- **[Active Logic](https://activelogic.com)**
 
-## How to Run
+## Contributing
 
-1. Simply open `index.html` in any modern web browser
-2. No build process or dependencies required
-3. Works offline (except for external resources like fonts and icons)
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## External Resources
+## Code of Conduct
 
-The site uses CDN links for:
-- **Google Fonts**: Cairo (Arabic font)
-- **Font Awesome**: Icons for UI elements
-- **Unsplash**: Placeholder product images
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Browser Support
+## Security Vulnerabilities
 
-- ✅ Chrome (latest)
-- ✅ Firefox (latest)
-- ✅ Safari (latest)
-- ✅ Edge (latest)
-- ✅ Mobile browsers
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## Customization
+## License
 
-### Colors
-Edit the CSS variables in `styles.css`:
-```css
-:root {
-    --primary-color: #0ea5e9;
-    --primary-dark: #0369a1;
-    --secondary-color: #1e293b;
-    --text-color: #1e293b;
-    --text-light: #64748b;
-}
-```
-
-### Products
-Add/edit products in `index.html` by copying the product card structure:
-```html
-<div class="product-card">
-    <div class="product-image">
-        <img src="your-image.jpg" alt="Product">
-    </div>
-    <div class="product-info">
-        <h3>Product Name</h3>
-        <p class="product-desc">Description</p>
-        <div class="product-price">
-            <span class="price">Price</span>
-        </div>
-        <button class="btn btn-cart">Add to Cart</button>
-    </div>
-</div>
-```
-
-## Future Enhancements
-
-- Backend integration for real product data
-- Shopping cart page
-- Checkout process
-- User authentication
-- Product filtering and sorting
-- Product detail pages
-- Order tracking
-- Customer reviews
-
-## Credits
-
-Built with pure HTML, CSS, and JavaScript following modern web standards and best practices.
-
----
-
-**Version**: 1.0.0
-**Last Updated**: 2024
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
