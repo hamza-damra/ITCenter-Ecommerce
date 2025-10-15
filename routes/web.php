@@ -9,11 +9,34 @@ use App\Http\Controllers\OfferController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 
+// Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
+Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
+
 Route::get('/brands', [BrandController::class, 'index'])->name('brands');
+Route::get('/brand/{slug}', [BrandController::class, 'show'])->name('brand.show');
+
 Route::get('/products', [ProductController::class, 'index'])->name('products');
-Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.detail');
+Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.detail');
+
 Route::get('/offers', [OfferController::class, 'index'])->name('offers');
+Route::get('/offer/{slug}', [OfferController::class, 'show'])->name('offer.show');
+
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+
+// Admin Routes
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    
+    // Products
+    Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
+    
+    // Categories
+    Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
+    
+    // Brands
+    Route::resource('brands', App\Http\Controllers\Admin\BrandController::class);
+});

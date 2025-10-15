@@ -106,89 +106,30 @@
         </div>
 
         <div class="categories-grid">
-            <div class="category-item">
+            @forelse($categories as $category)
+            <div class="category-item" onclick="window.location.href='{{ route('products', ['category' => $category->slug]) }}'">
                 <div class="category-icon">
-                    <i class="fas fa-desktop icon-computers"></i>
+                    @if($category->image)
+                        @if(str_starts_with($category->image, 'http'))
+                            <img src="{{ $category->image }}" alt="{{ $category->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        @else
+                            <img src="{{ asset($category->image) }}" alt="{{ $category->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        @endif
+                    @else
+                        <i class="fas fa-folder icon-computers"></i>
+                    @endif
                 </div>
-                <div class="category-name">computers</div>
+                <div class="category-name">{{ $category->name }}</div>
+                @if($category->products_count > 0)
+                    <small style="color: #999; font-size: 0.85rem;">({{ $category->products_count }} products)</small>
+                @endif
             </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    <i class="fas fa-print icon-printer"></i>
-                </div>
-                <div class="category-name">Printer</div>
+            @empty
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #999;">
+                <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                <p>No categories available at the moment.</p>
             </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    <i class="fas fa-mobile-alt icon-mobile"></i>
-                </div>
-                <div class="category-name">Mobile accessories</div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    <i class="fas fa-briefcase icon-bag"></i>
-                </div>
-                <div class="category-name">LAPTOP BAG</div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    <i class="fas fa-laptop icon-laptop"></i>
-                </div>
-                <div class="category-name">Laptop</div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    <i class="fas fa-keyboard icon-accessories"></i>
-                </div>
-                <div class="category-name">Laptop Accessories</div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    <i class="fas fa-tv icon-monitor"></i>
-                </div>
-                <div class="category-name">MONITORS</div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    <i class="fas fa-server icon-case"></i>
-                </div>
-                <div class="category-name">Computer Case</div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    <i class="fas fa-memory icon-motherboard"></i>
-                </div>
-                <div class="category-name">Motherboard</div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    <i class="fas fa-microchip icon-cpu"></i>
-                </div>
-                <div class="category-name">CPU</div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    <i class="fas fa-fan icon-cooler"></i>
-                </div>
-                <div class="category-name">COOLER</div>
-            </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    <i class="fas fa-hdd icon-gpu"></i>
-                </div>
-                <div class="category-name">GRAPHIC CARD</div>
-            </div>
+            @endforelse
         </div>
     </div>
 </div>

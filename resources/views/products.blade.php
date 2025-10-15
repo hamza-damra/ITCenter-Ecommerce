@@ -150,6 +150,105 @@
         position: relative;
         z-index: 10;
     }
+
+    /* Pagination Styling */
+    .pagination {
+        display: flex !important;
+        gap: 0.5rem !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 1rem 0 !important;
+        list-style: none !important;
+        margin: 0 !important;
+    }
+
+    .pagination li {
+        list-style: none !important;
+        margin: 0 !important;
+    }
+
+    .pagination .page-item {
+        list-style: none !important;
+    }
+
+    .pagination .page-link,
+    .pagination a,
+    .pagination span {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 40px !important;
+        height: 40px !important;
+        padding: 0.5rem 1rem !important;
+        background: #fff !important;
+        border: 1px solid #ddd !important;
+        border-radius: 8px !important;
+        color: #333 !important;
+        text-decoration: none !important;
+        font-weight: 500 !important;
+        transition: all 0.3s !important;
+        font-size: 1rem !important;
+        line-height: 1 !important;
+    }
+
+    .pagination .page-link:hover,
+    .pagination a:hover {
+        background: #e69270 !important;
+        color: #fff !important;
+        border-color: #e69270 !important;
+        transform: translateY(-2px) !important;
+    }
+
+    .pagination .page-item.active .page-link,
+    .pagination .page-item.active span,
+    .pagination .active span {
+        background: #e69270 !important;
+        color: #fff !important;
+        border-color: #e69270 !important;
+    }
+
+    .pagination .page-item.disabled .page-link,
+    .pagination .page-item.disabled span,
+    .pagination .disabled span {
+        background: #f5f5f5 !important;
+        color: #999 !important;
+        cursor: not-allowed !important;
+        pointer-events: none !important;
+    }
+
+    .pagination .page-link svg,
+    .pagination svg {
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    /* Hide default nav wrapper styles */
+    .pagination nav {
+        width: 100% !important;
+    }
+
+    .pagination-wrapper {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+
+    .pagination-wrapper nav {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
+
+    .pagination-wrapper ul {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
 </style>
 
 <div class="products-section">
@@ -159,145 +258,49 @@
         </div>
 
         <div class="product-grid">
-            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 1) }}'">
+            @forelse($products as $product)
+            <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
                 <div class="product-image">
                     <div class="wishlist-btn" onclick="event.stopPropagation();">
                         <i class="far fa-heart"></i>
                     </div>
-                    <img src="{{ asset('images/products/screen.png') }}" alt="Dell XPS 15">
-                </div>
-                <div class="product-info">
-                    <div class="product-title">Dell XPS 15</div>
-                    <div class="product-description">High-performance laptop with stunning 4K display and Intel Core i7</div>
-                    <div class="product-footer">
-                        <div class="product-price">₪ 1,299</div>
-                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 2) }}'">
-                <div class="product-image">
-                    <div class="wishlist-btn" onclick="event.stopPropagation();">
-                        <i class="far fa-heart"></i>
-                    </div>
-                    <img src="{{ asset('images/products/usb.png') }}" alt="HP Pavilion Desktop">
-                </div>
-                <div class="product-info">
-                    <div class="product-title">HP Pavilion Desktop</div>
-                    <div class="product-description">Powerful desktop for everyday computing with AMD Ryzen 7</div>
-                    <div class="product-footer">
-                        <div class="product-price">₪ 899</div>
-                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 3) }}'">
-                <div class="product-image">
-                    <div class="wishlist-btn" onclick="event.stopPropagation();">
-                        <i class="far fa-heart"></i>
-                    </div>
-                    <div class="product-badge">HOT</div>
-                    <img src="{{ asset('images/products/mouse.png') }}" alt="Logitech MX Master 3">
-                </div>
-                <div class="product-info">
-                    <div class="product-title">Logitech MX Master 3</div>
-                    <div class="product-description">Premium wireless mouse for productivity and precision</div>
-                    <div class="product-footer">
-                        <div class="product-price">₪ 99</div>
-                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 4) }}'">
-                <div class="product-image">
-                    <div class="wishlist-btn" onclick="event.stopPropagation();">
-                        <i class="far fa-heart"></i>
-                    </div>
-                    <div class="product-badge">SALE</div>
-                    <img src="{{ asset('images/products/controllerxbox.png') }}" alt="ASUS ROG Gaming PC">
-                </div>
-                <div class="product-info">
-                    <div class="product-title">ASUS ROG Gaming PC</div>
-                    <div class="product-description">High-end gaming desktop with RTX 4080 graphics card</div>
-                    <div class="product-footer">
-                        <div class="product-price">₪ 1,899</div>
-                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 5) }}'">
-                <div class="product-image">
-                    <div class="wishlist-btn" onclick="event.stopPropagation();">
-                        <i class="far fa-heart"></i>
-                    </div>
-                    <img src="{{ asset('images/products/ssd.png') }}" alt="Apple MacBook Pro">
-                </div>
-                <div class="product-info">
-                    <div class="product-title">Apple MacBook Pro</div>
-                    <div class="product-description">Professional laptop with M3 chip and Retina display</div>
-                    <div class="product-footer">
-                        <div class="product-price">₪ 2,499</div>
-                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 6) }}'">
-                <div class="product-image">
-                    <div class="wishlist-btn" onclick="event.stopPropagation();">
-                        <i class="far fa-heart"></i>
-                    </div>
-                    <img src="{{ asset('images/products/screen.png') }}" alt="Samsung Monitor">
-                </div>
-                <div class="product-info">
-                    <div class="product-title">Samsung 27" Monitor</div>
-                    <div class="product-description">4K UHD monitor with HDR support and 144Hz refresh rate</div>
-                    <div class="product-footer">
-                        <div class="product-price">₪ 349</div>
-                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 7) }}'">
-                <div class="product-image">
-                    <div class="wishlist-btn" onclick="event.stopPropagation();">
-                        <i class="far fa-heart"></i>
-                    </div>
-                    <img src="{{ asset('images/products/keyboardrazer.png') }}" alt="Mechanical Keyboard RGB">
-                </div>
-                <div class="product-info">
-                    <div class="product-title">Mechanical Keyboard RGB</div>
-                    <div class="product-description">Gaming mechanical keyboard with customizable RGB lighting</div>
-                    <div class="product-footer">
-                        <div class="product-price">₪ 129</div>
-                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 8) }}'">
-                <div class="product-image">
-                    <div class="wishlist-btn" onclick="event.stopPropagation();">
-                        <i class="far fa-heart"></i>
-                    </div>
+                    @if($product->is_new)
                     <div class="product-badge">NEW</div>
-                    <img src="{{ asset('images/products/1024.png') }}" alt="Sony Headphones">
+                    @elseif($product->sale_price && $product->sale_price < $product->price)
+                    <div class="product-badge">SALE</div>
+                    @elseif($product->is_featured)
+                    <div class="product-badge">HOT</div>
+                    @endif
+                    <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
                 </div>
                 <div class="product-info">
-                    <div class="product-title">Sony WH-1000XM5</div>
-                    <div class="product-description">Premium noise-cancelling wireless headphones</div>
+                    <div class="product-title">{{ $product->name }}</div>
+                    <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
                     <div class="product-footer">
-                        <div class="product-price">₪ 399</div>
+                        <div class="product-price">
+                            @if($product->sale_price && $product->sale_price < $product->price)
+                                <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">₪ {{ number_format($product->price, 0) }}</span>
+                                ₪ {{ number_format($product->sale_price, 0) }}
+                            @else
+                                ₪ {{ number_format($product->price, 0) }}
+                            @endif
+                        </div>
                         <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                     </div>
                 </div>
             </div>
+            @empty
+            <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                <p style="color: #999; font-size: 1.2rem;">No products found</p>
+            </div>
+            @endforelse
         </div>
+
+        @if(isset($products) && method_exists($products, 'hasPages') && $products->hasPages())
+        <div class="pagination-wrapper" style="display: flex; justify-content: center; margin: 3rem 0 2rem 0; padding: 0 1rem; width: 100%;">
+            {{ $products->links() }}
+        </div>
+        @endif
     </div>
 </div>
 @endsection

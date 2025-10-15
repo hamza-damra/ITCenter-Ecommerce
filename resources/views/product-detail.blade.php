@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Product Details - IT Center')
+@section('title', $product->name . ' - IT Center')
 
 @section('content')
 <style>
@@ -26,19 +26,25 @@
     .main-image {
         width: 100%;
         height: 500px;
-        background: #f5f5f5;
+        background: #ffffff;
         border-radius: 12px;
         overflow: hidden;
         margin-bottom: 1rem;
         position: relative;
         border: 1px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     .main-image img {
         width: 100%;
         height: 100%;
         object-fit: contain;
+        object-position: center;
         transition: transform 0.3s;
+        padding: 10px;
     }
 
     .main-image:hover img {
@@ -59,6 +65,9 @@
         cursor: pointer;
         border: 2px solid transparent;
         transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .thumbnail:hover,
@@ -70,6 +79,8 @@
         width: 100%;
         height: 100%;
         object-fit: contain;
+        object-position: center;
+        padding: 5px;
     }
 
     /* Product Info Section */
@@ -242,6 +253,22 @@
         box-shadow: 0 4px 12px rgba(230, 146, 112, 0.3);
     }
 
+    .btn-add-cart:disabled,
+    .btn-buy-now:disabled,
+    .quantity-btn:disabled {
+        background: #ccc;
+        color: #666;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    .btn-add-cart:disabled:hover,
+    .btn-buy-now:disabled:hover,
+    .quantity-btn:disabled:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
     .btn-buy-now {
         flex: 1;
         background: #000;
@@ -389,12 +416,22 @@
         background: #f5f5f5;
         position: relative;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .product-card-image img {
         width: 100%;
         height: 100%;
         object-fit: contain;
+        object-position: center;
+        padding: 10px;
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .product-card-image img {
+        transform: scale(1.08);
     }
 
     .product-card-content {
@@ -468,54 +505,77 @@
             <!-- Product Images -->
             <div class="product-images">
                 <div class="main-image">
-                    <img src="{{ asset('images/products/1024.png') }}" alt="Product" id="mainImage">
+                    @php
+                        $mainImageUrl = $product->main_image 
+                            ? (filter_var($product->main_image, FILTER_VALIDATE_URL) 
+                                ? $product->main_image 
+                                : asset('storage/' . $product->main_image))
+                            : 'https://via.placeholder.com/800x800/f5f5f5/666666?text=' . urlencode($product->name);
+                    @endphp
+                    <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}" id="mainImage" onerror="this.src='https://via.placeholder.com/800x800/f5f5f5/666666?text=No+Image'">
                 </div>
                 <div class="thumbnail-images">
-                    <div class="thumbnail active">
-                        <img src="{{ asset('images/products/1024.png') }}" alt="Thumbnail 1" onclick="changeImage(this)">
-                    </div>
-                    <div class="thumbnail">
-                        <img src="{{ asset('images/products/rtx2.png') }}" alt="Thumbnail 2" onclick="changeImage(this)">
-                    </div>
-                    <div class="thumbnail">
-                        <img src="{{ asset('images/products/rtx3.png') }}" alt="Thumbnail 3" onclick="changeImage(this)">
-                    </div>
-                    <div class="thumbnail">
-                        <img src="{{ asset('images/products/rtx4.png') }}" alt="Thumbnail 4" onclick="changeImage(this)">
-                    </div>
+                    @if($product->images->count() > 0)
+                        @foreach($product->images->take(4) as $index => $image)
+                            <div class="thumbnail {{ $index === 0 ? 'active' : '' }}">
+                                @php
+                                    $thumbnailUrl = $image->image_path 
+                                        ? (filter_var($image->image_path, FILTER_VALIDATE_URL) 
+                                            ? $image->image_path 
+                                            : asset('storage/' . $image->image_path))
+                                        : 'https://via.placeholder.com/200x200/f5f5f5/666666?text=Image+' . ($index + 1);
+                                @endphp
+                                <img src="{{ $thumbnailUrl }}" alt="{{ $product->name }}" onclick="changeImage(this)" onerror="this.src='https://via.placeholder.com/200x200/f5f5f5/666666?text=No+Image'">
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="thumbnail active">
+                            <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}" onclick="changeImage(this)" onerror="this.src='https://via.placeholder.com/200x200/f5f5f5/666666?text=No+Image'">
+                        </div>
+                    @endif
                 </div>
             </div>
 
             <!-- Product Info -->
             <div class="product-info">
-                <div class="product-category">Laptops / Gaming</div>
-                <h1 class="product-title">HP Pavilion Gaming Laptop 15.6" FHD 144Hz</h1>
+                <div class="product-category">{{ $product->category->name ?? 'Uncategorized' }} @if($product->brand) / {{ $product->brand->name }}@endif</div>
+                <h1 class="product-title">{{ $product->name }}</h1>
 
                 <div class="product-rating">
                     <div class="stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <= floor($product->avg_rating))
+                                <i class="fas fa-star"></i>
+                            @elseif($i - $product->avg_rating < 1)
+                                <i class="fas fa-star-half-alt"></i>
+                            @else
+                                <i class="far fa-star"></i>
+                            @endif
+                        @endfor
                     </div>
-                    <span class="rating-text">4.5 (128 reviews)</span>
+                    <span class="rating-text">{{ number_format($product->avg_rating, 1) }} ({{ $product->reviews_count }} reviews)</span>
                 </div>
 
                 <div class="product-price">
-                    <span class="current-price">$899.99</span>
-                    <span class="original-price">$1,199.99</span>
-                    <span class="discount-badge">-25%</span>
+                    <span class="current-price">${{ number_format($product->final_price, 2) }}</span>
+                    @if($product->is_on_sale)
+                        <span class="original-price">${{ number_format($product->price, 2) }}</span>
+                        <span class="discount-badge">-{{ $product->discount_percentage }}%</span>
+                    @endif
                 </div>
 
-                <div class="stock-status">
-                    <i class="fas fa-check-circle"></i>
-                    <span>In Stock - Ready to Ship</span>
+                <div class="stock-status {{ $product->stock_status === 'out_of_stock' ? 'out-of-stock' : '' }}">
+                    @if($product->stock_status === 'in_stock')
+                        <i class="fas fa-check-circle"></i>
+                        <span>In Stock - Ready to Ship</span>
+                    @else
+                        <i class="fas fa-times-circle"></i>
+                        <span>Out of Stock</span>
+                    @endif
                 </div>
 
                 <p class="product-description">
-                    Experience ultimate gaming performance with the HP Pavilion Gaming Laptop. Featuring a powerful Intel Core i7 processor,
-                    NVIDIA GeForce RTX 3060 graphics, and a stunning 144Hz display. Perfect for gaming, content creation, and demanding tasks.
+                    {{ $product->short_description ?? $product->description }}
                 </p>
 
                 <div class="product-features">
@@ -541,19 +601,24 @@
                     <label class="quantity-label">Quantity:</label>
                     <div class="quantity-selector">
                         <div class="quantity-controls">
-                            <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
-                            <input type="number" class="quantity-input" value="1" min="1" id="quantity">
-                            <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+                            <button class="quantity-btn" onclick="decreaseQuantity()" {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>-</button>
+                            <input type="number" class="quantity-input" value="1" min="1" 
+                                   max="{{ $product->track_stock ? $product->stock_quantity : 999 }}" 
+                                   id="quantity" 
+                                   {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
+                            <button class="quantity-btn" onclick="increaseQuantity()" {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>+</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn-add-cart">
+                    <button class="btn-add-cart" {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
                         <i class="fas fa-shopping-cart"></i>
-                        Add to Cart
+                        {{ $product->stock_status === 'out_of_stock' ? 'Out of Stock' : 'Add to Cart' }}
                     </button>
-                    <button class="btn-buy-now">Buy Now</button>
+                    <button class="btn-buy-now" {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
+                        {{ $product->stock_status === 'out_of_stock' ? 'Unavailable' : 'Buy Now' }}
+                    </button>
                     <button class="btn-wishlist">
                         <i class="far fa-heart"></i>
                     </button>
@@ -565,48 +630,49 @@
         <div class="specifications-section">
             <h2 class="section-title">Technical Specifications</h2>
             <div class="specs-grid">
-                <div class="spec-item">
-                    <span class="spec-label">Processor:</span>
-                    <span class="spec-value">Intel Core i7-11800H (8 cores, 16 threads)</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Graphics:</span>
-                    <span class="spec-value">NVIDIA GeForce RTX 3060 6GB</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">RAM:</span>
-                    <span class="spec-value">16GB DDR4 3200MHz</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Storage:</span>
-                    <span class="spec-value">512GB NVMe SSD</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Display:</span>
-                    <span class="spec-value">15.6" FHD (1920x1080) 144Hz IPS</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Battery:</span>
-                    <span class="spec-value">4-cell 70Wh Li-ion</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Weight:</span>
-                    <span class="spec-value">2.3 kg (5.07 lbs)</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Operating System:</span>
-                    <span class="spec-value">Windows 11 Home</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Connectivity:</span>
-                    <span class="spec-value">Wi-Fi 6, Bluetooth 5.2</span>
-                </div>
-                <div class="spec-item">
-                    <span class="spec-label">Ports:</span>
-                    <span class="spec-value">3x USB-A, 1x USB-C, HDMI, Audio Jack</span>
-                </div>
+                @if($product->specifications && is_array($product->specifications))
+                    @foreach($product->specifications as $key => $value)
+                        <div class="spec-item">
+                            <span class="spec-label">{{ ucfirst(str_replace('_', ' ', $key)) }}:</span>
+                            <span class="spec-value">{{ $value }}</span>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="spec-item">
+                        <span class="spec-label">SKU:</span>
+                        <span class="spec-value">{{ $product->sku }}</span>
+                    </div>
+                    @if($product->weight)
+                        <div class="spec-item">
+                            <span class="spec-label">Weight:</span>
+                            <span class="spec-value">{{ $product->weight }} kg</span>
+                        </div>
+                    @endif
+                    @if($product->warranty)
+                        <div class="spec-item">
+                            <span class="spec-label">Warranty:</span>
+                            <span class="spec-value">{{ $product->warranty }}</span>
+                        </div>
+                    @endif
+                    @if($product->length && $product->width && $product->height)
+                        <div class="spec-item">
+                            <span class="spec-label">Dimensions:</span>
+                            <span class="spec-value">{{ $product->length }} x {{ $product->width }} x {{ $product->height }} cm</span>
+                        </div>
+                    @endif
+                @endif
             </div>
         </div>
+
+        <!-- Full Description -->
+        @if($product->description && $product->description != $product->short_description)
+        <div class="specifications-section" style="margin-top: 2rem;">
+            <h2 class="section-title">Product Description</h2>
+            <div style="color: #555; line-height: 1.8; font-size: 1rem;">
+                {!! nl2br(e($product->description)) !!}
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 
@@ -615,50 +681,26 @@
     <div class="container">
         <h2 class="related-title">Related Products</h2>
         <div class="products-grid">
-            <a href="{{ route('product.detail', 2) }}" style="text-decoration: none; color: inherit;">
-                <div class="product-card">
-                    <div class="product-card-image">
-                        <img src="https://via.placeholder.com/300x200/f5f5f5/666666?text=Product+1" alt="Related Product 1">
+            @foreach($relatedProducts as $relatedProduct)
+                <a href="{{ route('product.detail', $relatedProduct->slug) }}" style="text-decoration: none; color: inherit;">
+                    <div class="product-card">
+                        <div class="product-card-image">
+                            @php
+                                $relatedImageUrl = $relatedProduct->main_image 
+                                    ? (filter_var($relatedProduct->main_image, FILTER_VALIDATE_URL) 
+                                        ? $relatedProduct->main_image 
+                                        : asset('storage/' . $relatedProduct->main_image))
+                                    : 'https://via.placeholder.com/300x200/f5f5f5/666666?text=' . urlencode($relatedProduct->name);
+                            @endphp
+                            <img src="{{ $relatedImageUrl }}" alt="{{ $relatedProduct->name }}" onerror="this.src='https://via.placeholder.com/300x200/f5f5f5/666666?text=No+Image'">
+                        </div>
+                        <div class="product-card-content">
+                            <h3 class="product-card-title">{{ $relatedProduct->name }}</h3>
+                            <div class="product-card-price">${{ number_format($relatedProduct->final_price, 2) }}</div>
+                        </div>
                     </div>
-                    <div class="product-card-content">
-                        <h3 class="product-card-title">ASUS ROG Gaming Laptop</h3>
-                        <div class="product-card-price">$1,099.99</div>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('product.detail', 3) }}" style="text-decoration: none; color: inherit;">
-                <div class="product-card">
-                    <div class="product-card-image">
-                        <img src="https://via.placeholder.com/300x200/f5f5f5/666666?text=Product+2" alt="Related Product 2">
-                    </div>
-                    <div class="product-card-content">
-                        <h3 class="product-card-title">Dell Gaming G15</h3>
-                        <div class="product-card-price">$849.99</div>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('product.detail', 4) }}" style="text-decoration: none; color: inherit;">
-                <div class="product-card">
-                    <div class="product-card-image">
-                        <img src="https://via.placeholder.com/300x200/f5f5f5/666666?text=Product+3" alt="Related Product 3">
-                    </div>
-                    <div class="product-card-content">
-                        <h3 class="product-card-title">Lenovo Legion 5</h3>
-                        <div class="product-card-price">$949.99</div>
-                    </div>
-                </div>
-            </a>
-            <a href="{{ route('product.detail', 5) }}" style="text-decoration: none; color: inherit;">
-                <div class="product-card">
-                    <div class="product-card-image">
-                        <img src="https://via.placeholder.com/300x200/f5f5f5/666666?text=Product+4" alt="Related Product 4">
-                    </div>
-                    <div class="product-card-content">
-                        <h3 class="product-card-title">MSI Katana Gaming</h3>
-                        <div class="product-card-price">$799.99</div>
-                    </div>
-                </div>
-            </a>
+                </a>
+            @endforeach
         </div>
     </div>
 </div>
@@ -679,13 +721,18 @@
     // Quantity controls
     function increaseQuantity() {
         const input = document.getElementById('quantity');
-        input.value = parseInt(input.value) + 1;
+        const max = parseInt(input.getAttribute('max'));
+        const current = parseInt(input.value);
+        if (current < max) {
+            input.value = current + 1;
+        }
     }
 
     function decreaseQuantity() {
         const input = document.getElementById('quantity');
-        if (parseInt(input.value) > 1) {
-            input.value = parseInt(input.value) - 1;
+        const current = parseInt(input.value);
+        if (current > 1) {
+            input.value = current - 1;
         }
     }
 

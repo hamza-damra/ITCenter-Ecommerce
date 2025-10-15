@@ -95,12 +95,24 @@
         color: #e69270ff;
     }
 
-    .categories-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 2rem;
+    .categories-wrapper {
+        position: relative;
         max-width: 1400px;
         margin: 0 auto;
+        padding: 0 60px;
+    }
+
+    .categories-grid {
+        display: flex;
+        gap: 2rem;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        padding: 1rem 0;
+    }
+
+    .categories-grid::-webkit-scrollbar {
+        display: none;
     }
 
     .category-item {
@@ -110,10 +122,60 @@
         text-align: center;
         cursor: pointer;
         transition: transform 0.3s;
+        min-width: 120px;
+        flex-shrink: 0;
     }
 
     .category-item:hover {
         transform: translateY(-5px);
+    }
+
+    .category-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #fff;
+        border: 2px solid #e0e0e0;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .category-nav-btn:hover {
+        background: #e69270ff;
+        border-color: #e69270ff;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .category-nav-btn.disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    .category-nav-btn.left {
+        left: 0;
+    }
+
+    .category-nav-btn.right {
+        right: 0;
+    }
+
+    .category-nav-btn i {
+        font-size: 1.2rem;
+        color: #333;
+    }
+
+    .category-nav-btn:hover i {
+        color: #fff;
     }
 
     .category-icon {
@@ -551,494 +613,349 @@
             </a>
         </div>
 
-        <div class="categories-grid">
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/screen.png') }}" alt="Computers">
+        <div class="categories-wrapper">
+            <button class="category-nav-btn left" id="categoryScrollLeft">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <div class="categories-grid" id="categoriesGrid">
+                @foreach($categories as $category)
+                <div class="category-item" onclick="window.location.href='{{ route('products', ['category' => $category->slug]) }}'">
+                    <div class="category-icon">
+                        @if($category->image)
+                            @if(str_starts_with($category->image, 'http'))
+                                <img src="{{ $category->image }}" alt="{{ $category->name }}">
+                            @else
+                                <img src="{{ asset($category->image) }}" alt="{{ $category->name }}">
+                            @endif
+                        @else
+                            <img src="{{ asset('images/products/default.png') }}" alt="{{ $category->name }}">
+                        @endif
+                    </div>
+                    <div class="category-name">{{ $category->name }}</div>
                 </div>
-                <div class="category-name">Computers</div>
+                @endforeach
             </div>
 
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/1024.png') }}" alt="Printer">
-                </div>
-                <div class="category-name">Printer</div>
-            </div>
-
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/mouse.png') }}" alt="Mobile Accessories">
-                </div>
-                <div class="category-name">Mobile Accessories</div>
-            </div>
-
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/ssd.png') }}" alt="Laptop Bag">
-                </div>
-                <div class="category-name">LAPTOP BAG</div>
-            </div>
-
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/screen.png') }}" alt="Laptop">
-                </div>
-                <div class="category-name">Laptop</div>
-            </div>
-
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/keyboardrazer.png') }}" alt="Laptop Accessories">
-                </div>
-                <div class="category-name">Laptop Accessories</div>
-            </div>
-
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/screen.png') }}" alt="Monitors">
-                </div>
-                <div class="category-name">MONITORS</div>
-            </div>
-
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/controllerxbox.png') }}" alt="Computer Case">
-                </div>
-                <div class="category-name">Computer Case</div>
-            </div>
-
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/usb.png') }}" alt="Motherboard">
-                </div>
-                <div class="category-name">Motherboard</div>
-            </div>
-
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/1024.png') }}" alt="CPU">
-                </div>
-                <div class="category-name">CPU</div>
-            </div>
-
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/mouse.png') }}" alt="COOLER">
-                </div>
-                <div class="category-name">COOLER</div>
-            </div>
-
-            <div class="category-item" onclick="window.location.href='{{ route('categories') }}'">
-                <div class="category-icon">
-                    <img src="{{ asset('images/products/ssd.png') }}" alt="GRAPHIC CARD">
-                </div>
-                <div class="category-name">GRAPHIC CARD</div>
-            </div>
+            <button class="category-nav-btn right" id="categoryScrollRight">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
     </div>
 </div>
 
 <!-- Special Offer Cards -->
 <div class="container">
+    @if($activeOffers->count() > 0 || $onSaleProducts->count() > 0)
     <div class="special-cards">
-        <div class="special-card" onclick="window.location.href='{{ route('products') }}'">
+        @foreach($activeOffers->take(3) as $offer)
+        <div class="special-card" onclick="window.location.href='{{ route('offer.show', $offer->slug) }}'">
             <div class="special-card-image">
-                <img src="https://via.placeholder.com/400x250/667eea/fff?text=Gaming+Setup" alt="Dominate Every Match">
+                @if($offer->banner_image)
+                    @if(str_starts_with($offer->banner_image, 'http'))
+                        <img src="{{ $offer->banner_image }}" alt="{{ $offer->name }}">
+                    @else
+                        <img src="{{ asset($offer->banner_image) }}" alt="{{ $offer->name }}">
+                    @endif
+                @else
+                    <img src="https://via.placeholder.com/400x250/ff6b6b/fff?text={{ urlencode($offer->name) }}" alt="{{ $offer->name }}">
+                @endif
             </div>
             <div class="special-card-content">
-                <div class="special-card-title">Dominate Every Match</div>
-                <div class="special-card-subtitle">Power. Precision. Performance.</div>
-                <a href="{{ route('products') }}" class="special-card-btn">
-                    Shop Top Gear <i class="fas fa-arrow-right"></i>
+                <div class="special-card-title">{{ $offer->name }}</div>
+                <div class="special-card-subtitle">{{ Str::limit($offer->description, 50) }}</div>
+                <a href="{{ route('offer.show', $offer->slug) }}" class="special-card-btn">
+                    Shop Now <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
-
-        <div class="special-card" onclick="window.location.href='{{ route('offers') }}'">
+        @endforeach
+        
+        @if($activeOffers->count() < 3 && $onSaleProducts->count() > 0)
+        <div class="special-card" onclick="window.location.href='{{ route('products', ['filter' => 'sale']) }}'">
             <div class="special-card-image">
-                <img src="https://via.placeholder.com/400x250/ff6b6b/fff?text=Hot+Deals" alt="Fantastic Deals">
+                @if($onSaleProducts->first()->main_image)
+                    <img src="{{ $onSaleProducts->first()->main_image }}" alt="On Sale">
+                @else
+                    <img src="https://via.placeholder.com/400x250/48b1bf/fff?text=On+Sale" alt="On Sale">
+                @endif
             </div>
             <div class="special-card-content">
-                <div class="special-card-title">Fantastic Deals</div>
-                <div class="special-card-subtitle">Under $30, Under $75 & More!</div>
-                <a href="{{ route('offers') }}" class="special-card-btn">
-                    Shop All <i class="fas fa-arrow-right"></i>
+                <div class="special-card-title">On Sale Now</div>
+                <div class="special-card-subtitle">Don't miss our amazing deals!</div>
+                <a href="{{ route('products', ['filter' => 'sale']) }}" class="special-card-btn">
+                    Shop Sale <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
+        @endif
 
-        <div class="special-card" onclick="window.location.href='{{ route('offers') }}'">
+        @if($activeOffers->count() + ($onSaleProducts->count() > 0 ? 1 : 0) < 4 && $newProducts->count() > 0)
+        <div class="special-card" onclick="window.location.href='{{ route('products', ['filter' => 'new']) }}'">
             <div class="special-card-image">
-                <img src="https://via.placeholder.com/400x250/48b1bf/fff?text=Smart+Picks" alt="Season's Best">
+                @if($newProducts->first()->main_image)
+                    <img src="{{ $newProducts->first()->main_image }}" alt="New Arrivals">
+                @else
+                    <img src="https://via.placeholder.com/400x250/4ecdc4/fff?text=New+Arrivals" alt="New Arrivals">
+                @endif
             </div>
             <div class="special-card-content">
-                <div class="special-card-title">Season's Best</div>
-                <div class="special-card-subtitle">Holiday deals across every category</div>
-                <a href="{{ route('offers') }}" class="special-card-btn">
-                    See Deals <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-
-        <div class="special-card" onclick="window.location.href='{{ route('products') }}'">
-            <div class="special-card-image">
-                <img src="https://via.placeholder.com/400x250/4ecdc4/fff?text=New+Arrivals" alt="Feature Event">
-            </div>
-            <div class="special-card-content">
-                <div class="special-card-title">Feature Event</div>
+                <div class="special-card-title">New Arrivals</div>
                 <div class="special-card-subtitle">Be the first to explore today's newest finds.</div>
-                <a href="{{ route('products') }}" class="special-card-btn">
+                <a href="{{ route('products', ['filter' => 'new']) }}" class="special-card-btn">
                     See What's New <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
+        @endif
     </div>
+    @endif
 
-    <!-- Most Popular Sales -->
+    <!-- Featured Products -->
     <div class="section-header">
-        <h2>Most Popular Sales</h2>
+        <h2>Featured Products</h2>
         <a href="{{ route('products') }}" class="view-more">
             View More <i class="fas fa-arrow-right"></i>
         </a>
     </div>
 
     <div class="product-grid">
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 1) }}'">
+        @foreach($featuredProducts as $product)
+        <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
             <div class="product-image">
                 <div class="wishlist-btn" onclick="event.stopPropagation();">
                     <i class="far fa-heart"></i>
                 </div>
-                <img src="{{ asset('images/products/ssd.png') }}" alt="SSD Storage">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Transcend 1TB ESD270C</div>
-                <div class="product-description">The Transcend ESD270C 1TB Portable External SSD</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 390</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 2) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/1024.png') }}" alt="Network Adapter">
-            </div>
-            <div class="product-info">
-                <div class="product-title">EMK Optical Splitter</div>
-                <div class="product-description">The EMK Optical Splitter 1in to 2out</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 25</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 3) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <div class="product-badge">HOT</div>
-                <img src="{{ asset('images/products/keyboardrazer.png') }}" alt="Mechanical Keyboard RGB">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Mechanical Keyboard RGB</div>
-                <div class="product-description">Gaming mechanical keyboard with customizable RGB lighting</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 129</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 4) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/usb.png') }}" alt="USB-C to Lightning">
-            </div>
-            <div class="product-info">
-                <div class="product-title">USB-C to Lightning</div>
-                <div class="product-description">The Cycle Premium USB-C to Lightning Cable</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 19</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 5) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
+                @if($product->is_new)
                 <div class="product-badge">NEW</div>
-                <img src="{{ asset('images/products/screen.png') }}" alt="Monitor">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Samsung 27" 4K Monitor</div>
-                <div class="product-description">Ultra HD display with HDR support</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 499</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 6) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/mouse.png') }}" alt="Gaming Mouse">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Logitech G Pro Wireless</div>
-                <div class="product-description">Professional gaming mouse with HERO sensor</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 149</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 7) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
+                @elseif($product->sale_price && $product->sale_price < $product->price)
                 <div class="product-badge">SALE</div>
-                <img src="{{ asset('images/products/controllerxbox.png') }}" alt="Controller">
+                @elseif($product->is_featured)
+                <div class="product-badge">HOT</div>
+                @endif
+                <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
             </div>
             <div class="product-info">
-                <div class="product-title">Xbox Wireless Controller</div>
-                <div class="product-description">Compatible with Xbox and PC</div>
+                <div class="product-title">{{ $product->name }}</div>
+                <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 59</div>
+                    <div class="product-price">
+                        @if($product->sale_price && $product->sale_price < $product->price)
+                            <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">₪ {{ number_format($product->price, 0) }}</span>
+                            ₪ {{ number_format($product->sale_price, 0) }}
+                        @else
+                            ₪ {{ number_format($product->price, 0) }}
+                        @endif
+                    </div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>
         </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 8) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/1024.png') }}" alt="Webcam">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Logitech C920 HD Pro</div>
-                <div class="product-description">Full HD 1080p webcam for streaming</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 89</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
 
-    <!-- Builder Cards -->
+    <!-- Shop by Categories - Builder Cards -->
+    @if($categories->count() >= 5)
     <div class="section-header">
-        <h2>Build Your Dream Setup</h2>
+        <h2>Shop by Category</h2>
     </div>
 
     <div class="builder-cards">
-        <div class="builder-card" onclick="window.location.href='{{ route('products') }}'">
-            <div class="builder-card-title">PC Builder</div>
-            <div class="builder-card-link">Check it out ›</div>
+        @foreach($categories->take(5) as $index => $category)
+        <div class="builder-card" onclick="window.location.href='{{ route('products', ['category' => $category->slug]) }}'">
+            <div class="builder-card-title">{{ $category->name }}</div>
+            <div class="builder-card-link">Explore {{ $category->products_count }} products ›</div>
+            @if($category->image)
             <div class="builder-card-image">
-                <img src="{{ asset('images/products/screen.png') }}" alt="PC Builder">
+                @if(str_starts_with($category->image, 'http'))
+                    <img src="{{ $category->image }}" alt="{{ $category->name }}">
+                @else
+                    <img src="{{ asset($category->image) }}" alt="{{ $category->name }}">
+                @endif
             </div>
+            @endif
         </div>
-
-        <div class="builder-card" onclick="window.location.href='{{ route('products') }}'">
-            <div class="builder-card-title">NAS Builder</div>
-            <div class="builder-card-link">Check it out ›</div>
-            <div class="builder-card-image">
-                <img src="{{ asset('images/products/controllerxbox.png') }}" alt="NAS Builder">
-            </div>
-        </div>
-
-        <div class="builder-card" onclick="window.location.href='{{ route('products') }}'">
-            <div class="builder-card-title">PC Upgrader</div>
-            <div class="builder-card-link">Check it out ›</div>
-            <div class="builder-card-image">
-                <img src="{{ asset('images/products/ssd.png') }}" alt="PC Upgrader">
-            </div>
-        </div>
-
-        <div class="builder-card" onclick="window.location.href='{{ route('products') }}'">
-            <div class="builder-card-title">Gaming PC Finder</div>
-            <div class="builder-card-link">Check it out ›</div>
-            <div class="builder-card-image">
-                <img src="{{ asset('images/products/mouse.png') }}" alt="Gaming PC">
-            </div>
-        </div>
-
-        <div class="builder-card" onclick="window.location.href='{{ route('products') }}'">
-            <div class="builder-card-title">Server Configurator</div>
-            <div class="builder-card-link">Check it out ›</div>
-            <div class="builder-card-image">
-                <img src="{{ asset('images/products/1024.png') }}" alt="Server">
-            </div>
-        </div>
+        @endforeach
     </div>
+    @endif
 
-    <!-- Most Popular Sales -->
+    <!-- New Arrivals -->
     <div class="section-header">
-        <h2>Most Popular Sales</h2>
+        <h2>New Arrivals</h2>
         <a href="{{ route('products') }}" class="view-more">
             View More <i class="fas fa-arrow-right"></i>
         </a>
     </div>
 
     <div class="product-grid">
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 1) }}'">
+        @foreach($newProducts as $product)
+        <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
             <div class="product-image">
                 <div class="wishlist-btn" onclick="event.stopPropagation();">
                     <i class="far fa-heart"></i>
                 </div>
-                <img src="{{ asset('images/products/ssd.png') }}" alt="SSD Storage">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Transcend 1TB ESD270C</div>
-                <div class="product-description">The Transcend ESD270C 1TB Portable External SSD</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 390</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 2) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/1024.png') }}" alt="Network Adapter">
-            </div>
-            <div class="product-info">
-                <div class="product-title">EMK Optical Splitter</div>
-                <div class="product-description">The EMK Optical Splitter 1in to 2out</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 25</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 3) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <div class="product-badge">HOT</div>
-                <img src="{{ asset('images/products/keyboardrazer.png') }}" alt="Mechanical Keyboard RGB">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Mechanical Keyboard RGB</div>
-                <div class="product-description">Gaming mechanical keyboard with customizable RGB lighting</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 129</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 4) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/usb.png') }}" alt="USB-C to Lightning">
-            </div>
-            <div class="product-info">
-                <div class="product-title">USB-C to Lightning</div>
-                <div class="product-description">The Cycle Premium USB-C to Lightning Cable</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 19</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 5) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
+                @if($product->is_new)
                 <div class="product-badge">NEW</div>
-                <img src="{{ asset('images/products/screen.png') }}" alt="Monitor">
+                @elseif($product->sale_price && $product->sale_price < $product->price)
+                <div class="product-badge">SALE</div>
+                @elseif($product->is_featured)
+                <div class="product-badge">HOT</div>
+                @endif
+                <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
             </div>
             <div class="product-info">
-                <div class="product-title">Samsung 27" 4K Monitor</div>
-                <div class="product-description">Ultra HD display with HDR support</div>
+                <div class="product-title">{{ $product->name }}</div>
+                <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 499</div>
+                    <div class="product-price">
+                        @if($product->sale_price && $product->sale_price < $product->price)
+                            <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">₪ {{ number_format($product->price, 0) }}</span>
+                            ₪ {{ number_format($product->sale_price, 0) }}
+                        @else
+                            ₪ {{ number_format($product->price, 0) }}
+                        @endif
+                    </div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>
         </div>
+        @endforeach
+    </div>
 
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 6) }}'">
+    <!-- Bestsellers -->
+    @if($bestsellerProducts->count() > 0)
+    <div class="section-header">
+        <h2>Bestsellers</h2>
+        <a href="{{ route('products', ['filter' => 'bestseller']) }}" class="view-more">
+            View More <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="product-grid">
+        @foreach($bestsellerProducts as $product)
+        <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
             <div class="product-image">
                 <div class="wishlist-btn" onclick="event.stopPropagation();">
                     <i class="far fa-heart"></i>
                 </div>
-                <img src="{{ asset('images/products/mouse.png') }}" alt="Gaming Mouse">
+                @if($product->is_new)
+                <div class="product-badge">NEW</div>
+                @elseif($product->sale_price && $product->sale_price < $product->price)
+                <div class="product-badge">SALE</div>
+                @elseif($product->is_featured)
+                <div class="product-badge">HOT</div>
+                @endif
+                <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
             </div>
             <div class="product-info">
-                <div class="product-title">Logitech G Pro Wireless</div>
-                <div class="product-description">Professional gaming mouse with HERO sensor</div>
+                <div class="product-title">{{ $product->name }}</div>
+                <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 149</div>
+                    <div class="product-price">
+                        @if($product->sale_price && $product->sale_price < $product->price)
+                            <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">₪ {{ number_format($product->price, 0) }}</span>
+                            ₪ {{ number_format($product->sale_price, 0) }}
+                        @else
+                            ₪ {{ number_format($product->price, 0) }}
+                        @endif
+                    </div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>
         </div>
+        @endforeach
+    </div>
+    @endif
 
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 7) }}'">
+    <!-- On Sale Products -->
+    @if($onSaleProducts->count() > 0)
+    <div class="section-header">
+        <h2>On Sale Now</h2>
+        <a href="{{ route('products', ['filter' => 'sale']) }}" class="view-more">
+            View More <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="product-grid">
+        @foreach($onSaleProducts as $product)
+        <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
             <div class="product-image">
                 <div class="wishlist-btn" onclick="event.stopPropagation();">
                     <i class="far fa-heart"></i>
                 </div>
                 <div class="product-badge">SALE</div>
-                <img src="{{ asset('images/products/controllerxbox.png') }}" alt="Controller">
+                <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
             </div>
             <div class="product-info">
-                <div class="product-title">Xbox Wireless Controller</div>
-                <div class="product-description">Compatible with Xbox and PC</div>
+                <div class="product-title">{{ $product->name }}</div>
+                <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 59</div>
+                    <div class="product-price">
+                        <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">₪ {{ number_format($product->price, 0) }}</span>
+                        ₪ {{ number_format($product->sale_price, 0) }}
+                    </div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>
         </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 8) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/1024.png') }}" alt="Webcam">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Logitech C920 HD Pro</div>
-                <div class="product-description">Full HD 1080p webcam for streaming</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 89</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
+    @endif
 </div>
+
+<script>
+    // Category Slider Navigation
+    document.addEventListener('DOMContentLoaded', function() {
+        const categoriesGrid = document.getElementById('categoriesGrid');
+        const scrollLeftBtn = document.getElementById('categoryScrollLeft');
+        const scrollRightBtn = document.getElementById('categoryScrollRight');
+        
+        if (categoriesGrid && scrollLeftBtn && scrollRightBtn) {
+            const scrollAmount = 300;
+            
+            // Update button states
+            function updateButtonStates() {
+                const maxScroll = categoriesGrid.scrollWidth - categoriesGrid.clientWidth;
+                
+                if (categoriesGrid.scrollLeft <= 0) {
+                    scrollLeftBtn.classList.add('disabled');
+                } else {
+                    scrollLeftBtn.classList.remove('disabled');
+                }
+                
+                if (categoriesGrid.scrollLeft >= maxScroll - 5) {
+                    scrollRightBtn.classList.add('disabled');
+                } else {
+                    scrollRightBtn.classList.remove('disabled');
+                }
+            }
+            
+            // Scroll left
+            scrollLeftBtn.addEventListener('click', function() {
+                categoriesGrid.scrollBy({
+                    left: -scrollAmount,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Scroll right
+            scrollRightBtn.addEventListener('click', function() {
+                categoriesGrid.scrollBy({
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Update button states on scroll
+            categoriesGrid.addEventListener('scroll', updateButtonStates);
+            
+            // Initial button state
+            updateButtonStates();
+            
+            // Update on window resize
+            window.addEventListener('resize', updateButtonStates);
+        }
+    });
+</script>
 
 @endsection
