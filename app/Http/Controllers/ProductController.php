@@ -10,4 +10,11 @@ class ProductController extends Controller
     {
         return view('products');
     }
+
+    public function show($id)
+    {
+        // Here you can fetch the product from database using $id
+        // For now, we'll just return the view
+        return view('product-detail');
+    }
 }

@@ -20,11 +20,20 @@
         }
 
         header {
-            background: #fff;
+            background: rgba(0, 0, 0, 1);
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
+            transition: background 0.3s ease, backdrop-filter 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .header-container {
@@ -65,7 +74,7 @@
         }
 
         .nav-menu a {
-            color: #333;
+            color: #ecececff;
             text-decoration: none;
             font-size: 0.95rem;
             transition: color 0.3s;
@@ -77,35 +86,144 @@
             color: #e69270ff;
         }
 
+        /* Animated Search Bar Styles */
+        .search-bar input,
+        .search-btn,
+        .search-btn:before,
+        .search-btn:after {
+            transition: all 0.25s ease-out;
+        }
+
+        .search-bar input,
+        .search-btn {
+            width: 3em;
+            height: 3em;
+        }
+
+        .search-bar input:invalid:not(:focus),
+        .search-btn {
+            cursor: pointer;
+        }
+
+        .search-bar,
+        .search-bar input:focus,
+        .search-bar input:valid {
+            width: 100%;
+        }
+
+        .search-bar input:focus,
+        .search-bar input:not(:focus) + .search-btn:focus {
+            outline: transparent;
+        }
+
         .search-bar {
             display: flex;
             flex: 1;
             max-width: 500px;
-            background: #f5f5f5;
-            border-radius: 5px;
-            overflow: hidden;
+            justify-content: center;
         }
 
         .search-bar input {
-            flex: 1;
-            border: none;
-            padding: 0.7rem 1rem;
             background: transparent;
-            outline: none;
-        }
-
-        .search-bar button {
-            background: #3e8cebff;
-            color: #fff;
+            border-radius: 1.5em;
+            box-shadow: 0 0 0 0.4em #f1f1f1 inset;
+            padding: 0.75em;
+            transform: translate(0.5em,0.5em) scale(0.5);
+            transform-origin: 100% 0;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
             border: none;
-            padding: 0.7rem 1.5rem;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.3s;
+            color: #f1f1f1ff;
         }
 
-        .search-bar button:hover {
-            background: #333;
+        .search-bar input::-webkit-search-decoration {
+            -webkit-appearance: none;
+        }
+
+        .search-bar input::placeholder {
+            color: #171717;
+        }
+
+        .search-bar input:focus,
+        .search-bar input:valid {
+            background: rgba(0,0,0,0.3);
+            border-radius: 0.375em 0 0 0.375em;
+            box-shadow: 0 0 0 0.1em #d9d9d9 inset;
+            transform: scale(1);
+            
+        }
+
+        .search-btn {
+            background: #f1f1f1;
+            border-radius: 0 0.75em 0.75em 0 / 0 1.5em 1.5em 0;
+            padding: 0.75em;
+            position: relative;
+            transform: translate(0.25em,0.25em) rotate(45deg) scale(0.25,0.125);
+            transform-origin: 0 50%;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-btn:before,
+        .search-btn:after {
+            content: "";
+            display: block;
+            opacity: 0;
+            position: absolute;
+        }
+
+        .search-btn:before {
+            border-radius: 50%;
+            box-shadow: 0 0 0 0.2em #171717 inset;
+            top: 0.75em;
+            left: 0.75em;
+            width: 1.2em;
+            height: 1.2em;
+        }
+
+        .search-btn:after {
+            background: #171717;
+            border-radius: 0 0.25em 0.25em 0;
+            top: 51%;
+            left: 51%;
+            width: 0.75em;
+            height: 0.25em;
+            transform: translate(0.2em,0) rotate(45deg);
+            transform-origin: 0 50%;
+        }
+
+        .search-btn span {
+            display: inline-block;
+            overflow: hidden;
+            width: 1px;
+            height: 1px;
+        }
+
+        /* Active state */
+        .search-bar input:focus + .search-btn,
+        .search-bar input:valid + .search-btn {
+            background: #2762f3;
+            border-radius: 0 0.375em 0.375em 0;
+            transform: scale(1);
+        }
+
+        .search-bar input:focus + .search-btn:before,
+        .search-bar input:focus + .search-btn:after,
+        .search-bar input:valid + .search-btn:before,
+        .search-bar input:valid + .search-btn:after {
+            opacity: 1;
+        }
+
+        .search-bar input:focus + .search-btn:hover,
+        .search-bar input:valid + .search-btn:hover,
+        .search-bar input:valid:not(:focus) + .search-btn:focus {
+            background: #0c48db;
+        }
+
+        .search-bar input:focus + .search-btn:active,
+        .search-bar input:valid + .search-btn:active {
+            transform: translateY(1px);
         }
 
         .header-icons {
@@ -117,7 +235,7 @@
         .header-icon {
             position: relative;
             cursor: pointer;
-            color: #333;
+            color: #ffffffff;
             font-size: 1.3rem;
         }
 
@@ -148,6 +266,7 @@
             color: #fff;
             padding: 3rem 0 1rem;
             margin-top: 4rem;
+
         }
 
         .footer-content {
@@ -232,7 +351,7 @@
             </div>
 
             <ul class="nav-menu">
-                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home Page</a></li>
+                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a></li>
                 <li><a href="{{ route('categories') }}" class="{{ request()->routeIs('categories') ? 'active' : '' }}">Categories</a></li>
                 <li><a href="{{ route('brands') }}" class="{{ request()->routeIs('brands') ? 'active' : '' }}">brands</a></li>
                 <li><a href="{{ route('products') }}" class="{{ request()->routeIs('products') ? 'active' : '' }}">Our Products</a></li>
@@ -241,12 +360,16 @@
                 <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact Us</a></li>
             </ul>
 
-            <div class="search-bar">
-                <input type="text" placeholder="Search Product...">
-                <button>Search</button>
-            </div>
+
 
             <div class="header-icons">
+
+                <form action="" class="search-bar">
+                    <input type="search" name="search" pattern=".*\S.*" required placeholder="">
+                    <button class="search-btn" type="submit">
+                        <span>Search</span>
+                    </button>
+                </form>
                 <div class="header-icon">
                     <i class="fas fa-user"></i>
                 </div>
@@ -318,5 +441,19 @@
             <p>&copy; {{ date('Y') }} IT Center. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            const scrollThreshold = window.innerHeight * 0.1; // 10% of viewport height
+
+            if (window.scrollY > scrollThreshold) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 </html>

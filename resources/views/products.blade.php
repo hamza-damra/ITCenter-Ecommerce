@@ -138,6 +138,18 @@
     .add-to-cart:hover {
         background: #333;
     }
+
+    .product-card a {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .wishlist-btn,
+    .add-to-cart {
+        position: relative;
+        z-index: 10;
+    }
 </style>
 
 <div class="products-section">
@@ -147,9 +159,9 @@
         </div>
 
         <div class="product-grid">
-            <div class="product-card">
+            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 1) }}'">
                 <div class="product-image">
-                    <div class="wishlist-btn">
+                    <div class="wishlist-btn" onclick="event.stopPropagation();">
                         <i class="far fa-heart"></i>
                     </div>
                     <img src="{{ asset('images/products/screen.png') }}" alt="Dell XPS 15">
@@ -159,14 +171,14 @@
                     <div class="product-description">High-performance laptop with stunning 4K display and Intel Core i7</div>
                     <div class="product-footer">
                         <div class="product-price">₪ 1,299</div>
-                        <button class="add-to-cart">Add to cart</button>
+                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card">
+            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 2) }}'">
                 <div class="product-image">
-                    <div class="wishlist-btn">
+                    <div class="wishlist-btn" onclick="event.stopPropagation();">
                         <i class="far fa-heart"></i>
                     </div>
                     <img src="{{ asset('images/products/usb.png') }}" alt="HP Pavilion Desktop">
@@ -176,14 +188,14 @@
                     <div class="product-description">Powerful desktop for everyday computing with AMD Ryzen 7</div>
                     <div class="product-footer">
                         <div class="product-price">₪ 899</div>
-                        <button class="add-to-cart">Add to cart</button>
+                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card">
+            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 3) }}'">
                 <div class="product-image">
-                    <div class="wishlist-btn">
+                    <div class="wishlist-btn" onclick="event.stopPropagation();">
                         <i class="far fa-heart"></i>
                     </div>
                     <div class="product-badge">HOT</div>
@@ -194,14 +206,14 @@
                     <div class="product-description">Premium wireless mouse for productivity and precision</div>
                     <div class="product-footer">
                         <div class="product-price">₪ 99</div>
-                        <button class="add-to-cart">Add to cart</button>
+                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card">
+            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 4) }}'">
                 <div class="product-image">
-                    <div class="wishlist-btn">
+                    <div class="wishlist-btn" onclick="event.stopPropagation();">
                         <i class="far fa-heart"></i>
                     </div>
                     <div class="product-badge">SALE</div>
@@ -212,14 +224,14 @@
                     <div class="product-description">High-end gaming desktop with RTX 4080 graphics card</div>
                     <div class="product-footer">
                         <div class="product-price">₪ 1,899</div>
-                        <button class="add-to-cart">Add to cart</button>
+                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card">
+            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 5) }}'">
                 <div class="product-image">
-                    <div class="wishlist-btn">
+                    <div class="wishlist-btn" onclick="event.stopPropagation();">
                         <i class="far fa-heart"></i>
                     </div>
                     <img src="{{ asset('images/products/ssd.png') }}" alt="Apple MacBook Pro">
@@ -229,14 +241,14 @@
                     <div class="product-description">Professional laptop with M3 chip and Retina display</div>
                     <div class="product-footer">
                         <div class="product-price">₪ 2,499</div>
-                        <button class="add-to-cart">Add to cart</button>
+                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card">
+            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 6) }}'">
                 <div class="product-image">
-                    <div class="wishlist-btn">
+                    <div class="wishlist-btn" onclick="event.stopPropagation();">
                         <i class="far fa-heart"></i>
                     </div>
                     <img src="{{ asset('images/products/screen.png') }}" alt="Samsung Monitor">
@@ -246,14 +258,14 @@
                     <div class="product-description">4K UHD monitor with HDR support and 144Hz refresh rate</div>
                     <div class="product-footer">
                         <div class="product-price">₪ 349</div>
-                        <button class="add-to-cart">Add to cart</button>
+                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card">
+            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 7) }}'">
                 <div class="product-image">
-                    <div class="wishlist-btn">
+                    <div class="wishlist-btn" onclick="event.stopPropagation();">
                         <i class="far fa-heart"></i>
                     </div>
                     <img src="{{ asset('images/products/keyboardrazer.png') }}" alt="Mechanical Keyboard RGB">
@@ -263,14 +275,14 @@
                     <div class="product-description">Gaming mechanical keyboard with customizable RGB lighting</div>
                     <div class="product-footer">
                         <div class="product-price">₪ 129</div>
-                        <button class="add-to-cart">Add to cart</button>
+                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                     </div>
                 </div>
             </div>
 
-            <div class="product-card">
+            <div class="product-card" onclick="window.location.href='{{ route('product.detail', 8) }}'">
                 <div class="product-image">
-                    <div class="wishlist-btn">
+                    <div class="wishlist-btn" onclick="event.stopPropagation();">
                         <i class="far fa-heart"></i>
                     </div>
                     <div class="product-badge">NEW</div>
@@ -281,7 +293,7 @@
                     <div class="product-description">Premium noise-cancelling wireless headphones</div>
                     <div class="product-footer">
                         <div class="product-price">₪ 399</div>
-                        <button class="add-to-cart">Add to cart</button>
+                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                     </div>
                 </div>
             </div>

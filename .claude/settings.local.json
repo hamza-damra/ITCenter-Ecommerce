@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir)"
+      "Bash(dir)",
+      "Read(//c/Users/rashe/Desktop/it-center/ITCenter-Ecommerce-temp/**)",
+      "Bash(git commit:*)",
+      "Bash(dir \"C:\\Users\\rashe\\Desktop\\it-center\\laravel-app\\mysrearchbar\")",
+      "Bash(dir \"C:\\Users\\rashe\\Desktop\\it-center\\laravel-app\\myimages\")",
+      "Bash(copy:*)"
     ],
     "deny": [],
     "ask": []

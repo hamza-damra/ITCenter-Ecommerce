@@ -12,7 +12,6 @@
         padding: 8rem 2rem;
         margin-bottom: 3rem;
         position: relative;
-        height: 700px;
     }
 
     .hero-container {
@@ -639,6 +638,103 @@
     </div>
 </div>
 
+<!-- Featured Brands Slider -->
+<div class="brands-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Featured Brands</h2>
+            <a href="{{ route('brands') }}" class="view-more">
+                See More <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="brands-slider">
+            <div class="brand-card">
+                <img src="https://via.placeholder.com/150x60/fff/333?text=ASUS" alt="ASUS">
+            </div>
+            <div class="brand-card">
+                <img src="https://via.placeholder.com/150x60/fff/d00000?text=AMD" alt="AMD">
+            </div>
+            <div class="brand-card">
+                <img src="https://via.placeholder.com/150x60/fff/0071c5?text=Intel" alt="Intel">
+            </div>
+            <div class="brand-card">
+                <img src="https://via.placeholder.com/150x60/fff/000?text=GIGABYTE" alt="GIGABYTE">
+            </div>
+            <div class="brand-card">
+                <img src="https://via.placeholder.com/150x60/fff/76b900?text=ASRock" alt="ASRock">
+            </div>
+            <div class="brand-card">
+                <img src="https://via.placeholder.com/150x60/fff/ff0000?text=MSI" alt="MSI">
+            </div>
+            <div class="brand-card">
+                <img src="https://via.placeholder.com/150x60/fff/0668e1?text=Meta" alt="Meta Quest">
+            </div>
+        </div>
+
+        <!-- Popular Products Tags -->
+        <div class="popular-tags">
+            <h3>Popular Products</h3>
+            <div class="tags-container">
+                <span class="tag">rtx</span>
+                <span class="tag">AMD</span>
+                <span class="tag">9800X3D</span>
+                <span class="tag">rtx 5090</span>
+                <span class="tag">PS5</span>
+                <span class="tag">Fractal Design</span>
+                <span class="tag">4090</span>
+                <span class="tag">ssd</span>
+                <span class="tag">RTX 5080</span>
+                <span class="tag">Intel</span>
+                <span class="tag">laptop</span>
+                <span class="tag">7800x3d</span>
+                <span class="tag">G.Skill</span>
+                <span class="tag">MSI</span>
+                <span class="tag">t-force</span>
+                <span class="tag">7600X</span>
+                <span class="tag">7900xtx</span>
+                <span class="tag">ram</span>
+                <span class="tag">msi psu</span>
+                <span class="tag">4k 2K Monitor</span>
+                <span class="tag">wd black</span>
+                <span class="tag">Asus</span>
+                <span class="tag">graphics card</span>
+                <span class="tag">acer nitro</span>
+                <span class="tag">monitor</span>
+                <span class="tag">corsair case</span>
+                <span class="tag">vengeance RGB</span>
+                <span class="tag">Montech</span>
+                <span class="tag">CUDIMM</span>
+                <span class="tag">ddr5</span>
+                <span class="tag">cpu</span>
+                <span class="tag">asus psu</span>
+                <span class="tag">990 pro</span>
+                <span class="tag">990 evo</span>
+                <span class="tag">motherboard</span>
+                <span class="tag">NZXT</span>
+                <span class="tag">cpu cooler</span>
+                <span class="tag">gaming monitor</span>
+                <span class="tag">keyboard</span>
+                <span class="tag">be quiet!</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Promotional Banners -->
+<div class="banners-section">
+    <div class="container">
+        <div class="banners-slider">
+            <div class="banner-large" onclick="window.location.href='{{ route('offers') }}'">
+                <img src="https://via.placeholder.com/900x350/667eea/fff?text=Windows+11+Upgrade+Special" alt="Windows 11">
+            </div>
+            <div class="banner-small" onclick="window.location.href='{{ route('offers') }}'">
+                <img src="https://via.placeholder.com/500x350/ec6ead/fff?text=ASUS+x+NEWEGG+Giveaway" alt="ASUS Promo">
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Special Offer Cards -->
 <div class="container">
     <div class="special-cards">
@@ -691,155 +787,6 @@
                 <a href="{{ route('products') }}" class="special-card-btn">
                     See What's New <i class="fas fa-arrow-right"></i>
                 </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Most Popular Sales -->
-    <div class="section-header">
-        <h2>Most Popular Sales</h2>
-        <a href="{{ route('products') }}" class="view-more">
-            View More <i class="fas fa-arrow-right"></i>
-        </a>
-    </div>
-
-    <div class="product-grid">
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 1) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/ssd.png') }}" alt="SSD Storage">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Transcend 1TB ESD270C</div>
-                <div class="product-description">The Transcend ESD270C 1TB Portable External SSD</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 390</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 2) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/1024.png') }}" alt="Network Adapter">
-            </div>
-            <div class="product-info">
-                <div class="product-title">EMK Optical Splitter</div>
-                <div class="product-description">The EMK Optical Splitter 1in to 2out</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 25</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 3) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <div class="product-badge">HOT</div>
-                <img src="{{ asset('images/products/keyboardrazer.png') }}" alt="Mechanical Keyboard RGB">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Mechanical Keyboard RGB</div>
-                <div class="product-description">Gaming mechanical keyboard with customizable RGB lighting</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 129</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 4) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/usb.png') }}" alt="USB-C to Lightning">
-            </div>
-            <div class="product-info">
-                <div class="product-title">USB-C to Lightning</div>
-                <div class="product-description">The Cycle Premium USB-C to Lightning Cable</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 19</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 5) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <div class="product-badge">NEW</div>
-                <img src="{{ asset('images/products/screen.png') }}" alt="Monitor">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Samsung 27" 4K Monitor</div>
-                <div class="product-description">Ultra HD display with HDR support</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 499</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 6) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/mouse.png') }}" alt="Gaming Mouse">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Logitech G Pro Wireless</div>
-                <div class="product-description">Professional gaming mouse with HERO sensor</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 149</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 7) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <div class="product-badge">SALE</div>
-                <img src="{{ asset('images/products/controllerxbox.png') }}" alt="Controller">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Xbox Wireless Controller</div>
-                <div class="product-description">Compatible with Xbox and PC</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 59</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', 8) }}'">
-            <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ asset('images/products/1024.png') }}" alt="Webcam">
-            </div>
-            <div class="product-info">
-                <div class="product-title">Logitech C920 HD Pro</div>
-                <div class="product-description">Full HD 1080p webcam for streaming</div>
-                <div class="product-footer">
-                    <div class="product-price">₪ 89</div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
-                </div>
             </div>
         </div>
     </div>
