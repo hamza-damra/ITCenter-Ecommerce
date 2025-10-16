@@ -14,8 +14,15 @@
         @method('PUT')
 
         <div class="form-group">
-            <label for="name">Product Name *</label>
-            <input type="text" id="name" name="name" class="form-control" value="{{ old('name', $product->name) }}" required>
+            <label for="name_en">Product Name (English) *</label>
+            <input type="text" id="name_en" name="name_en" class="form-control" value="{{ old('name_en', $product->name_en) }}" required>
+            @error('name_en')<span style="color: red;">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group">
+            <label for="name_ar">اسم المنتج (عربي) *</label>
+            <input type="text" id="name_ar" name="name_ar" class="form-control" value="{{ old('name_ar', $product->name_ar) }}" required dir="rtl">
+            @error('name_ar')<span style="color: red;">{{ $message }}</span>@enderror
         </div>
 
         <div class="form-group">
@@ -27,6 +34,7 @@
                     </option>
                 @endforeach
             </select>
+            @error('category_id')<span style="color: red;">{{ $message }}</span>@enderror
         </div>
 
         <div class="form-group">
@@ -39,26 +47,31 @@
                     </option>
                 @endforeach
             </select>
+            @error('brand_id')<span style="color: red;">{{ $message }}</span>@enderror
         </div>
 
         <div class="form-group">
             <label for="price">Price *</label>
             <input type="number" id="price" name="price" class="form-control" step="0.01" value="{{ old('price', $product->price) }}" required>
+            @error('price')<span style="color: red;">{{ $message }}</span>@enderror
         </div>
 
         <div class="form-group">
             <label for="sale_price">Sale Price</label>
             <input type="number" id="sale_price" name="sale_price" class="form-control" step="0.01" value="{{ old('sale_price', $product->sale_price) }}">
+            @error('sale_price')<span style="color: red;">{{ $message }}</span>@enderror
         </div>
 
         <div class="form-group">
             <label for="stock_quantity">Stock Quantity *</label>
             <input type="number" id="stock_quantity" name="stock_quantity" class="form-control" value="{{ old('stock_quantity', $product->stock_quantity) }}" required>
+            @error('stock_quantity')<span style="color: red;">{{ $message }}</span>@enderror
         </div>
 
         <div class="form-group">
             <label for="main_image">Main Image URL *</label>
             <input type="url" id="main_image" name="main_image" class="form-control" value="{{ old('main_image', $product->main_image) }}" required>
+            @error('main_image')<span style="color: red;">{{ $message }}</span>@enderror
             @if($product->main_image)
                 <img src="{{ $product->main_image }}" alt="Current Image" style="max-width: 200px; margin-top: 10px; border-radius: 5px;">
             @endif
@@ -83,13 +96,27 @@
         </div>
 
         <div class="form-group">
-            <label for="short_description">Short Description</label>
-            <textarea id="short_description" name="short_description" class="form-control">{{ old('short_description', $product->short_description) }}</textarea>
+            <label for="short_description_en">Short Description (English)</label>
+            <textarea id="short_description_en" name="short_description_en" class="form-control">{{ old('short_description_en', $product->short_description_en) }}</textarea>
+            @error('short_description_en')<span style="color: red;">{{ $message }}</span>@enderror
         </div>
 
         <div class="form-group">
-            <label for="description">Full Description</label>
-            <textarea id="description" name="description" class="form-control" style="min-height: 150px;">{{ old('description', $product->description) }}</textarea>
+            <label for="short_description_ar">وصف قصير (عربي)</label>
+            <textarea id="short_description_ar" name="short_description_ar" class="form-control" dir="rtl">{{ old('short_description_ar', $product->short_description_ar) }}</textarea>
+            @error('short_description_ar')<span style="color: red;">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group">
+            <label for="description_en">Full Description (English)</label>
+            <textarea id="description_en" name="description_en" class="form-control" style="min-height: 150px;">{{ old('description_en', $product->description_en) }}</textarea>
+            @error('description_en')<span style="color: red;">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group">
+            <label for="description_ar">وصف كامل (عربي)</label>
+            <textarea id="description_ar" name="description_ar" class="form-control" style="min-height: 150px;" dir="rtl">{{ old('description_ar', $product->description_ar) }}</textarea>
+            @error('description_ar')<span style="color: red;">{{ $message }}</span>@enderror
         </div>
 
         <div class="form-group checkbox-group">

@@ -50,6 +50,7 @@
         align-items: center;
         justify-content: center;
         position: relative;
+        overflow: hidden;
     }
 
     .product-image img {
@@ -63,35 +64,76 @@
     }
 
     .product-badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
+        position: absolute !important;
+        top: 10px !important;
+        bottom: auto !important;
+        @if(is_rtl())
+        left: 10px !important;
+        right: auto !important;
+        @else
+        right: 10px !important;
+        left: auto !important;
+        @endif
         background: #ff4757;
         color: #fff;
         padding: 0.3rem 0.8rem;
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
+        z-index: 5;
     }
 
     .wishlist-btn {
-        position: absolute;
-        top: 10px;
-        left: 10px;
+        position: absolute !important;
+        top: 10px !important;
+        bottom: auto !important;
+        @if(is_rtl())
+        right: 10px !important;
+        left: auto !important;
+        @else
+        left: 10px !important;
+        right: auto !important;
+        @endif
         background: #fff;
         width: 35px;
         height: 35px;
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         cursor: pointer;
         transition: all 0.3s;
+        z-index: 10;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .wishlist-btn:hover {
-        background: #ff4757;
-        color: #fff;
+        background: #fff;
+        transform: scale(1.1);
+    }
+
+    .wishlist-btn:hover i {
+        color: #ff0000 !important;
+    }
+
+    .wishlist-btn.active {
+        background: #fff !important;
+    }
+
+    .wishlist-btn.active i {
+        color: #ff0000 !important;
+    }
+
+    .wishlist-btn i {
+        font-size: 1rem;
+        color: #666;
+        transition: all 0.3s;
+    }
+
+    /* Solid heart icon should be red */
+    .wishlist-btn i.fas.fa-heart {
+        color: #ff0000 !important;
     }
 
     .product-info {
@@ -127,16 +169,41 @@
     .add-to-cart {
         background: #000;
         color: #fff;
-        padding: 0.6rem 1.5rem;
+        padding: 0.6rem 1rem;
         border-radius: 8px;
         border: none;
         cursor: pointer;
         font-weight: 600;
-        transition: background 0.3s;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        min-width: 140px;
+        white-space: nowrap;
+        font-size: 0.9rem;
     }
 
     .add-to-cart:hover {
         background: #333;
+        transform: translateY(-2px);
+    }
+
+    .add-to-cart.in-cart {
+        background: #4CAF50;
+    }
+
+    .add-to-cart.in-cart:hover {
+        background: #45a049;
+    }
+
+    .add-to-cart.in-cart i {
+        animation: cartBounce 0.5s ease;
+    }
+
+    @keyframes cartBounce {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.3); }
     }
 
     .product-card a {
@@ -249,6 +316,35 @@
         padding: 0 !important;
         margin: 0 !important;
     }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .product-footer {
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        
+        .add-to-cart {
+            width: 100%;
+            min-width: unset;
+        }
+        
+        .product-price {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .product-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .add-to-cart {
+            padding: 0.7rem 1rem;
+            font-size: 0.95rem;
+        }
+    }
 </style>
 
 <div class="products-section">
@@ -261,7 +357,7 @@
             @forelse($products as $product)
             <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
                 <div class="product-image">
-                    <div class="wishlist-btn" onclick="event.stopPropagation();">
+                    <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
                         <i class="far fa-heart"></i>
                     </div>
                     @if($product->is_new)
@@ -285,7 +381,9 @@
                                 ₪ {{ number_format($product->price, 0) }}
                             @endif
                         </div>
-                        <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
+                        <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                            <i class="fas fa-shopping-cart"></i> Add to cart
+                        </button>
                     </div>
                 </div>
             </div>
@@ -303,4 +401,42 @@
         @endif
     </div>
 </div>
+
+<script>
+    // Add event listener for wishlist buttons to force color change
+    document.addEventListener('DOMContentLoaded', function() {
+        // Observer to watch for class changes on wishlist buttons
+        const observeWishlistButtons = () => {
+            const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+            wishlistButtons.forEach(button => {
+                // Create a MutationObserver for each button
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.attributeName === 'class') {
+                            const icon = button.querySelector('i');
+                            if (button.classList.contains('active')) {
+                                // Force red color when active
+                                if (icon) {
+                                    icon.style.color = '#ff0000';
+                                }
+                            } else {
+                                // Reset to gray when not active
+                                if (icon) {
+                                    icon.style.color = '#666';
+                                }
+                            }
+                        }
+                    });
+                });
+                
+                // Start observing
+                observer.observe(button, { attributes: true });
+            });
+        };
+        
+        // Initial observation
+        setTimeout(observeWishlistButtons, 500);
+    });
+</script>
+
 @endsection

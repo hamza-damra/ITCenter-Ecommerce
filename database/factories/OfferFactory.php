@@ -13,14 +13,17 @@ class OfferFactory extends Factory
 
     public function definition(): array
     {
-        $name = $this->faker->words(3, true);
+        $nameEn = implode(' ', $this->faker->words(3));
+        $nameAr = $this->getArabicOfferName();
         $startDate = Carbon::now()->addDays($this->faker->numberBetween(-30, 0));
         $endDate = $startDate->copy()->addDays($this->faker->numberBetween(7, 60));
         
         return [
-            'name' => ucfirst($name),
-            'slug' => Str::slug($name),
-            'description' => $this->faker->paragraph(2),
+            'name_en' => ucfirst($nameEn),
+            'name_ar' => $nameAr,
+            'slug' => Str::slug($nameEn),
+            'description_en' => $this->faker->paragraph(2),
+            'description_ar' => $this->getArabicDescription(),
             'discount_type' => $this->faker->randomElement(['percentage', 'fixed']),
             'discount_value' => $this->faker->randomFloat(2, 5, 50),
             'min_purchase_amount' => $this->faker->randomElement([null, 100, 200, 500]),
@@ -31,6 +34,33 @@ class OfferFactory extends Factory
             'is_active' => $this->faker->boolean(80),
             'banner_image' => 'https://picsum.photos/seed/' . Str::random(10) . '/1200/400',
         ];
+    }
+
+    /**
+     * Get Arabic offer name.
+     */
+    private function getArabicOfferName(): string
+    {
+        $arabicOffers = [
+            'عرض خاص محدود',
+            'تخفيضات الموسم',
+            'عرض الجمعة البيضاء',
+            'تخفيضات الصيف',
+            'عرض نهاية العام',
+            'تخفيضات حصرية',
+            'عرض العودة للمدارس',
+            'تخفيضات رمضان',
+        ];
+        
+        return $this->faker->randomElement($arabicOffers);
+    }
+
+    /**
+     * Get Arabic description.
+     */
+    private function getArabicDescription(): string
+    {
+        return 'عرض خاص لفترة محدودة! احصل على أفضل المنتجات التقنية بأسعار لا تقبل المنافسة. لا تفوت هذه الفرصة الذهبية.';
     }
 
     /**

@@ -12,9 +12,11 @@ class Category extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'name_en',
+        'name_ar',
         'slug',
-        'description',
+        'description_en',
+        'description_ar',
         'image',
         'parent_id',
         'is_active',
@@ -30,6 +32,24 @@ class Category extends Model
     ];
 
     /**
+     * Get the name attribute based on current locale.
+     */
+    public function getNameAttribute()
+    {
+        $locale = app()->getLocale();
+        return $this->{"name_$locale"} ?? $this->name_en;
+    }
+
+    /**
+     * Get the description attribute based on current locale.
+     */
+    public function getDescriptionAttribute()
+    {
+        $locale = app()->getLocale();
+        return $this->{"description_$locale"} ?? $this->description_en;
+    }
+
+    /**
      * Boot the model.
      */
     protected static function boot()
@@ -38,7 +58,7 @@ class Category extends Model
 
         static::creating(function ($category) {
             if (empty($category->slug)) {
-                $category->slug = Str::slug($category->name);
+                $category->slug = Str::slug($category->name_en);
             }
         });
     }

@@ -13,9 +13,15 @@
         @csrf
 
         <div class="form-group">
-            <label for="name">Product Name *</label>
-            <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
-            @error('name')<span style="color: red;">{{ $message }}</span>@enderror
+            <label for="name_en">Product Name (English) *</label>
+            <input type="text" id="name_en" name="name_en" class="form-control" value="{{ old('name_en') }}" required>
+            @error('name_en')<span style="color: red;">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group">
+            <label for="name_ar">اسم المنتج (عربي) *</label>
+            <input type="text" id="name_ar" name="name_ar" class="form-control" value="{{ old('name_ar') }}" required dir="rtl">
+            @error('name_ar')<span style="color: red;">{{ $message }}</span>@enderror
         </div>
 
         <div class="form-group">
@@ -77,15 +83,27 @@
         </div>
 
         <div class="form-group">
-            <label for="short_description">Short Description</label>
-            <textarea id="short_description" name="short_description" class="form-control">{{ old('short_description') }}</textarea>
-            @error('short_description')<span style="color: red;">{{ $message }}</span>@enderror
+            <label for="short_description_en">Short Description (English)</label>
+            <textarea id="short_description_en" name="short_description_en" class="form-control">{{ old('short_description_en') }}</textarea>
+            @error('short_description_en')<span style="color: red;">{{ $message }}</span>@enderror
         </div>
 
         <div class="form-group">
-            <label for="description">Full Description</label>
-            <textarea id="description" name="description" class="form-control" style="min-height: 150px;">{{ old('description') }}</textarea>
-            @error('description')<span style="color: red;">{{ $message }}</span>@enderror
+            <label for="short_description_ar">وصف قصير (عربي)</label>
+            <textarea id="short_description_ar" name="short_description_ar" class="form-control" dir="rtl">{{ old('short_description_ar') }}</textarea>
+            @error('short_description_ar')<span style="color: red;">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group">
+            <label for="description_en">Full Description (English)</label>
+            <textarea id="description_en" name="description_en" class="form-control" style="min-height: 150px;">{{ old('description_en') }}</textarea>
+            @error('description_en')<span style="color: red;">{{ $message }}</span>@enderror
+        </div>
+
+        <div class="form-group">
+            <label for="description_ar">وصف كامل (عربي)</label>
+            <textarea id="description_ar" name="description_ar" class="form-control" style="min-height: 150px;" dir="rtl">{{ old('description_ar') }}</textarea>
+            @error('description_ar')<span style="color: red;">{{ $message }}</span>@enderror
         </div>
 
         <div class="form-group checkbox-group">

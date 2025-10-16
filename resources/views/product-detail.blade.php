@@ -299,8 +299,23 @@
     }
 
     .btn-wishlist:hover {
-        background: #e69270ff;
-        color: #fff;
+        background: #fff;
+        color: #ff0000;
+        border-color: #ff0000;
+    }
+
+    .btn-wishlist.active {
+        background: #fff;
+        color: #ff0000;
+        border-color: #ff0000;
+    }
+
+    .btn-wishlist.active i {
+        color: #ff0000;
+    }
+
+    .btn-wishlist i {
+        transition: color 0.3s;
     }
 
     /* Product Features */
@@ -612,14 +627,21 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn-add-cart" {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
+                    <button class="btn-add-cart" 
+                            type="button"
+                            onclick="addToCartWithQuantity({{ $product->id }}, this)" 
+                            {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
                         <i class="fas fa-shopping-cart"></i>
                         {{ $product->stock_status === 'out_of_stock' ? 'Out of Stock' : 'Add to Cart' }}
                     </button>
-                    <button class="btn-buy-now" {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
+                    <button class="btn-buy-now" 
+                            type="button"
+                            {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
                         {{ $product->stock_status === 'out_of_stock' ? 'Unavailable' : 'Buy Now' }}
                     </button>
-                    <button class="btn-wishlist">
+                    <button class="btn-wishlist wishlist-btn" 
+                            type="button"
+                            data-product-id="{{ $product->id }}">
                         <i class="far fa-heart"></i>
                     </button>
                 </div>
@@ -736,16 +758,79 @@
         }
     }
 
-    // Wishlist toggle
-    document.querySelector('.btn-wishlist').addEventListener('click', function() {
-        const icon = this.querySelector('i');
-        if (icon.classList.contains('far')) {
-            icon.classList.remove('far');
-            icon.classList.add('fas');
-        } else {
-            icon.classList.remove('fas');
-            icon.classList.add('far');
+    // Add to cart functionality with quantity support
+    function addToCartWithQuantity(productId, button) {
+        console.log('Add to cart clicked for product:', productId);
+        
+        const quantityInput = document.getElementById('quantity');
+        const quantity = parseInt(quantityInput.value) || 1;
+        const originalText = button.innerHTML;
+
+        console.log('Quantity:', quantity);
+
+        // Disable button and show loading state
+        button.disabled = true;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        if (!csrfToken) {
+            console.error('CSRF token not found');
+            button.disabled = false;
+            button.innerHTML = originalText;
+            showNotification('Security token not found. Please refresh the page.');
+            return;
         }
-    });
+
+        console.log('Sending request to:', `/cart/add/${productId}`);
+
+        fetch(`/cart/add/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrfToken.getAttribute('content')
+            },
+            body: JSON.stringify({ quantity: quantity })
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Response data:', data);
+            
+            if (data.success) {
+                // Show success feedback
+                button.innerHTML = '<i class="fas fa-check"></i> Added!';
+                button.style.background = '#28a745';
+                
+                // Update cart count in header
+                updateCartCount();
+
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    button.disabled = false;
+                    button.innerHTML = originalText;
+                    button.style.background = '';
+                }, 2000);
+
+                // Show notification
+                showNotification(data.message || 'Product added to cart successfully!');
+            } else {
+                // Show error
+                button.disabled = false;
+                button.innerHTML = originalText;
+                showNotification(data.message || 'Failed to add product to cart');
+            }
+        })
+        .catch(error => {
+            console.error('Error details:', error);
+            button.disabled = false;
+            button.innerHTML = originalText;
+            showNotification('An error occurred. Please try again.');
+        });
+    }
+
+    // Wishlist functionality is handled by the global script in layout
 </script>
 @endsection

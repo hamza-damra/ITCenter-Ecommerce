@@ -24,15 +24,17 @@ class BrandController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'name_en' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255',
+            'description_en' => 'nullable|string',
+            'description_ar' => 'nullable|string',
             'logo' => 'nullable|url',
             'website' => 'nullable|url',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
+        $validated['slug'] = Str::slug($validated['name_en']);
 
         Brand::create($validated);
 
@@ -48,15 +50,17 @@ class BrandController extends Controller
     public function update(Request $request, Brand $brand)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'name_en' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255',
+            'description_en' => 'nullable|string',
+            'description_ar' => 'nullable|string',
             'logo' => 'nullable|url',
             'website' => 'nullable|url',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
+        $validated['slug'] = Str::slug($validated['name_en']);
 
         $brand->update($validated);
 

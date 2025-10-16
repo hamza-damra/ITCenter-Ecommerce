@@ -12,11 +12,14 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'name_en',
+        'name_ar',
         'slug',
         'sku',
-        'short_description',
-        'description',
+        'short_description_en',
+        'short_description_ar',
+        'description_en',
+        'description_ar',
         'price',
         'sale_price',
         'cost_price',
@@ -69,6 +72,33 @@ class Product extends Model
     ];
 
     /**
+     * Get the name attribute based on current locale.
+     */
+    public function getNameAttribute()
+    {
+        $locale = app()->getLocale();
+        return $this->{"name_$locale"} ?? $this->name_en;
+    }
+
+    /**
+     * Get the short description attribute based on current locale.
+     */
+    public function getShortDescriptionAttribute()
+    {
+        $locale = app()->getLocale();
+        return $this->{"short_description_$locale"} ?? $this->short_description_en;
+    }
+
+    /**
+     * Get the description attribute based on current locale.
+     */
+    public function getDescriptionAttribute()
+    {
+        $locale = app()->getLocale();
+        return $this->{"description_$locale"} ?? $this->description_en;
+    }
+
+    /**
      * Boot the model.
      */
     protected static function boot()
@@ -77,7 +107,7 @@ class Product extends Model
 
         static::creating(function ($product) {
             if (empty($product->slug)) {
-                $product->slug = Str::slug($product->name);
+                $product->slug = Str::slug($product->name_en);
             }
             if (empty($product->sku)) {
                 $product->sku = 'SKU-' . strtoupper(Str::random(10));
@@ -270,5 +300,21 @@ class Product extends Model
         $this->avg_rating = $this->reviews()->avg('rating') ?? 0;
         $this->reviews_count = $this->reviews()->count();
         $this->save();
+    }
+
+    /**
+     * Get users who favorited this product.
+     */
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
+    }
+
+    /**
+     * Get all favorites for this product.
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
     }
 }

@@ -14,17 +14,21 @@ class ProductFactory extends Factory
 
     public function definition(): array
     {
-        $name = $this->faker->unique()->words(3, true);
+        $nameEn = implode(' ', $this->faker->unique()->words(3));
+        $nameAr = $this->getArabicProductName();
         $price = $this->faker->randomFloat(2, 50, 5000);
         $hasSale = $this->faker->boolean(30);
         $salePrice = $hasSale ? $this->faker->randomFloat(2, $price * 0.5, $price * 0.9) : null;
         
         return [
-            'name' => ucfirst($name),
-            'slug' => Str::slug($name),
+            'name_en' => ucfirst($nameEn),
+            'name_ar' => $nameAr,
+            'slug' => Str::slug($nameEn),
             'sku' => 'SKU-' . strtoupper(Str::random(10)),
-            'short_description' => $this->faker->sentence(10),
-            'description' => $this->faker->paragraphs(5, true),
+            'short_description_en' => $this->faker->sentence(10),
+            'short_description_ar' => $this->getArabicShortDescription(),
+            'description_en' => $this->faker->paragraphs(5, true),
+            'description_ar' => $this->getArabicDescription(),
             'price' => $price,
             'sale_price' => $salePrice,
             'cost_price' => $this->faker->randomFloat(2, $price * 0.3, $price * 0.6),
@@ -48,7 +52,7 @@ class ProductFactory extends Factory
             'sales_count' => $this->faker->numberBetween(0, 500),
             'avg_rating' => $this->faker->randomFloat(1, 0, 5),
             'reviews_count' => $this->faker->numberBetween(0, 200),
-            'meta_title' => ucfirst($name) . ' - IT Center',
+            'meta_title' => ucfirst($nameEn) . ' - IT Center',
             'meta_description' => $this->faker->sentence(20),
             'meta_keywords' => implode(', ', $this->faker->words(8)),
             'specifications' => [
@@ -58,6 +62,43 @@ class ProductFactory extends Factory
                 'Display' => $this->faker->randomElement(['15.6" FHD', '17.3" FHD', '14" QHD', '15.6" 4K']),
             ],
         ];
+    }
+
+    /**
+     * Get Arabic product name.
+     */
+    private function getArabicProductName(): string
+    {
+        $arabicProducts = [
+            'لابتوب احترافي',
+            'كمبيوتر مكتبي قوي',
+            'شاشة عالية الدقة',
+            'لوحة مفاتيح ميكانيكية',
+            'فأرة لاسلكية',
+            'سماعات احترافية',
+            'كاميرا ويب عالية الجودة',
+            'طابعة ليزر',
+            'ماسح ضوئي',
+            'قرص صلب خارجي',
+        ];
+        
+        return $this->faker->randomElement($arabicProducts);
+    }
+
+    /**
+     * Get Arabic short description.
+     */
+    private function getArabicShortDescription(): string
+    {
+        return 'منتج عالي الجودة بمواصفات ممتازة وأداء استثنائي';
+    }
+
+    /**
+     * Get Arabic description.
+     */
+    private function getArabicDescription(): string
+    {
+        return 'هذا المنتج يتميز بجودة تصنيع عالية ومواصفات تقنية متطورة. مناسب للاستخدام اليومي والمهام الاحترافية. يأتي مع ضمان شامل وخدمة ما بعد البيع ممتازة. تم تصميمه ليلبي احتياجات المستخدمين المحترفين ويوفر أداء موثوق وطويل الأمد. يتوفر بألوان وخيارات متعددة لتناسب جميع الأذواق والاحتياجات.';
     }
 
     /**

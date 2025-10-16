@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name_en');
+            $table->string('name_ar');
             $table->string('slug')->unique();
-            $table->text('description')->nullable();
+            $table->text('description_en')->nullable();
+            $table->text('description_ar')->nullable();
             $table->enum('discount_type', ['percentage', 'fixed'])->default('percentage');
             $table->decimal('discount_value', 10, 2);
             $table->decimal('min_purchase_amount', 10, 2)->nullable();

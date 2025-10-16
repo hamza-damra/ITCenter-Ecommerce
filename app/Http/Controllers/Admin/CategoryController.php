@@ -20,7 +20,10 @@ class CategoryController extends Controller
 
     public function create()
     {
-        $parentCategories = Category::whereNull('parent_id')->orderBy('name')->get();
+        $locale = app()->getLocale();
+        $nameColumn = "name_{$locale}";
+        
+        $parentCategories = Category::whereNull('parent_id')->orderBy($nameColumn)->get();
 
         return view('admin.categories.create', compact('parentCategories'));
     }
@@ -28,14 +31,16 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
-            'description' => 'nullable|string',
+            'description_en' => 'nullable|string',
+            'description_ar' => 'nullable|string',
             'image' => 'nullable|url',
             'is_active' => 'boolean',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
+        $validated['slug'] = Str::slug($validated['name_en']);
 
         Category::create($validated);
 
@@ -45,9 +50,12 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
+        $locale = app()->getLocale();
+        $nameColumn = "name_{$locale}";
+        
         $parentCategories = Category::whereNull('parent_id')
             ->where('id', '!=', $category->id)
-            ->orderBy('name')
+            ->orderBy($nameColumn)
             ->get();
 
         return view('admin.categories.edit', compact('category', 'parentCategories'));
@@ -56,14 +64,16 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
-            'description' => 'nullable|string',
+            'description_en' => 'nullable|string',
+            'description_ar' => 'nullable|string',
             'image' => 'nullable|url',
             'is_active' => 'boolean',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name']);
+        $validated['slug'] = Str::slug($validated['name_en']);
 
         $category->update($validated);
 

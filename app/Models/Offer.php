@@ -12,9 +12,11 @@ class Offer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'name_en',
+        'name_ar',
         'slug',
-        'description',
+        'description_en',
+        'description_ar',
         'discount_type',
         'discount_value',
         'min_purchase_amount',
@@ -37,6 +39,24 @@ class Offer extends Model
     ];
 
     /**
+     * Get the name attribute based on current locale.
+     */
+    public function getNameAttribute()
+    {
+        $locale = app()->getLocale();
+        return $this->{"name_$locale"} ?? $this->name_en;
+    }
+
+    /**
+     * Get the description attribute based on current locale.
+     */
+    public function getDescriptionAttribute()
+    {
+        $locale = app()->getLocale();
+        return $this->{"description_$locale"} ?? $this->description_en;
+    }
+
+    /**
      * Boot the model.
      */
     protected static function boot()
@@ -45,7 +65,7 @@ class Offer extends Model
 
         static::creating(function ($offer) {
             if (empty($offer->slug)) {
-                $offer->slug = Str::slug($offer->name);
+                $offer->slug = Str::slug($offer->name_en);
             }
         });
     }

@@ -12,9 +12,11 @@ class Brand extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'name_en',
+        'name_ar',
         'slug',
-        'description',
+        'description_en',
+        'description_ar',
         'logo',
         'website',
         'email',
@@ -34,6 +36,24 @@ class Brand extends Model
     ];
 
     /**
+     * Get the name attribute based on current locale.
+     */
+    public function getNameAttribute()
+    {
+        $locale = app()->getLocale();
+        return $this->{"name_$locale"} ?? $this->name_en;
+    }
+
+    /**
+     * Get the description attribute based on current locale.
+     */
+    public function getDescriptionAttribute()
+    {
+        $locale = app()->getLocale();
+        return $this->{"description_$locale"} ?? $this->description_en;
+    }
+
+    /**
      * Boot the model.
      */
     protected static function boot()
@@ -42,7 +62,7 @@ class Brand extends Model
 
         static::creating(function ($brand) {
             if (empty($brand->slug)) {
-                $brand->slug = Str::slug($brand->name);
+                $brand->slug = Str::slug($brand->name_en);
             }
         });
     }

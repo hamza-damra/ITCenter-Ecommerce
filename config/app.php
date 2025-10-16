@@ -78,11 +78,28 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_LOCALE', 'ar'),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Available Locales
+    |--------------------------------------------------------------------------
+    |
+    | List all supported locales for the application.
+    | This is used by the SetLocale middleware.
+    |
+    */
+
+    'available_locales' => ['en', 'ar'],
+
+    'locale_names' => [
+        'en' => 'English',
+        'ar' => 'العربية',
+    ],
 
     /*
     |--------------------------------------------------------------------------

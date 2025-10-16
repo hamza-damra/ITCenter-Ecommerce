@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home - IT Center')
+@section('title', __t('messages.home') . ' - IT Center')
 
 @section('content')
 <style>
@@ -93,6 +93,11 @@
 
     .view-more:hover {
         color: #e69270ff;
+    }
+
+    /* RTL Support for arrows */
+    [dir="rtl"] .view-more {
+        flex-direction: row-reverse;
     }
 
     .categories-wrapper {
@@ -481,6 +486,7 @@
         align-items: center;
         justify-content: center;
         position: relative;
+        overflow: hidden;
     }
 
     .product-image img {
@@ -490,36 +496,76 @@
     }
 
     .wishlist-btn {
-        position: absolute;
-        top: 10px;
-        left: 10px;
+        position: absolute !important;
+        top: 10px !important;
+        bottom: auto !important;
+        @if(is_rtl())
+        right: 10px !important;
+        left: auto !important;
+        @else
+        left: 10px !important;
+        right: auto !important;
+        @endif
         background: #fff;
         width: 35px;
         height: 35px;
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         cursor: pointer;
         transition: all 0.3s;
         z-index: 10;
+        border: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .wishlist-btn:hover {
-        background: #ff4757;
-        color: #fff;
+        background: #fff;
+        transform: scale(1.1);
+    }
+
+    .wishlist-btn:hover i {
+        color: #ff0000 !important;
+    }
+
+    .wishlist-btn.active {
+        background: #fff !important;
+    }
+
+    .wishlist-btn.active i {
+        color: #ff0000 !important;
+    }
+
+    .wishlist-btn i {
+        font-size: 1rem;
+        color: #666;
+        transition: all 0.3s;
+    }
+
+    /* Solid heart icon should be red */
+    .wishlist-btn i.fas.fa-heart {
+        color: #ff0000 !important;
     }
 
     .product-badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
+        position: absolute !important;
+        top: 10px !important;
+        bottom: auto !important;
+        @if(is_rtl())
+        left: 10px !important;
+        right: auto !important;
+        @else
+        right: 10px !important;
+        left: auto !important;
+        @endif
         background: #ff4757;
         color: #fff;
         padding: 0.3rem 0.8rem;
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
+        z-index: 5;
     }
 
     .product-info {
@@ -555,16 +601,41 @@
     .add-to-cart {
         background: #000;
         color: #fff;
-        padding: 0.6rem 1.5rem;
+        padding: 0.6rem 1rem;
         border-radius: 8px;
         border: none;
         cursor: pointer;
         font-weight: 600;
-        transition: background 0.3s;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        min-width: 140px;
+        white-space: nowrap;
+        font-size: 0.9rem;
     }
 
     .add-to-cart:hover {
         background: #333;
+        transform: translateY(-2px);
+    }
+
+    .add-to-cart.in-cart {
+        background: #4CAF50;
+    }
+
+    .add-to-cart.in-cart:hover {
+        background: #45a049;
+    }
+
+    .add-to-cart.in-cart i {
+        animation: cartBounce 0.5s ease;
+    }
+
+    @keyframes cartBounce {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.3); }
     }
 
     @media (max-width: 1200px) {
@@ -589,6 +660,32 @@
         .categories-grid {
             grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
         }
+        
+        .product-footer {
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        
+        .add-to-cart {
+            width: 100%;
+            min-width: unset;
+        }
+        
+        .product-price {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .product-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .add-to-cart {
+            padding: 0.7rem 1rem;
+            font-size: 0.95rem;
+        }
     }
 </style>
 
@@ -596,9 +693,9 @@
 <div class="hero-section">
     <div class="hero-container">
         <div class="hero-content">
-            <h1>Welcome to IT Center</h1>
-            <p>Discover our latest collection of premium technology products. From laptops to accessories, we have everything you need to stay connected and productive.</p>
-            <a href="{{ route('products') }}" class="hero-btn">Shop Now</a>
+            <h1>{{ __t('messages.hero_title') }}</h1>
+            <p>{{ __t('messages.hero_subtitle') }}</p>
+            <a href="{{ route('products') }}" class="hero-btn">{{ __t('messages.shop_now') }}</a>
         </div>
     </div>
 </div>
@@ -607,9 +704,9 @@
 <div class="categories-section">
     <div class="container">
         <div class="section-header">
-            <h2>Categories</h2>
+            <h2>{{ __t('messages.shop_by_category') }}</h2>
             <a href="{{ route('categories') }}" class="view-more">
-                View More <i class="fas fa-arrow-right"></i>
+                {{ __t('messages.view_more') }} <i class="fas fa-arrow-{{ is_rtl() ? 'left' : 'right' }}"></i>
             </a>
         </div>
 
@@ -713,9 +810,9 @@
 
     <!-- Featured Products -->
     <div class="section-header">
-        <h2>Featured Products</h2>
+        <h2>{{ __t('messages.featured_products') }}</h2>
         <a href="{{ route('products') }}" class="view-more">
-            View More <i class="fas fa-arrow-right"></i>
+            {{ __t('messages.view_more') }} <i class="fas fa-arrow-{{ is_rtl() ? 'left' : 'right' }}"></i>
         </a>
     </div>
 
@@ -723,7 +820,7 @@
         @foreach($featuredProducts as $product)
         <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
             <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
+                <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
                     <i class="far fa-heart"></i>
                 </div>
                 @if($product->is_new)
@@ -747,7 +844,9 @@
                             ₪ {{ number_format($product->price, 0) }}
                         @endif
                     </div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
+                    <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                        <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -757,14 +856,14 @@
     <!-- Shop by Categories - Builder Cards -->
     @if($categories->count() >= 5)
     <div class="section-header">
-        <h2>Shop by Category</h2>
+        <h2>{{ __t('messages.shop_by_category') }}</h2>
     </div>
 
     <div class="builder-cards">
         @foreach($categories->take(5) as $index => $category)
         <div class="builder-card" onclick="window.location.href='{{ route('products', ['category' => $category->slug]) }}'">
             <div class="builder-card-title">{{ $category->name }}</div>
-            <div class="builder-card-link">Explore {{ $category->products_count }} products ›</div>
+            <div class="builder-card-link">{{ __t('messages.explore_products', ['count' => $category->products_count]) }} ›</div>
             @if($category->image)
             <div class="builder-card-image">
                 @if(str_starts_with($category->image, 'http'))
@@ -781,9 +880,13 @@
 
     <!-- New Arrivals -->
     <div class="section-header">
-        <h2>New Arrivals</h2>
+        <h2>{{ __t('messages.new_arrivals') }}</h2>
         <a href="{{ route('products') }}" class="view-more">
-            View More <i class="fas fa-arrow-right"></i>
+            @if(app()->getLocale() === 'ar')
+                <i class="fas fa-arrow-left"></i> {{ __t('messages.view_more') }}
+            @else
+                {{ __t('messages.view_more') }} <i class="fas fa-arrow-right"></i>
+            @endif
         </a>
     </div>
 
@@ -791,7 +894,7 @@
         @foreach($newProducts as $product)
         <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
             <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
+                <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
                     <i class="far fa-heart"></i>
                 </div>
                 @if($product->is_new)
@@ -815,7 +918,9 @@
                             ₪ {{ number_format($product->price, 0) }}
                         @endif
                     </div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
+                    <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                        <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -825,9 +930,13 @@
     <!-- Bestsellers -->
     @if($bestsellerProducts->count() > 0)
     <div class="section-header">
-        <h2>Bestsellers</h2>
+        <h2>{{ __t('messages.best_sellers') }}</h2>
         <a href="{{ route('products', ['filter' => 'bestseller']) }}" class="view-more">
-            View More <i class="fas fa-arrow-right"></i>
+            @if(app()->getLocale() === 'ar')
+                <i class="fas fa-arrow-left"></i> {{ __t('messages.view_more') }}
+            @else
+                {{ __t('messages.view_more') }} <i class="fas fa-arrow-right"></i>
+            @endif
         </a>
     </div>
 
@@ -835,7 +944,7 @@
         @foreach($bestsellerProducts as $product)
         <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
             <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
+                <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
                     <i class="far fa-heart"></i>
                 </div>
                 @if($product->is_new)
@@ -859,7 +968,9 @@
                             ₪ {{ number_format($product->price, 0) }}
                         @endif
                     </div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
+                    <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                        <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -870,9 +981,13 @@
     <!-- On Sale Products -->
     @if($onSaleProducts->count() > 0)
     <div class="section-header">
-        <h2>On Sale Now</h2>
+        <h2>{{ __t('messages.on_sale') }}</h2>
         <a href="{{ route('products', ['filter' => 'sale']) }}" class="view-more">
-            View More <i class="fas fa-arrow-right"></i>
+            @if(app()->getLocale() === 'ar')
+                <i class="fas fa-arrow-left"></i> {{ __t('messages.view_more') }}
+            @else
+                {{ __t('messages.view_more') }} <i class="fas fa-arrow-right"></i>
+            @endif
         </a>
     </div>
 
@@ -880,7 +995,7 @@
         @foreach($onSaleProducts as $product)
         <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
             <div class="product-image">
-                <div class="wishlist-btn" onclick="event.stopPropagation();">
+                <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
                     <i class="far fa-heart"></i>
                 </div>
                 <div class="product-badge">SALE</div>
@@ -894,7 +1009,9 @@
                         <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">₪ {{ number_format($product->price, 0) }}</span>
                         ₪ {{ number_format($product->sale_price, 0) }}
                     </div>
-                    <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
+                    <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                        <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -955,6 +1072,41 @@
             // Update on window resize
             window.addEventListener('resize', updateButtonStates);
         }
+
+        // Add additional event listener for wishlist buttons to force color change
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observer to watch for class changes on wishlist buttons
+            const observeWishlistButtons = () => {
+                const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+                wishlistButtons.forEach(button => {
+                    // Create a MutationObserver for each button
+                    const observer = new MutationObserver((mutations) => {
+                        mutations.forEach((mutation) => {
+                            if (mutation.attributeName === 'class') {
+                                const icon = button.querySelector('i');
+                                if (button.classList.contains('active')) {
+                                    // Force red color when active
+                                    if (icon) {
+                                        icon.style.color = '#ff0000';
+                                    }
+                                } else {
+                                    // Reset to gray when not active
+                                    if (icon) {
+                                        icon.style.color = '#666';
+                                    }
+                                }
+                            }
+                        });
+                    });
+                    
+                    // Start observing
+                    observer.observe(button, { attributes: true });
+                });
+            };
+            
+            // Initial observation
+            setTimeout(observeWishlistButtons, 500);
+        });
     });
 </script>
 

@@ -24,8 +24,11 @@ class ProductController extends Controller
 
     public function create()
     {
-        $categories = Category::active()->orderBy('name')->get();
-        $brands = Brand::active()->orderBy('name')->get();
+        $locale = app()->getLocale();
+        $nameColumn = "name_{$locale}";
+        
+        $categories = Category::active()->orderBy($nameColumn)->get();
+        $brands = Brand::active()->orderBy($nameColumn)->get();
 
         return view('admin.products.create', compact('categories', 'brands'));
     }
@@ -33,7 +36,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'price' => 'required|numeric|min:0',
@@ -41,8 +45,10 @@ class ProductController extends Controller
             'stock_quantity' => 'required|integer|min:0',
             'main_image' => 'required|url',
             'additional_images' => 'nullable|string',
-            'short_description' => 'nullable|string',
-            'description' => 'nullable|string',
+            'short_description_en' => 'nullable|string',
+            'short_description_ar' => 'nullable|string',
+            'description_en' => 'nullable|string',
+            'description_ar' => 'nullable|string',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
             'is_new' => 'boolean',
@@ -51,7 +57,7 @@ class ProductController extends Controller
 
         DB::beginTransaction();
         try {
-            $validated['slug'] = Str::slug($validated['name']);
+            $validated['slug'] = Str::slug($validated['name_en']);
             $validated['sku'] = 'SKU-' . strtoupper(Str::random(10));
             $validated['stock_status'] = $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock';
 
@@ -99,8 +105,11 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $product->load('images');
-        $categories = Category::active()->orderBy('name')->get();
-        $brands = Brand::active()->orderBy('name')->get();
+        $locale = app()->getLocale();
+        $nameColumn = "name_{$locale}";
+        
+        $categories = Category::active()->orderBy($nameColumn)->get();
+        $brands = Brand::active()->orderBy($nameColumn)->get();
 
         return view('admin.products.edit', compact('product', 'categories', 'brands'));
     }
@@ -108,7 +117,8 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'price' => 'required|numeric|min:0',
@@ -116,8 +126,10 @@ class ProductController extends Controller
             'stock_quantity' => 'required|integer|min:0',
             'main_image' => 'required|url',
             'additional_images' => 'nullable|string',
-            'short_description' => 'nullable|string',
-            'description' => 'nullable|string',
+            'short_description_en' => 'nullable|string',
+            'short_description_ar' => 'nullable|string',
+            'description_en' => 'nullable|string',
+            'description_ar' => 'nullable|string',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
             'is_new' => 'boolean',
@@ -126,7 +138,7 @@ class ProductController extends Controller
 
         DB::beginTransaction();
         try {
-            $validated['slug'] = Str::slug($validated['name']);
+            $validated['slug'] = Str::slug($validated['name_en']);
             $validated['stock_status'] = $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock';
 
             // Remove additional_images from validated data before updating product
