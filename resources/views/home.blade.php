@@ -193,12 +193,13 @@
         justify-content: center;
         margin-bottom: 1rem;
         overflow: hidden;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        transition: box-shadow 0.3s;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08);
+        transition: box-shadow 0.3s, transform 0.3s;
     }
 
     .category-item:hover .category-icon {
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.12);
+        transform: scale(1.05);
     }
 
     .category-icon img {
@@ -319,14 +320,14 @@
         background: #fff;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
         cursor: pointer;
         transition: all 0.3s;
     }
 
     .special-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.12);
     }
 
     .special-card-image {
@@ -380,10 +381,11 @@
         padding: 2rem 1.5rem;
         color: #fff;
         cursor: pointer;
-        transition: transform 0.3s;
+        transition: transform 0.3s, box-shadow 0.3s;
         text-align: center;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .builder-card:nth-child(1) { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
@@ -393,7 +395,8 @@
     .builder-card:nth-child(5) { background: linear-gradient(135deg, #06beb6 0%, #48b1bf 100%); }
 
     .builder-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.25), 0 4px 16px rgba(0,0,0,0.15);
     }
 
     .builder-card-title {
@@ -468,14 +471,14 @@
         background: #fff;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
         transition: transform 0.3s, box-shadow 0.3s;
         cursor: pointer;
     }
 
     .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.12);
     }
 
     .product-image {
@@ -687,6 +690,18 @@
             font-size: 0.95rem;
         }
     }
+
+    /* Scroll Animation - Bottom to Top */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .scroll-animate.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
 </style>
 
 <!-- Hero Section -->
@@ -741,73 +756,8 @@
     </div>
 </div>
 
-<!-- Special Offer Cards -->
+<!-- Main Content Container -->
 <div class="container">
-    @if($activeOffers->count() > 0 || $onSaleProducts->count() > 0)
-    <div class="special-cards">
-        @foreach($activeOffers->take(3) as $offer)
-        <div class="special-card" onclick="window.location.href='{{ route('offer.show', $offer->slug) }}'">
-            <div class="special-card-image">
-                @if($offer->banner_image)
-                    @if(str_starts_with($offer->banner_image, 'http'))
-                        <img src="{{ $offer->banner_image }}" alt="{{ $offer->name }}">
-                    @else
-                        <img src="{{ asset($offer->banner_image) }}" alt="{{ $offer->name }}">
-                    @endif
-                @else
-                    <img src="https://via.placeholder.com/400x250/ff6b6b/fff?text={{ urlencode($offer->name) }}" alt="{{ $offer->name }}">
-                @endif
-            </div>
-            <div class="special-card-content">
-                <div class="special-card-title">{{ $offer->name }}</div>
-                <div class="special-card-subtitle">{{ Str::limit($offer->description, 50) }}</div>
-                <a href="{{ route('offer.show', $offer->slug) }}" class="special-card-btn">
-                    Shop Now <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-        @endforeach
-        
-        @if($activeOffers->count() < 3 && $onSaleProducts->count() > 0)
-        <div class="special-card" onclick="window.location.href='{{ route('products', ['filter' => 'sale']) }}'">
-            <div class="special-card-image">
-                @if($onSaleProducts->first()->main_image)
-                    <img src="{{ $onSaleProducts->first()->main_image }}" alt="On Sale">
-                @else
-                    <img src="https://via.placeholder.com/400x250/48b1bf/fff?text=On+Sale" alt="On Sale">
-                @endif
-            </div>
-            <div class="special-card-content">
-                <div class="special-card-title">On Sale Now</div>
-                <div class="special-card-subtitle">Don't miss our amazing deals!</div>
-                <a href="{{ route('products', ['filter' => 'sale']) }}" class="special-card-btn">
-                    Shop Sale <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-        @endif
-
-        @if($activeOffers->count() + ($onSaleProducts->count() > 0 ? 1 : 0) < 4 && $newProducts->count() > 0)
-        <div class="special-card" onclick="window.location.href='{{ route('products', ['filter' => 'new']) }}'">
-            <div class="special-card-image">
-                @if($newProducts->first()->main_image)
-                    <img src="{{ $newProducts->first()->main_image }}" alt="New Arrivals">
-                @else
-                    <img src="https://via.placeholder.com/400x250/4ecdc4/fff?text=New+Arrivals" alt="New Arrivals">
-                @endif
-            </div>
-            <div class="special-card-content">
-                <div class="special-card-title">New Arrivals</div>
-                <div class="special-card-subtitle">Be the first to explore today's newest finds.</div>
-                <a href="{{ route('products', ['filter' => 'new']) }}" class="special-card-btn">
-                    See What's New <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-        @endif
-    </div>
-    @endif
-
     <!-- Featured Products -->
     <div class="section-header">
         <h2>{{ __t('messages.featured_products') }}</h2>
@@ -1019,10 +969,32 @@
     </div>
     @endif
 </div>
+<!-- End Main Content Container -->
 
 <script>
-    // Category Slider Navigation
     document.addEventListener('DOMContentLoaded', function() {
+        // Scroll Animation - Bottom to Top
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards
+        const animateElements = document.querySelectorAll('.product-card, .category-item, .builder-card, .special-card');
+        animateElements.forEach(el => {
+            el.classList.add('scroll-animate');
+            observer.observe(el);
+        });
+
+        // Category Slider Navigation
         const categoriesGrid = document.getElementById('categoriesGrid');
         const scrollLeftBtn = document.getElementById('categoryScrollLeft');
         const scrollRightBtn = document.getElementById('categoryScrollRight');

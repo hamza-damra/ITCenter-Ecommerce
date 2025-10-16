@@ -91,15 +91,15 @@
         background: #fff;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
         transition: transform 0.3s, box-shadow 0.3s;
         cursor: pointer;
         position: relative;
     }
 
     .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(0,0,0,0.2), 0 4px 16px rgba(0,0,0,0.12);
     }
 
     .product-image {
@@ -282,6 +282,18 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
+
+    /* Scroll Animation - Bottom to Top */
+    .scroll-animate {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .scroll-animate.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
 </style>
 
 <div class="favorites-container">
@@ -345,6 +357,29 @@
 </div>
 
 <script>
+// Scroll Animation - Bottom to Top
+document.addEventListener('DOMContentLoaded', function() {
+    const observerOptions = {
+        threshold: 0.15,
+        rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all product cards
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+        card.classList.add('scroll-animate');
+        observer.observe(card);
+    });
+});
+
 // CSRF Token setup for AJAX requests
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
 

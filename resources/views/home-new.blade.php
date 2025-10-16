@@ -725,10 +725,10 @@
 <div class="banners-section">
     <div class="container">
         <div class="banners-slider">
-            <div class="banner-large" onclick="window.location.href='{{ route('offers') }}'">
+            <div class="banner-large" onclick="window.location.href='{{ route('products') }}'">
                 <img src="https://via.placeholder.com/900x350/667eea/fff?text=Windows+11+Upgrade+Special" alt="Windows 11">
             </div>
-            <div class="banner-small" onclick="window.location.href='{{ route('offers') }}'">
+            <div class="banner-small" onclick="window.location.href='{{ route('products') }}'">
                 <img src="https://via.placeholder.com/500x350/ec6ead/fff?text=ASUS+x+NEWEGG+Giveaway" alt="ASUS Promo">
             </div>
         </div>
@@ -751,27 +751,27 @@
             </div>
         </div>
 
-        <div class="special-card" onclick="window.location.href='{{ route('offers') }}'">
+        <div class="special-card" onclick="window.location.href='{{ route('products') }}'">
             <div class="special-card-image">
                 <img src="https://via.placeholder.com/400x250/ff6b6b/fff?text=Hot+Deals" alt="Fantastic Deals">
             </div>
             <div class="special-card-content">
                 <div class="special-card-title">Fantastic Deals</div>
                 <div class="special-card-subtitle">Under $30, Under $75 & More!</div>
-                <a href="{{ route('offers') }}" class="special-card-btn">
+                <a href="{{ route('products') }}" class="special-card-btn">
                     Shop All <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
 
-        <div class="special-card" onclick="window.location.href='{{ route('offers') }}'">
+        <div class="special-card" onclick="window.location.href='{{ route('products') }}'">
             <div class="special-card-image">
                 <img src="https://via.placeholder.com/400x250/48b1bf/fff?text=Smart+Picks" alt="Season's Best">
             </div>
             <div class="special-card-content">
                 <div class="special-card-title">Season's Best</div>
                 <div class="special-card-subtitle">Holiday deals across every category</div>
-                <a href="{{ route('offers') }}" class="special-card-btn">
+                <a href="{{ route('products') }}" class="special-card-btn">
                     See Deals <i class="fas fa-arrow-right"></i>
                 </a>
             </div>

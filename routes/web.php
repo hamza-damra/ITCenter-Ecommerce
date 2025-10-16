@@ -25,14 +25,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
 Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
 
-Route::get('/brands', [BrandController::class, 'index'])->name('brands');
-Route::get('/brand/{slug}', [BrandController::class, 'show'])->name('brand.show');
-
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.detail');
-
-Route::get('/offers', [OfferController::class, 'index'])->name('offers');
-Route::get('/offer/{slug}', [OfferController::class, 'show'])->name('offer.show');
 
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');

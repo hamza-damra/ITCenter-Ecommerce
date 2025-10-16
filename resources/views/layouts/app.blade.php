@@ -289,6 +289,163 @@
             transform: scale(1.1);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
+
+        /* Language Dropdown Styles */
+        .language-dropdown {
+            position: relative;
+        }
+
+        .language-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .language-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .language-dropdown.active .language-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #d4af37;
+        }
+
+        .language-dropdown.active .language-toggle .fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        .current-lang {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .language-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            {{ is_rtl() ? 'left: 0;' : 'right: 0;' }}
+            background: rgba(26, 26, 26, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 12px;
+            min-width: 180px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            z-index: 1001;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .language-dropdown.active .language-dropdown-menu {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .language-dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            {{ is_rtl() ? 'left: 20px;' : 'right: 20px;' }}
+            width: 12px;
+            height: 12px;
+            background: rgba(26, 26, 26, 0.98);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            border-left: 1px solid rgba(212, 175, 55, 0.2);
+            transform: rotate(45deg);
+        }
+
+        .language-option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.9rem 1.2rem;
+            color: #ecececff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .language-option:last-child {
+            border-bottom: none;
+        }
+
+        .language-option:hover {
+            background: rgba(212, 175, 55, 0.1);
+            color: #d4af37;
+            padding-{{ is_rtl() ? 'right' : 'left' }}: 1.4rem;
+        }
+
+        .language-option.active {
+            background: rgba(212, 175, 55, 0.15);
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        .language-option.active::before {
+            content: '';
+            position: absolute;
+            {{ is_rtl() ? 'right: 0;' : 'left: 0;' }}
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #d4af37, #e69270ff);
+        }
+
+        .lang-icon {
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .lang-name {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .lang-check {
+            font-size: 0.85rem;
+            color: #d4af37;
+            animation: checkIn 0.3s ease;
+        }
+
+        @keyframes checkIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .language-dropdown-menu {
+                min-width: 160px;
+            }
+            
+            .language-option {
+                padding: 0.8rem 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -303,10 +460,7 @@
             <ul class="nav-menu">
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">{{ __t('messages.home') }}</a></li>
                 <li><a href="{{ route('categories') }}" class="{{ request()->routeIs('categories') ? 'active' : '' }}">{{ __t('messages.categories') }}</a></li>
-                <li><a href="{{ route('brands') }}" class="{{ request()->routeIs('brands') ? 'active' : '' }}">{{ __t('messages.brands') }}</a></li>
                 <li><a href="{{ route('products') }}" class="{{ request()->routeIs('products') ? 'active' : '' }}">{{ __t('messages.products') }}</a></li>
-                <li><a href="{{ route('offers') }}" class="{{ request()->routeIs('offers') ? 'active' : '' }}">{{ __t('messages.offers') }}</a></li>
-                <li><a href="{{ route('favorites') }}" class="{{ request()->routeIs('favorites') ? 'active' : '' }}">{{ __t('messages.favorites') }}</a></li>
                 <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">{{ __t('messages.about') }}</a></li>
                 <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">{{ __t('messages.contact') }}</a></li>
             </ul>
@@ -324,15 +478,28 @@
                 <div class="header-icon">
                     <i class="fas fa-user"></i>
                 </div>
-                <div class="header-icon dropdown" style="position: relative;">
-                    <i class="fas fa-globe" style="cursor: pointer;"></i>
-                    <div class="dropdown-menu" style="display: none; position: absolute; top: 100%; {{ is_rtl() ? 'left: 0;' : 'right: 0;' }} background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 8px; min-width: 120px; margin-top: 10px; z-index: 1000;">
+                <div class="header-icon language-dropdown" style="position: relative;">
+                    <div class="language-toggle" style="cursor: pointer; display: flex; align-items: center; gap: 0.4rem;">
+                        <i class="fas fa-globe"></i>
+                        <span class="current-lang" style="font-size: 0.85rem; font-weight: 600;">{{ strtoupper(current_locale()) }}</span>
+                        <i class="fas fa-chevron-down" style="font-size: 0.7rem; transition: transform 0.3s;"></i>
+                    </div>
+                    <div class="language-dropdown-menu">
                         @foreach(available_locales() as $locale)
                             <a href="{{ switch_locale_url($locale) }}" 
-                               style="display: block; padding: 0.75rem 1rem; color: #333; text-decoration: none; transition: background 0.3s; {{ $locale === current_locale() ? 'background: #f0f0f0; font-weight: 600;' : '' }}"
-                               onmouseover="this.style.background='#f8f8f8'" 
-                               onmouseout="this.style.background='{{ $locale === current_locale() ? '#f0f0f0' : 'transparent' }}'">
-                                {{ locale_name($locale) }}
+                               class="language-option {{ $locale === current_locale() ? 'active' : '' }}"
+                               data-locale="{{ $locale }}">
+                                <span class="lang-icon">
+                                    @if($locale === 'en')
+                                        🇬🇧
+                                    @else
+                                        🇵🇸
+                                    @endif
+                                </span>
+                                <span class="lang-name">{{ locale_name($locale) }}</span>
+                                @if($locale === current_locale())
+                                    <i class="fas fa-check lang-check"></i>
+                                @endif
                             </a>
                         @endforeach
                     </div>
@@ -401,7 +568,6 @@
                 <ul>
                     <li><a href="{{ route('home') }}">{{ __('messages.home') }}</a></li>
                     <li><a href="{{ route('products') }}">{{ __('messages.products') }}</a></li>
-                    <li><a href="{{ route('offers') }}">{{ __('messages.special_offers') }}</a></li>
                     <li><a href="{{ route('about') }}">{{ __('messages.about') }}</a></li>
                 </ul>
             </div>
@@ -443,18 +609,31 @@
 
         // Language dropdown toggle
         document.addEventListener('DOMContentLoaded', function() {
-            const dropdown = document.querySelector('.dropdown');
-            const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+            const languageDropdown = document.querySelector('.language-dropdown');
+            const languageToggle = languageDropdown?.querySelector('.language-toggle');
+            const languageMenu = languageDropdown?.querySelector('.language-dropdown-menu');
             
-            dropdown.addEventListener('click', function(e) {
-                e.stopPropagation();
-                dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
-            });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function() {
-                dropdownMenu.style.display = 'none';
-            });
+            if (languageToggle && languageMenu) {
+                languageToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    languageDropdown.classList.toggle('active');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!languageDropdown.contains(e.target)) {
+                        languageDropdown.classList.remove('active');
+                    }
+                });
+
+                // Close dropdown when clicking a language option
+                const languageOptions = languageMenu.querySelectorAll('.language-option');
+                languageOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        languageDropdown.classList.remove('active');
+                    });
+                });
+            }
 
             // Load and update favorites count
             updateFavoritesCount();
