@@ -10,7 +10,7 @@ return [
     'favorites' => 'المفضلة',
     'about' => 'من نحن',
     'contact' => 'اتصل بنا',
-    'search' => 'بحث...',
+    'search' => 'بحث',
     
     // Hero Section
     'hero_title' => 'اكتشف أحدث التقنيات',

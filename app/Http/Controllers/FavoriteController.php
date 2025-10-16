@@ -8,6 +8,10 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Web Controller - Returns views only
+ * All business logic moved to API controllers
+ */
 class FavoriteController extends Controller
 {
     /**
@@ -15,134 +19,105 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        // Get favorites from session for guests
-        $sessionFavorites = Session::get('favorites', []);
-        
-        if (Auth::check()) {
-            // Get authenticated user's favorites from database
-            $favorites = Auth::user()->favoriteProducts()
-                ->with(['category', 'brand', 'images'])
-                ->where('is_active', true)
-                ->get();
-        } else {
-            // Get favorites for guest users from session
-            $favorites = Product::whereIn('id', $sessionFavorites)
-                ->with(['category', 'brand', 'images'])
-                ->where('is_active', true)
-                ->get();
-        }
-        
+        $identifier = $this->getIdentifier();
+
+        $favorites = Favorite::with('product.images')
+            ->where(function($query) use ($identifier) {
+                if (isset($identifier['user_id'])) {
+                    $query->where('user_id', $identifier['user_id']);
+                } else {
+                    $query->where('session_id', $identifier['session_id']);
+                }
+            })
+            ->get()
+            ->pluck('product') // Extract just the products
+            ->filter(); // Remove any null products
+
         return view('favorites', compact('favorites'));
     }
 
     /**
-     * Toggle a product in favorites (add or remove).
+     * Get favorite product IDs for header badge
      */
-    public function toggle(Request $request, $productId)
+    public function getIds()
+    {
+        $identifier = $this->getIdentifier();
+
+        $favoriteIds = Favorite::where(function($query) use ($identifier) {
+            if (isset($identifier['user_id'])) {
+                $query->where('user_id', $identifier['user_id']);
+            } else {
+                $query->where('session_id', $identifier['session_id']);
+            }
+        })->pluck('product_id')->toArray();
+
+        return response()->json([
+            'success' => true,
+            'favoriteIds' => array_map('intval', $favoriteIds),
+        ]);
+    }
+
+    /**
+     * Toggle a product in favorites
+     */
+    public function toggle($productId)
     {
         $product = Product::findOrFail($productId);
-        
-        // Ensure productId is an integer
-        $productId = (int) $productId;
-        
-        if (Auth::check()) {
-            // For authenticated users, toggle in database
-            $favorite = Favorite::where('user_id', Auth::id())
-                ->where('product_id', $productId)
-                ->first();
+        $identifier = $this->getIdentifier();
+
+        // Check if product is already in favorites
+        $favorite = Favorite::where('product_id', $productId)
+            ->where(function($query) use ($identifier) {
+                if (isset($identifier['user_id'])) {
+                    $query->where('user_id', $identifier['user_id']);
+                } else {
+                    $query->where('session_id', $identifier['session_id']);
+                }
+            })
+            ->first();
+
+        if ($favorite) {
+            // Remove from favorites
+            $favorite->delete();
             
-            if ($favorite) {
-                $favorite->delete();
-                return response()->json([
-                    'success' => true,
-                    'action' => 'removed',
-                    'message' => 'Product removed from favorites'
-                ]);
-            } else {
-                Favorite::create([
-                    'user_id' => Auth::id(),
-                    'product_id' => $productId,
-                ]);
-                return response()->json([
-                    'success' => true,
-                    'action' => 'added',
-                    'message' => 'Product added to favorites'
-                ]);
-            }
+            return response()->json([
+                'success' => true,
+                'action' => 'removed',
+                'message' => 'Removed from favorites',
+                'in_favorites' => false,
+            ]);
         } else {
-            // For guest users, toggle in session
-            $sessionFavorites = Session::get('favorites', []);
-            
-            // Ensure all existing IDs are integers
-            $sessionFavorites = array_map('intval', $sessionFavorites);
-            
-            // Check if product is in favorites (strict comparison with integers)
-            if (in_array($productId, $sessionFavorites, true)) {
-                // Remove from favorites
-                $sessionFavorites = array_filter($sessionFavorites, function($id) use ($productId) {
-                    return $id !== $productId;
-                });
-                $sessionFavorites = array_values($sessionFavorites); // Re-index array
-                Session::put('favorites', $sessionFavorites);
-                
-                return response()->json([
-                    'success' => true,
-                    'action' => 'removed',
-                    'message' => 'Product removed from favorites'
-                ]);
-            } else {
-                // Add to favorites
-                $sessionFavorites[] = $productId;
-                Session::put('favorites', $sessionFavorites);
-                
-                return response()->json([
-                    'success' => true,
-                    'action' => 'added',
-                    'message' => 'Product added to favorites'
-                ]);
-            }
+            // Add to favorites
+            Favorite::create([
+                'user_id' => $identifier['user_id'] ?? null,
+                'session_id' => $identifier['session_id'] ?? null,
+                'product_id' => $productId,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'action' => 'added',
+                'message' => 'Added to favorites',
+                'in_favorites' => true,
+            ]);
         }
     }
 
     /**
-     * Check if a product is in favorites.
+     * Get identifier (user_id or session_id)
      */
-    public function check($productId)
+    private function getIdentifier()
     {
         if (Auth::check()) {
-            $isFavorite = Favorite::where('user_id', Auth::id())
-                ->where('product_id', $productId)
-                ->exists();
-        } else {
-            $sessionFavorites = Session::get('favorites', []);
-            $isFavorite = in_array($productId, $sessionFavorites);
+            return ['user_id' => Auth::id()];
         }
-        
-        return response()->json([
-            'isFavorite' => $isFavorite
-        ]);
-    }
 
-    /**
-     * Get all favorite product IDs for the current user.
-     */
-    public function getFavoriteIds()
-    {
-        if (Auth::check()) {
-            $favoriteIds = Favorite::where('user_id', Auth::id())
-                ->pluck('product_id')
-                ->map(fn($id) => (int) $id)  // Ensure integers
-                ->toArray();
-        } else {
-            $favoriteIds = Session::get('favorites', []);
-            // Ensure all IDs are integers, not strings
-            $favoriteIds = array_map('intval', $favoriteIds);
-            // Update session with cleaned integer values
-            Session::put('favorites', $favoriteIds);
+        // Ensure session is started
+        if (!Session::isStarted()) {
+            Session::start();
         }
-        
-        return response()->json([
-            'favoriteIds' => $favoriteIds
-        ]);
+
+        return ['session_id' => Session::getId()];
     }
 }
+

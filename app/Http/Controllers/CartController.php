@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * Web Controller - Returns views only
+ * All business logic moved to API controllers
+ */
 class CartController extends Controller
 {
     /**
@@ -35,25 +39,14 @@ class CartController extends Controller
     }
 
     /**
-     * Get the cart identifier (user_id or session_id)
-     */
-    private function getCartIdentifier()
-    {
-        if (Auth::check()) {
-            return ['user_id' => Auth::id()];
-        } else {
-            if (!Session::has('cart_session_id')) {
-                Session::put('cart_session_id', Session::getId());
-            }
-            return ['session_id' => Session::get('cart_session_id')];
-        }
-    }
-
-    /**
      * Add a product to the cart
      */
     public function add(Request $request, $productId)
     {
+        $request->validate([
+            'quantity' => 'nullable|integer|min:1',
+        ]);
+
         $product = Product::findOrFail($productId);
         
         // Check if product is in stock
@@ -87,7 +80,7 @@ class CartController extends Controller
                 'success' => true,
                 'action' => 'updated',
                 'message' => 'Cart updated',
-                'quantity' => $cartItem->quantity
+                'cart_count' => $this->getCartCount($identifier),
             ]);
         } else {
             // Create new cart item
@@ -95,20 +88,52 @@ class CartController extends Controller
                 ? $product->sale_price 
                 : $product->price;
 
-            CartItem::create([
+            $cartItem = CartItem::create([
                 'user_id' => $identifier['user_id'] ?? null,
                 'session_id' => $identifier['session_id'] ?? null,
                 'product_id' => $productId,
                 'quantity' => $quantity,
-                'price' => $price
+                'price' => $price,
             ]);
 
             return response()->json([
                 'success' => true,
                 'action' => 'added',
-                'message' => 'Product added to cart'
+                'message' => 'Product added to cart',
+                'cart_count' => $this->getCartCount($identifier),
             ]);
         }
+    }
+
+    /**
+     * Update cart item quantity
+     */
+    public function update(Request $request, $productId)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $identifier = $this->getCartIdentifier();
+
+        $cartItem = CartItem::where('product_id', $productId)
+            ->where(function($query) use ($identifier) {
+                if (isset($identifier['user_id'])) {
+                    $query->where('user_id', $identifier['user_id']);
+                } else {
+                    $query->where('session_id', $identifier['session_id']);
+                }
+            })
+            ->firstOrFail();
+
+        $cartItem->quantity = $request->quantity;
+        $cartItem->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Cart updated',
+            'cart_count' => $this->getCartCount($identifier),
+        ]);
     }
 
     /**
@@ -118,6 +143,37 @@ class CartController extends Controller
     {
         $identifier = $this->getCartIdentifier();
 
+        $deleted = CartItem::where('product_id', $productId)
+            ->where(function($query) use ($identifier) {
+                if (isset($identifier['user_id'])) {
+                    $query->where('user_id', $identifier['user_id']);
+                } else {
+                    $query->where('session_id', $identifier['session_id']);
+                }
+            })
+            ->delete();
+
+        if ($deleted) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Product removed from cart',
+                'cart_count' => $this->getCartCount($identifier),
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Product not found in cart'
+        ], 404);
+    }
+
+    /**
+     * Check if a product is in the cart
+     */
+    public function check($productId)
+    {
+        $identifier = $this->getCartIdentifier();
+
         $cartItem = CartItem::where('product_id', $productId)
             ->where(function($query) use ($identifier) {
                 if (isset($identifier['user_id'])) {
@@ -128,122 +184,77 @@ class CartController extends Controller
             })
             ->first();
 
-        if ($cartItem) {
-            $cartItem->delete();
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Product removed from cart'
-            ]);
-        }
-
         return response()->json([
-            'success' => false,
-            'message' => 'Product not in cart'
-        ], 404);
-    }
-
-    /**
-     * Update cart item quantity
-     */
-    public function updateQuantity(Request $request, $productId)
-    {
-        $identifier = $this->getCartIdentifier();
-        $quantity = $request->input('quantity', 1);
-
-        if ($quantity < 1) {
-            return $this->remove($productId);
-        }
-
-        $cartItem = CartItem::where('product_id', $productId)
-            ->where(function($query) use ($identifier) {
-                if (isset($identifier['user_id'])) {
-                    $query->where('user_id', $identifier['user_id']);
-                } else {
-                    $query->where('session_id', $identifier['session_id']);
-                }
-            })
-            ->first();
-
-        if ($cartItem) {
-            $cartItem->quantity = $quantity;
-            $cartItem->save();
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Quantity updated',
-                'quantity' => $cartItem->quantity
-            ]);
-        }
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Product not in cart'
-        ], 404);
-    }
-
-    /**
-     * Get cart item count
-     */
-    public function getCount()
-    {
-        $identifier = $this->getCartIdentifier();
-
-        $count = CartItem::where(function($query) use ($identifier) {
-                if (isset($identifier['user_id'])) {
-                    $query->where('user_id', $identifier['user_id']);
-                } else {
-                    $query->where('session_id', $identifier['session_id']);
-                }
-            })
-            ->sum('quantity');
-
-        return response()->json([
-            'count' => $count
+            'success' => true,
+            'in_cart' => !is_null($cartItem),
+            'quantity' => $cartItem ? $cartItem->quantity : 0,
         ]);
     }
 
     /**
-     * Get all product IDs in cart
+     * Get cart identifier (user_id or session_id)
+     */
+    private function getCartIdentifier()
+    {
+        if (Auth::check()) {
+            return ['user_id' => Auth::id()];
+        }
+
+        // Ensure session is started
+        if (!Session::isStarted()) {
+            Session::start();
+        }
+
+        return ['session_id' => Session::getId()];
+    }
+
+    /**
+     * Get total cart item count
+     */
+    private function getCartCount($identifier)
+    {
+        return CartItem::where(function($query) use ($identifier) {
+            if (isset($identifier['user_id'])) {
+                $query->where('user_id', $identifier['user_id']);
+            } else {
+                $query->where('session_id', $identifier['session_id']);
+            }
+        })->sum('quantity');
+    }
+
+    /**
+     * Get cart count for header badge (public endpoint)
+     */
+    public function getCount()
+    {
+        $identifier = $this->getCartIdentifier();
+        $count = $this->getCartCount($identifier);
+
+        return response()->json([
+            'success' => true,
+            'count' => (int) $count,
+        ]);
+    }
+
+    /**
+     * Get cart product IDs for quick checks
      */
     public function getProductIds()
     {
         $identifier = $this->getCartIdentifier();
 
         $productIds = CartItem::where(function($query) use ($identifier) {
-                if (isset($identifier['user_id'])) {
-                    $query->where('user_id', $identifier['user_id']);
-                } else {
-                    $query->where('session_id', $identifier['session_id']);
-                }
-            })
-            ->pluck('product_id')
-            ->toArray();
+            if (isset($identifier['user_id'])) {
+                $query->where('user_id', $identifier['user_id']);
+            } else {
+                $query->where('session_id', $identifier['session_id']);
+            }
+        })->pluck('product_id')->toArray();
 
         return response()->json([
-            'productIds' => $productIds
-        ]);
-    }
-
-    /**
-     * Check if product is in cart
-     */
-    public function check($productId)
-    {
-        $identifier = $this->getCartIdentifier();
-
-        $inCart = CartItem::where('product_id', $productId)
-            ->where(function($query) use ($identifier) {
-                if (isset($identifier['user_id'])) {
-                    $query->where('user_id', $identifier['user_id']);
-                } else {
-                    $query->where('session_id', $identifier['session_id']);
-                }
-            })
-            ->exists();
-
-        return response()->json([
-            'inCart' => $inCart
+            'success' => true,
+            'productIds' => array_map('intval', $productIds),
         ]);
     }
 }
+

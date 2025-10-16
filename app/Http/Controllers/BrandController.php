@@ -2,35 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
-use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Brand;
 
+/**
+ * Web Controller - Returns views only
+ * All business logic moved to API controllers
+ */
 class BrandController extends Controller
 {
     public function index()
     {
-        $brands = Brand::active()
-            ->withCount('products')
-            ->orderBy('order')
+        $locale = app()->getLocale();
+        $nameColumn = "name_{$locale}";
+        
+        $brands = Brand::withCount('products')
+            ->orderBy($nameColumn)
             ->get();
-
-        $featuredBrands = $brands->where('is_featured', true);
-
-        return view('brands', compact('brands', 'featuredBrands'));
+            
+        return view('brands', compact('brands'));
     }
 
     public function show($slug)
     {
-        $brand = Brand::where('slug', $slug)
-            ->active()
-            ->firstOrFail();
-
-        $products = Product::with(['category', 'images'])
-            ->where('brand_id', $brand->id)
-            ->active()
-            ->paginate(12);
-
-        return view('brand-products', compact('brand', 'products'));
+        $brand = Brand::where('slug', $slug)->firstOrFail();
+        
+        return view('brand-products', compact('slug', 'brand'));
     }
 }

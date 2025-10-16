@@ -93,145 +93,80 @@
             color: #e69270ff;
         }
 
-        /* Animated Search Bar Styles */
-        .search-bar input,
-        .search-btn,
-        .search-btn:before,
-        .search-btn:after {
-            transition: all 0.25s ease-out;
-        }
-
-        .search-bar input,
-        .search-btn {
-            width: 3em;
-            height: 3em;
-        }
-
-        .search-bar input:invalid:not(:focus),
-        .search-btn {
-            cursor: pointer;
-        }
-
-        .search-bar,
-        .search-bar input:focus,
-        .search-bar input:valid {
-            width: 100%;
-        }
-
-        .search-bar input:focus,
-        .search-bar input:not(:focus) + .search-btn:focus {
-            outline: transparent;
-        }
-
+        /* Search Bar Styles */
         .search-bar {
             display: flex;
             flex-direction: {{ is_rtl() ? 'row-reverse' : 'row' }};
             flex: 1;
             max-width: 500px;
-            justify-content: center;
+            gap: 0;
+            align-items: center;
         }
 
         .search-bar input {
-            background: transparent;
-            border-radius: 1.5em;
-            box-shadow: 0 0 0 0.4em #f1f1f1 inset;
-            padding: 0.75em;
-            transform: translate({{ is_rtl() ? '-0.5em' : '0.5em' }}, 0.5em) scale(0.5);
-            transform-origin: {{ is_rtl() ? '0% 0' : '100% 0' }};
+            flex: 1;
+            height: 45px;
+            padding: 0 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: {{ is_rtl() ? '8px 0 0 8px' : '8px 0 0 8px' }};
+            background: #ffffff;
+            color: #333;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            border: none;
-            color: #f1f1f1ff;
+            direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+            text-align: {{ is_rtl() ? 'right' : 'left' }};
         }
 
-        .search-bar input::-webkit-search-decoration {
+        .search-bar input::-webkit-search-decoration,
+        .search-bar input::-webkit-search-cancel-button {
             -webkit-appearance: none;
         }
 
         .search-bar input::placeholder {
-            color: #171717;
+            color: #999;
+            direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+            text-align: {{ is_rtl() ? 'right' : 'left' }};
         }
 
-        .search-bar input:focus,
-        .search-bar input:valid {
-            background: rgba(0,0,0,0.3);
-            border-radius: {{ is_rtl() ? '0 0.375em 0.375em 0' : '0.375em 0 0 0.375em' }};
-            box-shadow: 0 0 0 0.1em #d9d9d9 inset;
-            transform: scale(1);
-            
+        .search-bar input:focus {
+            border-color: #000;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
         }
 
         .search-btn {
-            background: #f1f1f1;
-            border-radius: {{ is_rtl() ? '0.75em 0 0 0.75em / 1.5em 0 0 1.5em' : '0 0.75em 0.75em 0 / 0 1.5em 1.5em 0' }};
-            padding: 0.75em;
-            position: relative;
-            transform: translate({{ is_rtl() ? '-0.25em' : '0.25em' }}, 0.25em) rotate(45deg) scale(0.25,0.125);
-            transform-origin: {{ is_rtl() ? '100% 50%' : '0 50%' }};
+            height: 45px;
+            padding: 0 30px;
+            background: #2762f3;
+            color: #ffffff;
             border: none;
+            border-radius: {{ is_rtl() ? '0 8px 8px 0' : '0 8px 8px 0' }};
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+            unicode-bidi: embed;
         }
 
-        .search-btn:before,
-        .search-btn:after {
-            content: "";
-            display: block;
-            opacity: 0;
-            position: absolute;
+        .search-btn:hover {
+            background: #1a4dbf;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(39, 98, 243, 0.4);
         }
 
-        .search-btn:before {
-            border-radius: 50%;
-            box-shadow: 0 0 0 0.2em #171717 inset;
-            top: 0.75em;
-            left: 0.75em;
-            width: 1.2em;
-            height: 1.2em;
-        }
-
-        .search-btn:after {
-            background: #171717;
-            border-radius: 0 0.25em 0.25em 0;
-            top: 51%;
-            left: 51%;
-            width: 0.75em;
-            height: 0.25em;
-            transform: translate(0.2em, 0) rotate(45deg);
-            transform-origin: 0 50%;
+        .search-btn:active {
+            transform: translateY(0);
         }
 
         .search-btn span {
             display: inline-block;
-            overflow: hidden;
-            width: 1px;
-            height: 1px;
-        }
-
-        /* Active state */
-        .search-bar input:focus + .search-btn,
-        .search-bar input:valid + .search-btn {
-            background: #2762f3;
-            border-radius: {{ is_rtl() ? '0.375em 0 0 0.375em' : '0 0.375em 0.375em 0' }};
-            transform: scale(1);
-        }
-
-        .search-bar input:focus + .search-btn:before,
-        .search-bar input:focus + .search-btn:after,
-        .search-bar input:valid + .search-btn:before,
-        .search-bar input:valid + .search-btn:after {
-            opacity: 1;
-        }
-
-        .search-bar input:focus + .search-btn:hover,
-        .search-bar input:valid + .search-btn:hover,
-        .search-bar input:valid:not(:focus) + .search-btn:focus {
-            background: #0c48db;
-        }
-
-        .search-bar input:focus + .search-btn:active,
-        .search-bar input:valid + .search-btn:active {
-            transform: translateY(1px);
+            direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+            unicode-bidi: embed;
         }
 
         .header-icons {
@@ -381,7 +316,7 @@
             <div class="header-icons">
 
                 <form action="" class="search-bar">
-                    <input type="search" name="search" pattern=".*\S.*" required placeholder="{{ __t('messages.search') }}">
+                    <input type="search" name="search" placeholder="{{ __t('messages.search') }}">
                     <button class="search-btn" type="submit">
                         <span>{{ __t('messages.search') }}</span>
                     </button>
@@ -523,6 +458,9 @@
 
             // Load and update favorites count
             updateFavoritesCount();
+
+            // Load and update cart count
+            updateCartCount();
 
             // Initialize all wishlist buttons on the page
             initializeWishlistButtons();

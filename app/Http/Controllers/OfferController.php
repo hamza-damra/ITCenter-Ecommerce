@@ -2,35 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Offer;
 use Illuminate\Http\Request;
+use App\Models\Offer;
 
+/**
+ * Web Controller - Returns views only
+ * All business logic moved to API controllers
+ */
 class OfferController extends Controller
 {
     public function index()
     {
-        $activeOffers = Offer::with(['products'])
-            ->active()
+        $offers = Offer::with('products')
+            ->where('is_active', true)
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->orderBy('created_at', 'desc')
             ->get();
-
-        $upcomingOffers = Offer::upcoming()
-            ->orderBy('start_date')
-            ->limit(5)
-            ->get();
-
-        return view('offers', compact('activeOffers', 'upcomingOffers'));
+            
+        return view('offers', compact('offers'));
     }
 
     public function show($slug)
     {
-        $offer = Offer::with(['products.brand', 'products.category'])
+        $offer = Offer::with('products.images')
             ->where('slug', $slug)
+            ->where('is_active', true)
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
             ->firstOrFail();
-
-        if (!$offer->isValid()) {
-            abort(404, 'This offer is no longer available.');
-        }
-
-        return view('offer-detail', compact('offer'));
+        
+        return view('offer-detail', compact('slug', 'offer'));
     }
 }

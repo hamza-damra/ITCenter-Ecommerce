@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Brand;
 use Illuminate\Http\Request;
+use App\Models\Product;
 
+/**
+ * Web Controller - Returns views only
+ * All business logic moved to API controllers
+ */
 class ProductController extends Controller
 {
     public function index(Request $request)
@@ -51,9 +53,12 @@ class ProductController extends Controller
         if ($request->has('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%")
-                    ->orWhere('short_description', 'like', "%{$search}%")
+                $q->where('name_en', 'like', "%{$search}%")
+                    ->orWhere('name_ar', 'like', "%{$search}%")
+                    ->orWhere('description_en', 'like', "%{$search}%")
+                    ->orWhere('description_ar', 'like', "%{$search}%")
+                    ->orWhere('short_description_en', 'like', "%{$search}%")
+                    ->orWhere('short_description_ar', 'like', "%{$search}%")
                     ->orWhere('sku', 'like', "%{$search}%");
             });
         }
@@ -63,11 +68,9 @@ class ProductController extends Controller
         $sortOrder = $request->get('order', 'desc');
         $query->orderBy($sortBy, $sortOrder);
 
-        $products = $query->paginate(12);
-        $categories = Category::active()->parent()->get();
-        $brands = Brand::active()->get();
+        $products = $query->paginate($request->get('per_page', 12));
 
-        return view('products', compact('products', 'categories', 'brands'));
+        return view('products', compact('products'));
     }
 
     public function show($slug)
@@ -75,19 +78,16 @@ class ProductController extends Controller
         $product = Product::with(['category', 'brand', 'images', 'reviews.user', 'attributes'])
             ->where('slug', $slug)
             ->firstOrFail();
-
-        // Increment views
-        $product->incrementViews();
-
-        // Get related products
-        $relatedProducts = Product::with(['category', 'brand'])
+        
+        // Get related products (same category, different product)
+        $relatedProducts = Product::with(['category', 'brand', 'images'])
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->active()
-            ->inStock()
-            ->limit(8)
+            ->inRandomOrder()
+            ->limit(4)
             ->get();
-
-        return view('product-detail', compact('product', 'relatedProducts'));
+            
+        return view('product-detail', compact('slug', 'product', 'relatedProducts'));
     }
 }

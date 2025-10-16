@@ -39,18 +39,18 @@ Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 // Favorites Routes
 Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites');
+Route::get('/favorites/ids', [FavoriteController::class, 'getIds'])->name('favorites.ids');
 Route::post('/favorites/toggle/{product}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
-Route::get('/favorites/check/{product}', [FavoriteController::class, 'check'])->name('favorites.check');
-Route::get('/favorites/ids', [FavoriteController::class, 'getFavoriteIds'])->name('favorites.ids');
 
 // Cart Routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+Route::put('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
-Route::put('/cart/update/{product}', [CartController::class, 'updateQuantity'])->name('cart.update');
+Route::get('/cart/check/{product}', [CartController::class, 'check'])->name('cart.check');
 Route::get('/cart/count', [CartController::class, 'getCount'])->name('cart.count');
 Route::get('/cart/products', [CartController::class, 'getProductIds'])->name('cart.products');
-Route::get('/cart/check/{product}', [CartController::class, 'check'])->name('cart.check');
+
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->group(function () {
