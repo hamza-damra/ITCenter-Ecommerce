@@ -1,60 +1,75 @@
 @extends('admin.layout')
 
-@section('title', 'Products Management')
+@section('title', __('messages.products_management'))
 
 @section('content')
 <style>
     /* Products Page Specific Styles */
     .search-filter-box {
         display: flex;
-        gap: 12px;
-        margin-bottom: 24px;
+        gap: 16px;
+        margin-bottom: 28px;
         background: white;
-        padding: 16px;
-        border-radius: 12px;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: none;
         flex-wrap: wrap;
+        align-items: center;
     }
 
     .search-filter-box input,
     .search-filter-box select {
-        padding: 10px 14px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
         font-size: 14px;
-        min-width: 180px;
+        min-width: 200px;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #f8fafc;
     }
 
     .search-filter-box input:focus,
     .search-filter-box select:focus {
         outline: none;
         border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .search-filter-box input::placeholder {
+        color: #94a3b8;
     }
 
     .filter-reset-btn {
-        padding: 10px 16px;
-        background: #f8fafc;
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        border: 2px solid #cbd5e1;
+        border-radius: 10px;
         cursor: pointer;
         font-size: 14px;
-        font-weight: 600;
-        color: var(--secondary);
-        transition: all 0.3s ease;
+        font-weight: 700;
+        color: var(--dark);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .filter-reset-btn:hover {
-        background: var(--light);
-        border-color: var(--secondary);
+        background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+        border-color: #64748b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .products-table-wrapper {
         background: white;
-        border-radius: 12px;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: none;
         overflow: hidden;
     }
 
@@ -65,26 +80,28 @@
 
     .products-table thead {
         background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        border-bottom: 2px solid var(--border);
+        border-bottom: 2px solid #e2e8f0;
     }
 
     .products-table th {
-        padding: 16px;
+        padding: 18px 20px;
         text-align: left;
         font-weight: 700;
         color: var(--dark);
         font-size: 13px;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.8px;
     }
 
     .products-table tbody tr {
-        border-bottom: 1px solid var(--border);
-        transition: all 0.3s ease;
+        border-bottom: 1px solid #f1f5f9;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .products-table tbody tr:hover {
-        background: #f8fafc;
+        background: linear-gradient(90deg, #f8fafc 0%, #ffffff 100%);
+        transform: scale(1.005);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .products-table tbody tr:last-child {
@@ -92,7 +109,7 @@
     }
 
     .products-table td {
-        padding: 16px;
+        padding: 18px 20px;
         color: var(--dark);
         vertical-align: middle;
     }
@@ -103,45 +120,58 @@
     }
 
     .product-image {
-        width: 60px;
-        height: 60px;
+        width: 70px;
+        height: 70px;
         object-fit: cover;
-        border-radius: 8px;
-        border: 1px solid var(--border);
+        border-radius: 12px;
+        border: 2px solid #e2e8f0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .product-image:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     }
 
     .product-image-placeholder {
-        width: 60px;
-        height: 60px;
+        width: 70px;
+        height: 70px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f0f4f8;
+        background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
         color: #94a3b8;
-        border-radius: 8px;
-        font-size: 24px;
+        border-radius: 12px;
+        font-size: 28px;
     }
 
     .product-name-cell {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 6px;
     }
 
     .product-name {
-        font-weight: 600;
+        font-weight: 700;
         color: var(--dark);
-        font-size: 15px;
-        max-width: 250px;
+        font-size: 16px;
+        max-width: 280px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
 
     .product-sku {
-        font-size: 12px;
+        font-size: 13px;
         color: var(--secondary);
         font-family: 'Courier New', monospace;
+        font-weight: 600;
+        background: #f1f5f9;
+        padding: 3px 8px;
+        border-radius: 4px;
+        display: inline-block;
+        width: fit-content;
     }
 
     .product-category {
@@ -151,11 +181,12 @@
 
     .product-category-badge {
         display: inline-block;
-        background: #e0e7ff;
+        background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
         color: #3730a3;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-weight: 600;
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 13px;
     }
 
     .product-brand-cell {
@@ -165,59 +196,62 @@
 
     .product-brand-badge {
         display: inline-block;
-        background: #f3e8ff;
+        background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
         color: #6b21a8;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-weight: 600;
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 13px;
     }
 
     .product-price-cell {
         font-weight: 700;
         color: var(--success);
-        font-size: 15px;
+        font-size: 17px;
     }
 
     .product-sale-price {
-        font-size: 12px;
+        font-size: 13px;
         color: var(--danger);
         text-decoration: line-through;
+        font-weight: 600;
+        margin-top: 2px;
     }
 
     .stock-badge {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 6px;
+        gap: 7px;
+        padding: 8px 14px;
+        border-radius: 8px;
         font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.6px;
     }
 
     .stock-high {
-        background: #d1fae5;
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
         color: #065f46;
     }
 
     .stock-medium {
-        background: #fef3c7;
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
         color: #92400e;
     }
 
     .stock-low {
-        background: #fee2e2;
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
         color: #7f1d1d;
     }
 
     .images-badge {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 6px;
-        background: #dbeafe;
+        gap: 7px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
         color: #0c4a6e;
         font-size: 12px;
         font-weight: 700;
@@ -226,95 +260,117 @@
     .status-badge {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        border-radius: 6px;
+        gap: 7px;
+        padding: 8px 14px;
+        border-radius: 8px;
         font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.6px;
     }
 
     .status-active {
-        background: #d1fae5;
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
         color: #065f46;
     }
 
     .status-inactive {
-        background: #fee2e2;
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
         color: #7f1d1d;
     }
 
     .action-cell {
         display: flex;
-        gap: 8px;
+        gap: 10px;
     }
 
     .action-cell .btn {
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 8px 16px;
+        font-size: 13px;
         flex-shrink: 0;
     }
 
     .empty-state {
         background: white;
-        border-radius: 12px;
-        padding: 60px 20px;
+        border-radius: 16px;
+        padding: 80px 40px;
         text-align: center;
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow);
+        border: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
 
     .empty-state i {
-        font-size: 48px;
+        font-size: 64px;
         color: #cbd5e1;
-        margin-bottom: 16px;
+        margin-bottom: 20px;
         display: block;
     }
 
     .empty-state h3 {
-        font-size: 20px;
+        font-size: 24px;
         color: var(--dark);
-        margin-bottom: 8px;
+        margin-bottom: 12px;
+        font-weight: 700;
     }
 
     .empty-state p {
         color: var(--secondary);
-        margin-bottom: 24px;
+        margin-bottom: 28px;
+        font-size: 16px;
     }
 
     .stats-overview {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 16px;
-        margin-bottom: 24px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        margin-bottom: 28px;
     }
 
     .stat-mini-card {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
-        border-left: 4px solid var(--primary);
+        padding: 28px 24px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        border: none;
+    }
+
+    .stat-mini-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: var(--primary);
+    }
+
+    .stat-mini-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
     }
 
     .stat-mini-card h4 {
         font-size: 13px;
         color: var(--secondary);
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.8px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .stat-mini-card .number {
-        font-size: 32px;
+        font-size: 38px;
         font-weight: 700;
         color: var(--primary);
     }
 
     .pagination-wrapper {
-        margin-top: 24px;
+        margin-top: 28px;
         display: flex;
         justify-content: center;
     }
@@ -338,21 +394,21 @@
 
         .products-table td,
         .products-table th {
-            padding: 12px;
+            padding: 14px;
         }
 
         .product-image {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
         }
 
         .product-image-placeholder {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
         }
 
         .product-name {
-            max-width: 150px;
+            max-width: 180px;
         }
 
         .action-cell {
@@ -362,18 +418,37 @@
         .action-cell .btn {
             width: 100%;
         }
+
+        .stat-mini-card .number {
+            font-size: 32px;
+        }
+    }
+
+    /* RTL Support for Products Table */
+    [dir="rtl"] .products-table th,
+    [dir="rtl"] .products-table td {
+        text-align: right;
+    }
+
+    [dir="rtl"] .products-table th:last-child,
+    [dir="rtl"] .products-table td:last-child {
+        text-align: left;
+    }
+
+    [dir="rtl"] .action-cell {
+        justify-content: flex-start;
     }
 </style>
 
 <!-- Page Header -->
 <div class="page-header">
     <div class="page-header-content">
-        <h1>Products Management</h1>
-        <p>Manage your product catalog with ease</p>
+        <h1><i class="fas fa-box-open"></i> {{ __('messages.products_management') }}</h1>
+        <p>{{ __('messages.manage_product_catalog') }}</p>
     </div>
     <div class="page-actions">
         <a href="{{ route('admin.products.create') }}" class="btn btn-success">
-            <i class="fas fa-plus-circle"></i> Add New Product
+            <i class="fas fa-plus-circle"></i> {{ __('messages.add_new_product') }}
         </a>
     </div>
 </div>
@@ -386,39 +461,39 @@
     $lowStockProducts = $products->where('stock_quantity', '<', 5)->count() ?? 0;
 @endphp
 <div class="stats-overview">
-    <div class="stat-mini-card">
-        <h4><i class="fas fa-boxes"></i> Total Products</h4>
-        <div class="number">{{ $totalProducts }}</div>
+    <div class="stat-mini-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <h4 style="color: rgba(255,255,255,0.9);"><i class="fas fa-boxes"></i> {{ __('messages.total_products') }}</h4>
+        <div class="number" style="color: white;">{{ $totalProducts }}</div>
     </div>
-    <div class="stat-mini-card" style="border-left-color: var(--success);">
-        <h4><i class="fas fa-check-circle"></i> Active</h4>
-        <div class="number" style="color: var(--success);">{{ $activeProducts }}</div>
+    <div class="stat-mini-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;">
+        <h4 style="color: rgba(255,255,255,0.9);"><i class="fas fa-check-circle"></i> {{ __('messages.active') }}</h4>
+        <div class="number" style="color: white;">{{ $activeProducts }}</div>
     </div>
-    <div class="stat-mini-card" style="border-left-color: var(--warning);">
-        <h4><i class="fas fa-star"></i> Featured</h4>
-        <div class="number" style="color: var(--warning);">{{ $featuredProducts }}</div>
+    <div class="stat-mini-card" style="background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%); color: white;">
+        <h4 style="color: rgba(255,255,255,0.9);"><i class="fas fa-star"></i> {{ __('messages.featured_products_count') }}</h4>
+        <div class="number" style="color: white;">{{ $featuredProducts }}</div>
     </div>
-    <div class="stat-mini-card" style="border-left-color: var(--danger);">
-        <h4><i class="fas fa-exclamation-triangle"></i> Low Stock</h4>
-        <div class="number" style="color: var(--danger);">{{ $lowStockProducts }}</div>
+    <div class="stat-mini-card" style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); color: white;">
+        <h4 style="color: rgba(255,255,255,0.9);"><i class="fas fa-exclamation-triangle"></i> {{ __('messages.low_stock') }}</h4>
+        <div class="number" style="color: white;">{{ $lowStockProducts }}</div>
     </div>
 </div>
 
 <!-- Search & Filter -->
 <div class="search-filter-box">
-    <input type="text" id="searchInput" placeholder="🔍 Search by name or SKU..." onkeyup="filterProducts()">
+    <input type="text" id="searchInput" placeholder="🔍 {{ __('messages.search_by_name_sku') }}" onkeyup="filterProducts()">
     <select id="statusFilter" onchange="filterProducts()">
-        <option value="">All Status</option>
-        <option value="active">Active Only</option>
-        <option value="inactive">Inactive Only</option>
+        <option value="">{{ __('messages.all_status') }}</option>
+        <option value="active">{{ __('messages.active_only') }}</option>
+        <option value="inactive">{{ __('messages.inactive_only') }}</option>
     </select>
     <select id="stockFilter" onchange="filterProducts()">
-        <option value="">All Stock</option>
-        <option value="low">Low Stock</option>
-        <option value="out">Out of Stock</option>
+        <option value="">{{ __('messages.all_stock') }}</option>
+        <option value="low">{{ __('messages.low_stock') }}</option>
+        <option value="out">{{ __('messages.out_of_stock') }}</option>
     </select>
     <button class="filter-reset-btn" onclick="resetFilters()">
-        <i class="fas fa-redo"></i> Reset
+        <i class="fas fa-redo"></i> {{ __('messages.reset') }}
     </button>
 </div>
 
@@ -428,15 +503,15 @@
         <table class="products-table">
             <thead>
                 <tr>
-                    <th>Image</th>
-                    <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Brand</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Images</th>
-                    <th>Status</th>
-                    <th style="text-align: right;">Actions</th>
+                    <th>{{ __('messages.image') }}</th>
+                    <th>{{ __('messages.product_name') }}</th>
+                    <th>{{ __('messages.category') }}</th>
+                    <th>{{ __('messages.brand') }}</th>
+                    <th>{{ __('messages.price') }}</th>
+                    <th>{{ __('messages.stock') }}</th>
+                    <th>{{ __('messages.images') }}</th>
+                    <th>{{ __('messages.status') }}</th>
+                    <th style="text-align: right;">{{ __('messages.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -473,7 +548,7 @@
                                 {{ $product->category->name_en ?? $product->category->name }}
                             </span>
                         @else
-                            <span style="color: #94a3b8;">Uncategorized</span>
+                            <span style="color: #94a3b8;">{{ __('messages.uncategorized') }}</span>
                         @endif
                     </td>
 
@@ -502,7 +577,7 @@
                         @php
                             $stock = $product->stock_quantity;
                             $stockClass = $stock > 20 ? 'stock-high' : ($stock > 5 ? 'stock-medium' : 'stock-low');
-                            $stockLabel = $stock > 0 ? $stock . ' units' : 'Out of Stock';
+                            $stockLabel = $stock > 0 ? $stock . ' ' . __('messages.units') : __('messages.out_of_stock');
                         @endphp
                         <span class="stock-badge {{ $stockClass }}">
                             <i class="fas {{ $stock > 0 ? 'fa-check' : 'fa-times' }}"></i>
@@ -513,26 +588,26 @@
                     <td>
                         <span class="images-badge">
                             <i class="fas fa-image"></i>
-                            {{ $product->images->count() + 1 }} {{ $product->images->count() + 1 === 1 ? 'image' : 'images' }}
+                            {{ $product->images->count() + 1 }} {{ $product->images->count() + 1 === 1 ? __('messages.image') : __('messages.images') }}
                         </span>
                     </td>
 
                     <td>
                         <span class="status-badge {{ $product->is_active ? 'status-active' : 'status-inactive' }}">
                             <i class="fas {{ $product->is_active ? 'fa-check-circle' : 'fa-times-circle' }}"></i>
-                            {{ $product->is_active ? 'Active' : 'Inactive' }}
+                            {{ $product->is_active ? __('messages.active') : __('messages.inactive') }}
                         </span>
                     </td>
 
                     <td class="action-cell" style="text-align: right;">
                         <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-edit"></i> Edit
+                            <i class="fas fa-edit"></i> {{ __('messages.edit') }}
                         </a>
-                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone.');">
+                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" style="display: inline;" onsubmit="return confirm('{{ __('messages.delete_product_confirm') }}');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash"></i> Delete
+                                <i class="fas fa-trash"></i> {{ __('messages.delete') }}
                             </button>
                         </form>
                     </td>
@@ -551,10 +626,10 @@
 @else
     <div class="empty-state">
         <i class="fas fa-box-open"></i>
-        <h3>No Products Found</h3>
-        <p>You haven't added any products yet. Start by creating your first product!</p>
+        <h3>{{ __('messages.no_products_available') }}</h3>
+        <p>{{ __('messages.start_adding_products') }}</p>
         <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus-circle"></i> Create First Product
+            <i class="fas fa-plus-circle"></i> {{ __('messages.create_product') }}
         </a>
     </div>
 @endif

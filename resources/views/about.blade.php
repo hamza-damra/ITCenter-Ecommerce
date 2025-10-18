@@ -1,52 +1,162 @@
 @extends('layouts.app')
 
-@section('title', 'About Us - IT Center')
+@section('title', __('messages.about') . ' - IT Center')
 
 @section('content')
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 4rem 0;
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .page-header p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+    }
+
+    .page-container {
+        direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+        text-align: {{ is_rtl() ? 'right' : 'left' }};
+        padding: 2rem 0 4rem 0;
+    }
+
+    .content-section {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .content-section h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #333;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .content-section h2:first-child {
+        margin-top: 0;
+    }
+
+    .content-section p {
+        margin: 1rem 0;
+        line-height: 1.8;
+        color: #555;
+        font-size: 1rem;
+    }
+
+    .content-section ul {
+        margin: 1rem 0;
+        line-height: 1.8;
+        color: #555;
+        list-style-position: {{ is_rtl() ? 'inside' : 'outside' }};
+        padding-{{ is_rtl() ? 'right' : 'left' }}: {{ is_rtl() ? '0' : '2rem' }};
+    }
+
+    .content-section ul li {
+        margin-bottom: 0.5rem;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .stat-card {
+        text-align: center;
+        padding: 1.5rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        transition: all 0.3s;
+        background: #fff;
+    }
+
+    .stat-card:hover {
+        border-color: #4169E1;
+        box-shadow: 0 4px 15px rgba(65, 105, 225, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .stat-card h3 {
+        color: #4169E1;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-card p {
+        color: #666;
+        font-size: 1rem;
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .page-header h1 {
+            font-size: 2rem;
+        }
+
+        .content-section h2 {
+            font-size: 1.5rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
 <div class="page-header">
     <div class="container">
-        <h1>About IT Center</h1>
-        <p>Learn more about our company and mission</p>
+        <h1>{{ __('messages.about_us_title') }}</h1>
+        <p>{{ __('messages.about_us_subtitle') }}</p>
     </div>
 </div>
 
-<div class="container">
-    <div style="max-width: 800px; margin: 0 auto;">
-        <h2>Who We Are</h2>
-        <p style="margin: 1rem 0; line-height: 1.8;">
-            IT Center is a leading provider of technology products and solutions. We have been serving customers
-            for over 10 years, offering a wide range of computers, accessories, and IT services.
+<div class="container page-container">
+    <div class="content-section">
+        <h2>{{ __('messages.who_we_are') }}</h2>
+        <p>
+            {{ __('messages.who_we_are_text') }}
         </p>
 
-        <h2 style="margin-top: 2rem;">Our Mission</h2>
-        <p style="margin: 1rem 0; line-height: 1.8;">
-            Our mission is to provide high-quality technology products at competitive prices while delivering
-            exceptional customer service. We strive to be your trusted partner in all things technology.
+        <h2>{{ __('messages.our_mission') }}</h2>
+        <p>
+            {{ __('messages.our_mission_text') }}
         </p>
 
-        <h2 style="margin-top: 2rem;">What We Offer</h2>
-        <ul style="margin: 1rem 0 1rem 2rem; line-height: 1.8;">
-            <li>Wide selection of computers and laptops</li>
-            <li>Computer components and accessories</li>
-            <li>Networking equipment</li>
-            <li>Software solutions</li>
-            <li>Technical support and services</li>
-            <li>Custom PC builds</li>
+        <h2>{{ __('messages.what_we_offer') }}</h2>
+        <ul>
+            <li>{{ __('messages.offer_computers') }}</li>
+            <li>{{ __('messages.offer_components') }}</li>
+            <li>{{ __('messages.offer_networking') }}</li>
+            <li>{{ __('messages.offer_software') }}</li>
+            <li>{{ __('messages.offer_support') }}</li>
+            <li>{{ __('messages.offer_custom_pc') }}</li>
         </ul>
 
-        <h2 style="margin-top: 2rem;">Why Choose Us</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
-            <div style="text-align: center; padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px;">
-                <h3 style="color: #4CAF50;">10+ Years</h3>
-                <p>Experience</p>
+        <h2>{{ __('messages.why_choose_us') }}</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>{{ __('messages.years_experience') }}</h3>
+                <p>{{ __('messages.experience') }}</p>
             </div>
-            <div style="text-align: center; padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px;">
-                <h3 style="color: #4CAF50;">5000+</h3>
-                <p>Happy Customers</p>
+            <div class="stat-card">
+                <h3>{{ __('messages.happy_customers_count') }}</h3>
+                <p>{{ __('messages.happy_customers') }}</p>
             </div>
-            <div style="text-align: center; padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px;">
-                <h3 style="color: #4CAF50;">24/7</h3>
-                <p>Support</p>
+            <div class="stat-card">
+                <h3>{{ __('messages.support_24_7') }}</h3>
+                <p>{{ __('messages.support') }}</p>
             </div>
         </div>
     </div>

@@ -6,72 +6,8 @@
 <style>
     /* Product Create Page Specific Styles */
     .product-form-grid {
-        display: grid;
-        grid-template-columns: 1fr 350px;
-        gap: 24px;
-        margin-bottom: 24px;
-    }
-
-    .form-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    .info-card {
-        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-        border-left: 4px solid var(--primary);
-        padding: 16px;
-        border-radius: 8px;
-        font-size: 14px;
-        color: #0c4a6e;
-    }
-
-    .info-card i {
-        margin-right: 8px;
-        color: var(--primary);
-    }
-
-    .info-card strong {
-        display: block;
-        margin-bottom: 4px;
-        color: var(--dark);
-    }
-
-    .progress-indicator {
-        background: white;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 16px;
-        text-align: center;
-    }
-
-    .progress-indicator h3 {
-        font-size: 14px;
-        color: var(--secondary);
-        margin-bottom: 12px;
-        font-weight: 600;
-    }
-
-    .progress-steps {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .progress-step {
-        font-size: 13px;
-        padding: 8px 12px;
-        border-radius: 6px;
-        background: #f8fafc;
-        color: var(--secondary);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .progress-step i {
-        font-size: 12px;
+        max-width: 900px;
+        margin: 0 auto;
     }
 
     .section-group {
@@ -99,12 +35,6 @@
         color: var(--primary);
         margin-bottom: 12px;
         opacity: 0.5;
-    }
-
-    @media (max-width: 1024px) {
-        .product-form-grid {
-            grid-template-columns: 1fr;
-        }
     }
 </style>
 
@@ -475,54 +405,6 @@
             <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
                 <i class="fas fa-times"></i> Cancel
             </a>
-        </div>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="form-sidebar">
-        <!-- Quick Tips Card -->
-        <div class="info-card">
-            <strong><i class="fas fa-lightbulb"></i> Quick Tips</strong>
-            <ul style="margin: 8px 0 0 20px; padding: 0;">
-                <li>Use clear, descriptive names</li>
-                <li>Fill all required fields (*)</li>
-                <li>Add discount prices for sales</li>
-                <li>Use high-quality images</li>
-            </ul>
-        </div>
-
-        <!-- Required Fields Card -->
-        <div class="info-card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left-color: var(--warning); color: #78350f;">
-            <strong style="color: var(--dark);"><i class="fas fa-asterisk"></i> Required Fields</strong>
-            <p style="font-size: 13px; margin-top: 8px;">All fields marked with <span class="required">*</span> must be completed before creating the product.</p>
-        </div>
-
-        <!-- Progress Card -->
-        <div class="progress-indicator">
-            <h3><i class="fas fa-tasks"></i> Setup Progress</h3>
-            <div class="progress-steps">
-                <div class="progress-step">
-                    <i class="fas fa-check-circle"></i> Basic Info
-                </div>
-                <div class="progress-step">
-                    <i class="fas fa-check-circle"></i> Pricing
-                </div>
-                <div class="progress-step">
-                    <i class="fas fa-check-circle"></i> Images
-                </div>
-                <div class="progress-step">
-                    <i class="fas fa-check-circle"></i> Descriptions
-                </div>
-                <div class="progress-step">
-                    <i class="fas fa-check-circle"></i> Settings
-                </div>
-            </div>
-        </div>
-
-        <!-- Help Card -->
-        <div class="info-card" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-left-color: var(--success); color: #065f46;">
-            <strong style="color: var(--dark);"><i class="fas fa-circle-info"></i> Help</strong>
-            <p style="font-size: 13px; margin-top: 8px;">Need help? All fields have helpful hints. Check them as you fill the form.</p>
         </div>
     </div>
 </form>

@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Categories Management')
+@section('title', __('messages.categories_management'))
 
 @section('content')
 <style>
@@ -320,12 +320,12 @@
 <!-- Page Header -->
 <div class="page-header">
     <div class="page-header-content">
-        <h1>Categories Management</h1>
-        <p>Organize your products with categories and subcategories</p>
+        <h1>{{ __('messages.categories_management_title') }}</h1>
+        <p>{{ __('messages.organize_categories_subtitle') }}</p>
     </div>
     <div class="page-actions">
         <a href="{{ route('admin.categories.create') }}" class="btn btn-success">
-            <i class="fas fa-plus-circle"></i> Add New Category
+            <i class="fas fa-plus-circle"></i> {{ __('messages.add_new_category') }}
         </a>
     </div>
 </div>
@@ -338,34 +338,34 @@
 @endphp
 <div class="stats-overview">
     <div class="stat-mini-card">
-        <h4><i class="fas fa-folder"></i> Total Categories</h4>
+        <h4><i class="fas fa-folder"></i> {{ __('messages.total_categories_stat') }}</h4>
         <div class="number">{{ $totalCategories }}</div>
     </div>
     <div class="stat-mini-card" style="border-left-color: var(--success);">
-        <h4><i class="fas fa-check-circle"></i> Active</h4>
+        <h4><i class="fas fa-check-circle"></i> {{ __('messages.active_categories') }}</h4>
         <div class="number" style="color: var(--success);">{{ $activeCategories }}</div>
     </div>
     <div class="stat-mini-card" style="border-left-color: var(--primary-light);">
-        <h4><i class="fas fa-sitemap"></i> Root Categories</h4>
+        <h4><i class="fas fa-sitemap"></i> {{ __('messages.root_categories') }}</h4>
         <div class="number" style="color: var(--primary-light);">{{ $rootCategories }}</div>
     </div>
 </div>
 
 <!-- Search & Filter -->
 <div class="search-filter-box">
-    <input type="text" id="searchInput" placeholder="🔍 Search categories by name or slug..." onkeyup="filterCategories()">
+    <input type="text" id="searchInput" placeholder="{{ __('messages.search_categories') }}" onkeyup="filterCategories()">
     <select id="statusFilter" onchange="filterCategories()">
-        <option value="">All Status</option>
-        <option value="active">Active Only</option>
-        <option value="inactive">Inactive Only</option>
+        <option value="">{{ __('messages.all_status') }}</option>
+        <option value="active">{{ __('messages.active_only') }}</option>
+        <option value="inactive">{{ __('messages.inactive_only') }}</option>
     </select>
     <select id="parentFilter" onchange="filterCategories()">
-        <option value="">All Categories</option>
-        <option value="root">Root Only</option>
-        <option value="subcategory">Subcategories Only</option>
+        <option value="">{{ __('messages.all_categories_filter') }}</option>
+        <option value="root">{{ __('messages.root_only') }}</option>
+        <option value="subcategory">{{ __('messages.subcategories_only') }}</option>
     </select>
     <button class="filter-reset-btn" onclick="resetFilters()">
-        <i class="fas fa-redo"></i> Reset Filters
+        <i class="fas fa-redo"></i> {{ __('messages.reset_filters') }}
     </button>
 </div>
 
@@ -375,11 +375,11 @@
         <table class="categories-table">
             <thead>
                 <tr>
-                    <th>Image</th>
-                    <th>Category Name</th>
-                    <th>Parent Category</th>
-                    <th>Status</th>
-                    <th style="text-align: right;">Actions</th>
+                    <th>{{ __('messages.image') }}</th>
+                    <th>{{ __('messages.category_name') }}</th>
+                    <th>{{ __('messages.parent_category') }}</th>
+                    <th>{{ __('messages.status') }}</th>
+                    <th style="text-align: right;">{{ __('messages.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -414,7 +414,7 @@
                             </span>
                         @else
                             <span class="category-parent-root">
-                                <i class="fas fa-folder-open"></i> Root Category
+                                <i class="fas fa-folder-open"></i> {{ __('messages.root_category') }}
                             </span>
                         @endif
                     </td>
@@ -422,19 +422,19 @@
                     <td>
                         <span class="status-badge {{ $category->is_active ? 'status-active' : 'status-inactive' }}">
                             <i class="fas {{ $category->is_active ? 'fa-check-circle' : 'fa-times-circle' }}"></i>
-                            {{ $category->is_active ? 'Active' : 'Inactive' }}
+                            {{ $category->is_active ? __('messages.active') : __('messages.inactive') }}
                         </span>
                     </td>
 
                     <td class="action-cell" style="text-align: right;">
                         <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-edit"></i> Edit
+                            <i class="fas fa-edit"></i> {{ __('messages.edit') }}
                         </a>
-                        <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this category? This action cannot be undone.');">
+                        <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" style="display: inline;" onsubmit="return confirm('{{ __('messages.delete_category_confirm') }}');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash"></i> Delete
+                                <i class="fas fa-trash"></i> {{ __('messages.delete') }}
                             </button>
                         </form>
                     </td>
@@ -453,10 +453,10 @@
 @else
     <div class="empty-state">
         <i class="fas fa-folder-open"></i>
-        <h3>No Categories Found</h3>
-        <p>You haven't created any categories yet. Start by creating your first category!</p>
+        <h3>{{ __('messages.no_categories_found') }}</h3>
+        <p>{{ __('messages.no_categories_description') }}</p>
         <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus-circle"></i> Create First Category
+            <i class="fas fa-plus-circle"></i> {{ __('messages.create_first_category') }}
         </a>
     </div>
 @endif

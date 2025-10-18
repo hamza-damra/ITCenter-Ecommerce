@@ -122,6 +122,39 @@ php artisan cache:clear
 - Verify database credentials in `.env` file
 - Make sure the database exists (create it if needed)
 
+### Issue: "could not find driver" (PDO MySQL not found)
+
+**Solution:**
+
+1. Check if PDO MySQL is installed:
+   ```bash
+   php -m | findstr pdo
+   ```
+
+2. If `pdo_mysql` is missing, enable it in `php.ini`:
+   - Find php.ini: `php --ini`
+   - Uncomment this line (remove semicolon):
+     ```ini
+     extension=pdo_mysql
+     ```
+   - Also uncomment:
+     ```ini
+     extension=mysqli
+     ```
+   - Save and restart your web server
+
+3. **For XAMPP users:**
+   - Open XAMPP Control Panel
+   - Config → PHP (php.ini)
+   - Uncomment `extension=pdo_mysql`
+   - Restart Apache
+
+4. Verify:
+   ```bash
+   php -m | findstr pdo
+   ```
+   Should show: `PDO` and `pdo_mysql`
+
 ### Issue: "No application encryption key has been specified"
 
 **Solution:**

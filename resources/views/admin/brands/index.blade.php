@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Brands Management')
+@section('title', __('messages.brands_management'))
 
 @section('content')
 <style>
@@ -301,12 +301,12 @@
 <!-- Page Header -->
 <div class="page-header">
     <div class="page-header-content">
-        <h1>Brands Management</h1>
-        <p>Manage your product brands and keep your catalog organized</p>
+        <h1>{{ __('messages.brands_management_title') }}</h1>
+        <p>{{ __('messages.manage_brands_subtitle') }}</p>
     </div>
     <div class="page-actions">
         <a href="{{ route('admin.brands.create') }}" class="btn btn-success">
-            <i class="fas fa-plus-circle"></i> Add New Brand
+            <i class="fas fa-plus-circle"></i> {{ __('messages.add_new_brand') }}
         </a>
     </div>
 </div>
@@ -319,34 +319,34 @@
 @endphp
 <div class="stats-overview">
     <div class="stat-mini-card">
-        <h4><i class="fas fa-tags"></i> Total Brands</h4>
+        <h4><i class="fas fa-tags"></i> {{ __('messages.total_brands_stat') }}</h4>
         <div class="number">{{ $totalBrands }}</div>
     </div>
     <div class="stat-mini-card" style="border-left-color: var(--success);">
-        <h4><i class="fas fa-check-circle"></i> Active</h4>
+        <h4><i class="fas fa-check-circle"></i> {{ __('messages.active_brands') }}</h4>
         <div class="number" style="color: var(--success);">{{ $activeBrands }}</div>
     </div>
     <div class="stat-mini-card" style="border-left-color: var(--warning);">
-        <h4><i class="fas fa-star"></i> Featured</h4>
+        <h4><i class="fas fa-star"></i> {{ __('messages.featured_brands') }}</h4>
         <div class="number" style="color: var(--warning);">{{ $featuredBrands }}</div>
     </div>
 </div>
 
 <!-- Search & Filter -->
 <div class="search-filter-box">
-    <input type="text" id="searchInput" placeholder="🔍 Search brands..." onkeyup="filterBrands()">
+    <input type="text" id="searchInput" placeholder="{{ __('messages.search_brands') }}" onkeyup="filterBrands()">
     <select id="statusFilter" onchange="filterBrands()">
-        <option value="">All Status</option>
-        <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
+        <option value="">{{ __('messages.all_status') }}</option>
+        <option value="active">{{ __('messages.active') }}</option>
+        <option value="inactive">{{ __('messages.inactive') }}</option>
     </select>
     <select id="featuredFilter" onchange="filterBrands()">
-        <option value="">All Featured</option>
-        <option value="yes">Featured Only</option>
-        <option value="no">Not Featured</option>
+        <option value="">{{ __('messages.all_featured') }}</option>
+        <option value="yes">{{ __('messages.featured_only') }}</option>
+        <option value="no">{{ __('messages.not_featured') }}</option>
     </select>
     <button class="filter-reset-btn" onclick="resetFilters()">
-        <i class="fas fa-redo"></i> Reset
+        <i class="fas fa-redo"></i> {{ __('messages.reset') }}
     </button>
 </div>
 
@@ -360,7 +360,7 @@
                     <img src="{{ $brand->logo }}" alt="{{ $brand->name }}" class="brand-logo">
                 @else
                     <div class="brand-logo-placeholder">
-                        <i class="fas fa-image"></i> No Logo
+                        <i class="fas fa-image"></i> {{ __('messages.no_logo') }}
                     </div>
                 @endif
             </div>
@@ -381,11 +381,11 @@
                 <div class="brand-meta">
                     <span class="brand-meta-badge {{ $brand->is_active ? 'brand-status-active' : 'brand-status-inactive' }}">
                         <i class="fas {{ $brand->is_active ? 'fa-circle' : 'fa-circle' }}"></i>
-                        {{ $brand->is_active ? 'Active' : 'Inactive' }}
+                        {{ $brand->is_active ? __('messages.active') : __('messages.inactive') }}
                     </span>
                     <span class="brand-meta-badge {{ $brand->is_featured ? 'brand-featured-yes' : 'brand-featured-no' }}">
                         <i class="fas {{ $brand->is_featured ? 'fa-star' : 'fa-star' }}"></i>
-                        {{ $brand->is_featured ? 'Featured' : 'Regular' }}
+                        {{ $brand->is_featured ? __('messages.featured') : __('messages.regular') }}
                     </span>
                 </div>
             </div>
@@ -393,13 +393,13 @@
             <!-- Card Footer with Actions -->
             <div class="brand-card-footer">
                 <a href="{{ route('admin.brands.edit', $brand) }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-edit"></i> Edit
+                    <i class="fas fa-edit"></i> {{ __('messages.edit') }}
                 </a>
-                <form action="{{ route('admin.brands.destroy', $brand) }}" method="POST" style="flex: 1;" onsubmit="return confirm('Are you sure you want to delete this brand? This action cannot be undone.');">
+                <form action="{{ route('admin.brands.destroy', $brand) }}" method="POST" style="flex: 1;" onsubmit="return confirm('{{ __('messages.delete_brand_confirm') }}');">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm" style="width: 100%;">
-                        <i class="fas fa-trash"></i> Delete
+                        <i class="fas fa-trash"></i> {{ __('messages.delete') }}
                     </button>
                 </form>
             </div>
@@ -407,10 +407,10 @@
     @empty
         <div class="empty-state" style="grid-column: 1 / -1;">
             <i class="fas fa-box-open"></i>
-            <h3>No Brands Found</h3>
-            <p>You haven't added any brands yet. Start by creating your first brand!</p>
+            <h3>{{ __('messages.no_brands_found') }}</h3>
+            <p>{{ __('messages.no_brands_description') }}</p>
             <a href="{{ route('admin.brands.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus-circle"></i> Create First Brand
+                <i class="fas fa-plus-circle"></i> {{ __('messages.create_first_brand') }}
             </a>
         </div>
     @endforelse

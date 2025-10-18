@@ -7,6 +7,7 @@
     .product-detail-container {
         padding: 3rem 0;
         background: #fff;
+        direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
     }
 
     .product-main {
@@ -14,6 +15,12 @@
         grid-template-columns: 1fr 1fr;
         gap: 3rem;
         margin-bottom: 3rem;
+    }
+
+    @media (max-width: 968px) {
+        .product-main {
+            grid-template-columns: 1fr;
+        }
     }
 
     /* Product Images Section */
@@ -498,6 +505,35 @@
         }
     }
 
+    /* RTL Support */
+    [dir="rtl"] .product-detail-container {
+        direction: rtl;
+        text-align: right;
+    }
+
+    [dir="rtl"] .product-rating {
+        flex-direction: row-reverse;
+    }
+
+    [dir="rtl"] .product-price {
+        flex-direction: row-reverse;
+    }
+
+    [dir="rtl"] .action-buttons {
+        direction: rtl;
+    }
+
+    [dir="rtl"] .feature-item {
+        direction: rtl;
+    }
+
+    [dir="rtl"] .spec-item {
+        direction: rtl;
+    }
+
+    [dir="rtl"] .quantity-selector {
+        direction: ltr;
+    }
 
     /* أخفي الأسهم في كروم/إيدج/سفاري */
 .quantity-input::-webkit-outer-spin-button,
@@ -553,8 +589,8 @@
 
             <!-- Product Info -->
             <div class="product-info">
-                <div class="product-category">{{ $product->category->name ?? 'Uncategorized' }} @if($product->brand) / {{ $product->brand->name }}@endif</div>
-                <h1 class="product-title">{{ $product->name }}</h1>
+                <div class="product-category">{{ $product->category->{'name_' . current_locale()} ?? $product->category->name ?? __('messages.Uncategorized') }} @if($product->brand) / {{ $product->brand->{'name_' . current_locale()} ?? $product->brand->name }}@endif</div>
+                <h1 class="product-title">{{ $product->{'name_' . current_locale()} ?? $product->name }}</h1>
 
                 <div class="product-rating">
                     <div class="stars">
@@ -568,7 +604,7 @@
                             @endif
                         @endfor
                     </div>
-                    <span class="rating-text">{{ number_format($product->avg_rating, 1) }} ({{ $product->reviews_count }} reviews)</span>
+                    <span class="rating-text">{{ number_format($product->avg_rating, 1) }} ({{ $product->reviews_count }} {{ __('messages.reviews') }})</span>
                 </div>
 
                 <div class="product-price">
@@ -582,38 +618,38 @@
                 <div class="stock-status {{ $product->stock_status === 'out_of_stock' ? 'out-of-stock' : '' }}">
                     @if($product->stock_status === 'in_stock')
                         <i class="fas fa-check-circle"></i>
-                        <span>In Stock - Ready to Ship</span>
+                        <span>{{ __('messages.in_stock') }}</span>
                     @else
                         <i class="fas fa-times-circle"></i>
-                        <span>Out of Stock</span>
+                        <span>{{ __('messages.out_of_stock') }}</span>
                     @endif
                 </div>
 
                 <p class="product-description">
-                    {{ $product->short_description ?? $product->description }}
+                    {{ $product->{'short_description_' . current_locale()} ?? $product->short_description ?? $product->{'description_' . current_locale()} ?? $product->description }}
                 </p>
 
                 <div class="product-features">
                     <div class="feature-item">
                         <i class="fas fa-shipping-fast feature-icon"></i>
-                        <span class="feature-text">Free shipping on orders over $50</span>
+                        <span class="feature-text">{{ __('messages.free_shipping') }}</span>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-undo feature-icon"></i>
-                        <span class="feature-text">30-day return policy</span>
+                        <span class="feature-text">{{ __('messages.return_policy') }}</span>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-shield-alt feature-icon"></i>
-                        <span class="feature-text">1 year manufacturer warranty</span>
+                        <span class="feature-text">{{ __('messages.warranty') }}</span>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-headset feature-icon"></i>
-                        <span class="feature-text">24/7 customer support</span>
+                        <span class="feature-text">{{ __('messages.customer_support') }}</span>
                     </div>
                 </div>
 
                 <div class="quantity-section">
-                    <label class="quantity-label">Quantity:</label>
+                    <label class="quantity-label">{{ __('messages.quantity') }}:</label>
                     <div class="quantity-selector">
                         <div class="quantity-controls">
                             <button class="quantity-btn" onclick="decreaseQuantity()" {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>-</button>
@@ -632,12 +668,12 @@
                             onclick="addToCartWithQuantity({{ $product->id }}, this)" 
                             {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
                         <i class="fas fa-shopping-cart"></i>
-                        {{ $product->stock_status === 'out_of_stock' ? 'Out of Stock' : 'Add to Cart' }}
+                        {{ $product->stock_status === 'out_of_stock' ? __('messages.out_of_stock') : __('messages.add_to_cart') }}
                     </button>
                     <button class="btn-buy-now" 
                             type="button"
                             {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
-                        {{ $product->stock_status === 'out_of_stock' ? 'Unavailable' : 'Buy Now' }}
+                        {{ $product->stock_status === 'out_of_stock' ? __('messages.unavailable') : __('messages.buy_now') }}
                     </button>
                     <button class="btn-wishlist wishlist-btn" 
                             type="button"
@@ -650,7 +686,7 @@
 
         <!-- Specifications -->
         <div class="specifications-section">
-            <h2 class="section-title">Technical Specifications</h2>
+            <h2 class="section-title">{{ __('messages.technical_specifications') }}</h2>
             <div class="specs-grid">
                 @if($product->specifications && is_array($product->specifications))
                     @foreach($product->specifications as $key => $value)
@@ -687,11 +723,11 @@
         </div>
 
         <!-- Full Description -->
-        @if($product->description && $product->description != $product->short_description)
+        @if($product->{'description_' . current_locale()} ?? $product->description && ($product->{'description_' . current_locale()} ?? $product->description) != ($product->{'short_description_' . current_locale()} ?? $product->short_description))
         <div class="specifications-section" style="margin-top: 2rem;">
-            <h2 class="section-title">Product Description</h2>
+            <h2 class="section-title">{{ __('messages.product_description') }}</h2>
             <div style="color: #555; line-height: 1.8; font-size: 1rem;">
-                {!! nl2br(e($product->description)) !!}
+                {!! nl2br(e($product->{'description_' . current_locale()} ?? $product->description)) !!}
             </div>
         </div>
         @endif
@@ -701,7 +737,7 @@
 <!-- Related Products -->
 <div class="related-products">
     <div class="container">
-        <h2 class="related-title">Related Products</h2>
+        <h2 class="related-title">{{ __('messages.related_products') }}</h2>
         <div class="products-grid">
             @foreach($relatedProducts as $relatedProduct)
                 <a href="{{ route('product.detail', $relatedProduct->slug) }}" style="text-decoration: none; color: inherit;">
@@ -712,12 +748,12 @@
                                     ? (filter_var($relatedProduct->main_image, FILTER_VALIDATE_URL) 
                                         ? $relatedProduct->main_image 
                                         : asset('storage/' . $relatedProduct->main_image))
-                                    : 'https://via.placeholder.com/300x200/f5f5f5/666666?text=' . urlencode($relatedProduct->name);
+                                    : 'https://via.placeholder.com/300x200/f5f5f5/666666?text=' . urlencode($relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name);
                             @endphp
-                            <img src="{{ $relatedImageUrl }}" alt="{{ $relatedProduct->name }}" onerror="this.src='https://via.placeholder.com/300x200/f5f5f5/666666?text=No+Image'">
+                            <img src="{{ $relatedImageUrl }}" alt="{{ $relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name }}" onerror="this.src='https://via.placeholder.com/300x200/f5f5f5/666666?text=No+Image'">
                         </div>
                         <div class="product-card-content">
-                            <h3 class="product-card-title">{{ $relatedProduct->name }}</h3>
+                            <h3 class="product-card-title">{{ $relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name }}</h3>
                             <div class="product-card-price">${{ number_format($relatedProduct->final_price, 2) }}</div>
                         </div>
                     </div>

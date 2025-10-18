@@ -13,7 +13,7 @@ use App\Http\Controllers\CartController;
 
 // Language Routes
 Route::get('/lang/{locale}', function ($locale) {
-    if (in_array($locale, config('app.available_locales', ['en', 'ar']))) {
+    if (in_array($locale, config('app.available_locales', ['en', 'ar', 'he']))) {
         session(['locale' => $locale]);
     }
     return redirect()->back();

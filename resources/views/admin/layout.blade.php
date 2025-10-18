@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ in_array(app()->getLocale(), ['ar', 'he']) ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,28 +34,28 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: #f1f5f9;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
             color: #1e293b;
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         .admin-container {
             display: flex;
             min-height: 100vh;
-            background: #f1f5f9;
         }
 
         /* Sidebar Styles */
         .sidebar {
             width: 260px;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
             color: white;
             padding: 0;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
             z-index: 1000;
-            box-shadow: var(--shadow-lg);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
         }
 
         .sidebar::-webkit-scrollbar {
@@ -72,18 +72,23 @@
         }
 
         .sidebar-header {
-            padding: 24px 20px;
+            padding: 28px 24px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(0, 0, 0, 0.3) 100%);
         }
 
         .sidebar-header h2 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             color: #fff;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+        }
+
+        .sidebar-header h2 i {
+            font-size: 24px;
+            color: var(--primary-light);
         }
 
         .sidebar-menu {
@@ -94,30 +99,52 @@
         .sidebar-menu li a {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
+            gap: 14px;
+            padding: 14px 24px;
             color: #cbd5e1;
             text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 15px;
             font-weight: 500;
+            position: relative;
+            margin: 4px 12px;
+            border-radius: 10px;
+        }
+
+        .sidebar-menu li a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 0;
+            background: var(--primary-light);
+            border-radius: 2px;
+            transition: height 0.3s ease;
         }
 
         .sidebar-menu li a:hover {
-            background: rgba(37, 99, 235, 0.2);
+            background: rgba(37, 99, 235, 0.15);
             color: #fff;
-            padding-left: 24px;
+            padding-left: 28px;
+        }
+
+        .sidebar-menu li a:hover::before {
+            height: 60%;
         }
 
         .sidebar-menu li a.active {
-            background: var(--primary);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.25) 0%, rgba(37, 99, 235, 0.15) 100%);
             color: white;
             border-left: 4px solid var(--primary-light);
-            padding-left: 20px;
+            padding-left: 24px;
+            font-weight: 700;
         }
 
         .sidebar-menu li a i {
-            width: 18px;
+            width: 20px;
+            font-size: 16px;
         }
 
         .main-content {
@@ -130,26 +157,36 @@
         /* Page Header */
         .page-header {
             background: white;
-            padding: 28px 24px;
-            border-radius: 12px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow);
+            padding: 32px 28px;
+            border-radius: 16px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-left: 5px solid var(--primary);
+            border-left: 6px solid var(--primary);
+            border: none;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
         }
 
         .page-header-content h1 {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--dark);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .page-header-content h1 i {
+            color: var(--primary);
         }
 
         .page-header-content p {
             color: var(--secondary);
-            font-size: 14px;
+            font-size: 15px;
+            font-weight: 500;
         }
 
         .page-actions {
@@ -160,32 +197,33 @@
         /* Card Styles */
         .card {
             background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            border: 1px solid var(--border);
+            border: none;
             transition: all 0.3s ease;
         }
 
         .card:hover {
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
         }
 
         .card-header {
-            padding: 20px 24px;
-            background: #f8fafc;
+            padding: 24px 28px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             border-bottom: 1px solid var(--border);
         }
 
         .card-header h2 {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 20px;
+            font-weight: 700;
             color: var(--dark);
             margin: 0;
         }
 
         .card-body {
-            padding: 24px;
+            padding: 28px;
         }
 
         /* Buttons */
@@ -256,8 +294,21 @@
         }
 
         .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            min-width: 80px;
+            justify-content: center;
+        }
+
+        /* Ensure form buttons (like delete) match anchor buttons */
+        form button.btn {
+            cursor: pointer;
+        }
+
+        form button.btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
         }
 
         /* Forms */
@@ -313,6 +364,40 @@
             font-family: inherit;
             transition: all 0.3s ease;
             background: white;
+        }
+
+        /* Modern Select/Dropdown Styles */
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 12px;
+            padding-right: 40px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        select.form-control:hover {
+            border-color: #94a3b8;
+        }
+
+        select.form-control:focus {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232563eb' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        }
+
+        select.form-control option {
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            background: white;
+            color: var(--dark);
+        }
+
+        select.form-control option:hover,
+        select.form-control option:checked {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            color: var(--primary);
         }
 
         .form-control::placeholder {
@@ -574,6 +659,200 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: relative;
+            padding: 12px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 16px;
+        }
+
+        .language-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .language-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .language-btn i {
+            width: 18px;
+            font-size: 16px;
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            padding: 8px;
+            margin-top: 12px;
+            display: none;
+            z-index: 1000;
+            border: 2px solid #e2e8f0;
+        }
+
+        /* Global reset for all dropdown elements */
+        .language-dropdown *,
+        .language-dropdown *::before,
+        .language-dropdown *::after {
+            text-decoration: none !important;
+            -webkit-text-decoration: none !important;
+            border-bottom: none !important;
+            text-underline-offset: 0 !important;
+        }
+
+        .language-dropdown.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .language-dropdown a {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            padding: 12px 14px !important;
+            color: #1e293b !important;
+            text-decoration: none !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            border-radius: 8px !important;
+            margin-bottom: 4px !important;
+            border: none !important;
+            outline: none !important;
+        }
+
+        .language-dropdown a:link,
+        .language-dropdown a:visited,
+        .language-dropdown a:focus,
+        .language-dropdown a:active {
+            text-decoration: none !important;
+            border-bottom: none !important;
+            color: #1e293b !important;
+            outline: none !important;
+        }
+
+        .language-dropdown a:last-child {
+            margin-bottom: 0 !important;
+        }
+
+        .language-dropdown a:hover {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+            color: var(--primary) !important;
+            transform: translateX(4px) !important;
+            text-decoration: none !important;
+            border-bottom: none !important;
+        }
+
+        .language-dropdown a.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+            text-decoration: none !important;
+            border-bottom: none !important;
+        }
+
+        .language-dropdown a.active:link,
+        .language-dropdown a.active:visited,
+        .language-dropdown a.active:focus,
+        .language-dropdown a.active:active {
+            color: white !important;
+            text-decoration: none !important;
+            border-bottom: none !important;
+        }
+
+        .language-dropdown a.active:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%) !important;
+            text-decoration: none !important;
+            color: white !important;
+            border-bottom: none !important;
+            transform: translateX(4px) !important;
+        }
+
+        .language-dropdown a span {
+            text-decoration: none !important;
+            color: inherit !important;
+            border-bottom: none !important;
+        }
+
+        .language-dropdown a .lang-flag {
+            font-size: 18px !important;
+            line-height: 1 !important;
+            text-decoration: none !important;
+        }
+
+        .lang-flag {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* RTL Support */
+        [dir="rtl"] .sidebar {
+            right: 0;
+            left: auto;
+        }
+
+        [dir="rtl"] .main-content {
+            margin-left: 0;
+            margin-right: 260px;
+        }
+
+        [dir="rtl"] .sidebar-menu li a.active {
+            border-left: none;
+            border-right: 4px solid var(--primary-light);
+            padding-right: 20px;
+            padding-left: 12px;
+        }
+
+        [dir="rtl"] .sidebar-menu li a:hover {
+            padding-left: 12px;
+            padding-right: 24px;
+        }
+
+        [dir="rtl"] .page-header {
+            border-left: none;
+            border-right: 5px solid var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            [dir="rtl"] .main-content {
+                margin-right: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -583,12 +862,35 @@
                 <h2><i class="fas fa-cube"></i> IT Center</h2>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                <li><a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><i class="fas fa-box"></i> Products</a></li>
-                <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-folder"></i> Categories</a></li>
-                <li><a href="{{ route('admin.brands.index') }}" class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}"><i class="fas fa-tag"></i> Brands</a></li>
-                <li><a href="{{ route('home') }}" target="_blank"><i class="fas fa-globe"></i> View Website</a></li>
+                <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> {{ __('messages.dashboard') }}</a></li>
+                <li><a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><i class="fas fa-box"></i> {{ __('messages.products') }}</a></li>
+                <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-folder"></i> {{ __('messages.categories') }}</a></li>
+                <li><a href="{{ route('admin.brands.index') }}" class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}"><i class="fas fa-tag"></i> {{ __('messages.brands') }}</a></li>
+                <li><a href="{{ route('home') }}" target="_blank"><i class="fas fa-globe"></i> {{ __('messages.view') }} {{ __('messages.home') }}</a></li>
             </ul>
+            
+            <!-- Language Switcher -->
+            <div class="language-switcher">
+                <button class="language-btn" onclick="toggleLanguageDropdown()">
+                    <i class="fas fa-globe"></i>
+                    <span>{{ config('app.locale_names')[app()->getLocale()] ?? 'English' }}</span>
+                    <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                </button>
+                <div class="language-dropdown" id="languageDropdown">
+                    <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'active' : '' }}">
+                        <span class="lang-flag">🇬🇧</span>
+                        <span>English</span>
+                    </a>
+                    <a href="{{ route('lang.switch', 'ar') }}" class="{{ app()->getLocale() == 'ar' ? 'active' : '' }}">
+                        <span class="lang-flag">🇸🇦</span>
+                        <span>العربية</span>
+                    </a>
+                    <a href="{{ route('lang.switch', 'he') }}" class="{{ app()->getLocale() == 'he' ? 'active' : '' }}">
+                        <span class="lang-flag">🇮🇱</span>
+                        <span>עברית</span>
+                    </a>
+                </div>
+            </div>
         </aside>
 
         <main class="main-content">
@@ -612,6 +914,22 @@
 
     <!-- Admin API Scripts -->
     <script src="{{ asset('js/admin/api-client.js') }}"></script>
+    <script>
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('languageDropdown');
+            const languageBtn = document.querySelector('.language-btn');
+            
+            if (!languageBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
     @stack('scripts')
 </body>
 </html>

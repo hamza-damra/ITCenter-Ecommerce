@@ -13,12 +13,7 @@
     }
 
     .cart-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #4169E1;
+        display: none;
     }
 
     .cart-header h1 {
@@ -59,11 +54,11 @@
         gap: 1.5rem;
         padding: 1.5rem;
         border: 1px solid #e0e0e0;
-        border-radius: 8px;
+        border-radius: 12px;
         margin-bottom: 1rem;
         transition: all 0.3s;
         align-items: center;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         background: #fff;
     }
 
@@ -96,7 +91,7 @@
     }
 
     .cart-item-title {
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 600;
         color: #333;
         margin-bottom: 0.5rem;
@@ -109,7 +104,7 @@
     }
 
     .cart-item-price {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         color: #4169E1;
         font-weight: 700;
         margin-bottom: 1rem;
@@ -164,22 +159,31 @@
     }
 
     .remove-btn {
-        background: #ff4444;
+        background: #4169E1;
         color: #fff;
         border: none;
-        padding: 0.6rem 1.2rem;
-        border-radius: 5px;
+        padding: 0.6rem 1rem;
+        border-radius: 50px;
         cursor: pointer;
         transition: all 0.3s;
-        font-weight: 500;
-        display: flex;
+        font-weight: 600;
+        display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 0.5rem;
+        font-size: 0.9rem;
+        min-width: 140px;
+        white-space: nowrap;
     }
 
     .remove-btn:hover {
-        background: #cc0000;
-        transform: scale(1.05);
+        background: #1E90FF;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(65, 105, 225, 0.3);
+    }
+
+    .remove-btn i {
+        font-size: 0.85rem;
     }
 
     /* Empty Cart */
@@ -190,12 +194,12 @@
 
     .empty-cart i {
         font-size: 5rem;
-        color: #ddd;
-        margin-bottom: 1rem;
+        color: #e0e0e0;
+        margin-bottom: 1.5rem;
     }
 
     .empty-cart h2 {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         color: #666;
         margin-bottom: 1rem;
     }
@@ -203,15 +207,16 @@
     .empty-cart p {
         color: #999;
         margin-bottom: 2rem;
+        font-size: 1rem;
     }
 
     .continue-shopping-btn {
         background: #4169E1;
         color: #fff;
-        padding: 10px;
-        border-radius: 10px;
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
         text-decoration: none;
-        font-weight: 400;
+        font-weight: 600;
         display: inline-block;
         transition: all 0.3s;
         box-shadow: 0 4px 15px rgba(65, 105, 225, 0.3);
@@ -219,13 +224,12 @@
 
     .continue-shopping-btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(65, 105, 225, 0.4);
+        box-shadow: 0 10px 30px rgba(65, 105, 225, 0.4);
         background: #1E90FF;
     }
     .continue-shopping-btn i {
-        font-size: 15px;
-        margin-top: 11px;
-        padding-right: 5px;
+        font-size: 1rem;
+        margin-{{ is_rtl() ? 'left' : 'right' }}: 0.5rem;
     }
 
     /* Cart Summary */
@@ -272,10 +276,10 @@
         width: 100%;
         background: #4169E1;
         color: #fff;
-        padding: 1.2rem;
+        padding: 1rem;
         border: none;
-        border-radius: 8px;
-        font-size: 1.1rem;
+        border-radius: 50px;
+        font-size: 1rem;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s;
@@ -284,12 +288,17 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(65, 105, 225, 0.3);
     }
 
     .checkout-btn:hover {
         background: #1E90FF;
         transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(65, 105, 225, 0.4);
+        box-shadow: 0 6px 20px rgba(65, 105, 225, 0.4);
+    }
+
+    .checkout-btn i {
+        font-size: 0.9rem;
     }
 
     .continue-shopping-link {
@@ -301,11 +310,16 @@
         text-decoration: none;
         margin-top: 1rem;
         font-weight: 500;
+        font-size: 0.95rem;
         transition: color 0.3s;
     }
 
     .continue-shopping-link:hover {
         color: #4169E1;
+    }
+
+    .continue-shopping-link i {
+        font-size: 0.9rem;
     }
 
     /* Loading Spinner */
@@ -404,7 +418,6 @@
                 <h2>{{ __('messages.cart_empty') }}</h2>
                 <p>{{ __('messages.cart_empty_description') }}</p>
                 <a href="{{ route('products') }}" class="continue-shopping-btn">
-                    <i class="fas fa-arrow-left"></i>
                     {{ __('messages.continue_shopping') }}
                 </a>
             </div>
@@ -485,7 +498,6 @@
                 </button>
                 
                 <a href="{{ route('products') }}" class="continue-shopping-link">
-                    <i class="fas fa-arrow-{{ is_rtl() ? 'right' : 'left' }}"></i>
                     {{ __('messages.continue_shopping') }}
                 </a>
             </div>

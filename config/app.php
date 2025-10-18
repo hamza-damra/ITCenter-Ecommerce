@@ -94,11 +94,12 @@ return [
     |
     */
 
-    'available_locales' => ['en', 'ar'],
+    'available_locales' => ['en', 'ar', 'he'],
 
     'locale_names' => [
         'en' => 'English',
         'ar' => 'العربية',
+        'he' => 'עברית',
     ],
 
     /*
