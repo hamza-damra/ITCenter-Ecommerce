@@ -4,15 +4,50 @@
 
 @section('content')
 <style>
-    /* Hero Section */
+    /* Hero Section - Slider */
     .hero-section {
-        background: linear-gradient(to right, rgba(0, 0, 0, 0.2), transparent), radial-gradient(circle, rgba(0, 0, 0, 0.5),transparent), url('{{ asset('images/assets/wallpaper2.png') }}');
+        padding: 0;
+        margin: 1.5rem 1.5rem 3rem 1.5rem;
+        border-radius: 20px;
+        position: relative;
+        height: 500px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+
+    .hero-slider {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
         background-size: cover;
         background-repeat: no-repeat;
-        padding: 8rem 2rem;
-        margin-bottom: 3rem;
-        position: relative;
-        height: 700px;
+        background-position: center;
+    }
+
+    .hero-slide.active {
+        opacity: 1;
+        z-index: 1;
+    }
+
+    .hero-slide::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
     }
 
     .hero-container {
@@ -21,11 +56,88 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        height: 100%;
+        position: relative;
+        z-index: 2;
+        padding: 6rem 2rem;
     }
 
     .hero-content {
         max-width: 600px;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        position: relative;
+        z-index: 2;
+        display: none;
+    }
+
+    /* Slider Navigation Controls */
+    .slider-dots {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 12px;
+        z-index: 10;
+    }
+
+    .slider-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .slider-dot:hover {
+        background: rgba(255, 255, 255, 0.6);
+        transform: scale(1.2);
+    }
+
+    .slider-dot.active {
+        background: #fff;
+        width: 30px;
+        border-radius: 6px;
+    }
+
+    /* Slider Arrow Controls */
+    .slider-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .slider-arrow:hover {
+        background: rgba(255, 255, 255, 0.4);
+        border-color: rgba(255, 255, 255, 0.8);
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .slider-arrow i {
+        font-size: 20px;
+        color: #fff;
+    }
+
+    .slider-arrow.prev {
+        left: 30px;
+    }
+
+    .slider-arrow.next {
+        right: 30px;
     }
 
     .hero-content h1 {
@@ -704,13 +816,31 @@
     }
 </style>
 
-<!-- Hero Section -->
+<!-- Hero Section - Slider -->
 <div class="hero-section">
-    <div class="hero-container">
-        <div class="hero-content">
-            <h1>{{ __t('messages.hero_title') }}</h1>
-            <p>{{ __t('messages.hero_subtitle') }}</p>
-            <a href="{{ route('products') }}" class="hero-btn">{{ __t('messages.shop_now') }}</a>
+    <div class="hero-slider">
+        <!-- Slide 1 - Banner.jpg -->
+        <div class="hero-slide active" style="background-image: url('{{ asset('images/assets/Banner.jpg') }}');"></div>
+
+        <!-- Slide 2 - wallpaper.png -->
+        <div class="hero-slide" style="background-image: url('{{ asset('images/assets/wallpaper.png') }}');"></div>
+
+        <!-- Slide 3 - wallpaper2.png -->
+        <div class="hero-slide" style="background-image: url('{{ asset('images/assets/wallpaper2.png') }}');"></div>
+
+        <!-- Navigation Arrows -->
+        <div class="slider-arrow prev" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="slider-arrow next" onclick="changeSlide(1)">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="slider-dots">
+            <div class="slider-dot active" onclick="goToSlide(0)"></div>
+            <div class="slider-dot" onclick="goToSlide(1)"></div>
+            <div class="slider-dot" onclick="goToSlide(2)"></div>
         </div>
     </div>
 </div>
@@ -973,6 +1103,62 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Hero Slider Functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        const totalSlides = slides.length;
+        let slideInterval;
+
+        // Function to change slide
+        window.changeSlide = function(direction) {
+            clearInterval(slideInterval);
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            updateSlider();
+            startAutoSlide();
+        }
+
+        // Function to go to specific slide
+        window.goToSlide = function(slideIndex) {
+            clearInterval(slideInterval);
+            currentSlide = slideIndex;
+            updateSlider();
+            startAutoSlide();
+        }
+
+        // Function to update slider display
+        function updateSlider() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                dots[index].classList.remove('active');
+            });
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        // Function to start auto sliding
+        function startAutoSlide() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlider();
+            }, 5000); // Change slide every 5 seconds
+        }
+
+        // Start auto sliding
+        startAutoSlide();
+
+        // Pause auto sliding when mouse is over the slider
+        const heroSection = document.querySelector('.hero-section');
+        heroSection.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+
+        // Resume auto sliding when mouse leaves the slider
+        heroSection.addEventListener('mouseleave', () => {
+            startAutoSlide();
+        });
+
         // Scroll Animation - Bottom to Top
         const observerOptions = {
             threshold: 0.15,

@@ -18,7 +18,7 @@
         gap: 1rem;
         margin-bottom: 2rem;
         padding-bottom: 1rem;
-        border-bottom: 2px solid #e69270ff;
+        border-bottom: 2px solid #4169E1;
     }
 
     .cart-header h1 {
@@ -29,7 +29,7 @@
 
     .cart-header i {
         font-size: 2rem;
-        color: #e69270ff;
+        color: #4169E1;
     }
 
     .cart-content {
@@ -63,10 +63,12 @@
         margin-bottom: 1rem;
         transition: all 0.3s;
         align-items: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        background: #fff;
     }
 
     .cart-item:hover {
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         transform: translateY(-2px);
     }
 
@@ -76,12 +78,17 @@
         border-radius: 8px;
         overflow: hidden;
         background: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
     }
 
     .cart-item-image img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
+        padding: 10px;
     }
 
     .cart-item-details {
@@ -98,12 +105,12 @@
     }
 
     .cart-item-title:hover {
-        color: #e69270ff;
+        color: #4169E1;
     }
 
     .cart-item-price {
         font-size: 1.3rem;
-        color: #e69270ff;
+        color: #4169E1;
         font-weight: 700;
         margin-bottom: 1rem;
     }
@@ -130,9 +137,9 @@
     }
 
     .quantity-btn:hover {
-        background: #e69270ff;
+        background: #4169E1;
         color: #fff;
-        border-color: #e69270ff;
+        border-color: #4169E1;
     }
 
     .quantity-display {
@@ -199,21 +206,26 @@
     }
 
     .continue-shopping-btn {
-        background: #e69270ff;
+        background: #4169E1;
         color: #fff;
-        padding: 1rem 2.5rem;
-        border-radius: 50px;
+        padding: 10px;
+        border-radius: 10px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 400;
         display: inline-block;
         transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(230, 146, 112, 0.3);
+        box-shadow: 0 4px 15px rgba(65, 105, 225, 0.3);
     }
 
     .continue-shopping-btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(230, 146, 112, 0.4);
-        background: #d4825f;
+        box-shadow: 0 6px 20px rgba(65, 105, 225, 0.4);
+        background: #1E90FF;
+    }
+    .continue-shopping-btn i {
+        font-size: 15px;
+        margin-top: 11px;
+        padding-right: 5px;
     }
 
     /* Cart Summary */
@@ -253,12 +265,12 @@
     }
 
     .summary-row.total .amount {
-        color: #e69270ff;
+        color: #4169E1;
     }
 
     .checkout-btn {
         width: 100%;
-        background: #e69270ff;
+        background: #4169E1;
         color: #fff;
         padding: 1.2rem;
         border: none;
@@ -275,9 +287,9 @@
     }
 
     .checkout-btn:hover {
-        background: #d4825f;
+        background: #1E90FF;
         transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(230, 146, 112, 0.4);
+        box-shadow: 0 4px 15px rgba(65, 105, 225, 0.4);
     }
 
     .continue-shopping-link {
@@ -293,13 +305,13 @@
     }
 
     .continue-shopping-link:hover {
-        color: #e69270ff;
+        color: #4169E1;
     }
 
     /* Loading Spinner */
     .spinner {
         border: 3px solid #f3f3f3;
-        border-top: 3px solid #e69270ff;
+        border-top: 3px solid #4169E1;
         border-radius: 50%;
         width: 20px;
         height: 20px;
@@ -325,7 +337,7 @@
         width: 16px;
         height: 16px;
         border: 2px solid #f3f3f3;
-        border-top: 2px solid #e69270ff;
+        border-top: 2px solid #4169E1;
         border-radius: 50%;
         animation: spin 1s linear infinite;
         margin-left: 10px;
@@ -404,10 +416,16 @@
                     <div class="cart-item" data-product-id="{{ $item->product_id }}">
                         <div class="cart-item-image">
                             @if($item->product->images->isNotEmpty())
-                                <img src="{{ asset('storage/' . $item->product->images->first()->image_path) }}" 
+                                @php
+                                    $imagePath = $item->product->images->first()->image_path;
+                                    $imageUrl = (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://'))
+                                        ? $imagePath
+                                        : asset('storage/' . $imagePath);
+                                @endphp
+                                <img src="{{ $imageUrl }}"
                                      alt="{{ $item->product->{'name_' . current_locale()} }}">
                             @else
-                                <img src="{{ asset('images/placeholder.png') }}" 
+                                <img src="{{ asset('images/placeholder.png') }}"
                                      alt="{{ $item->product->{'name_' . current_locale()} }}">
                             @endif
                         </div>

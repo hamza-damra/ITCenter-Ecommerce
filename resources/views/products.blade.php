@@ -260,18 +260,18 @@
 
     .pagination .page-link:hover,
     .pagination a:hover {
-        background: #e69270 !important;
+        background: #4169E1 !important;
         color: #fff !important;
-        border-color: #e69270 !important;
+        border-color: #4169E1 !important;
         transform: translateY(-2px) !important;
     }
 
     .pagination .page-item.active .page-link,
     .pagination .page-item.active span,
     .pagination .active span {
-        background: #e69270 !important;
+        background: #4169E1 !important;
         color: #fff !important;
-        border-color: #e69270 !important;
+        border-color: #4169E1 !important;
     }
 
     .pagination .page-item.disabled .page-link,

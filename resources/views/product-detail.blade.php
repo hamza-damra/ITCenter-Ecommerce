@@ -72,7 +72,7 @@
 
     .thumbnail:hover,
     .thumbnail.active {
-        border-color: #e69270ff;
+        border-color: #4169E1;
     }
 
     .thumbnail img {
@@ -133,7 +133,7 @@
     .current-price {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #e69270ff;
+        color: #4169E1;
     }
 
     .original-price {
@@ -232,7 +232,7 @@
 
     .btn-add-cart {
         flex: 1;
-        background: #e69270ff;
+        background: #4169E1;
         color: #fff;
         border: none;
         padding: 1rem 2rem;
@@ -248,9 +248,9 @@
     }
 
     .btn-add-cart:hover {
-        background: #d4af37;
+        background: #1E90FF;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(230, 146, 112, 0.3);
+        box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
     }
 
     .btn-add-cart:disabled,
@@ -289,8 +289,8 @@
 
     .btn-wishlist {
         background: #fff;
-        border: 2px solid #e69270ff;
-        color: #e69270ff;
+        border: 2px solid #4169E1;
+        color: #4169E1;
         padding: 1rem;
         border-radius: 8px;
         cursor: pointer;
@@ -339,7 +339,7 @@
     }
 
     .feature-icon {
-        color: #e69270ff;
+        color: #4169E1;
         font-size: 1.3rem;
         width: 30px;
     }
@@ -364,7 +364,7 @@
         color: #333;
         margin-bottom: 1.5rem;
         padding-bottom: 1rem;
-        border-bottom: 3px solid #e69270ff;
+        border-bottom: 3px solid #4169E1;
     }
 
     .specs-grid {
@@ -466,7 +466,7 @@
     .product-card-price {
         font-size: 1.3rem;
         font-weight: 700;
-        color: #e69270ff;
+        color: #4169E1;
     }
 
     @media (max-width: 968px) {
