@@ -162,6 +162,24 @@
                             <span class="error-message">{{ $message }}</span>
                         @enderror
                     </div>
+
+                    <div class="form-group">
+                        <label for="name_he" class="form-label">
+                            שם המוצר (עברית)
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="name_he" 
+                            name="name_he" 
+                            class="form-control @error('name_he') is-invalid @enderror" 
+                            value="{{ old('name_he', $product->name_he) }}" 
+                            placeholder="הזן את שם המוצר בעברית"
+                            dir="rtl">
+                        @error('name_he')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="form-row">
@@ -388,6 +406,23 @@
                             <span class="error-message">{{ $message }}</span>
                         @enderror
                     </div>
+
+                    <div class="form-group">
+                        <label for="short_description_he" class="form-label">
+                            תיאור קצר (עברית)
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        </label>
+                        <textarea 
+                            id="short_description_he" 
+                            name="short_description_he" 
+                            class="form-control @error('short_description_he') is-invalid @enderror"
+                            dir="rtl"
+                            placeholder="תיאור קצר של המוצר"
+                            style="min-height: 80px;">{{ old('short_description_he', $product->short_description_he) }}</textarea>
+                        @error('short_description_he')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
 
                 <div class="form-row">
@@ -420,6 +455,23 @@
                             placeholder="وصف المنتج الكامل بالتفاصيل"
                             style="min-height: 150px;">{{ old('description_ar', $product->description_ar) }}</textarea>
                         @error('description_ar')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description_he" class="form-label">
+                            תיאור מלא (עברית)
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        </label>
+                        <textarea 
+                            id="description_he" 
+                            name="description_he" 
+                            class="form-control @error('description_he') is-invalid @enderror"
+                            dir="rtl"
+                            placeholder="תיאור מלא של המוצר עם פרטים"
+                            style="min-height: 150px;">{{ old('description_he', $product->description_he) }}</textarea>
+                        @error('description_he')
                             <span class="error-message">{{ $message }}</span>
                         @enderror
                     </div>

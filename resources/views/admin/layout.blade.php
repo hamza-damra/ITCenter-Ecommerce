@@ -671,7 +671,7 @@
         .language-btn {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             padding: 12px 16px;
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid rgba(255, 255, 255, 0.2);
@@ -682,6 +682,17 @@
             width: 100%;
             font-size: 14px;
             font-weight: 600;
+            justify-content: space-between;
+        }
+
+        .language-btn .fa-chevron-down {
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+        [dir="rtl"] .language-btn .fa-chevron-down {
+            margin-left: 0;
+            margin-right: auto;
         }
 
         .language-btn:hover {
@@ -700,14 +711,14 @@
             top: 100%;
             left: 20px;
             right: 20px;
-            background: white;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             padding: 8px;
             margin-top: 12px;
             display: none;
             z-index: 1000;
-            border: 2px solid #e2e8f0;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         /* Global reset for all dropdown elements */
@@ -741,7 +752,7 @@
             align-items: center !important;
             gap: 12px !important;
             padding: 12px 14px !important;
-            color: #1e293b !important;
+            color: #ffffff !important;
             text-decoration: none !important;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
             font-size: 14px !important;
@@ -750,6 +761,7 @@
             margin-bottom: 4px !important;
             border: none !important;
             outline: none !important;
+            background: rgba(255, 255, 255, 0.05) !important;
         }
 
         .language-dropdown a:link,
@@ -758,7 +770,7 @@
         .language-dropdown a:active {
             text-decoration: none !important;
             border-bottom: none !important;
-            color: #1e293b !important;
+            color: #ffffff !important;
             outline: none !important;
         }
 
@@ -767,17 +779,17 @@
         }
 
         .language-dropdown a:hover {
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
-            color: var(--primary) !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            color: #ffffff !important;
             transform: translateX(4px) !important;
             text-decoration: none !important;
             border-bottom: none !important;
         }
 
         .language-dropdown a.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
             color: white !important;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4) !important;
             text-decoration: none !important;
             border-bottom: none !important;
         }
@@ -792,7 +804,7 @@
         }
 
         .language-dropdown a.active:hover {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%) !important;
+            background: linear-gradient(135deg, #2980b9 0%, #3498db 100%) !important;
             text-decoration: none !important;
             color: white !important;
             border-bottom: none !important;
@@ -874,7 +886,7 @@
                 <button class="language-btn" onclick="toggleLanguageDropdown()">
                     <i class="fas fa-globe"></i>
                     <span>{{ config('app.locale_names')[app()->getLocale()] ?? 'English' }}</span>
-                    <i class="fas fa-chevron-down" style="margin-left: auto;"></i>
+                    <i class="fas fa-chevron-down"></i>
                 </button>
                 <div class="language-dropdown" id="languageDropdown">
                     <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'active' : '' }}">

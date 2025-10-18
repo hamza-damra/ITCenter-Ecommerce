@@ -304,6 +304,13 @@
         color: var(--success);
     }
 
+    .stock-cell.out {
+        color: #dc2626;
+        background: #fee2e2;
+        padding: 4px 12px;
+        border-radius: 6px;
+    }
+
     .status-pill {
         display: inline-flex;
         align-items: center;
@@ -324,6 +331,11 @@
     .status-inactive {
         background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
         color: #7f1d1d;
+    }
+
+    .status-warning {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #78350f;
     }
 
     .quick-actions-card {
@@ -683,6 +695,186 @@
                 </a>
             </li>
         </ul>
+    </div>
+</div>
+
+<!-- Additional Analytics Section -->
+<div class="dashboard-sections" style="margin-top: 24px;">
+    <!-- Top Rated Products -->
+    <div class="recent-products-card">
+        <div class="card-header">
+            <h2><i class="fas fa-star"></i> {{ __('messages.top_rated_products') }}</h2>
+        </div>
+        <div class="card-body" style="padding: 0;">
+            @if(isset($top_rated_products) && $top_rated_products->count() > 0)
+                <table class="recent-products-table">
+                    <thead>
+                        <tr>
+                            <th>{{ __('messages.product_name') }}</th>
+                            <th>{{ __('messages.rating') }}</th>
+                            <th>{{ __('messages.reviews') }}</th>
+                            <th>{{ __('messages.price') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($top_rated_products as $product)
+                        <tr>
+                            <td>
+                                <div class="product-cell">
+                                    <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                                    <div class="product-info">
+                                        <div class="product-name">{{ $product->name_en ?? $product->name }}</div>
+                                        <div class="product-sku">{{ $product->sku }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="color: #f59e0b; font-weight: 700; font-size: 16px;">
+                                        {{ number_format($product->reviews_avg_rating, 1) }}
+                                    </span>
+                                    <span style="color: #f59e0b;">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <i class="fas fa-star" style="font-size: 12px;"></i>
+                                        @endfor
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <span style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: #1e40af; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px;">
+                                    {{ $product->reviews_count }} {{ __('messages.reviews') }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="price-cell">${{ number_format($product->price, 2) }}</div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <div class="empty-state-message">
+                    <i class="fas fa-star"></i>
+                    <p>{{ __('messages.no_rated_products_yet') }}</p>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <!-- Low Stock Alerts -->
+    <div class="recent-products-card">
+        <div class="card-header">
+            <h2><i class="fas fa-exclamation-triangle"></i> {{ __('messages.low_stock_alerts') }}</h2>
+        </div>
+        <div class="card-body" style="padding: 0;">
+            @if(isset($low_stock_products) && $low_stock_products->count() > 0)
+                <table class="recent-products-table">
+                    <thead>
+                        <tr>
+                            <th>{{ __('messages.product_name') }}</th>
+                            <th>{{ __('messages.category') }}</th>
+                            <th>{{ __('messages.current_stock') }}</th>
+                            <th>{{ __('messages.status') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($low_stock_products as $product)
+                        <tr>
+                            <td>
+                                <div class="product-cell">
+                                    <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                                    <div class="product-info">
+                                        <div class="product-name">{{ $product->name_en ?? $product->name }}</div>
+                                        <div class="product-sku">{{ $product->sku }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: #3730a3; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px;">
+                                    {{ $product->category->name_en ?? $product->category->name }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="stock-cell {{ $product->stock_quantity == 0 ? 'out' : 'low' }}">
+                                    {{ $product->stock_quantity ?? 0 }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="status-pill {{ $product->stock_status == 'out_of_stock' ? 'status-inactive' : 'status-warning' }}">
+                                    <i class="fas {{ $product->stock_status == 'out_of_stock' ? 'fa-times-circle' : 'fa-exclamation-circle' }}"></i>
+                                    {{ ucfirst(str_replace('_', ' ', $product->stock_status)) }}
+                                </span>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <div class="empty-state-message">
+                    <i class="fas fa-check-circle"></i>
+                    <p>{{ __('messages.all_products_well_stocked') }}</p>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+
+<!-- Analytics Overview -->
+<div class="stats-grid-dashboard" style="margin-top: 24px;">
+    <!-- Cart Statistics -->
+    <div class="stat-card-large info">
+        <div class="stat-card-content">
+            <div class="stat-card-label">{{ __('messages.total_cart_value') }}</div>
+            <div class="stat-card-value">${{ number_format($stats['cart_value'] ?? 0, 2) }}</div>
+            <div class="stat-card-footer">
+                <i class="fas fa-shopping-cart"></i> {{ $stats['active_carts'] ?? 0 }} {{ __('messages.active_carts') }}
+            </div>
+        </div>
+        <div class="stat-card-icon-wrapper">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+    </div>
+
+    <!-- Average Rating -->
+    <div class="stat-card-large success">
+        <div class="stat-card-content">
+            <div class="stat-card-label">{{ __('messages.average_rating') }}</div>
+            <div class="stat-card-value">{{ number_format($stats['average_rating'] ?? 0, 1) }} <i class="fas fa-star" style="font-size: 24px; color: #fbbf24;"></i></div>
+            <div class="stat-card-footer">
+                <i class="fas fa-comments"></i> {{ __('messages.from') }} {{ $stats['total_reviews'] ?? 0 }} {{ __('messages.reviews') }}
+            </div>
+        </div>
+        <div class="stat-card-icon-wrapper">
+            <i class="fas fa-star"></i>
+        </div>
+    </div>
+
+    <!-- Stock Value -->
+    <div class="stat-card-large customers">
+        <div class="stat-card-content">
+            <div class="stat-card-label">{{ __('messages.total_stock_value') }}</div>
+            <div class="stat-card-value">${{ number_format($stats['total_stock_value'] ?? 0, 2) }}</div>
+            <div class="stat-card-footer">
+                <i class="fas fa-box"></i> {{ __('messages.inventory_value') }}
+            </div>
+        </div>
+        <div class="stat-card-icon-wrapper">
+            <i class="fas fa-dollar-sign"></i>
+        </div>
+    </div>
+
+    <!-- Total Favorites -->
+    <div class="stat-card-large revenue">
+        <div class="stat-card-content">
+            <div class="stat-card-label">{{ __('messages.total_favorites') }}</div>
+            <div class="stat-card-value">{{ $stats['total_favorites'] ?? 0 }}</div>
+            <div class="stat-card-footer">
+                <i class="fas fa-heart"></i> {{ __('messages.customer_wishlists') }}
+            </div>
+        </div>
+        <div class="stat-card-icon-wrapper">
+            <i class="fas fa-heart"></i>
+        </div>
     </div>
 </div>
 

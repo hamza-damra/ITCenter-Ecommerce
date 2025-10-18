@@ -23,6 +23,12 @@ class CategoryController extends Controller
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
         
+        // Fallback to English if the locale column doesn't exist
+        $availableColumns = ['name_en', 'name_ar'];
+        if (!in_array($nameColumn, $availableColumns)) {
+            $nameColumn = 'name_en';
+        }
+        
         $parentCategories = Category::whereNull('parent_id')->orderBy($nameColumn)->get();
 
         return view('admin.categories.create', compact('parentCategories'));
@@ -52,6 +58,12 @@ class CategoryController extends Controller
     {
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
+        
+        // Fallback to English if the locale column doesn't exist
+        $availableColumns = ['name_en', 'name_ar'];
+        if (!in_array($nameColumn, $availableColumns)) {
+            $nameColumn = 'name_en';
+        }
         
         $parentCategories = Category::whereNull('parent_id')
             ->where('id', '!=', $category->id)

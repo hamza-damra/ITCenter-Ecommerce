@@ -27,6 +27,12 @@ class ProductController extends Controller
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
         
+        // Fallback to English if the locale column doesn't exist
+        $availableColumns = ['name_en', 'name_ar'];
+        if (!in_array($nameColumn, $availableColumns)) {
+            $nameColumn = 'name_en';
+        }
+        
         $categories = Category::active()->orderBy($nameColumn)->get();
         $brands = Brand::active()->orderBy($nameColumn)->get();
 
@@ -38,6 +44,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name_en' => 'required|string|max:255',
             'name_ar' => 'required|string|max:255',
+            'name_he' => 'nullable|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'price' => 'required|numeric|min:0',
@@ -47,8 +54,10 @@ class ProductController extends Controller
             'additional_images' => 'nullable|string',
             'short_description_en' => 'nullable|string',
             'short_description_ar' => 'nullable|string',
+            'short_description_he' => 'nullable|string',
             'description_en' => 'nullable|string',
             'description_ar' => 'nullable|string',
+            'description_he' => 'nullable|string',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
             'is_new' => 'boolean',
@@ -108,6 +117,12 @@ class ProductController extends Controller
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
         
+        // Fallback to English if the locale column doesn't exist
+        $availableColumns = ['name_en', 'name_ar'];
+        if (!in_array($nameColumn, $availableColumns)) {
+            $nameColumn = 'name_en';
+        }
+        
         $categories = Category::active()->orderBy($nameColumn)->get();
         $brands = Brand::active()->orderBy($nameColumn)->get();
 
@@ -119,6 +134,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name_en' => 'required|string|max:255',
             'name_ar' => 'required|string|max:255',
+            'name_he' => 'nullable|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'price' => 'required|numeric|min:0',
@@ -128,8 +144,10 @@ class ProductController extends Controller
             'additional_images' => 'nullable|string',
             'short_description_en' => 'nullable|string',
             'short_description_ar' => 'nullable|string',
+            'short_description_he' => 'nullable|string',
             'description_en' => 'nullable|string',
             'description_ar' => 'nullable|string',
+            'description_he' => 'nullable|string',
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
             'is_new' => 'boolean',

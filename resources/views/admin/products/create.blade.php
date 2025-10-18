@@ -40,12 +40,12 @@
 
 <div class="page-header">
     <div class="page-header-content">
-        <h1>Add New Product</h1>
-        <p>Create and configure a new product for your catalog</p>
+        <h1>{{ __('messages.add_new_product') }}</h1>
+        <p>{{ __('messages.create_configure_product') }}</p>
     </div>
     <div class="page-actions">
         <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Products
+            <i class="fas fa-arrow-left"></i> {{ __('messages.back_to_products') }}
         </a>
     </div>
 </div>
@@ -59,13 +59,13 @@
         <!-- Basic Information Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-info-circle"></i> Basic Information</h2>
+                <h2><i class="fas fa-info-circle"></i> {{ __('messages.basic_information') }}</h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name_en" class="form-label">
-                            Product Name (English)
+                            {{ __('messages.product_name_english') }}
                             <span class="required">*</span>
                         </label>
                         <input 
@@ -74,7 +74,7 @@
                             name="name_en" 
                             class="form-control @error('name_en') is-invalid @enderror" 
                             value="{{ old('name_en') }}" 
-                            placeholder="Enter product name in English"
+                            placeholder="{{ __('messages.enter_product_name_english') }}"
                             required>
                         @error('name_en')
                             <span class="error-message">{{ $message }}</span>
@@ -83,7 +83,7 @@
 
                     <div class="form-group">
                         <label for="name_ar" class="form-label">
-                            اسم المنتج (عربي)
+                            {{ __('messages.product_name_arabic') }}
                             <span class="required">*</span>
                         </label>
                         <input 
@@ -92,10 +92,28 @@
                             name="name_ar" 
                             class="form-control @error('name_ar') is-invalid @enderror" 
                             value="{{ old('name_ar') }}" 
-                            placeholder="أدخل اسم المنتج بالعربية"
+                            placeholder="{{ __('messages.enter_product_name_arabic') }}"
                             required 
                             dir="rtl">
                         @error('name_ar')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name_he" class="form-label">
+                            שם המוצר (עברית)
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="name_he" 
+                            name="name_he" 
+                            class="form-control @error('name_he') is-invalid @enderror" 
+                            value="{{ old('name_he') }}" 
+                            placeholder="הזן את שם המוצר בעברית"
+                            dir="rtl">
+                        @error('name_he')
                             <span class="error-message">{{ $message }}</span>
                         @enderror
                     </div>
@@ -104,11 +122,11 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="category_id" class="form-label">
-                            Category
+                            {{ __('messages.category') }}
                             <span class="required">*</span>
                         </label>
                         <select id="category_id" name="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
-                            <option value="">Select a Category</option>
+                            <option value="">{{ __('messages.select_category') }}</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
                                     {{ $category->name_en ?? $category->name }}
@@ -122,10 +140,10 @@
 
                     <div class="form-group">
                         <label for="brand_id" class="form-label">
-                            Brand
+                            {{ __('messages.brand') }}
                         </label>
                         <select id="brand_id" name="brand_id" class="form-control @error('brand_id') is-invalid @enderror">
-                            <option value="">Select a Brand</option>
+                            <option value="">{{ __('messages.select_brand') }}</option>
                             @foreach($brands as $brand)
                                 <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
                                     {{ $brand->name_en ?? $brand->name }}
@@ -143,13 +161,13 @@
         <!-- Pricing & Inventory Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-dollar-sign"></i> Pricing & Inventory</h2>
+                <h2><i class="fas fa-dollar-sign"></i> {{ __('messages.pricing_inventory') }}</h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="price" class="form-label">
-                            Regular Price
+                            {{ __('messages.regular_price') }}
                             <span class="required">*</span>
                         </label>
                         <div style="position: relative;">
@@ -172,8 +190,8 @@
 
                     <div class="form-group">
                         <label for="sale_price" class="form-label">
-                            Sale Price
-                            <span style="color: #64748b; font-size: 12px;">(Optional)</span>
+                            {{ __('messages.sale_price') }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
                         </label>
                         <div style="position: relative;">
                             <span style="position: absolute; left: 12px; top: 12px; color: var(--secondary); font-weight: 600;">$</span>
@@ -194,7 +212,7 @@
 
                     <div class="form-group">
                         <label for="stock_quantity" class="form-label">
-                            Stock Quantity
+                            {{ __('messages.stock_quantity') }}
                             <span class="required">*</span>
                         </label>
                         <input 
@@ -216,12 +234,12 @@
         <!-- Images Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-images"></i> Product Images</h2>
+                <h2><i class="fas fa-images"></i> {{ __('messages.product_images') }}</h2>
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <label for="main_image" class="form-label">
-                        Main Product Image
+                        {{ __('messages.main_product_image') }}
                         <span class="required">*</span>
                     </label>
                     <input 
@@ -233,7 +251,7 @@
                         placeholder="https://picsum.photos/800/800"
                         required>
                     <p class="form-text">
-                        <i class="fas fa-lightbulb"></i> Recommended: Use services like <strong>picsum.photos</strong> or <strong>placehold.co</strong>
+                        <i class="fas fa-lightbulb"></i> {{ __('messages.image_services_recommendation') }}
                     </p>
                     @error('main_image')
                         <span class="error-message">{{ $message }}</span>
@@ -242,8 +260,8 @@
 
                 <div class="form-group">
                     <label for="additional_images" class="form-label">
-                        Additional Images
-                        <span style="color: #64748b; font-size: 12px;">(Optional - One URL per line)</span>
+                        {{ __('messages.additional_images') }}
+                        <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_one_url_per_line') }})</span>
                     </label>
                     <textarea 
                         id="additional_images" 
@@ -252,7 +270,7 @@
                         rows="5" 
                         placeholder="https://picsum.photos/800/801&#10;https://picsum.photos/800/802&#10;https://picsum.photos/800/803">{{ old('additional_images') }}</textarea>
                     <p class="form-text">
-                        <i class="fas fa-info-circle"></i> Enter each image URL on a new line for the product gallery
+                        <i class="fas fa-info-circle"></i> {{ __('messages.enter_each_image_url') }}
                     </p>
                     @error('additional_images')
                         <span class="error-message">{{ $message }}</span>
@@ -264,19 +282,19 @@
         <!-- Descriptions Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-align-left"></i> Descriptions</h2>
+                <h2><i class="fas fa-align-left"></i> {{ __('messages.descriptions') }}</h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="short_description_en" class="form-label">
-                            Short Description (English)
+                            {{ __('messages.short_description_english') }}
                         </label>
                         <textarea 
                             id="short_description_en" 
                             name="short_description_en" 
                             class="form-control @error('short_description_en') is-invalid @enderror"
-                            placeholder="Brief description for product listings"
+                            placeholder="{{ __('messages.brief_description_listings') }}"
                             style="min-height: 80px;">{{ old('short_description_en') }}</textarea>
                         @error('short_description_en')
                             <span class="error-message">{{ $message }}</span>
@@ -285,16 +303,32 @@
 
                     <div class="form-group">
                         <label for="short_description_ar" class="form-label">
-                            وصف قصير (عربي)
+                            {{ __('messages.short_description_arabic') }}
                         </label>
                         <textarea 
                             id="short_description_ar" 
                             name="short_description_ar" 
                             class="form-control @error('short_description_ar') is-invalid @enderror"
                             dir="rtl"
-                            placeholder="وصف قصير للمنتج"
+                            placeholder="{{ __('messages.brief_description_arabic') }}"
                             style="min-height: 80px;">{{ old('short_description_ar') }}</textarea>
                         @error('short_description_ar')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="short_description_he" class="form-label">
+                            תיאור קצר (עברית)
+                        </label>
+                        <textarea 
+                            id="short_description_he" 
+                            name="short_description_he" 
+                            class="form-control @error('short_description_he') is-invalid @enderror"
+                            dir="rtl"
+                            placeholder="תיאור קצר של המוצר"
+                            style="min-height: 80px;">{{ old('short_description_he') }}</textarea>
+                        @error('short_description_he')
                             <span class="error-message">{{ $message }}</span>
                         @enderror
                     </div>
@@ -303,13 +337,13 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="description_en" class="form-label">
-                            Full Description (English)
+                            {{ __('messages.full_description_english') }}
                         </label>
                         <textarea 
                             id="description_en" 
                             name="description_en" 
                             class="form-control @error('description_en') is-invalid @enderror"
-                            placeholder="Complete product description with details"
+                            placeholder="{{ __('messages.complete_product_description') }}"
                             style="min-height: 150px;">{{ old('description_en') }}</textarea>
                         @error('description_en')
                             <span class="error-message">{{ $message }}</span>
@@ -318,16 +352,32 @@
 
                     <div class="form-group">
                         <label for="description_ar" class="form-label">
-                            وصف كامل (عربي)
+                            {{ __('messages.full_description_arabic') }}
                         </label>
                         <textarea 
                             id="description_ar" 
                             name="description_ar" 
                             class="form-control @error('description_ar') is-invalid @enderror"
                             dir="rtl"
-                            placeholder="وصف المنتج الكامل بالتفاصيل"
+                            placeholder="{{ __('messages.complete_description_arabic') }}"
                             style="min-height: 150px;">{{ old('description_ar') }}</textarea>
                         @error('description_ar')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description_he" class="form-label">
+                            תיאור מלא (עברית)
+                        </label>
+                        <textarea 
+                            id="description_he" 
+                            name="description_he" 
+                            class="form-control @error('description_he') is-invalid @enderror"
+                            dir="rtl"
+                            placeholder="תיאור מלא של המוצר עם פרטים"
+                            style="min-height: 150px;">{{ old('description_he') }}</textarea>
+                        @error('description_he')
                             <span class="error-message">{{ $message }}</span>
                         @enderror
                     </div>
@@ -338,7 +388,7 @@
         <!-- Product Settings Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-cog"></i> Product Settings</h2>
+                <h2><i class="fas fa-cog"></i> {{ __('messages.product_settings') }}</h2>
             </div>
             <div class="card-body">
                 <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -350,8 +400,8 @@
                             value="1" 
                             {{ old('is_active', true) ? 'checked' : '' }}>
                         <span>
-                            <strong><i class="fas fa-eye"></i> Active</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Display this product in the store</p>
+                            <strong><i class="fas fa-eye"></i> {{ __('messages.active') }}</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.display_product_in_store') }}</p>
                         </span>
                     </label>
 
@@ -363,8 +413,8 @@
                             value="1" 
                             {{ old('is_featured') ? 'checked' : '' }}>
                         <span>
-                            <strong><i class="fas fa-star"></i> Featured</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Show on homepage featured section</p>
+                            <strong><i class="fas fa-star"></i> {{ __('messages.featured') }}</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.show_homepage_featured') }}</p>
                         </span>
                     </label>
 
@@ -376,8 +426,8 @@
                             value="1" 
                             {{ old('is_new') ? 'checked' : '' }}>
                         <span>
-                            <strong><i class="fas fa-badge"></i> New Product</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Mark as new to highlight in store</p>
+                            <strong><i class="fas fa-badge"></i> {{ __('messages.new_product') }}</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.mark_new_highlight') }}</p>
                         </span>
                     </label>
 
@@ -389,8 +439,8 @@
                             value="1" 
                             {{ old('is_bestseller') ? 'checked' : '' }}>
                         <span>
-                            <strong><i class="fas fa-fire"></i> Bestseller</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Mark as popular/bestselling product</p>
+                            <strong><i class="fas fa-fire"></i> {{ __('messages.bestseller') }}</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.mark_bestselling_product') }}</p>
                         </span>
                     </label>
                 </div>
@@ -400,10 +450,10 @@
         <!-- Form Actions -->
         <div style="display: flex; gap: 12px; padding-top: 24px;">
             <button type="submit" class="btn btn-success">
-                <i class="fas fa-save"></i> Create Product
+                <i class="fas fa-save"></i> {{ __('messages.create_product') }}
             </button>
             <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
-                <i class="fas fa-times"></i> Cancel
+                <i class="fas fa-times"></i> {{ __('messages.cancel') }}
             </a>
         </div>
     </div>

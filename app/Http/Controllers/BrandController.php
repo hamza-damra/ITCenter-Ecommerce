@@ -16,6 +16,12 @@ class BrandController extends Controller
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
         
+        // Fallback to English if the locale column doesn't exist
+        $availableColumns = ['name_en', 'name_ar'];
+        if (!in_array($nameColumn, $availableColumns)) {
+            $nameColumn = 'name_en';
+        }
+        
         $brands = Brand::withCount('products')
             ->orderBy($nameColumn)
             ->get();
