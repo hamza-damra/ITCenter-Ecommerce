@@ -101,6 +101,7 @@
             max-width: 500px;
             gap: 0;
             align-items: center;
+            position: relative; /* added for absolute icon */
         }
 
         .search-bar input {
@@ -108,38 +109,44 @@
             height: 45px;
             padding: 0 20px;
             border: 1px solid #e0e0e0;
-            border-radius: {{ is_rtl() ? '8px 0 0 8px' : '8px 0 0 8px' }};
-            background: #ffffff;
-            color: #333;
+            background: rgba(0, 0, 0, 0.0);
+            color: #f5f5f5ff;
             font-size: 0.95rem;
             outline: none;
             transition: all 0.3s ease;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
+            border-style:none none solid none;
             direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
             text-align: {{ is_rtl() ? 'right' : 'left' }};
+
+            /* reserve space for the search icon inside the input */
+            @if(is_rtl())
+                padding-right: 44px;
+            @else
+                padding-left: 44px;
+            @endif
         }
 
-        .search-bar input::-webkit-search-decoration,
-        .search-bar input::-webkit-search-cancel-button {
-            -webkit-appearance: none;
-        }
-
-        .search-bar input::placeholder {
+        .search-input-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
             color: #999;
-            direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
-            text-align: {{ is_rtl() ? 'right' : 'left' }};
-        }
-
-        .search-bar input:focus {
-            border-color: #000;
-            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+            font-size: 1rem;
+            pointer-events: none;
+            z-index: 2;
+            @if(is_rtl())
+            right: 12px;
+            @else
+            left: 12px;
+            @endif
         }
 
         .search-btn {
             height: 45px;
-            padding: 0 30px;
+            padding: 0 18px;
             background: #2762f3;
             color: #ffffff;
             border: none;
@@ -151,6 +158,9 @@
             white-space: nowrap;
             direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
             unicode-bidi: embed;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .search-btn:hover {
@@ -465,19 +475,48 @@
                 <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">{{ __t('messages.contact') }}</a></li>
             </ul>
 
-
+            <form action="" class="search-bar" role="search">
+                <!-- icon inside input -->
+                <i class="fas fa-search search-input-icon" aria-hidden="true"></i>
+                <input type="search" name="search" placeholder="{{ __t('messages.search') }}">
+               <!-- <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
+                    <span>{{ __t('messages.search') }}</span>
+                </button> -->
+            </form>
 
             <div class="header-icons">
-
-                <form action="" class="search-bar">
-                    <input type="search" name="search" placeholder="{{ __t('messages.search') }}">
-                    <button class="search-btn" type="submit">
-                        <span>{{ __t('messages.search') }}</span>
-                    </button>
-                </form>
-                <div class="header-icon">
-                    <i class="fas fa-user"></i>
+                @guest
+                <div class="header-icon" style="position: relative;">
+                    <a href="{{ route('login') }}" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-user"></i>
+                    </a>
                 </div>
+                @else
+                <div class="header-icon user-dropdown" style="position: relative;">
+                    <div class="user-toggle" style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-user-circle"></i>
+                        <i class="fas fa-chevron-down" style="font-size: 0.7rem; transition: transform 0.3s;"></i>
+                    </div>
+                    <div class="user-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 10px); {{ is_rtl() ? 'left: 0;' : 'right: 0;' }} background: rgba(26, 26, 26, 0.98); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; min-width: 200px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); overflow: hidden; z-index: 1001; opacity: 0; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease;">
+                        <a href="#" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; color: #ecececff; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                            <i class="fas fa-user"></i>
+                            <span>{{ Auth::user()->name }}</span>
+                        </a>
+                        <a href="#" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; color: #ecececff; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                            <i class="fas fa-box"></i>
+                            <span>{{ __t('messages.my_orders') }}</span>
+                        </a>
+                        <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                            @csrf
+                            <button type="submit" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; color: #ecececff; background: none; border: none; cursor: pointer; transition: all 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit;">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>{{ __t('messages.logout') }}</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                @endguest
+
                 <div class="header-icon language-dropdown" style="position: relative;">
                     <div class="language-toggle" style="cursor: pointer; display: flex; align-items: center; gap: 0.4rem;">
                         <i class="fas fa-globe"></i>
@@ -607,11 +646,17 @@
             }
         });
 
-        // Language dropdown toggle
+        // Language and User dropdown toggle
         document.addEventListener('DOMContentLoaded', function() {
+            // Language Dropdown
             const languageDropdown = document.querySelector('.language-dropdown');
             const languageToggle = languageDropdown?.querySelector('.language-toggle');
             const languageMenu = languageDropdown?.querySelector('.language-dropdown-menu');
+
+            // User Dropdown
+            const userDropdown = document.querySelector('.user-dropdown');
+            const userToggle = userDropdown?.querySelector('.user-toggle');
+            const userMenu = userDropdown?.querySelector('.user-dropdown-menu');
             
             if (languageToggle && languageMenu) {
                 languageToggle.addEventListener('click', function(e) {
@@ -631,6 +676,54 @@
                 languageOptions.forEach(option => {
                     option.addEventListener('click', function() {
                         languageDropdown.classList.remove('active');
+                    });
+                });
+            }
+
+            // User dropdown toggle
+            if (userToggle && userMenu) {
+                userToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userDropdown.classList.toggle('active');
+
+                    // Toggle menu visibility
+                    if (userDropdown.classList.contains('active')) {
+                        userMenu.style.display = 'block';
+                        setTimeout(() => {
+                            userMenu.style.opacity = '1';
+                            userMenu.style.transform = 'translateY(0)';
+                        }, 10);
+                    } else {
+                        userMenu.style.opacity = '0';
+                        userMenu.style.transform = 'translateY(-10px)';
+                        setTimeout(() => {
+                            userMenu.style.display = 'none';
+                        }, 300);
+                    }
+                });
+
+                // Close user dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!userDropdown.contains(e.target)) {
+                        userDropdown.classList.remove('active');
+                        userMenu.style.opacity = '0';
+                        userMenu.style.transform = 'translateY(-10px)';
+                        setTimeout(() => {
+                            userMenu.style.display = 'none';
+                        }, 300);
+                    }
+                });
+
+                // Add hover effects to user menu items
+                const userMenuItems = userMenu.querySelectorAll('a, button');
+                userMenuItems.forEach(item => {
+                    item.addEventListener('mouseenter', function() {
+                        this.style.background = 'rgba(212, 175, 55, 0.1)';
+                        this.style.color = '#d4af37';
+                    });
+                    item.addEventListener('mouseleave', function() {
+                        this.style.background = '';
+                        this.style.color = '#ecececff';
                     });
                 });
             }

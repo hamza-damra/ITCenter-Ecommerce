@@ -412,7 +412,7 @@ return [
     'edit_brand_title' => 'Edit Brand: :name',
     'current_logo' => 'Current Logo',
     'update_brand' => 'Update Brand',
-    
+
     // Product Create/Edit
     'create_configure_product' => 'Create and configure a new product for your catalog',
     'back_to_products' => 'Back to Products',
@@ -446,7 +446,7 @@ return [
     'show_homepage_featured' => 'Show on homepage featured section',
     'mark_new_highlight' => 'Mark as new to highlight in store',
     'mark_bestselling_product' => 'Mark as popular/bestselling product',
-    
+
     // Dashboard Analytics
     'top_rated_products' => 'Top Rated Products',
     'low_stock_alerts' => 'Low Stock Alerts',
@@ -461,5 +461,45 @@ return [
     'inventory_value' => 'Inventory Value',
     'total_favorites' => 'Total Favorites',
     'customer_wishlists' => 'Customer Wishlists',
+
+    // Authentication
+    'login' => 'Login',
+    'register' => 'Register',
+    'logout' => 'Logout',
+    'my_orders' => 'My Orders',
+    'welcome_back' => 'Welcome Back!',
+    'login_description' => 'Login to access your account and continue shopping',
+    'enter_credentials' => 'Enter your credentials to continue',
+    'email_placeholder' => 'Enter your email address',
+    'password' => 'Password',
+    'password_placeholder' => 'Enter your password',
+    'remember_me' => 'Remember me',
+    'forgot_password' => 'Forgot Password?',
+    'or_continue_with' => 'Or continue with',
+    'dont_have_account' => "Don't have an account?",
+    'register_now' => 'Register Now',
+    'join_us' => 'Join Us Today!',
+    'register_description' => 'Create an account to enjoy exclusive benefits and offers',
+    'create_account' => 'Create Account',
+    'fill_details' => 'Fill in your details to get started',
+    'first_name' => 'First Name',
+    'first_name_placeholder' => 'Enter your first name',
+    'last_name' => 'Last Name',
+    'last_name_placeholder' => 'Enter your last name',
+    'phone_placeholder' => 'Enter your phone number',
+    'confirm_password' => 'Confirm Password',
+    'confirm_password_placeholder' => 'Re-enter your password',
+    'agree_to' => 'I agree to the',
+    'terms_conditions' => 'Terms & Conditions',
+    'and' => 'and',
+    'privacy_policy' => 'Privacy Policy',
+    'already_have_account' => 'Already have an account?',
+    'login_here' => 'Login Here',
+    'login_success' => 'Welcome back! You have successfully logged in.',
+    'register_success' => 'Registration successful! Welcome to IT Center.',
+    'logout_success' => 'You have been logged out successfully.',
+    'invalid_credentials' => 'Invalid email or password. Please try again.',
+    'register_failed' => 'Registration failed. Please try again.',
+    'reset_link_sent' => 'Password reset link has been sent to your email.',
 ];
 

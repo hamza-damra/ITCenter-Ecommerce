@@ -412,7 +412,7 @@ return [
     'edit_brand_title' => 'تعديل العلامة التجارية: :name',
     'current_logo' => 'الشعار الحالي',
     'update_brand' => 'تحديث العلامة التجارية',
-    
+
     // Product Create/Edit
     'create_configure_product' => 'إنشاء وتكوين منتج جديد لكتالوجك',
     'back_to_products' => 'العودة إلى المنتجات',
@@ -445,7 +445,7 @@ return [
     'show_homepage_featured' => 'عرض في قسم المميزات بالصفحة الرئيسية',
     'mark_new_highlight' => 'وضع علامة كجديد لتسليط الضوء في المتجر',
     'mark_bestselling_product' => 'وضع علامة كمنتج أكثر مبيعاً',
-    
+
     // Dashboard Analytics
     'top_rated_products' => 'المنتجات الأعلى تقييماً',
     'low_stock_alerts' => 'تنبيهات المخزون المنخفض',
@@ -460,5 +460,45 @@ return [
     'inventory_value' => 'قيمة المخزون',
     'total_favorites' => 'إجمالي المفضلة',
     'customer_wishlists' => 'قوائم رغبات العملاء',
+
+    // Authentication - المصادقة
+    'login' => 'تسجيل الدخول',
+    'register' => 'تسجيل جديد',
+    'logout' => 'تسجيل الخروج',
+    'my_orders' => 'طلباتي',
+    'welcome_back' => 'مرحباً بعودتك!',
+    'login_description' => 'سجل دخولك للوصول إلى حسابك ومتابعة التسوق',
+    'enter_credentials' => 'أدخل بيانات الدخول للمتابعة',
+    'email_placeholder' => 'أدخل البريد الإلكتروني',
+    'password' => 'كلمة المرور',
+    'password_placeholder' => 'أدخل كلمة المرور',
+    'remember_me' => 'تذكرني',
+    'forgot_password' => 'نسيت كلمة المرور؟',
+    'or_continue_with' => 'أو تابع باستخدام',
+    'dont_have_account' => 'ليس لديك حساب؟',
+    'register_now' => 'سجل الآن',
+    'join_us' => 'انضم إلينا اليوم!',
+    'register_description' => 'أنشئ حساباً للاستمتاع بالمزايا والعروض الحصرية',
+    'create_account' => 'إنشاء حساب',
+    'fill_details' => 'املأ بياناتك للبدء',
+    'first_name' => 'الاسم الأول',
+    'first_name_placeholder' => 'أدخل الاسم الأول',
+    'last_name' => 'اسم العائلة',
+    'last_name_placeholder' => 'أدخل اسم العائلة',
+    'phone_placeholder' => 'أدخل رقم الهاتف',
+    'confirm_password' => 'تأكيد كلمة المرور',
+    'confirm_password_placeholder' => 'أعد إدخال كلمة المرور',
+    'agree_to' => 'أوافق على',
+    'terms_conditions' => 'الشروط والأحكام',
+    'and' => 'و',
+    'privacy_policy' => 'سياسة الخصوصية',
+    'already_have_account' => 'لديك حساب بالفعل؟',
+    'login_here' => 'سجل دخولك هنا',
+    'login_success' => 'مرحباً بعودتك! تم تسجيل الدخول بنجاح.',
+    'register_success' => 'تم التسجيل بنجاح! مرحباً بك في IT Center.',
+    'logout_success' => 'تم تسجيل الخروج بنجاح.',
+    'invalid_credentials' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.',
+    'register_failed' => 'فشل التسجيل. يرجى المحاولة مرة أخرى.',
+    'reset_link_sent' => 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.',
 ];
 
