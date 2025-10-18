@@ -143,9 +143,63 @@ class AuthController extends Controller
                 ->withInput();
         }
 
-        // TODO: Implement password reset email logic
+        $status = \Illuminate\Support\Facades\Password::sendResetLink(
+            $request->only('email')
+        );
+
+        if ($status === \Illuminate\Support\Facades\Password::RESET_LINK_SENT) {
+            return redirect()->back()
+                ->with('success', __t('messages.reset_link_sent'));
+        }
 
         return redirect()->back()
-            ->with('success', __t('messages.reset_link_sent'));
+            ->with('error', __t('messages.reset_link_failed'));
+    }
+
+    /**
+     * Show reset password form
+     */
+    public function showResetPassword(Request $request, $token)
+    {
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->email
+        ]);
+    }
+
+    /**
+     * Handle reset password
+     */
+    public function resetPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput($request->only('email'));
+        }
+
+        $status = \Illuminate\Support\Facades\Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->save();
+            }
+        );
+
+        if ($status === \Illuminate\Support\Facades\Password::PASSWORD_RESET) {
+            return redirect()->route('login')
+                ->with('success', __t('messages.password_reset_success'));
+        }
+
+        return redirect()->back()
+            ->withErrors(['email' => __t('messages.password_reset_failed')])
+            ->withInput($request->only('email'));
     }
 }

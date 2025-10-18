@@ -17,64 +17,8 @@
         border-radius: 20px;
         box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         overflow: hidden;
-        max-width: 1000px;
+        max-width: 500px;
         width: 100%;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .auth-left {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 3rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        color: #fff;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .auth-left::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        animation: float 15s infinite linear;
-    }
-
-    @keyframes float {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    .auth-left-content {
-        position: relative;
-        z-index: 2;
-    }
-
-    .auth-left h2 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-    }
-
-    .auth-left p {
-        font-size: 1.1rem;
-        opacity: 0.95;
-        margin-bottom: 2rem;
-        line-height: 1.6;
-    }
-
-    .auth-left-icon {
-        font-size: 5rem;
-        margin-bottom: 2rem;
-        opacity: 0.9;
     }
 
     .auth-right {
@@ -220,66 +164,6 @@
         transform: translateY(0);
     }
 
-    .auth-divider {
-        text-align: center;
-        margin: 1.5rem 0;
-        position: relative;
-    }
-
-    .auth-divider::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: #e0e0e0;
-    }
-
-    .auth-divider span {
-        background: #fff;
-        padding: 0 1rem;
-        color: #999;
-        font-size: 0.9rem;
-        position: relative;
-        z-index: 1;
-    }
-
-    .social-login {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .social-btn {
-        flex: 1;
-        padding: 0.8rem;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        background: #fff;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        font-weight: 600;
-        color: #333;
-    }
-
-    .social-btn:hover {
-        border-color: #667eea;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    .social-btn i {
-        font-size: 1.2rem;
-    }
-
-    .social-btn.google i { color: #DB4437; }
-    .social-btn.facebook i { color: #4267B2; }
-
     .auth-footer {
         text-align: center;
         margin-top: 1.5rem;
@@ -301,23 +185,6 @@
     }
 
     @media (max-width: 768px) {
-        .auth-card {
-            grid-template-columns: 1fr;
-        }
-
-        .auth-left {
-            padding: 2rem;
-            min-height: 250px;
-        }
-
-        .auth-left h2 {
-            font-size: 2rem;
-        }
-
-        .auth-left-icon {
-            font-size: 3rem;
-        }
-
         .auth-right {
             padding: 2rem;
         }
@@ -331,16 +198,6 @@
 
 <div class="auth-container">
     <div class="auth-card">
-        <div class="auth-left">
-            <div class="auth-left-content">
-                <div class="auth-left-icon">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                <h2>{{ __t('messages.welcome_back') }}</h2>
-                <p>{{ __t('messages.login_description') }}</p>
-            </div>
-        </div>
-
         <div class="auth-right">
             <div class="auth-header">
                 <h3>{{ __t('messages.login') }}</h3>
@@ -399,19 +256,6 @@
                     <i class="fas fa-sign-in-alt"></i> {{ __t('messages.login') }}
                 </button>
             </form>
-
-            <div class="auth-divider">
-                <span>{{ __t('messages.or_continue_with') }}</span>
-            </div>
-
-            <div class="social-login">
-                <button class="social-btn google">
-                    <i class="fab fa-google"></i> Google
-                </button>
-                <button class="social-btn facebook">
-                    <i class="fab fa-facebook-f"></i> Facebook
-                </button>
-            </div>
 
             <div class="auth-footer">
                 {{ __t('messages.dont_have_account') }}

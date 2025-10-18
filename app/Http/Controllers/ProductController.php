@@ -88,6 +88,7 @@ class ProductController extends Controller
             ->limit(4)
             ->get();
             
+            
         return view('product-detail', compact('slug', 'product', 'relatedProducts'));
     }
 }

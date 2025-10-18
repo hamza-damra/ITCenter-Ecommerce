@@ -446,6 +446,53 @@
             }
         }
 
+        /* User Dropdown Menu Styles */
+        .user-dropdown.active .user-dropdown-menu {
+            display: block !important;
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .user-dropdown-menu form {
+            margin: 0 !important;
+        }
+
+        /* Default state for all menu items - Force color */
+        .user-dropdown-menu .user-menu-item {
+            color: #ecececff !important;
+            transition: background 0.3s ease, padding 0.3s ease, color 0.3s ease !important;
+        }
+
+        .user-dropdown-menu .user-menu-item i {
+            color: #ecececff !important;
+            transition: color 0.3s ease !important;
+        }
+
+        .user-dropdown-menu .user-menu-item span {
+            color: #ecececff !important;
+            transition: color 0.3s ease !important;
+        }
+
+        /* Hover state for all menu items */
+        .user-dropdown-menu .user-menu-item:hover {
+            background: rgba(212, 175, 55, 0.1) !important;
+            color: #d4af37 !important;
+            padding-{{ is_rtl() ? 'right' : 'left' }}: 1.4rem !important;
+        }
+
+        .user-dropdown-menu .user-menu-item:hover i {
+            color: #d4af37 !important;
+        }
+
+        .user-dropdown-menu .user-menu-item:hover span {
+            color: #d4af37 !important;
+        }
+
+        /* Active state for logout button */
+        .user-dropdown-menu .logout-btn:active {
+            background: rgba(212, 175, 55, 0.2) !important;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .language-dropdown-menu {
@@ -498,17 +545,17 @@
                         <i class="fas fa-chevron-down" style="font-size: 0.7rem; transition: transform 0.3s;"></i>
                     </div>
                     <div class="user-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 10px); {{ is_rtl() ? 'left: 0;' : 'right: 0;' }} background: rgba(26, 26, 26, 0.98); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; min-width: 200px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); overflow: hidden; z-index: 1001; opacity: 0; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease;">
-                        <a href="#" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; color: #ecececff; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                        <a href="#" class="user-menu-item" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; text-decoration: none; transition: background 0.3s ease, padding 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
                             <i class="fas fa-user"></i>
                             <span>{{ Auth::user()->name }}</span>
                         </a>
-                        <a href="#" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; color: #ecececff; text-decoration: none; transition: all 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                        <a href="#" class="user-menu-item" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; text-decoration: none; transition: background 0.3s ease, padding 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
                             <i class="fas fa-box"></i>
                             <span>{{ __t('messages.my_orders') }}</span>
                         </a>
                         <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
                             @csrf
-                            <button type="submit" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; color: #ecececff; background: none; border: none; cursor: pointer; transition: all 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit;">
+                            <button type="submit" class="user-menu-item logout-btn" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit;">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span>{{ __t('messages.logout') }}</span>
                             </button>
@@ -682,6 +729,16 @@
 
             // User dropdown toggle
             if (userToggle && userMenu) {
+                // Force remove inline color styles on menu items
+                const menuItems = userMenu.querySelectorAll('.user-menu-item');
+                menuItems.forEach(item => {
+                    item.style.removeProperty('color');
+                    const icons = item.querySelectorAll('i');
+                    const spans = item.querySelectorAll('span');
+                    icons.forEach(icon => icon.style.removeProperty('color'));
+                    spans.forEach(span => span.style.removeProperty('color'));
+                });
+
                 userToggle.addEventListener('click', function(e) {
                     e.stopPropagation();
                     userDropdown.classList.toggle('active');
