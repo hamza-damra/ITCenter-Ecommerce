@@ -612,6 +612,13 @@
                         </span>
                     </a>
                 </div>
+                @auth
+                <div class="header-icon">
+                    <a href="{{ route('orders.index') }}" style="color: inherit; text-decoration: none;" title="{{ __t('messages.my_orders') }}">
+                        <i class="fas fa-shopping-bag"></i>
+                    </a>
+                </div>
+                @endauth
                 <div class="header-icon">
                     <a href="{{ route('cart.index') }}" style="color: inherit; text-decoration: none;">
                         <i class="fas fa-shopping-cart"></i>

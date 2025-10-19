@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __t('messages.login') . ' - IT Center')
+@section('title', __('messages.login') . ' - IT Center')
 
 @section('content')
 <style>
@@ -200,8 +200,8 @@
     <div class="auth-card">
         <div class="auth-right">
             <div class="auth-header">
-                <h3>{{ __t('messages.login') }}</h3>
-                <p>{{ __t('messages.enter_credentials') }}</p>
+                <h3>{{ __('messages.login') }}</h3>
+                <p>{{ __('messages.enter_credentials') }}</p>
             </div>
 
             @if(session('error'))
@@ -220,11 +220,11 @@
                 @csrf
 
                 <div class="form-group">
-                    <label for="email">{{ __t('messages.email') }}</label>
+                    <label for="email">{{ __('messages.email') }}</label>
                     <div class="form-input-wrapper">
                         <i class="fas fa-envelope form-input-icon"></i>
                         <input type="email" id="email" name="email" class="form-control"
-                               placeholder="{{ __t('messages.email_placeholder') }}"
+                               placeholder="{{ __('messages.email_placeholder') }}"
                                value="{{ old('email') }}" required>
                     </div>
                     @error('email')
@@ -233,11 +233,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">{{ __t('messages.password') }}</label>
+                    <label for="password">{{ __('messages.password') }}</label>
                     <div class="form-input-wrapper">
                         <i class="fas fa-lock form-input-icon"></i>
                         <input type="password" id="password" name="password" class="form-control"
-                               placeholder="{{ __t('messages.password_placeholder') }}" required>
+                               placeholder="{{ __('messages.password_placeholder') }}" required>
                     </div>
                     @error('password')
                     <div class="error-message show">{{ $message }}</div>
@@ -247,19 +247,19 @@
                 <div class="form-options">
                     <div class="remember-me">
                         <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">{{ __t('messages.remember_me') }}</label>
+                        <label for="remember">{{ __('messages.remember_me') }}</label>
                     </div>
-                    <a href="{{ route('password.request') }}" class="forgot-password">{{ __t('messages.forgot_password') }}</a>
+                    <a href="{{ route('password.request') }}" class="forgot-password">{{ __('messages.forgot_password') }}</a>
                 </div>
 
                 <button type="submit" class="btn-submit">
-                    <i class="fas fa-sign-in-alt"></i> {{ __t('messages.login') }}
+                    <i class="fas fa-sign-in-alt"></i> {{ __('messages.login') }}
                 </button>
             </form>
 
             <div class="auth-footer">
-                {{ __t('messages.dont_have_account') }}
-                <a href="{{ route('register') }}">{{ __t('messages.register_now') }}</a>
+                {{ __('messages.dont_have_account') }}
+                <a href="{{ route('register') }}">{{ __('messages.register_now') }}</a>
             </div>
         </div>
     </div>
@@ -325,3 +325,4 @@
 </script>
 
 @endsection
+

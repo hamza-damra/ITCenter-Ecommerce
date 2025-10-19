@@ -44,22 +44,24 @@
 
     .product-card {
         background: #fff;
-        border-radius: 12px;
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         transition: transform 0.3s, box-shadow 0.3s;
         cursor: pointer;
+        display: flex;
+        flex-direction: column;
     }
 
     .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     }
 
     .product-image {
         width: 100%;
-        height: 250px;
-        background: #f5f5f5;
+        height: 280px;
+        background: #f8f9fa;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -68,8 +70,8 @@
     }
 
     .product-image img {
-        max-width: 90%;
-        max-height: 90%;
+        max-width: 85%;
+        max-height: 85%;
         object-fit: contain;
     }
 
@@ -77,40 +79,20 @@
         font-size: 4rem;
     }
 
-    .product-badge {
-        position: absolute !important;
-        top: 10px !important;
-        bottom: auto !important;
-        @if(is_rtl())
-        left: 10px !important;
-        right: auto !important;
-        @else
-        right: 10px !important;
-        left: auto !important;
-        @endif
-        background: #ff4757;
-        color: #fff;
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        z-index: 5;
-    }
-
     .wishlist-btn {
         position: absolute !important;
-        top: 10px !important;
+        top: 12px !important;
         bottom: auto !important;
         @if(is_rtl())
-        right: 10px !important;
-        left: auto !important;
-        @else
-        left: 10px !important;
+        left: 12px !important;
         right: auto !important;
+        @else
+        right: 12px !important;
+        left: auto !important;
         @endif
-        background: #fff;
-        width: 35px;
-        height: 35px;
+        background: rgba(255, 255, 255, 0.95);
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         display: flex !important;
         align-items: center !important;
@@ -120,11 +102,13 @@
         z-index: 10;
         border: none;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
     }
 
     .wishlist-btn:hover {
-        background: #fff;
+        background: rgba(255, 255, 255, 1);
         transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     .wishlist-btn:hover i {
@@ -132,7 +116,7 @@
     }
 
     .wishlist-btn.active {
-        background: #fff !important;
+        background: rgba(255, 255, 255, 1) !important;
     }
 
     .wishlist-btn.active i {
@@ -140,8 +124,8 @@
     }
 
     .wishlist-btn i {
-        font-size: 1rem;
-        color: #666;
+        font-size: 1.1rem;
+        color: #888;
         transition: all 0.3s;
     }
 
@@ -150,57 +134,102 @@
         color: #ff0000 !important;
     }
 
+    .product-badge {
+        position: absolute !important;
+        top: 12px !important;
+        bottom: auto !important;
+        @if(is_rtl())
+        right: 12px !important;
+        left: auto !important;
+        @else
+        left: 12px !important;
+        right: auto !important;
+        @endif
+        background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
+        color: #fff;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        z-index: 5;
+        box-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
+        letter-spacing: 0.3px;
+    }
+
     .product-info {
-        padding: 1.5rem;
+        padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
     }
 
     .product-title {
-        font-size: 1rem;
+        font-size: 1.05rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: #333;
+        color: #1a1a1a;
+        text-align: center;
+        line-height: 1.4;
     }
 
     .product-description {
-        font-size: 0.85rem;
-        color: #666;
+        font-size: 0.875rem;
+        color: #6c757d;
         margin-bottom: 1rem;
-        line-height: 1.4;
+        line-height: 1.5;
+        text-align: center;
+        flex-grow: 1;
     }
 
     .product-footer {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+        margin-top: auto;
     }
 
     .product-price {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        color: #333;
+        color: #1a1a1a;
+        text-align: start;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .product-price .original-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 1rem;
+        font-weight: 500;
     }
 
     .add-to-cart {
-        background: #000;
+        background: linear-gradient(135deg, #4e73df 0%, #3659d1 100%);
         color: #fff;
-        padding: 0.6rem 1rem;
-        border-radius: 8px;
+        padding: 0.875rem 1.5rem;
+        border-radius: 12px;
         border: none;
         cursor: pointer;
         font-weight: 600;
         transition: all 0.3s;
-        display: inline-flex;
+        display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        min-width: 140px;
+        width: 100%;
         white-space: nowrap;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
+        box-shadow: 0 4px 12px rgba(78, 115, 223, 0.3);
     }
 
     .add-to-cart:hover {
-        background: #333;
+        background: linear-gradient(135deg, #3659d1 0%, #2447b8 100%);
         transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(78, 115, 223, 0.4);
     }
 
     .add-to-cart.in-cart {
@@ -469,16 +498,16 @@
             @forelse($products as $product)
             <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
                 <div class="product-image">
+                    @if($product->is_new)
+                    <div class="product-badge">{{ __t('messages.new') }}</div>
+                    @elseif($product->sale_price && $product->sale_price < $product->price)
+                    <div class="product-badge">{{ __t('messages.sale') }}</div>
+                    @elseif($product->is_featured)
+                    <div class="product-badge">{{ __t('messages.hot') }}</div>
+                    @endif
                     <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
                         <i class="far fa-heart"></i>
                     </div>
-                    @if($product->is_new)
-                    <div class="product-badge">NEW</div>
-                    @elseif($product->sale_price && $product->sale_price < $product->price)
-                    <div class="product-badge">SALE</div>
-                    @elseif($product->is_featured)
-                    <div class="product-badge">HOT</div>
-                    @endif
                     <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
                 </div>
                 <div class="product-info">
@@ -487,14 +516,14 @@
                     <div class="product-footer">
                         <div class="product-price">
                             @if($product->sale_price && $product->sale_price < $product->price)
-                                <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">₪ {{ number_format($product->price, 0) }}</span>
-                                ₪ {{ number_format($product->sale_price, 0) }}
+                                <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
+                                <span>₪ {{ number_format($product->sale_price, 0) }}</span>
                             @else
-                                ₪ {{ number_format($product->price, 0) }}
+                                <span>₪ {{ number_format($product->price, 0) }}</span>
                             @endif
                         </div>
                         <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                            <i class="fas fa-shopping-cart"></i> Add to cart
+                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
                         </button>
                     </div>
                 </div>

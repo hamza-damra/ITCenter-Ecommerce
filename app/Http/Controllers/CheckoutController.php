@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\CartItem;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Web Controller - Returns views only
@@ -86,20 +89,87 @@ class CheckoutController extends Controller
                 ->with('error', __('messages.cart_empty'));
         }
 
-        // Here you would create an order in the database
-        // For now, we'll just clear the cart and show success message
+        // Calculate totals
+        $subtotal = $cartItems->sum(function($item) {
+            return $item->price * $item->quantity;
+        });
         
-        // Clear the cart
-        CartItem::where(function($query) use ($identifier) {
-            if (isset($identifier['user_id'])) {
-                $query->where('user_id', $identifier['user_id']);
-            } else {
-                $query->where('session_id', $identifier['session_id']);
-            }
-        })->delete();
+        $taxRate = 0.17; // 17% VAT
+        $tax = $subtotal * $taxRate;
+        $shippingCost = $subtotal >= 200 ? 0 : 25; // Free shipping over $200
+        $total = $subtotal + $tax + $shippingCost;
 
-        return redirect()->route('home')
-            ->with('success', __('messages.order_placed_successfully'));
+        DB::beginTransaction();
+        try {
+            // Create the order
+            $order = Order::create([
+                'order_number' => Order::generateOrderNumber(),
+                'user_id' => Auth::id(),
+                'session_id' => isset($identifier['session_id']) ? $identifier['session_id'] : null,
+                'customer_name' => $validated['first_name'] . ' ' . $validated['last_name'],
+                'customer_email' => $validated['email'],
+                'customer_phone' => $validated['phone'],
+                'shipping_address' => $validated['address'],
+                'shipping_city' => $validated['city'],
+                'shipping_state' => $validated['state'] ?? null,
+                'shipping_postal_code' => $validated['postal_code'],
+                'shipping_country' => $validated['country'],
+                'subtotal' => $subtotal,
+                'tax' => $tax,
+                'shipping_cost' => $shippingCost,
+                'discount' => 0,
+                'total' => $total,
+                'status' => 'pending',
+                'payment_status' => 'pending',
+                'payment_method' => 'cash_on_delivery',
+                'notes' => $validated['notes'] ?? null,
+            ]);
+
+            // Create order items
+            foreach ($cartItems as $cartItem) {
+                $product = $cartItem->product;
+                
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product->id,
+                    'product_name_en' => $product->name_en,
+                    'product_name_ar' => $product->name_ar,
+                    'product_name_he' => $product->name_he ?? $product->name_en,
+                    'product_slug' => $product->slug,
+                    'product_image' => $product->main_image,
+                    'product_sku' => $product->sku,
+                    'price' => $cartItem->price,
+                    'original_price' => $product->original_price,
+                    'quantity' => $cartItem->quantity,
+                    'subtotal' => $cartItem->price * $cartItem->quantity,
+                ]);
+
+                // Update product stock
+                if ($product->stock_quantity > 0) {
+                    $product->decrement('stock_quantity', $cartItem->quantity);
+                }
+            }
+
+            // Clear the cart
+            CartItem::where(function($query) use ($identifier) {
+                if (isset($identifier['user_id'])) {
+                    $query->where('user_id', $identifier['user_id']);
+                } else {
+                    $query->where('session_id', $identifier['session_id']);
+                }
+            })->delete();
+
+            DB::commit();
+
+            return redirect()->route('orders.show', $order->order_number)
+                ->with('success', __('messages.order_placed_successfully'));
+                
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->with('error', __('messages.order_error'))
+                ->withInput();
+        }
     }
 
     /**
