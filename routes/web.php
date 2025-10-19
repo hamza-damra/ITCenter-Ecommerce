@@ -10,6 +10,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AuthController;
 
 // Language Routes
@@ -57,6 +58,9 @@ Route::get('/cart/check/{product}', [CartController::class, 'check'])->name('car
 Route::get('/cart/count', [CartController::class, 'getCount'])->name('cart.count');
 Route::get('/cart/products', [CartController::class, 'getProductIds'])->name('cart.products');
 
+// Checkout Routes
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/checkout/process', [CheckoutController::class, 'processOrder'])->name('checkout.process');
 
 // Admin Authentication Routes
 Route::prefix('admin')->name('admin.')->group(function () {

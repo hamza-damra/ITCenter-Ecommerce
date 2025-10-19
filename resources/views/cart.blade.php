@@ -506,10 +506,10 @@
                     <span class="amount" id="total-amount">${{ number_format($total, 2) }}</span>
                 </div>
                 
-                <button class="checkout-btn">
+                <a href="{{ route('checkout.index') }}" class="checkout-btn" style="text-decoration: none;">
                     <i class="fas fa-lock"></i>
                     {{ __('messages.proceed_to_checkout') }}
-                </button>
+                </a>
                 
                 <a href="{{ route('products') }}" class="continue-shopping-link">
                     {{ __('messages.continue_shopping') }}
@@ -676,14 +676,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => console.error('Error:', error));
-    }
-
-    // Checkout button
-    const checkoutBtn = document.querySelector('.checkout-btn');
-    if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', function() {
-            alert('{{ __('messages.checkout_coming_soon') }}');
-        });
     }
 });
 </script>
