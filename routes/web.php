@@ -58,8 +58,15 @@ Route::get('/cart/count', [CartController::class, 'getCount'])->name('cart.count
 Route::get('/cart/products', [CartController::class, 'getProductIds'])->name('cart.products');
 
 
-// Admin Routes
+// Admin Authentication Routes
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/login', [App\Http\Controllers\Admin\AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [App\Http\Controllers\Admin\AuthController::class, 'login'])->name('login.post');
+    Route::post('/logout', [App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('logout');
+});
+
+// Admin Routes (Protected)
+Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     
     // Products

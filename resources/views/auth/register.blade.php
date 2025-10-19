@@ -346,6 +346,42 @@
         const submitBtn = document.getElementById('submitBtn');
         const termsCheckbox = document.getElementById('terms');
 
+        // Get all input fields (excluding checkbox)
+        const inputs = form.querySelectorAll('.form-control');
+        const inputArray = Array.from(inputs);
+
+        // Handle Enter key to move to next field
+        inputs.forEach((input, index) => {
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    
+                    const nextIndex = index + 1;
+                    
+                    // If this is the last input field, focus on terms checkbox
+                    if (nextIndex >= inputArray.length) {
+                        termsCheckbox.focus();
+                    } else {
+                        // Move to next input field
+                        inputArray[nextIndex].focus();
+                    }
+                }
+            });
+        });
+
+        // Handle Enter key on terms checkbox to submit
+        termsCheckbox.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (this.checked && !submitBtn.disabled) {
+                    form.submit();
+                } else if (!this.checked) {
+                    this.checked = true;
+                    this.dispatchEvent(new Event('change'));
+                }
+            }
+        });
+
         // Password strength checker
         password.addEventListener('input', function() {
             const value = this.value;
@@ -407,7 +443,6 @@
         });
 
         // Add focus/blur effects
-        const inputs = form.querySelectorAll('.form-control');
         inputs.forEach(input => {
             input.addEventListener('focus', function() {
                 this.parentElement.style.transform = 'scale(1.02)';

@@ -879,6 +879,14 @@
                 <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-folder"></i> {{ __('messages.categories') }}</a></li>
                 <li><a href="{{ route('admin.brands.index') }}" class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}"><i class="fas fa-tag"></i> {{ __('messages.brands') }}</a></li>
                 <li><a href="{{ route('home') }}" target="_blank"><i class="fas fa-globe"></i> {{ __('messages.view') }} {{ __('messages.home') }}</a></li>
+                <li>
+                    <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
+                        @csrf
+                        <button type="submit" style="width: 100%; background: none; border: none; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 14px 24px; color: #cbd5e1; font-size: 15px; font-weight: 500; margin: 4px 12px; border-radius: 10px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);" onmouseover="this.style.background='rgba(239, 68, 68, 0.15)'; this.style.color='#fff';" onmouseout="this.style.background='none'; this.style.color='#cbd5e1';">
+                            <i class="fas fa-sign-out-alt" style="width: 20px; font-size: 16px;"></i> {{ __('Logout') }}
+                        </button>
+                    </form>
+                </li>
             </ul>
             
             <!-- Language Switcher -->

@@ -461,12 +461,8 @@ return [
     'total_favorites' => 'إجمالي المفضلة',
     'customer_wishlists' => 'قوائم رغبات العملاء',
 
-    // Authentication - المصادقة
-    'login' => 'تسجيل الدخول',
-    'register' => 'تسجيل جديد',
-    'logout' => 'تسجيل الخروج',
+    // Authentication - المصادقة (duplicates removed)
     'my_orders' => 'طلباتي',
-    'welcome_back' => 'مرحباً بعودتك!',
     'login_description' => 'سجل دخولك للوصول إلى حسابك ومتابعة التسوق',
     'enter_credentials' => 'أدخل بيانات الدخول للمتابعة',
     'email_placeholder' => 'أدخل البريد الإلكتروني',

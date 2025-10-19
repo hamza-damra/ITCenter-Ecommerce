@@ -269,6 +269,10 @@
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('loginForm');
         const inputs = form.querySelectorAll('.form-control');
+        const submitBtn = form.querySelector('.btn-submit');
+
+        // Convert NodeList to Array for easier manipulation
+        const inputArray = Array.from(inputs);
 
         // Add focus/blur effects
         inputs.forEach(input => {
@@ -278,6 +282,25 @@
 
             input.addEventListener('blur', function() {
                 this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // Handle Enter key to move to next field
+        inputs.forEach((input, index) => {
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    
+                    const nextIndex = index + 1;
+                    
+                    // If this is the last input field, submit the form
+                    if (nextIndex >= inputArray.length) {
+                        form.submit();
+                    } else {
+                        // Move to next input field
+                        inputArray[nextIndex].focus();
+                    }
+                }
             });
         });
 

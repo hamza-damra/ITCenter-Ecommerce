@@ -96,12 +96,12 @@
         /* Search Bar Styles */
         .search-bar {
             display: flex;
-            flex-direction: {{ is_rtl() ? 'row-reverse' : 'row' }};
+            flex-direction: row;
             flex: 1;
             max-width: 500px;
             gap: 0;
             align-items: center;
-            position: relative; /* added for absolute icon */
+            position: relative;
         }
 
         .search-bar input {
@@ -120,38 +120,27 @@
             border-style:none none solid none;
             direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
             text-align: {{ is_rtl() ? 'right' : 'left' }};
-
-            /* reserve space for the search icon inside the input */
-            @if(is_rtl())
-                padding-right: 44px;
-            @else
-                padding-left: 44px;
-            @endif
         }
 
-        .search-input-icon {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            font-size: 1rem;
-            pointer-events: none;
-            z-index: 2;
-            @if(is_rtl())
-            right: 12px;
-            @else
-            left: 12px;
-            @endif
+        /* RTL: input is second (on the right) */
+        @if(is_rtl())
+        .search-bar input {
+            border-radius: 0 8px 8px 0;
         }
+        @else
+        /* LTR: input is first (on the left) */
+        .search-bar input {
+            border-radius: 8px 0 0 8px;
+        }
+        @endif
 
         .search-btn {
             height: 45px;
-            padding: 0 18px;
+            padding: 0 20px;
             background: #2762f3;
             color: #ffffff;
             border: none;
-            border-radius: {{ is_rtl() ? '0 8px 8px 0' : '0 8px 8px 0' }};
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -160,8 +149,22 @@
             unicode-bidi: embed;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
+            min-width: 50px;
         }
+
+        /* RTL: button is first (on the left) */
+        @if(is_rtl())
+        .search-btn {
+            border-radius: 8px 0 0 8px;
+        }
+        @else
+        /* LTR: button is second (on the right) */
+        .search-btn {
+            border-radius: 0 8px 8px 0;
+        }
+        @endif
 
         .search-btn:hover {
             background: #1a4dbf;
@@ -173,10 +176,8 @@
             transform: translateY(0);
         }
 
-        .search-btn span {
-            display: inline-block;
-            direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
-            unicode-bidi: embed;
+        .search-btn i {
+            font-size: 0.95rem;
         }
 
         .header-icons {
@@ -522,13 +523,18 @@
                 <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">{{ __t('messages.contact') }}</a></li>
             </ul>
 
-            <form action="" class="search-bar" role="search">
-                <!-- icon inside input -->
-                <i class="fas fa-search search-input-icon" aria-hidden="true"></i>
-                <input type="search" name="search" placeholder="{{ __t('messages.search') }}">
-               <!-- <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
-                    <span>{{ __t('messages.search') }}</span>
-                </button> -->
+            <form action="{{ route('products') }}" method="GET" class="search-bar" role="search">
+                @if(is_rtl())
+                    <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __t('messages.search') }}" aria-label="{{ __t('messages.search') }}">
+                @else
+                    <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __t('messages.search') }}" aria-label="{{ __t('messages.search') }}">
+                    <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
+                        <i class="fas fa-search"></i>
+                    </button>
+                @endif
             </form>
 
             <div class="header-icons">

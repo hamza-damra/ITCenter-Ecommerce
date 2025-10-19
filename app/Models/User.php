@@ -26,6 +26,7 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
+        'role',
     ];
 
     /**
@@ -84,5 +85,15 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    /**
+     * Check if the user is an admin.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
     }
 }

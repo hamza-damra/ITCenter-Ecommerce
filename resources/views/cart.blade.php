@@ -4,6 +4,20 @@
 
 @section('content')
 <style>
+    /* Import Google Font - Poppins */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    /* Override font - exclude Font Awesome icons */
+    body, 
+    body *:not(.fa):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class*="fa-"]) {
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+
+    /* Ensure Font Awesome icons keep their font */
+    .fa, .fas, .far, .fab, .fal, .fad, [class*="fa-"] {
+        font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 6 Pro" !important;
+    }
+
     /* Cart Page Styles */
     .cart-container {
         max-width: 1400px;

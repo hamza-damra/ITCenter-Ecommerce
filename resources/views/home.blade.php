@@ -4,6 +4,20 @@
 
 @section('content')
 <style>
+    /* Import Google Font - Poppins */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    /* Override font for home page - exclude Font Awesome icons */
+    body, 
+    body *:not(.fa):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class*="fa-"]) {
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+
+    /* Ensure Font Awesome icons keep their font */
+    .fa, .fas, .far, .fab, .fal, .fad, [class*="fa-"] {
+        font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 6 Pro" !important;
+    }
+
     /* Hero Section - Slider */
     .hero-section {
         padding: 0;
@@ -814,6 +828,96 @@
         opacity: 1;
         transform: translateY(0);
     }
+
+    /* Hero Search Bar */
+    .hero-search-section {
+        margin: -50px auto 3rem;
+        max-width: 900px;
+        padding: 0 2rem;
+        position: relative;
+        z-index: 10;
+    }
+
+    .hero-search-wrapper {
+        background: white;
+        border-radius: 50px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .hero-search-wrapper:focus-within {
+        box-shadow: 0 15px 50px rgba(39, 98, 243, 0.25);
+        transform: translateY(-2px);
+    }
+
+    .hero-search-input {
+        flex: 1;
+        border: none;
+        outline: none;
+        padding: 1rem 1.5rem;
+        font-size: 1.05rem;
+        background: transparent;
+        color: #333;
+        direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+    }
+
+    .hero-search-input::placeholder {
+        color: #999;
+    }
+
+    .hero-search-btn {
+        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
+        color: white;
+        border: none;
+        border-radius: 40px;
+        padding: 1rem 2.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .hero-search-btn:hover {
+        background: linear-gradient(135deg, #1a4dbf 0%, #0d3080 100%);
+        transform: scale(1.02);
+        box-shadow: 0 5px 20px rgba(39, 98, 243, 0.4);
+    }
+
+    .hero-search-btn:active {
+        transform: scale(0.98);
+    }
+
+    @media (max-width: 768px) {
+        .hero-search-section {
+            margin: -30px auto 2rem;
+            padding: 0 1rem;
+        }
+
+        .hero-search-wrapper {
+            flex-direction: column;
+            border-radius: 20px;
+            padding: 1rem;
+        }
+
+        .hero-search-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+        }
+
+        .hero-search-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 0.9rem 2rem;
+        }
+    }
 </style>
 
 <!-- Hero Section - Slider -->
@@ -843,6 +947,24 @@
             <div class="slider-dot" onclick="goToSlide(2)"></div>
         </div>
     </div>
+</div>
+
+<!-- Hero Search Bar -->
+<div class="hero-search-section">
+    <form action="{{ route('products') }}" method="GET" class="hero-search-wrapper">
+        <input 
+            type="search" 
+            name="search" 
+            class="hero-search-input" 
+            placeholder="{{ __t('messages.search') }}..." 
+            value="{{ request('search') }}"
+            aria-label="{{ __t('messages.search') }}"
+        >
+        <button type="submit" class="hero-search-btn">
+            <i class="fas fa-search"></i>
+            <span>{{ __t('messages.search') }}</span>
+        </button>
+    </form>
 </div>
 
 <!-- Categories Section -->

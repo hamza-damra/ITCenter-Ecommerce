@@ -4,6 +4,20 @@
 
 @section('content')
 <style>
+    /* Import Google Font - Poppins */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+    /* Override font - exclude Font Awesome icons */
+    body, 
+    body *:not(.fa):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class*="fa-"]) {
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+    }
+
+    /* Ensure Font Awesome icons keep their font */
+    .fa, .fas, .far, .fab, .fal, .fad, [class*="fa-"] {
+        font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 6 Pro" !important;
+    }
+
     .products-section {
         padding: 3rem 2rem;
         background: #f5f5f5;
@@ -345,6 +359,86 @@
             font-size: 0.95rem;
         }
     }
+
+    /* Search Results Indicator */
+    .search-results-info {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem 2rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .search-results-info h3 {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .search-results-info p {
+        font-size: 1rem;
+        opacity: 0.95;
+        margin: 0;
+    }
+
+    .search-query-highlight {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.3rem 0.8rem;
+        border-radius: 8px;
+        font-weight: 700;
+        display: inline-block;
+        margin: 0 0.3rem;
+    }
+
+    .clear-search-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 2px solid white;
+        padding: 0.6rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .clear-search-btn:hover {
+        background: white;
+        color: #667eea;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .no-results i {
+        font-size: 5rem;
+        color: #ddd;
+        margin-bottom: 1.5rem;
+    }
+
+    .no-results h3 {
+        font-size: 1.8rem;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    .no-results p {
+        font-size: 1.1rem;
+        color: #666;
+        margin-bottom: 2rem;
+    }
 </style>
 
 <div class="products-section">
@@ -353,6 +447,24 @@
             <h2>All Products</h2>
         </div>
 
+        @if(request('search'))
+        <div class="search-results-info">
+            <h3>
+                <i class="fas fa-search"></i>
+                Search Results
+            </h3>
+            <p>
+                Found <strong>{{ $products->total() }}</strong> {{ Str::plural('product', $products->total()) }} for
+                <span class="search-query-highlight">"{{ request('search') }}"</span>
+            </p>
+            <a href="{{ route('products') }}" class="clear-search-btn">
+                <i class="fas fa-times"></i>
+                Clear Search
+            </a>
+        </div>
+        @endif
+
+        @if($products->count() > 0)
         <div class="product-grid">
             @forelse($products as $product)
             <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
@@ -388,11 +500,25 @@
                 </div>
             </div>
             @empty
-            <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-                <p style="color: #999; font-size: 1.2rem;">No products found</p>
-            </div>
             @endforelse
         </div>
+        @else
+        <div class="no-results">
+            <i class="fas fa-search"></i>
+            <h3>No Products Found</h3>
+            <p>
+                @if(request('search'))
+                    We couldn't find any products matching "<strong>{{ request('search') }}</strong>"
+                @else
+                    No products available at the moment
+                @endif
+            </p>
+            <a href="{{ route('products') }}" class="clear-search-btn">
+                <i class="fas fa-arrow-left"></i>
+                View All Products
+            </a>
+        </div>
+        @endif
 
         @if(isset($products) && method_exists($products, 'hasPages') && $products->hasPages())
         <div class="pagination-wrapper" style="display: flex; justify-content: center; margin: 3rem 0 2rem 0; padding: 0 1rem; width: 100%;">
