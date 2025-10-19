@@ -41,7 +41,7 @@ class HomeController extends Controller
             ->parent()
             ->withCount('products')
             ->orderBy('order')
-            ->limit(10)
+            ->limit(20)
             ->get();
 
         $featuredBrands = Brand::active()

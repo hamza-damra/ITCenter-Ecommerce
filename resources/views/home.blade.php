@@ -240,6 +240,21 @@
         scroll-behavior: smooth;
         scrollbar-width: none;
         padding: 1rem 0;
+        /* Fix for RTL horizontal scrolling - force LTR for scrolling */
+        direction: ltr !important;
+    }
+    
+    /* Restore RTL for category items content */
+    html[dir="rtl"] .categories-grid .category-item,
+    [dir="rtl"] .categories-grid .category-item {
+        direction: rtl;
+    }
+    
+    /* Ensure proper text alignment in RTL */
+    html[dir="rtl"] .category-name,
+    [dir="rtl"] .category-name {
+        text-align: center;
+        direction: rtl;
     }
 
     .categories-grid::-webkit-scrollbar {
@@ -366,6 +381,14 @@
         scroll-behavior: smooth;
         padding: 1rem 0;
         scrollbar-width: none;
+        /* Fix for RTL horizontal scrolling - force LTR for scrolling */
+        direction: ltr !important;
+    }
+    
+    /* Restore RTL for brand cards content */
+    html[dir="rtl"] .brands-slider .brand-card,
+    [dir="rtl"] .brands-slider .brand-card {
+        direction: rtl;
     }
 
     .brands-slider::-webkit-scrollbar {
@@ -903,7 +926,7 @@
                 <i class="fas fa-chevron-left"></i>
             </button>
             
-            <div class="categories-grid" id="categoriesGrid">
+            <div class="categories-grid" id="categoriesGrid" style="direction: ltr !important;">
                 @foreach($categories as $category)
                 <div class="category-item" onclick="window.location.href='{{ route('products', ['category' => $category->slug]) }}'">
                     <div class="category-icon">
@@ -1231,35 +1254,60 @@
         if (categoriesGrid && scrollLeftBtn && scrollRightBtn) {
             const scrollAmount = 300;
             
+            // Check if RTL - check multiple sources
+            const isRTL = document.documentElement.dir === 'rtl' || 
+                         document.body.dir === 'rtl' || 
+                         document.documentElement.getAttribute('dir') === 'rtl' ||
+                         getComputedStyle(document.body).direction === 'rtl';
+            
+            console.log('Is RTL:', isRTL);
+            
+            // Since we force LTR on the container, scrolling works normally
+            // But we need to reverse button behavior for RTL pages
+            
             // Update button states
             function updateButtonStates() {
                 const maxScroll = categoriesGrid.scrollWidth - categoriesGrid.clientWidth;
+                let currentScroll = categoriesGrid.scrollLeft;
                 
-                if (categoriesGrid.scrollLeft <= 0) {
+                // Container is LTR, so scroll works normally (0 to maxScroll)
+                // But we keep button behavior consistent with visual direction
+                
+                if (currentScroll <= 0) {
+                    // At the start (scroll position = 0)
+                    // Can't scroll more to the left
                     scrollLeftBtn.classList.add('disabled');
-                } else {
-                    scrollLeftBtn.classList.remove('disabled');
-                }
-                
-                if (categoriesGrid.scrollLeft >= maxScroll - 5) {
+                    scrollRightBtn.classList.remove('disabled');
+                } else if (currentScroll >= maxScroll - 5) {
+                    // At the end (scroll position = max)
+                    // Can't scroll more to the right
                     scrollRightBtn.classList.add('disabled');
+                    scrollLeftBtn.classList.remove('disabled');
                 } else {
+                    // In the middle - both enabled
+                    scrollLeftBtn.classList.remove('disabled');
                     scrollRightBtn.classList.remove('disabled');
                 }
             }
             
-            // Scroll left
+            // Scroll left button
             scrollLeftBtn.addEventListener('click', function() {
+                // In RTL: left button (←) should scroll left (negative)
+                // In LTR: left button (←) should scroll left (negative)
+                const scrollValue = -scrollAmount;
                 categoriesGrid.scrollBy({
-                    left: -scrollAmount,
+                    left: scrollValue,
                     behavior: 'smooth'
                 });
             });
             
-            // Scroll right
+            // Scroll right button
             scrollRightBtn.addEventListener('click', function() {
+                // In RTL: right button (→) should scroll right (positive)
+                // In LTR: right button (→) should scroll right (positive)
+                const scrollValue = scrollAmount;
                 categoriesGrid.scrollBy({
-                    left: scrollAmount,
+                    left: scrollValue,
                     behavior: 'smooth'
                 });
             });
@@ -1268,7 +1316,7 @@
             categoriesGrid.addEventListener('scroll', updateButtonStates);
             
             // Initial button state
-            updateButtonStates();
+            setTimeout(updateButtonStates, 100);
             
             // Update on window resize
             window.addEventListener('resize', updateButtonStates);
