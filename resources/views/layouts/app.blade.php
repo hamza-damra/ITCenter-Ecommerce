@@ -1070,6 +1070,9 @@
             // Disable button temporarily
             button.disabled = true;
             const originalText = button.innerHTML;
+            const addedText = button.getAttribute('data-added-text') || 'Added';
+            const originalTextAttr = button.getAttribute('data-original-text') || 'Add to Cart';
+            
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
             
             fetch(`/cart/add/${productId}`, {
@@ -1086,7 +1089,12 @@
                 if (data.success) {
                     // Update button state
                     button.classList.add('in-cart');
-                    button.innerHTML = '<i class="fas fa-check"></i> Added';
+                    button.innerHTML = '<i class="fas fa-check"></i> ' + addedText;
+                    
+                    // Add product ID to global cart array
+                    if (window.cartProductIds && !window.cartProductIds.includes(productId)) {
+                        window.cartProductIds.push(productId);
+                    }
                     
                     // Update cart count
                     updateCartCount();
@@ -1094,11 +1102,8 @@
                     // Show notification
                     showNotification(data.message);
                     
-                    // Reset button after 2 seconds
-                    setTimeout(() => {
-                        button.innerHTML = originalText;
-                        button.disabled = false;
-                    }, 2000);
+                    // Keep the "Added" state permanently
+                    button.disabled = false;
                 } else {
                     button.innerHTML = originalText;
                     button.disabled = false;
@@ -1151,15 +1156,21 @@
             const cartButtons = document.querySelectorAll('.add-to-cart[data-product-id]');
             cartButtons.forEach(button => {
                 const productId = parseInt(button.getAttribute('data-product-id'));
+                const addedText = button.getAttribute('data-added-text') || 'In Cart';
+                const originalText = button.getAttribute('data-original-text') || 'Add to Cart';
+                
                 if (window.cartProductIds && window.cartProductIds.includes(productId)) {
                     button.classList.add('in-cart');
-                    // Optionally change the text
-                    const icon = button.querySelector('i');
-                    if (icon && !button.innerHTML.includes('Added')) {
-                        // Keep the original functionality
+                    // Update button text if not already updated
+                    if (!button.innerHTML.includes('check')) {
+                        button.innerHTML = '<i class="fas fa-check"></i> ' + addedText;
                     }
                 } else {
                     button.classList.remove('in-cart');
+                    // Restore original text
+                    if (button.innerHTML.includes('check')) {
+                        button.innerHTML = '<i class="fas fa-shopping-cart"></i> ' + originalText;
+                    }
                 }
             });
         }

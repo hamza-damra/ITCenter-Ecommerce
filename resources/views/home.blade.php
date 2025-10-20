@@ -3,7 +3,19 @@
 @section('title', __t('messages.home') . ' - IT Center')
 
 @section('content')
+
+<!-- Page Loader -->
+<div id="page-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <div style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #2762f3; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+    <p style="margin-top: 20px; color: #2762f3; font-size: 16px; font-weight: 600;">{{ __t('messages.loading') }}...</p>
+</div>
+
 <style>
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
     /* Import Google Font - Poppins */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
@@ -990,8 +1002,16 @@
                             <span>₪ {{ number_format($product->price, 0) }}</span>
                         @endif
                     </div>
-                    <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                        <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                    <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}" 
+                            data-product-id="{{ $product->id }}" 
+                            data-original-text="{{ __t('messages.add_to_cart') }}"
+                            data-added-text="{{ __t('messages.in_cart') }}"
+                            onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                        @if(in_array($product->id, $cartProductIds))
+                            <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                        @else
+                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                        @endif
                     </button>
                 </div>
             </div>
@@ -1064,8 +1084,16 @@
                             <span>₪ {{ number_format($product->price, 0) }}</span>
                         @endif
                     </div>
-                    <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                        <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                    <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}" 
+                            data-product-id="{{ $product->id }}" 
+                            data-original-text="{{ __t('messages.add_to_cart') }}"
+                            data-added-text="{{ __t('messages.in_cart') }}"
+                            onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                        @if(in_array($product->id, $cartProductIds))
+                            <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                        @else
+                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                        @endif
                     </button>
                 </div>
             </div>
@@ -1114,8 +1142,16 @@
                             <span>₪ {{ number_format($product->price, 0) }}</span>
                         @endif
                     </div>
-                    <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                        <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                    <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}" 
+                            data-product-id="{{ $product->id }}" 
+                            data-original-text="{{ __t('messages.add_to_cart') }}"
+                            data-added-text="{{ __t('messages.in_cart') }}"
+                            onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                        @if(in_array($product->id, $cartProductIds))
+                            <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                        @else
+                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                        @endif
                     </button>
                 </div>
             </div>
@@ -1155,8 +1191,16 @@
                         <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
                         <span>₪ {{ number_format($product->sale_price, 0) }}</span>
                     </div>
-                    <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                        <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                    <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}" 
+                            data-product-id="{{ $product->id }}" 
+                            data-original-text="{{ __t('messages.add_to_cart') }}"
+                            data-added-text="{{ __t('messages.in_cart') }}"
+                            onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                        @if(in_array($product->id, $cartProductIds))
+                            <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                        @else
+                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                        @endif
                     </button>
                 </div>
             </div>
@@ -1168,7 +1212,22 @@
 <!-- End Main Content Container -->
 
 <script>
+    // Store cart product IDs from server
+    window.cartProductIds = @json($cartProductIds);
+    
     document.addEventListener('DOMContentLoaded', function() {
+        // Hide page loader when everything is ready
+        const pageLoader = document.getElementById('page-loader');
+        if (pageLoader) {
+            // Wait a bit to ensure all resources are loaded
+            setTimeout(() => {
+                pageLoader.style.opacity = '0';
+                pageLoader.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => {
+                    pageLoader.style.display = 'none';
+                }, 300);
+            }, 100);
+        }
         // Hero Slider Functionality
         let currentSlide = 0;
         const slides = document.querySelectorAll('.hero-slide');

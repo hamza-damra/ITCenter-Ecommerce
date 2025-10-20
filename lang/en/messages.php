@@ -37,6 +37,7 @@ return [
     'on_sale' => 'On Sale Now',
     'no_products' => 'No products available',
     'add_to_cart' => 'Add to Cart',
+    'in_cart' => 'In Cart',
     'quick_view' => 'Quick View',
     'compare' => 'Compare',
     'wishlist' => 'Wishlist',

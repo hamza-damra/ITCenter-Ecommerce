@@ -37,6 +37,7 @@ return [
     'on_sale' => 'במבצע כעת',
     'no_products' => 'אין מוצרים זמינים',
     'add_to_cart' => 'הוסף לסל',
+    'in_cart' => 'בסל',
     'quick_view' => 'צפייה מהירה',
     'compare' => 'השווה',
     'wishlist' => 'רשימת משאלות',

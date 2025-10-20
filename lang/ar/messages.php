@@ -37,6 +37,7 @@ return [
     'on_sale' => 'تخفيضات الآن',
     'no_products' => 'لا توجد منتجات متاحة',
     'add_to_cart' => 'أضف إلى السلة',
+    'in_cart' => 'في السلة',
     'quick_view' => 'عرض سريع',
     'compare' => 'قارن',
     'wishlist' => 'قائمة الأمنيات',

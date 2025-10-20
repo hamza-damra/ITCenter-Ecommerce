@@ -77,6 +77,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the user's orders.
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
      * Send the password reset notification.
      *
      * @param  string  $token
