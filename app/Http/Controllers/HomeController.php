@@ -15,7 +15,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Optimize queries with eager loading
+        // Optimize queries with eager loading - only fetch non-empty collections
+        
+        // Featured Products (المنتجات المميزة)
         $featuredProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
             ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id')
             ->active()
@@ -23,6 +25,7 @@ class HomeController extends Controller
             ->limit(8)
             ->get();
 
+        // New Arrivals (وصل حديثاً)
         $newProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
             ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id')
             ->active()
@@ -30,6 +33,7 @@ class HomeController extends Controller
             ->limit(8)
             ->get();
 
+        // Bestsellers (الأكثر مبيعاً)
         $bestsellerProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
             ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id')
             ->active()
@@ -37,6 +41,7 @@ class HomeController extends Controller
             ->limit(8)
             ->get();
 
+        // On Sale Products (التخفيضات)
         $onSaleProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
             ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id')
             ->active()

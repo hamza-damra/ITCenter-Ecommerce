@@ -967,6 +967,7 @@
 <!-- Main Content Container -->
 <div class="container">
     <!-- Featured Products -->
+    @if($featuredProducts->count() > 0)
     <div class="section-header">
         <h2>{{ __t('messages.featured_products') }}</h2>
         <a href="{{ route('products') }}" class="view-more">
@@ -1018,6 +1019,7 @@
         </div>
         @endforeach
     </div>
+    @endif
 
     <!-- Shop by Categories - Builder Cards -->
     @if($categories->count() >= 5)
@@ -1045,6 +1047,7 @@
     @endif
 
     <!-- New Arrivals -->
+    @if($newProducts->count() > 0)
     <div class="section-header">
         <h2>{{ __t('messages.new_arrivals') }}</h2>
         <a href="{{ route('products') }}" class="view-more">
@@ -1057,7 +1060,8 @@
     </div>
 
     <div class="product-grid">
-        @foreach($newProducts as $product)
+        {{-- Debug: {{ $newProducts->count() }} products --}}
+        @forelse($newProducts as $product)
         <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
             <div class="product-image">
                 @if($product->is_new)
@@ -1098,8 +1102,13 @@
                 </div>
             </div>
         </div>
-        @endforeach
+        @empty
+        <div style="width: 100%; text-align: center; padding: 40px; color: #999;">
+            <p>لا توجد منتجات جديدة حالياً</p>
+        </div>
+        @endforelse
     </div>
+    @endif
 
     <!-- Bestsellers -->
     @if($bestsellerProducts->count() > 0)

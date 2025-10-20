@@ -454,44 +454,39 @@
             transform: translateY(0) !important;
         }
 
-        .user-dropdown-menu form {
-            margin: 0 !important;
+        /* New Logout Button Design */
+        .logout-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 16px;
+            background: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
-        /* Default state for all menu items - Force color */
-        .user-dropdown-menu .user-menu-item {
-            color: #ecececff !important;
-            transition: background 0.3s ease, padding 0.3s ease, color 0.3s ease !important;
+        .logout-button:hover {
+            background: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        .user-dropdown-menu .user-menu-item i {
-            color: #ecececff !important;
-            transition: color 0.3s ease !important;
+        .logout-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
         }
 
-        .user-dropdown-menu .user-menu-item span {
-            color: #ecececff !important;
-            transition: color 0.3s ease !important;
-        }
-
-        /* Hover state for all menu items */
-        .user-dropdown-menu .user-menu-item:hover {
-            background: rgba(212, 175, 55, 0.1) !important;
-            color: #d4af37 !important;
-            padding-{{ is_rtl() ? 'right' : 'left' }}: 1.4rem !important;
-        }
-
-        .user-dropdown-menu .user-menu-item:hover i {
-            color: #d4af37 !important;
-        }
-
-        .user-dropdown-menu .user-menu-item:hover span {
-            color: #d4af37 !important;
-        }
-
-        /* Active state for logout button */
-        .user-dropdown-menu .logout-btn:active {
-            background: rgba(212, 175, 55, 0.2) !important;
+        .logout-button span {
+            color: #ffffff;
+            letter-spacing: 0.3px;
         }
 
         /* Responsive adjustments */
@@ -551,18 +546,9 @@
                         <i class="fas fa-chevron-down" style="font-size: 0.7rem; transition: transform 0.3s;"></i>
                     </div>
                     <div class="user-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 10px); {{ is_rtl() ? 'left: 0;' : 'right: 0;' }} background: rgba(26, 26, 26, 0.98); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; min-width: 200px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); overflow: hidden; z-index: 1001; opacity: 0; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease;">
-                        <a href="#" class="user-menu-item" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; text-decoration: none; transition: background 0.3s ease, padding 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
-                            <i class="fas fa-user"></i>
-                            <span>{{ Auth::user()->name }}</span>
-                        </a>
-                        <a href="#" class="user-menu-item" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; text-decoration: none; transition: background 0.3s ease, padding 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
-                            <i class="fas fa-box"></i>
-                            <span>{{ __t('messages.my_orders') }}</span>
-                        </a>
-                        <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                        <form action="{{ route('logout') }}" method="POST" style="margin: 0; padding: 8px;">
                             @csrf
-                            <button type="submit" class="user-menu-item logout-btn" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit;">
-                                <i class="fas fa-sign-out-alt"></i>
+                            <button type="submit" class="logout-button">
                                 <span>{{ __t('messages.logout') }}</span>
                             </button>
                         </form>

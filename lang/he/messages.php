@@ -480,4 +480,18 @@ return [
     'date_from' => 'מתאריך',
     'date_to' => 'עד תאריך',
     'all' => 'הכל',
+    
+    // Contact Page
+    'get_in_touch' => 'צור קשר עם הצוות שלנו',
+    'send_us_message' => 'שלח לנו הודעה',
+    'your_name' => 'שם',
+    'your_email' => 'דוא"ל',
+    'your_phone' => 'טלפון',
+    'your_message' => 'הודעה',
+    'send_message' => 'שלח הודעה',
+    'business_hours' => 'שעות פעילות',
+    'monday_friday' => 'שני - שישי: 9:00 - 18:00',
+    'saturday_hours' => 'שבת: 10:00 - 16:00',
+    'sunday_closed' => 'ראשון: סגור',
 ];
+

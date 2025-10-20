@@ -601,6 +601,21 @@ return [
     'payment' => 'الدفع',
     'name' => 'الاسم',
     'login' => 'تسجيل الدخول',
+    
+    // Contact Page
+    'get_in_touch' => 'تواصل مع فريقنا',
+    'send_us_message' => 'أرسل لنا رسالة',
+    'your_name' => 'الاسم',
+    'your_email' => 'البريد الإلكتروني',
+    'your_phone' => 'رقم الهاتف',
+    'your_message' => 'رسالتك',
+    'send_message' => 'إرسال الرسالة',
+    'business_hours' => 'ساعات العمل',
+    'monday_friday' => 'الإثنين - الجمعة: 9:00 صباحاً - 6:00 مساءً',
+    'saturday_hours' => 'السبت: 10:00 صباحاً - 4:00 مساءً',
+    'sunday_closed' => 'الأحد: مغلق',
 ];
+
+
 
 

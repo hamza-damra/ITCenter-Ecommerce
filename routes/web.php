@@ -23,6 +23,7 @@ Route::get('/lang/{locale}', function ($locale) {
 
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/test-home', [HomeController::class, 'index'])->name('test.home');
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
 Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');

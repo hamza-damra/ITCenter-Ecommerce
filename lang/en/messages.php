@@ -631,5 +631,19 @@ return [
     'shipped_at' => 'Shipped',
     'delivered_at' => 'Delivered',
     'cancelled_at' => 'Cancelled',
+    
+    // Contact Page
+    'get_in_touch' => 'Get in touch with our team',
+    'send_us_message' => 'Send Us a Message',
+    'your_name' => 'Name',
+    'your_email' => 'Email',
+    'your_phone' => 'Phone',
+    'your_message' => 'Message',
+    'send_message' => 'Send Message',
+    'business_hours' => 'Business Hours',
+    'monday_friday' => 'Monday - Friday: 9:00 AM - 6:00 PM',
+    'saturday_hours' => 'Saturday: 10:00 AM - 4:00 PM',
+    'sunday_closed' => 'Sunday: Closed',
 ];
+
 
