@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\CartItem;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 /**
  * Web Controller - Returns views only
@@ -73,7 +76,10 @@ class ProductController extends Controller
 
         $products = $query->paginate($request->get('per_page', 12));
 
-        return view('products', compact('products'));
+        // Get cart product IDs for current user/session
+        $cartProductIds = $this->getCartProductIds();
+
+        return view('products', compact('products', 'cartProductIds'));
     }
 
     public function show($slug)
@@ -90,8 +96,41 @@ class ProductController extends Controller
             ->inRandomOrder()
             ->limit(4)
             ->get();
-            
-            
+
+
         return view('product-detail', compact('slug', 'product', 'relatedProducts'));
+    }
+
+    /**
+     * Get cart product IDs for current user/session
+     */
+    private function getCartProductIds()
+    {
+        $identifier = $this->getCartIdentifier();
+
+        return CartItem::where(function($query) use ($identifier) {
+            if (isset($identifier['user_id'])) {
+                $query->where('user_id', $identifier['user_id']);
+            } else {
+                $query->where('session_id', $identifier['session_id']);
+            }
+        })->pluck('product_id')->toArray();
+    }
+
+    /**
+     * Get cart identifier (user_id or session_id)
+     */
+    private function getCartIdentifier()
+    {
+        if (Auth::check()) {
+            return ['user_id' => Auth::id()];
+        }
+
+        // Ensure session is started
+        if (!Session::isStarted()) {
+            Session::start();
+        }
+
+        return ['session_id' => Session::getId()];
     }
 }
