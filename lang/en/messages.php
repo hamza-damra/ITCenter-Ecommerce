@@ -43,6 +43,7 @@ return [
     'wishlist' => 'Wishlist',
     'out_of_stock' => 'Out of Stock',
     'in_stock' => 'In Stock',
+    'request_product' => 'Request Product',
     'product' => 'product',
     
     // Product Badges

@@ -244,6 +244,19 @@
         animation: cartBounce 0.5s ease;
     }
 
+    .add-to-cart.out-of-stock {
+        background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    }
+
+    .add-to-cart.out-of-stock:hover {
+        background: linear-gradient(135deg, #f57c00 0%, #ef6c00 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
+    }
+
     @keyframes cartBounce {
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.3); }
@@ -522,9 +535,26 @@
                                 <span>₪ {{ number_format($product->price, 0) }}</span>
                             @endif
                         </div>
-                        <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                        @if($product->stock_status === 'out_of_stock')
+                        <button class="add-to-cart out-of-stock"
+                                data-product-id="{{ $product->id }}"
+                                data-product-name="{{ $product->name }}"
+                                onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
+                            <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
                         </button>
+                        @else
+                        <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
+                                data-product-id="{{ $product->id }}"
+                                data-original-text="{{ __t('messages.add_to_cart') }}"
+                                data-added-text="{{ __t('messages.in_cart') }}"
+                                onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                            @if(in_array($product->id, $cartProductIds))
+                                <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                            @else
+                                <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                            @endif
+                        </button>
+                        @endif
                     </div>
                 </div>
             </div>

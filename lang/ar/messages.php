@@ -38,6 +38,7 @@ return [
     'no_products' => 'لا توجد منتجات متاحة',
     'add_to_cart' => 'أضف إلى السلة',
     'in_cart' => 'في السلة',
+    'request_product' => 'اطلب المنتج',
     'quick_view' => 'عرض سريع',
     'compare' => 'قارن',
     'wishlist' => 'قائمة الأمنيات',

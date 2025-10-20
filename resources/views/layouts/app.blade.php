@@ -1105,6 +1105,19 @@
         }
 
         /**
+         * Request out-of-stock product
+         */
+        function requestProduct(productId, productName) {
+            // Escape product name for display
+            const escapedName = productName.replace(/'/g, "\\'");
+
+            // Show confirmation dialog
+            if (confirm(`{{ __t('messages.request_product') }}: ${productName}?\n\n{{ __t('messages.contact_us') }}: 0599-123456`)) {
+                showNotification(`{{ __t('messages.request_product') }}: ${productName}`);
+            }
+        }
+
+        /**
          * Update cart count in header
          */
         function updateCartCount() {

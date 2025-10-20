@@ -38,6 +38,7 @@ return [
     'no_products' => 'אין מוצרים זמינים',
     'add_to_cart' => 'הוסף לסל',
     'in_cart' => 'בסל',
+    'request_product' => 'בקש מוצר',
     'quick_view' => 'צפייה מהירה',
     'compare' => 'השווה',
     'wishlist' => 'רשימת משאלות',
