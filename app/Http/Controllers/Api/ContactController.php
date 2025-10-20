@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Traits\ApiResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
 {
-    public function index()
-    {
-        return view('contact');
-    }
+    use ApiResponses;
 
     /**
-     * Store a newly created contact message (fallback for non-JS submissions)
+     * Store a newly created contact message.
      */
     public function store(Request $request)
     {
@@ -26,13 +25,11 @@ class ContactController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+            return $this->validationErrorResponse($validator->errors()->toArray());
         }
 
         try {
-            Contact::create([
+            $contact = Contact::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'subject' => $request->subject,
@@ -40,12 +37,16 @@ class ContactController extends Controller
                 'status' => 'pending',
             ]);
 
-            return redirect()->route('contact')
-                ->with('success', __('messages.message_sent_successfully'));
+            return $this->successResponse(
+                $contact,
+                __('messages.message_sent_successfully'),
+                201
+            );
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', __('messages.message_send_failed'))
-                ->withInput();
+            return $this->errorResponse(
+                __('messages.message_send_failed'),
+                500
+            );
         }
     }
 }

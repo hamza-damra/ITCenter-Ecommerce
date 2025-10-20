@@ -487,11 +487,55 @@ return [
     'your_name' => 'שם',
     'your_email' => 'דוא"ל',
     'your_phone' => 'טלפון',
+    'subject' => 'נושא',
     'your_message' => 'הודעה',
     'send_message' => 'שלח הודעה',
+    'sending' => 'שולח...',
+    'message_sent_successfully' => 'הודעתך נשלחה בהצלחה. ניצור איתך קשר בקרוב.',
+    'message_send_failed' => 'שליחת ההודעה נכשלה. אנא נסה שוב מאוחר יותר.',
     'business_hours' => 'שעות פעילות',
     'monday_friday' => 'שני - שישי: 9:00 - 18:00',
     'saturday_hours' => 'שבת: 10:00 - 16:00',
     'sunday_closed' => 'ראשון: סגור',
+    'error_occurred' => 'אירעה שגיאה. אנא נסה שוב.',
+    
+    // Contact Management (Admin)
+    'contact_messages_management' => 'ניהול הודעות יצירת קשר',
+    'contact_messages' => 'הודעות יצירת קשר',
+    'view_and_manage_customer_inquiries' => 'צפה ונהל פניות לקוחות',
+    'total_messages' => 'סך כל ההודעות',
+    'read' => 'נקרא',
+    'archived' => 'מאורכב',
+    'messages_selected' => 'הודעות נבחרו',
+    'mark_as_pending' => 'סמן כממתין',
+    'mark_as_read' => 'סמן כנקרא',
+    'mark_as_archived' => 'סמן כמאורכב',
+    'are_you_sure_delete_selected_messages' => 'האם אתה בטוח שברצונך למחוק הודעות נבחרות?',
+    'search_name_email_subject' => 'שם, דוא"ל, נושא...',
+    'no_messages_found' => 'לא נמצאו הודעות',
+    'no_contact_messages_to_display' => 'אין הודעות יצירת קשר להצגה',
+    
+    // Contact Message Details
+    'view_contact_message' => 'צפה בהודעת יצירת קשר',
+    'back_to_messages' => 'חזרה להודעות',
+    'contact_message_details' => 'פרטי הודעת יצירת קשר',
+    'received' => 'התקבל',
+    'sender_information' => 'מידע על השולח',
+    'message_content' => 'תוכן ההודעה',
+    'reply_via_email' => 'השב באמצעות דוא"ל',
+    'archive_message' => 'ארכב הודעה',
+    'unarchive' => 'בטל ארכוב',
+    'delete_message' => 'מחק הודעה',
+    'are_you_sure_delete_message' => 'האם אתה בטוח שברצונך למחוק הודעה זו?',
+    'message_info' => 'מידע על ההודעה',
+    'received_date' => 'תאריך קבלה',
+    'received_time' => 'זמן קבלה',
+    'last_updated' => 'עודכן לאחרונה',
+    
+    // Bulk operations messages
+    'messages_deleted_successfully' => ':count הודעות נמחקו בהצלחה',
+    'messages_status_updated_successfully' => 'סטטוס של :count הודעות עודכן בהצלחה',
 ];
+
+
 

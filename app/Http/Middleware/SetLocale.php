@@ -22,9 +22,10 @@ class SetLocale
         
         // Priority order for locale detection:
         // 1. URL parameter (?lang=ar)
-        // 2. Session
-        // 3. Browser Accept-Language header
-        // 4. Default from config
+        // 2. Accept-Language header (for API requests)
+        // 3. Session
+        // 4. Browser Accept-Language header
+        // 5. Default from config
         
         $locale = null;
         
@@ -32,6 +33,16 @@ class SetLocale
         if ($request->has('lang') && in_array($request->get('lang'), $availableLocales)) {
             $locale = $request->get('lang');
             Session::put('locale', $locale);
+        }
+        
+        // Check Accept-Language header (for API requests)
+        if (!$locale && $request->header('Accept-Language')) {
+            $acceptLanguage = $request->header('Accept-Language');
+            // Extract first locale from header (e.g., "ar" from "ar,en;q=0.9")
+            $headerLocale = strtok($acceptLanguage, ',;');
+            if ($headerLocale && in_array($headerLocale, $availableLocales)) {
+                $locale = $headerLocale;
+            }
         }
         
         // Check session

@@ -608,13 +608,57 @@ return [
     'your_name' => 'الاسم',
     'your_email' => 'البريد الإلكتروني',
     'your_phone' => 'رقم الهاتف',
+    'subject' => 'الموضوع',
     'your_message' => 'رسالتك',
     'send_message' => 'إرسال الرسالة',
+    'sending' => 'جاري الإرسال...',
+    'message_sent_successfully' => 'تم إرسال رسالتك بنجاح. سنتواصل معك قريباً.',
+    'message_send_failed' => 'فشل إرسال الرسالة. يرجى المحاولة مرة أخرى لاحقاً.',
     'business_hours' => 'ساعات العمل',
     'monday_friday' => 'الإثنين - الجمعة: 9:00 صباحاً - 6:00 مساءً',
     'saturday_hours' => 'السبت: 10:00 صباحاً - 4:00 مساءً',
     'sunday_closed' => 'الأحد: مغلق',
+    'error_occurred' => 'حدث خطأ. يرجى المحاولة مرة أخرى.',
+    
+    // Contact Management (Admin)
+    'contact_messages_management' => 'إدارة رسائل التواصل',
+    'contact_messages' => 'رسائل التواصل',
+    'view_and_manage_customer_inquiries' => 'عرض وإدارة استفسارات العملاء',
+    'total_messages' => 'إجمالي الرسائل',
+    'read' => 'مقروءة',
+    'archived' => 'مؤرشفة',
+    'messages_selected' => 'رسالة محددة',
+    'mark_as_pending' => 'وضع علامة قيد الانتظار',
+    'mark_as_read' => 'وضع علامة كمقروءة',
+    'mark_as_archived' => 'وضع علامة كمؤرشفة',
+    'are_you_sure_delete_selected_messages' => 'هل أنت متأكد من حذف الرسائل المحددة؟',
+    'search_name_email_subject' => 'الاسم، البريد الإلكتروني، الموضوع...',
+    'no_messages_found' => 'لا توجد رسائل',
+    'no_contact_messages_to_display' => 'لا توجد رسائل تواصل للعرض',
+    
+    // Contact Message Details
+    'view_contact_message' => 'عرض رسالة التواصل',
+    'back_to_messages' => 'العودة إلى الرسائل',
+    'contact_message_details' => 'تفاصيل رسالة التواصل',
+    'received' => 'تم الاستلام',
+    'sender_information' => 'معلومات المرسل',
+    'message_content' => 'محتوى الرسالة',
+    'reply_via_email' => 'الرد عبر البريد الإلكتروني',
+    'archive_message' => 'أرشفة الرسالة',
+    'unarchive' => 'إلغاء الأرشفة',
+    'delete_message' => 'حذف الرسالة',
+    'are_you_sure_delete_message' => 'هل أنت متأكد من حذف هذه الرسالة؟',
+    'message_info' => 'معلومات الرسالة',
+    'received_date' => 'تاريخ الاستلام',
+    'received_time' => 'وقت الاستلام',
+    'last_updated' => 'آخر تحديث',
+    
+    // Bulk operations messages
+    'messages_deleted_successfully' => 'تم حذف :count رسالة بنجاح',
+    'messages_status_updated_successfully' => 'تم تحديث حالة :count رسالة بنجاح',
+    'deleting' => 'جاري الحذف',
 ];
+
 
 
 

@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,9 @@ Route::prefix('v1')->group(function () {
     Route::get('/products/{slug}/reviews', [ReviewController::class, 'index']);
     Route::post('/reviews/{review}/helpful', [ReviewController::class, 'markHelpful']);
     Route::post('/reviews/{review}/unhelpful', [ReviewController::class, 'markUnhelpful']);
+    
+    // Contact
+    Route::post('/contact', [ContactController::class, 'store'])->name('api.contact.store');
     
     // Public routes with optional auth
     Route::get('/favorites', [FavoriteController::class, 'index']);
