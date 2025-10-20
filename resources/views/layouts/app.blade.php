@@ -122,7 +122,7 @@
             text-align: {{ is_rtl() ? 'right' : 'left' }};
         }
 
-        /* RTL: input is second (on the right) */
+        /* RTL: input is first (on the right in visual order) */
         @if(is_rtl())
         .search-bar input {
             border-radius: 0 8px 8px 0;
@@ -154,7 +154,7 @@
             min-width: 50px;
         }
 
-        /* RTL: button is first (on the left) */
+        /* RTL: button is second (on the left in visual order) */
         @if(is_rtl())
         .search-btn {
             border-radius: 8px 0 0 8px;
@@ -520,10 +520,10 @@
 
             <form action="{{ route('products') }}" method="GET" class="search-bar" role="search">
                 @if(is_rtl())
+                    <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __t('messages.search') }}" aria-label="{{ __t('messages.search') }}">
                     <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
                         <i class="fas fa-search"></i>
                     </button>
-                    <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __t('messages.search') }}" aria-label="{{ __t('messages.search') }}">
                 @else
                     <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __t('messages.search') }}" aria-label="{{ __t('messages.search') }}">
                     <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
