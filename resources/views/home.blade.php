@@ -3,32 +3,7 @@
 @section('title', __t('messages.home') . ' - IT Center')
 
 @section('content')
-
-<!-- Page Loader -->
-<div id="page-loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-    <div style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #2762f3; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-    <p style="margin-top: 20px; color: #2762f3; font-size: 16px; font-weight: 600;">{{ __t('messages.loading') }}...</p>
-</div>
-
 <style>
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    
-    /* Import Google Font - Poppins */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
-    /* Override font for home page - exclude Font Awesome icons */
-    body, 
-    body *:not(.fa):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class*="fa-"]) {
-        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-    }
-
-    /* Ensure Font Awesome icons keep their font */
-    .fa, .fas, .far, .fab, .fal, .fad, [class*="fa-"] {
-        font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 6 Pro" !important;
-    }
 
     /* Hero Section - Slider */
     .hero-section {
@@ -630,24 +605,23 @@
 
     .product-card {
         background: #fff;
-        border-radius: 16px;
+        border-radius: 10px;
         overflow: hidden;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
-        display: flex;
-        flex-direction: column;
+        border: 1px solid rgba(0,0,0,0.02);
     }
 
     .product-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.08);
     }
 
     .product-image {
         width: 100%;
-        height: 280px;
-        background: #f8f9fa;
+        height: 250px;
+        background: #fafafaff;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -655,9 +629,10 @@
         overflow: hidden;
     }
 
+
     .product-image img {
-        max-width: 85%;
-        max-height: 85%;
+        max-width: 90%;
+        max-height: 90%;
         object-fit: contain;
     }
 
@@ -790,7 +765,7 @@
     }
 
     .add-to-cart {
-        background: linear-gradient(135deg, #4e73df 0%, #3659d1 100%);
+        background: linear-gradient(135deg, #454546ff 0%, #000000ff 100%);
         color: #fff;
         padding: 0.875rem 1.5rem;
         border-radius: 12px;
@@ -809,7 +784,7 @@
     }
 
     .add-to-cart:hover {
-        background: linear-gradient(135deg, #3659d1 0%, #2447b8 100%);
+        background: linear-gradient(135deg, #7bace3ff 0%, #404249ff 100%);
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(78, 115, 223, 0.4);
     }

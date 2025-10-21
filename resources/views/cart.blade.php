@@ -553,9 +553,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const productId = this.dataset.productId;
             const cartItem = this.closest('.cart-item');
             
-            if (confirm('{{ __('messages.confirm_remove_cart') }}')) {
+            removeFromCart(productId, cartItem);
+            /*if (confirm('{{ __('messages.confirm_remove_cart') }}')) {
                 removeFromCart(productId, cartItem);
-            }
+            }*/
         });
     });
 

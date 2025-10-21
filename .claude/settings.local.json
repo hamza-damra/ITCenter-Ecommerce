@@ -6,7 +6,10 @@
       "Bash(git commit:*)",
       "Bash(dir \"C:\\Users\\rashe\\Desktop\\it-center\\laravel-app\\mysrearchbar\")",
       "Bash(dir \"C:\\Users\\rashe\\Desktop\\it-center\\laravel-app\\myimages\")",
-      "Bash(copy:*)"
+      "Bash(copy:*)",
+      "Bash(git pull:*)",
+      "Read(//c/Users/rashe/Desktop/it-center/backup/laravel-app/resources/views/layouts/**)",
+      "Read(//c/Users/rashe/Desktop/it-center/backup/laravel-app/resources/views/**)"
     ],
     "deny": [],
     "ask": []

@@ -96,12 +96,12 @@
         /* Search Bar Styles */
         .search-bar {
             display: flex;
-            flex-direction: row;
+            flex-direction: {{ is_rtl() ? 'row-reverse' : 'row' }};
             flex: 1;
             max-width: 500px;
             gap: 0;
             align-items: center;
-            position: relative;
+            position: relative; /* added for absolute icon */
         }
 
         .search-bar input {
@@ -117,30 +117,41 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            border-style:none none solid none;
+            border-style:none none none none;
             direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
             text-align: {{ is_rtl() ? 'right' : 'left' }};
+
+            /* reserve space for the search icon inside the input */
+            @if(is_rtl())
+                padding-right: 44px;
+            @else
+                padding-left: 44px;
+            @endif
         }
 
-        /* RTL: input is first (on the right in visual order) */
-        @if(is_rtl())
-        .search-bar input {
-            border-radius: 0 8px 8px 0;
+        .search-input-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1rem;
+            pointer-events: none;
+            z-index: 2;
+            @if(is_rtl())
+            right: 12px;
+            @else
+            left: 12px;
+            @endif
         }
-        @else
-        /* LTR: input is first (on the left) */
-        .search-bar input {
-            border-radius: 8px 0 0 8px;
-        }
-        @endif
 
         .search-btn {
             height: 45px;
-            padding: 0 20px;
+            padding: 0 18px;
             background: #2762f3;
             color: #ffffff;
             border: none;
-            font-size: 1rem;
+            border-radius: {{ is_rtl() ? '0 8px 8px 0' : '0 8px 8px 0' }};
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -149,22 +160,8 @@
             unicode-bidi: embed;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 0.5rem;
-            min-width: 50px;
         }
-
-        /* RTL: button is second (on the left in visual order) */
-        @if(is_rtl())
-        .search-btn {
-            border-radius: 8px 0 0 8px;
-        }
-        @else
-        /* LTR: button is second (on the right) */
-        .search-btn {
-            border-radius: 0 8px 8px 0;
-        }
-        @endif
 
         .search-btn:hover {
             background: #1a4dbf;
@@ -176,8 +173,10 @@
             transform: translateY(0);
         }
 
-        .search-btn i {
-            font-size: 0.95rem;
+        .search-btn span {
+            display: inline-block;
+            direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+            unicode-bidi: embed;
         }
 
         .header-icons {
@@ -219,7 +218,7 @@
 
         main {
             min-height: calc(100vh - 200px);
-            background-color: #f5f5f5;
+            background-color: #fafafaff;
         }
 
         footer {
@@ -242,7 +241,7 @@
 
         .footer-section h3 {
             margin-bottom: 1rem;
-            color: #d4af37;
+            color: rgba(232, 184, 116, 1);
         }
 
         .footer-section ul {
@@ -305,7 +304,9 @@
         .language-dropdown {
             position: relative;
         }
-
+        .fas:hover{
+            color: rgba(232, 184, 116, 1);
+        }
         .language-toggle {
             display: flex;
             align-items: center;
@@ -314,13 +315,10 @@
             padding: 0.4rem 0.8rem;
             border-radius: 6px;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .language-toggle:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+            color: rgba(232, 184, 116, 1);
         }
 
         .language-dropdown.active .language-toggle {
@@ -454,39 +452,44 @@
             transform: translateY(0) !important;
         }
 
-        /* New Logout Button Design */
-        .logout-button {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 16px;
-            background: #000000;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        .user-dropdown-menu form {
+            margin: 0 !important;
         }
 
-        .logout-button:hover {
-            background: #1a1a1a;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        /* Default state for all menu items - Force color */
+        .user-dropdown-menu .user-menu-item {
+            color: #ecececff !important;
+            transition: background 0.3s ease, padding 0.3s ease, color 0.3s ease !important;
         }
 
-        .logout-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        .user-dropdown-menu .user-menu-item i {
+            color: #ecececff !important;
+            transition: color 0.3s ease !important;
         }
 
-        .logout-button span {
-            color: #ffffff;
-            letter-spacing: 0.3px;
+        .user-dropdown-menu .user-menu-item span {
+            color: #ecececff !important;
+            transition: color 0.3s ease !important;
+        }
+
+        /* Hover state for all menu items */
+        .user-dropdown-menu .user-menu-item:hover {
+            background: rgba(212, 175, 55, 0.1) !important;
+            color: #d4af37 !important;
+            padding-{{ is_rtl() ? 'right' : 'left' }}: 1.4rem !important;
+        }
+
+        .user-dropdown-menu .user-menu-item:hover i {
+            color: #d4af37 !important;
+        }
+
+        .user-dropdown-menu .user-menu-item:hover span {
+            color: #d4af37 !important;
+        }
+
+        /* Active state for logout button */
+        .user-dropdown-menu .logout-btn:active {
+            background: rgba(212, 175, 55, 0.2) !important;
         }
 
         /* Responsive adjustments */
@@ -518,18 +521,13 @@
                 <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">{{ __t('messages.contact') }}</a></li>
             </ul>
 
-            <form action="{{ route('products') }}" method="GET" class="search-bar" role="search">
-                @if(is_rtl())
-                    <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __t('messages.search') }}" aria-label="{{ __t('messages.search') }}">
-                    <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
-                        <i class="fas fa-search"></i>
-                    </button>
-                @else
-                    <input type="search" name="search" value="{{ request('search') }}" placeholder="{{ __t('messages.search') }}" aria-label="{{ __t('messages.search') }}">
-                    <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
-                        <i class="fas fa-search"></i>
-                    </button>
-                @endif
+            <form action="" class="search-bar" role="search">
+                <!-- icon inside input -->
+                <i class="fas fa-search search-input-icon" aria-hidden="true"></i>
+                <input type="search" name="search" placeholder="{{ __t('messages.search') }}">
+               <!-- <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
+                    <span>{{ __t('messages.search') }}</span>
+                </button> -->
             </form>
 
             <div class="header-icons">
@@ -546,9 +544,18 @@
                         <i class="fas fa-chevron-down" style="font-size: 0.7rem; transition: transform 0.3s;"></i>
                     </div>
                     <div class="user-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 10px); {{ is_rtl() ? 'left: 0;' : 'right: 0;' }} background: rgba(26, 26, 26, 0.98); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; min-width: 200px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); overflow: hidden; z-index: 1001; opacity: 0; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease;">
-                        <form action="{{ route('logout') }}" method="POST" style="margin: 0; padding: 8px;">
+                        <a href="#" class="user-menu-item" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; text-decoration: none; transition: background 0.3s ease, padding 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                            <i class="fas fa-user"></i>
+                            <span>{{ Auth::user()->name }}</span>
+                        </a>
+                        <a href="{{ route('orders.index') }}" class="user-menu-item" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; text-decoration: none; transition: background 0.3s ease, padding 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
+                            <i class="fas fa-box"></i>
+                            <span>{{ __t('messages.my_orders') }}</span>
+                        </a>
+                        <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
                             @csrf
-                            <button type="submit" class="logout-button">
+                            <button type="submit" class="user-menu-item logout-btn" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit;">
+                                <i class="fas fa-sign-out-alt"></i>
                                 <span>{{ __t('messages.logout') }}</span>
                             </button>
                         </form>
@@ -598,13 +605,6 @@
                         </span>
                     </a>
                 </div>
-                @auth
-                <div class="header-icon">
-                    <a href="{{ route('orders.index') }}" style="color: inherit; text-decoration: none;" title="{{ __t('messages.my_orders') }}">
-                        <i class="fas fa-shopping-bag"></i>
-                    </a>
-                </div>
-                @endauth
                 <div class="header-icon">
                     <a href="{{ route('cart.index') }}" style="color: inherit; text-decoration: none;">
                         <i class="fas fa-shopping-cart"></i>
