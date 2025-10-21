@@ -44,24 +44,25 @@
 
     .product-card {
         background: #fff;
-        border-radius: 16px;
+        border-radius: 10px;
         overflow: hidden;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        transition: transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
+        border: 1px solid rgba(0,0,0,0.02);
         display: flex;
         flex-direction: column;
     }
 
     .product-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.08);
     }
 
     .product-image {
         width: 100%;
-        height: 280px;
-        background: #f8f9fa;
+        height: 250px;
+        background: #fafafaff;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -70,8 +71,8 @@
     }
 
     .product-image img {
-        max-width: 85%;
-        max-height: 85%;
+        max-width: 90%;
+        max-height: 90%;
         object-fit: contain;
     }
 
@@ -208,7 +209,7 @@
     }
 
     .add-to-cart {
-        background: linear-gradient(135deg, #4e73df 0%, #3659d1 100%);
+        background: linear-gradient(135deg, #454546ff 0%, #000000ff 100%);
         color: #fff;
         padding: 0.875rem 1.5rem;
         border-radius: 12px;
@@ -227,7 +228,7 @@
     }
 
     .add-to-cart:hover {
-        background: linear-gradient(135deg, #3659d1 0%, #2447b8 100%);
+        background: linear-gradient(135deg, #7bace3ff 0%, #404249ff 100%);
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(78, 115, 223, 0.4);
     }
@@ -680,6 +681,7 @@
                                 <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
                                 <span>₪ {{ number_format($product->sale_price, 0) }}</span>
                             @else
+                                <span class="original-price" style="visibility: hidden;">₪ 0</span>
                                 <span>₪ {{ number_format($product->price, 0) }}</span>
                             @endif
                         </div>
@@ -688,7 +690,11 @@
                                 data-product-id="{{ $product->id }}"
                                 data-product-name="{{ $product->name }}"
                                 onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
-                            <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                            @if(is_rtl())
+                                {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
+                            @else
+                                <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                            @endif
                         </button>
                         @else
                         <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
@@ -697,9 +703,17 @@
                                 data-added-text="{{ __t('messages.in_cart') }}"
                                 onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
                             @if(in_array($product->id, $cartProductIds))
-                                <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                                @if(is_rtl())
+                                    {{ __t('messages.in_cart') }} <i class="fas fa-check"></i>
+                                @else
+                                    <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                                @endif
                             @else
-                                <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                                @if(is_rtl())
+                                    {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
+                                @else
+                                    <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                                @endif
                             @endif
                         </button>
                         @endif

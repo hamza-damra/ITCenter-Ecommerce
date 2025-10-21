@@ -261,8 +261,8 @@
         gap: 7px;
         padding: 8px 14px;
         border-radius: 8px;
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-        color: #0c4a6e;
+        background: transparent;
+        color: var(--dark);
         font-size: 12px;
         font-weight: 700;
     }

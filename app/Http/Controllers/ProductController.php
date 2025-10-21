@@ -65,6 +65,7 @@ class ProductController extends Controller
                     ->orWhere('short_description_en', 'like', "%{$search}%")
                     ->orWhere('short_description_ar', 'like', "%{$search}%")
                     ->orWhere('short_description_he', 'like', "%{$search}%")
+                    ->orWhere('search_keywords', 'like', "%{$search}%")
                     ->orWhere('sku', 'like', "%{$search}%");
             });
         }

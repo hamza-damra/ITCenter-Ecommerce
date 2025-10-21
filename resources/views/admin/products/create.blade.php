@@ -102,16 +102,16 @@
 
                     <div class="form-group">
                         <label for="name_he" class="form-label">
-                            שם המוצר (עברית)
+                            {{ __('messages.product_name_hebrew') }}
                             <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
                         </label>
-                        <input 
-                            type="text" 
-                            id="name_he" 
-                            name="name_he" 
-                            class="form-control @error('name_he') is-invalid @enderror" 
-                            value="{{ old('name_he') }}" 
-                            placeholder="הזן את שם המוצר בעברית"
+                        <input
+                            type="text"
+                            id="name_he"
+                            name="name_he"
+                            class="form-control @error('name_he') is-invalid @enderror"
+                            value="{{ old('name_he') }}"
+                            placeholder="{{ __('messages.enter_product_name_hebrew') }}"
                             dir="rtl">
                         @error('name_he')
                             <span class="error-message">{{ $message }}</span>
@@ -279,6 +279,33 @@
             </div>
         </div>
 
+        <!-- Search Keywords Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-search"></i> {{ __('messages.search_optimization') }}</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="search_keywords" class="form-label">
+                        {{ __('messages.search_keywords') }}
+                        <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                    </label>
+                    <textarea
+                        id="search_keywords"
+                        name="search_keywords"
+                        class="form-control @error('search_keywords') is-invalid @enderror"
+                        placeholder="{{ __('messages.search_keywords_placeholder') }}"
+                        style="min-height: 100px;">{{ old('search_keywords') }}</textarea>
+                    <p class="form-text">
+                        <i class="fas fa-info-circle"></i> {{ __('messages.search_keywords_help') }}
+                    </p>
+                    @error('search_keywords')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
         <!-- Descriptions Card -->
         <div class="card">
             <div class="card-header">
@@ -319,14 +346,14 @@
 
                     <div class="form-group">
                         <label for="short_description_he" class="form-label">
-                            תיאור קצר (עברית)
+                            {{ __('messages.short_description_hebrew') }}
                         </label>
-                        <textarea 
-                            id="short_description_he" 
-                            name="short_description_he" 
+                        <textarea
+                            id="short_description_he"
+                            name="short_description_he"
                             class="form-control @error('short_description_he') is-invalid @enderror"
                             dir="rtl"
-                            placeholder="תיאור קצר של המוצר"
+                            placeholder="{{ __('messages.brief_description_hebrew') }}"
                             style="min-height: 80px;">{{ old('short_description_he') }}</textarea>
                         @error('short_description_he')
                             <span class="error-message">{{ $message }}</span>
@@ -368,14 +395,14 @@
 
                     <div class="form-group">
                         <label for="description_he" class="form-label">
-                            תיאור מלא (עברית)
+                            {{ __('messages.full_description_hebrew') }}
                         </label>
-                        <textarea 
-                            id="description_he" 
-                            name="description_he" 
+                        <textarea
+                            id="description_he"
+                            name="description_he"
                             class="form-control @error('description_he') is-invalid @enderror"
                             dir="rtl"
-                            placeholder="תיאור מלא של המוצר עם פרטים"
+                            placeholder="{{ __('messages.complete_description_hebrew') }}"
                             style="min-height: 150px;">{{ old('description_he') }}</textarea>
                         @error('description_he')
                             <span class="error-message">{{ $message }}</span>

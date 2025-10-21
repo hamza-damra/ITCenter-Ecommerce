@@ -46,6 +46,21 @@ return [
     'in_stock' => 'במלאי',
     'product' => 'מוצר',
     
+    // Special Offer Section
+    'special_offer' => 'הצעה מיוחדת',
+    'save_amount' => 'חסוך :amount',
+    'game_controller_offer' => 'בקר משחקים + כבל USB 3.0',
+    'hurry_up_offer_ends' => 'מהרו! ההצעה מסתיימת בעוד:',
+    'hours' => 'שעות',
+    'mins' => 'דקות',
+    'secs' => 'שניות',
+    'shop_now' => 'קנה עכשיו',
+    'featured' => 'מומלץ',
+    'top_rated' => 'המדורג ביותר',
+    'free_shipping' => 'משלוח חינם',
+    'warranty_included' => 'אחריות כלולה',
+    'limited_stock' => 'מלאי מוגבל',
+    
     // Product Badges
     'new' => 'חדש',
     'sale' => 'הנחה',
@@ -291,6 +306,7 @@ return [
     'low_stock' => 'מלאי נמוך',
     'reset' => 'אפס',
     'image' => 'תמונה',
+    'images' => 'תמונות',
     'uncategorized' => 'ללא קטגוריה',
     'units' => 'יחידות',
     'unit' => 'יחידה',
@@ -448,6 +464,49 @@ return [
     'current_logo' => 'הלוגו הנוכחי',
     'update_brand' => 'עדכן מותג',
 
+    // Product Create/Edit
+    'add_new_product' => 'הוסף מוצר חדש',
+    'create_configure_product' => 'צור והגדר מוצר חדש עבור הקטלוג שלך',
+    'back_to_products' => 'חזרה למוצרים',
+    'product_name_english' => 'שם מוצר (אנגלית)',
+    'product_name_arabic' => 'שם מוצר (עربית)',
+    'product_name_hebrew' => 'שם מוצר (עברית)',
+    'enter_product_name_english' => 'Enter product name in English',
+    'enter_product_name_arabic' => 'أدخل اسم المنتج بالعربية',
+    'enter_product_name_hebrew' => 'הזן את שם המוצר בעברית',
+    'select_category' => 'בחר קטגוריה',
+    'select_brand' => 'בחר מותג',
+    'pricing_inventory' => 'תמחור ומלאי',
+    'regular_price' => 'מחיר רגיל',
+    'sale_price' => 'מחיר מבצע',
+    'stock_quantity' => 'כמות במלאי',
+    'product_images' => 'תמונות מוצר',
+    'main_product_image' => 'תמונת מוצר ראשית',
+    'image_services_recommendation' => 'מומלץ: השתמש בשירותים כמו picsum.photos או placehold.co',
+    'additional_images' => 'תמונות נוספות',
+    'optional_one_url_per_line' => 'אופציונלי - כתובת URL אחת בכל שורה',
+    'enter_each_image_url' => 'הזן כל כתובת URL של תמונה בשורה חדשה עבור גלריית המוצר',
+    'short_description_english' => 'תיאור קצר (אנגלית)',
+    'short_description_arabic' => 'תיאור קצר (עربית)',
+    'short_description_hebrew' => 'תיאור קצר (עברית)',
+    'brief_description_listings' => 'תיאור קצר עבור רשימות מוצרים',
+    'brief_description_arabic' => 'وصف قصير للمنتج',
+    'brief_description_hebrew' => 'תיאור קצר של המוצר',
+    'full_description_english' => 'תיאור מלא (אנגלית)',
+    'full_description_arabic' => 'תיאור מלא (עربית)',
+    'full_description_hebrew' => 'תיאור מלא (עברית)',
+    'complete_product_description' => 'תיאור מוצר מלא עם פרטים',
+    'complete_description_arabic' => 'وصف المنتج الكامل بالتفاصيل',
+    'complete_description_hebrew' => 'תיאור מלא של המוצר עם פרטים',
+    'product_settings' => 'הגדרות מוצר',
+    'display_product_in_store' => 'הצג מוצר זה בחנות',
+    'show_homepage_featured' => 'הצג בקטע מוצרים מומלצים בדף הבית',
+    'new_product' => 'מוצר חדש',
+    'mark_new_highlight' => 'סמן כחדש כדי להדגיש בחנות',
+    'bestseller' => 'הנמכר ביותר',
+    'mark_bestselling_product' => 'סמן כמוצר פופולרי/הנמכר ביותר',
+    'create_product' => 'צור מוצר',
+
     'orders' => 'הזמנות',
 
     // Admin Orders Page
@@ -551,6 +610,12 @@ return [
     'found' => 'נמצאו',
     'products_for' => 'מוצרים עבור',
     'clear_search' => 'נקה חיפוש',
+
+    // Search Keywords
+    'search_optimization' => 'אופטימיזציה לחיפוש',
+    'search_keywords' => 'מילות מפתח לחיפוש',
+    'search_keywords_placeholder' => 'הזן מילים חלופיות ומילים נרדפות לשיפור תוצאות החיפוש (דוגמה: keyboard, كيبورد, לוחة مفاتيح)',
+    'search_keywords_help' => 'הוסף מילים חלופיות ומילים נרדפות כדי לעזור ללקוחות למצוא את המוצר הזה בקלות. לדוגמה: אם המוצר הוא "keyboard", הוסף "كيبورد, لوحة مفاتيح" כך שיופיע בחיפוש עם כל אחד מהמונחים האלה.',
 ];
 
 

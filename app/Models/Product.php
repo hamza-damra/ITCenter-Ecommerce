@@ -49,6 +49,7 @@ class Product extends Model
         'meta_title',
         'meta_description',
         'meta_keywords',
+        'search_keywords',
         'specifications',
     ];
 

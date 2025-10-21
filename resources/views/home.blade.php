@@ -14,6 +14,8 @@
         height: 500px;
         overflow: hidden;
         box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        max-width: 100%;
+        width: calc(100% - 3rem);
     }
 
     .hero-slider {
@@ -634,6 +636,8 @@
         max-width: 90%;
         max-height: 90%;
         object-fit: contain;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
     }
 
     .wishlist-btn {
@@ -819,53 +823,968 @@
         50% { transform: scale(1.3); }
     }
 
+    /* Tablet Responsive */
     @media (max-width: 1200px) {
+        .hero-section {
+            height: 400px;
+            margin: 1rem 1rem 2rem 1rem;
+        }
+        
         .special-cards {
             grid-template-columns: repeat(2, 1fr);
         }
+        
         .builder-cards {
             grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .product-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+    }
+
+    /* Mobile Landscape */
+    @media (max-width: 968px) {
+        .container {
+            padding: 0 1.5rem;
+        }
+        
+        .hero-section {
+            height: 350px;
+            margin: 1rem 1rem 2rem 1rem;
+        }
+        
+        .hero-content h1 {
+            font-size: 2.5rem;
+        }
+        
+        .hero-content p {
+            font-size: 1rem;
+        }
+        
+        .categories-wrapper {
+            padding: 0 50px;
+        }
+        
+        .category-nav-btn {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .category-icon {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .section-header h2 {
+            font-size: 1.8rem;
+        }
+        
+        .product-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .product-card {
+            border-radius: 8px;
+        }
+        
+        .product-image {
+            height: 200px;
+        }
+        
+        .product-title {
+            font-size: 0.95rem;
+        }
+        
+        .product-price {
+            font-size: 1.3rem;
+        }
+        
+        .add-to-cart {
+            padding: 0.75rem 1.2rem;
+            font-size: 0.9rem;
+        }
+        
+        .banners-slider {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .banner-large,
+        .banner-small {
+            height: 250px;
+        }
+        
+        .special-cards {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .builder-cards {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .featured-section {
+            padding: 2rem 0;
+        }
+    }
+
+    /* Mobile Portrait */
+    @media (max-width: 768px) {
+        .container {
+            padding: 0 1rem;
+            max-width: 100%;
+        }
+        
+        .hero-section {
+            height: 300px;
+            margin: 0.5rem;
+            border-radius: 15px;
+            width: calc(100% - 1rem);
+        }
+        
+        .hero-content h1 {
+            font-size: 2rem;
+        }
+        
+        .hero-content p {
+            font-size: 0.9rem;
+        }
+        
+        .hero-btn {
+            padding: 0.8rem 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .slider-arrow {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .slider-arrow.prev {
+            left: 15px;
+        }
+        
+        .slider-arrow.next {
+            right: 15px;
+        }
+        
+        .slider-dots {
+            bottom: 15px;
+            gap: 8px;
+        }
+        
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+        }
+        
+        .categories-section {
+            padding: 2rem 0;
+        }
+        
+        .section-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .view-more {
+            font-size: 0.9rem;
+        }
+        
+        .categories-wrapper {
+            padding: 0 40px;
+        }
+        
+        .category-nav-btn {
+            width: 35px;
+            height: 35px;
+        }
+        
+        .category-nav-btn i {
+            font-size: 1rem;
+        }
+        
+        .category-icon {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .category-item {
+            min-width: 90px;
+        }
+        
+        .category-name {
+            font-size: 0.85rem;
+        }
+        
+        .product-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .product-card {
+            border-radius: 8px;
+        }
+        
+        .product-image {
+            height: 180px;
+        }
+        
+        .product-badge {
+            font-size: 0.65rem;
+            padding: 0.3rem 0.8rem;
+            top: 8px;
+            @if(is_rtl())
+            right: 8px;
+            @else
+            left: 8px;
+            @endif
+        }
+        
+        .wishlist-btn {
+            width: 35px;
+            height: 35px;
+            top: 8px;
+            @if(is_rtl())
+            left: 8px;
+            @else
+            right: 8px;
+            @endif
+        }
+        
+        .wishlist-btn i {
+            font-size: 1rem;
+        }
+        
+        .product-info {
+            padding: 1rem;
+        }
+        
+        .product-title {
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+        }
+        
+        .product-description {
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .product-footer {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .product-price {
+            font-size: 1.2rem;
+            width: 100%;
+            align-items: center;
+        }
+        
+        .product-price .original-price {
+            font-size: 0.9rem;
+        }
+        
+        .add-to-cart {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            font-size: 0.85rem;
+            min-width: unset;
+        }
+        
+        .banners-slider {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .banner-large,
+        .banner-small {
+            height: 200px;
+        }
+        
+        .special-cards {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .builder-cards {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .builder-card {
+            padding: 1.5rem 1rem;
+        }
+        
+        .builder-card-title {
+            font-size: 1rem;
+        }
+        
+        .brands-section {
+            padding: 2rem 0;
+        }
+        
+        .brand-card {
+            min-width: 150px;
+            height: 100px;
+            padding: 1rem;
+        }
+        
+        .popular-tags {
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .popular-tags h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tag {
+            font-size: 0.8rem;
+            padding: 0.4rem 1rem;
+        }
+        
+        .featured-tabs {
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .featured-tab {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+        }
+    }
+
+    /* Small Mobile */
+    @media (max-width: 480px) {
+        .container {
+            padding: 0 0.8rem;
+        }
+        
+        .hero-section {
+            height: 250px;
+            margin: 0.5rem;
+            border-radius: 12px;
+            width: calc(100% - 1rem);
+        }
+        
+        .hero-content h1 {
+            font-size: 1.5rem;
+        }
+        
+        .hero-content p {
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .slider-arrow {
+            width: 35px;
+            height: 35px;
+        }
+        
+        .slider-arrow i {
+            font-size: 16px;
+        }
+        
+        .slider-arrow.prev {
+            left: 10px;
+        }
+        
+        .slider-arrow.next {
+            right: 10px;
+        }
+        
+        .slider-dots {
+            bottom: 10px;
+            gap: 6px;
+        }
+        
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+        }
+        
+        .slider-dot.active {
+            width: 20px;
+        }
+        
+        .section-header h2 {
+            font-size: 1.3rem;
+        }
+        
+        .categories-wrapper {
+            padding: 0 35px;
+        }
+        
+        .category-nav-btn {
+            width: 30px;
+            height: 30px;
+        }
+        
+        .category-icon {
+            width: 70px;
+            height: 70px;
+        }
+        
+        .category-item {
+            min-width: 80px;
+        }
+        
+        .category-name {
+            font-size: 0.8rem;
+        }
+        
+        .product-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+        
+        .product-card {
+            max-width: 100%;
+        }
+        
+        .product-image {
+            height: 220px;
+        }
+        
+        .product-title {
+            font-size: 1rem;
+        }
+        
+        .product-description {
+            font-size: 0.85rem;
+        }
+        
+        .product-price {
+            font-size: 1.4rem;
+        }
+        
+        .add-to-cart {
+            padding: 0.8rem 1.2rem;
+            font-size: 0.9rem;
+        }
+        
+        .builder-cards {
+            grid-template-columns: 1fr;
+        }
+        
+        .builder-card-image {
+            height: 80px;
+        }
+    }
+
+    /* Extra Small Mobile */
+    @media (max-width: 360px) {
+        .container {
+            padding: 0 0.5rem;
+        }
+        
+        .hero-section {
+            height: 200px;
+            margin: 0.5rem;
+            width: calc(100% - 1rem);
+        }
+        
+        .hero-content h1 {
+            font-size: 1.3rem;
+        }
+        
+        .section-header h2 {
+            font-size: 1.2rem;
+        }
+        
+        .category-icon {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .category-name {
+            font-size: 0.75rem;
+        }
+        
+        .product-image {
+            height: 200px;
+        }
+        
+        .product-title {
+            font-size: 0.95rem;
+        }
+        
+        .product-price {
+            font-size: 1.3rem;
+        }
+    }
+
+    /* Special Offer Card */
+    .special-offer-section {
+        background: linear-gradient(135deg, #f8f9ff 0%, #fff8e1 100%);
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .special-offer-card {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .offer-card {
+        background: linear-gradient(135deg, #ffffff 0%, #fffef7 100%);
+        border: 5px solid #FFD700;
+        border-radius: 30px;
+        padding: 0;
+        position: relative;
+        box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3);
+        transition: all 0.4s ease;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+    }
+
+    .offer-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 25px 70px rgba(255, 215, 0, 0.4);
+    }
+
+    .offer-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+        transform: rotate(45deg);
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+
+    .offer-left-section {
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .offer-right-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .offer-right-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .discount-badge {
+        background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        color: #000;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 900;
+        font-size: 1.3rem;
+        position: absolute;
+        top: 20px;
+        @if(is_rtl())
+        left: 20px;
+        @else
+        right: 20px;
+        @endif
+        box-shadow: 0 8px 25px rgba(255, 165, 0, 0.5);
+        animation: pulse 2s infinite;
+        z-index: 10;
+        letter-spacing: 1px;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+    }
+
+    .offer-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .offer-label {
+        display: inline-block;
+        background: #ff4757;
+        color: #fff;
+        padding: 0.5rem 1.5rem;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+    }
+
+    .offer-title {
+        font-size: 2.8rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0 0 1rem 0;
+        line-height: 1.2;
+    }
+
+    .offer-product-name {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1.5rem;
+        line-height: 1.4;
+    }
+
+    .offer-pricing {
+        display: flex;
+        align-items: baseline;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .current-price {
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: #ff4757;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(255, 71, 87, 0.2);
+    }
+
+    .original-price {
+        font-size: 1.8rem;
+        color: #999;
+        text-decoration: line-through;
+        margin: 0;
+        position: relative;
+    }
+
+    .savings-text {
+        background: #e8f5e9;
+        color: #2e7d32;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.95rem;
+        font-weight: 700;
+    }
+
+    .urgency-message {
+        text-align: center;
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .countdown-timer {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .countdown-item {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 1rem;
+        min-width: 90px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .countdown-number {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #667eea;
+        display: block;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .countdown-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .countdown-separator {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #fff;
+        align-self: center;
+        opacity: 0.7;
+    }
+
+    .offer-image {
+        text-align: center;
+        position: relative;
+        z-index: 1;
+        margin: 2rem 0;
+    }
+
+    .offer-image img {
+        max-width: 90%;
+        max-height: 350px;
+        object-fit: contain;
+        filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+        transition: transform 0.3s ease;
+    }
+
+    .offer-image:hover img {
+        transform: scale(1.05) rotate(-2deg);
+    }
+
+    .offer-cta {
+        text-align: center;
+    }
+
+    .offer-btn {
+        background: linear-gradient(135deg, #ff4757 0%, #ff6348 100%);
+        color: #fff;
+        padding: 1.5rem 4rem;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.3rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .offer-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .offer-btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .offer-btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 12px 35px rgba(255, 71, 87, 0.5);
+    }
+
+    .offer-btn i {
+        font-size: 1.2rem;
+    }
+
+    .offer-features {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .offer-feature {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #555;
+        font-size: 0.95rem;
+    }
+
+    .offer-feature i {
+        color: #4caf50;
+        font-size: 1.1rem;
+    }
+
+    /* Featured Products Section */
+    .featured-section {
+        background: #f8f9fa;
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+    }
+
+    .featured-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .featured-tab {
+        background: transparent;
+        border: none;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #666;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+    }
+
+    .featured-tab.active {
+        color: #4169E1;
+        border-bottom-color: #FFD700;
+    }
+
+    .featured-tab:hover {
+        color: #4169E1;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 968px) {
+        .special-offer-section {
+            padding: 2rem 0;
+        }
+        
+        .special-offer-card {
+            padding: 0 1rem;
+        }
+        
+        .offer-card {
+            grid-template-columns: 1fr;
+            border-width: 4px;
+        }
+        
+        .offer-left-section,
+        .offer-right-section {
+            padding: 2rem;
+        }
+        
+        .offer-title {
+            font-size: 2.2rem;
+        }
+        
+        .current-price {
+            font-size: 2.5rem;
+        }
+        
+        .countdown-item {
+            min-width: 70px;
+            padding: 0.8rem;
+        }
+        
+        .countdown-number {
+            font-size: 2rem;
+        }
+        
+        .offer-btn {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
         }
     }
 
     @media (max-width: 768px) {
-        .banners-slider {
-            grid-template-columns: 1fr;
-        }
-        .special-cards {
-            grid-template-columns: 1fr;
-        }
-        .builder-cards {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        .categories-grid {
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        .special-offer-section {
+            padding: 1.5rem 0;
         }
         
-        .product-footer {
-            flex-wrap: wrap;
-            gap: 0.75rem;
+        .special-offer-card {
+            padding: 0 0.8rem;
         }
         
-        .add-to-cart {
-            width: 100%;
-            min-width: unset;
+        .offer-card {
+            border-radius: 20px;
+            border-width: 3px;
         }
         
-        .product-price {
-            width: 100%;
-            text-align: center;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .product-grid {
-            grid-template-columns: 1fr;
+        .offer-left-section,
+        .offer-right-section {
+            padding: 1.5rem;
         }
         
-        .add-to-cart {
-            padding: 0.7rem 1rem;
-            font-size: 0.95rem;
+        .offer-title {
+            font-size: 1.8rem;
+        }
+        
+        .current-price {
+            font-size: 2rem;
+        }
+        
+        .original-price {
+            font-size: 1.3rem;
+        }
+        
+        .countdown-timer {
+            gap: 0.5rem;
+        }
+        
+        .countdown-item {
+            min-width: 60px;
+            padding: 0.6rem;
+        }
+        
+        .countdown-number {
+            font-size: 1.5rem;
+        }
+        
+        .countdown-label {
+            font-size: 0.65rem;
+        }
+        
+        .countdown-separator {
+            font-size: 1.8rem;
+        }
+        
+        .offer-btn {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+        
+        .discount-badge {
+            font-size: 1rem;
+            padding: 0.7rem 1.2rem;
         }
     }
 
@@ -952,6 +1871,160 @@
     </div>
 </div>
 
+<!-- Special Offer Section -->
+<div class="special-offer-section">
+    <div class="special-offer-card">
+        <!-- Special Offer Card -->
+        <div class="offer-card">
+            <!-- Discount Badge -->
+            <div class="discount-badge">{{ __t('messages.save_amount', ['amount' => '₪ 19']) }}</div>
+            
+            <!-- Left Section - Product Info -->
+            <div class="offer-left-section">
+                <div class="offer-header">
+                    <span class="offer-label">{{ __t('messages.special_offer') }}</span>
+                    <h2 class="offer-title">{{ __t('messages.game_controller_offer') }}</h2>
+                </div>
+                
+                <div class="offer-pricing">
+                    <span class="current-price">₪80</span>
+                    <span class="original-price">₪99</span>
+                    <span class="savings-text">{{ __t('messages.save_amount', ['amount' => '19%']) }}</span>
+                </div>
+                
+                <div class="offer-features">
+                    <div class="offer-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>{{ __t('messages.free_shipping') }}</span>
+                    </div>
+                    <div class="offer-feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>{{ __t('messages.warranty_included') }}</span>
+                    </div>
+                    <div class="offer-feature">
+                        <i class="fas fa-bolt"></i>
+                        <span>{{ __t('messages.limited_stock') }}</span>
+                    </div>
+                </div>
+                
+                <div class="offer-image">
+                    <img src="{{ asset('images/products/game-controller.png') }}" alt="Game Console Controller">
+                </div>
+                
+                <div class="offer-cta">
+                    <a href="#" class="offer-btn">
+                        @if(is_rtl())
+                            {{ __t('messages.shop_now') }} <i class="fas fa-shopping-cart"></i>
+                        @else
+                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.shop_now') }}
+                        @endif
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Section - Countdown Timer -->
+            <div class="offer-right-section">
+                <div class="urgency-message">
+                    {{ __t('messages.hurry_up_offer_ends') }}
+                </div>
+                
+                <div class="countdown-timer" id="countdownTimer">
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="hours">08</span>
+                        <span class="countdown-label">{{ __t('messages.hours') }}</span>
+                    </div>
+                    <span class="countdown-separator">:</span>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="minutes">19</span>
+                        <span class="countdown-label">{{ __t('messages.mins') }}</span>
+                    </div>
+                    <span class="countdown-separator">:</span>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="seconds">36</span>
+                        <span class="countdown-label">{{ __t('messages.secs') }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Featured Products Section -->
+        <div class="featured-section">
+            <div class="featured-tabs">
+                <button class="featured-tab active" data-tab="featured">{{ __t('messages.featured') }}</button>
+                <button class="featured-tab" data-tab="sale">{{ __t('messages.on_sale') }}</button>
+                <button class="featured-tab" data-tab="rated">{{ __t('messages.top_rated') }}</button>
+            </div>
+            
+            <div class="product-grid" id="featuredProducts">
+                @foreach($featuredProducts->take(8) as $product)
+                <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
+                    <div class="product-image">
+                        @if($product->is_new)
+                        <div class="product-badge">{{ __t('messages.new') }}</div>
+                        @elseif($product->sale_price && $product->sale_price < $product->price)
+                        <div class="product-badge">{{ __t('messages.sale') }}</div>
+                        @elseif($product->is_featured)
+                        <div class="product-badge">{{ __t('messages.hot') }}</div>
+                        @endif
+                        <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">{{ $product->name }}</div>
+                        <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                @if($product->sale_price && $product->sale_price < $product->price)
+                                    <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
+                                    <span>₪ {{ number_format($product->sale_price, 0) }}</span>
+                                @else
+                                    <span class="original-price" style="visibility: hidden;">₪ 0</span>
+                                    <span>₪ {{ number_format($product->price, 0) }}</span>
+                                @endif
+                            </div>
+                            @if($product->stock_status === 'out_of_stock')
+                            <button class="add-to-cart out-of-stock"
+                                    data-product-id="{{ $product->id }}"
+                                    data-product-name="{{ $product->name }}"
+                                    onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
+                                @if(is_rtl())
+                                    {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
+                                @else
+                                    <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                                @endif
+                            </button>
+                            @else
+                            <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
+                                    data-product-id="{{ $product->id }}"
+                                    data-original-text="{{ __t('messages.add_to_cart') }}"
+                                    data-added-text="{{ __t('messages.in_cart') }}"
+                                    onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                                @if(in_array($product->id, $cartProductIds))
+                                    @if(is_rtl())
+                                        {{ __t('messages.in_cart') }} <i class="fas fa-check"></i>
+                                    @else
+                                        <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                                    @endif
+                                @else
+                                    @if(is_rtl())
+                                        {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
+                                    @else
+                                        <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                                    @endif
+                                @endif
+                            </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Main Content Container -->
 <div class="container">
     <!-- Featured Products -->
@@ -988,6 +2061,7 @@
                             <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
                             <span>₪ {{ number_format($product->sale_price, 0) }}</span>
                         @else
+                            <span class="original-price" style="visibility: hidden;">₪ 0</span>
                             <span>₪ {{ number_format($product->price, 0) }}</span>
                         @endif
                     </div>
@@ -996,7 +2070,11 @@
                             data-product-id="{{ $product->id }}"
                             data-product-name="{{ $product->name }}"
                             onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
-                        <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                        @if(is_rtl())
+                            {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
+                        @else
+                            <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                        @endif
                     </button>
                     @else
                     <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
@@ -1005,9 +2083,17 @@
                             data-added-text="{{ __t('messages.in_cart') }}"
                             onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
                         @if(in_array($product->id, $cartProductIds))
-                            <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                            @if(is_rtl())
+                                {{ __t('messages.in_cart') }} <i class="fas fa-check"></i>
+                            @else
+                                <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                            @endif
                         @else
-                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                            @if(is_rtl())
+                                {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
+                            @else
+                                <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                            @endif
                         @endif
                     </button>
                     @endif
@@ -1082,6 +2168,7 @@
                             <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
                             <span>₪ {{ number_format($product->sale_price, 0) }}</span>
                         @else
+                            <span class="original-price" style="visibility: hidden;">₪ 0</span>
                             <span>₪ {{ number_format($product->price, 0) }}</span>
                         @endif
                     </div>
@@ -1090,7 +2177,11 @@
                             data-product-id="{{ $product->id }}"
                             data-product-name="{{ $product->name }}"
                             onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
-                        <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                        @if(is_rtl())
+                            {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
+                        @else
+                            <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                        @endif
                     </button>
                     @else
                     <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
@@ -1099,9 +2190,17 @@
                             data-added-text="{{ __t('messages.in_cart') }}"
                             onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
                         @if(in_array($product->id, $cartProductIds))
-                            <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                            @if(is_rtl())
+                                {{ __t('messages.in_cart') }} <i class="fas fa-check"></i>
+                            @else
+                                <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                            @endif
                         @else
-                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                            @if(is_rtl())
+                                {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
+                            @else
+                                <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                            @endif
                         @endif
                     </button>
                     @endif
@@ -1154,6 +2253,7 @@
                             <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
                             <span>₪ {{ number_format($product->sale_price, 0) }}</span>
                         @else
+                            <span class="original-price" style="visibility: hidden;">₪ 0</span>
                             <span>₪ {{ number_format($product->price, 0) }}</span>
                         @endif
                     </div>
@@ -1162,7 +2262,11 @@
                             data-product-id="{{ $product->id }}"
                             data-product-name="{{ $product->name }}"
                             onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
-                        <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                        @if(is_rtl())
+                            {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
+                        @else
+                            <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                        @endif
                     </button>
                     @else
                     <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
@@ -1171,9 +2275,17 @@
                             data-added-text="{{ __t('messages.in_cart') }}"
                             onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
                         @if(in_array($product->id, $cartProductIds))
-                            <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                            @if(is_rtl())
+                                {{ __t('messages.in_cart') }} <i class="fas fa-check"></i>
+                            @else
+                                <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                            @endif
                         @else
-                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                            @if(is_rtl())
+                                {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
+                            @else
+                                <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                            @endif
                         @endif
                     </button>
                     @endif
@@ -1220,7 +2332,11 @@
                             data-product-id="{{ $product->id }}"
                             data-product-name="{{ $product->name }}"
                             onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
-                        <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                        @if(is_rtl())
+                            {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
+                        @else
+                            <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                        @endif
                     </button>
                     @else
                     <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
@@ -1229,9 +2345,17 @@
                             data-added-text="{{ __t('messages.in_cart') }}"
                             onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
                         @if(in_array($product->id, $cartProductIds))
-                            <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                            @if(is_rtl())
+                                {{ __t('messages.in_cart') }} <i class="fas fa-check"></i>
+                            @else
+                                <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
+                            @endif
                         @else
-                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                            @if(is_rtl())
+                                {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
+                            @else
+                                <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
+                            @endif
                         @endif
                     </button>
                     @endif
@@ -1447,6 +2571,75 @@
             
             // Initial observation
             setTimeout(observeWishlistButtons, 500);
+        });
+
+        // Countdown Timer Functionality
+        function startCountdown() {
+            const hoursElement = document.getElementById('hours');
+            const minutesElement = document.getElementById('minutes');
+            const secondsElement = document.getElementById('seconds');
+            
+            if (!hoursElement || !minutesElement || !secondsElement) return;
+            
+            // Set initial time (8 hours, 19 minutes, 36 seconds)
+            let totalSeconds = 8 * 3600 + 19 * 60 + 36;
+            
+            function updateCountdown() {
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                
+                hoursElement.textContent = hours.toString().padStart(2, '0');
+                minutesElement.textContent = minutes.toString().padStart(2, '0');
+                secondsElement.textContent = seconds.toString().padStart(2, '0');
+                
+                if (totalSeconds <= 0) {
+                    // Reset timer when it reaches zero
+                    totalSeconds = 8 * 3600 + 19 * 60 + 36;
+                } else {
+                    totalSeconds--;
+                }
+            }
+            
+            // Update immediately
+            updateCountdown();
+            
+            // Update every second
+            setInterval(updateCountdown, 1000);
+        }
+
+        // Featured Products Tab Functionality
+        function initFeaturedTabs() {
+            const tabs = document.querySelectorAll('.featured-tab');
+            const productsGrid = document.getElementById('featuredProducts');
+            
+            if (!tabs.length || !productsGrid) return;
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Get tab type
+                    const tabType = this.dataset.tab;
+                    
+                    // Here you would typically fetch different products based on tab type
+                    // For now, we'll just show a message
+                    console.log('Switched to tab:', tabType);
+                    
+                    // You can add AJAX calls here to fetch different product sets
+                    // Example: fetchProductsByType(tabType);
+                });
+            });
+        }
+
+        // Initialize countdown and tabs when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            startCountdown();
+            initFeaturedTabs();
         });
     });
 </script>

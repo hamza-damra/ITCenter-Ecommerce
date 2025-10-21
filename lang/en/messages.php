@@ -46,6 +46,21 @@ return [
     'request_product' => 'Request Product',
     'product' => 'product',
     
+    // Special Offer Section
+    'special_offer' => 'Special Offer',
+    'save_amount' => 'Save :amount',
+    'game_controller_offer' => 'Game Console Controller + USB 3.0 Cable',
+    'hurry_up_offer_ends' => 'Hurry Up! Offer ends in:',
+    'hours' => 'HOURS',
+    'mins' => 'MINS',
+    'secs' => 'SECS',
+    'shop_now' => 'Shop Now',
+    'featured' => 'Featured',
+    'top_rated' => 'Top Rated',
+    'free_shipping' => 'Free Shipping',
+    'warranty_included' => 'Warranty Included',
+    'limited_stock' => 'Limited Stock',
+    
     // Product Badges
     'new' => 'NEW',
     'sale' => 'SALE',
@@ -343,6 +358,7 @@ return [
     'low_stock' => 'Low Stock',
     'reset' => 'Reset',
     'image' => 'Image',
+    'images' => 'Images',
     'uncategorized' => 'Uncategorized',
     'units' => 'units',
     'unit' => 'unit',
@@ -488,8 +504,10 @@ return [
     'basic_information' => 'Basic Information',
     'product_name_english' => 'Product Name (English)',
     'product_name_arabic' => 'Product Name (Arabic)',
+    'product_name_hebrew' => 'Product Name (Hebrew)',
     'enter_product_name_english' => 'Enter product name in English',
     'enter_product_name_arabic' => 'أدخل اسم المنتج بالعربية',
+    'enter_product_name_hebrew' => 'הזן את שם המוצר בעברית',
     'select_category' => 'Select a Category',
     'select_brand' => 'Select a Brand',
     'pricing_inventory' => 'Pricing & Inventory',
@@ -504,16 +522,22 @@ return [
     'enter_each_image_url' => 'Enter each image URL on a new line for the product gallery',
     'short_description_english' => 'Short Description (English)',
     'short_description_arabic' => 'Short Description (Arabic)',
+    'short_description_hebrew' => 'Short Description (Hebrew)',
     'brief_description_listings' => 'Brief description for product listings',
     'brief_description_arabic' => 'وصف قصير للمنتج',
+    'brief_description_hebrew' => 'Brief description of the product',
     'full_description_english' => 'Full Description (English)',
     'full_description_arabic' => 'Full Description (Arabic)',
+    'full_description_hebrew' => 'Full Description (Hebrew)',
     'complete_product_description' => 'Complete product description with details',
     'complete_description_arabic' => 'وصف المنتج الكامل بالتفاصيل',
+    'complete_description_hebrew' => 'Complete product description with details',
     'product_settings' => 'Product Settings',
     'display_product_in_store' => 'Display this product in the store',
     'show_homepage_featured' => 'Show on homepage featured section',
+    'new_product' => 'New Product',
     'mark_new_highlight' => 'Mark as new to highlight in store',
+    'bestseller' => 'Bestseller',
     'mark_bestselling_product' => 'Mark as popular/bestselling product',
 
     // Dashboard Analytics
@@ -716,6 +740,12 @@ return [
     'found' => 'Found',
     'products_for' => 'products for',
     'clear_search' => 'Clear Search',
+
+    // Search Keywords
+    'search_optimization' => 'Search Optimization',
+    'search_keywords' => 'Search Keywords',
+    'search_keywords_placeholder' => 'Enter alternative words and synonyms to improve search results (e.g., keyboard, كيبورد, لوحة مفاتيح)',
+    'search_keywords_help' => 'Add alternative words and synonyms to help customers find this product easily. For example: if the product is "keyboard", add "كيبورد, لوحة مفاتيح" so it appears when searching with any of these terms.',
 ];
 
 

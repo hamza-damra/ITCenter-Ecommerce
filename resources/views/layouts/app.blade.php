@@ -18,12 +18,37 @@
             box-sizing: border-box;
         }
 
+        html {
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             font-family: {{ is_rtl() ? "'Cairo', sans-serif" : "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }};
             line-height: 1.6;
             background-color: #f5f5f5;
             color: #333;
             direction: {{ locale_direction() }};
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            max-width: 100vw;
+        }
+        
+        *:not(html):not(body) {
+            max-width: 100%;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .container,
+        .header-container,
+        section {
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         header {
@@ -35,6 +60,7 @@
             top: 0;
             z-index: 1000;
             transition: background 0.3s ease, backdrop-filter 0.3s ease;
+            width: 100%;
         }
 
         header.scrolled {
@@ -51,6 +77,24 @@
             justify-content: space-between;
             align-items: center;
             gap: 2rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+        
+        .mobile-menu-toggle:hover {
+            color: #e69270ff;
         }
 
         .logo {
@@ -60,10 +104,11 @@
         }
 
         .logo img {
-            height: 35px;
+            height: 40px;
             width: auto;
+            max-width: 150px;
             object-fit: contain;
-            margin-top:3px;
+            margin-top: 3px;
         }
 
         .logo-text {
@@ -78,6 +123,8 @@
             list-style: none;
             gap: 2rem;
             align-items: center;
+            margin: 0;
+            padding: 0;
         }
 
         .nav-menu a {
@@ -86,11 +133,31 @@
             font-size: 0.95rem;
             transition: color 0.3s;
             font-weight: 500;
+            padding: 0.5rem 0;
         }
 
         .nav-menu a:hover,
         .nav-menu a.active {
             color: #e69270ff;
+        }
+        
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .mobile-menu-overlay.active {
+            display: block;
+            opacity: 1;
         }
 
         /* Search Bar Styles */
@@ -214,6 +281,20 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 2rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 0.8rem;
+            }
         }
 
         main {
@@ -434,6 +515,18 @@
             animation: checkIn 0.3s ease;
         }
 
+        /* RTL: Move checkmark to the left (after text) */
+        @if(is_rtl())
+        .language-option {
+            flex-direction: row-reverse;
+        }
+
+        .lang-check {
+            margin-right: auto;
+            margin-left: 0;
+        }
+        @endif
+
         @keyframes checkIn {
             from {
                 opacity: 0;
@@ -493,27 +586,293 @@
         }
 
         /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .language-dropdown-menu {
-                min-width: 160px;
+        @media (max-width: 968px) {
+            header {
+                padding: 0.8rem 1rem;
             }
             
-            .language-option {
+            .header-container {
+                gap: 1rem;
+            }
+            
+            .logo img {
+                height: 35px;
+            }
+            
+            .nav-menu {
+                gap: 1rem;
+            }
+            
+            .nav-menu a {
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem;
+            }
+            
+            .search-bar {
+                max-width: 300px;
+            }
+            
+            .header-icon {
+                padding: 0.6rem;
+            }
+            
+            .cart-count {
+                width: 18px;
+                height: 18px;
+                font-size: 0.65rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
                 padding: 0.8rem 1rem;
+                flex-wrap: nowrap;
+                gap: 0.8rem;
+            }
+            
+            /* Show mobile menu toggle */
+            .mobile-menu-toggle {
+                display: block;
+                order: 1;
+            }
+            
+            .logo {
+                order: 2;
+                flex: 0 0 auto;
+            }
+            
+            .logo img {
+                height: 32px;
+                max-width: 120px;
+            }
+            
+            .header-icons {
+                order: 3;
+                gap: 0.5rem;
+                margin-{{ is_rtl() ? 'right' : 'left' }}: auto;
+                display: flex;
+                flex-direction: row;
+            }
+            
+            .search-bar {
+                order: 4;
+                position: fixed;
+                top: 65px;
+                left: 0;
+                right: 0;
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                padding: 0.8rem 1rem;
+                background: rgba(0, 0, 0, 0.98);
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 998;
+                display: none;
+            }
+            
+            .search-bar.mobile-search-active {
+                display: flex;
+            }
+            
+            .search-bar input {
+                font-size: 0.95rem;
+                padding: 0.8rem 2.5rem 0.8rem 1rem;
+                width: 100%;
+                border-radius: 25px;
+            }
+            
+            .search-input-icon {
+                {{ is_rtl() ? 'left' : 'right' }}: 1.5rem;
+            }
+            
+            /* Mobile Sidebar Menu */
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                {{ is_rtl() ? 'right' : 'left' }}: -100%;
+                width: 280px;
+                height: 100vh;
+                background: #1a1a1a;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 5rem 0 2rem 0;
+                gap: 0;
+                overflow-y: auto;
+                transition: {{ is_rtl() ? 'right' : 'left' }} 0.3s ease;
+                z-index: 1000;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            }
+            
+            .nav-menu.active {
+                {{ is_rtl() ? 'right' : 'left' }}: 0;
+            }
+            
+            .nav-menu li {
+                width: 100%;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            .nav-menu a {
+                font-size: 1rem;
+                padding: 1rem 1.5rem;
+                width: 100%;
+                display: block;
+                transition: all 0.3s;
+            }
+            
+            .nav-menu a:hover,
+            .nav-menu a.active {
+                background: rgba(230, 146, 112, 0.1);
+                padding-{{ is_rtl() ? 'right' : 'left' }}: 2rem;
+            }
+            
+            .header-icon {
+                padding: 0.5rem;
+            }
+            
+            .header-icon i {
+                font-size: 1.2rem;
+            }
+            
+            .cart-count {
+                width: 18px;
+                height: 18px;
+                font-size: 0.65rem;
+                top: -5px;
+                {{ is_rtl() ? 'left' : 'right' }}: -5px;
+            }
+            
+            .language-dropdown-menu,
+            .user-dropdown-menu {
+                min-width: 180px;
+                {{ is_rtl() ? 'left' : 'right' }}: 0;
+            }
+            
+            .language-option,
+            .user-dropdown-menu a {
+                padding: 0.9rem 1.2rem;
+                font-size: 0.95rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 0.6rem 0.8rem;
+                gap: 0.5rem;
+            }
+            
+            .logo img {
+                height: 28px;
+                max-width: 100px;
+            }
+            
+            .header-icons {
+                gap: 0.3rem;
+            }
+            
+            .header-icon {
+                padding: 0.4rem;
+            }
+            
+            .header-icon i {
+                font-size: 1.1rem;
+            }
+            
+            .mobile-menu-toggle {
+                font-size: 1.3rem;
+                padding: 0.4rem;
+            }
+            
+            .nav-menu {
+                width: 260px;
+                padding: 4.5rem 0 2rem 0;
+            }
+            
+            .nav-menu a {
+                font-size: 0.95rem;
+                padding: 0.9rem 1.2rem;
+            }
+            
+            .search-bar {
+                top: 60px;
+                padding: 0.7rem 0.8rem;
+            }
+            
+            .search-bar input {
+                font-size: 0.9rem;
+                padding: 0.7rem 2.5rem 0.7rem 0.9rem;
+            }
+            
+            .cart-count {
+                width: 16px;
+                height: 16px;
+                font-size: 0.6rem;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .header-container {
+                padding: 0.5rem 0.6rem;
+                gap: 0.4rem;
+            }
+            
+            .logo img {
+                height: 26px;
+                max-width: 90px;
+            }
+            
+            .header-icons {
+                gap: 0.2rem;
+            }
+            
+            .header-icon {
+                padding: 0.3rem;
+            }
+            
+            .header-icon i {
+                font-size: 1rem;
+            }
+            
+            .mobile-menu-toggle {
+                font-size: 1.2rem;
+                padding: 0.3rem;
+            }
+            
+            .nav-menu {
+                width: 240px;
+            }
+            
+            .nav-menu a {
+                font-size: 0.9rem;
+                padding: 0.85rem 1rem;
+            }
+            
+            .cart-count {
+                width: 14px;
+                height: 14px;
+                font-size: 0.55rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    
     <header>
         <div class="header-container">
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            
             <div class="logo">
                 <a href="{{ route('home') }}">
                     <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
                 </a>
             </div>
 
-            <ul class="nav-menu">
+            <ul class="nav-menu" id="navMenu">
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">{{ __t('messages.home') }}</a></li>
                 <li><a href="{{ route('categories') }}" class="{{ request()->routeIs('categories') ? 'active' : '' }}">{{ __t('messages.categories') }}</a></li>
                 <li><a href="{{ route('products') }}" class="{{ request()->routeIs('products') ? 'active' : '' }}">{{ __t('messages.products') }}</a></li>
@@ -1075,7 +1434,11 @@
                 if (data.success) {
                     // Update button state
                     button.classList.add('in-cart');
+                    @if(is_rtl())
+                    button.innerHTML = addedText + ' <i class="fas fa-check"></i>';
+                    @else
                     button.innerHTML = '<i class="fas fa-check"></i> ' + addedText;
+                    @endif
                     
                     // Add product ID to global cart array
                     if (window.cartProductIds && !window.cartProductIds.includes(productId)) {
@@ -1162,13 +1525,21 @@
                     button.classList.add('in-cart');
                     // Update button text if not already updated
                     if (!button.innerHTML.includes('check')) {
+                        @if(is_rtl())
+                        button.innerHTML = addedText + ' <i class="fas fa-check"></i>';
+                        @else
                         button.innerHTML = '<i class="fas fa-check"></i> ' + addedText;
+                        @endif
                     }
                 } else {
                     button.classList.remove('in-cart');
                     // Restore original text
                     if (button.innerHTML.includes('check')) {
+                        @if(is_rtl())
+                        button.innerHTML = originalText + ' <i class="fas fa-shopping-cart"></i>';
+                        @else
                         button.innerHTML = '<i class="fas fa-shopping-cart"></i> ' + originalText;
+                        @endif
                     }
                 }
             });
@@ -1178,6 +1549,72 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateCartCount();
         });
+        
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navMenu = document.getElementById('navMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        
+        if (mobileMenuToggle && navMenu && mobileMenuOverlay) {
+            // Toggle menu
+            mobileMenuToggle.addEventListener('click', function() {
+                const isActive = navMenu.classList.contains('active');
+                
+                if (isActive) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+            
+            // Close menu when clicking overlay
+            mobileMenuOverlay.addEventListener('click', function() {
+                closeMenu();
+            });
+            
+            // Close menu when clicking a link
+            const menuLinks = navMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        setTimeout(closeMenu, 300);
+                    }
+                });
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    closeMenu();
+                }
+            });
+            
+            function openMenu() {
+                navMenu.classList.add('active');
+                mobileMenuOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Change icon to X
+                const icon = mobileMenuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                }
+            }
+            
+            function closeMenu() {
+                navMenu.classList.remove('active');
+                mobileMenuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+                
+                // Change icon back to bars
+                const icon = mobileMenuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        }
     </script>
 </body>
 </html>

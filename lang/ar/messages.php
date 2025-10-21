@@ -46,6 +46,21 @@ return [
     'in_stock' => 'متوفر',
     'product' => 'منتج',
     
+    // Special Offer Section
+    'special_offer' => 'عرض خاص',
+    'save_amount' => 'وفر :amount',
+    'game_controller_offer' => 'جهاز تحكم الألعاب + كابل USB 3.0',
+    'hurry_up_offer_ends' => 'أسرع! العرض ينتهي خلال:',
+    'hours' => 'ساعات',
+    'mins' => 'دقائق',
+    'secs' => 'ثواني',
+    'shop_now' => 'تسوق الآن',
+    'featured' => 'مميز',
+    'top_rated' => 'الأعلى تقيماً',
+    'free_shipping' => 'شحن مجاني',
+    'warranty_included' => 'ضمان شامل',
+    'limited_stock' => 'كمية محدودة',
+    
     // Product Badges
     'new' => 'جديد',
     'sale' => 'تخفيض',
@@ -307,6 +322,7 @@ return [
     'low_stock' => 'مخزون منخفض',
     'reset' => 'إعادة تعيين',
     'image' => 'صورة',
+    'images' => 'صور',
     'uncategorized' => 'غير مصنف',
     'units' => 'وحدات',
     'unit' => 'وحدة',
@@ -451,8 +467,10 @@ return [
     'back_to_products' => 'العودة إلى المنتجات',
     'product_name_english' => 'اسم المنتج (إنجليزي)',
     'product_name_arabic' => 'اسم المنتج (عربي)',
+    'product_name_hebrew' => 'اسم المنتج (عبري)',
     'enter_product_name_english' => 'أدخل اسم المنتج بالإنجليزية',
     'enter_product_name_arabic' => 'أدخل اسم المنتج بالعربية',
+    'enter_product_name_hebrew' => 'הזן את שם המוצר בעברית',
     'select_category' => 'اختر فئة',
     'select_brand' => 'اختر علامة تجارية',
     'pricing_inventory' => 'التسعير والمخزون',
@@ -467,16 +485,22 @@ return [
     'enter_each_image_url' => 'أدخل كل رابط صورة في سطر جديد لمعرض المنتج',
     'short_description_english' => 'وصف قصير (إنجليزي)',
     'short_description_arabic' => 'وصف قصير (عربي)',
+    'short_description_hebrew' => 'وصف قصير (عبري)',
     'brief_description_listings' => 'وصف موجز لقوائم المنتجات',
     'brief_description_arabic' => 'وصف قصير للمنتج',
+    'brief_description_hebrew' => 'وصف قصير للمنتج',
     'full_description_english' => 'الوصف الكامل (إنجليزي)',
     'full_description_arabic' => 'الوصف الكامل (عربي)',
+    'full_description_hebrew' => 'الوصف الكامل (عبري)',
     'complete_product_description' => 'وصف كامل للمنتج مع التفاصيل',
     'complete_description_arabic' => 'وصف المنتج الكامل بالتفاصيل',
+    'complete_description_hebrew' => 'وصف المنتج الكامل بالتفاصيل',
     'product_settings' => 'إعدادات المنتج',
     'display_product_in_store' => 'عرض هذا المنتج في المتجر',
     'show_homepage_featured' => 'عرض في قسم المميزات بالصفحة الرئيسية',
+    'new_product' => 'منتج جديد',
     'mark_new_highlight' => 'وضع علامة كجديد لتسليط الضوء في المتجر',
+    'bestseller' => 'الأكثر مبيعاً',
     'mark_bestselling_product' => 'وضع علامة كمنتج أكثر مبيعاً',
 
     // Dashboard Analytics
@@ -671,6 +695,12 @@ return [
     'found' => 'تم العثور على',
     'products_for' => 'منتجات لـ',
     'clear_search' => 'مسح البحث',
+
+    // Search Keywords
+    'search_optimization' => 'تحسين البحث',
+    'search_keywords' => 'الكلمات المفتاحية للبحث',
+    'search_keywords_placeholder' => 'أدخل كلمات بديلة ومرادفات لتحسين نتائج البحث (مثال: كيبورد، لوحة مفاتيح، keyboard)',
+    'search_keywords_help' => 'أضف كلمات بديلة ومرادفات لمساعدة العملاء في العثور على هذا المنتج بسهولة. مثلاً: إذا كان المنتج "لوحة مفاتيح"، أضف "كيبورد، keyboard" كي يظهر عند البحث بأي من هذه الكلمات.',
 ];
 
 
