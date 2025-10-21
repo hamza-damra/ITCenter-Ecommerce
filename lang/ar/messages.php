@@ -658,6 +658,19 @@ return [
     'messages_deleted_successfully' => 'تم حذف :count رسالة بنجاح',
     'messages_status_updated_successfully' => 'تم تحديث حالة :count رسالة بنجاح',
     'deleting' => 'جاري الحذف',
+
+    // No Products Found
+    'no_products_found_title' => 'لا توجد منتجات',
+    'no_products_found_search' => 'لم نتمكن من العثور على منتجات تطابق ":query"',
+    'no_products_available' => 'لا توجد منتجات متاحة في الوقت الحالي',
+    'view_all_products' => 'عرض جميع المنتجات',
+    'clear_filters' => 'مسح الفلاتر',
+
+    // Search Results
+    'search_results' => 'نتائج البحث',
+    'found' => 'تم العثور على',
+    'products_for' => 'منتجات لـ',
+    'clear_search' => 'مسح البحث',
 ];
 
 

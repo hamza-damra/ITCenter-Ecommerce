@@ -446,36 +446,15 @@
                                 @php
                                     $imagePath = $item->product->images->first()->image_path;
                                     $imageUrl = (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://'))
-                                        ? $imagePath
-                                        : asset('storage/' . $imagePath);
-                                @endphp
-                                <img src="{{ $imageUrl }}"
-                                     alt="{{ $item->product->{'name_' . current_locale()} }}">
-                            @else
-                                <img src="{{ asset('images/placeholder.png') }}"
-                                     alt="{{ $item->product->{'name_' . current_locale()} }}">
-                            @endif
-                        </div>
-
-                        <div class="cart-item-details">
-                            <a href="{{ route('product.detail', $item->product->slug) }}" class="cart-item-title">
-                                {{ $item->product->{'name_' . current_locale()} }}
-                            </a>
-                            <div class="cart-item-price">
-                                ${{ number_format($item->price, 2) }}
-                            </div>
-                            <div class="quantity-controls">
-                                <button class="quantity-btn decrease-qty" data-product-id="{{ $item->product_id }}">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <span class="quantity-display">{{ $item->quantity }}</span>
-                                <button class="quantity-btn increase-qty" data-product-id="{{ $item->product_id }}">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="cart-item-actions">
+                                            // Remove item
+                                            document.querySelectorAll('.remove-btn').forEach(btn => {
+                                                    btn.addEventListener('click', function() {
+                                                            const productId = this.dataset.productId;
+                                                            const cartItem = this.closest('.cart-item');
+                                                            // Remove directly without an extra confirm dialog (handled in UI)
+                                                            removeFromCart(productId, cartItem);
+                                                    });
+                                            });
                             <div class="cart-item-total">
                                 ${{ number_format($item->price * $item->quantity, 2) }}
                             </div>
@@ -552,11 +531,16 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             const productId = this.dataset.productId;
             const cartItem = this.closest('.cart-item');
+<<<<<<< HEAD
             
             removeFromCart(productId, cartItem);
             /*if (confirm('{{ __('messages.confirm_remove_cart') }}')) {
                 removeFromCart(productId, cartItem);
             }*/
+=======
+
+            removeFromCart(productId, cartItem);
+>>>>>>> d7a4214 (feat(i18n/ui): add product search messages, improve no-results UI, admin RTL and logout styling, and cart remove behavior)
         });
     });
 

@@ -456,52 +456,200 @@
         color: #667eea;
     }
 
+    /* RTL Support for Search Results */
+    @if(is_rtl())
+    .search-results-info h3,
+    .search-results-info p {
+        direction: rtl;
+    }
+    @endif
+
     .no-results {
         text-align: center;
-        padding: 4rem 2rem;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        padding: 5rem 2rem;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        margin: 2rem 0;
+        position: relative;
+        overflow: hidden;
     }
 
-    .no-results i {
-        font-size: 5rem;
-        color: #ddd;
-        margin-bottom: 1.5rem;
+    .no-results::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(78, 115, 223, 0.05) 0%, transparent 70%);
+        animation: pulse 15s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.1); opacity: 0.3; }
+    }
+
+    .no-results-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .no-results-icon {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 2rem;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+        animation: iconBounce 3s ease-in-out infinite;
+    }
+
+    @keyframes iconBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .no-results-icon i {
+        font-size: 3.5rem;
+        color: white;
+        margin: 0;
     }
 
     .no-results h3 {
-        font-size: 1.8rem;
-        color: #333;
+        font-size: 2rem;
+        color: #2c3e50;
         margin-bottom: 1rem;
+        font-weight: 700;
+        line-height: 1.3;
     }
 
     .no-results p {
-        font-size: 1.1rem;
-        color: #666;
-        margin-bottom: 2rem;
+        font-size: 1.15rem;
+        color: #6c757d;
+        margin-bottom: 2.5rem;
+        line-height: 1.6;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .no-results-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-primary-action {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: all 0.3s;
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        font-size: 1.05rem;
+    }
+
+    .btn-primary-action:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+        color: white;
+    }
+
+    .btn-secondary-action {
+        background: white;
+        color: #667eea;
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: all 0.3s;
+        border: 2px solid #667eea;
+        font-size: 1.05rem;
+    }
+
+    .btn-secondary-action:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+    }
+
+    /* RTL Support for No Results */
+    @if(is_rtl())
+    .no-results h3,
+    .no-results p {
+        direction: rtl;
+        text-align: center;
+    }
+    @endif
+
+    @media (max-width: 768px) {
+        .no-results {
+            padding: 3rem 1.5rem;
+        }
+
+        .no-results-icon {
+            width: 100px;
+            height: 100px;
+        }
+
+        .no-results-icon i {
+            font-size: 2.5rem;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+        }
+
+        .no-results p {
+            font-size: 1rem;
+        }
+
+        .no-results-actions {
+            flex-direction: column;
+        }
+
+        .btn-primary-action,
+        .btn-secondary-action {
+            width: 100%;
+            justify-content: center;
+        }
     }
 </style>
 
 <div class="products-section">
     <div class="container">
         <div class="section-header">
-            <h2>All Products</h2>
+            <h2>{{ __t('messages.all_products') }}</h2>
         </div>
 
         @if(request('search'))
         <div class="search-results-info">
             <h3>
                 <i class="fas fa-search"></i>
-                Search Results
+                {{ __t('messages.search_results') }}
             </h3>
             <p>
-                Found <strong>{{ $products->total() }}</strong> {{ Str::plural('product', $products->total()) }} for
+                {{ __t('messages.found') }} <strong>{{ $products->total() }}</strong> {{ __t('messages.products_for') }}
                 <span class="search-query-highlight">"{{ request('search') }}"</span>
             </p>
             <a href="{{ route('products') }}" class="clear-search-btn">
                 <i class="fas fa-times"></i>
-                Clear Search
+                {{ __t('messages.clear_search') }}
             </a>
         </div>
         @endif
@@ -563,19 +711,31 @@
         </div>
         @else
         <div class="no-results">
-            <i class="fas fa-search"></i>
-            <h3>No Products Found</h3>
-            <p>
-                @if(request('search'))
-                    We couldn't find any products matching "<strong>{{ request('search') }}</strong>"
-                @else
-                    No products available at the moment
-                @endif
-            </p>
-            <a href="{{ route('products') }}" class="clear-search-btn">
-                <i class="fas fa-arrow-left"></i>
-                View All Products
-            </a>
+            <div class="no-results-content">
+                <div class="no-results-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>{{ __t('messages.no_products_found_title') }}</h3>
+                <p>
+                    @if(request('search'))
+                        {{ __t('messages.no_products_found_search', ['query' => request('search')]) }}
+                    @else
+                        {{ __t('messages.no_products_available') }}
+                    @endif
+                </p>
+                <div class="no-results-actions">
+                    <a href="{{ route('products') }}" class="btn-primary-action">
+                        <i class="fas fa-th-large"></i>
+                        {{ __t('messages.view_all_products') }}
+                    </a>
+                    @if(request('search'))
+                    <a href="{{ route('products') }}" class="btn-secondary-action">
+                        <i class="fas fa-times"></i>
+                        {{ __t('messages.clear_filters') }}
+                    </a>
+                    @endif
+                </div>
+            </div>
         </div>
         @endif
 

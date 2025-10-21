@@ -448,6 +448,8 @@ return [
     'current_logo' => 'הלוגו הנוכחי',
     'update_brand' => 'עדכן מותג',
 
+    'orders' => 'הזמנות',
+
     // Admin Orders Page
     'orders_management' => 'ניהול הזמנות',
     'manage_track_orders' => 'נהל ועקוב אחר הזמנות לקוחות',
@@ -536,6 +538,19 @@ return [
     // Bulk operations messages
     'messages_deleted_successfully' => ':count הודעות נמחקו בהצלחה',
     'messages_status_updated_successfully' => 'סטטוס של :count הודעות עודכן בהצלחה',
+
+    // No Products Found
+    'no_products_found_title' => 'לא נמצאו מוצרים',
+    'no_products_found_search' => 'לא הצלחנו למצוא מוצרים התואמים ל-":query"',
+    'no_products_available' => 'אין מוצרים זמינים כרגע',
+    'view_all_products' => 'צפה בכל המוצרים',
+    'clear_filters' => 'נקה סינון',
+
+    // Search Results
+    'search_results' => 'תוצאות חיפוש',
+    'found' => 'נמצאו',
+    'products_for' => 'מוצרים עבור',
+    'clear_search' => 'נקה חיפוש',
 ];
 
 

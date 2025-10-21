@@ -156,6 +156,66 @@
             font-size: 16px;
         }
 
+        /* Logout Button - Match sidebar menu link styles */
+        .sidebar-logout-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 24px;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 15px;
+            font-weight: 500;
+            position: relative;
+            margin: 4px 12px;
+            border-radius: 10px;
+            font-family: inherit;
+        }
+
+        .sidebar-logout-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 0;
+            background: var(--danger);
+            border-radius: 2px;
+            transition: height 0.3s ease;
+        }
+
+        .sidebar-logout-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fff;
+            padding-left: 28px;
+        }
+
+        .sidebar-logout-btn:hover::before {
+            height: 60%;
+        }
+
+        .sidebar-logout-btn i {
+            width: 20px;
+            font-size: 16px;
+        }
+
+        [dir="rtl"] .sidebar-logout-btn:hover {
+            padding-left: 24px;
+            padding-right: 28px;
+        }
+
+        [dir="rtl"] .sidebar-logout-btn::before {
+            left: auto;
+            right: 0;
+        }
+
         .main-content {
             flex: 1;
             margin-left: 260px;
@@ -250,6 +310,13 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-family: inherit;
+        }
+
+        /* Remove text transformation for RTL languages */
+        [dir="rtl"] .btn {
+            text-transform: none;
+            letter-spacing: normal;
         }
 
         .btn-primary {
@@ -536,6 +603,11 @@
             letter-spacing: 0.5px;
         }
 
+        [dir="rtl"] table th {
+            text-transform: none;
+            letter-spacing: normal;
+        }
+
         table tr:hover {
             background: #f8fafc;
         }
@@ -549,6 +621,11 @@
             display: inline-block;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+
+        [dir="rtl"] .badge {
+            text-transform: none;
+            letter-spacing: normal;
         }
 
         .badge-success {
@@ -595,6 +672,11 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+
+        [dir="rtl"] .stat-card h3 {
+            text-transform: none;
+            letter-spacing: normal;
         }
 
         .stat-card .number {
@@ -884,7 +966,7 @@
             </div>
             <ul class="sidebar-menu">
                 <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> {{ __('messages.dashboard') }}</a></li>
-                <li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i class="fas fa-shopping-bag"></i> {{ __('messages.orders') }}</a></li>
+                <li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i class="fas fa-shopping-bag"></i> {{ __t('messages.orders') }}</a></li>
                 <li><a href="{{ route('admin.contacts.index') }}" class="{{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}"><i class="fas fa-envelope"></i> {{ __('messages.contact_messages') }}</a></li>
                 <li><a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><i class="fas fa-box"></i> {{ __('messages.products') }}</a></li>
                 <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-folder"></i> {{ __('messages.categories') }}</a></li>
@@ -893,8 +975,8 @@
                 <li>
                     <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
                         @csrf
-                        <button type="submit" style="width: 100%; background: none; border: none; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 14px 24px; color: #cbd5e1; font-size: 15px; font-weight: 500; margin: 4px 12px; border-radius: 10px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);" onmouseover="this.style.background='rgba(239, 68, 68, 0.15)'; this.style.color='#fff';" onmouseout="this.style.background='none'; this.style.color='#cbd5e1';">
-                            <i class="fas fa-sign-out-alt" style="width: 20px; font-size: 16px;"></i> {{ __('Logout') }}
+                        <button type="submit" class="sidebar-logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> {{ __('messages.logout') }}
                         </button>
                     </form>
                 </li>

@@ -703,6 +703,19 @@ return [
     'messages_deleted_successfully' => ':count message(s) deleted successfully',
     'messages_status_updated_successfully' => ':count message(s) status updated successfully',
     'deleting' => 'Deleting',
+
+    // No Products Found
+    'no_products_found_title' => 'No Products Found',
+    'no_products_found_search' => 'We couldn\'t find any products matching ":query"',
+    'no_products_available' => 'No products available at the moment',
+    'view_all_products' => 'View All Products',
+    'clear_filters' => 'Clear Filters',
+
+    // Search Results
+    'search_results' => 'Search Results',
+    'found' => 'Found',
+    'products_for' => 'products for',
+    'clear_search' => 'Clear Search',
 ];
 
 

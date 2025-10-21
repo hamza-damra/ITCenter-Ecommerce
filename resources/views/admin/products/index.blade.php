@@ -93,6 +93,11 @@
         letter-spacing: 0.8px;
     }
 
+    [dir="rtl"] .products-table th {
+        text-transform: none;
+        letter-spacing: normal;
+    }
+
     .products-table tbody tr {
         border-bottom: 1px solid #f1f5f9;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -230,6 +235,11 @@
         letter-spacing: 0.6px;
     }
 
+    [dir="rtl"] .stock-badge {
+        text-transform: none;
+        letter-spacing: normal;
+    }
+
     .stock-high {
         background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
         color: #065f46;
@@ -267,6 +277,11 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.6px;
+    }
+
+    [dir="rtl"] .status-badge {
+        text-transform: none;
+        letter-spacing: normal;
     }
 
     .status-active {
@@ -361,6 +376,11 @@
         display: flex;
         align-items: center;
         gap: 8px;
+    }
+
+    [dir="rtl"] .stat-mini-card h4 {
+        text-transform: none;
+        letter-spacing: normal;
     }
 
     .stat-mini-card .number {
