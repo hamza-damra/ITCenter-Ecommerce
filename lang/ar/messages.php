@@ -783,6 +783,11 @@ return [
     'users_deleted_successfully' => 'تم حذف :count مستخدم بنجاح!',
     'cannot_delete_own_account' => 'لا يمكنك حذف حسابك الخاص!',
     'product_deleted' => 'المنتج محذوف',
+    
+    // Account Status Messages (for suspended/banned users)
+    'account_suspended' => 'تم إيقاف حسابك. يرجى الاتصال بالدعم للحصول على المساعدة.',
+    'account_banned' => 'تم حظر حسابك بشكل دائم. يرجى الاتصال بالدعم إذا كنت تعتقد أن هذا خطأ.',
+    'reason' => 'السبب',
 ];
 
 

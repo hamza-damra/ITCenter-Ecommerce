@@ -440,6 +440,7 @@
         <div class="cart-content">
             <div class="cart-items-section">
                 @foreach($cartItems as $item)
+                    @if($item->product)
                     <div class="cart-item" data-product-id="{{ $item->product_id }}">
                         <div class="cart-item-image">
                             @if($item->product->images->isNotEmpty())
@@ -449,7 +450,10 @@
                                         ? $imagePath
                                         : asset('storage/' . $imagePath);
                                 @endphp
-                                <img src="{{ $imageUrl }}" alt="{{ $item->product->name }}" loading="lazy">
+                                <img src="{{ $imageUrl }}" 
+                                     alt="{{ $item->product->name }}" 
+                                     loading="lazy"
+                                     onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-image\'></i></div>';">
                             @else
                                 <div class="no-image">
                                     <i class="fas fa-image"></i>
@@ -484,6 +488,7 @@
                             </button>
                         </div>
                     </div>
+                    @endif
                 @endforeach
             </div>
 

@@ -29,7 +29,11 @@ class CartController extends Controller
                     $query->where('session_id', $identifier['session_id']);
                 }
             })
-            ->get();
+            ->get()
+            ->filter(function($item) {
+                // Remove cart items with missing/deleted products
+                return $item->product !== null;
+            });
 
         $total = $cartItems->sum(function($item) {
             return $item->price * $item->quantity;

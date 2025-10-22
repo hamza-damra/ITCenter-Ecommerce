@@ -237,6 +237,81 @@
     [dir="rtl"] .order-card:hover {
         transform: translateX(-4px);
     }
+
+    /* Status Pills */
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-active {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46;
+    }
+
+    /* Account Control Buttons */
+    .account-control-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .account-control-buttons .btn {
+        font-size: 13px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    .account-control-buttons .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .account-control-buttons .btn-warning {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        border: none;
+        color: white;
+    }
+
+    .account-control-buttons .btn-danger {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        border: none;
+        color: white;
+    }
+
+    .account-control-buttons .btn-success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border: none;
+        color: white;
+    }
+
+    /* Page Actions Responsive */
+    .page-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+        .page-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .account-control-buttons {
+            justify-content: center;
+        }
+    }
 </style>
 
 <!-- Page Header -->
@@ -252,6 +327,15 @@
         <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-primary">
             <i class="fas fa-edit"></i> {{ __('messages.edit_user') }}
         </a>
+        
+        <!-- Account Control Buttons -->
+        <div class="account-control-buttons">
+            @if($user->id !== auth()->id())
+                <button type="button" class="btn btn-danger" onclick="openAccountControlModal('delete')">
+                    <i class="fas fa-trash"></i> {{ __('messages.delete_account') }}
+                </button>
+            @endif
+        </div>
     </div>
 </div>
 
@@ -292,6 +376,16 @@
             <span class="user-detail-value">
                 <i class="fas {{ $user->role === 'admin' ? 'fa-user-shield' : 'fa-user' }}"></i>
                 {{ $user->role === 'admin' ? __('messages.admin') : __('messages.customer') }}
+            </span>
+        </div>
+
+        <div class="user-detail-item">
+            <span class="user-detail-label">{{ __('messages.account_status') }}</span>
+            <span class="user-detail-value">
+                <span class="status-pill {{ $user->getStatusBadgeClass() }}">
+                    <i class="{{ $user->getStatusIcon() }}"></i>
+                    {{ ucfirst($user->status ?? 'active') }}
+                </span>
             </span>
         </div>
 
@@ -482,6 +576,397 @@
     </div>
 </div>
 @endif
+
+<!-- Account Control Modal -->
+<div id="accountControlModal" class="modal-overlay" style="display: none;">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3 id="modalTitle">{{ __('messages.delete_confirm_title') }}</h3>
+            <button type="button" class="modal-close" onclick="closeAccountControlModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-icon">
+                <i id="modalIcon" class="fas fa-trash-circle"></i>
+            </div>
+            <p id="modalMessage">{{ __('messages.delete_confirm_message') }}</p>
+            <div class="user-info-card">
+                <div class="user-avatar">
+                    {{ strtoupper(substr($user->first_name ?? $user->name, 0, 1)) }}{{ strtoupper(substr($user->last_name ?? '', 0, 1)) }}
+                </div>
+                <div class="user-details">
+                    <h4>{{ $user->name }}</h4>
+                    <p>{{ $user->email }}</p>
+                    <span class="user-role">{{ $user->role === 'admin' ? __('messages.admin') : __('messages.customer') }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeAccountControlModal()">
+                {{ __('messages.cancel') }}
+            </button>
+            <button type="button" class="btn btn-danger" id="confirmButton" onclick="confirmAccountAction()">
+                {{ __('messages.confirm_action') }}
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: var(--secondary);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: var(--border);
+    color: var(--dark);
+}
+
+.modal-body {
+    padding: 28px;
+    text-align: center;
+}
+
+.modal-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #dc2626;
+}
+
+.modal-body p {
+    font-size: 16px;
+    color: var(--secondary);
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.user-info-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.user-details h4 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.user-details p {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: var(--secondary);
+}
+
+.user-role {
+    background: var(--primary);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.reason-input {
+    text-align: left;
+}
+
+.reason-input label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.reason-input textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.2s ease;
+}
+
+.reason-input textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 24px 28px;
+    border-top: 1px solid var(--border);
+    background: #f8fafc;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+[dir="rtl"] .user-info-card {
+    text-align: right;
+}
+
+[dir="rtl"] .modal-footer {
+    justify-content: flex-start;
+}
+</style>
+
+<script>
+let currentAction = null;
+let currentUserId = {{ $user->id }};
+
+function openAccountControlModal(action) {
+    currentAction = action;
+    const modal = document.getElementById('accountControlModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalIcon = document.getElementById('modalIcon');
+    const confirmButton = document.getElementById('confirmButton');
+    const reasonInput = document.getElementById('reasonInput');
+    const reasonTextarea = document.getElementById('reason');
+    
+    // Reset form
+    reasonTextarea.value = '';
+    
+    switch(action) {
+        case 'delete':
+            modalTitle.textContent = '{{ __("messages.delete_confirm_title") }}';
+            modalMessage.textContent = '{{ __("messages.delete_confirm_message") }}';
+            modalIcon.className = 'fas fa-trash';
+            modalIcon.parentElement.style.background = 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)';
+            modalIcon.style.color = '#dc2626';
+            confirmButton.textContent = '{{ __("messages.delete_account") }}';
+            confirmButton.className = 'btn btn-danger';
+            reasonInput.style.display = 'none';
+            break;
+    }
+    
+    modal.style.display = 'flex';
+}
+
+function closeAccountControlModal() {
+    document.getElementById('accountControlModal').style.display = 'none';
+    currentAction = null;
+}
+
+function confirmAccountAction() {
+    if (!currentAction) return;
+    
+    const reason = document.getElementById('reason').value;
+    const confirmButton = document.getElementById('confirmButton');
+    
+    // Disable button and show loading
+    confirmButton.disabled = true;
+    confirmButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    
+    let url = '';
+    let data = {};
+    
+    switch(currentAction) {
+        case 'delete':
+            url = `/admin/users/${currentUserId}`;
+            data = { _method: 'DELETE' };
+            break;
+    }
+    
+    // Prepare form data with CSRF token
+    const formData = new FormData();
+    formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+    
+    Object.keys(data).forEach(key => {
+        formData.append(key, data[key]);
+    });
+    
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json'
+        },
+        body: formData
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response data:', data);
+        
+        if (data.success) {
+            showNotification(data.message, 'success');
+            // Redirect to users list after delete
+            window.location.href = '/admin/users';
+            closeAccountControlModal();
+        } else {
+            showNotification(data.message || 'Action failed', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error details:', error);
+        showNotification('An error occurred. Please try again.', 'error');
+    })
+    .finally(() => {
+        // Re-enable button
+        confirmButton.disabled = false;
+        confirmButton.innerHTML = '{{ __("messages.confirm_action") }}';
+    });
+}
+
+function showNotification(message, type) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    // Add styles
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#10b981' : '#ef4444'};
+        color: white;
+        padding: 16px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 10000;
+        animation: slideInRight 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 5000);
+}
+
+// Add CSS for notifications
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+    .notification-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+`;
+document.head.appendChild(style);
+</script>
 
 @endsection
 

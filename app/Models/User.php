@@ -27,6 +27,7 @@ class User extends Authenticatable
         'phone',
         'password',
         'role',
+        'status',
     ];
 
     /**
@@ -103,5 +104,15 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
+    }
+
+    /**
+     * Check if the user is active.
+     *
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
     }
 }

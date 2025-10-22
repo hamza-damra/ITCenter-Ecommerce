@@ -1426,6 +1426,24 @@
         document.head.appendChild(style);
 
         /**
+         * GLOBAL HELPER: Handle 403 responses
+         */
+        window.handleAccountStatus = function(response) {
+            if (response.status === 403) {
+                return response.json().then(data => {
+                    showNotification(data.message || 'Access denied');
+                    if (data.redirect) {
+                        setTimeout(() => {
+                            window.location.href = data.redirect;
+                        }, 2000);
+                    }
+                    throw new Error('Access denied');
+                });
+            }
+            return Promise.resolve(response);
+        };
+
+        /**
          * CART FUNCTIONS
          */
 
@@ -1450,6 +1468,7 @@
                 },
                 body: JSON.stringify({ quantity: 1 })
             })
+            .then(response => handleAccountStatus(response))
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -1700,6 +1719,40 @@
                 }
             }
         }
+
+        // Global image error handler for broken external URLs
+        // Use event delegation to handle dynamically loaded images
+        document.addEventListener('error', function(e) {
+            if (e.target.tagName === 'IMG' && !e.target.classList.contains('error-handled')) {
+                e.target.classList.add('error-handled');
+                
+                const parent = e.target.parentElement;
+                if (!parent) return;
+                
+                // Check if there's already a placeholder
+                const existingPlaceholder = parent.querySelector('.no-image');
+                if (existingPlaceholder) {
+                    e.target.style.display = 'none';
+                    existingPlaceholder.style.display = 'flex';
+                    return;
+                }
+                
+                // Create a placeholder
+                const div = document.createElement('div');
+                div.className = 'no-image';
+                div.innerHTML = '<i class="fas fa-image"></i>';
+                div.style.cssText = 'display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: #f5f5f5; color: #999;';
+                
+                // Try to replace the image
+                try {
+                    parent.replaceChild(div, e.target);
+                } catch (error) {
+                    // If replace fails, just hide the image
+                    e.target.style.display = 'none';
+                    parent.appendChild(div);
+                }
+            }
+        }, true); // Use capture phase to catch all errors
     </script>
 </body>
 </html>

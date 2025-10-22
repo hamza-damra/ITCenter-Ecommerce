@@ -828,6 +828,42 @@ return [
     'users_deleted_successfully' => ':count user(s) deleted successfully!',
     'cannot_delete_own_account' => 'You cannot delete your own account!',
     'product_deleted' => 'Product Deleted',
+    
+    // Account Control
+    'account_control' => 'Account Control',
+    'suspend_account' => 'Suspend Account',
+    'ban_account' => 'Ban Account',
+    'activate_account' => 'Activate Account',
+    'delete_account' => 'Delete Account',
+    'account_status' => 'Account Status',
+    'active' => 'Active',
+    'suspended' => 'Suspended',
+    'banned' => 'Banned',
+    'status_reason' => 'Reason (Optional)',
+    'suspend_reason_placeholder' => 'Enter reason for suspension...',
+    'ban_reason_placeholder' => 'Enter reason for ban...',
+    'user_suspended_successfully' => 'User account suspended successfully!',
+    'user_banned_successfully' => 'User account banned successfully!',
+    'user_activated_successfully' => 'User account activated successfully!',
+    'cannot_suspend_own_account' => 'You cannot suspend your own account!',
+    'cannot_ban_own_account' => 'You cannot ban your own account!',
+    'suspend_confirm_title' => 'Suspend User Account',
+    'ban_confirm_title' => 'Ban User Account',
+    'delete_confirm_title' => 'Delete User Account',
+    'suspend_confirm_message' => 'Are you sure you want to suspend this user account? The user will not be able to log in until reactivated.',
+    'ban_confirm_message' => 'Are you sure you want to ban this user account? This is a permanent action and the user will not be able to log in.',
+    'delete_confirm_message' => 'Are you sure you want to permanently delete this user account? This action cannot be undone and will remove all user data.',
+    'confirm_action' => 'Confirm Action',
+    'cancel' => 'Cancel',
+    'suspended_at' => 'Suspended At',
+    'banned_at' => 'Banned At',
+    'account_actions' => 'Account Actions',
+    'quick_actions' => 'Quick Actions',
+    
+    // Account Status Messages (for suspended/banned users)
+    'account_suspended' => 'Your account has been suspended. Please contact support for assistance.',
+    'account_banned' => 'Your account has been permanently banned. Please contact support if you believe this is an error.',
+    'reason' => 'Reason',
 ];
 
 

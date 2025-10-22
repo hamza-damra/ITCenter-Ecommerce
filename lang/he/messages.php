@@ -698,6 +698,11 @@ return [
     'users_deleted_successfully' => ':count משתמשים נמחקו בהצלחה!',
     'cannot_delete_own_account' => 'אינך יכול למחוק את החשבון שלך!',
     'product_deleted' => 'המוצר נמחק',
+    
+    // Account Status Messages (for suspended/banned users)
+    'account_suspended' => 'החשבון שלך הושעה. אנא צור קשר עם התמיכה לקבלת סיוע.',
+    'account_banned' => 'החשבון שלך נחסם לצמיתות. אנא צור קשר עם התמיכה אם אתה מאמין שזו טעות.',
+    'reason' => 'סיבה',
 ];
 
 

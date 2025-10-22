@@ -560,6 +560,7 @@
                         <th>{{ __('messages.email') }}</th>
                         <th>{{ __('messages.phone') }}</th>
                         <th>{{ __('messages.role') }}</th>
+                        <th>{{ __('messages.account_status') }}</th>
                         <th>{{ __('messages.orders') }}</th>
                         <th>{{ __('messages.registration_date') }}</th>
                         <th>{{ __('messages.actions') }}</th>
@@ -567,7 +568,7 @@
                 </thead>
                 <tbody>
                     @foreach($users as $user)
-                    <tr>
+                    <tr data-user-id="{{ $user->id }}">
                         <td>
                             <div class="user-cell">
                                 <div class="user-avatar">
@@ -605,6 +606,12 @@
                             </span>
                         </td>
                         <td>
+                            <span class="status-pill {{ $user->getStatusBadgeClass() }}">
+                                <i class="{{ $user->getStatusIcon() }}"></i>
+                                {{ ucfirst($user->status ?? 'active') }}
+                            </span>
+                        </td>
+                        <td>
                             <div style="display: flex; flex-direction: column; gap: 4px;">
                                 <span class="stats-pill">
                                     <i class="fas fa-shopping-bag" style="color: var(--primary);"></i>
@@ -625,19 +632,17 @@
                         <td>
                             <div class="action-buttons">
                                 <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-primary" title="{{ __('messages.view_details') }}">
-                                    <i class="fas fa-eye"></i> {{ __('messages.view') }}
+                                    <i class="fas fa-eye"></i>
                                 </a>
                                 <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-secondary" title="{{ __('messages.edit_user') }}">
-                                    <i class="fas fa-edit"></i> {{ __('messages.edit') }}
+                                    <i class="fas fa-edit"></i>
                                 </a>
+                                
                                 @if($user->id !== auth()->id())
-                                <form method="POST" action="{{ route('admin.users.destroy', $user) }}" style="display: inline;" onsubmit="return confirm('{{ __('messages.delete_user_confirm') }}');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" title="{{ __('messages.delete_user') }}">
-                                        <i class="fas fa-trash"></i> {{ __('messages.delete') }}
+                                    <!-- Quick Actions -->
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="quickDelete({{ $user->id }})" title="{{ __('messages.delete_account') }}">
+                                        <i class="fas fa-trash"></i>
                                     </button>
-                                </form>
                                 @endif
                             </div>
                         </td>
@@ -661,5 +666,201 @@
         @endif
     </div>
 </div>
+
+<style>
+/* Status Pills */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-active {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #065f46;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.action-buttons .btn {
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.action-buttons .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.action-buttons .btn-warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    border: none;
+    color: white;
+}
+
+.action-buttons .btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border: none;
+    color: white;
+}
+
+.action-buttons .btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: none;
+    color: white;
+}
+</style>
+
+<script>
+function quickDelete(userId) {
+    if (confirm('{{ __("messages.delete_confirm_message") }}')) {
+        performAccountAction(userId, 'delete');
+    }
+}
+
+function performAccountAction(userId, action, reason = null) {
+    const button = event.target.closest('button');
+    const originalContent = button.innerHTML;
+    
+    // Show loading state
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    
+    let url = '';
+    let data = {};
+    
+    switch(action) {
+        case 'delete':
+            url = `/admin/users/${userId}`;
+            data = { _method: 'DELETE' };
+            break;
+    }
+    
+    // Prepare form data with CSRF token
+    const formData = new FormData();
+    formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+    
+    Object.keys(data).forEach(key => {
+        formData.append(key, data[key]);
+    });
+    
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json'
+        },
+        body: formData
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response data:', data);
+        
+        if (data.success) {
+            showNotification(data.message, 'success');
+            // Reload page after successful delete
+            window.location.reload();
+        } else {
+            showNotification(data.message || 'Action failed', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error details:', error);
+        showNotification('An error occurred. Please try again.', 'error');
+    })
+    .finally(() => {
+        // Re-enable button
+        button.disabled = false;
+        button.innerHTML = originalContent;
+    });
+}
+
+function updateStatusBadge(userId, status, statusBadgeClass, statusIcon) {
+    const row = document.querySelector(`tr[data-user-id="${userId}"]`);
+    if (row) {
+        const statusCell = row.querySelector('.status-pill');
+        if (statusCell) {
+            statusCell.className = `status-pill ${statusBadgeClass}`;
+            statusCell.innerHTML = `<i class="${statusIcon}"></i> ${status.charAt(0).toUpperCase() + status.slice(1)}`;
+        }
+    }
+}
+
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#10b981' : '#ef4444'};
+        color: white;
+        padding: 16px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 10000;
+        animation: slideInRight 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 5000);
+}
+
+// Add CSS for notifications
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+    .notification-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+`;
+document.head.appendChild(style);
+</script>
+
 @endsection
 

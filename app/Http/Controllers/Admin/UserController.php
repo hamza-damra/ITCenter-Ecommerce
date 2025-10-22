@@ -157,11 +157,24 @@ class UserController extends Controller
     {
         // Prevent deleting own account
         if ($user->id === auth()->id()) {
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('messages.cannot_delete_own_account')
+                ], 400);
+            }
             return redirect()->route('admin.users.index')
                 ->with('error', __('messages.cannot_delete_own_account'));
         }
 
         $user->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => __('messages.user_deleted_successfully')
+            ]);
+        }
 
         return redirect()->route('admin.users.index')
             ->with('success', __('messages.user_deleted_successfully'));
@@ -186,4 +199,3 @@ class UserController extends Controller
             ->with('success', __('messages.users_deleted_successfully', ['count' => count($userIds)]));
     }
 }
-

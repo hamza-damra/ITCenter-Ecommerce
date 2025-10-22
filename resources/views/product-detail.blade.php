@@ -847,8 +847,9 @@
         })
         .then(response => {
             console.log('Response status:', response.status);
-            return response.json();
+            return window.handleAccountStatus ? handleAccountStatus(response) : response;
         })
+        .then(response => response.json())
         .then(data => {
             console.log('Response data:', data);
             
