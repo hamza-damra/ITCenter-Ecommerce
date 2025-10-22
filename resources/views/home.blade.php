@@ -1342,7 +1342,7 @@
 
     /* Special Offer Card */
     .special-offer-section {
-        background: linear-gradient(135deg, #f8f9ff 0%, #fff8e1 100%);
+        background: transparent;
         padding: 3rem 0;
         margin-bottom: 3rem;
         width: 100%;
@@ -1358,22 +1358,23 @@
     }
 
     .offer-card {
-        background: linear-gradient(135deg, #ffffff 0%, #fffef7 100%);
-        border: 5px solid #FFD700;
-        border-radius: 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: 3px solid #FFD700;
+        border-radius: 24px;
         padding: 0;
         position: relative;
-        box-shadow: 0 20px 60px rgba(255, 215, 0, 0.3);
+        box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
         transition: all 0.4s ease;
         overflow: hidden;
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0;
+        min-height: 500px;
     }
 
     .offer-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 25px 70px rgba(255, 215, 0, 0.4);
+        box-shadow: 0 25px 70px rgba(102, 126, 234, 0.4);
     }
 
     .offer-card::before {
@@ -1383,7 +1384,7 @@
         left: -50%;
         width: 200%;
         height: 200%;
-        background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
         transform: rotate(45deg);
         animation: shimmer 3s infinite;
     }
@@ -1397,19 +1398,21 @@
         padding: 3rem;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         position: relative;
         z-index: 1;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
     }
 
     .offer-right-section {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
         padding: 3rem;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         position: relative;
+        border-radius: 0 21px 21px 0;
     }
 
     .offer-right-section::before {
@@ -1419,27 +1422,27 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(102,126,234,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
         opacity: 0.3;
     }
 
     .discount-badge {
         background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
         color: #000;
-        padding: 1rem 2rem;
+        padding: 0.75rem 1.5rem;
         border-radius: 50px;
         font-weight: 900;
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         position: absolute;
-        top: 20px;
+        top: -15px;
         @if(is_rtl())
-        left: 20px;
+        right: 30px;
         @else
-        right: 20px;
+        left: 30px;
         @endif
         box-shadow: 0 8px 25px rgba(255, 165, 0, 0.5);
         animation: pulse 2s infinite;
-        z-index: 10;
+        z-index: 100;
         letter-spacing: 1px;
     }
 
@@ -1449,38 +1452,23 @@
     }
 
     .offer-header {
-        margin-bottom: 1.5rem;
-    }
-
-    .offer-label {
-        display: inline-block;
-        background: #ff4757;
-        color: #fff;
-        padding: 0.5rem 1.5rem;
-        border-radius: 30px;
-        font-size: 0.9rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        margin-bottom: 1rem;
+        margin-bottom: 2rem;
     }
 
     .offer-title {
-        font-size: 2.8rem;
+        font-size: 2.5rem;
         font-weight: 900;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #ffffff;
         margin: 0 0 1rem 0;
         line-height: 1.2;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
 
     .offer-product-name {
         font-size: 1.4rem;
         font-weight: 600;
-        color: #333;
-        margin-bottom: 1.5rem;
+        color: rgba(255,255,255,0.9);
+        margin-bottom: 2rem;
         line-height: 1.4;
     }
 
@@ -1495,37 +1483,37 @@
     .current-price {
         font-size: 3.5rem;
         font-weight: 900;
-        color: #ff4757;
+        color: #FFD700;
         margin: 0;
-        text-shadow: 2px 2px 4px rgba(255, 71, 87, 0.2);
+        text-shadow: 2px 2px 8px rgba(255, 215, 0, 0.4);
     }
 
     .original-price {
-        font-size: 1.8rem;
-        color: #999;
+        font-size: 1.6rem;
+        color: rgba(255,255,255,0.6);
         text-decoration: line-through;
         margin: 0;
         position: relative;
     }
 
     .savings-text {
-        background: #e8f5e9;
-        color: #2e7d32;
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
         padding: 0.5rem 1rem;
         border-radius: 20px;
         font-size: 0.95rem;
         font-weight: 700;
+        backdrop-filter: blur(10px);
     }
 
     .urgency-message {
         text-align: center;
-        color: #fff;
-        font-size: 1.2rem;
+        color: #667eea;
+        font-size: 1.1rem;
         font-weight: 700;
-        margin-bottom: 1.5rem;
+        margin-bottom: 2rem;
         text-transform: uppercase;
         letter-spacing: 1.5px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
 
     .countdown-timer {
@@ -1533,21 +1521,24 @@
         justify-content: center;
         gap: 1rem;
         margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
     }
 
     .countdown-item {
         text-align: center;
-        background: rgba(255, 255, 255, 0.95);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border-radius: 15px;
-        padding: 1rem;
-        min-width: 90px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        padding: 1.2rem 1rem;
+        min-width: 85px;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.1);
     }
 
     .countdown-number {
         font-size: 2.5rem;
         font-weight: 900;
-        color: #667eea;
+        color: #ffffff;
         display: block;
         line-height: 1;
         margin-bottom: 0.5rem;
@@ -1556,7 +1547,7 @@
     .countdown-label {
         font-size: 0.75rem;
         font-weight: 700;
-        color: #666;
+        color: rgba(255,255,255,0.9);
         text-transform: uppercase;
         letter-spacing: 1px;
     }
@@ -1564,7 +1555,7 @@
     .countdown-separator {
         font-size: 2.5rem;
         font-weight: 900;
-        color: #fff;
+        color: #667eea;
         align-self: center;
         opacity: 0.7;
     }
@@ -1574,13 +1565,17 @@
         position: relative;
         z-index: 1;
         margin: 2rem 0;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .offer-image img {
-        max-width: 90%;
-        max-height: 350px;
+        max-width: 100%;
+        max-height: 280px;
         object-fit: contain;
-        filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+        filter: drop-shadow(0 15px 35px rgba(255,255,255,0.2));
         transition: transform 0.3s ease;
     }
 
@@ -1590,15 +1585,16 @@
 
     .offer-cta {
         text-align: center;
+        margin-top: auto;
     }
 
     .offer-btn {
         background: linear-gradient(135deg, #ff4757 0%, #ff6348 100%);
         color: #fff;
-        padding: 1.5rem 4rem;
+        padding: 1.2rem 3rem;
         border: none;
         border-radius: 50px;
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         font-weight: 800;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -1651,12 +1647,16 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: #555;
+        color: rgba(255,255,255,0.9);
         font-size: 0.95rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
     }
 
     .offer-feature i {
-        color: #4caf50;
+        color: #FFD700;
         font-size: 1.1rem;
     }
 
@@ -1665,7 +1665,82 @@
         background: #f8f9fa;
         padding: 3rem 0;
         margin-bottom: 3rem;
+        width: 100%;
     }
+
+    .featured-section .container {
+        max-width: 1500px; /* give more room */
+        margin: 0 auto;
+        padding: 0 1rem; /* reduce side margins */
+    }
+
+    .featured-section .product-grid {
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 0 1rem; /* reduce side margins */
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        align-items: stretch;
+    }
+
+    /* Promo card that spans two product rows */
+    .promo-featured-card {
+        grid-row: span 2;
+        border: 1.5px solid rgba(15,23,42,.2); /* subtle dark line similar to site */
+        border-radius: 18px;
+        background: #ffffff; /* no colored background */
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .promo-featured-card .badge-save {
+        position: absolute;
+        top: 12px;
+        {{ is_rtl() ? 'left' : 'right' }}: 12px;
+        background: #f59e0b; /* keep a small warm badge */
+        color: #fff;
+        font-weight: 800;
+        padding: .4rem .8rem;
+        border-radius: 999px;
+        font-size: .9rem;
+        box-shadow: 0 6px 14px rgba(245,158,11,.35);
+    }
+    .promo-featured-card .promo-media {
+        background: #fff;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        flex: 1 1 auto;
+        border: 1px solid rgba(15,23,42,.06); /* light inner frame around image */
+    }
+    .promo-featured-card .promo-media img {
+        width: 100%;
+        height: 240px;
+        object-fit: contain;
+    }
+    .promo-featured-card .promo-body { color: #1f2937; margin-top: 1rem; display: flex; flex-direction: column; gap: .75rem; }
+    .promo-featured-card .promo-title { font-weight: 800; font-size: 1.1rem; margin-bottom: .25rem; text-align:center; }
+    .promo-featured-card .promo-product-name { color:#6b7280; font-weight:600; font-size:.95rem; text-align:center; }
+    .promo-featured-card .promo-prices { display: flex; align-items: baseline; justify-content:center; gap: .6rem; text-align:center; }
+    .promo-featured-card .promo-prices .orig { text-decoration: line-through; opacity: .6; color: #6b7280; }
+    .promo-featured-card .promo-prices .sale { font-size: 1.8rem; font-weight: 900; color: #e11d48; }
+    .promo-featured-card .promo-cta { margin-top: .4rem; }
+    .promo-featured-card .promo-cta a { display:block; text-align:center; padding:.8rem 1rem; background:#111827; color:#fff; border-radius:10px; font-weight:800; text-decoration:none; border: 1px solid #111827; }
+    .promo-featured-card .promo-cta a:hover { background:#1f2937; border-color:#1f2937; }
+
+    /* Countdown in promo card */
+    .promo-countdown { margin-top: .25rem; }
+    .promo-countdown .label { color:#6b7280; font-weight:600; font-size:.9rem; margin-bottom:.4rem; text-align:center; }
+    .promo-countdown .boxes { display:flex; justify-content:center; gap:.5rem; }
+    .promo-countdown .box { background:#f3f4f6; border:1px solid rgba(15,23,42,.12); border-radius:10px; padding:.6rem .8rem; min-width:60px; text-align:center; }
+    .promo-countdown .num { font-size:1.2rem; font-weight:800; color:#111827; display:block; }
+    .promo-countdown .unit { font-size:.7rem; color:#6b7280; text-transform:uppercase; letter-spacing:.05em; display:block; margin-top:.15rem; }
 
     .featured-tabs {
         display: flex;
@@ -1704,10 +1779,19 @@
         .special-offer-card {
             padding: 0 1rem;
         }
+
+        .featured-section .product-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+        }
         
         .offer-card {
             grid-template-columns: 1fr;
-            border-width: 4px;
+            border-width: 3px;
+        }
+
+        .offer-right-section {
+            border-radius: 0 0 21px 21px;
         }
         
         .offer-left-section,
@@ -1716,7 +1800,7 @@
         }
         
         .offer-title {
-            font-size: 2.2rem;
+            font-size: 2rem;
         }
         
         .current-price {
@@ -1725,7 +1809,7 @@
         
         .countdown-item {
             min-width: 70px;
-            padding: 0.8rem;
+            padding: 1rem 0.8rem;
         }
         
         .countdown-number {
@@ -1733,8 +1817,12 @@
         }
         
         .offer-btn {
-            padding: 1.2rem 2.5rem;
-            font-size: 1.1rem;
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+        }
+
+        .offer-image img {
+            max-height: 250px;
         }
     }
 
@@ -1744,12 +1832,12 @@
         }
         
         .special-offer-card {
-            padding: 0 0.8rem;
+            padding: 0 1rem;
         }
         
         .offer-card {
-            border-radius: 20px;
-            border-width: 3px;
+            border-radius: 16px;
+            border-width: 2px;
         }
         
         .offer-left-section,
@@ -1758,7 +1846,7 @@
         }
         
         .offer-title {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
         }
         
         .current-price {
@@ -1798,6 +1886,12 @@
         .discount-badge {
             font-size: 1rem;
             padding: 0.7rem 1.2rem;
+        }
+
+        .featured-section .product-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            padding: 0 .75rem;
         }
     }
 
@@ -1843,6 +1937,124 @@
     </div>
 </div>
 
+<style>
+.promo-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #ff6b6b;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 10px rgba(255,107,107,0.4);
+    z-index: 2;
+}
+
+[dir="rtl"] .promo-badge { right: auto; left: 20px; }
+
+.promo-image {
+    background: white;
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.promo-image img {
+    width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+    display: block;
+}
+
+.promo-content { color: white; }
+
+.promo-header { margin-bottom: .5rem; }
+
+.promo-product-name {
+    font-size: .95rem;
+    opacity: .9;
+}
+
+.promo-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.promo-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem 0;
+}
+
+.promo-features li {
+    padding: 0.4rem 0;
+    font-size: 0.95rem;
+    opacity: 0.95;
+}
+
+.promo-features i {
+    color: #4ade80;
+    margin-inline-end: 0.5rem;
+}
+
+.promo-price {
+    background: rgba(255,255,255,0.2);
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    backdrop-filter: blur(10px);
+}
+
+.price-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.original-price {
+    font-size: 1.1rem;
+    text-decoration: line-through;
+    opacity: 0.8;
+}
+
+.sale-price {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #4ade80;
+}
+
+.savings {
+    font-size: 0.9rem;
+    color: #fbbf24;
+    font-weight: 600;
+}
+
+.promo-btn {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    color: #3b82f6;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+/* removed old promo section styles */
+</style>
+
 <!-- Categories Section -->
 <div class="categories-section">
     <div class="container">
@@ -1884,92 +2096,72 @@
     </div>
 </div>
 
-<!-- Special Offer Section -->
-<div class="special-offer-section">
-    <div class="special-offer-card">
-        <!-- Special Offer Card -->
-        <div class="offer-card">
-            <!-- Discount Badge -->
-            <div class="discount-badge">{{ __t('messages.save_amount', ['amount' => '₪ 19']) }}</div>
-            
-            <!-- Left Section - Product Info -->
-            <div class="offer-left-section">
-                <div class="offer-header">
-                    <span class="offer-label">{{ __t('messages.special_offer') }}</span>
-                    <h2 class="offer-title">{{ __t('messages.game_controller_offer') }}</h2>
-                </div>
-                
-                <div class="offer-pricing">
-                    <span class="current-price">₪80</span>
-                    <span class="original-price">₪99</span>
-                    <span class="savings-text">{{ __t('messages.save_amount', ['amount' => '19%']) }}</span>
-                </div>
-                
-                <div class="offer-features">
-                    <div class="offer-feature">
-                        <i class="fas fa-check-circle"></i>
-                        <span>{{ __t('messages.free_shipping') }}</span>
-                    </div>
-                    <div class="offer-feature">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>{{ __t('messages.warranty_included') }}</span>
-                    </div>
-                    <div class="offer-feature">
-                        <i class="fas fa-bolt"></i>
-                        <span>{{ __t('messages.limited_stock') }}</span>
-                    </div>
-                </div>
-                
-                <div class="offer-image">
-                    <img src="{{ asset('images/products/game-controller.png') }}" alt="Game Console Controller">
-                </div>
-                
-                <div class="offer-cta">
-                    <a href="#" class="offer-btn">
-                        @if(is_rtl())
-                            {{ __t('messages.shop_now') }} <i class="fas fa-shopping-cart"></i>
-                        @else
-                            <i class="fas fa-shopping-cart"></i> {{ __t('messages.shop_now') }}
-                        @endif
-                    </a>
-                </div>
-            </div>
-            
-            <!-- Right Section - Countdown Timer -->
-            <div class="offer-right-section">
-                <div class="urgency-message">
-                    {{ __t('messages.hurry_up_offer_ends') }}
-                </div>
-                
-                <div class="countdown-timer" id="countdownTimer">
-                    <div class="countdown-item">
-                        <span class="countdown-number" id="hours">08</span>
-                        <span class="countdown-label">{{ __t('messages.hours') }}</span>
-                    </div>
-                    <span class="countdown-separator">:</span>
-                    <div class="countdown-item">
-                        <span class="countdown-number" id="minutes">19</span>
-                        <span class="countdown-label">{{ __t('messages.mins') }}</span>
-                    </div>
-                    <span class="countdown-separator">:</span>
-                    <div class="countdown-item">
-                        <span class="countdown-number" id="seconds">36</span>
-                        <span class="countdown-label">{{ __t('messages.secs') }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Featured Products Section -->
-        <div class="featured-section">
-            <div class="featured-tabs">
-                <button class="featured-tab active" data-tab="featured">{{ __t('messages.featured') }}</button>
-                <button class="featured-tab" data-tab="sale">{{ __t('messages.on_sale') }}</button>
+<!-- Removed static special-offer demo card -->
+
+<!-- Featured Products Section -->
+<div class="featured-section">
+    <div class="container">
+        <div class="featured-tabs">
+            <button class="featured-tab active" data-tab="featured">{{ __t('messages.featured') }}</button>
+            <button class="featured-tab" data-tab="sale">{{ __t('messages.on_sale') }}</button>
                 <button class="featured-tab" data-tab="rated">{{ __t('messages.top_rated') }}</button>
             </div>
             
             <div class="product-grid" id="featuredProducts">
-                @foreach($featuredProducts->take(8) as $product)
+                @if(isset($promotionalOffers) && $promotionalOffers->count() > 0)
+                    @php $promo = $promotionalOffers->first(); @endphp
+                    <div class="promo-featured-card">
+                        <div class="badge-save">{{ is_rtl() ? 'وفر' : 'Save' }} {{ round($promo->discount_percentage) }}%</div>
+                        <div class="promo-media">
+                            @php
+                                $img = null;
+                                if ($promo->product && $promo->product->main_image) {
+                                    $path = $promo->product->main_image;
+                                    if (str_starts_with($path, 'http')) {
+                                        $img = $path;
+                                    } elseif (str_starts_with($path, 'storage/') || str_starts_with($path, 'images/')) {
+                                        $img = asset($path);
+                                    } else {
+                                        $img = asset('storage/' . $path);
+                                    }
+                                }
+                            @endphp
+                            <img src="{{ $img ?? asset('images/placeholder.png') }}" alt="{{ $promo->title }}">
+                        </div>
+                        <div class="promo-body">
+                            <div class="promo-title">{{ $promo->title }}</div>
+                            @if($promo->product)
+                                <div class="promo-product-name">{{ $promo->product->name }}</div>
+                            @endif
+                            <div class="promo-prices">
+                                <span class="orig">₪{{ number_format($promo->original_price, 0) }}</span>
+                                <span class="sale">₪{{ number_format($promo->sale_price, 0) }}</span>
+                            </div>
+                            @if($promo->end_date)
+                            <div class="promo-countdown" data-end="{{ optional($promo->end_date)->format('c') }}">
+                                <div class="label">{{ is_rtl() ? 'العرض ينتهي خلال:' : 'Hurry up! Offer ends in:' }}</div>
+                                <div class="boxes">
+                                    <div class="box"><span class="num cd-hours">00</span><span class="unit">{{ is_rtl() ? 'ساعات' : 'HRS' }}</span></div>
+                                    <div class="box"><span class="num cd-mins">00</span><span class="unit">{{ is_rtl() ? 'دقائق' : 'MINS' }}</span></div>
+                                    <div class="box"><span class="num cd-secs">00</span><span class="unit">{{ is_rtl() ? 'ثواني' : 'SECS' }}</span></div>
+                                </div>
+                            </div>
+                            @endif
+                            @if($promo->product)
+                            <div class="promo-cta">
+                                <a href="{{ route('product.detail', $promo->product->slug) }}">
+                                    @if(is_rtl())
+                                        {{ 'اطلب الآن' }} <i class="fas fa-shopping-cart"></i>
+                                    @else
+                                        <i class="fas fa-shopping-cart"></i> {{ 'Order Now' }}
+                                    @endif
+                                </a>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+                @foreach($featuredProducts->take(6) as $product)
                 <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
                     <div class="product-image">
                         @if($product->is_new)
@@ -2621,7 +2813,7 @@
             setInterval(updateCountdown, 1000);
         }
 
-        // Featured Products Tab Functionality
+    // Featured Products Tab Functionality
         function initFeaturedTabs() {
             const tabs = document.querySelectorAll('.featured-tab');
             const productsGrid = document.getElementById('featuredProducts');
@@ -2652,6 +2844,31 @@
         // Initialize countdown and tabs when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             startCountdown();
+            // Promo Featured countdown (boxed H/M/S under image)
+            (function initPromoFeaturedCountdown(){
+                const blocks = document.querySelectorAll('.promo-featured-card .promo-countdown[data-end]');
+                if (!blocks.length) return;
+                const update = () => {
+                    blocks.forEach(block => {
+                        const end = new Date(block.getAttribute('data-end')).getTime();
+                        if (!end) return;
+                        const now = Date.now();
+                        let diff = Math.max(0, end - now);
+                        const hours = Math.floor(diff / 3_600_000);
+                        diff %= 3_600_000;
+                        const mins = Math.floor(diff / 60_000);
+                        const secs = Math.floor((diff % 60_000) / 1000);
+                        const hEl = block.querySelector('.cd-hours');
+                        const mEl = block.querySelector('.cd-mins');
+                        const sEl = block.querySelector('.cd-secs');
+                        if (hEl) hEl.textContent = String(hours).padStart(2,'0');
+                        if (mEl) mEl.textContent = String(mins).padStart(2,'0');
+                        if (sEl) sEl.textContent = String(secs).padStart(2,'0');
+                    });
+                };
+                update();
+                setInterval(update, 1000);
+            })();
             initFeaturedTabs();
         });
     });
