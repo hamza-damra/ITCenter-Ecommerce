@@ -24,6 +24,7 @@ Route::get('/lang/{locale}', function ($locale) {
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/test-home', [HomeController::class, 'index'])->name('test.home');
+Route::get('/clear-cache', [HomeController::class, 'clearHomeCache'])->name('clear.cache');
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
 Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
@@ -90,6 +91,10 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     
     // Brands
     Route::resource('brands', App\Http\Controllers\Admin\BrandController::class);
+    
+    // Users Management
+    Route::resource('users', App\Http\Controllers\Admin\UserController::class);
+    Route::post('/users/bulk-delete', [App\Http\Controllers\Admin\UserController::class, 'bulkDelete'])->name('users.bulk-delete');
     
     // Orders
     Route::get('/orders', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
