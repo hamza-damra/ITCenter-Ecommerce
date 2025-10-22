@@ -527,10 +527,12 @@
 
     [dir="rtl"] .product-rating {
         flex-direction: row-reverse;
+        justify-content: flex-end;
     }
 
     [dir="rtl"] .product-price {
         flex-direction: row-reverse;
+        justify-content: flex-end;
     }
 
     [dir="rtl"] .action-buttons {
@@ -547,6 +549,7 @@
 
     [dir="rtl"] .quantity-selector {
         direction: ltr;
+        justify-content: flex-end;
     }
 
     /* أخفي الأسهم في كروم/إيدج/سفاري */

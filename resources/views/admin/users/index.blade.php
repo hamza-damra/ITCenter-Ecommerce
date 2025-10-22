@@ -254,6 +254,133 @@
         z-index: 0;
     }
 
+    /* Statistics Cards Styling - Matching Dashboard */
+    .stats-grid-dashboard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 32px;
+    }
+
+    .stat-card-large {
+        padding: 28px 24px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        border: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .stat-card-large:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Products Sold Card - Purple Gradient */
+    .stat-card-large.products-sold {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    /* Revenue Card - Pink Gradient */
+    .stat-card-large.revenue {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+    }
+
+    /* Customers Card - Orange Gradient */
+    .stat-card-large.customers {
+        background: linear-gradient(135deg, #fa8e42 0%, #feb47b 100%);
+        color: white;
+    }
+
+    /* Satisfaction Card - Blue Gradient */
+    .stat-card-large.satisfaction {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+    }
+
+    /* Green Gradient for success metrics */
+    .stat-card-large.success {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+    }
+
+    .stat-card-content {
+        flex: 1;
+        z-index: 2;
+    }
+
+    .stat-card-label {
+        font-size: 14px;
+        opacity: 0.95;
+        margin-bottom: 8px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+    }
+
+    .stat-card-value {
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 4px;
+        line-height: 1;
+    }
+
+    .stat-card-footer {
+        font-size: 13px;
+        opacity: 0.9;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 8px;
+    }
+
+    .stat-card-icon-wrapper {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+        z-index: 2;
+    }
+
+    .stat-card-icon-wrapper i {
+        font-size: 32px;
+        opacity: 0.9;
+    }
+
+    /* Decorative background elements */
+    .stat-card-large::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        z-index: 0;
+    }
+
+    .stat-card-large::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+        z-index: 0;
+    }
+
     @media (max-width: 768px) {
         .users-page-header {
             padding: 32px 24px;
@@ -280,6 +407,11 @@
             width: 100%;
             justify-content: center;
         }
+
+        .stats-grid-dashboard {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
     }
 </style>
 
@@ -303,72 +435,72 @@
 
 <!-- Enhanced Statistics Cards -->
 <div class="stats-grid-dashboard">
-    <!-- Total Users Card -->
-    <div class="stat-card-large" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+    <!-- Total Users Card - Purple Gradient -->
+    <div class="stat-card-large products-sold">
         <div class="stat-card-content">
-            <div class="stat-card-label" style="opacity: 0.95;">{{ __('messages.total_users') }}</div>
+            <div class="stat-card-label">{{ __('messages.total_users') }}</div>
             <div class="stat-card-value">{{ $stats['total_users'] }}</div>
-            <div class="stat-card-footer" style="opacity: 0.9;">
+            <div class="stat-card-footer">
                 <i class="fas fa-users"></i> {{ __('messages.all_registered_users') }}
             </div>
         </div>
-        <div class="stat-card-icon-wrapper" style="background: rgba(255, 255, 255, 0.25);">
+        <div class="stat-card-icon-wrapper">
             <i class="fas fa-users"></i>
         </div>
     </div>
 
-    <!-- Administrators Card -->
-    <div class="stat-card-large" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+    <!-- Administrators Card - Pink Gradient -->
+    <div class="stat-card-large revenue">
         <div class="stat-card-content">
-            <div class="stat-card-label" style="opacity: 0.95;">{{ __('messages.administrators') }}</div>
+            <div class="stat-card-label">{{ __('messages.administrators') }}</div>
             <div class="stat-card-value">{{ $stats['admin_users'] }}</div>
-            <div class="stat-card-footer" style="opacity: 0.9;">
+            <div class="stat-card-footer">
                 <i class="fas fa-user-shield"></i> {{ __('messages.admin_accounts') }}
             </div>
         </div>
-        <div class="stat-card-icon-wrapper" style="background: rgba(255, 255, 255, 0.25);">
+        <div class="stat-card-icon-wrapper">
             <i class="fas fa-user-shield"></i>
         </div>
     </div>
 
-    <!-- Customers Card -->
-    <div class="stat-card-large" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">
+    <!-- Customers Card - Blue Gradient -->
+    <div class="stat-card-large satisfaction">
         <div class="stat-card-content">
-            <div class="stat-card-label" style="opacity: 0.95;">{{ __('messages.customers') }}</div>
+            <div class="stat-card-label">{{ __('messages.customers') }}</div>
             <div class="stat-card-value">{{ $stats['customer_users'] }}</div>
-            <div class="stat-card-footer" style="opacity: 0.9;">
+            <div class="stat-card-footer">
                 <i class="fas fa-user"></i> {{ __('messages.customer_accounts') }}
             </div>
         </div>
-        <div class="stat-card-icon-wrapper" style="background: rgba(255, 255, 255, 0.25);">
+        <div class="stat-card-icon-wrapper">
             <i class="fas fa-user"></i>
         </div>
     </div>
 
-    <!-- Active Customers Card -->
-    <div class="stat-card-large" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;">
+    <!-- Active Customers Card - Green Gradient -->
+    <div class="stat-card-large success">
         <div class="stat-card-content">
-            <div class="stat-card-label" style="opacity: 0.95;">{{ __('messages.users_with_orders') }}</div>
+            <div class="stat-card-label">{{ __('messages.users_with_orders') }}</div>
             <div class="stat-card-value">{{ $stats['users_with_orders'] }}</div>
-            <div class="stat-card-footer" style="opacity: 0.9;">
+            <div class="stat-card-footer">
                 <i class="fas fa-shopping-bag"></i> {{ __('messages.active_customers') }}
             </div>
         </div>
-        <div class="stat-card-icon-wrapper" style="background: rgba(255, 255, 255, 0.25);">
+        <div class="stat-card-icon-wrapper">
             <i class="fas fa-shopping-bag"></i>
         </div>
     </div>
 
-    <!-- New Users Card -->
-    <div class="stat-card-large" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white;">
+    <!-- New Users Card - Orange Gradient -->
+    <div class="stat-card-large customers">
         <div class="stat-card-content">
-            <div class="stat-card-label" style="opacity: 0.95;">{{ __('messages.new_users_this_month') }}</div>
+            <div class="stat-card-label">{{ __('messages.new_users_this_month') }}</div>
             <div class="stat-card-value">{{ $stats['new_users_this_month'] }}</div>
-            <div class="stat-card-footer" style="opacity: 0.9;">
+            <div class="stat-card-footer">
                 <i class="fas fa-calendar-plus"></i> {{ __('messages.joined_this_month') }}
             </div>
         </div>
-        <div class="stat-card-icon-wrapper" style="background: rgba(255, 255, 255, 0.25);">
+        <div class="stat-card-icon-wrapper">
             <i class="fas fa-user-plus"></i>
         </div>
     </div>

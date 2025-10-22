@@ -47,6 +47,30 @@ class Brand extends Model
     }
 
     /**
+     * Get the logo with fallback to default.
+     */
+    public function getLogoAttribute($value)
+    {
+        if (empty($value)) {
+            return asset('images/products/default.png');
+        }
+        
+        if (str_starts_with($value, 'http')) {
+            // If it's an external URL, return it as is
+            return $value;
+        }
+        
+        // If it's a local path, check if file exists
+        $imagePath = public_path($value);
+        if (file_exists($imagePath)) {
+            return asset($value);
+        }
+        
+        // Fallback to default image
+        return asset('images/products/default.png');
+    }
+
+    /**
      * Get the description attribute based on current locale.
      */
     public function getDescriptionAttribute()

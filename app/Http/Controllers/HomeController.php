@@ -10,79 +10,91 @@ use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        // Optimize queries with eager loading - only fetch non-empty collections
+        // Cache key for home page data
+        $cacheKey = 'home_page_data_' . app()->getLocale();
         
-        // Featured Products (المنتجات المميزة)
-        $featuredProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
-            ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
-            ->active()
-            ->featured()
-            ->limit(8)
-            ->get();
+        // Try to get data from cache first (cache for 30 minutes)
+        $data = Cache::remember($cacheKey, 1800, function () {
+            // Optimize queries with eager loading - only fetch non-empty collections
+            
+            // Featured Products (المنتجات المميزة)
+            $featuredProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
+                ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
+                ->active()
+                ->featured()
+                ->limit(8)
+                ->get();
 
-        // New Arrivals (وصل حديثاً)
-        $newProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
-            ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
-            ->active()
-            ->new()
-            ->limit(8)
-            ->get();
+            // New Arrivals (وصل حديثاً)
+            $newProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
+                ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
+                ->active()
+                ->new()
+                ->limit(8)
+                ->get();
 
-        // Bestsellers (الأكثر مبيعاً)
-        $bestsellerProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
-            ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
-            ->active()
-            ->bestseller()
-            ->limit(8)
-            ->get();
+            // Bestsellers (الأكثر مبيعاً)
+            $bestsellerProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
+                ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
+                ->active()
+                ->bestseller()
+                ->limit(8)
+                ->get();
 
-        // On Sale Products (التخفيضات)
-        $onSaleProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
-            ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
-            ->active()
-            ->whereNotNull('sale_price')
-            ->where('sale_price', '<', \DB::raw('price'))
-            ->limit(8)
-            ->get();
+            // On Sale Products (التخفيضات)
+            $onSaleProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
+                ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
+                ->active()
+                ->whereNotNull('sale_price')
+                ->where('sale_price', '<', \DB::raw('price'))
+                ->limit(8)
+                ->get();
 
-        $categories = Category::select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'image', 'order')
-            ->active()
-            ->parent()
-            ->withCount('products')
-            ->orderBy('order')
-            ->limit(20)
-            ->get();
+            $categories = Category::select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'image', 'order')
+                ->active()
+                ->parent()
+                ->withCount(['products' => function($query) {
+                    $query->active();
+                }])
+                ->orderBy('order')
+                ->limit(20)
+                ->get();
 
-        $featuredBrands = Brand::select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'logo', 'order')
-            ->active()
-            ->featured()
-            ->orderBy('order')
-            ->limit(12)
-            ->get();
+            $featuredBrands = Brand::select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'logo', 'order')
+                ->active()
+                ->featured()
+                ->orderBy('order')
+                ->limit(12)
+                ->get();
 
-        $activeOffers = Offer::select('id', 'name_en', 'name_ar', 'slug', 'description_en', 'description_ar', 'discount_type', 'discount_value', 'start_date', 'end_date', 'banner_image')
-            ->active()
-            ->limit(3)
-            ->get();
+            $activeOffers = Offer::select('id', 'name_en', 'name_ar', 'slug', 'description_en', 'description_ar', 'discount_type', 'discount_value', 'start_date', 'end_date', 'banner_image')
+                ->active()
+                ->limit(3)
+                ->get();
 
-        // Get cart product IDs for current user/session
+            return [
+                'featuredProducts' => $featuredProducts,
+                'newProducts' => $newProducts,
+                'bestsellerProducts' => $bestsellerProducts,
+                'onSaleProducts' => $onSaleProducts,
+                'categories' => $categories,
+                'featuredBrands' => $featuredBrands,
+                'activeOffers' => $activeOffers,
+            ];
+        });
+
+        // Get cart product IDs for current user/session (not cached as it's user-specific)
         $cartProductIds = $this->getCartProductIds();
 
-        return view('home', compact(
-            'featuredProducts',
-            'newProducts',
-            'bestsellerProducts',
-            'onSaleProducts',
-            'categories',
-            'featuredBrands',
-            'activeOffers',
-            'cartProductIds'
-        ));
+        return view('home', array_merge($data, [
+            'cartProductIds' => $cartProductIds
+        ]));
     }
 
     /**
@@ -116,5 +128,17 @@ class HomeController extends Controller
         }
 
         return ['session_id' => Session::getId()];
+    }
+
+    /**
+     * Clear home page cache
+     */
+    public function clearHomeCache()
+    {
+        Cache::forget('home_page_data_ar');
+        Cache::forget('home_page_data_en');
+        Cache::forget('home_page_data_he');
+        
+        return response()->json(['success' => true, 'message' => 'Cache cleared successfully']);
     }
 }

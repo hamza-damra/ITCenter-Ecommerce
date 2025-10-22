@@ -163,7 +163,7 @@
         /* Search Bar Styles */
         .search-bar {
             display: flex;
-            flex-direction: {{ is_rtl() ? 'row-reverse' : 'row' }};
+            flex-direction: {{ is_rtl() ? 'row' : 'row' }};
             flex: 1;
             max-width: 500px;
             gap: 0;
@@ -176,7 +176,7 @@
             height: 45px;
             padding: 0 20px;
             border: 1px solid #e0e0e0;
-            background: rgba(0, 0, 0, 0.0);
+            background: rgba(255, 255, 255, 0.1);
             color: #f5f5f5ff;
             font-size: 0.95rem;
             outline: none;
@@ -184,40 +184,28 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            border-style:none none none none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: {{ is_rtl() ? '0 8px 8px 0' : '8px 0 0 8px' }};
             direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
             text-align: {{ is_rtl() ? 'right' : 'left' }};
-
-            /* reserve space for the search icon inside the input */
-            @if(is_rtl())
-                padding-right: 44px;
-            @else
-                padding-left: 44px;
-            @endif
         }
-
-        .search-input-icon {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            font-size: 1rem;
-            pointer-events: none;
-            z-index: 2;
-            @if(is_rtl())
-            right: 12px;
-            @else
-            left: 12px;
-            @endif
+        
+        .search-bar input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #2762f3;
+        }
+        
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .search-btn {
             height: 45px;
-            padding: 0 18px;
+            padding: 0 20px;
             background: #2762f3;
             color: #ffffff;
             border: none;
-            border-radius: {{ is_rtl() ? '0 8px 8px 0' : '0 8px 8px 0' }};
+            border-radius: {{ is_rtl() ? '8px 0 0 8px' : '0 8px 8px 0' }};
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
@@ -227,7 +215,9 @@
             unicode-bidi: embed;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
+            min-width: 80px;
         }
 
         .search-btn:hover {
@@ -275,6 +265,34 @@
         .header-icon .badge.badge-loading {
             /* Badge shows initial server-side count, no need to hide */
             opacity: 1;
+        }
+
+        /* Ensure page loading indicator stops */
+        .page-loaded {
+            /* This class is added when page is fully loaded */
+        }
+
+        .page-interactive {
+            /* This class is added when page becomes interactive */
+        }
+
+        /* Hide any loading indicators after page load */
+        body.loaded .loading,
+        body.loaded .spinner,
+        body.loaded [class*="loading"] {
+            display: none !important;
+        }
+
+        /* Force stop browser loading indicator */
+        html.page-loaded,
+        html.page-interactive {
+            /* These classes help ensure the browser stops showing loading indicator */
+        }
+
+        /* Additional CSS to prevent loading indicators */
+        body.loaded::before,
+        body.loaded::after {
+            display: none !important;
         }
 
         .container {
@@ -580,11 +598,6 @@
             color: #d4af37 !important;
         }
 
-        /* Active state for logout button */
-        .user-dropdown-menu .logout-btn:active {
-            background: rgba(212, 175, 55, 0.2) !important;
-        }
-
         /* Responsive adjustments */
         @media (max-width: 968px) {
             header {
@@ -668,6 +681,7 @@
                 box-shadow: 0 2px 10px rgba(0,0,0,0.2);
                 z-index: 998;
                 display: none;
+                flex-direction: {{ is_rtl() ? 'row' : 'row' }};
             }
             
             .search-bar.mobile-search-active {
@@ -678,7 +692,11 @@
                 font-size: 0.95rem;
                 padding: 0.8rem 2.5rem 0.8rem 1rem;
                 width: 100%;
-                border-radius: 25px;
+                border-radius: {{ is_rtl() ? '0 25px 25px 0' : '25px 0 0 25px' }};
+            }
+            
+            .search-btn {
+                border-radius: {{ is_rtl() ? '25px 0 0 25px' : '0 25px 25px 0' }};
             }
             
             .search-input-icon {
@@ -796,11 +814,17 @@
             .search-bar {
                 top: 60px;
                 padding: 0.7rem 0.8rem;
+                flex-direction: {{ is_rtl() ? 'row' : 'row' }};
             }
             
             .search-bar input {
                 font-size: 0.9rem;
                 padding: 0.7rem 2.5rem 0.7rem 0.9rem;
+                border-radius: {{ is_rtl() ? '0 25px 25px 0' : '25px 0 0 25px' }};
+            }
+            
+            .search-btn {
+                border-radius: {{ is_rtl() ? '25px 0 0 25px' : '0 25px 25px 0' }};
             }
             
             .cart-count {
@@ -880,13 +904,11 @@
                 <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">{{ __t('messages.contact') }}</a></li>
             </ul>
 
-            <form action="" class="search-bar" role="search">
-                <!-- icon inside input -->
-                <i class="fas fa-search search-input-icon" aria-hidden="true"></i>
+            <form action="{{ route('products') }}" method="GET" class="search-bar" role="search">
                 <input type="search" name="search" placeholder="{{ __t('messages.search') }}">
-               <!-- <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
-                    <span>{{ __t('messages.search') }}</span>
-                </button> -->
+                <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
+                    <i class="fas fa-search"></i>
+                </button>
             </form>
 
             <div class="header-icons">
@@ -903,17 +925,9 @@
                         <i class="fas fa-chevron-down" style="font-size: 0.7rem; transition: transform 0.3s;"></i>
                     </div>
                     <div class="user-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 10px); {{ is_rtl() ? 'left: 0;' : 'right: 0;' }} background: rgba(26, 26, 26, 0.98); backdrop-filter: blur(10px); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 12px; min-width: 200px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); overflow: hidden; z-index: 1001; opacity: 0; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease;">
-                        <a href="#" class="user-menu-item" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; text-decoration: none; transition: background 0.3s ease, padding 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
-                            <i class="fas fa-user"></i>
-                            <span>{{ Auth::user()->name }}</span>
-                        </a>
-                        <a href="{{ route('orders.index') }}" class="user-menu-item" style="display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; text-decoration: none; transition: background 0.3s ease, padding 0.3s ease; border-bottom: 1px solid rgba(255, 255, 255, 0.05);">
-                            <i class="fas fa-box"></i>
-                            <span>{{ __t('messages.my_orders') }}</span>
-                        </a>
                         <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
                             @csrf
-                            <button type="submit" class="user-menu-item logout-btn" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit;">
+                            <button type="submit" class="user-menu-item" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit; text-decoration: none;">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span>{{ __t('messages.logout') }}</span>
                             </button>
@@ -964,6 +978,13 @@
                         </span>
                     </a>
                 </div>
+                @auth
+                <div class="header-icon">
+                    <a href="{{ route('orders.index') }}" style="color: inherit; text-decoration: none; position: relative;" title="{{ __t('messages.my_orders') }}">
+                        <i class="fas fa-box"></i>
+                    </a>
+                </div>
+                @endauth
                 <div class="header-icon">
                     <a href="{{ route('cart.index') }}" style="color: inherit; text-decoration: none;">
                         <i class="fas fa-shopping-cart"></i>
@@ -1143,10 +1164,10 @@
                 });
             }
 
-            // Load and update favorites count
+            // Load and update favorites count (only once on page load)
             updateFavoritesCount();
 
-            // Load and update cart count
+            // Load and update cart count (only once on page load)
             updateCartCount();
 
             // Initialize all wishlist buttons on the page
@@ -1548,6 +1569,70 @@
         // Initialize cart count on page load
         document.addEventListener('DOMContentLoaded', function() {
             updateCartCount();
+        });
+
+        // Ensure page loading indicator stops after page is fully loaded
+        window.addEventListener('load', function() {
+            // Force stop any loading indicators
+            document.body.classList.add('loaded');
+            
+            // Remove any loading spinners or indicators
+            const loadingElements = document.querySelectorAll('.loading, .spinner, [class*="loading"]');
+            loadingElements.forEach(el => el.style.display = 'none');
+            
+            // Ensure all images are loaded
+            const images = document.querySelectorAll('img');
+            let loadedImages = 0;
+            const totalImages = images.length;
+            
+            if (totalImages === 0) {
+                // No images, page is fully loaded
+                document.documentElement.classList.add('page-loaded');
+            } else {
+                images.forEach(img => {
+                    if (img.complete) {
+                        loadedImages++;
+                    } else {
+                        img.addEventListener('load', () => {
+                            loadedImages++;
+                            if (loadedImages === totalImages) {
+                                document.documentElement.classList.add('page-loaded');
+                            }
+                        });
+                        img.addEventListener('error', () => {
+                            loadedImages++;
+                            if (loadedImages === totalImages) {
+                                document.documentElement.classList.add('page-loaded');
+                            }
+                        });
+                    }
+                });
+                
+                // Fallback timeout to ensure loading stops
+                setTimeout(() => {
+                    document.documentElement.classList.add('page-loaded');
+                }, 3000);
+            }
+        });
+
+        // Additional fix for browser loading indicator
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mark page as interactive
+            document.documentElement.classList.add('page-interactive');
+            
+            // Force stop loading after a short delay
+            setTimeout(() => {
+                document.documentElement.classList.add('page-loaded');
+                document.body.classList.add('loaded');
+            }, 100);
+        });
+
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                document.documentElement.classList.add('page-loaded');
+                document.body.classList.add('loaded');
+            }
         });
         
         // Mobile Menu Toggle
