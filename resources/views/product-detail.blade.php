@@ -57,6 +57,7 @@
         align-items: center;
         justify-content: center;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        cursor: pointer;
     }
 
     .main-image img {
@@ -64,12 +65,319 @@
         height: 100%;
         object-fit: contain;
         object-position: center;
-        transition: transform 0.3s;
+        transition: transform 0.3s, opacity 0.3s;
         padding: 10px;
     }
 
     .main-image:hover img {
         transform: scale(1.05);
+        opacity: 0.9;
+    }
+
+    /* Image Zoom Modal Styles */
+    .image-zoom-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+    }
+
+    .image-zoom-modal.active {
+        display: flex;
+        opacity: 1;
+    }
+
+    .modal-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 2rem;
+    }
+
+    .modal-main-content {
+        display: flex;
+        gap: 1.5rem;
+        max-width: 1600px;
+        width: 100%;
+        height: 95vh;
+        align-items: center;
+    }
+
+    .modal-image-wrapper {
+        flex: 1;
+        height: 100%;
+        position: relative;
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        cursor: default;
+    }
+
+    .modal-main-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+    }
+
+    .modal-main-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        animation: fadeInImage 0.3s ease;
+    }
+
+    @keyframes fadeInImage {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Modal Thumbnails Sidebar */
+    .modal-thumbnails {
+        width: 140px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        overflow-y: auto;
+        padding: 0.75rem;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    }
+
+    .modal-thumbnails::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .modal-thumbnails::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .modal-thumbnails::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+    }
+
+    .modal-thumbnail {
+        width: 100%;
+        aspect-ratio: 1;
+        background: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    .modal-thumbnail:hover {
+        border-color: rgba(39, 98, 243, 0.6);
+        transform: scale(1.05);
+    }
+
+    .modal-thumbnail.active {
+        border-color: #2762f3;
+        box-shadow: 0 0 0 2px rgba(39, 98, 243, 0.3);
+    }
+
+    .modal-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 4px;
+    }
+
+    /* Navigation Arrows */
+    .modal-nav-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #333;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-nav-arrow:hover {
+        background: #2762f3;
+        color: #ffffff;
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .modal-nav-arrow:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+
+    .modal-nav-arrow.prev {
+        {{ is_rtl() ? 'right: 1rem;' : 'left: 1rem;' }}
+    }
+
+    .modal-nav-arrow.next {
+        {{ is_rtl() ? 'left: 1rem;' : 'right: 1rem;' }}
+    }
+
+    /* Close Button */
+    .modal-close-btn {
+        position: absolute;
+        top: 1.5rem;
+        {{ is_rtl() ? 'left: 1.5rem;' : 'right: 1.5rem;' }}
+        width: 45px;
+        height: 45px;
+        background: rgba(255, 255, 255, 0.95);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #333;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-close-btn:hover {
+        background: #e74c3c;
+        color: #ffffff;
+        transform: rotate(90deg) scale(1.1);
+    }
+
+    .modal-close-btn:active {
+        transform: rotate(90deg) scale(0.95);
+    }
+
+    /* Image Counter */
+    .image-counter {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.75);
+        padding: 0.5rem 1.2rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        pointer-events: none;
+        backdrop-filter: blur(10px);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 968px) {
+        .modal-main-content {
+            flex-direction: column-reverse;
+            height: 95vh;
+            padding: 1rem 0;
+        }
+
+        .modal-thumbnails {
+            width: 100%;
+            height: 100px;
+            flex-direction: row;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .modal-thumbnail {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+        }
+
+        .modal-image-wrapper {
+            height: calc(100% - 120px);
+        }
+
+        .modal-main-image {
+            padding: 1rem;
+        }
+
+        .modal-nav-arrow {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+
+        .modal-nav-arrow.prev {
+            {{ is_rtl() ? 'right: 0.5rem;' : 'left: 0.5rem;' }}
+        }
+
+        .modal-nav-arrow.next {
+            {{ is_rtl() ? 'left: 0.5rem;' : 'right: 0.5rem;' }}
+        }
+
+        .modal-close-btn {
+            top: 1rem;
+            {{ is_rtl() ? 'left: 1rem;' : 'right: 1rem;' }}
+            width: 38px;
+            height: 38px;
+            font-size: 1.2rem;
+        }
+
+        .image-counter {
+            bottom: 1rem;
+            font-size: 0.75rem;
+            padding: 0.4rem 1rem;
+        }
+
+        .modal-container {
+            padding: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .modal-thumbnails {
+            height: 80px;
+        }
+
+        .modal-thumbnail {
+            width: 60px;
+            height: 60px;
+        }
+
+        .modal-image-wrapper {
+            height: calc(100% - 100px);
+        }
+
+        .modal-main-image {
+            padding: 0.5rem;
+        }
     }
 
     .thumbnail-images {
@@ -433,28 +741,48 @@
     }
 
     .product-card {
-        background: #fff;
-        border-radius: 12px;
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 16px;
         overflow: hidden;
-        transition: all 0.3s;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(230, 146, 112, 0.08);
+        position: relative;
+    }
+
+    .product-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #2762f3 0%, #1a4dbf 50%, #333333 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
     }
 
     .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(39, 98, 243, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+        border-color: rgba(39, 98, 243, 0.2);
+    }
+
+    .product-card:hover::before {
+        opacity: 1;
     }
 
     .product-card-image {
         width: 100%;
         height: 200px;
-        background: #f5f5f5;
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
         position: relative;
         overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .product-card-image img {
@@ -463,11 +791,15 @@
         object-fit: contain;
         object-position: center;
         padding: 10px;
-        transition: transform 0.3s ease;
+        transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+        filter: brightness(1);
+        will-change: transform;
     }
 
     .product-card:hover .product-card-image img {
         transform: scale(1.08);
+        filter: brightness(1.05);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
 
     .product-card-content {
@@ -477,17 +809,22 @@
     .product-card-title {
         font-size: 1rem;
         font-weight: 600;
-        color: #333;
+        color: #1e293b;
         margin-bottom: 0.5rem;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        transition: color 0.3s ease;
+    }
+
+    .product-card:hover .product-card-title {
+        color: #2762f3;
     }
 
     .product-card-price {
         font-size: 1.3rem;
         font-weight: 700;
-        color: #4169E1;
+        color: #2762f3;
     }
 
     @media (max-width: 968px) {
@@ -580,7 +917,7 @@
                                 : asset('storage/' . $product->main_image))
                             : 'https://via.placeholder.com/800x800/f5f5f5/666666?text=' . urlencode($product->name);
                     @endphp
-                    <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}" id="mainImage" onerror="this.src='https://via.placeholder.com/800x800/f5f5f5/666666?text=No+Image'">
+                    <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}" id="mainImage" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22800%22%3E%3Crect width=%22800%22 height=%22800%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2224%22%3ENo Image%3C/text%3E%3C/svg%3E';">
                 </div>
                 <div class="thumbnail-images">
                     @if($product->images->count() > 0)
@@ -593,12 +930,12 @@
                                             : asset('storage/' . $image->image_path))
                                         : 'https://via.placeholder.com/200x200/f5f5f5/666666?text=Image+' . ($index + 1);
                                 @endphp
-                                <img src="{{ $thumbnailUrl }}" alt="{{ $product->name }}" onclick="changeImage(this)" onerror="this.src='https://via.placeholder.com/200x200/f5f5f5/666666?text=No+Image'">
+                                <img src="{{ $thumbnailUrl }}" alt="{{ $product->name }}" onclick="changeImage(this)" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
                             </div>
                         @endforeach
                     @else
                         <div class="thumbnail active">
-                            <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}" onclick="changeImage(this)" onerror="this.src='https://via.placeholder.com/200x200/f5f5f5/666666?text=No+Image'">
+                            <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}" onclick="changeImage(this)" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
                         </div>
                     @endif
                 </div>
@@ -767,7 +1104,7 @@
                                         : asset('storage/' . $relatedProduct->main_image))
                                     : 'https://via.placeholder.com/300x200/f5f5f5/666666?text=' . urlencode($relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name);
                             @endphp
-                            <img src="{{ $relatedImageUrl }}" alt="{{ $relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name }}" onerror="this.src='https://via.placeholder.com/300x200/f5f5f5/666666?text=No+Image'">
+                            <img src="{{ $relatedImageUrl }}" alt="{{ $relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name }}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect width=%22300%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
                         </div>
                         <div class="product-card-content">
                             <h3 class="product-card-title">{{ $relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name }}</h3>
@@ -780,7 +1117,220 @@
     </div>
 </div>
 
+<!-- Image Zoom Modal -->
+@php
+    $allImages = collect([$product->main_image]);
+    if($product->images->count() > 0) {
+        $allImages = $allImages->merge($product->images->pluck('image_path'));
+    }
+
+    // Resolve first image URL for immediate render inside modal (avoids broken/empty src before JS runs)
+    $firstImagePath = $allImages->first();
+    $firstImageUrl = $firstImagePath
+        ? (filter_var($firstImagePath, FILTER_VALIDATE_URL)
+            ? $firstImagePath
+            : asset('storage/' . $firstImagePath))
+        : 'https://via.placeholder.com/1000x800/f5f5f5/666666?text=' . urlencode($product->name);
+@endphp
+<div class="image-zoom-modal" id="imageZoomModal">
+    <div class="modal-container">
+        <!-- Close Button -->
+        <button class="modal-close-btn" onclick="closeZoomModal()">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Navigation Arrows -->
+        <button class="modal-nav-arrow prev" onclick="navigateModalImage(-1)">
+            <i class="fas fa-chevron-{{ is_rtl() ? 'right' : 'left' }}"></i>
+        </button>
+        <button class="modal-nav-arrow next" onclick="navigateModalImage(1)">
+            <i class="fas fa-chevron-{{ is_rtl() ? 'left' : 'right' }}"></i>
+        </button>
+
+        <!-- Image Counter -->
+        <div class="image-counter" id="imageCounter">
+            <i class="fas fa-images"></i>
+            <span id="currentImageNumber">1</span> / <span id="totalImages">{{ $allImages->count() }}</span>
+        </div>
+
+        <div class="modal-main-content">
+            <!-- Main Image -->
+            <div class="modal-image-wrapper" id="modalImageWrapper">
+                <div class="modal-main-image" id="modalMainImage">
+                    <img src="{{ $firstImageUrl }}" alt="{{ $product->name }}" id="modalImage" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221000%22 height=%22800%22%3E%3Crect width=%221000%22 height=%22800%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2224%22%3ENo Image%3C/text%3E%3C/svg%3E';">
+                </div>
+            </div>
+
+            <!-- Thumbnails Sidebar -->
+            <div class="modal-thumbnails" id="modalThumbnails">
+                @foreach($allImages as $index => $imagePath)
+                    @php
+                        $imageUrl = $imagePath 
+                            ? (filter_var($imagePath, FILTER_VALIDATE_URL) 
+                                ? $imagePath 
+                                : asset('storage/' . $imagePath))
+                            : 'https://via.placeholder.com/200x200/f5f5f5/666666?text=Image+' . ($index + 1);
+                    @endphp
+                    <div class="modal-thumbnail {{ $index === 0 ? 'active' : '' }}" onclick="selectModalImage({{ $index }})">
+                        <img src="{{ $imageUrl }}" alt="{{ $product->name }}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    // Image Gallery Modal System
+    let currentModalImageIndex = 0;
+    let modalImages = [];
+    let totalImagesCount = 0;
+    let modal = null;
+    let modalImage = null;
+
+    // Initialize modal images array
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get modal elements and store in global scope
+        modal = document.getElementById('imageZoomModal');
+        modalImage = document.getElementById('modalImage');
+        
+        // Collect all image URLs from modal thumbnails (they have the correct full URLs)
+        const modalThumbnails = document.querySelectorAll('.modal-thumbnail img');
+        modalImages = Array.from(modalThumbnails).map(img => img.src);
+        totalImagesCount = modalImages.length;
+
+        // Add click event to main image to open modal
+        const mainImage = document.querySelector('.main-image');
+        if (mainImage) {
+            mainImage.addEventListener('click', function() {
+                openImageGallery(0);
+            });
+        }
+
+        // Add click events to thumbnails to open modal with specific image
+        document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+            thumb.addEventListener('click', function(e) {
+                // Prevent changeImage from firing
+                e.stopPropagation();
+                // Add 1 to index since main image is at index 0
+                openImageGallery(index);
+            });
+        });
+    });
+
+    // Open image gallery modal
+    function openImageGallery(imageIndex = 0) {
+        currentModalImageIndex = imageIndex;
+
+        // Safety: if for any reason the array is empty, rebuild from modal thumbnails
+        if (!modalImages || modalImages.length === 0) {
+            const modalThumbImgs = document.querySelectorAll('.modal-thumbnail img');
+            modalImages = Array.from(modalThumbImgs).map(img => img.src);
+            totalImagesCount = modalImages.length;
+            const totalSpan = document.getElementById('totalImages');
+            if (totalSpan) totalSpan.textContent = totalImagesCount;
+        }
+
+        if (modalImages.length > 0) {
+            const nextSrc = modalImages[currentModalImageIndex];
+            try { console.debug('Modal opening. Setting src ->', nextSrc); } catch (e) {}
+            modalImage.src = nextSrc;
+            modal.classList.add('active');
+            updateModalThumbnails();
+            updateImageCounter();
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    // Close image gallery modal
+    function closeZoomModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Navigate between images in modal
+    function navigateModalImage(direction) {
+        currentModalImageIndex += direction;
+        
+        // Loop around
+        if (currentModalImageIndex < 0) {
+            currentModalImageIndex = modalImages.length - 1;
+        } else if (currentModalImageIndex >= modalImages.length) {
+            currentModalImageIndex = 0;
+        }
+        
+        changeModalImage();
+    }
+
+    // Select image from modal thumbnails
+    function selectModalImage(index) {
+        currentModalImageIndex = index;
+        changeModalImage();
+    }
+
+    // Change modal image with fade effect
+    function changeModalImage() {
+        // Fade out
+        modalImage.style.opacity = '0';
+        
+        setTimeout(() => {
+            // Change image
+            const nextSrc = modalImages[currentModalImageIndex];
+            try { console.debug('Modal change. Setting src ->', nextSrc); } catch (e) {}
+            modalImage.src = nextSrc;
+            
+            // Trigger animation
+            modalImage.style.animation = 'none';
+            setTimeout(() => {
+                modalImage.style.animation = 'fadeInImage 0.3s ease';
+                modalImage.style.opacity = '1';
+            }, 10);
+            
+            updateModalThumbnails();
+            updateImageCounter();
+        }, 150);
+    }
+
+    // Update active thumbnail in modal
+    function updateModalThumbnails() {
+        document.querySelectorAll('.modal-thumbnail').forEach((thumb, index) => {
+            if (index === currentModalImageIndex) {
+                thumb.classList.add('active');
+                thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                thumb.classList.remove('active');
+            }
+        });
+    }
+
+    // Update image counter
+    function updateImageCounter() {
+        const currentNumber = document.getElementById('currentImageNumber');
+        if (currentNumber) {
+            currentNumber.textContent = currentModalImageIndex + 1;
+        }
+    }
+
+    // Close modal on clicking outside
+    document.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeZoomModal();
+        }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (modal && modal.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeZoomModal();
+            } else if (e.key === 'ArrowLeft') {
+                navigateModalImage({{ is_rtl() ? '1' : '-1' }});
+            } else if (e.key === 'ArrowRight') {
+                navigateModalImage({{ is_rtl() ? '-1' : '1' }});
+            }
+        }
+    });
+
     // Change main image
     function changeImage(element) {
         const mainImage = document.getElementById('mainImage');
