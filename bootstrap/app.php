@@ -14,7 +14,6 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\App as AppFacade;
-use PDOException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -42,7 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
             $isDbDown = false;
 
             // Detect PDO/Query exceptions that indicate DB connectivity issues
-            if ($e instanceof PDOException) {
+            if ($e instanceof \PDOException) {
                 $isDbDown = true;
             }
 

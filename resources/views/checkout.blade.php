@@ -693,20 +693,6 @@
                     <span class="label">{{ __('messages.subtotal') }}</span>
                     <span class="value">₪{{ number_format($subtotal, 2) }}</span>
                 </div>
-                <div class="summary-row">
-                    <span class="label">{{ __('messages.tax') }} (17%)</span>
-                    <span class="value">₪{{ number_format($tax, 2) }}</span>
-                </div>
-                <div class="summary-row">
-                    <span class="label">{{ __('messages.shipping') }}</span>
-                    <span class="value">
-                        @if($shippingFee == 0)
-                            {{ __('messages.free') }}
-                        @else
-                            ₪{{ number_format($shippingFee, 2) }}
-                        @endif
-                    </span>
-                </div>
                 <div class="summary-row total">
                     <span class="label">{{ __('messages.total') }}</span>
                     <span class="value">₪{{ number_format($total, 2) }}</span>

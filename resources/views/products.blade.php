@@ -4,13 +4,17 @@
 
 @section('content')
 <style>
-    /* Import Google Font - Poppins */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+    /* Import Google Fonts - Poppins & Cairo for Arabic */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
 
     /* Override font - exclude Font Awesome icons */
     body, 
     body *:not(.fa):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class*="fa-"]) {
-        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        @if(is_rtl())
+        font-family: 'Cairo', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        @else
+        font-family: 'Poppins', 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        @endif
     }
 
     /* Ensure Font Awesome icons keep their font */
@@ -20,7 +24,8 @@
 
     .products-section {
         padding: 3rem 2rem;
-        background: #f5f5f5;
+        background: #F9FAFB;
+        min-height: 100vh;
     }
 
     .section-header {
@@ -33,6 +38,96 @@
     .section-header h2 {
         font-size: 2rem;
         color: #333;
+    }
+
+    /* Search Results Info Box */
+    .search-results-info-box {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 3rem;
+        margin-top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        animation: fadeInUp 0.6s ease-out;
+        @if(is_rtl())
+        flex-direction: row-reverse;
+        @endif
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .search-query-display {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .search-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #64748b;
+        font-size: 0.9rem;
+        font-weight: 500;
+        @if(is_rtl())
+        flex-direction: row-reverse;
+        @endif
+    }
+
+    .search-label i {
+        color: #3B82F6;
+    }
+
+    .search-query {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .search-results-count {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 1rem 1.5rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .count-number {
+        font-size: 2rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1;
+    }
+
+    .count-label {
+        font-size: 0.85rem;
+        color: #64748b;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .product-grid {
@@ -607,48 +702,80 @@
     .no-results-content {
         position: relative;
         z-index: 1;
+        animation: fadeInUp 0.8s ease-out;
     }
 
     .no-results-icon {
-        width: 120px;
-        height: 120px;
-        margin: 0 auto 2rem;
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        width: 160px;
+        height: 160px;
+        margin: 0 auto 2.5rem;
+        background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
-        animation: iconBounce 3s ease-in-out infinite;
+        box-shadow: 0 20px 60px rgba(236, 72, 153, 0.3), 0 0 100px rgba(139, 92, 246, 0.2);
+        animation: iconFloat 4s ease-in-out infinite;
+        position: relative;
     }
 
-    @keyframes iconBounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
+    .no-results-icon::before {
+        content: '';
+        position: absolute;
+        inset: -10px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(236, 72, 153, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+        filter: blur(20px);
+        animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes iconFloat {
+        0%, 100% { 
+            transform: translateY(0) scale(1); 
+        }
+        25% {
+            transform: translateY(-15px) scale(1.02);
+        }
+        50% { 
+            transform: translateY(0) scale(1); 
+        }
+        75% {
+            transform: translateY(-8px) scale(0.98);
+        }
     }
 
     .no-results-icon i {
-        font-size: 3.5rem;
+        font-size: 4.5rem;
         color: white;
         margin: 0;
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
     }
 
     .no-results h3 {
-        font-size: 2rem;
-        color: #2c3e50;
-        margin-bottom: 1rem;
+        font-size: 2.25rem;
+        color: #1e293b;
+        margin-bottom: 1.25rem;
         font-weight: 700;
         line-height: 1.3;
+        @if(is_rtl())
+        direction: rtl;
+        @endif
     }
 
     .no-results p {
         font-size: 1.15rem;
-        color: #6c757d;
-        margin-bottom: 2.5rem;
-        line-height: 1.6;
+        color: #64748b;
+        margin-bottom: 3rem;
+        line-height: 1.8;
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
+        @if(is_rtl())
+        direction: rtl;
+        text-align: center;
+        @endif
     }
 
     .no-results-actions {
@@ -656,49 +783,67 @@
         gap: 1rem;
         justify-content: center;
         flex-wrap: wrap;
+        @if(is_rtl())
+        flex-direction: row-reverse;
+        @endif
     }
 
     .btn-primary-action {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
         color: white;
-        padding: 1rem 2.5rem;
+        padding: 1.1rem 3rem;
         border-radius: 50px;
         text-decoration: none;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
         gap: 0.75rem;
-        transition: all 0.3s;
-        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.35);
         font-size: 1.05rem;
+        border: none;
+        @if(is_rtl())
+        flex-direction: row-reverse;
+        @endif
     }
 
     .btn-primary-action:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+        box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45);
         color: white;
+    }
+
+    .btn-primary-action:active {
+        transform: translateY(-1px);
     }
 
     .btn-secondary-action {
         background: white;
-        color: #667eea;
-        padding: 1rem 2.5rem;
+        color: #3B82F6;
+        padding: 1.1rem 3rem;
         border-radius: 50px;
         text-decoration: none;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
         gap: 0.75rem;
-        transition: all 0.3s;
-        border: 2px solid #667eea;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid #3B82F6;
         font-size: 1.05rem;
+        @if(is_rtl())
+        flex-direction: row-reverse;
+        @endif
     }
 
     .btn-secondary-action:hover {
-        background: #667eea;
+        background: #3B82F6;
         color: white;
         transform: translateY(-3px);
-        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-secondary-action:active {
+        transform: translateY(-1px);
     }
 
     /* RTL Support for No Results */
@@ -710,9 +855,100 @@
     }
     @endif
 
+    /* Product Grid Fade In Animation */
+    .product-card {
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
+    }
+
+    .product-card:nth-child(1) { animation-delay: 0.1s; }
+    .product-card:nth-child(2) { animation-delay: 0.15s; }
+    .product-card:nth-child(3) { animation-delay: 0.2s; }
+    .product-card:nth-child(4) { animation-delay: 0.25s; }
+    .product-card:nth-child(5) { animation-delay: 0.3s; }
+    .product-card:nth-child(6) { animation-delay: 0.35s; }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .search-results-info-box {
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .search-query-display {
+            align-items: center;
+        }
+
+        .search-label {
+            justify-content: center;
+        }
+    }
+
     @media (max-width: 768px) {
+        .products-section {
+            padding: 2rem 1rem;
+        }
+
+        .search-results-info-box {
+            padding: 1.5rem;
+            border-radius: 16px;
+        }
+
+        .search-query {
+            font-size: 1.25rem;
+        }
+
+        .count-number {
+            font-size: 1.75rem;
+        }
+
         .no-results {
             padding: 3rem 1.5rem;
+        }
+
+        .no-results-icon {
+            width: 120px;
+            height: 120px;
+        }
+
+        .no-results-icon i {
+            font-size: 3rem;
+        }
+
+        .no-results h3 {
+            font-size: 1.75rem;
+        }
+
+        .no-results p {
+            font-size: 1rem;
+        }
+
+        .no-results-actions {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .btn-primary-action,
+        .btn-secondary-action {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .product-grid {
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .search-query {
+            font-size: 1.1rem;
+        }
+
+        .search-results-info-box {
+            padding: 1.25rem;
+            margin-bottom: 2rem;
         }
 
         .no-results-icon {
@@ -728,42 +964,34 @@
             font-size: 1.5rem;
         }
 
-        .no-results p {
-            font-size: 1rem;
-        }
-
-        .no-results-actions {
-            flex-direction: column;
-        }
-
         .btn-primary-action,
         .btn-secondary-action {
-            width: 100%;
-            justify-content: center;
+            padding: 1rem 2rem;
+            font-size: 0.95rem;
         }
     }
 </style>
 
 <div class="products-section">
     <div class="container">
+        @if(request('search'))
+        <!-- Search Results Info Box -->
+        <div class="search-results-info-box">
+            <div class="search-query-display">
+                <div class="search-label">
+                    <i class="fas fa-search"></i>
+                    <span>{{ is_rtl() ? 'نتائج البحث عن' : 'Search results for' }}</span>
+                </div>
+                <div class="search-query">"{{ request('search') }}"</div>
+            </div>
+            <div class="search-results-count">
+                <span class="count-number">{{ $products->total() }}</span>
+                <span class="count-label">{{ is_rtl() ? 'منتج' : 'products' }}</span>
+            </div>
+        </div>
+        @else
         <div class="section-header">
             <h2>{{ __t('messages.all_products') }}</h2>
-        </div>
-
-        @if(request('search'))
-        <div class="search-results-info">
-            <h3>
-                <i class="fas fa-search"></i>
-                {{ __t('messages.search_results') }}
-            </h3>
-            <p>
-                {{ __t('messages.found') }} <strong>{{ $products->total() }}</strong> {{ __t('messages.products_for') }}
-                <span class="search-query-highlight">"{{ request('search') }}"</span>
-            </p>
-            <a href="{{ route('products') }}" class="clear-search-btn">
-                <i class="fas fa-times"></i>
-                {{ __t('messages.clear_search') }}
-            </a>
         </div>
         @endif
 
@@ -841,23 +1069,49 @@
                 <div class="no-results-icon">
                     <i class="fas fa-search"></i>
                 </div>
-                <h3>{{ __t('messages.no_products_found_title') }}</h3>
+                <h3>
+                    @if(is_rtl())
+                        لم يتم العثور على نتائج
+                    @else
+                        No Results Found
+                    @endif
+                </h3>
                 <p>
                     @if(request('search'))
-                        {{ __t('messages.no_products_found_search', ['query' => request('search')]) }}
+                        @if(is_rtl())
+                            لم يتم العثور على نتائج مطابقة لبحثك عن <strong>"{{ request('search') }}"</strong><br>
+                            جرب استخدام كلمات مفتاحية مختلفة أو تصفح جميع المنتجات.
+                        @else
+                            No results found matching your search for <strong>"{{ request('search') }}"</strong><br>
+                            Try using different keywords or browse all products.
+                        @endif
                     @else
-                        {{ __t('messages.no_products_available') }}
+                        @if(is_rtl())
+                            لا توجد منتجات متاحة في الوقت الحالي.
+                        @else
+                            No products are currently available.
+                        @endif
                     @endif
                 </p>
                 <div class="no-results-actions">
                     <a href="{{ route('products') }}" class="btn-primary-action">
-                        <i class="fas fa-th-large"></i>
-                        {{ __t('messages.view_all_products') }}
+                        @if(is_rtl())
+                            <span>عرض جميع المنتجات</span>
+                            <i class="fas fa-th-large"></i>
+                        @else
+                            <i class="fas fa-th-large"></i>
+                            <span>View All Products</span>
+                        @endif
                     </a>
                     @if(request('search'))
-                    <a href="{{ route('products') }}" class="btn-secondary-action">
-                        <i class="fas fa-times"></i>
-                        {{ __t('messages.clear_filters') }}
+                    <a href="{{ route('home') }}" class="btn-secondary-action">
+                        @if(is_rtl())
+                            <span>العودة للرئيسية</span>
+                            <i class="fas fa-home"></i>
+                        @else
+                            <i class="fas fa-home"></i>
+                            <span>Back to Home</span>
+                        @endif
                     </a>
                     @endif
                 </div>
