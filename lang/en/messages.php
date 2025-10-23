@@ -275,6 +275,8 @@ return [
     'technical_specifications' => 'Technical Specifications',
     'product_description' => 'Product Description',
     'related_products' => 'Related Products',
+    'click_to_zoom' => 'Click to zoom',
+    'click_to_zoom_out' => 'Click to zoom out',
     
     // About Us Page
     'about_us_title' => 'About IT Center',

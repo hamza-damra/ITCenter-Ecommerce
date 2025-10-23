@@ -92,10 +92,6 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Brands
     Route::resource('brands', App\Http\Controllers\Admin\BrandController::class);
     
-    // Users Management
-    Route::resource('users', App\Http\Controllers\Admin\UserController::class);
-    Route::post('/users/bulk-delete', [App\Http\Controllers\Admin\UserController::class, 'bulkDelete'])->name('users.bulk-delete');
-    
     // Orders
     Route::get('/orders', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [App\Http\Controllers\Admin\OrderController::class, 'show'])->name('orders.show');
@@ -112,4 +108,8 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::delete('/contacts/{id}', [App\Http\Controllers\Admin\ContactController::class, 'destroy'])->name('contacts.destroy');
     Route::post('/contacts/bulk-update-status', [App\Http\Controllers\Admin\ContactController::class, 'bulkUpdateStatus'])->name('contacts.bulk-update-status');
     Route::post('/contacts/bulk-delete', [App\Http\Controllers\Admin\ContactController::class, 'bulkDelete'])->name('contacts.bulk-delete');
+    
+    // Promotional Offers
+    Route::resource('promotional-offers', App\Http\Controllers\Admin\PromotionalOfferController::class);
+    Route::post('/promotional-offers/{promotionalOffer}/toggle-active', [App\Http\Controllers\Admin\PromotionalOfferController::class, 'toggleActive'])->name('promotional-offers.toggle-active');
 });

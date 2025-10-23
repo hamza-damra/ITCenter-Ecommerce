@@ -12,6 +12,9 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\App as AppFacade;
+use PDOException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -34,6 +37,60 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Global handler: if database is unreachable, show a friendly 503 page (web) or JSON (API)
+        $exceptions->render(function (\Throwable $e, Request $request) {
+            $isDbDown = false;
+
+            // Detect PDO/Query exceptions that indicate DB connectivity issues
+            if ($e instanceof PDOException) {
+                $isDbDown = true;
+            }
+
+            if (!$isDbDown && $e instanceof QueryException) {
+                $message = $e->getMessage();
+                $patterns = [
+                    'SQLSTATE[HY000] [2002]', // Connection refused / host unreachable
+                    'SQLSTATE[HY000] [1045]', // Access denied
+                    'SQLSTATE[08006]',        // Connection failure
+                    'No connection could be made',
+                    'Connection refused',
+                    'Can\'t connect to',
+                    'Access denied for user',
+                    'server has gone away',
+                ];
+                foreach ($patterns as $p) {
+                    if (str_contains($message, $p)) {
+                        $isDbDown = true;
+                        break;
+                    }
+                }
+            }
+
+            if ($isDbDown) {
+                // Ensure session is not using database to avoid cascading failures during render
+                config(['session.driver' => 'array']);
+
+                // Allow language switching without session if provided as query (?lang=ar|en|he)
+                $available = config('app.available_locales', ['en','ar','he']);
+                $lang = $request->query('lang');
+                if ($lang && in_array($lang, $available, true)) {
+                    AppFacade::setLocale($lang);
+                }
+
+                if ($request->expectsJson() || $request->is('api/*')) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => trans('errors.db_connection_failed'),
+                        'error' => config('app.debug') ? $e->getMessage() : 'Database connection failed'
+                    ], 503);
+                }
+
+                return response()->view('errors.db-down', [
+                    'exception' => $e,
+                ], 503);
+            }
+        });
+
         // Handle API exceptions with JSON responses
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
             if ($request->is('api/*')) {

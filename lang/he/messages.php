@@ -242,6 +242,8 @@ return [
     'technical_specifications' => 'מפרט טכני',
     'product_description' => 'תיאור מוצר',
     'related_products' => 'מוצרים קשורים',
+    'click_to_zoom' => 'לחץ להגדלה',
+    'click_to_zoom_out' => 'לחץ לביטול הגדלה',
     
     // About Us Page
     'about_us_title' => 'אודות מרכז IT',

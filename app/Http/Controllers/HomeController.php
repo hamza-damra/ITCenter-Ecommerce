@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Offer;
+use App\Models\PromotionalOffer;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,6 +79,15 @@ class HomeController extends Controller
                 ->limit(3)
                 ->get();
 
+            $promotionalOffers = PromotionalOffer::with(['product' => function($query) {
+                    $query->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'main_image', 'stock_status');
+                }])
+                ->select('id', 'product_id', 'title_en', 'title_ar', 'title_he', 'original_price', 'sale_price', 'discount_percentage', 'features_en', 'features_ar', 'features_he', 'start_date', 'end_date', 'display_order')
+                ->active()
+                ->orderBy('display_order')
+                ->limit(3)
+                ->get();
+
             return [
                 'featuredProducts' => $featuredProducts,
                 'newProducts' => $newProducts,
@@ -86,6 +96,7 @@ class HomeController extends Controller
                 'categories' => $categories,
                 'featuredBrands' => $featuredBrands,
                 'activeOffers' => $activeOffers,
+                'promotionalOffers' => $promotionalOffers,
             ];
         });
 

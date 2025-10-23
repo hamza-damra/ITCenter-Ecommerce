@@ -239,6 +239,8 @@ return [
     'technical_specifications' => 'المواصفات التقنية',
     'product_description' => 'وصف المنتج',
     'related_products' => 'منتجات ذات صلة',
+    'click_to_zoom' => 'انقر للتكبير',
+    'click_to_zoom_out' => 'انقر لإلغاء التكبير',
     
     // About Us Page
     'about_us_title' => 'من نحن - مركز تكنولوجيا المعلومات',

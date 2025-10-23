@@ -18,6 +18,16 @@
             box-sizing: border-box;
         }
 
+        /* Prevent Font Awesome from affecting select options */
+        select option::before,
+        select option::after,
+        option::before,
+        option::after {
+            content: none !important;
+            display: none !important;
+            font-family: inherit !important;
+        }
+
         :root {
             --primary: #2563eb;
             --primary-dark: #1e40af;
@@ -442,37 +452,53 @@
             background: white;
         }
 
-        /* Modern Select/Dropdown Styles */
+        /* Select reset (no custom arrow) - prevents repeated arrow backgrounds */
         select.form-control {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 12px;
-            padding-right: 40px;
+            -webkit-appearance: auto;
+            -moz-appearance: auto;
+            appearance: auto;
+            background-color: #ffffff;
+            background-image: none !important;
+            background: #ffffff none !important;
+            padding: 12px 16px; /* match .form-control */
             cursor: pointer;
             font-weight: 500;
         }
+
+        /* Ensure legacy IE/Edge don't paint extra dropdown glyph */
+        select.form-control::-ms-expand { display: none; }
 
         select.form-control:hover {
             border-color: #94a3b8;
         }
 
-        select.form-control:focus {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232563eb' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-        }
+        select.form-control:focus { background-image: none !important; }
 
+        /* Style options - CRITICAL: Remove all markers and backgrounds */
         select.form-control option {
-            padding: 12px;
+            padding: 8px 12px;
             font-size: 14px;
             font-weight: 500;
+            background-color: white;
+            background-image: none !important;
             background: white;
             color: var(--dark);
+            list-style: none;
+            list-style-type: none;
+        }
+
+        /* Remove any ::before or ::after that might add markers */
+        select.form-control option::before,
+        select.form-control option::after {
+            content: none !important;
+            display: none !important;
         }
 
         select.form-control option:hover,
         select.form-control option:checked {
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            background-color: #eff6ff;
+            background-image: none !important;
+            background: #eff6ff;
             color: var(--primary);
         }
 
@@ -968,6 +994,7 @@
                 <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> {{ __('messages.dashboard') }}</a></li>
                 <li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i class="fas fa-shopping-bag"></i> {{ __t('messages.orders') }}</a></li>
                 <li><a href="{{ route('admin.contacts.index') }}" class="{{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}"><i class="fas fa-envelope"></i> {{ __('messages.contact_messages') }}</a></li>
+                <li><a href="{{ route('admin.promotional-offers.index') }}" class="{{ request()->routeIs('admin.promotional-offers.*') ? 'active' : '' }}"><i class="fas fa-bullhorn"></i> إدارة الإعلانات</a></li>
                 <li><a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><i class="fas fa-box"></i> {{ __('messages.products') }}</a></li>
                 <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-folder"></i> {{ __('messages.categories') }}</a></li>
                 <li><a href="{{ route('admin.brands.index') }}" class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}"><i class="fas fa-tag"></i> {{ __('messages.brands') }}</a></li>

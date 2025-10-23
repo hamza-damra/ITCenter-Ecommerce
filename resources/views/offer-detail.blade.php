@@ -125,57 +125,90 @@
     }
 
     .product-card {
-        background: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 12px;
+        background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+        border: 1px solid rgba(230, 146, 112, 0.08);
+        border-radius: 16px;
         overflow: hidden;
-        transition: all 0.3s;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+        position: relative;
+    }
+
+    .product-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #2762f3 0%, #1a4dbf 50%, #333333 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
     }
 
     .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 32px rgba(39, 98, 243, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
+        border-color: rgba(39, 98, 243, 0.2);
+    }
+
+    .product-card:hover::before {
+        opacity: 1;
     }
 
     .product-image {
         width: 100%;
         height: 250px;
-        background: #f5f5f5;
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        overflow: hidden;
     }
 
     .product-image img {
         max-width: 90%;
         max-height: 90%;
         object-fit: contain;
+        transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+        filter: brightness(1);
+        will-change: transform;
+    }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.08);
+        filter: brightness(1.05);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
 
     .product-badge {
         position: absolute;
         top: 10px;
         right: 10px;
-        background: #ff4757;
+        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
         color: #fff;
         padding: 0.3rem 0.8rem;
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 600;
+        box-shadow: 0 4px 12px rgba(39, 98, 243, 0.4);
+        text-transform: uppercase;
     }
 
     .discount-badge {
         position: absolute;
         top: 10px;
         left: 10px;
-        background: #4CAF50;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: #fff;
         padding: 0.5rem 1rem;
         border-radius: 8px;
         font-size: 0.9rem;
         font-weight: 700;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
     }
 
     .product-info {
@@ -193,11 +226,16 @@
         font-size: 1rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: #333;
+        color: #1e293b;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        transition: color 0.3s ease;
+    }
+
+    .product-card:hover .product-title {
+        color: #2762f3;
     }
 
     .product-brand {
@@ -215,23 +253,24 @@
 
     .original-price {
         text-decoration: line-through;
-        color: #999;
+        color: #94a3b8;
         font-size: 0.9rem;
     }
 
     .sale-price {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #4CAF50;
+        color: #2762f3;
     }
 
     .savings {
-        background: #ffeb3b;
-        color: #333;
+        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+        color: #fff;
         padding: 0.2rem 0.5rem;
         border-radius: 4px;
         font-size: 0.8rem;
         font-weight: 600;
+        box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
     }
 
     .product-actions {
@@ -241,10 +280,22 @@
 
     .btn-view {
         flex: 1;
-        background: #667eea;
+        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
         color: #fff;
         padding: 0.8rem;
         border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(39, 98, 243, 0.25);
+    }
+
+    .btn-view:hover {
+        background: linear-gradient(135deg, #1a4dbf 0%, #133a99 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(39, 98, 243, 0.35);
+    }
         border-radius: 8px;
         font-weight: 600;
         cursor: pointer;

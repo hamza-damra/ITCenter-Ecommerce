@@ -189,13 +189,7 @@
         background: #f0f0f0;
     }
 
-    /* Categories Section */
-    .categories-section {
-        background: #fff;
-        padding: 3rem 0;
-        margin-bottom: 3rem;
-    }
-
+    /* Section Header - Used by multiple sections */
     .section-header {
         display: flex;
         justify-content: space-between;
@@ -220,141 +214,12 @@
     }
 
     .view-more:hover {
-        color: #e69270ff;
+        color: #6366f1;
     }
 
     /* RTL Support for arrows */
     [dir="rtl"] .view-more {
         flex-direction: row-reverse;
-    }
-
-    .categories-wrapper {
-        position: relative;
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0 60px;
-    }
-
-    .categories-grid {
-        display: flex;
-        gap: 2rem;
-        overflow-x: auto;
-        scroll-behavior: smooth;
-        scrollbar-width: none;
-        padding: 1rem 0;
-        /* Fix for RTL horizontal scrolling - force LTR for scrolling */
-        direction: ltr !important;
-    }
-    
-    /* Restore RTL for category items content */
-    html[dir="rtl"] .categories-grid .category-item,
-    [dir="rtl"] .categories-grid .category-item {
-        direction: rtl;
-    }
-    
-    /* Ensure proper text alignment in RTL */
-    html[dir="rtl"] .category-name,
-    [dir="rtl"] .category-name {
-        text-align: center;
-        direction: rtl;
-    }
-
-    .categories-grid::-webkit-scrollbar {
-        display: none;
-    }
-
-    .category-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        cursor: pointer;
-        transition: transform 0.3s;
-        min-width: 120px;
-        flex-shrink: 0;
-    }
-
-    .category-item:hover {
-        transform: translateY(-5px);
-    }
-
-    .category-nav-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: #fff;
-        border: 2px solid #e0e0e0;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 10;
-        transition: all 0.3s;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .category-nav-btn:hover {
-        background: #e69270ff;
-        border-color: #e69270ff;
-        color: #fff;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    .category-nav-btn.disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-        pointer-events: none;
-    }
-
-    .category-nav-btn.left {
-        left: 0;
-    }
-
-    .category-nav-btn.right {
-        right: 0;
-    }
-
-    .category-nav-btn i {
-        font-size: 1.2rem;
-        color: #333;
-    }
-
-    .category-nav-btn:hover i {
-        color: #fff;
-    }
-
-    .category-icon {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: #f5f5f5;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 1rem;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08);
-        transition: box-shadow 0.3s, transform 0.3s;
-    }
-
-    .category-item:hover .category-icon {
-        box-shadow: 0 8px 24px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.12);
-        transform: scale(1.05);
-    }
-
-    .category-icon img {
-        width: 80%;
-        height: 80%;
-        object-fit: contain;
-    }
-
-    .category-name {
-        font-size: 0.95rem;
-        color: #333;
-        font-weight: 500;
     }
 
     /* Featured Brands Slider */
@@ -484,12 +349,20 @@
     .special-card-image {
         height: 250px;
         position: relative;
+        overflow: hidden;
     }
 
     .special-card-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
+        will-change: transform;
+    }
+
+    .special-card:hover .special-card-image img {
+        transform: scale(1.08);
+        filter: brightness(1.05);
     }
 
     .special-card-content {
@@ -518,58 +391,93 @@
         gap: 0.5rem;
     }
 
-    /* Builder Cards */
+    /* Builder Cards - Clean & Minimal Design */
     .builder-cards {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 1.5rem;
-        margin-bottom: 3rem;
+        gap: 2rem;
+        margin-bottom: 4rem;
+        padding: 0 1rem;
     }
 
     .builder-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 12px;
-        padding: 2rem 1.5rem;
-        color: #fff;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 2.5rem 1.5rem;
         cursor: pointer;
-        transition: transform 0.3s, box-shadow 0.3s;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         text-align: center;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
 
-    .builder-card:nth-child(1) { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .builder-card:nth-child(2) { background: linear-gradient(135deg, #06beb6 0%, #48b1bf 100%); }
-    .builder-card:nth-child(3) { background: linear-gradient(135deg, #3494E6 0%, #EC6EAD 100%); }
-    .builder-card:nth-child(4) { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .builder-card:nth-child(5) { background: linear-gradient(135deg, #06beb6 0%, #48b1bf 100%); }
+    .builder-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
 
     .builder-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 12px 32px rgba(0,0,0,0.25), 0 4px 16px rgba(0,0,0,0.15);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 10px 20px rgba(0, 0, 0, 0.04);
+        border-color: #d1d5db;
     }
 
-    .builder-card-title {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-
-    .builder-card-link {
-        font-size: 0.85rem;
-        color: rgba(255,255,255,0.9);
+    .builder-card:hover::before {
+        opacity: 1;
     }
 
     .builder-card-image {
-        margin-top: 1rem;
-        height: 100px;
+        margin-bottom: 1.5rem;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
     }
 
     .builder-card-image img {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
+        transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
+        will-change: transform;
+    }
+
+    .builder-card:hover .builder-card-image img {
+        transform: scale(1.08);
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08)) brightness(1.05);
+    }
+
+    .builder-card-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.01em;
+    }
+
+    .builder-card-link {
+        font-size: 0.875rem;
+        color: #6b7280;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        transition: color 0.3s ease;
+    }
+
+    .builder-card:hover .builder-card-link {
+        color: #6366f1;
     }
 
     /* Popular Tags */
@@ -610,225 +518,356 @@
         transform: translateY(-2px);
     }
 
-    /* Product Grid */
+    /* Product Grid - Modern Responsive Layout */
     .product-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1.5rem;
         margin-bottom: 3rem;
+        padding: 0.5rem;
     }
 
     .product-card {
-        background: #fff;
-        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
-        border: 1px solid rgba(0,0,0,0.02);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Subtle gradient overlay on hover */
+    .product-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(39, 98, 243, 0.03) 0%, rgba(26, 77, 191, 0.02) 100%);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+        border-radius: 20px;
+    }
+
+    /* Glowing border effect on hover */
+    .product-card::after {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        background: linear-gradient(135deg, #2762f3, #1a4dbf, #64748b);
+        border-radius: 20px;
+        opacity: 0;
+        z-index: -1;
+        transition: opacity 0.35s ease;
     }
 
     .product-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.08);
+        transform: translateY(-6px) scale(1.01);
+        box-shadow: 0 20px 40px rgba(39, 98, 243, 0.08), 0 8px 16px rgba(0, 0, 0, 0.06);
+        border-color: rgba(39, 98, 243, 0.15);
+    }
+
+    .product-card:hover::before {
+        opacity: 1;
+    }
+
+    .product-card:hover::after {
+        opacity: 0.4;
     }
 
     .product-image {
         width: 100%;
-        height: 250px;
-        background: #fafafaff;
+        height: 240px;
+        background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
         overflow: hidden;
+        padding: 1rem;
     }
 
 
     .product-image img {
-        max-width: 90%;
-        max-height: 90%;
+        max-width: 85%;
+        max-height: 85%;
         object-fit: contain;
         image-rendering: -webkit-optimize-contrast;
         image-rendering: crisp-edges;
+        transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+        filter: brightness(1);
+        will-change: transform;
+    }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.08);
+        filter: brightness(1.05);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
 
     .wishlist-btn {
         position: absolute !important;
-        top: 12px !important;
+        top: 14px !important;
         bottom: auto !important;
         @if(is_rtl())
-        left: 12px !important;
+        left: 14px !important;
         right: auto !important;
         @else
-        right: 12px !important;
+        right: 14px !important;
         left: auto !important;
         @endif
-        background: rgba(255, 255, 255, 0.95);
-        width: 40px;
-        height: 40px;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 10;
-        border: none;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
     .wishlist-btn:hover {
-        background: rgba(255, 255, 255, 1);
-        transform: scale(1.1);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        background: rgba(255, 255, 255, 0.98);
+        transform: scale(1.12);
+        box-shadow: 0 4px 16px rgba(39, 98, 243, 0.18);
+        border-color: rgba(39, 98, 243, 0.2);
     }
 
     .wishlist-btn:hover i {
-        color: #ff0000 !important;
+        color: #2762f3 !important;
     }
 
     .wishlist-btn.active {
-        background: rgba(255, 255, 255, 1) !important;
+        background: rgba(39, 98, 243, 0.1) !important;
+        border-color: #2762f3 !important;
     }
 
     .wishlist-btn.active i {
-        color: #ff0000 !important;
+        color: #2762f3 !important;
     }
 
     .wishlist-btn i {
-        font-size: 1.1rem;
-        color: #888;
-        transition: all 0.3s;
+        font-size: 1rem;
+        color: #64748b;
+        transition: all 0.3s ease;
     }
 
-    /* Solid heart icon should be red */
+    /* Solid heart icon should be blue */
     .wishlist-btn i.fas.fa-heart {
-        color: #ff0000 !important;
+        color: #2762f3 !important;
     }
 
     .product-badge {
         position: absolute !important;
-        top: 12px !important;
+        top: 14px !important;
         bottom: auto !important;
         @if(is_rtl())
-        right: 12px !important;
+        right: 14px !important;
         left: auto !important;
         @else
-        left: 12px !important;
+        left: 14px !important;
         right: auto !important;
         @endif
-        background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
+        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
         color: #fff;
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 12px;
+        font-size: 0.7rem;
         font-weight: 700;
         z-index: 5;
-        box-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
-        letter-spacing: 0.3px;
+        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
     }
 
     .product-info {
-        padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+        padding: 1.25rem 1.25rem 1.25rem 1.25rem;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+        background: transparent;
     }
 
     .product-title {
-        font-size: 1.05rem;
+        font-size: 0.95rem;
         font-weight: 600;
-        margin-bottom: 0.5rem;
-        color: #1a1a1a;
-        text-align: center;
-        line-height: 1.4;
+        margin-bottom: 0.4rem;
+        color: #1e293b;
+        text-align: start;
+        line-height: 1.35;
+        transition: color 0.3s ease;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 2.7rem;
+    }
+
+    .product-card:hover .product-title {
+        color: #2762f3;
     }
 
     .product-description {
-        font-size: 0.875rem;
-        color: #6c757d;
-        margin-bottom: 1rem;
-        line-height: 1.5;
-        text-align: center;
+        font-size: 0.8rem;
+        color: #64748b;
+        margin-bottom: 0.875rem;
+        line-height: 1.4;
+        text-align: start;
         flex-grow: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .product-footer {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.875rem;
         align-items: stretch;
         margin-top: auto;
+        padding-top: 0.5rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.04);
     }
 
     .product-price {
-        font-size: 1.5rem;
+        font-size: 1.35rem;
         font-weight: 700;
-        color: #1a1a1a;
+        color: #1e293b;
         text-align: start;
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.25rem;
+        flex-direction: row;
+        align-items: baseline;
+        gap: 0.5rem;
     }
 
     .product-price .original-price {
         text-decoration: line-through;
-        color: #999;
-        font-size: 1rem;
+        color: #94a3b8;
+        font-size: 0.9rem;
         font-weight: 500;
     }
 
+    .product-price .discount-percentage {
+        font-size: 0.75rem;
+        color: #10b981;
+        font-weight: 600;
+        background: rgba(16, 185, 129, 0.1);
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        margin-left: auto;
+    }
+
+    /* Modern Outlined Button with Glow Effect */
     .add-to-cart {
-        background: linear-gradient(135deg, #454546ff 0%, #000000ff 100%);
-        color: #fff;
-        padding: 0.875rem 1.5rem;
-        border-radius: 12px;
-        border: none;
+        background: transparent;
+        color: #2762f3;
+        padding: 0.65rem 1.25rem;
+        border-radius: 50px;
+        border: 1.5px solid #2762f3;
         cursor: pointer;
         font-weight: 600;
-        transition: all 0.3s;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
         width: 100%;
         white-space: nowrap;
-        font-size: 0.95rem;
-        box-shadow: 0 4px 12px rgba(78, 115, 223, 0.3);
+        font-size: 0.85rem;
+        box-shadow: 0 0 0 rgba(39, 98, 243, 0);
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 0.3px;
+    }
+
+    /* Glowing background on hover */
+    .add-to-cart::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        z-index: -1;
     }
 
     .add-to-cart:hover {
-        background: linear-gradient(135deg, #7bace3ff 0%, #404249ff 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(78, 115, 223, 0.4);
+        color: #ffffff;
+        border-color: #2762f3;
+        box-shadow: 0 0 20px rgba(39, 98, 243, 0.4), 0 4px 12px rgba(39, 98, 243, 0.2);
+        transform: translateY(-1px);
     }
 
+    .add-to-cart:hover::before {
+        opacity: 1;
+    }
+
+    .add-to-cart:active {
+        transform: translateY(0);
+    }
+
+    /* Success state - filled green */
     .add-to-cart.in-cart {
-        background: #4CAF50;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        border-color: #10b981;
+        color: #ffffff;
+    }
+
+    .add-to-cart.in-cart::before {
+        opacity: 1;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     }
 
     .add-to-cart.in-cart:hover {
-        background: #45a049;
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), 0 4px 12px rgba(16, 185, 129, 0.2);
     }
 
     .add-to-cart.in-cart i {
         animation: cartBounce 0.5s ease;
     }
 
+    /* Out of stock state - outlined orange */
     .add-to-cart.out-of-stock {
-        background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
-        color: #fff;
-        cursor: pointer;
-        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+        background: transparent;
+        color: #f97316;
+        border-color: #f97316;
+        cursor: not-allowed;
+    }
+
+    .add-to-cart.out-of-stock::before {
+        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
     }
 
     .add-to-cart.out-of-stock:hover {
-        background: linear-gradient(135deg, #f57c00 0%, #ef6c00 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
+        color: #ffffff;
+        box-shadow: 0 0 20px rgba(249, 115, 22, 0.3), 0 4px 12px rgba(249, 115, 22, 0.15);
+    }
+
+    .add-to-cart.out-of-stock:hover::before {
+        opacity: 1;
     }
 
     @keyframes cartBounce {
@@ -849,11 +888,42 @@
         
         .builder-cards {
             grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .builder-card {
+            padding: 2rem 1.25rem;
+        }
+        
+        .builder-card-image {
+            height: 110px;
         }
         
         .product-grid {
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+            gap: 1.25rem;
+            padding: 0.25rem;
+        }
+
+        .product-card {
+            border-radius: 18px;
+        }
+
+        .product-image {
+            height: 220px;
+        }
+
+        .product-info {
+            padding: 1.125rem;
+        }
+
+        .product-title {
+            font-size: 0.9rem;
+            min-height: 2.5rem;
+        }
+
+        .product-description {
+            font-size: 0.75rem;
         }
     }
 
@@ -876,27 +946,40 @@
             font-size: 1rem;
         }
         
-        .categories-wrapper {
-            padding: 0 50px;
-        }
-        
-        .category-nav-btn {
-            width: 40px;
-            height: 40px;
-        }
-        
-        .category-icon {
-            width: 100px;
-            height: 100px;
-        }
-        
         .section-header h2 {
             font-size: 1.8rem;
         }
         
         .product-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
+            gap: 1rem;
+            padding: 0.25rem;
+        }
+
+        .product-card {
+            border-radius: 16px;
+        }
+
+        .product-image {
+            height: 200px;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 0.875rem;
+            min-height: 2.4rem;
+        }
+
+        .product-price {
+            font-size: 1.2rem;
+        }
+
+        .add-to-cart {
+            padding: 0.6rem 1rem;
+            font-size: 0.8rem;
         }
         
         .product-card {
@@ -937,7 +1020,16 @@
         
         .builder-cards {
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            gap: 1.5rem;
+            padding: 0 0.5rem;
+        }
+        
+        .builder-card {
+            padding: 2rem 1rem;
+        }
+        
+        .builder-card-image {
+            height: 100px;
         }
         
         .featured-section {
@@ -1027,26 +1119,14 @@
             font-size: 1rem;
         }
         
-        .category-icon {
-            width: 80px;
-            height: 80px;
-        }
-        
-        .category-item {
-            min-width: 90px;
-        }
-        
-        .category-name {
-            font-size: 0.85rem;
-        }
-        
         .product-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
+            gap: 0.875rem;
+            padding: 0.25rem;
         }
         
         .product-card {
-            border-radius: 8px;
+            border-radius: 14px;
         }
         
         .product-image {
@@ -1055,24 +1135,52 @@
         
         .product-badge {
             font-size: 0.65rem;
-            padding: 0.3rem 0.8rem;
-            top: 8px;
+            padding: 0.3rem 0.65rem;
+            border-radius: 10px;
+            top: 10px;
             @if(is_rtl())
-            right: 8px;
+            right: 10px;
             @else
-            left: 8px;
+            left: 10px;
             @endif
         }
         
         .wishlist-btn {
-            width: 35px;
-            height: 35px;
-            top: 8px;
+            width: 32px;
+            height: 32px;
+            top: 10px;
             @if(is_rtl())
-            left: 8px;
+            left: 10px;
             @else
-            right: 8px;
+            right: 10px;
             @endif
+        }
+
+        .wishlist-btn i {
+            font-size: 0.9rem;
+        }
+
+        .product-info {
+            padding: 0.875rem;
+        }
+
+        .product-title {
+            font-size: 0.85rem;
+            min-height: 2.2rem;
+        }
+
+        .product-description {
+            font-size: 0.725rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .product-price {
+            font-size: 1.15rem;
+        }
+
+        .add-to-cart {
+            padding: 0.55rem 0.875rem;
+            font-size: 0.75rem;
         }
         
         .wishlist-btn i {
@@ -1133,14 +1241,23 @@
         .builder-cards {
             grid-template-columns: 1fr;
             gap: 1rem;
+            padding: 0;
         }
         
         .builder-card {
-            padding: 1.5rem 1rem;
+            padding: 2rem 1.5rem;
+        }
+        
+        .builder-card-image {
+            height: 100px;
         }
         
         .builder-card-title {
-            font-size: 1rem;
+            font-size: 1.05rem;
+        }
+        
+        .builder-card-link {
+            font-size: 0.8rem;
         }
         
         .brands-section {
@@ -1166,17 +1283,6 @@
         .tag {
             font-size: 0.8rem;
             padding: 0.4rem 1rem;
-        }
-        
-        .featured-tabs {
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .featured-tab {
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
         }
     }
 
@@ -1246,47 +1352,46 @@
             height: 30px;
         }
         
-        .category-icon {
-            width: 70px;
-            height: 70px;
-        }
-        
-        .category-item {
-            min-width: 80px;
-        }
-        
-        .category-name {
-            font-size: 0.8rem;
-        }
-        
         .product-grid {
             grid-template-columns: 1fr;
             gap: 1rem;
+            padding: 0.25rem;
         }
         
         .product-card {
             max-width: 100%;
+            border-radius: 16px;
         }
         
         .product-image {
-            height: 220px;
+            height: 240px;
+        }
+        
+        .product-info {
+            padding: 1rem;
         }
         
         .product-title {
-            font-size: 1rem;
+            font-size: 0.95rem;
+            min-height: auto;
         }
         
         .product-description {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.875rem;
         }
         
         .product-price {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
+        }
+
+        .product-footer {
+            gap: 0.75rem;
         }
         
         .add-to-cart {
-            padding: 0.8rem 1.2rem;
-            font-size: 0.9rem;
+            padding: 0.7rem 1.25rem;
+            font-size: 0.85rem;
         }
         
         .builder-cards {
@@ -1316,15 +1421,6 @@
         
         .section-header h2 {
             font-size: 1.2rem;
-        }
-        
-        .category-icon {
-            width: 60px;
-            height: 60px;
-        }
-        
-        .category-name {
-            font-size: 0.75rem;
         }
         
         .product-image {
@@ -1742,34 +1838,6 @@
     .promo-countdown .num { font-size:1.2rem; font-weight:800; color:#111827; display:block; }
     .promo-countdown .unit { font-size:.7rem; color:#6b7280; text-transform:uppercase; letter-spacing:.05em; display:block; margin-top:.15rem; }
 
-    .featured-tabs {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        margin-bottom: 3rem;
-    }
-
-    .featured-tab {
-        background: transparent;
-        border: none;
-        padding: 1rem 2rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #666;
-        cursor: pointer;
-        border-bottom: 3px solid transparent;
-        transition: all 0.3s ease;
-    }
-
-    .featured-tab.active {
-        color: #4169E1;
-        border-bottom-color: #FFD700;
-    }
-
-    .featured-tab:hover {
-        color: #4169E1;
-    }
-
     /* Mobile Responsive */
     @media (max-width: 968px) {
         .special-offer-section {
@@ -2055,59 +2123,12 @@
 /* removed old promo section styles */
 </style>
 
-<!-- Categories Section -->
-<div class="categories-section">
-    <div class="container">
-        <div class="section-header">
-            <h2>{{ __t('messages.shop_by_category') }}</h2>
-            <a href="{{ route('categories') }}" class="view-more">
-                {{ __t('messages.view_more') }} <i class="fas fa-arrow-{{ is_rtl() ? 'left' : 'right' }}"></i>
-            </a>
-        </div>
-
-        <div class="categories-wrapper">
-            <button class="category-nav-btn left" id="categoryScrollLeft">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            
-            <div class="categories-grid" id="categoriesGrid" style="direction: ltr !important;">
-                @foreach($categories as $category)
-                <div class="category-item" onclick="window.location.href='{{ route('products', ['category' => $category->slug]) }}'">
-                    <div class="category-icon">
-                        @if($category->image)
-                            @if(str_starts_with($category->image, 'http'))
-                                <img src="{{ $category->image }}" alt="{{ $category->name }}">
-                            @else
-                                <img src="{{ asset($category->image) }}" alt="{{ $category->name }}">
-                            @endif
-                        @else
-                            <img src="{{ asset('images/products/default.png') }}" alt="{{ $category->name }}">
-                        @endif
-                    </div>
-                    <div class="category-name">{{ $category->name }}</div>
-                </div>
-                @endforeach
-            </div>
-
-            <button class="category-nav-btn right" id="categoryScrollRight">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Removed static special-offer demo card -->
+<!-- Removed top categories section - keeping only the middle one -->
 
 <!-- Featured Products Section -->
 <div class="featured-section">
     <div class="container">
-        <div class="featured-tabs">
-            <button class="featured-tab active" data-tab="featured">{{ __t('messages.featured') }}</button>
-            <button class="featured-tab" data-tab="sale">{{ __t('messages.on_sale') }}</button>
-                <button class="featured-tab" data-tab="rated">{{ __t('messages.top_rated') }}</button>
-            </div>
-            
-            <div class="product-grid" id="featuredProducts">
+        <div class="product-grid" id="featuredProducts">
                 @if(isset($promotionalOffers) && $promotionalOffers->count() > 0)
                     @php $promo = $promotionalOffers->first(); @endphp
                     <div class="promo-featured-card">
@@ -2318,8 +2339,6 @@
     <div class="builder-cards">
         @foreach($categories->take(5) as $index => $category)
         <div class="builder-card" onclick="window.location.href='{{ route('products', ['category' => $category->slug]) }}'">
-            <div class="builder-card-title">{{ $category->name }}</div>
-            <div class="builder-card-link">{{ __t('messages.explore_products', ['count' => $category->products_count]) }} ›</div>
             @if($category->image)
             <div class="builder-card-image">
                 @if(str_starts_with($category->image, 'http'))
@@ -2328,7 +2347,21 @@
                     <img src="{{ asset($category->image) }}" alt="{{ $category->name }}">
                 @endif
             </div>
+            @else
+            <div class="builder-card-image">
+                <img src="https://img.icons8.com/fluency/240/{{ 
+                    $index === 0 ? 'laptop' : 
+                    ($index === 1 ? 'smartphone' : 
+                    ($index === 2 ? 'headphones' : 
+                    ($index === 3 ? 'smartwatch' : 'camera'))) 
+                }}.png" alt="{{ $category->name }}">
+            </div>
             @endif
+            <div class="builder-card-title">{{ $category->name }}</div>
+            <div class="builder-card-link">
+                {{ __t('messages.explore_products', ['count' => $category->products_count]) }}
+                <i class="fas fa-arrow-{{ is_rtl() ? 'left' : 'right' }}" style="font-size: 0.75rem;"></i>
+            </div>
         </div>
         @endforeach
     </div>
@@ -2661,87 +2694,11 @@
         }, observerOptions);
 
         // Observe all cards
-        const animateElements = document.querySelectorAll('.product-card, .category-item, .builder-card, .special-card');
+        const animateElements = document.querySelectorAll('.product-card, .builder-card, .special-card');
         animateElements.forEach(el => {
             el.classList.add('scroll-animate');
             observer.observe(el);
         });
-
-        // Category Slider Navigation
-        const categoriesGrid = document.getElementById('categoriesGrid');
-        const scrollLeftBtn = document.getElementById('categoryScrollLeft');
-        const scrollRightBtn = document.getElementById('categoryScrollRight');
-        
-        if (categoriesGrid && scrollLeftBtn && scrollRightBtn) {
-            const scrollAmount = 300;
-            
-            // Check if RTL - check multiple sources
-            const isRTL = document.documentElement.dir === 'rtl' || 
-                         document.body.dir === 'rtl' || 
-                         document.documentElement.getAttribute('dir') === 'rtl' ||
-                         getComputedStyle(document.body).direction === 'rtl';
-            
-            console.log('Is RTL:', isRTL);
-            
-            // Since we force LTR on the container, scrolling works normally
-            // But we need to reverse button behavior for RTL pages
-            
-            // Update button states
-            function updateButtonStates() {
-                const maxScroll = categoriesGrid.scrollWidth - categoriesGrid.clientWidth;
-                let currentScroll = categoriesGrid.scrollLeft;
-                
-                // Container is LTR, so scroll works normally (0 to maxScroll)
-                // But we keep button behavior consistent with visual direction
-                
-                if (currentScroll <= 0) {
-                    // At the start (scroll position = 0)
-                    // Can't scroll more to the left
-                    scrollLeftBtn.classList.add('disabled');
-                    scrollRightBtn.classList.remove('disabled');
-                } else if (currentScroll >= maxScroll - 5) {
-                    // At the end (scroll position = max)
-                    // Can't scroll more to the right
-                    scrollRightBtn.classList.add('disabled');
-                    scrollLeftBtn.classList.remove('disabled');
-                } else {
-                    // In the middle - both enabled
-                    scrollLeftBtn.classList.remove('disabled');
-                    scrollRightBtn.classList.remove('disabled');
-                }
-            }
-            
-            // Scroll left button
-            scrollLeftBtn.addEventListener('click', function() {
-                // In RTL: left button (←) should scroll left (negative)
-                // In LTR: left button (←) should scroll left (negative)
-                const scrollValue = -scrollAmount;
-                categoriesGrid.scrollBy({
-                    left: scrollValue,
-                    behavior: 'smooth'
-                });
-            });
-            
-            // Scroll right button
-            scrollRightBtn.addEventListener('click', function() {
-                // In RTL: right button (→) should scroll right (positive)
-                // In LTR: right button (→) should scroll right (positive)
-                const scrollValue = scrollAmount;
-                categoriesGrid.scrollBy({
-                    left: scrollValue,
-                    behavior: 'smooth'
-                });
-            });
-            
-            // Update button states on scroll
-            categoriesGrid.addEventListener('scroll', updateButtonStates);
-            
-            // Initial button state
-            setTimeout(updateButtonStates, 100);
-            
-            // Update on window resize
-            window.addEventListener('resize', updateButtonStates);
-        }
 
         // Add additional event listener for wishlist buttons to force color change
         document.addEventListener('DOMContentLoaded', function() {
@@ -2813,35 +2770,7 @@
             setInterval(updateCountdown, 1000);
         }
 
-    // Featured Products Tab Functionality
-        function initFeaturedTabs() {
-            const tabs = document.querySelectorAll('.featured-tab');
-            const productsGrid = document.getElementById('featuredProducts');
-            
-            if (!tabs.length || !productsGrid) return;
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    
-                    // Add active class to clicked tab
-                    this.classList.add('active');
-                    
-                    // Get tab type
-                    const tabType = this.dataset.tab;
-                    
-                    // Here you would typically fetch different products based on tab type
-                    // For now, we'll just show a message
-                    console.log('Switched to tab:', tabType);
-                    
-                    // You can add AJAX calls here to fetch different product sets
-                    // Example: fetchProductsByType(tabType);
-                });
-            });
-        }
-
-        // Initialize countdown and tabs when DOM is loaded
+        // Initialize countdown when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             startCountdown();
             // Promo Featured countdown (boxed H/M/S under image)
@@ -2869,7 +2798,6 @@
                 update();
                 setInterval(update, 1000);
             })();
-            initFeaturedTabs();
         });
     });
 </script>
