@@ -3,6 +3,12 @@
 @section('title', __('messages.contact_messages_management'))
 
 @section('content')
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+@if(app()->getLocale() === 'ar')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+@endif
+
 <style>
     /* Force RTL for all text elements */
     * {
@@ -617,6 +623,79 @@
             grid-template-columns: 1fr;
         }
     }
+
+    /* Date Input RTL Support */
+    [dir="rtl"] input[type="date"] {
+        direction: rtl;
+        text-align: right;
+    }
+
+    /* Force RTL layout for date picker in Arabic */
+    input[type="date"][lang="ar"],
+    input[type="date"][lang="he"] {
+        direction: rtl;
+    }
+
+    /* Calendar icon position for RTL */
+    [dir="rtl"] input[type="date"]::-webkit-calendar-picker-indicator {
+        margin-left: 0;
+        margin-right: auto;
+    }
+
+    /* Placeholder styling for date inputs (all languages) */
+    input[type="date"].date-input-locale::placeholder {
+        color: #9ca3af;
+        opacity: 0.7;
+        font-size: 0.9rem;
+    }
+
+    input[type="date"].date-input-locale::-webkit-input-placeholder {
+        color: #9ca3af;
+        opacity: 0.7;
+        font-size: 0.9rem;
+    }
+
+    input[type="date"].date-input-locale::-moz-placeholder {
+        color: #9ca3af;
+        opacity: 0.7;
+        font-size: 0.9rem;
+    }
+
+    /* Flatpickr RTL Support */
+    @if(app()->getLocale() === 'ar' || app()->getLocale() === 'he')
+    .flatpickr-calendar {
+        direction: rtl;
+    }
+
+    .flatpickr-calendar .flatpickr-months {
+        direction: rtl;
+    }
+
+    .flatpickr-calendar .flatpickr-weekdays {
+        direction: rtl;
+    }
+
+    .flatpickr-calendar .dayContainer {
+        direction: rtl;
+    }
+
+    .flatpickr-calendar .flatpickr-prev-month,
+    .flatpickr-calendar .flatpickr-next-month {
+        transform: scaleX(-1); /* Flip arrow icons for RTL */
+    }
+
+    .flatpickr-calendar .flatpickr-current-month {
+        padding-right: 28.5px;
+        padding-left: 28.5px;
+    }
+
+    /* Adjust positioning for RTL */
+    .flatpickr-calendar.arrowTop:after,
+    .flatpickr-calendar.arrowTop:before {
+        left: auto;
+        right: 22px;
+    }
+    @endif
 </style>
 
 <div class="contacts-header">
@@ -690,11 +769,31 @@
         </div>
         <div class="filter-group">
             <label><i class="fas fa-calendar-alt"></i> {{ __('messages.from_date') }}</label>
-            <input type="date" name="date_from" value="{{ request('date_from') }}">
+            <input type="date" name="date_from" value="{{ request('date_from') }}" 
+                   class="date-input-locale" 
+                   data-locale="{{ app()->getLocale() }}"
+                   lang="{{ app()->getLocale() }}"
+                   @if(app()->getLocale() === 'ar')
+                   placeholder="اضغط لاختيار تاريخ البداية"
+                   @elseif(app()->getLocale() === 'he')
+                   placeholder="לחץ לבחירת תאריך התחלה"
+                   @else
+                   placeholder="Click to choose start date"
+                   @endif>
         </div>
         <div class="filter-group">
             <label><i class="fas fa-calendar-check"></i> {{ __('messages.to_date') }}</label>
-            <input type="date" name="date_to" value="{{ request('date_to') }}">
+            <input type="date" name="date_to" value="{{ request('date_to') }}" 
+                   class="date-input-locale" 
+                   data-locale="{{ app()->getLocale() }}"
+                   lang="{{ app()->getLocale() }}"
+                   @if(app()->getLocale() === 'ar')
+                   placeholder="اضغط لاختيار تاريخ النهاية"
+                   @elseif(app()->getLocale() === 'he')
+                   placeholder="לחץ לבחירת תאריך סיום"
+                   @else
+                   placeholder="Click to choose end date"
+                   @endif>
         </div>
         <div class="filter-actions">
             <button type="submit" class="btn btn-primary">
@@ -782,6 +881,14 @@
     @endif
 </div>
 
+<!-- Flatpickr JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+@if(app()->getLocale() === 'ar')
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ar.js"></script>
+@elseif(app()->getLocale() === 'he')
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/he.js"></script>
+@endif
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const selectAll = document.getElementById('selectAll');
@@ -837,6 +944,46 @@ document.addEventListener('DOMContentLoaded', function() {
     checkboxes.forEach(cb => {
         cb.addEventListener('change', updateBulkActions);
     });
+
+    // Initialize Flatpickr for date inputs with localization
+    const currentLocale = '{{ app()->getLocale() }}';
+    const dateInputs = document.querySelectorAll('input[type="date"].date-input-locale');
+    
+    // Flatpickr configuration based on locale
+    const flatpickrConfig = {
+        dateFormat: 'Y-m-d',
+        allowInput: true,
+        disableMobile: true, // Force custom calendar instead of native mobile picker
+    };
+
+    // Add locale-specific configuration
+    if (currentLocale === 'ar') {
+        flatpickrConfig.locale = 'ar';
+        flatpickrConfig.position = 'auto right'; // RTL positioning
+    } else if (currentLocale === 'he') {
+        flatpickrConfig.locale = 'he';
+        flatpickrConfig.position = 'auto right'; // RTL positioning
+    }
+
+    // Initialize Flatpickr on each date input with custom placeholder
+    dateInputs.forEach(input => {
+        const config = { ...flatpickrConfig };
+        
+        // Handle placeholder for all languages
+        const placeholderText = input.getAttribute('placeholder');
+        if (placeholderText) {
+            // Store original placeholder
+            input.setAttribute('data-placeholder', placeholderText);
+            
+            // Show placeholder when field is empty
+            if (!input.value) {
+                input.setAttribute('placeholder', placeholderText);
+            }
+        }
+        
+        flatpickr(input, config);
+    });
 });
 </script>
 @endsection
+

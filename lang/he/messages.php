@@ -273,6 +273,74 @@ return [
     'products_management' => 'ניהול מוצרים',
     'categories_management' => 'ניהול קטגוריות',
     'brands_management' => 'ניהול מותגים',
+    'promotional_management' => 'ניהול מבצעים',
+    
+    // Promotional Offers
+    'promotional_offers_title' => 'ניהול מבצעים פרסומיים',
+    'promotional_offers_subtitle' => 'נהל את המבצעים והפרסומים המוצגים בדף הבית',
+    'add_new_offer' => 'הוסף מבצע חדש',
+    'create_new_promotional_offer' => 'הוסף מבצע פרסומי חדש',
+    'create_promotional_subtitle' => 'צור מבצע פרסומי חדש להצגה בדף הבית',
+    'back_to_list' => 'חזרה לרשימה',
+    'please_correct_errors' => 'אנא תקן את השגיאות הבאות:',
+    
+    // Form Sections
+    'product_selection' => 'בחירת מוצר',
+    'select_product_desc' => 'בחר את המוצר עבורו ברצונך ליצור מבצע פרסומי',
+    'product' => 'מוצר',
+    'select_product_placeholder' => '-- בחר מוצר מהרשימה --',
+    
+    'offer_title_section' => 'כותרת המבצע',
+    'offer_title_desc' => 'הזן את כותרת המבצע בכל השפות הנתמכות',
+    'title_arabic' => 'כותרת בערבית',
+    'title_english' => 'כותרת באנגלית',
+    'title_hebrew' => 'כותרת בעברית',
+    
+    'pricing' => 'תמחור',
+    'pricing_desc' => 'הגדר את המחיר המקורי ואת מחיר המבצע המיוחד',
+    'calculated_discount' => 'הנחה מחושבת',
+    'enter_prices_to_calculate' => 'הזן מחירים כדי לחשב את ההנחה',
+    
+    'offer_features' => 'תכונות המבצע',
+    'offer_features_desc' => 'הוסף תכונות שברצונך להדגיש (כל תכונה בשורה נפרדת)',
+    'features_arabic' => 'תכונות בערבית',
+    'features_english' => 'תכונות באנגלית',
+    'features_hebrew' => 'תכונות בעברית',
+    
+    'offer_duration' => 'משך המבצע',
+    'offer_duration_desc' => 'הגדר את תאריך ההתחלה והסיום של המבצע הפרסומי',
+    'start_date_label' => 'תאריך התחלה',
+    'end_date_label' => 'תאריך סיום',
+    
+    'settings' => 'הגדרות',
+    'additional_settings' => 'הגדרות נוספות למבצע',
+    'display_order' => 'סדר תצוגה',
+    'display_order_hint' => 'מספר נמוך יותר = מופיע ראשון ברשימה',
+    'activate_offer_immediately' => 'הפעל מבצע מיד',
+    'will_appear_on_homepage' => 'המבצע יופיע ישירות בדף הבית',
+    
+    'save_promotional_offer' => 'שמור מבצע פרסומי',
+    'cancel' => 'בטל',
+    'required' => 'נדרש',
+    
+    'edit_promotional_offer' => 'ערוך מבצע פרסומי',
+    'update_promotional_subtitle' => 'עדכן את פרטי המבצע הפרסומי',
+    'back' => 'חזרה',
+    'product_information' => 'מידע על המוצר',
+    'update_offer' => 'עדכן מבצע',
+    
+    'image' => 'תמונה',
+    'title' => 'כותרת',
+    'original_price' => 'מחיר מקורי',
+    'sale_price' => 'מחיר מבצע',
+    'discount' => 'הנחה',
+    'start_date' => 'התחלה',
+    'end_date' => 'סיום',
+    'no_offers_currently' => 'אין מבצעים כרגע',
+    'confirm_delete_offer' => 'האם אתה בטוח שברצונך למחוק?',
+    'confirm_toggle_status' => 'האם ברצונך לשנות את מצב המבצע?',
+    'inactive' => 'לא פעיל',
+    
     'all_products' => 'כל המוצרים',
     'add_product' => 'הוסף מוצר',
     'all_categories' => 'כל הקטגוריות',
@@ -599,6 +667,8 @@ return [
     // Bulk operations messages
     'messages_deleted_successfully' => ':count הודעות נמחקו בהצלחה',
     'messages_status_updated_successfully' => 'סטטוס של :count הודעות עודכן בהצלחה',
+    'from_date' => 'מתאריך',
+    'to_date' => 'עד תאריך',
 
     // No Products Found
     'no_products_found_title' => 'לא נמצאו מוצרים',
@@ -705,6 +775,16 @@ return [
     'account_suspended' => 'החשבון שלך הושעה. אנא צור קשר עם התמיכה לקבלת סיוע.',
     'account_banned' => 'החשבון שלך נחסם לצמיתות. אנא צור קשר עם התמיכה אם אתה מאמין שזו טעות.',
     'reason' => 'סיבה',
+    
+    // Dashboard Analytics Cards
+    'total_cart_value' => 'סך ערך עגלות',
+    'active_carts' => 'עגלות פעילות',
+    'average_rating' => 'דירוג ממוצע',
+    'from' => 'מתוך',
+    'total_stock_value' => 'סך ערך מלאי',
+    'inventory_value' => 'ערך מלאי',
+    'total_favorites' => 'סך מועדפים',
+    'customer_wishlists' => 'רשימות משאלות לקוחות',
 ];
 
 

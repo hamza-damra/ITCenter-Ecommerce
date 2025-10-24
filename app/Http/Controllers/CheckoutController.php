@@ -17,9 +17,16 @@ class CheckoutController extends Controller
 {
     /**
      * Display the checkout page
+     * IMPORTANT: Only accessible to authenticated users
      */
     public function index()
     {
+        // Extra defensive check (middleware already protects this route)
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('info', __('messages.please_login_to_checkout'));
+        }
+
         $identifier = $this->getCartIdentifier();
 
         $cartItems = CartItem::with('product.images')
@@ -55,9 +62,16 @@ class CheckoutController extends Controller
 
     /**
      * Process the order
+     * CRITICAL: Only authenticated users can create orders
      */
     public function processOrder(Request $request)
     {
+        // Defensive authentication check - MUST be logged in to create an order
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('error', __('messages.must_login_to_place_order'));
+        }
+
         // Validate the request
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
@@ -72,16 +86,12 @@ class CheckoutController extends Controller
             'notes' => 'nullable|string|max:1000',
         ]);
 
-        $identifier = $this->getCartIdentifier();
+        // Get authenticated user's ID
+        $userId = Auth::id();
 
+        // Get cart items for authenticated user only
         $cartItems = CartItem::with('product')
-            ->where(function($query) use ($identifier) {
-                if (isset($identifier['user_id'])) {
-                    $query->where('user_id', $identifier['user_id']);
-                } else {
-                    $query->where('session_id', $identifier['session_id']);
-                }
-            })
+            ->where('user_id', $userId)
             ->get();
 
         if ($cartItems->isEmpty()) {
@@ -101,11 +111,10 @@ class CheckoutController extends Controller
 
         DB::beginTransaction();
         try {
-            // Create the order
+            // Create the order - ONLY for authenticated users
             $order = Order::create([
                 'order_number' => Order::generateOrderNumber(),
-                'user_id' => Auth::id(),
-                'session_id' => isset($identifier['session_id']) ? $identifier['session_id'] : null,
+                'user_id' => $userId, // REQUIRED: Must have valid user_id
                 'customer_name' => $validated['first_name'] . ' ' . $validated['last_name'],
                 'customer_email' => $validated['email'],
                 'customer_phone' => $validated['phone'],
@@ -150,14 +159,8 @@ class CheckoutController extends Controller
                 }
             }
 
-            // Clear the cart
-            CartItem::where(function($query) use ($identifier) {
-                if (isset($identifier['user_id'])) {
-                    $query->where('user_id', $identifier['user_id']);
-                } else {
-                    $query->where('session_id', $identifier['session_id']);
-                }
-            })->delete();
+            // Clear the cart for authenticated user
+            CartItem::where('user_id', $userId)->delete();
 
             DB::commit();
 

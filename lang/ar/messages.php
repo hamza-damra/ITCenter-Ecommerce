@@ -270,6 +270,74 @@ return [
     'products_management' => 'إدارة المنتجات',
     'categories_management' => 'إدارة الفئات',
     'brands_management' => 'إدارة العلامات التجارية',
+    'promotional_management' => 'إدارة الإعلانات',
+    
+    // Promotional Offers
+    'promotional_offers_title' => 'إدارة الإعلانات الترويجية',
+    'promotional_offers_subtitle' => 'إدارة العروض والإعلانات التي تظهر في الصفحة الرئيسية',
+    'add_new_offer' => 'إضافة عرض جديد',
+    'create_new_promotional_offer' => 'إضافة عرض ترويجي جديد',
+    'create_promotional_subtitle' => 'قم بإنشاء عرض ترويجي جديد لعرضه في الصفحة الرئيسية',
+    'back_to_list' => 'رجوع للقائمة',
+    'please_correct_errors' => 'يرجى تصحيح الأخطاء التالية:',
+    
+    // Form Sections
+    'product_selection' => 'اختيار المنتج',
+    'select_product_desc' => 'حدد المنتج الذي تريد إنشاء عرض ترويجي له',
+    'product' => 'المنتج',
+    'select_product_placeholder' => '-- اختر منتج من القائمة --',
+    
+    'offer_title_section' => 'عنوان العرض',
+    'offer_title_desc' => 'أدخل عنوان العرض بجميع اللغات المدعومة',
+    'title_arabic' => 'العنوان بالعربية',
+    'title_english' => 'العنوان بالإنجليزية',
+    'title_hebrew' => 'العنوان بالعبرية',
+    
+    'pricing' => 'التسعير',
+    'pricing_desc' => 'حدد السعر الأصلي وسعر العرض الخاص',
+    'calculated_discount' => 'الخصم المحسوب',
+    'enter_prices_to_calculate' => 'أدخل الأسعار لحساب الخصم',
+    
+    'offer_features' => 'مميزات العرض',
+    'offer_features_desc' => 'أضف المميزات التي تريد إبرازها (كل ميزة في سطر منفصل)',
+    'features_arabic' => 'الميزات بالعربية',
+    'features_english' => 'الميزات بالإنجليزية',
+    'features_hebrew' => 'الميزات بالعبرية',
+    
+    'offer_duration' => 'مدة العرض',
+    'offer_duration_desc' => 'حدد تاريخ بداية ونهاية العرض الترويجي',
+    'start_date_label' => 'تاريخ البداية',
+    'end_date_label' => 'تاريخ النهاية',
+    
+    'settings' => 'الإعدادات',
+    'additional_settings' => 'إعدادات إضافية للعرض',
+    'display_order' => 'ترتيب العرض',
+    'display_order_hint' => 'رقم أقل = يظهر أولاً في القائمة',
+    'activate_offer_immediately' => 'تفعيل العرض فوراً',
+    'will_appear_on_homepage' => 'سيظهر العرض مباشرة في الصفحة الرئيسية',
+    
+    'save_promotional_offer' => 'حفظ العرض الترويجي',
+    'cancel' => 'إلغاء',
+    'required' => 'مطلوب',
+    
+    'edit_promotional_offer' => 'تعديل العرض الترويجي',
+    'update_promotional_subtitle' => 'قم بتحديث معلومات العرض الترويجي',
+    'back' => 'رجوع',
+    'product_information' => 'معلومات المنتج',
+    'update_offer' => 'تحديث العرض',
+    
+    'image' => 'صورة',
+    'title' => 'العنوان',
+    'original_price' => 'السعر الأصلي',
+    'sale_price' => 'سعر العرض',
+    'discount' => 'الخصم',
+    'start_date' => 'البداية',
+    'end_date' => 'النهاية',
+    'no_offers_currently' => 'لا توجد عروض حالياً',
+    'confirm_delete_offer' => 'هل أنت متأكد من الحذف؟',
+    'confirm_toggle_status' => 'هل تريد تغيير حالة العرض؟',
+    'inactive' => 'غير نشط',
+    
     'all_products' => 'جميع المنتجات',
     'add_product' => 'إضافة منتج',
     'all_categories' => 'جميع الفئات',
@@ -684,6 +752,8 @@ return [
     'messages_deleted_successfully' => 'تم حذف :count رسالة بنجاح',
     'messages_status_updated_successfully' => 'تم تحديث حالة :count رسالة بنجاح',
     'deleting' => 'جاري الحذف',
+    'from_date' => 'من تاريخ',
+    'to_date' => 'إلى تاريخ',
 
     // No Products Found
     'no_products_found_title' => 'لا توجد منتجات',

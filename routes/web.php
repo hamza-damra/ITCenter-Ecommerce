@@ -61,9 +61,11 @@ Route::get('/cart/check/{product}', [CartController::class, 'check'])->name('car
 Route::get('/cart/count', [CartController::class, 'getCount'])->name('cart.count');
 Route::get('/cart/products', [CartController::class, 'getProductIds'])->name('cart.products');
 
-// Checkout Routes
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout/process', [CheckoutController::class, 'processOrder'])->name('checkout.process');
+// Checkout Routes (Protected - Must be authenticated)
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout/process', [CheckoutController::class, 'processOrder'])->name('checkout.process');
+});
 
 // Order Routes (Protected)
 Route::middleware('auth')->group(function () {

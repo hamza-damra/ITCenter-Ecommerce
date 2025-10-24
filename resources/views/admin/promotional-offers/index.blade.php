@@ -4,11 +4,11 @@
 <div class="admin-content">
     <div class="content-header">
         <div>
-            <h1><i class="fas fa-bullhorn"></i> إدارة الإعلانات الترويجية</h1>
-            <p>إدارة العروض والإعلانات التي تظهر في الصفحة الرئيسية</p>
+            <h1><i class="fas fa-bullhorn"></i> {{ __('messages.promotional_offers_title') }}</h1>
+            <p>{{ __('messages.promotional_offers_subtitle') }}</p>
         </div>
         <a href="{{ route('admin.promotional-offers.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> إضافة عرض جديد
+            <i class="fas fa-plus"></i> {{ __('messages.add_new_offer') }}
         </a>
     </div>
 
@@ -23,16 +23,16 @@
             <table class="admin-table">
                 <thead>
                     <tr>
-                        <th>الصورة</th>
-                        <th>العنوان</th>
-                        <th>المنتج</th>
-                        <th>السعر الأصلي</th>
-                        <th>سعر العرض</th>
-                        <th>الخصم</th>
-                        <th>البداية</th>
-                        <th>النهاية</th>
-                        <th>الحالة</th>
-                        <th>الإجراءات</th>
+                        <th>{{ __('messages.image') }}</th>
+                        <th>{{ __('messages.title') }}</th>
+                        <th>{{ __('messages.product') }}</th>
+                        <th>{{ __('messages.original_price') }}</th>
+                        <th>{{ __('messages.sale_price') }}</th>
+                        <th>{{ __('messages.discount') }}</th>
+                        <th>{{ __('messages.start_date') }}</th>
+                        <th>{{ __('messages.end_date') }}</th>
+                        <th>{{ __('messages.status') }}</th>
+                        <th>{{ __('messages.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,7 +64,7 @@
                             <button class="badge {{ $offer->is_active ? 'badge-success' : 'badge-danger' }}" 
                                     onclick="toggleActive({{ $offer->id }})"
                                     style="cursor: pointer; border: none;">
-                                {{ $offer->is_active ? 'نشط' : 'غير نشط' }}
+                                {{ $offer->is_active ? __('messages.active') : __('messages.inactive') }}
                             </button>
                         </td>
                         <td class="action-btns">
@@ -74,7 +74,7 @@
                             <form action="{{ route('admin.promotional-offers.destroy', $offer->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('هل أنت متأكد من الحذف؟')">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('{{ __('messages.confirm_delete_offer') }}')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -84,9 +84,9 @@
                     <tr>
                         <td colspan="10" style="text-align: center; padding: 3rem;">
                             <i class="fas fa-inbox" style="font-size: 3rem; color: #ddd; margin-bottom: 1rem;"></i>
-                            <p>لا توجد عروض حالياً</p>
+                            <p>{{ __('messages.no_offers_currently') }}</p>
                             <a href="{{ route('admin.promotional-offers.create') }}" class="btn btn-primary">
-                                <i class="fas fa-plus"></i> إضافة عرض جديد
+                                <i class="fas fa-plus"></i> {{ __('messages.add_new_offer') }}
                             </a>
                         </td>
                     </tr>
@@ -105,7 +105,7 @@
 
 <script>
 function toggleActive(offerId) {
-    if (!confirm('هل تريد تغيير حالة العرض؟')) return;
+    if (!confirm('{{ __('messages.confirm_toggle_status') }}')) return;
     
     fetch(`/admin/promotional-offers/${offerId}/toggle-active`, {
         method: 'POST',

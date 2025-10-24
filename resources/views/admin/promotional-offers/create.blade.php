@@ -5,12 +5,12 @@
     <div class="content-header" style="margin-bottom: 2rem;">
         <div>
             <h1 style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
-                <i class="fas fa-bullhorn" style="color: #667eea;"></i> إضافة عرض ترويجي جديد
+                <i class="fas fa-bullhorn" style="color: #667eea;"></i> {{ __('messages.create_new_promotional_offer') }}
             </h1>
-            <p style="color: #666; margin: 0;">قم بإنشاء عرض ترويجي جديد لعرضه في الصفحة الرئيسية</p>
+            <p style="color: #666; margin: 0;">{{ __('messages.create_promotional_subtitle') }}</p>
         </div>
         <a href="{{ route('admin.promotional-offers.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> رجوع للقائمة
+            <i class="fas fa-arrow-left"></i> {{ __('messages.back_to_list') }}
         </a>
     </div>
 
@@ -18,7 +18,7 @@
     <div class="alert alert-danger" style="margin-bottom: 2rem;">
         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
             <i class="fas fa-exclamation-circle"></i>
-            <strong>يرجى تصحيح الأخطاء التالية:</strong>
+            <strong>{{ __('messages.please_correct_errors') }}</strong>
         </div>
         <ul style="margin: 0.5rem 0 0 0; padding-right: 20px;">
             @foreach($errors->all() as $error)
@@ -38,17 +38,17 @@
                     <i class="fas fa-box-open"></i>
                 </div>
                 <div>
-                    <h3>اختيار المنتج</h3>
-                    <p>حدد المنتج الذي تريد إنشاء عرض ترويجي له</p>
+                    <h3>{{ __('messages.product_selection') }}</h3>
+                    <p>{{ __('messages.select_product_desc') }}</p>
                 </div>
             </div>
             
             <div class="card-body-custom">
                 <div class="form-group-enhanced">
-                    <label for="product_id">المنتج <span class="required">*</span></label>
+                    <label for="product_id">{{ __('messages.product') }} <span class="required">*</span></label>
                     <div class="select-wrapper">
                         <select name="product_id" id="product_id" class="form-control-enhanced" required>
-                            <option value="">-- اختر منتج من القائمة --</option>
+                            <option value="">{{ __('messages.select_product_placeholder') }}</option>
                             @foreach($products as $product)
                             <option value="{{ $product->id }}" 
                                     data-price="{{ $product->price }}"
@@ -77,8 +77,8 @@
                     <i class="fas fa-heading"></i>
                 </div>
                 <div>
-                    <h3>عنوان العرض</h3>
-                    <p>أدخل عنوان العرض بجميع اللغات المدعومة</p>
+                    <h3>{{ __('messages.offer_title_section') }}</h3>
+                    <p>{{ __('messages.offer_title_desc') }}</p>
                 </div>
             </div>
             
@@ -86,7 +86,7 @@
                 <div class="form-row">
                     <div class="form-group-enhanced">
                         <label for="title_ar">
-                            <span class="flag-icon">🇸🇦</span> العنوان بالعربية <span class="required">*</span>
+                            <span class="flag-icon">🇸🇦</span> {{ __('messages.title_arabic') }} <span class="required">*</span>
                         </label>
                         <input type="text" name="title_ar" id="title_ar" class="form-control-enhanced" 
                                value="{{ old('title_ar') }}" 
@@ -96,7 +96,7 @@
 
                     <div class="form-group-enhanced">
                         <label for="title_en">
-                            <span class="flag-icon">🇬🇧</span> العنوان بالإنجليزية <span class="required">*</span>
+                            <span class="flag-icon">🇬🇧</span> {{ __('messages.title_english') }} <span class="required">*</span>
                         </label>
                         <input type="text" name="title_en" id="title_en" class="form-control-enhanced" 
                                value="{{ old('title_en') }}" 
@@ -106,7 +106,7 @@
 
                     <div class="form-group-enhanced">
                         <label for="title_he">
-                            <span class="flag-icon">🇮🇱</span> العنوان بالعبرية
+                            <span class="flag-icon">🇮🇱</span> {{ __('messages.title_hebrew') }}
                         </label>
                         <input type="text" name="title_he" id="title_he" class="form-control-enhanced" 
                                value="{{ old('title_he') }}"
@@ -123,8 +123,8 @@
                     <i class="fas fa-tags"></i>
                 </div>
                 <div>
-                    <h3>التسعير</h3>
-                    <p>حدد السعر الأصلي وسعر العرض الخاص</p>
+                    <h3>{{ __('messages.pricing') }}</h3>
+                    <p>{{ __('messages.pricing_desc') }}</p>
                 </div>
             </div>
             
@@ -132,7 +132,7 @@
                 <div class="pricing-grid">
                     <div class="form-group-enhanced">
                         <label for="original_price">
-                            <i class="fas fa-dollar-sign"></i> السعر الأصلي <span class="required">*</span>
+                            <i class="fas fa-dollar-sign"></i> {{ __('messages.original_price') }} <span class="required">*</span>
                         </label>
                         <div class="input-with-icon">
                             <span class="currency">₪</span>
@@ -146,7 +146,7 @@
 
                     <div class="form-group-enhanced">
                         <label for="sale_price">
-                            <i class="fas fa-percent"></i> سعر العرض <span class="required">*</span>
+                            <i class="fas fa-percent"></i> {{ __('messages.sale_price') }} <span class="required">*</span>
                         </label>
                         <div class="input-with-icon">
                             <span class="currency sale">₪</span>
@@ -159,9 +159,9 @@
                     </div>
 
                     <div class="discount-display">
-                        <div class="discount-label">الخصم المحسوب</div>
+                        <div class="discount-label">{{ __('messages.calculated_discount') }}</div>
                         <div id="discount_preview" class="discount-value">
-                            <span class="no-discount">أدخل الأسعار لحساب الخصم</span>
+                            <span class="no-discount">{{ __('messages.enter_prices_to_calculate') }}</span>
                         </div>
                     </div>
                 </div>
@@ -175,8 +175,8 @@
                     <i class="fas fa-star"></i>
                 </div>
                 <div>
-                    <h3>مميزات العرض</h3>
-                    <p>أضف المميزات التي تريد إبرازها (كل ميزة في سطر منفصل)</p>
+                    <h3>{{ __('messages.offer_features') }}</h3>
+                    <p>{{ __('messages.offer_features_desc') }}</p>
                 </div>
             </div>
             
@@ -184,7 +184,7 @@
                 <div class="form-row">
                     <div class="form-group-enhanced">
                         <label for="features_ar">
-                            <span class="flag-icon">🇸🇦</span> الميزات بالعربية
+                            <span class="flag-icon">🇸🇦</span> {{ __('messages.features_arabic') }}
                         </label>
                         <textarea name="features_ar" id="features_ar" class="form-control-enhanced textarea-enhanced" 
                                   rows="4" 
@@ -193,7 +193,7 @@
 
                     <div class="form-group-enhanced">
                         <label for="features_en">
-                            <span class="flag-icon">🇬🇧</span> الميزات بالإنجليزية
+                            <span class="flag-icon">🇬🇧</span> {{ __('messages.features_english') }}
                         </label>
                         <textarea name="features_en" id="features_en" class="form-control-enhanced textarea-enhanced" 
                                   rows="4" 
@@ -202,7 +202,7 @@
 
                     <div class="form-group-enhanced">
                         <label for="features_he">
-                            <span class="flag-icon">🇮🇱</span> الميزات بالعبرية
+                            <span class="flag-icon">🇮🇱</span> {{ __('messages.features_hebrew') }}
                         </label>
                         <textarea name="features_he" id="features_he" class="form-control-enhanced textarea-enhanced" 
                                   rows="4">{{ old('features_he') }}</textarea>
@@ -218,8 +218,8 @@
                     <i class="fas fa-calendar-alt"></i>
                 </div>
                 <div>
-                    <h3>مدة العرض</h3>
-                    <p>حدد تاريخ بداية ونهاية العرض الترويجي</p>
+                    <h3>{{ __('messages.offer_duration') }}</h3>
+                    <p>{{ __('messages.offer_duration_desc') }}</p>
                 </div>
             </div>
             
@@ -227,7 +227,7 @@
                 <div class="date-grid">
                     <div class="form-group-enhanced">
                         <label for="start_date">
-                            <i class="fas fa-calendar-check"></i> تاريخ البداية <span class="required">*</span>
+                            <i class="fas fa-calendar-check"></i> {{ __('messages.start_date_label') }} <span class="required">*</span>
                         </label>
                         <input type="datetime-local" name="start_date" id="start_date" 
                                class="form-control-enhanced" 
@@ -237,7 +237,7 @@
 
                     <div class="form-group-enhanced">
                         <label for="end_date">
-                            <i class="fas fa-calendar-times"></i> تاريخ النهاية <span class="required">*</span>
+                            <i class="fas fa-calendar-times"></i> {{ __('messages.end_date_label') }} <span class="required">*</span>
                         </label>
                         <input type="datetime-local" name="end_date" id="end_date" 
                                class="form-control-enhanced" 
@@ -255,8 +255,8 @@
                     <i class="fas fa-cog"></i>
                 </div>
                 <div>
-                    <h3>الإعدادات</h3>
-                    <p>إعدادات إضافية للعرض</p>
+                    <h3>{{ __('messages.settings') }}</h3>
+                    <p>{{ __('messages.additional_settings') }}</p>
                 </div>
             </div>
             
@@ -264,14 +264,14 @@
                 <div class="settings-grid">
                     <div class="form-group-enhanced">
                         <label for="display_order">
-                            <i class="fas fa-sort-numeric-down"></i> ترتيب العرض
+                            <i class="fas fa-sort-numeric-down"></i> {{ __('messages.display_order') }}
                         </label>
                         <input type="number" name="display_order" id="display_order" 
                                class="form-control-enhanced" 
                                value="{{ old('display_order', 0) }}"
                                placeholder="0">
                         <small class="form-hint">
-                            <i class="fas fa-info-circle"></i> رقم أقل = يظهر أولاً في القائمة
+                            <i class="fas fa-info-circle"></i> {{ __('messages.display_order_hint') }}
                         </small>
                     </div>
 
@@ -283,10 +283,10 @@
                                        class="toggle-input">
                                 <span class="toggle-slider"></span>
                                 <span class="toggle-text">
-                                    <i class="fas fa-power-off"></i> تفعيل العرض فوراً
+                                    <i class="fas fa-power-off"></i> {{ __('messages.activate_offer_immediately') }}
                                 </span>
                             </label>
-                            <small class="form-hint">سيظهر العرض مباشرة في الصفحة الرئيسية</small>
+                            <small class="form-hint">{{ __('messages.will_appear_on_homepage') }}</small>
                         </div>
                     </div>
                 </div>
@@ -297,11 +297,11 @@
         <div class="form-actions-enhanced">
             <button type="submit" class="btn-enhanced btn-primary-enhanced">
                 <i class="fas fa-save"></i>
-                <span>حفظ العرض الترويجي</span>
+                <span>{{ __('messages.save_promotional_offer') }}</span>
             </button>
             <a href="{{ route('admin.promotional-offers.index') }}" class="btn-enhanced btn-secondary-enhanced">
                 <i class="fas fa-times"></i>
-                <span>إلغاء</span>
+                <span>{{ __('messages.cancel') }}</span>
             </a>
         </div>
     </form>
@@ -418,16 +418,38 @@
 
 .select-wrapper select {
     appearance: none;
+}
+
+/* LTR: Arrow on the right, padding on the right */
+[dir="ltr"] .select-wrapper select {
     padding-right: 3rem;
+    padding-left: 1rem;
+}
+
+/* RTL: Arrow on the left, padding on the left */
+[dir="rtl"] .select-wrapper select {
+    padding-left: 3rem;
+    padding-right: 1rem;
 }
 
 .select-icon {
     position: absolute;
-    left: 1rem;
     top: 50%;
     transform: translateY(-50%);
     color: #667eea;
     pointer-events: none;
+}
+
+/* LTR: Icon on the right side */
+[dir="ltr"] .select-icon {
+    right: 1rem;
+    left: auto;
+}
+
+/* RTL: Icon on the left side */
+[dir="rtl"] .select-icon {
+    left: 1rem;
+    right: auto;
 }
 
 /* Product Preview */
@@ -684,294 +706,6 @@
         width: 100%;
         justify-content: center;
     }
-}
-</style>
-
-<script>
-// Product selection with preview
-document.getElementById('product_id').addEventListener('change', function() {
-    const selectedOption = this.options[this.selectedIndex];
-    const price = selectedOption.getAttribute('data-price');
-    const image = selectedOption.getAttribute('data-image');
-    const name = selectedOption.text.split(' (₪')[0];
-    
-    if (price && this.value) {
-        document.getElementById('original_price').value = price;
-        
-        // Show preview
-        const preview = document.getElementById('product_preview');
-        document.getElementById('preview_image').src = image || '/images/products/default.png';
-        document.getElementById('preview_name').textContent = name;
-        document.getElementById('preview_price').textContent = `₪${parseFloat(price).toFixed(2)}`;
-        preview.style.display = 'flex';
-    } else {
-        document.getElementById('product_preview').style.display = 'none';
-    }
-});
-
-// Calculate discount with animation
-function calculateDiscount() {
-    const original = parseFloat(document.getElementById('original_price').value) || 0;
-    const sale = parseFloat(document.getElementById('sale_price').value) || 0;
-    const preview = document.getElementById('discount_preview');
-    
-    if (original > 0 && sale > 0 && sale < original) {
-        const discount = original - sale;
-        const percentage = Math.round((discount / original) * 100);
-        preview.innerHTML = `
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                <div style="font-size: 2rem;">₪${discount.toFixed(2)}</div>
-                <div style="font-size: 1.2rem; opacity: 0.9;">${percentage}% خصم</div>
-            </div>
-        `;
-    } else if (original > 0 && sale >= original) {
-        preview.innerHTML = '<span style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">⚠️ سعر العرض يجب أن يكون أقل من السعر الأصلي</span>';
-    } else {
-        preview.innerHTML = '<span class="no-discount">أدخل الأسعار لحساب الخصم</span>';
-    }
-}
-
-document.getElementById('original_price').addEventListener('input', calculateDiscount);
-document.getElementById('sale_price').addEventListener('input', calculateDiscount);
-
-// Form validation
-document.getElementById('promoForm').addEventListener('submit', function(e) {
-    const original = parseFloat(document.getElementById('original_price').value);
-    const sale = parseFloat(document.getElementById('sale_price').value);
-    
-    if (sale >= original) {
-        e.preventDefault();
-        alert('سعر العرض يجب أن يكون أقل من السعر الأصلي');
-        document.getElementById('sale_price').focus();
-    }
-});
-</script>
-            <i class="fas fa-arrow-left"></i> رجوع
-        </a>
-    </div>
-
-    @if($errors->any())
-    <div class="alert alert-danger">
-        <ul style="margin: 0; padding-right: 20px;">
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-
-    <form action="{{ route('admin.promotional-offers.store') }}" method="POST">
-        @csrf
-        
-        <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-info-circle"></i> معلومات المنتج</h3>
-            
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="product_id">اختر المنتج <span style="color: red;">*</span></label>
-                    <select name="product_id" id="product_id" class="form-control" required>
-                        <option value="">-- اختر منتج --</option>
-                        @foreach($products as $product)
-                        <option value="{{ $product->id }}" data-price="{{ $product->price }}">
-                            {{ $product->name }} (₪{{ number_format($product->price, 2) }})
-                        </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-language"></i> العناوين</h3>
-            
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="title_ar">العنوان بالعربية <span style="color: red;">*</span></label>
-                    <input type="text" name="title_ar" id="title_ar" class="form-control" value="{{ old('title_ar') }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="title_en">العنوان بالإنجليزية <span style="color: red;">*</span></label>
-                    <input type="text" name="title_en" id="title_en" class="form-control" value="{{ old('title_en') }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="title_he">العنوان بالعبرية</label>
-                    <input type="text" name="title_he" id="title_he" class="form-control" value="{{ old('title_he') }}">
-                </div>
-            </div>
-        </div>
-
-        <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-dollar-sign"></i> الأسعار</h3>
-            
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="original_price">السعر الأصلي <span style="color: red;">*</span></label>
-                    <input type="number" step="0.01" name="original_price" id="original_price" class="form-control" value="{{ old('original_price') }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="sale_price">سعر العرض <span style="color: red;">*</span></label>
-                    <input type="number" step="0.01" name="sale_price" id="sale_price" class="form-control" value="{{ old('sale_price') }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label>الخصم المحسوب</label>
-                    <div id="discount_preview" style="padding: 10px; background: #f8f9fa; border-radius: 5px; font-weight: bold;">
-                        --
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-list"></i> الميزات (اختياري)</h3>
-            <p style="color: #666; margin-bottom: 1rem;">أدخل كل ميزة في سطر منفصل</p>
-            
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="features_ar">الميزات بالعربية</label>
-                    <textarea name="features_ar" id="features_ar" class="form-control" rows="4" placeholder="شحن مجاني&#10;ضمان شامل&#10;كمية محدودة">{{ old('features_ar') }}</textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="features_en">الميزات بالإنجليزية</label>
-                    <textarea name="features_en" id="features_en" class="form-control" rows="4" placeholder="Free Shipping&#10;Full Warranty&#10;Limited Stock">{{ old('features_en') }}</textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="features_he">الميزات بالعبرية</label>
-                    <textarea name="features_he" id="features_he" class="form-control" rows="4">{{ old('features_he') }}</textarea>
-                </div>
-            </div>
-        </div>
-
-        <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-calendar"></i> مدة العرض</h3>
-            
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="start_date">تاريخ البداية <span style="color: red;">*</span></label>
-                    <input type="datetime-local" name="start_date" id="start_date" class="form-control" value="{{ old('start_date') }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="end_date">تاريخ النهاية <span style="color: red;">*</span></label>
-                    <input type="datetime-local" name="end_date" id="end_date" class="form-control" value="{{ old('end_date') }}" required>
-                </div>
-            </div>
-        </div>
-
-        <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-cog"></i> الإعدادات</h3>
-            
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="display_order">ترتيب العرض</label>
-                    <input type="number" name="display_order" id="display_order" class="form-control" value="{{ old('display_order', 0) }}">
-                    <small style="color: #666;">رقم أقل = يظهر أولاً</small>
-                </div>
-
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
-                        <span>تفعيل العرض فوراً</span>
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> حفظ العرض
-            </button>
-            <a href="{{ route('admin.promotional-offers.index') }}" class="btn btn-secondary">
-                <i class="fas fa-times"></i> إلغاء
-            </a>
-        </div>
-    </form>
-</div>
-
-<script>
-// Auto-fill price when product selected
-document.getElementById('product_id').addEventListener('change', function() {
-    const selectedOption = this.options[this.selectedIndex];
-    const price = selectedOption.getAttribute('data-price');
-    if (price) {
-        document.getElementById('original_price').value = price;
-    }
-});
-
-// Calculate discount
-function calculateDiscount() {
-    const original = parseFloat(document.getElementById('original_price').value) || 0;
-    const sale = parseFloat(document.getElementById('sale_price').value) || 0;
-    
-    if (original > 0 && sale > 0 && sale < original) {
-        const discount = original - sale;
-        const percentage = Math.round((discount / original) * 100);
-        document.getElementById('discount_preview').innerHTML = `
-            <span style="color: #28a745;">وفر ₪${discount.toFixed(2)} (${percentage}%)</span>
-        `;
-    } else {
-        document.getElementById('discount_preview').textContent = '--';
-    }
-}
-
-document.getElementById('original_price').addEventListener('input', calculateDiscount);
-document.getElementById('sale_price').addEventListener('input', calculateDiscount);
-</script>
-
-<style>
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-
-.form-group {
-    margin-bottom: 0;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #333;
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-}
-
-.form-control:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-}
-
-.checkbox-label input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-
-.form-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
 }
 </style>
 

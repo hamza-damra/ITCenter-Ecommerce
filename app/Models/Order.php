@@ -13,8 +13,8 @@ class Order extends Model
 
     protected $fillable = [
         'order_number',
-        'user_id',
-        'session_id',
+        'user_id', // REQUIRED: Every order must belong to an authenticated user
+        // 'session_id' - REMOVED: No longer supporting guest orders
         'customer_name',
         'customer_email',
         'customer_phone',

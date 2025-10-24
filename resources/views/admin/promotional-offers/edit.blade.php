@@ -4,11 +4,11 @@
 <div class="admin-content">
     <div class="content-header">
         <div>
-            <h1><i class="fas fa-edit"></i> تعديل العرض الترويجي</h1>
-            <p>قم بتحديث معلومات العرض الترويجي</p>
+            <h1><i class="fas fa-edit"></i> {{ __('messages.edit_promotional_offer') }}</h1>
+            <p>{{ __('messages.update_promotional_subtitle') }}</p>
         </div>
         <a href="{{ route('admin.promotional-offers.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> رجوع
+            <i class="fas fa-arrow-left"></i> {{ __('messages.back') }}
         </a>
     </div>
 
@@ -27,13 +27,13 @@
         @method('PUT')
         
         <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-info-circle"></i> معلومات المنتج</h3>
+            <h3 style="margin-bottom: 2rem;"><i class="fas fa-info-circle"></i> {{ __('messages.product_information') }}</h3>
             
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="product_id">اختر المنتج <span style="color: red;">*</span></label>
+                    <label for="product_id">{{ __('messages.product') }} <span style="color: red;">*</span></label>
                     <select name="product_id" id="product_id" class="form-control" required>
-                        <option value="">-- اختر منتج --</option>
+                        <option value="">{{ __('messages.select_product_placeholder') }}</option>
                         @foreach($products as $product)
                         <option value="{{ $product->id }}" data-price="{{ $product->price }}" {{ old('product_id', $promotionalOffer->product_id) == $product->id ? 'selected' : '' }}>
                             {{ $product->name }} (₪{{ number_format($product->price, 2) }})
@@ -45,42 +45,42 @@
         </div>
 
         <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-language"></i> العناوين</h3>
+            <h3 style="margin-bottom: 2rem;"><i class="fas fa-language"></i> {{ __('messages.offer_title_section') }}</h3>
             
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="title_ar">العنوان بالعربية <span style="color: red;">*</span></label>
+                    <label for="title_ar">{{ __('messages.title_arabic') }} <span style="color: red;">*</span></label>
                     <input type="text" name="title_ar" id="title_ar" class="form-control" value="{{ old('title_ar', $promotionalOffer->title_ar) }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="title_en">العنوان بالإنجليزية <span style="color: red;">*</span></label>
+                    <label for="title_en">{{ __('messages.title_english') }} <span style="color: red;">*</span></label>
                     <input type="text" name="title_en" id="title_en" class="form-control" value="{{ old('title_en', $promotionalOffer->title_en) }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="title_he">العنوان بالعبرية</label>
+                    <label for="title_he">{{ __('messages.title_hebrew') }}</label>
                     <input type="text" name="title_he" id="title_he" class="form-control" value="{{ old('title_he', $promotionalOffer->title_he) }}">
                 </div>
             </div>
         </div>
 
         <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-dollar-sign"></i> الأسعار</h3>
+            <h3 style="margin-bottom: 2rem;"><i class="fas fa-dollar-sign"></i> {{ __('messages.pricing') }}</h3>
             
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="original_price">السعر الأصلي <span style="color: red;">*</span></label>
+                    <label for="original_price">{{ __('messages.original_price') }} <span style="color: red;">*</span></label>
                     <input type="number" step="0.01" name="original_price" id="original_price" class="form-control" value="{{ old('original_price', $promotionalOffer->original_price) }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="sale_price">سعر العرض <span style="color: red;">*</span></label>
+                    <label for="sale_price">{{ __('messages.sale_price') }} <span style="color: red;">*</span></label>
                     <input type="number" step="0.01" name="sale_price" id="sale_price" class="form-control" value="{{ old('sale_price', $promotionalOffer->sale_price) }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label>الخصم المحسوب</label>
+                    <label>{{ __('messages.calculated_discount') }}</label>
                     <div id="discount_preview" style="padding: 10px; background: #f8f9fa; border-radius: 5px; font-weight: bold;">
                         --
                     </div>
@@ -89,57 +89,57 @@
         </div>
 
         <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-list"></i> الميزات (اختياري)</h3>
-            <p style="color: #666; margin-bottom: 1rem;">أدخل كل ميزة في سطر منفصل</p>
+            <h3 style="margin-bottom: 2rem;"><i class="fas fa-list"></i> {{ __('messages.offer_features') }}</h3>
+            <p style="color: #666; margin-bottom: 1rem;">{{ __('messages.offer_features_desc') }}</p>
             
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="features_ar">الميزات بالعربية</label>
+                    <label for="features_ar">{{ __('messages.features_arabic') }}</label>
                     <textarea name="features_ar" id="features_ar" class="form-control" rows="4" placeholder="شحن مجاني&#10;ضمان شامل&#10;كمية محدودة">{{ old('features_ar') }}</textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="features_en">الميزات بالإنجليزية</label>
+                    <label for="features_en">{{ __('messages.features_english') }}</label>
                     <textarea name="features_en" id="features_en" class="form-control" rows="4" placeholder="Free Shipping&#10;Full Warranty&#10;Limited Stock">{{ old('features_en') }}</textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="features_he">الميزات بالعبرية</label>
+                    <label for="features_he">{{ __('messages.features_hebrew') }}</label>
                     <textarea name="features_he" id="features_he" class="form-control" rows="4">{{ old('features_he') }}</textarea>
                 </div>
             </div>
         </div>
 
         <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-calendar"></i> مدة العرض</h3>
+            <h3 style="margin-bottom: 2rem;"><i class="fas fa-calendar"></i> {{ __('messages.offer_duration') }}</h3>
             
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="start_date">تاريخ البداية <span style="color: red;">*</span></label>
+                    <label for="start_date">{{ __('messages.start_date_label') }} <span style="color: red;">*</span></label>
                     <input type="datetime-local" name="start_date" id="start_date" class="form-control" value="{{ old('start_date', $promotionalOffer->start_date->format('Y-m-d\TH:i')) }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="end_date">تاريخ النهاية <span style="color: red;">*</span></label>
+                    <label for="end_date">{{ __('messages.end_date_label') }} <span style="color: red;">*</span></label>
                     <input type="datetime-local" name="end_date" id="end_date" class="form-control" value="{{ old('end_date', $promotionalOffer->end_date->format('Y-m-d\TH:i')) }}" required>
                 </div>
             </div>
         </div>
 
         <div class="admin-card">
-            <h3 style="margin-bottom: 2rem;"><i class="fas fa-cog"></i> الإعدادات</h3>
+            <h3 style="margin-bottom: 2rem;"><i class="fas fa-cog"></i> {{ __('messages.settings') }}</h3>
             
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="display_order">ترتيب العرض</label>
+                    <label for="display_order">{{ __('messages.display_order') }}</label>
                     <input type="number" name="display_order" id="display_order" class="form-control" value="{{ old('display_order', $promotionalOffer->display_order) }}">
-                    <small style="color: #666;">رقم أقل = يظهر أولاً</small>
+                    <small style="color: #666;">{{ __('messages.display_order_hint') }}</small>
                 </div>
 
                 <div class="form-group">
                     <label class="checkbox-label">
                         <input type="checkbox" name="is_active" value="1" {{ old('is_active', $promotionalOffer->is_active) ? 'checked' : '' }}>
-                        <span>تفعيل العرض فوراً</span>
+                        <span>{{ __('messages.activate_offer_immediately') }}</span>
                     </label>
                 </div>
             </div>
@@ -147,10 +147,10 @@
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> تحديث العرض
+                <i class="fas fa-save"></i> {{ __('messages.update_offer') }}
             </button>
             <a href="{{ route('admin.promotional-offers.index') }}" class="btn btn-secondary">
-                <i class="fas fa-times"></i> إلغاء
+                <i class="fas fa-times"></i> {{ __('messages.cancel') }}
             </a>
         </div>
     </form>
