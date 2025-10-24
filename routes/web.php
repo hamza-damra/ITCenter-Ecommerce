@@ -114,4 +114,16 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Promotional Offers
     Route::resource('promotional-offers', App\Http\Controllers\Admin\PromotionalOfferController::class);
     Route::post('/promotional-offers/{promotionalOffer}/toggle-active', [App\Http\Controllers\Admin\PromotionalOfferController::class, 'toggleActive'])->name('promotional-offers.toggle-active');
+    
+    // Database Backup Management
+    Route::get('/backup', [App\Http\Controllers\Admin\BackupController::class, 'index'])->name('backup.index');
+    Route::post('/backup/create', [App\Http\Controllers\Admin\BackupController::class, 'create'])->name('backup.create');
+    Route::post('/backup/create-with-options', [App\Http\Controllers\Admin\BackupController::class, 'createWithOptions'])->name('backup.create-with-options');
+    Route::post('/backup/restore', [App\Http\Controllers\Admin\BackupController::class, 'restore'])->name('backup.restore');
+    Route::get('/backup/download/{filename}', [App\Http\Controllers\Admin\BackupController::class, 'download'])->name('backup.download');
+    Route::delete('/backup/delete/{filename}', [App\Http\Controllers\Admin\BackupController::class, 'delete'])->name('backup.delete');
+    Route::post('/backup/cleanup', [App\Http\Controllers\Admin\BackupController::class, 'cleanup'])->name('backup.cleanup');
+    Route::post('/backup/validate-upload', [App\Http\Controllers\Admin\BackupController::class, 'validateUpload'])->name('backup.validate-upload');
+    Route::post('/backup/import-and-restore', [App\Http\Controllers\Admin\BackupController::class, 'importAndRestore'])->name('backup.import-and-restore');
+    Route::get('/backup/modules', [App\Http\Controllers\Admin\BackupController::class, 'getModules'])->name('backup.modules');
 });

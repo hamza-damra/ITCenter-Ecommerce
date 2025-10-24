@@ -998,6 +998,7 @@
                 <li><a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><i class="fas fa-box"></i> {{ __('messages.products') }}</a></li>
                 <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-folder"></i> {{ __('messages.categories') }}</a></li>
                 <li><a href="{{ route('admin.brands.index') }}" class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}"><i class="fas fa-tag"></i> {{ __('messages.brands') }}</a></li>
+                <li><a href="{{ route('admin.backup.index') }}" class="{{ request()->routeIs('admin.backup.*') ? 'active' : '' }}"><i class="fas fa-database"></i> {{ __('messages.Database Backup Management') }}</a></li>
                 <li><a href="{{ route('home') }}" target="_blank"><i class="fas fa-globe"></i> {{ __('messages.view') }} {{ __('messages.home') }}</a></li>
                 <li>
                     <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
@@ -1068,6 +1069,13 @@
             }
         });
     </script>
+    
+    <!-- Global Confirmation Modal -->
+    @include('components.confirm-modal')
+    
+    <!-- Confirmation Helper -->
+    <script src="{{ asset('js/confirm-helper.js') }}"></script>
+    
     @stack('scripts')
 </body>
 </html>

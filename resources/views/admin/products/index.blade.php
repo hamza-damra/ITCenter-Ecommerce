@@ -623,7 +623,13 @@
                         <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i> {{ __('messages.edit') }}
                         </a>
-                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" style="display: inline;" onsubmit="return confirm('{{ __('messages.delete_product_confirm') }}');">
+                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" style="display: inline;" 
+                              onsubmit="handleFormConfirm(event, {
+                                  message: '{{ __('messages.delete_product_confirm') }}',
+                                  confirmText: '{{ __('messages.yes_delete') }}',
+                                  type: 'danger',
+                                  confirmButtonType: 'danger'
+                              })">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">

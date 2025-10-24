@@ -395,7 +395,13 @@
                 <a href="{{ route('admin.brands.edit', $brand) }}" class="btn btn-primary btn-sm">
                     <i class="fas fa-edit"></i> {{ __('messages.edit') }}
                 </a>
-                <form action="{{ route('admin.brands.destroy', $brand) }}" method="POST" style="flex: 1;" onsubmit="return confirm('{{ __('messages.delete_brand_confirm') }}');">
+                <form action="{{ route('admin.brands.destroy', $brand) }}" method="POST" style="flex: 1;" 
+                      onsubmit="handleFormConfirm(event, {
+                          message: '{{ __('messages.delete_brand_confirm') }}',
+                          confirmText: '{{ __('messages.yes_delete') }}',
+                          type: 'danger',
+                          confirmButtonType: 'danger'
+                      })">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm" style="width: 100%;">
