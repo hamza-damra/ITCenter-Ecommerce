@@ -2,7 +2,7 @@
 <div id="globalConfirmModal" class="confirm-modal-overlay" style="display: none;">
     <div class="confirm-modal-container">
         <div class="confirm-modal-content">
-            <div class="confirm-modal-header">
+            <div class="confirm-modal-header" id="confirmModalHeader">
                 <h3 id="confirmModalTitle">{{ __('messages.confirm_action') }}</h3>
                 <button type="button" class="confirm-modal-close" onclick="window.confirmModal.cancel()">&times;</button>
             </div>
@@ -87,11 +87,54 @@
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
 }
 
+.confirm-modal-header.success {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    border-bottom-color: #86efac;
+}
+
+.confirm-modal-header.success h3 {
+    color: #15803d;
+}
+
+.confirm-modal-header.danger {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    border-bottom-color: #fca5a5;
+}
+
+.confirm-modal-header.danger h3 {
+    color: #991b1b;
+}
+
+.confirm-modal-header.warning {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-bottom-color: #fcd34d;
+}
+
+.confirm-modal-header.warning h3 {
+    color: #92400e;
+}
+
+.confirm-modal-header.info {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-bottom-color: #93c5fd;
+}
+
+.confirm-modal-header.info h3 {
+    color: #1e40af;
+}
+
 .confirm-modal-header h3 {
     margin: 0;
     font-size: 20px;
     font-weight: 600;
     color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.confirm-modal-header h3 i {
+    font-size: 22px;
 }
 
 .confirm-modal-close {
@@ -271,6 +314,8 @@
     window.confirmModal = {
         resolveCallback: null,
         rejectCallback: null,
+        isOpen: false,
+        pendingPromise: null,
         
         /**
          * Show confirmation modal
@@ -278,6 +323,16 @@
          * @returns {Promise<boolean>}
          */
         show: function(options) {
+            try {
+                console.debug('[CONFIRM MODAL] show() called with options:', options);
+            } catch (e) {}
+
+            // If a modal is already open, return the existing promise to avoid overwriting callbacks
+            if (this.isOpen && this.pendingPromise) {
+                try { console.debug('[CONFIRM MODAL] Modal already open, returning existing promise'); } catch (e) {}
+                return this.pendingPromise;
+            }
+
             const defaults = {
                 title: '{{ __('messages.confirm_action') }}',
                 message: '{{ __('messages.are_you_sure') }}',
@@ -290,12 +345,30 @@
             const config = { ...defaults, ...options };
             
             // Set modal content
-            document.getElementById('confirmModalTitle').textContent = config.title;
+            const titleEl = document.getElementById('confirmModalTitle');
+            const headerEl = document.getElementById('confirmModalHeader');
+            
+            // Update icon based on type
+            const iconMap = {
+                'warning': 'fa-exclamation-triangle',
+                'danger': 'fa-exclamation-circle',
+                'info': 'fa-info-circle',
+                'success': 'fa-check-circle'
+            };
+            const iconClass = iconMap[config.type] || 'fa-exclamation-triangle';
+            
+            // Set title with icon
+            titleEl.innerHTML = `<i class="fas ${iconClass}"></i> ${config.title}`;
+            
+            // Set header style based on type
+            headerEl.className = 'confirm-modal-header ' + config.type;
+            
             document.getElementById('confirmModalMessage').textContent = config.message;
             
-            // Set icon type
+            // Set icon type and icon itself
             const iconEl = document.getElementById('confirmModalIcon');
             iconEl.className = 'confirm-modal-icon ' + config.type;
+            iconEl.innerHTML = `<i class="fas ${iconClass}"></i>`;
             
             // Set button text
             const confirmBtn = document.getElementById('confirmModalConfirmBtn');
@@ -311,19 +384,26 @@
             document.body.style.overflow = 'hidden';
             
             // Return promise
-            return new Promise((resolve, reject) => {
+            this.isOpen = true;
+            this.pendingPromise = new Promise((resolve, reject) => {
                 this.resolveCallback = resolve;
                 this.rejectCallback = reject;
             });
+
+            return this.pendingPromise;
         },
         
         /**
          * Confirm action
          */
         confirm: function() {
+            try { console.debug('[CONFIRM MODAL] confirm()'); } catch (e) {}
+            // Cache callbacks before hide clears them
+            const resolveCb = this.resolveCallback;
+            const rejectCb = this.rejectCallback;
             this.hide();
-            if (this.resolveCallback) {
-                this.resolveCallback(true);
+            if (typeof resolveCb === 'function') {
+                try { resolveCb(true); } catch (e) { try { console.error('[CONFIRM MODAL] resolve error:', e); } catch(_) {} }
             }
         },
         
@@ -331,9 +411,13 @@
          * Cancel action
          */
         cancel: function() {
+            try { console.debug('[CONFIRM MODAL] cancel()'); } catch (e) {}
+            // Cache callbacks before hide clears them
+            const resolveCb = this.resolveCallback;
+            const rejectCb = this.rejectCallback;
             this.hide();
-            if (this.resolveCallback) {
-                this.resolveCallback(false);
+            if (typeof resolveCb === 'function') {
+                try { resolveCb(false); } catch (e) { try { console.error('[CONFIRM MODAL] resolve error:', e); } catch(_) {} }
             }
         },
         
@@ -341,10 +425,13 @@
          * Hide modal
          */
         hide: function() {
+            try { console.debug('[CONFIRM MODAL] hide()'); } catch (e) {}
             document.getElementById('globalConfirmModal').style.display = 'none';
             document.body.style.overflow = '';
             this.resolveCallback = null;
             this.rejectCallback = null;
+            this.isOpen = false;
+            this.pendingPromise = null;
         }
     };
     

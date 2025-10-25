@@ -209,6 +209,8 @@ return [
     'loading' => 'Loading...',
     'error' => 'Error',
     'success' => 'Success',
+    'Success' => 'Success',
+    'Error' => 'Error',
     'warning' => 'Warning',
     'info' => 'Info',
     'close' => 'Close',
@@ -1019,7 +1021,80 @@ return [
     'execute' => 'Execute',
     'yes_delete' => 'Yes, Delete',
     'yes_proceed' => 'Yes, Proceed',
+    'OK' => 'OK',
+    'Processing...' => 'Processing...',
+    'An error occurred during cleanup' => 'An error occurred during cleanup',
+    'Failed to cleanup backups. Please try again.' => 'Failed to cleanup backups. Please try again.',
+    'Backup deleted successfully' => 'Backup deleted successfully',
+    'Failed to delete backup' => 'Failed to delete backup',
+    'Failed to delete backup. Please try again.' => 'Failed to delete backup. Please try again.',
+    
+    // Delete All Feature
+    'delete_all' => 'Delete All',
+    'confirm_delete_all' => 'Are you sure you want to delete all records on this page?',
+    'all_records_deleted_successfully' => 'All records deleted successfully!',
+    'delete_all_products' => 'Delete All Products',
+    'delete_all_categories' => 'Delete All Categories',
+    'delete_all_brands' => 'Delete All Brands',
+    'no_records_to_delete' => 'No records to delete',
+    'deleting_all_records' => 'Deleting all records...',
+    
+    // Backup Settings
+    'Backup Settings' => 'Backup Settings',
+    'Configure automatic backup retention and cleanup policies' => 'Configure automatic backup retention and cleanup policies',
+    'Back to Backups' => 'Back to Backups',
+    'Automatic Cleanup' => 'Automatic Cleanup',
+    'Configure automatic cleanup of expired backups' => 'Configure automatic cleanup of expired backups',
+    'Enable Automatic Cleanup' => 'Enable Automatic Cleanup',
+    'When enabled, expired backups will be automatically deleted daily' => 'When enabled, expired backups will be automatically deleted daily',
+    'Default Retention Policy' => 'Default Retention Policy',
+    'Set how long automatic backups should be kept before being deleted' => 'Set how long automatic backups should be kept before being deleted',
+    'Default Retention Period' => 'Default Retention Period',
+    '1 Day' => '1 Day',
+    '7 Days' => '7 Days',
+    '14 Days' => '14 Days',
+    '30 Days' => '30 Days',
+    '60 Days' => '60 Days',
+    '90 Days' => '90 Days',
+    '180 Days' => '180 Days',
+    '1 Year' => '1 Year',
+    'This applies to automatic backups. Manual backups can have custom expiration.' => 'This applies to automatic backups. Manual backups can have custom expiration.',
+    'Maximum Number of Backups' => 'Maximum Number of Backups',
+    'Maximum backups to keep regardless of expiration date' => 'Maximum backups to keep regardless of expiration date',
+    'Save Settings' => 'Save Settings',
+    'Backup settings updated successfully' => 'Backup settings updated successfully',
+    'Failed to load backup settings' => 'Failed to load backup settings',
+    'Failed to update backup settings' => 'Failed to update backup settings',
+    'Settings' => 'Settings',
+    
+    // Backup Expiration
+    'Expiration' => 'Expiration',
+    'Select Expiration' => 'Select Expiration',
+    'Keep for 1 Day' => 'Keep for 1 Day',
+    'Keep for 1 Week' => 'Keep for 1 Week',
+    'Keep for 1 Month' => 'Keep for 1 Month',
+    'Keep for 3 Months' => 'Keep for 3 Months',
+    'Keep for 6 Months' => 'Keep for 6 Months',
+    'Keep for 1 Year' => 'Keep for 1 Year',
+    'Never Delete' => 'Never Delete',
+    'Never expires' => 'Never expires',
+    'Expired' => 'Expired',
+    'Expires in' => 'Expires in',
+    'Expires at' => 'Expires at',
+    
+    // Backup Limit Messages
+    'Cannot create a new backup. You have reached the maximum allowed backups.' => 'Cannot create a new backup. You have reached the maximum allowed backups.',
+    'Backup created successfully!' => 'Backup created successfully!',
+    'Failed to create backup' => 'Failed to create backup',
+    'File' => 'File',
+    'Type' => 'Type',
 ];
+
+
+
+
+
+
 
 
 

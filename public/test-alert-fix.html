@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار التنبيهات - Alert Duplication Fix Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 32px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .comparison-card {
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .comparison-card.before {
+            border-top: 4px solid #e74c3c;
+        }
+        
+        .comparison-card.after {
+            border-top: 4px solid #27ae60;
+        }
+        
+        .comparison-card h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .comparison-card.before h2 {
+            color: #e74c3c;
+        }
+        
+        .comparison-card.after h2 {
+            color: #27ae60;
+        }
+        
+        .mock-alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+        
+        .mock-alert.success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+        }
+        
+        .mock-alert.error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+        
+        .mock-alert i {
+            font-size: 20px;
+        }
+        
+        .label {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        
+        .label.from-view {
+            background: #ffc107;
+            color: #000;
+        }
+        
+        .label.from-layout {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .issue-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .success-badge {
+            background: #27ae60;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .test-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-right: 4px solid #667eea;
+        }
+        
+        .test-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .test-step {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            font-weight: bold;
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        
+        .actions {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 8px;
+            font-size: 16px;
+        }
+        
+        .btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: #27ae60;
+        }
+        
+        .btn-success:hover {
+            background: #229954;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        code {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .note {
+            padding: 20px;
+            background: #fff9e6;
+            border-right: 4px solid #ffc107;
+            border-radius: 8px;
+            color: #856404;
+            margin: 20px 0;
+        }
+        
+        .note strong {
+            color: #856404;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 اختبار إصلاح تكرار التنبيهات</h1>
+        <p class="subtitle">Alert Duplication Fix - Before & After Comparison</p>
+        
+        <div class="note">
+            <strong>📋 المشكلة الأصلية:</strong> عند إنشاء نسخة احتياطية أو حذفها، كان يظهر تنبيهان متطابقان (واحد من الـ view وواحد من الـ layout) مما يسبب ارتباك للمستخدم.
+        </div>
+
+        <div class="comparison-grid">
+            <!-- BEFORE -->
+            <div class="comparison-card before">
+                <h2>❌ قبل الإصلاح (Before Fix)</h2>
+                
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; color: #555; margin-bottom: 10px;">محاولة إنشاء النسخة الرابعة (تجاوز الحد):</h3>
+                    
+                    <!-- Alert from VIEW -->
+                    <div class="mock-alert error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div>
+                            <span class="label from-view">من الـ View</span>
+                            لا يمكن إنشاء نسخة احتياطية جديدة...
+                        </div>
+                    </div>
+                    
+                    <!-- Alert from LAYOUT -->
+                    <div class="mock-alert error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div>
+                            <span class="label from-layout">من الـ Layout</span>
+                            لا يمكن إنشاء نسخة احتياطية جديدة...
+                        </div>
+                    </div>
+                    
+                    <div class="issue-badge">⚠️ تنبيهان متطابقان!</div>
+                </div>
+
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd;">
+                    <h3 style="font-size: 16px; color: #555; margin-bottom: 10px;">إنشاء نسخة بنجاح:</h3>
+                    
+                    <!-- Alert from VIEW -->
+                    <div class="mock-alert success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <span class="label from-view">من الـ View</span>
+                            تم إنشاء النسخة الاحتياطية بنجاح!
+                        </div>
+                    </div>
+                    
+                    <!-- Alert from LAYOUT -->
+                    <div class="mock-alert success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <span class="label from-layout">من الـ Layout</span>
+                            تم إنشاء النسخة الاحتياطية بنجاح!
+                        </div>
+                    </div>
+                    
+                    <div class="issue-badge">⚠️ تنبيهان متطابقان!</div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: #fff; border-radius: 6px; border-right: 3px solid #e74c3c;">
+                    <strong style="color: #e74c3c;">السبب:</strong>
+                    <ul style="margin-right: 20px; margin-top: 10px; color: #555;">
+                        <li>الـ View يحتوي على Alert blocks</li>
+                        <li>الـ Layout أيضاً يحتوي على Alert blocks</li>
+                        <li>كلاهما يقرأ نفس session data</li>
+                        <li>النتيجة: تنبيهان متطابقان!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- AFTER -->
+            <div class="comparison-card after">
+                <h2>✅ بعد الإصلاح (After Fix)</h2>
+                
+                <div style="margin-bottom: 20px;">
+                    <h3 style="font-size: 16px; color: #555; margin-bottom: 10px;">محاولة إنشاء النسخة الرابعة (تجاوز الحد):</h3>
+                    
+                    <!-- Single Alert from LAYOUT only -->
+                    <div class="mock-alert error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div>
+                            <span class="label from-layout">من الـ Layout فقط</span>
+                            لا يمكن إنشاء نسخة احتياطية جديدة...
+                        </div>
+                    </div>
+                    
+                    <div class="success-badge">✅ تنبيه واحد فقط!</div>
+                </div>
+
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd;">
+                    <h3 style="font-size: 16px; color: #555; margin-bottom: 10px;">إنشاء نسخة بنجاح:</h3>
+                    
+                    <!-- Single Alert from LAYOUT only -->
+                    <div class="mock-alert success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <span class="label from-layout">من الـ Layout فقط</span>
+                            تم إنشاء النسخة الاحتياطية بنجاح!
+                        </div>
+                    </div>
+                    
+                    <div class="success-badge">✅ تنبيه واحد فقط!</div>
+                </div>
+
+                <div style="margin-top: 20px; padding: 15px; background: #fff; border-radius: 6px; border-right: 3px solid #27ae60;">
+                    <strong style="color: #27ae60;">الحل:</strong>
+                    <ul style="margin-right: 20px; margin-top: 10px; color: #555;">
+                        <li>✅ حذف Alert blocks من الـ View</li>
+                        <li>✅ الاعتماد على Layout فقط</li>
+                        <li>✅ استخدام <code>@elseif</code> في Layout</li>
+                        <li>✅ نفس نمط <code>/admin/products</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 خطوات الاختبار</h2>
+            
+            <div class="test-step">
+                <span class="step-number">1</span>
+                <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
+                    <strong style="font-size: 18px; color: #2c3e50;">اختبار تجاوز الحد:</strong>
+                    <p style="margin-top: 10px; color: #555; line-height: 1.6;">
+                        اذهب إلى <code>/admin/backup/settings</code> واضبط max_backups = 3
+                        <br>ثم أنشئ 3 نسخ احتياطية
+                        <br>حاول إنشاء النسخة الرابعة
+                    </p>
+                    <div style="margin-top: 15px; padding: 15px; background: #e8f5e9; border-radius: 6px;">
+                        <strong style="color: #27ae60;">النتيجة المتوقعة:</strong>
+                        <ul style="margin-right: 20px; margin-top: 8px; color: #2e7d32;">
+                            <li>✅ تنبيه خطأ واحد فقط (أحمر)</li>
+                            <li>✅ الرسالة: "لا يمكن إنشاء نسخة احتياطية جديدة..."</li>
+                            <li>✅ لا يوجد تنبيه نجاح أخضر</li>
+                            <li>✅ لا يوجد تنبيهات مكررة</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-step">
+                <span class="step-number">2</span>
+                <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
+                    <strong style="font-size: 18px; color: #2c3e50;">اختبار النجاح:</strong>
+                    <p style="margin-top: 10px; color: #555; line-height: 1.6;">
+                        احذف إحدى النسخ الثلاثة
+                        <br>ثم أنشئ نسخة جديدة
+                    </p>
+                    <div style="margin-top: 15px; padding: 15px; background: #e8f5e9; border-radius: 6px;">
+                        <strong style="color: #27ae60;">النتيجة المتوقعة:</strong>
+                        <ul style="margin-right: 20px; margin-top: 8px; color: #2e7d32;">
+                            <li>✅ تنبيه نجاح واحد فقط (أخضر)</li>
+                            <li>✅ الرسالة: "تم إنشاء النسخة الاحتياطية بنجاح!"</li>
+                            <li>✅ لا يوجد تنبيه خطأ أحمر</li>
+                            <li>✅ لا يوجد تنبيهات مكررة</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-step">
+                <span class="step-number">3</span>
+                <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
+                    <strong style="font-size: 18px; color: #2c3e50;">مقارنة مع /admin/products:</strong>
+                    <p style="margin-top: 10px; color: #555; line-height: 1.6;">
+                        اذهب إلى <code>/admin/products</code>
+                        <br>احذف منتج
+                        <br>تحقق من شكل التنبيه
+                    </p>
+                    <div style="margin-top: 15px; padding: 15px; background: #e8f5e9; border-radius: 6px;">
+                        <strong style="color: #27ae60;">النتيجة المتوقعة:</strong>
+                        <ul style="margin-right: 20px; margin-top: 8px; color: #2e7d32;">
+                            <li>✅ نفس شكل ونمط تنبيهات /admin/backup</li>
+                            <li>✅ تنبيه واحد فقط</li>
+                            <li>✅ التصميم متطابق</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <h3 style="margin-bottom: 20px; color: #2c3e50;">🚀 روابط سريعة للاختبار</h3>
+            <a href="/admin/backup" class="btn btn-success">📦 النسخ الاحتياطية</a>
+            <a href="/admin/backup/settings" class="btn">⚙️ الإعدادات</a>
+            <a href="/admin/products" class="btn">🛍️ المنتجات (للمقارنة)</a>
+        </div>
+
+        <div class="note">
+            <strong>💡 ملاحظة فنية:</strong>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>تم حذف Alert blocks من <code>resources/views/admin/backup/index.blade.php</code></li>
+                <li>تم تغيير Layout من <code>@if/@if</code> إلى <code>@if/@elseif</code></li>
+                <li>الآن جميع صفحات Admin تستخدم نفس النمط</li>
+                <li>Controller لم يتغير (كان صحيحاً من الأصل)</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

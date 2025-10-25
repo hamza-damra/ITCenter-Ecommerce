@@ -173,6 +173,8 @@ return [
     'loading' => 'جاري التحميل...',
     'error' => 'خطأ',
     'success' => 'نجح',
+    'Success' => 'نجاح',
+    'Error' => 'خطأ',
     'warning' => 'تحذير',
     'info' => 'معلومة',
     'close' => 'إغلاق',
@@ -945,7 +947,80 @@ return [
     'execute' => 'تنفيذ',
     'yes_delete' => 'نعم، احذف',
     'yes_proceed' => 'نعم، تابع',
+    'OK' => 'حسناً',
+    'Processing...' => 'جارٍ المعالجة...',
+    'An error occurred during cleanup' => 'حدث خطأ أثناء التنظيف',
+    'Failed to cleanup backups. Please try again.' => 'فشل تنظيف النسخ الاحتياطية. يرجى المحاولة مرة أخرى.',
+    'Backup deleted successfully' => 'تم حذف النسخة الاحتياطية بنجاح',
+    'Failed to delete backup' => 'فشل حذف النسخة الاحتياطية',
+    'Failed to delete backup. Please try again.' => 'فشل حذف النسخة الاحتياطية. يرجى المحاولة مرة أخرى.',
+    
+    // Delete All Feature
+    'delete_all' => 'حذف الكل',
+    'confirm_delete_all' => 'هل أنت متأكد أنك تريد حذف جميع السجلات في هذه الصفحة؟',
+    'all_records_deleted_successfully' => 'تم حذف جميع السجلات بنجاح!',
+    'delete_all_products' => 'حذف جميع المنتجات',
+    'delete_all_categories' => 'حذف جميع الفئات',
+    'delete_all_brands' => 'حذف جميع العلامات التجارية',
+    'no_records_to_delete' => 'لا توجد سجلات للحذف',
+    'deleting_all_records' => 'جارٍ حذف جميع السجلات...',
+    
+    // إعدادات النسخ الاحتياطي
+    'Backup Settings' => 'إعدادات النسخ الاحتياطي',
+    'Configure automatic backup retention and cleanup policies' => 'تكوين سياسات الاحتفاظ بالنسخ الاحتياطي والتنظيف التلقائي',
+    'Back to Backups' => 'العودة إلى النسخ الاحتياطي',
+    'Automatic Cleanup' => 'التنظيف التلقائي',
+    'Configure automatic cleanup of expired backups' => 'تكوين التنظيف التلقائي للنسخ الاحتياطية المنتهية الصلاحية',
+    'Enable Automatic Cleanup' => 'تفعيل التنظيف التلقائي',
+    'When enabled, expired backups will be automatically deleted daily' => 'عند التفعيل، سيتم حذف النسخ الاحتياطية المنتهية الصلاحية تلقائياً يومياً',
+    'Default Retention Policy' => 'سياسة الاحتفاظ الافتراضية',
+    'Set how long automatic backups should be kept before being deleted' => 'حدد المدة التي يجب الاحتفاظ بالنسخ الاحتياطية التلقائية قبل حذفها',
+    'Default Retention Period' => 'فترة الاحتفاظ الافتراضية',
+    '1 Day' => 'يوم واحد',
+    '7 Days' => '7 أيام',
+    '14 Days' => '14 يوماً',
+    '30 Days' => '30 يوماً',
+    '60 Days' => '60 يوماً',
+    '90 Days' => '90 يوماً',
+    '180 Days' => '180 يوماً',
+    '1 Year' => 'سنة واحدة',
+    'This applies to automatic backups. Manual backups can have custom expiration.' => 'ينطبق هذا على النسخ الاحتياطية التلقائية. يمكن للنسخ الاحتياطية اليدوية أن يكون لها انتهاء صلاحية مخصص.',
+    'Maximum Number of Backups' => 'الحد الأقصى لعدد النسخ الاحتياطية',
+    'Maximum backups to keep regardless of expiration date' => 'الحد الأقصى للنسخ الاحتياطية للاحتفاظ بها بغض النظر عن تاريخ انتهاء الصلاحية',
+    'Save Settings' => 'حفظ الإعدادات',
+    'Backup settings updated successfully' => 'تم تحديث إعدادات النسخ الاحتياطي بنجاح',
+    'Failed to load backup settings' => 'فشل تحميل إعدادات النسخ الاحتياطي',
+    'Failed to update backup settings' => 'فشل تحديث إعدادات النسخ الاحتياطي',
+    'Settings' => 'الإعدادات',
+    
+    // انتهاء صلاحية النسخ الاحتياطي
+    'Expiration' => 'انتهاء الصلاحية',
+    'Select Expiration' => 'اختر انتهاء الصلاحية',
+    'Keep for 1 Day' => 'الاحتفاظ ليوم واحد',
+    'Keep for 1 Week' => 'الاحتفاظ لأسبوع واحد',
+    'Keep for 1 Month' => 'الاحتفاظ لشهر واحد',
+    'Keep for 3 Months' => 'الاحتفاظ لـ 3 أشهر',
+    'Keep for 6 Months' => 'الاحتفاظ لـ 6 أشهر',
+    'Keep for 1 Year' => 'الاحتفاظ لسنة واحدة',
+    'Never Delete' => 'عدم الحذف أبداً',
+    'Never expires' => 'لا ينتهي أبداً',
+    'Expired' => 'منتهي الصلاحية',
+    'Expires in' => 'ينتهي خلال',
+    'Expires at' => 'ينتهي في',
+    
+    // رسائل حد النسخ الاحتياطي
+    'Cannot create a new backup. You have reached the maximum allowed backups.' => 'لا يمكن إنشاء نسخة احتياطية جديدة. وصلت للحد الأقصى للنسخ الاحتياطية المسموح بها.',
+    'Backup created successfully!' => 'تم إنشاء النسخة الاحتياطية بنجاح!',
+    'Failed to create backup' => 'فشل إنشاء النسخة الاحتياطية',
+    'File' => 'الملف',
+    'Type' => 'النوع',
 ];
+
+
+
+
+
+
 
 
 

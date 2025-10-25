@@ -36,3 +36,10 @@ Schedule::command('backup:cleanup --force')
     ->dailyAt('03:00')
     ->name('backup-cleanup')
     ->withoutOverlapping();
+
+// Clean up expired backups daily
+Schedule::command('backup:cleanup-expired')
+    ->daily()
+    ->at('04:00')
+    ->name('backup-cleanup-expired')
+    ->withoutOverlapping();

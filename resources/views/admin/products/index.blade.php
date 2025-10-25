@@ -467,6 +467,11 @@
         <p>{{ __('messages.manage_product_catalog') }}</p>
     </div>
     <div class="page-actions">
+        @if($products->count() > 0)
+            <button onclick="showDeleteAllModal()" class="btn btn-danger" style="margin-right: 10px;">
+                <i class="fas fa-trash-alt"></i> {{ __('messages.delete_all') }}
+            </button>
+        @endif
         <a href="{{ route('admin.products.create') }}" class="btn btn-success">
             <i class="fas fa-plus-circle"></i> {{ __('messages.add_new_product') }}
         </a>
@@ -660,7 +665,82 @@
     </div>
 @endif
 
+<!-- Delete All Confirmation Modal -->
+<div id="deleteAllModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+        <h3 style="margin: 0 0 15px 0; color: #dc2626; font-size: 24px;">
+            <i class="fas fa-exclamation-triangle"></i> {{ __('messages.delete_all_products') }}
+        </h3>
+        <p style="margin: 0 0 25px 0; font-size: 16px; color: #4b5563;">
+            {{ __('messages.confirm_delete_all') }}
+        </p>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button onclick="hideDeleteAllModal()" class="btn" style="background: #e5e7eb; color: #374151; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                <i class="fas fa-times"></i> {{ __('messages.cancel') }}
+            </button>
+            <button onclick="deleteAllRecords()" class="btn btn-danger" style="padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                <i class="fas fa-trash-alt"></i> {{ __('messages.yes_delete') }}
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div id="successModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+        <h3 style="margin: 0 0 15px 0; color: #10b981; font-size: 24px;">
+            <i class="fas fa-check-circle"></i> {{ __('messages.success') }}
+        </h3>
+        <p id="successMessage" style="margin: 0 0 25px 0; font-size: 16px; color: #4b5563;">
+            {{ __('messages.all_records_deleted_successfully') }}
+        </p>
+        <div style="display: flex; justify-content: flex-end;">
+            <button onclick="window.location.reload()" class="btn btn-success" style="padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                <i class="fas fa-check"></i> {{ __('messages.OK') }}
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
+    function showDeleteAllModal() {
+        document.getElementById('deleteAllModal').style.display = 'flex';
+    }
+
+    function hideDeleteAllModal() {
+        document.getElementById('deleteAllModal').style.display = 'none';
+    }
+
+    function deleteAllRecords() {
+        // Disable the delete button to prevent multiple clicks
+        event.target.disabled = true;
+        event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("messages.deleting_all_records") }}';
+
+        fetch('{{ route("admin.products.delete-all") }}', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            hideDeleteAllModal();
+            if (data.success) {
+                document.getElementById('successMessage').textContent = data.message;
+                document.getElementById('successModal').style.display = 'flex';
+            } else {
+                alert('Error: ' + data.message);
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            hideDeleteAllModal();
+            alert('Error: ' + error.message);
+            window.location.reload();
+        });
+    }
+
     function filterProducts() {
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
         const statusFilter = document.getElementById('statusFilter').value;

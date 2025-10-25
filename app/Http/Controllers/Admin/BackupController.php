@@ -55,13 +55,13 @@ class BackupController extends Controller
             $result = $this->backupService->createBackup();
 
             return redirect()->route('admin.backup.index')
-                ->with('success', "Backup created successfully! File: {$result['filename']} ({$this->formatBytes($result['size'])})");
+                ->with('success', __('messages.Backup created successfully!') . " " . __('messages.File') . ": {$result['filename']} ({$this->formatBytes($result['size'])})");
 
         } catch (Exception $e) {
             Log::error('Backup creation failed', ['error' => $e->getMessage()]);
             
             return redirect()->route('admin.backup.index')
-                ->with('error', 'Failed to create backup: ' . $e->getMessage());
+                ->with('error', $e->getMessage());
         }
     }
 
@@ -106,20 +106,45 @@ class BackupController extends Controller
      * Delete a backup
      *
      * @param string $filename
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function delete($filename)
+    public function delete(Request $request, $filename)
     {
         try {
             $deleted = $this->backupService->deleteBackup($filename);
 
             if ($deleted) {
+                $message = "Backup '{$filename}' deleted successfully!";
+                
+                Log::info('Backup deleted', [
+                    'filename' => $filename,
+                    'admin' => auth()->user()->email ?? 'unknown'
+                ]);
+                
+                // Return JSON for AJAX requests
+                if ($request->expectsJson() || $request->ajax()) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => $message
+                    ]);
+                }
+                
                 return redirect()->route('admin.backup.index')
-                    ->with('success', "Backup '{$filename}' deleted successfully!");
+                    ->with('success', $message);
             }
 
+            $errorMessage = "Backup file not found: {$filename}";
+            
+            // Return JSON for AJAX requests
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $errorMessage
+                ], 404);
+            }
+            
             return redirect()->route('admin.backup.index')
-                ->with('error', "Backup file not found: {$filename}");
+                ->with('error', $errorMessage);
 
         } catch (Exception $e) {
             Log::error('Backup deletion failed', [
@@ -127,8 +152,19 @@ class BackupController extends Controller
                 'error' => $e->getMessage()
             ]);
             
+            $errorMessage = 'Failed to delete backup: ' . $e->getMessage();
+            
+            // Return JSON for AJAX requests
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $errorMessage,
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+            
             return redirect()->route('admin.backup.index')
-                ->with('error', 'Failed to delete backup: ' . $e->getMessage());
+                ->with('error', $errorMessage);
         }
     }
 
@@ -185,6 +221,44 @@ class BackupController extends Controller
     }
 
     /**
+     * Clean up old backups (AJAX version)
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cleanupAjax()
+    {
+        try {
+            $result = $this->backupService->cleanupOldBackups();
+
+            Log::info('Backup cleanup completed via AJAX', [
+                'deleted' => $result['deleted_count'],
+                'kept' => $result['kept_count'],
+                'admin' => auth()->user()->email ?? 'unknown'
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => "Cleanup completed! Deleted {$result['deleted_count']} old backups, kept {$result['kept_count']} backups.",
+                'data' => [
+                    'deleted_count' => $result['deleted_count'],
+                    'kept_count' => $result['kept_count'],
+                    'deleted_files' => $result['deleted'],
+                    'kept_files' => $result['kept']
+                ]
+            ]);
+
+        } catch (Exception $e) {
+            Log::error('Backup cleanup failed', ['error' => $e->getMessage()]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to cleanup backups: ' . $e->getMessage(),
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Format bytes to human readable format
      *
      * @param int $bytes
@@ -226,7 +300,7 @@ class BackupController extends Controller
             $typeLabel = $this->getBackupTypeLabel($result['type']);
             
             return redirect()->route('admin.backup.index')
-                ->with('success', "Backup created successfully! Type: {$typeLabel}, File: {$result['filename']} ({$this->formatBytes($result['size'])})");
+                ->with('success', __('messages.Backup created successfully!') . " " . __('messages.Type') . ": {$typeLabel}, " . __('messages.File') . ": {$result['filename']} ({$this->formatBytes($result['size'])})");
 
         } catch (Exception $e) {
             Log::error('Advanced backup creation failed', [
@@ -235,7 +309,7 @@ class BackupController extends Controller
             ]);
             
             return redirect()->route('admin.backup.index')
-                ->with('error', 'Failed to create backup: ' . $e->getMessage());
+                ->with('error', $e->getMessage());
         }
     }
 

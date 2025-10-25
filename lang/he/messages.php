@@ -176,6 +176,8 @@ return [
     'loading' => 'טוען...',
     'error' => 'שגיאה',
     'success' => 'הצלחה',
+    'Success' => 'הצלחה',
+    'Error' => 'שגיאה',
     'warning' => 'אזהרה',
     'info' => 'מידע',
     'close' => 'סגור',
@@ -870,7 +872,78 @@ return [
     'execute' => 'בצע',
     'yes_delete' => 'כן, מחק',
     'yes_proceed' => 'כן, המשך',
+    'OK' => 'אישור',
+    'Processing...' => 'מעבד...',
+    'An error occurred during cleanup' => 'אירעה שגיאה במהלך הניקוי',
+    'Failed to cleanup backups. Please try again.' => 'הניקוי נכשל. אנא נסה שוב.',
+    'Backup deleted successfully' => 'הגיבוי נמחק בהצלחה',
+    'Failed to delete backup' => 'מחיקת הגיבוי נכשלה',
+    'Failed to delete backup. Please try again.' => 'מחיקת הגיבוי נכשלה. אנא נסה שוב.',
+    
+    // Delete All Feature
+    'delete_all' => 'מחק הכל',
+    'confirm_delete_all' => 'האם אתה בטוח שברצונך למחוק את כל הרשומות בדף זה?',
+    'all_records_deleted_successfully' => 'כל הרשומות נמחקו בהצלחה!',
+    'delete_all_products' => 'מחק את כל המוצרים',
+    'delete_all_categories' => 'מחק את כל הקטגוריות',
+    'delete_all_brands' => 'מחק את כל המותגים',
+    'no_records_to_delete' => 'אין רשומות למחיקה',
+    'deleting_all_records' => 'מוחק את כל הרשומות...',
+    
+    // הגדרות גיבוי
+    'Backup Settings' => 'הגדרות גיבוי',
+    'Configure automatic backup retention and cleanup policies' => 'הגדר מדיניות שמירה וניקוי אוטומטיים של גיבויים',
+    'Back to Backups' => 'חזרה לגיבויים',
+    'Automatic Cleanup' => 'ניקוי אוטומטי',
+    'Configure automatic cleanup of expired backups' => 'הגדר ניקוי אוטומטי של גיבויים שפג תוקפם',
+    'Enable Automatic Cleanup' => 'הפעל ניקוי אוטומטי',
+    'When enabled, expired backups will be automatically deleted daily' => 'כאשר מופעל, גיבויים שפג תוקפם יימחקו אוטומטית מדי יום',
+    'Default Retention Policy' => 'מדיניות שמירה ברירת מחדל',
+    'Set how long automatic backups should be kept before being deleted' => 'קבע כמה זמן יש לשמור גיבויים אוטומטיים לפני מחיקתם',
+    'Default Retention Period' => 'תקופת שמירה ברירת מחדל',
+    '1 Day' => 'יום אחד',
+    '7 Days' => '7 ימים',
+    '14 Days' => '14 ימים',
+    '30 Days' => '30 ימים',
+    '60 Days' => '60 ימים',
+    '90 Days' => '90 ימים',
+    '180 Days' => '180 ימים',
+    '1 Year' => 'שנה אחת',
+    'This applies to automatic backups. Manual backups can have custom expiration.' => 'זה חל על גיבויים אוטומטיים. גיבויים ידניים יכולים לקבל תפוגה מותאמת אישית.',
+    'Maximum Number of Backups' => 'מספר מקסימלי של גיבויים',
+    'Maximum backups to keep regardless of expiration date' => 'מספר מקסימלי של גיבויים לשמור ללא קשר לתאריך תפוגה',
+    'Save Settings' => 'שמור הגדרות',
+    'Backup settings updated successfully' => 'הגדרות הגיבוי עודכנו בהצלחה',
+    'Failed to load backup settings' => 'טעינת הגדרות הגיבוי נכשלה',
+    'Failed to update backup settings' => 'עדכון הגדרות הגיבוי נכשל',
+    'Settings' => 'הגדרות',
+    
+    // תפוגת גיבוי
+    'Expiration' => 'תפוגה',
+    'Select Expiration' => 'בחר תפוגה',
+    'Keep for 1 Day' => 'שמור ליום אחד',
+    'Keep for 1 Week' => 'שמור לשבוע אחד',
+    'Keep for 1 Month' => 'שמור לחודש אחד',
+    'Keep for 3 Months' => 'שמור ל-3 חודשים',
+    'Keep for 6 Months' => 'שמור ל-6 חודשים',
+    'Keep for 1 Year' => 'שמור לשנה אחת',
+    'Never Delete' => 'אל תמחק לעולם',
+    'Never expires' => 'לעולם לא פג תוקף',
+    'Expired' => 'פג תוקף',
+    'Expires in' => 'פג תוקף ב',
+    'Expires at' => 'פג תוקף ב',
+    
+    // Backup Limit Messages
+    'Cannot create a new backup. You have reached the maximum allowed backups.' => 'לא ניתן ליצור גיבוי חדש. הגעת למספר המקסימלי של גיבויים המותרים.',
+    'Backup created successfully!' => 'הגיבוי נוצר בהצלחה!',
+    'Failed to create backup' => 'יצירת הגיבוי נכשלה',
+    'File' => 'קובץ',
+    'Type' => 'סוג',
 ];
+
+
+
+
 
 
 

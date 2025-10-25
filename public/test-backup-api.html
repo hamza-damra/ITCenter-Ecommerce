@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup System API Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .test-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #45a049;
+        }
+        .test-button.warning {
+            background: #ff9800;
+        }
+        .test-button.danger {
+            background: #f44336;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .result.info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status-badge.pass {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-badge.fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .checkbox-item {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .checkbox-item input {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Backup System API Test Suite</h1>
+    <p>This page tests all backup system endpoints without requiring Laravel boot.</p>
+    
+    <div class="test-section" style="background: #fff3cd; border: 2px solid #ffc107;">
+        <h2 style="color: #856404; border-color: #ffc107;">⚠️ Authentication Required</h2>
+        <p style="color: #856404;">
+            <strong>Before running tests, you must be logged in to the admin panel.</strong>
+        </p>
+        <ol style="color: #856404;">
+            <li>Open a new tab: <a href="/admin/login" target="_blank" style="color: #0066cc;"><strong>/admin/login</strong></a></li>
+            <li>Login with your admin credentials</li>
+            <li>Return to this page and reload</li>
+            <li>Tests will become enabled automatically</li>
+        </ol>
+        <p style="color: #856404; margin-bottom: 0;">
+            <strong>Status:</strong> <span id="auth-status" style="font-weight: bold;">Checking...</span>
+        </p>
+
+        <!-- Inline Admin Login (for convenience) -->
+        <div id="inline-login" style="margin-top: 16px; padding: 12px; background: #fff; border: 1px dashed #ffc107; border-radius: 6px;">
+            <div style="display:flex; flex-wrap: wrap; gap:10px; align-items: center;">
+                <input id="login-email" type="email" placeholder="Admin email" style="flex:1 1 260px; padding:10px; border:1px solid #ccc; border-radius:4px;"/>
+                <input id="login-password" type="password" placeholder="Password" style="flex:1 1 200px; padding:10px; border:1px solid #ccc; border-radius:4px;"/>
+                <button id="login-button" class="test-button" style="background:#007bff;">Login & Enable Tests</button>
+            </div>
+            <div id="login-message" class="result info" style="margin-top:10px; display:none;"></div>
+        </div>
+    </div>
+
+    <!-- Test 1: Get Modules -->
+    <div class="test-section">
+        <h2>Test 1: Get Available Modules <span id="test1-status"></span></h2>
+        <p>Tests the <code>GET /admin/backup/modules</code> endpoint.</p>
+        <button class="test-button" onclick="testGetModules()">Run Test</button>
+        <div id="test1-result"></div>
+    </div>
+
+    <!-- Test 2: Create Database Backup -->
+    <div class="test-section">
+        <h2>Test 2: Create Database Backup <span id="test2-status"></span></h2>
+        <p>Tests the <code>POST /admin/backup/create-with-options</code> endpoint with type "database".</p>
+        <button class="test-button" onclick="testCreateDatabaseBackup()">Run Test</button>
+        <div id="test2-result"></div>
+    </div>
+
+    <!-- Test 3: Create Modules Backup -->
+    <div class="test-section">
+        <h2>Test 3: Create Modules Backup <span id="test3-status"></span></h2>
+        <p>Tests the <code>POST /admin/backup/create-with-options</code> endpoint with type "modules".</p>
+        <div class="checkbox-grid" id="module-checkboxes"></div>
+        <button class="test-button" onclick="testCreateModulesBackup()">Run Test</button>
+        <div id="test3-result"></div>
+    </div>
+
+    <!-- Test 4: Validate File Upload -->
+    <div class="test-section">
+        <h2>Test 4: Validate Backup File <span id="test4-status"></span></h2>
+        <p>Tests the <code>POST /admin/backup/validate-upload</code> endpoint.</p>
+        <input type="file" id="fileInput" accept=".gz,.sql" style="margin: 10px 0;">
+        <button class="test-button warning" onclick="testValidateUpload()">Run Test</button>
+        <div id="test4-result"></div>
+    </div>
+
+    <!-- Test 5: Import and Restore -->
+    <div class="test-section">
+        <h2>Test 5: Import and Restore Backup <span id="test5-status"></span></h2>
+        <p>Tests the <code>POST /admin/backup/import-and-restore</code> endpoint.</p>
+        <p style="color: #f44336;"><strong>⚠️ WARNING:</strong> This will restore the database from the uploaded file!</p>
+        <input type="file" id="restoreFileInput" accept=".gz,.sql" style="margin: 10px 0;">
+        <button class="test-button danger" onclick="testImportRestore()">Run Test (Destructive)</button>
+        <div id="test5-result"></div>
+    </div>
+
+    <!-- Test Summary -->
+    <div class="test-section">
+        <h2>📊 Test Summary</h2>
+        <div id="test-summary">
+            <p>Run tests to see results...</p>
+        </div>
+    </div>
+
+    <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return '';
+        }
+        // Helper: safely parse JSON or surface auth/HTML responses
+        async function parseResponseJson(response, testId) {
+            const contentType = (response.headers.get('content-type') || '').toLowerCase();
+            if (!contentType.includes('application/json')) {
+                const html = await response.text();
+                // Likely not authenticated -> login page HTML
+                if (html.includes('<!DOCTYPE') || html.toLowerCase().includes('form') && html.toLowerCase().includes('password')) {
+                    updateAuthStatus(false);
+                    const msg = 'Not authenticated. Please login to the admin panel at /admin/login, then reload this page.';
+                    if (testId) {
+                        showResult(testId, `❌ AUTH REQUIRED\n\n${msg}`, 'error');
+                        updateStatus(testId, false);
+                    } else {
+                        showGlobalError(msg);
+                    }
+                    // Throw to stop the test flow
+                    throw new Error('Authentication required');
+                }
+                // Not JSON and not clearly a login page
+                if (testId) {
+                    showResult(testId, '❌ ERROR\n\nUnexpected non-JSON response. Check server logs.', 'error');
+                    updateStatus(testId, false);
+                }
+                throw new Error('Unexpected non-JSON response');
+            }
+            return response.json();
+        }
+
+        // Check if current session is authenticated for admin routes
+        async function verifyAuth() {
+            try {
+                const response = await fetch('/admin/backup/modules', { headers: { 'Accept': 'application/json' }, credentials: 'same-origin' });
+                const data = await parseResponseJson(response);
+                return !!(data && data.success);
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Perform login to /admin/login from within this page
+        async function performInlineLogin(email, password) {
+            const showMsg = (msg, type='info') => {
+                const el = document.getElementById('login-message');
+                el.style.display = 'block';
+                el.className = `result ${type}`;
+                el.textContent = msg;
+            };
+
+            try {
+                showMsg('Preparing login...', 'info');
+
+                // Fetch the login page to capture CSRF token
+                const loginPage = await fetch('/admin/login', { credentials: 'same-origin' });
+                const loginHtml = await loginPage.text();
+
+                // Extract token either from meta or hidden input
+                let token = '';
+                const metaMatch = loginHtml.match(/name="csrf-token" content="([^"]+)"/);
+                if (metaMatch) token = metaMatch[1];
+                if (!token) {
+                    const inputMatch = loginHtml.match(/name="_token" value="([^"]+)"/);
+                    if (inputMatch) token = inputMatch[1];
+                }
+                if (!token) {
+                    // Fallback to cookie
+                    token = getCookie('XSRF-TOKEN');
+                }
+                if (!token) {
+                    showMsg('Unable to retrieve CSRF token. Please reload the page and try again.', 'error');
+                    return false;
+                }
+
+                // Build form data
+                const form = new FormData();
+                form.append('_token', token);
+                form.append('email', email);
+                form.append('password', password);
+
+                const res = await fetch('/admin/login', {
+                    method: 'POST',
+                    body: form,
+                    credentials: 'same-origin',
+                    redirect: 'follow'
+                });
+
+                // Wait a moment for session to propagate
+                await new Promise(resolve => setTimeout(resolve, 300));
+
+                // After login, verify auth by hitting modules JSON endpoint
+                const authed = await verifyAuth();
+                if (authed) {
+                    showMsg('✅ Login successful. Reloading page to activate session...', 'success');
+                    updateAuthStatus(true);
+                    // Reload the page to ensure session cookies are properly set
+                    setTimeout(() => window.location.reload(), 1000);
+                    return true;
+                }
+                // Try to parse any error message in the returned HTML
+                const text = await res.text();
+                const err = (text.match(/class=\"invalid-feedback\"[^>]*>\s*<strong>([^<]+)<\//) || [,'Invalid credentials'])[1];
+                showMsg('❌ Login failed: ' + err, 'error');
+                updateAuthStatus(false);
+                return false;
+            } catch (e) {
+                showMsg('❌ Login error: ' + (e.message || e), 'error');
+                updateAuthStatus(false);
+                return false;
+            }
+        }
+
+        // Get CSRF token from meta tag or generate request
+        async function getCSRFToken() {
+            try {
+                const response = await fetch('/admin/backup', {
+                    credentials: 'same-origin'
+                });
+                const html = await response.text();
+                
+                // Check if we got redirected to login (HTML contains login form)
+                if (html.includes('login') && html.includes('password') && !html.includes('backup')) {
+                    showGlobalError('❌ NOT AUTHENTICATED: Please login to admin panel first at <a href="/admin/login" target="_blank">/admin/login</a>');
+                    return null;
+                }
+                
+                const match = html.match(/name="csrf-token" content="([^"]+)"/);
+                if (match && match[1]) return match[1];
+                // Fallback to XSRF-TOKEN cookie (Laravel sets this)
+                const xsrf = getCookie('XSRF-TOKEN');
+                return xsrf ? decodeURIComponent(xsrf) : '';
+            } catch (error) {
+                console.error('Failed to get CSRF token:', error);
+                return '';
+            }
+        }
+        
+        function showGlobalError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #f44336; color: white; padding: 20px; border-radius: 8px; z-index: 10000; max-width: 600px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);';
+            errorDiv.innerHTML = `<strong>Authentication Required</strong><br>${message}`;
+            document.body.insertBefore(errorDiv, document.body.firstChild);
+            
+            // Update auth status
+            const authStatus = document.getElementById('auth-status');
+            if (authStatus) {
+                authStatus.innerHTML = '❌ Not Logged In - <a href="/admin/login" target="_blank" style="color: #0066cc;">Login Here</a>';
+                authStatus.style.color = '#f44336';
+            }
+        }
+        
+        function updateAuthStatus(authenticated) {
+            const authStatus = document.getElementById('auth-status');
+            if (authStatus) {
+                if (authenticated) {
+                    authStatus.innerHTML = '✅ Authenticated - Tests Ready';
+                    authStatus.style.color = '#155724';
+                } else {
+                    authStatus.innerHTML = '❌ Not Logged In - <a href="/admin/login" target="_blank" style="color: #0066cc;">Login Here</a>';
+                    authStatus.style.color = '#f44336';
+                }
+            }
+        }
+
+        let csrfToken = '';
+        let testResults = {
+            test1: null,
+            test2: null,
+            test3: null,
+            test4: null,
+            test5: null
+        };
+
+        // Initialize
+        (async () => {
+            // Wire inline login button
+            const loginBtn = document.getElementById('login-button');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', async () => {
+                    const btn = document.getElementById('login-button');
+                    btn.disabled = true;
+                    btn.textContent = 'Logging in...';
+                    const email = document.getElementById('login-email').value.trim();
+                    const password = document.getElementById('login-password').value;
+                    const ok = await performInlineLogin(email, password);
+                    if (ok) {
+                        // Acquire CSRF and enable tests
+                        csrfToken = await getCSRFToken();
+                        document.querySelectorAll('.test-button').forEach(b => {
+                            b.disabled = false;
+                            b.style.opacity = '1';
+                            b.style.cursor = 'pointer';
+                        });
+                        await loadModuleCheckboxes();
+                    }
+                    btn.disabled = false;
+                    btn.textContent = 'Login & Enable Tests';
+                });
+            }
+
+            const authed = await verifyAuth();
+            if (!authed) {
+                // Not logged in: disable test buttons except login
+                updateAuthStatus(false);
+                document.querySelectorAll('.test-button').forEach(b => {
+                    if (b.id !== 'login-button') {
+                        b.disabled = true;
+                        b.style.opacity = '0.5';
+                        b.style.cursor = 'not-allowed';
+                    }
+                });
+                return;
+            }
+
+            // Logged in: get token and load modules
+            updateAuthStatus(true);
+            csrfToken = await getCSRFToken();
+            await loadModuleCheckboxes();
+        })();
+
+        async function loadModuleCheckboxes() {
+            try {
+                const response = await fetch('/admin/backup/modules', { 
+                    headers: { 'Accept': 'application/json' },
+                    credentials: 'same-origin'
+                });
+                const data = await parseResponseJson(response, 1);
+                
+                if (data.success) {
+                    const container = document.getElementById('module-checkboxes');
+                    container.innerHTML = Object.entries(data.modules).map(([key, module]) => `
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="module-${key}" value="${key}" checked>
+                            <label for="module-${key}">${module.name}</label>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Failed to load modules:', error);
+            }
+        }
+
+        function showResult(testId, message, type = 'info') {
+            const resultDiv = document.getElementById(`test${testId}-result`);
+            resultDiv.className = `result ${type}`;
+            resultDiv.textContent = message;
+        }
+
+        function updateStatus(testId, passed) {
+            testResults[`test${testId}`] = passed;
+            const statusSpan = document.getElementById(`test${testId}-status`);
+            statusSpan.className = `status-badge ${passed ? 'pass' : 'fail'}`;
+            statusSpan.textContent = passed ? 'PASS' : 'FAIL';
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const total = Object.keys(testResults).length;
+            const run = Object.values(testResults).filter(r => r !== null).length;
+            const passed = Object.values(testResults).filter(r => r === true).length;
+            const failed = Object.values(testResults).filter(r => r === false).length;
+            
+            const summaryDiv = document.getElementById('test-summary');
+            summaryDiv.innerHTML = `
+                <p><strong>Total Tests:</strong> ${total}</p>
+                <p><strong>Run:</strong> ${run} / ${total}</p>
+                <p><strong>Passed:</strong> ${passed}</p>
+                <p><strong>Failed:</strong> ${failed}</p>
+                ${run === total ? `<h3 style="color: ${passed === total ? '#155724' : '#721c24'};">
+                    ${passed === total ? '✅ All Tests Passed!' : '❌ Some Tests Failed'}
+                </h3>` : ''}
+            `;
+        }
+
+        async function testGetModules() {
+            try {
+                showResult(1, 'Fetching modules...', 'info');
+                
+                const response = await fetch('/admin/backup/modules', { 
+                    headers: { 'Accept': 'application/json' },
+                    credentials: 'same-origin'
+                });
+                const data = await parseResponseJson(response, 1);
+                
+                if (data.success && data.modules) {
+                    const moduleCount = Object.keys(data.modules).length;
+                    showResult(1, 
+                        `✅ SUCCESS\n\nFound ${moduleCount} modules:\n` + 
+                        JSON.stringify(data.modules, null, 2), 
+                        'success'
+                    );
+                    updateStatus(1, true);
+                } else {
+                    showResult(1, `❌ FAILED\n\nUnexpected response:\n${JSON.stringify(data, null, 2)}`, 'error');
+                    updateStatus(1, false);
+                }
+            } catch (error) {
+                showResult(1, `❌ ERROR\n\n${error.message}`, 'error');
+                updateStatus(1, false);
+            }
+        }
+
+        async function testCreateDatabaseBackup() {
+            try {
+                showResult(2, 'Creating database backup...', 'info');
+                
+                const formData = new FormData();
+                formData.append('_token', csrfToken);
+                formData.append('type', 'database');
+                
+                const response = await fetch('/admin/backup/create-with-options', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: formData,
+                    credentials: 'same-origin'
+                });
+                
+                const data = await parseResponseJson(response, 2);
+                
+                if (data.success) {
+                    showResult(2, 
+                        `✅ SUCCESS\n\nBackup created: ${data.filename}\nMessage: ${data.message}`, 
+                        'success'
+                    );
+                    updateStatus(2, true);
+                } else {
+                    showResult(2, `❌ FAILED\n\n${JSON.stringify(data, null, 2)}`, 'error');
+                    updateStatus(2, false);
+                }
+            } catch (error) {
+                showResult(2, `❌ ERROR\n\n${error.message}`, 'error');
+                updateStatus(2, false);
+            }
+        }
+
+        async function testCreateModulesBackup() {
+            try {
+                showResult(3, 'Creating modules backup...', 'info');
+                
+                const selectedModules = Array.from(
+                    document.querySelectorAll('#module-checkboxes input:checked')
+                ).map(cb => cb.value);
+                
+                if (selectedModules.length === 0) {
+                    showResult(3, '⚠️ Please select at least one module', 'error');
+                    return;
+                }
+                
+                const formData = new FormData();
+                formData.append('_token', csrfToken);
+                formData.append('type', 'modules');
+                selectedModules.forEach(module => {
+                    formData.append('modules[]', module);
+                });
+                
+                const response = await fetch('/admin/backup/create-with-options', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: formData,
+                    credentials: 'same-origin'
+                });
+                
+                const data = await parseResponseJson(response, 3);
+                
+                if (data.success) {
+                    showResult(3, 
+                        `✅ SUCCESS\n\nBackup created: ${data.filename}\nModules: ${selectedModules.join(', ')}\nMessage: ${data.message}`, 
+                        'success'
+                    );
+                    updateStatus(3, true);
+                } else {
+                    showResult(3, `❌ FAILED\n\n${JSON.stringify(data, null, 2)}`, 'error');
+                    updateStatus(3, false);
+                }
+            } catch (error) {
+                showResult(3, `❌ ERROR\n\n${error.message}`, 'error');
+                updateStatus(3, false);
+            }
+        }
+
+        async function testValidateUpload() {
+            try {
+                const fileInput = document.getElementById('fileInput');
+                const file = fileInput.files[0];
+                
+                if (!file) {
+                    showResult(4, '⚠️ Please select a file first', 'error');
+                    return;
+                }
+                
+                showResult(4, `Validating ${file.name}...`, 'info');
+                
+                const formData = new FormData();
+                formData.append('_token', csrfToken);
+                formData.append('backup_file', file);
+                
+                const response = await fetch('/admin/backup/validate-upload', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: formData,
+                    credentials: 'same-origin'
+                });
+                
+                const data = await parseResponseJson(response, 4);
+                
+                if (data.success) {
+                    showResult(4, 
+                        `✅ SUCCESS\n\nFile: ${(data.file && data.file.name) || file.name}\nSize: ${(data.file && data.file.size) || 'n/a'}\nType: ${(data.file && data.file.backup_type) || 'n/a'}\nCreated: ${(data.file && data.file.created_at) || 'n/a'}\nTables: ${(data.file && data.file.tables_count) || 'n/a'}`, 
+                        'success'
+                    );
+                    updateStatus(4, true);
+                } else {
+                    showResult(4, `❌ FAILED\n\n${data.message || JSON.stringify(data, null, 2)}`, 'error');
+                    updateStatus(4, false);
+                }
+            } catch (error) {
+                showResult(4, `❌ ERROR\n\n${error.message}`, 'error');
+                updateStatus(4, false);
+            }
+        }
+
+        async function testImportRestore() {
+            if (!confirm('⚠️ WARNING: This will restore the database from the selected file. This action cannot be undone. Are you sure?')) {
+                return;
+            }
+            
+            try {
+                const fileInput = document.getElementById('restoreFileInput');
+                const file = fileInput.files[0];
+                
+                if (!file) {
+                    showResult(5, '⚠️ Please select a file first', 'error');
+                    return;
+                }
+                
+                showResult(5, `Importing and restoring ${file.name}...\n\nThis may take a while...`, 'info');
+                
+                const formData = new FormData();
+                formData.append('_token', csrfToken);
+                formData.append('backup_file', file);
+                
+                const response = await fetch('/admin/backup/import-and-restore', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: formData,
+                    credentials: 'same-origin'
+                });
+                
+                const data = await parseResponseJson(response, 5);
+                
+                if (data.success) {
+                    showResult(5, 
+                        `✅ SUCCESS\n\nDatabase restored successfully!\nMessage: ${data.message}`, 
+                        'success'
+                    );
+                    updateStatus(5, true);
+                } else {
+                    showResult(5, `❌ FAILED\n\n${data.message || JSON.stringify(data, null, 2)}`, 'error');
+                    updateStatus(5, false);
+                }
+            } catch (error) {
+                showResult(5, `❌ ERROR\n\n${error.message}`, 'error');
+                updateStatus(5, false);
+            }
+        }
+    </script>
+</body>
+</html>

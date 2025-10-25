@@ -15,6 +15,9 @@
         <p>{{ __('messages.Create, restore, and manage database backups') }}</p>
     </div>
     <div class="page-header-actions">
+        <a href="{{ route('admin.backup.settings') }}" class="btn btn-secondary">
+            <i class="fas fa-cog"></i> {{ __('messages.Settings') }}
+        </a>
         <button type="button" class="btn btn-success" onclick="showExportModal()">
             <i class="fas fa-plus"></i> {{ __('messages.Create Backup Now') }}
         </button>
@@ -29,18 +32,6 @@
         </form>
     </div>
 </div>
-
-@if(session('success'))
-    <div class="alert alert-success">
-        <i class="fas fa-check-circle"></i> {{ session('success') }}
-    </div>
-@endif
-
-@if(session('error'))
-    <div class="alert alert-danger">
-        <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
-    </div>
-@endif
 
 <!-- Statistics Cards -->
 <div class="stats-grid" style="margin-bottom: 30px;">
@@ -955,6 +946,47 @@
 </style>
 
 <script>
+// Debug: Check if confirmModal is available
+console.log('[INIT] Checking confirmModal availability...');
+console.log('[INIT] window.confirmModal:', window.confirmModal);
+console.log('[INIT] typeof window.confirmModal:', typeof window.confirmModal);
+
+// Wait for confirmModal to be available
+function waitForConfirmModal() {
+    return new Promise((resolve) => {
+        if (window.confirmModal) {
+            console.log('[INIT] confirmModal is already available');
+            resolve();
+            return;
+        }
+        
+        console.log('[INIT] Waiting for confirmModal...');
+        const checkInterval = setInterval(() => {
+            if (window.confirmModal) {
+                console.log('[INIT] confirmModal is now available');
+                clearInterval(checkInterval);
+                resolve();
+            }
+        }, 100);
+        
+        // Timeout after 5 seconds
+        setTimeout(() => {
+            clearInterval(checkInterval);
+            console.error('[INIT] confirmModal timeout - not available after 5 seconds');
+            resolve(); // Resolve anyway to prevent hanging
+        }, 5000);
+    });
+}
+
+// Global error handler
+window.addEventListener('error', function(event) {
+    console.error('[GLOBAL ERROR]', event.error);
+});
+
+window.addEventListener('unhandledrejection', function(event) {
+    console.error('[UNHANDLED PROMISE REJECTION]', event.reason);
+});
+
 function showRestoreModal(filename) {
     document.getElementById('restoreFilename').value = filename;
     document.getElementById('restoreFilenameDisplay').textContent = filename;
@@ -1002,6 +1034,23 @@ async function handleCreateBackup() {
  * Handle Cleanup Old Backups with custom confirmation modal
  */
 async function handleCleanupBackups() {
+    console.log('[CLEANUP] Function called');
+    
+    // Wait for confirmModal to be available
+    await waitForConfirmModal();
+    
+    if (!window.confirmModal) {
+        console.error('[CLEANUP] confirmModal is not available!');
+        alert('Error: Confirmation system not loaded. Please refresh the page.');
+        return;
+    }
+    
+    // Prevent duplicate confirmation modals
+    if (window.confirmModal.isOpen) {
+        console.warn('[CLEANUP] Confirmation already open, ignoring duplicate call');
+        return;
+    }
+
     const confirmed = await window.confirmModal.show({
         title: '{{ __('messages.confirm_action') }}',
         message: '{{ __('messages.Delete old backups based on retention policy?') }}',
@@ -1010,22 +1059,149 @@ async function handleCleanupBackups() {
         confirmButtonType: 'warning'
     });
     
+    console.log('[CLEANUP] Confirmation result:', confirmed);
+    
     if (confirmed) {
-        document.getElementById('cleanupBackupForm').submit();
+        console.log('[CLEANUP] User confirmed, proceeding with cleanup');
+        
+        // Show loading state
+        const cleanupBtn = document.querySelector('button[onclick="handleCleanupBackups()"]');
+        console.log('[CLEANUP] Button found:', cleanupBtn);
+        
+        const originalHtml = cleanupBtn.innerHTML;
+        cleanupBtn.disabled = true;
+        cleanupBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __('messages.Processing...') }}';
+        
+        console.log('[CLEANUP] Button state changed to loading');
+        
+        try {
+            const url = '{{ route('admin.backup.cleanup-ajax') }}';
+            const csrfToken = '{{ csrf_token() }}';
+            
+            console.log('[CLEANUP] Making request to:', url);
+            console.log('[CLEANUP] CSRF Token:', csrfToken);
+            
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            
+            console.log('[CLEANUP] Response status:', response.status, response.statusText);
+            console.log('[CLEANUP] Response headers:', [...response.headers.entries()]);
+            
+            const data = await response.json();
+            console.log('[CLEANUP] Response data:', data);
+            
+            // Restore button state
+            cleanupBtn.disabled = false;
+            cleanupBtn.innerHTML = originalHtml;
+            console.log('[CLEANUP] Button state restored');
+            
+            if (response.ok && data.success) {
+                console.log('[CLEANUP] Success! Showing success modal');
+                
+                // Show success modal
+                await window.confirmModal.show({
+                    title: '{{ __('messages.Success') }}',
+                    message: data.message,
+                    confirmText: '{{ __('messages.OK') }}',
+                    type: 'success',
+                    confirmButtonType: 'success'
+                });
+                
+                console.log('[CLEANUP] Reloading page...');
+                // Reload page to show updated backup list
+                window.location.reload();
+            } else {
+                console.error('[CLEANUP] Error response:', data);
+                
+                // Show error modal
+                await window.confirmModal.show({
+                    title: '{{ __('messages.Error') }}',
+                    message: data.message || '{{ __('messages.An error occurred during cleanup') }}',
+                    confirmText: '{{ __('messages.OK') }}',
+                    type: 'danger',
+                    confirmButtonType: 'danger'
+                });
+            }
+        } catch (error) {
+            console.error('[CLEANUP] Exception caught:', error);
+            console.error('[CLEANUP] Error stack:', error.stack);
+            
+            // Restore button state
+            cleanupBtn.disabled = false;
+            cleanupBtn.innerHTML = originalHtml;
+            
+            // Show error modal
+            await window.confirmModal.show({
+                title: '{{ __('messages.Error') }}',
+                message: '{{ __('messages.Failed to cleanup backups. Please try again.') }}',
+                confirmText: '{{ __('messages.OK') }}',
+                type: 'danger',
+                confirmButtonType: 'danger'
+            });
+        }
+    } else {
+        console.log('[CLEANUP] User cancelled');
     }
 }
 
 /**
  * Handle Delete Backup with custom confirmation modal
  */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('[DELETE] DOM Content Loaded - Initializing delete handlers');
+    
+    // Wait for confirmModal to be available
+    await waitForConfirmModal();
+    
+    if (!window.confirmModal) {
+        console.error('[DELETE] confirmModal is not available! Delete functionality will not work.');
+        return;
+    }
+    
     // Attach event listeners to all delete buttons
     const deleteButtons = document.querySelectorAll('.delete-backup-btn');
+    console.log('[DELETE] Found delete buttons:', deleteButtons.length);
     
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', async function() {
+    deleteButtons.forEach((button, index) => {
+        console.log(`[DELETE] Attaching handler to button ${index + 1}`);
+        
+        button.addEventListener('click', async function(event) {
+            console.log('[DELETE] Delete button clicked!');
+            console.log('[DELETE] Event:', event);
+            console.log('[DELETE] Button:', this);
+            
             const filename = this.getAttribute('data-filename');
+            console.log('[DELETE] Filename:', filename);
+            
             const form = this.closest('form');
+            console.log('[DELETE] Form found:', form);
+            console.log('[DELETE] Form action:', form?.action);
+            
+            const row = this.closest('tr');
+            console.log('[DELETE] Row found:', row);
+            
+            console.log('[DELETE] Showing confirmation modal...');
+            console.log('[DELETE] confirmModal exists:', !!window.confirmModal);
+            
+            if (!window.confirmModal) {
+                console.error('[DELETE] confirmModal is not available at click time!');
+                alert('Error: Confirmation system not loaded. Please refresh the page.');
+                return;
+            }
+
+            // Prevent duplicate confirmation modals for rapid clicks
+            if (this.dataset.confirmOpen === '1') {
+                console.warn('[DELETE] Confirmation already open for this button; ignoring duplicate click');
+                return;
+            }
+            this.dataset.confirmOpen = '1';
             
             const confirmed = await window.confirmModal.show({
                 title: '{{ __('messages.confirm_action') }}',
@@ -1034,12 +1210,118 @@ document.addEventListener('DOMContentLoaded', function() {
                 type: 'danger',
                 confirmButtonType: 'danger'
             });
+            // Clear confirm-open guard regardless of result
+            delete this.dataset.confirmOpen;
+            
+            console.log('[DELETE] Confirmation result:', confirmed);
             
             if (confirmed) {
-                form.submit();
+                console.log('[DELETE] User confirmed deletion, proceeding...');
+                
+                // Show loading state on button
+                const originalHtml = this.innerHTML;
+                console.log('[DELETE] Original button HTML:', originalHtml);
+                
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                console.log('[DELETE] Button changed to loading state');
+                
+                try {
+                    // Get the delete URL from the form action
+                    const deleteUrl = form.action;
+                    console.log('[DELETE] Delete URL:', deleteUrl);
+                    
+                    const csrfToken = '{{ csrf_token() }}';
+                    console.log('[DELETE] CSRF Token:', csrfToken);
+                    
+                    console.log('[DELETE] Making DELETE request...');
+                    const response = await fetch(deleteUrl, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    
+                    console.log('[DELETE] Response status:', response.status, response.statusText);
+                    console.log('[DELETE] Response headers:', [...response.headers.entries()]);
+                    
+                    const data = await response.json();
+                    console.log('[DELETE] Response data:', data);
+                    
+                    if (response.ok && data.success) {
+                        console.log('[DELETE] Success! Showing success modal');
+                        
+                        // Show success modal
+                        await window.confirmModal.show({
+                            title: '{{ __('messages.Success') }}',
+                            message: data.message || '{{ __('messages.Backup deleted successfully') }}',
+                            confirmText: '{{ __('messages.OK') }}',
+                            type: 'success',
+                            confirmButtonType: 'success'
+                        });
+                        
+                        console.log('[DELETE] Removing row with animation...');
+                        // Remove the row from the table with animation
+                        row.style.transition = 'opacity 0.3s';
+                        row.style.opacity = '0';
+                        setTimeout(() => {
+                            row.remove();
+                            console.log('[DELETE] Row removed');
+                            
+                            // Check if table is empty and reload if needed
+                            const remainingRows = document.querySelectorAll('.data-table tbody tr').length;
+                            console.log('[DELETE] Remaining rows:', remainingRows);
+                            
+                            if (remainingRows === 0) {
+                                console.log('[DELETE] No more rows, reloading page...');
+                                window.location.reload();
+                            }
+                        }, 300);
+                    } else {
+                        console.error('[DELETE] Delete failed:', data);
+                        
+                        // Show error modal
+                        await window.confirmModal.show({
+                            title: '{{ __('messages.Error') }}',
+                            message: data.message || '{{ __('messages.Failed to delete backup') }}',
+                            confirmText: '{{ __('messages.OK') }}',
+                            type: 'danger',
+                            confirmButtonType: 'danger'
+                        });
+                        
+                        // Restore button state
+                        console.log('[DELETE] Restoring button state');
+                        this.disabled = false;
+                        this.innerHTML = originalHtml;
+                    }
+                } catch (error) {
+                    console.error('[DELETE] Exception caught:', error);
+                    console.error('[DELETE] Error stack:', error.stack);
+                    
+                    // Show error modal
+                    await window.confirmModal.show({
+                        title: '{{ __('messages.Error') }}',
+                        message: '{{ __('messages.Failed to delete backup. Please try again.') }}',
+                        confirmText: '{{ __('messages.OK') }}',
+                        type: 'danger',
+                        confirmButtonType: 'danger'
+                    });
+                    
+                    // Restore button state
+                    console.log('[DELETE] Restoring button state after error');
+                    this.disabled = false;
+                    this.innerHTML = originalHtml;
+                }
+            } else {
+                console.log('[DELETE] User cancelled deletion');
             }
         });
     });
+    
+    console.log('[DELETE] All delete handlers attached successfully');
 });
 
 // ============================================

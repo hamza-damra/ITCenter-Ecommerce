@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\BackupSetting;
 
 class DatabaseBackupService
 {
@@ -45,6 +46,9 @@ class DatabaseBackupService
      */
     public function createBackup(): array
     {
+        // Check max backup limit BEFORE creating file
+        $this->checkMaxBackupLimit();
+
         try {
             $timestamp = Carbon::now()->format('Y-m-d_H-i-s');
             $filename = config('backup.prefix') . "_{$timestamp}.sql";
@@ -462,6 +466,9 @@ class DatabaseBackupService
      */
     public function createBackupWithOptions(array $options): array
     {
+        // Check max backup limit BEFORE creating file
+        $this->checkMaxBackupLimit();
+
         try {
             $type = $options['type'] ?? 'database'; // database or modules
             $modules = $options['modules'] ?? [];
@@ -706,5 +713,81 @@ class DatabaseBackupService
     public function getAvailableModules(): array
     {
         return config('backup.modules', []);
+    }
+
+    /**
+     * Check if creating a new backup would exceed max limit
+     * Throws exception if limit reached
+     *
+     * @return void
+     * @throws Exception
+     */
+    protected function checkMaxBackupLimit(): void
+    {
+        $maxBackups = BackupSetting::get('max_backups', null);
+        
+        // If no limit is set, allow creation
+        if ($maxBackups === null || $maxBackups <= 0) {
+            return;
+        }
+
+        $backups = $this->listBackups();
+        $currentCount = count($backups);
+        
+        // If current count is already at or above limit, prevent creation
+        if ($currentCount >= $maxBackups) {
+            throw new Exception(__('messages.Cannot create a new backup. You have reached the maximum allowed backups.'));
+        }
+    }
+
+    /**
+     * Enforce maximum backup count limit
+     * Deletes oldest backups if count exceeds max_backups setting
+     *
+     * @return void
+     */
+    protected function enforceMaxBackupLimit(): void
+    {
+        try {
+            $maxBackups = BackupSetting::get('max_backups', null);
+            
+            // If no limit is set, return early
+            if ($maxBackups === null || $maxBackups <= 0) {
+                return;
+            }
+
+            $backups = $this->listBackups();
+            $currentCount = count($backups);
+            
+            // If current count is within limit, no action needed
+            if ($currentCount <= $maxBackups) {
+                return;
+            }
+
+            // Calculate how many to delete
+            $deleteCount = $currentCount - $maxBackups;
+            
+            // Sort backups by age (oldest first) and delete excess
+            $backupsToDelete = array_slice($backups, -$deleteCount);
+            
+            $deleted = 0;
+            foreach ($backupsToDelete as $backup) {
+                if ($this->deleteBackup($backup['filename'])) {
+                    $deleted++;
+                }
+            }
+
+            Log::info('Enforced max backup limit', [
+                'max_backups' => $maxBackups,
+                'total_before' => $currentCount,
+                'deleted' => $deleted,
+                'remaining' => $currentCount - $deleted
+            ]);
+
+        } catch (Exception $e) {
+            Log::error('Failed to enforce max backup limit', [
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

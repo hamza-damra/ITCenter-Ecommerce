@@ -1040,9 +1040,7 @@
                     <i class="fas fa-check-circle"></i>
                     <div>{{ session('success') }}</div>
                 </div>
-            @endif
-
-            @if(session('error'))
+            @elseif(session('error'))
                 <div class="alert alert-error">
                     <i class="fas fa-exclamation-circle"></i>
                     <div>{{ session('error') }}</div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class BrandController extends Controller
 {
@@ -75,4 +76,30 @@ class BrandController extends Controller
         return redirect()->route('admin.brands.index')
             ->with('success', 'Brand deleted successfully!');
     }
+
+    public function deleteAll(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            
+            // Delete all brands
+            $count = Brand::count();
+            Brand::query()->delete();
+            
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => __('messages.all_records_deleted_successfully'),
+                'count' => $count
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
+

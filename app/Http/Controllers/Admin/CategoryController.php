@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -100,4 +101,30 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')
             ->with('success', 'Category deleted successfully!');
     }
+
+    public function deleteAll(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            
+            // Delete all categories
+            $count = Category::count();
+            Category::query()->delete();
+            
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => __('messages.all_records_deleted_successfully'),
+                'count' => $count
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
+

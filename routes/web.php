@@ -12,6 +12,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ForgotPasswordController;
 
 // Language Routes
 Route::get('/lang/{locale}', function ($locale) {
@@ -42,10 +43,14 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
-Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.email');
-Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
-Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+// Password Reset Routes (OTP-based)
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'requestReset'])->name('password.request.post');
+Route::get('/verify-code', [ForgotPasswordController::class, 'showVerifyCodeForm'])->name('password.verify.form');
+Route::post('/verify-code', [ForgotPasswordController::class, 'verifyCode'])->name('password.verify.post');
+Route::get('/reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('password.reset.form');
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset.post');
 
 // Favorites Routes
 Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites');
@@ -86,12 +91,15 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     
     // Products
+    Route::delete('/products/delete-all', [App\Http\Controllers\Admin\ProductController::class, 'deleteAll'])->name('products.delete-all');
     Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
     
     // Categories
+    Route::delete('/categories/delete-all', [App\Http\Controllers\Admin\CategoryController::class, 'deleteAll'])->name('categories.delete-all');
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
     
     // Brands
+    Route::delete('/brands/delete-all', [App\Http\Controllers\Admin\BrandController::class, 'deleteAll'])->name('brands.delete-all');
     Route::resource('brands', App\Http\Controllers\Admin\BrandController::class);
     
     // Orders
@@ -123,7 +131,12 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/backup/download/{filename}', [App\Http\Controllers\Admin\BackupController::class, 'download'])->name('backup.download');
     Route::delete('/backup/delete/{filename}', [App\Http\Controllers\Admin\BackupController::class, 'delete'])->name('backup.delete');
     Route::post('/backup/cleanup', [App\Http\Controllers\Admin\BackupController::class, 'cleanup'])->name('backup.cleanup');
+    Route::post('/backup/cleanup-ajax', [App\Http\Controllers\Admin\BackupController::class, 'cleanupAjax'])->name('backup.cleanup-ajax');
     Route::post('/backup/validate-upload', [App\Http\Controllers\Admin\BackupController::class, 'validateUpload'])->name('backup.validate-upload');
     Route::post('/backup/import-and-restore', [App\Http\Controllers\Admin\BackupController::class, 'importAndRestore'])->name('backup.import-and-restore');
     Route::get('/backup/modules', [App\Http\Controllers\Admin\BackupController::class, 'getModules'])->name('backup.modules');
+    
+    // Backup Settings
+    Route::get('/backup/settings', [App\Http\Controllers\Admin\BackupSettingController::class, 'index'])->name('backup.settings');
+    Route::post('/backup/settings', [App\Http\Controllers\Admin\BackupSettingController::class, 'update'])->name('backup.settings.update');
 });

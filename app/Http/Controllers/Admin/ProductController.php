@@ -212,4 +212,30 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')
             ->with('success', 'Product deleted successfully!');
     }
+
+    public function deleteAll(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            
+            // Delete all products (this will also soft delete them if using SoftDeletes)
+            $count = Product::count();
+            Product::query()->delete();
+            
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => __('messages.all_records_deleted_successfully'),
+                'count' => $count
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
+
