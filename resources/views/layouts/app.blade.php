@@ -6,6 +6,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'IT Center')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    {{-- Horizontal Scroller CSS --}}
+    <link rel="stylesheet" href="{{ asset('css/horizontal-scroller.css') }}">
+    
     @if(is_rtl())
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1869,5 +1873,10 @@
             }
         }, true); // Use capture phase to catch all errors
     </script>
+    
+    {{-- Horizontal Scroller JavaScript --}}
+    <script src="{{ asset('js/horizontal-scroller.js') }}"></script>
+    
+    @stack('scripts')
 </body>
 </html>

@@ -51,6 +51,11 @@ class BackupController extends Controller
      */
     public function create()
     {
+        // Ensure user is authenticated
+        if (!auth()->check()) {
+            abort(403, 'Unauthorized: Authentication required for backup operations');
+        }
+
         try {
             $result = $this->backupService->createBackup();
 
@@ -73,6 +78,11 @@ class BackupController extends Controller
      */
     public function restore(Request $request)
     {
+        // Ensure user is authenticated
+        if (!auth()->check()) {
+            abort(403, 'Unauthorized: Authentication required for restore operations');
+        }
+
         $request->validate([
             'filename' => 'required|string',
             'confirm' => 'required|accepted',
@@ -177,12 +187,52 @@ class BackupController extends Controller
     public function download($filename)
     {
         try {
+            // Validate filename format to prevent path traversal attacks
+            if (!preg_match('/^(backup|import)_[a-z0-9_-]+\.sql(\.gz)?$/i', $filename)) {
+                Log::warning('Invalid backup filename format attempted', [
+                    'filename' => $filename,
+                    'ip' => request()->ip(),
+                    'user' => auth()->user()->email ?? 'unknown'
+                ]);
+                
+                return redirect()->route('admin.backup.index')
+                    ->with('error', 'Invalid backup filename format.');
+            }
+
+            // Prevent directory traversal
+            if (str_contains($filename, '..') || str_contains($filename, '/') || str_contains($filename, '\\')) {
+                Log::warning('Path traversal attempt detected', [
+                    'filename' => $filename,
+                    'ip' => request()->ip(),
+                    'user' => auth()->user()->email ?? 'unknown'
+                ]);
+                
+                abort(403, 'Forbidden: Invalid filename');
+            }
+
             $filepath = $this->backupService->getBackupPath($filename);
 
             if (!$filepath) {
                 return redirect()->route('admin.backup.index')
                     ->with('error', "Backup file not found: {$filename}");
             }
+
+            // Additional security check: ensure file is within backup directory
+            $backupPath = realpath(config('backup.path', storage_path('app/backups')));
+            $realFilePath = realpath($filepath);
+            
+            if (!$realFilePath || strpos($realFilePath, $backupPath) !== 0) {
+                Log::warning('Attempted access to file outside backup directory', [
+                    'filename' => $filename,
+                    'ip' => request()->ip(),
+                ]);
+                abort(403, 'Forbidden');
+            }
+
+            Log::info('Backup file downloaded', [
+                'filename' => $filename,
+                'user' => auth()->user()->email ?? 'unknown'
+            ]);
 
             return response()->download($filepath, $filename, [
                 'Content-Type' => 'application/octet-stream',
@@ -207,10 +257,16 @@ class BackupController extends Controller
     public function cleanup()
     {
         try {
-            $result = $this->backupService->cleanupOldBackups();
+            // Use force mode to ensure old backups are actually deleted
+            $force = request()->has('force') ? request()->boolean('force') : true;
+            $result = $this->backupService->cleanupOldBackups($force);
+
+            $message = $force 
+                ? "Force cleanup completed! Deleted {$result['deleted_count']} old backups, kept {$result['kept_count']} most recent backup(s)."
+                : "Cleanup completed! Deleted {$result['deleted_count']} old backups, kept {$result['kept_count']} backups.";
 
             return redirect()->route('admin.backup.index')
-                ->with('success', "Cleanup completed! Deleted {$result['deleted_count']} old backups, kept {$result['kept_count']} backups.");
+                ->with('success', $message);
 
         } catch (Exception $e) {
             Log::error('Backup cleanup failed', ['error' => $e->getMessage()]);
@@ -228,22 +284,30 @@ class BackupController extends Controller
     public function cleanupAjax()
     {
         try {
-            $result = $this->backupService->cleanupOldBackups();
+            // Use force mode to ensure old backups are actually deleted
+            $force = request()->has('force') ? request()->boolean('force') : true;
+            $result = $this->backupService->cleanupOldBackups($force);
 
             Log::info('Backup cleanup completed via AJAX', [
                 'deleted' => $result['deleted_count'],
                 'kept' => $result['kept_count'],
+                'force_mode' => $force,
                 'admin' => auth()->user()->email ?? 'unknown'
             ]);
 
+            $message = isset($result['mode']) && $result['mode'] === 'force'
+                ? "Force cleanup completed! Deleted {$result['deleted_count']} old backups, kept {$result['kept_count']} most recent backup(s)."
+                : "Cleanup completed! Deleted {$result['deleted_count']} old backups, kept {$result['kept_count']} backups.";
+
             return response()->json([
                 'success' => true,
-                'message' => "Cleanup completed! Deleted {$result['deleted_count']} old backups, kept {$result['kept_count']} backups.",
+                'message' => $message,
                 'data' => [
                     'deleted_count' => $result['deleted_count'],
                     'kept_count' => $result['kept_count'],
                     'deleted_files' => $result['deleted'],
-                    'kept_files' => $result['kept']
+                    'kept_files' => $result['kept'],
+                    'mode' => $result['mode'] ?? 'normal'
                 ]
             ]);
 

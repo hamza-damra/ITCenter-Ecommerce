@@ -56,7 +56,7 @@ class BackupList extends Command
                 $backup['filename'],
                 $backup['size_formatted'],
                 $backup['created_at_formatted'],
-                $backup['age_days'] . ' days ago',
+                $backup['age_human'] ?? ($backup['age_days'] . ' days ago'),
             ];
         }, $backups);
 

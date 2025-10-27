@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use App\Models\BackupSetting;
+use App\Models\Backup;
 
 class DatabaseBackupService
 {
@@ -95,10 +96,24 @@ class DatabaseBackupService
 
             $filesize = filesize($filepath);
 
+            // Create database record for backup
+            $backup = Backup::create([
+                'filename' => $filename,
+                'type' => 'database',
+                'size' => $filesize,
+                'expires_at' => now()->addDays(BackupSetting::get('default_retention_days', 30)),
+                'created_by' => auth()->check() ? auth()->user()->email : 'system',
+                'metadata' => [
+                    'tables' => count($tables),
+                    'compressed' => config('backup.compress'),
+                ],
+            ]);
+
             Log::info('Database backup created successfully', [
                 'filename' => $filename,
                 'size' => $filesize,
-                'tables' => count($tables)
+                'tables' => count($tables),
+                'backup_id' => $backup->id,
             ]);
 
             return [
@@ -235,39 +250,85 @@ class DatabaseBackupService
                 throw new Exception("Backup file not found: {$filename}");
             }
 
+            // Check file size to determine processing method
+            $fileSize = filesize($filepath);
+            $maxMemorySafeSize = 50 * 1024 * 1024; // 50MB threshold
+
             // Decompress if needed
             $isCompressed = substr($filename, -3) === '.gz';
+            
+            // For large files, use streaming approach
+            if ($fileSize > $maxMemorySafeSize) {
+                Log::info('Using memory-safe streaming restore for large backup', [
+                    'filename' => $filename,
+                    'size' => $fileSize
+                ]);
+                return $this->restoreBackupStreaming($filepath, $filename, $isCompressed);
+            }
+            
+            // For smaller files, use traditional method
             if ($isCompressed) {
                 $sqlContent = $this->decompressBackup($filepath);
             } else {
                 $sqlContent = file_get_contents($filepath);
             }
 
-            // Disable foreign key checks first
-            DB::statement('SET FOREIGN_KEY_CHECKS=0');
-            
-            // Execute the entire SQL content
+            // Validate backup file integrity
+            $this->validateBackupFile($sqlContent, $filename);
+
+            // Create automatic safety backup before restore
+            Log::info('Creating safety backup before restore', ['target_backup' => $filename]);
+            $safetyBackup = null;
             try {
-                // Use DB::unprepared to execute multiple statements
+                $safetyResult = $this->createBackup();
+                $safetyBackup = $safetyResult['filename'];
+                Log::info('Safety backup created', ['safety_backup' => $safetyBackup]);
+            } catch (Exception $e) {
+                Log::warning('Could not create safety backup, proceeding anyway', ['error' => $e->getMessage()]);
+            }
+
+            // Use transaction for restore
+            DB::beginTransaction();
+            
+            try {
+                // Disable foreign key checks first
+                DB::statement('SET FOREIGN_KEY_CHECKS=0');
+                
+                // Execute the entire SQL content
                 DB::unprepared($sqlContent);
                 
                 // Re-enable foreign key checks
                 DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
+                // Commit transaction
+                DB::commit();
+
                 Log::info('Database restored successfully', [
-                    'filename' => $filename
+                    'filename' => $filename,
+                    'safety_backup' => $safetyBackup,
                 ]);
 
                 return [
                     'success' => true,
                     'filename' => $filename,
-                    'statements' => 'all'
+                    'statements' => 'all',
+                    'safety_backup' => $safetyBackup,
                 ];
 
             } catch (Exception $e) {
+                // Rollback transaction
+                DB::rollBack();
+                
                 // Re-enable foreign key checks even on error
                 DB::statement('SET FOREIGN_KEY_CHECKS=1');
-                throw $e;
+                
+                Log::error('Restore failed, transaction rolled back', [
+                    'filename' => $filename,
+                    'error' => $e->getMessage(),
+                    'safety_backup' => $safetyBackup,
+                ]);
+                
+                throw new Exception("Restore failed: {$e->getMessage()}. Database was not modified. Safety backup available: {$safetyBackup}");
             }
 
         } catch (Exception $e) {
@@ -278,6 +339,174 @@ class DatabaseBackupService
 
             throw $e;
         }
+    }
+
+    /**
+     * Restore backup using memory-safe streaming approach for large files
+     *
+     * @param string $filepath
+     * @param string $filename
+     * @param bool $isCompressed
+     * @return array
+     * @throws Exception
+     */
+    protected function restoreBackupStreaming(string $filepath, string $filename, bool $isCompressed): array
+    {
+        $safetyBackup = null;
+        
+        try {
+            // Create safety backup
+            try {
+                $safetyResult = $this->createBackup();
+                $safetyBackup = $safetyResult['filename'];
+                Log::info('Safety backup created for streaming restore', ['safety_backup' => $safetyBackup]);
+            } catch (Exception $e) {
+                Log::warning('Could not create safety backup', ['error' => $e->getMessage()]);
+            }
+
+            // Open file handle
+            if ($isCompressed) {
+                $handle = gzopen($filepath, 'rb');
+            } else {
+                $handle = fopen($filepath, 'rb');
+            }
+
+            if (!$handle) {
+                throw new Exception("Could not open backup file for reading");
+            }
+
+            DB::beginTransaction();
+            
+            try {
+                DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+                $buffer = '';
+                $statementCount = 0;
+                
+                // Read file line by line
+                while (!feof($handle)) {
+                    $line = $isCompressed ? gzgets($handle) : fgets($handle);
+                    
+                    if ($line === false) {
+                        break;
+                    }
+
+                    // Skip comments and empty lines
+                    $trimmedLine = trim($line);
+                    if (empty($trimmedLine) || str_starts_with($trimmedLine, '--') || str_starts_with($trimmedLine, '/*')) {
+                        continue;
+                    }
+
+                    // Accumulate lines until we hit a semicolon
+                    $buffer .= $line;
+
+                    // Execute when we find a complete statement
+                    if (str_ends_with($trimmedLine, ';')) {
+                        try {
+                            DB::unprepared($buffer);
+                            $statementCount++;
+                            $buffer = '';
+                        } catch (Exception $e) {
+                            Log::error('Failed to execute SQL statement during streaming restore', [
+                                'statement_number' => $statementCount,
+                                'error' => $e->getMessage()
+                            ]);
+                            throw $e;
+                        }
+                    }
+                }
+
+                // Execute any remaining buffer
+                if (!empty(trim($buffer))) {
+                    DB::unprepared($buffer);
+                    $statementCount++;
+                }
+
+                DB::statement('SET FOREIGN_KEY_CHECKS=1');
+                DB::commit();
+
+                if ($isCompressed) {
+                    gzclose($handle);
+                } else {
+                    fclose($handle);
+                }
+
+                Log::info('Large backup restored successfully using streaming', [
+                    'filename' => $filename,
+                    'statements' => $statementCount,
+                    'safety_backup' => $safetyBackup,
+                ]);
+
+                return [
+                    'success' => true,
+                    'filename' => $filename,
+                    'statements' => $statementCount,
+                    'safety_backup' => $safetyBackup,
+                    'method' => 'streaming',
+                ];
+
+            } catch (Exception $e) {
+                DB::rollBack();
+                DB::statement('SET FOREIGN_KEY_CHECKS=1');
+                
+                if ($isCompressed) {
+                    gzclose($handle);
+                } else {
+                    fclose($handle);
+                }
+                
+                throw new Exception("Streaming restore failed: {$e->getMessage()}. Safety backup: {$safetyBackup}");
+            }
+
+        } catch (Exception $e) {
+            Log::error('Streaming restore failed', [
+                'filename' => $filename,
+                'error' => $e->getMessage()
+            ]);
+            throw $e;
+        }
+    }
+
+    /**
+     * Validate backup file integrity before restore
+     *
+     * @param string $sqlContent
+     * @param string $filename
+     * @return void
+     * @throws Exception
+     */
+    protected function validateBackupFile(string $sqlContent, string $filename): void
+    {
+        // Check file is not empty
+        if (empty(trim($sqlContent))) {
+            throw new Exception("Backup file is empty: {$filename}");
+        }
+
+        // Check for SQL keywords - must have CREATE TABLE statements
+        if (!str_contains($sqlContent, 'CREATE TABLE')) {
+            throw new Exception("Invalid backup: No CREATE TABLE statements found in {$filename}");
+        }
+
+        // Check file is not truncated - should end with semicolon or SQL comment
+        $trimmed = trim($sqlContent);
+        if (!str_ends_with($trimmed, ';') && !str_ends_with($trimmed, '*/')) {
+            throw new Exception("Backup file appears truncated or corrupted: {$filename}");
+        }
+
+        // Verify it's our backup format
+        if (!str_contains($sqlContent, '-- Database Backup') && !str_contains($sqlContent, '-- Advanced Database Backup')) {
+            Log::warning("Backup file format not recognized, proceeding with caution", ['filename' => $filename]);
+        }
+
+        // Check for suspicious SQL injection patterns
+        $dangerous = ['<?php', '<?', 'exec(', 'system(', 'shell_exec'];
+        foreach ($dangerous as $pattern) {
+            if (str_contains($sqlContent, $pattern)) {
+                throw new Exception("Backup file contains suspicious content and has been rejected: {$filename}");
+            }
+        }
+
+        Log::info('Backup file validation passed', ['filename' => $filename]);
     }
 
     /**
@@ -312,14 +541,21 @@ class DatabaseBackupService
         $backups = [];
         foreach ($files as $file) {
             $filename = basename($file);
+            $createdAt = Carbon::createFromTimestamp(filemtime($file));
+            $now = Carbon::now();
+            
+            // Calculate age in days (always positive)
+            $ageDays = abs($createdAt->diffInDays($now, false));
+            
             $backups[] = [
                 'filename' => $filename,
                 'filepath' => $file,
                 'size' => filesize($file),
                 'size_formatted' => $this->formatBytes(filesize($file)),
                 'created_at' => filemtime($file),
-                'created_at_formatted' => Carbon::createFromTimestamp(filemtime($file))->format('Y-m-d H:i:s'),
-                'age_days' => Carbon::createFromTimestamp(filemtime($file))->diffInDays(Carbon::now())
+                'created_at_formatted' => $createdAt->format('Y-m-d H:i:s'),
+                'age_days' => (int) $ageDays,
+                'age_human' => $this->formatTimeAgo($createdAt)
             ];
         }
 
@@ -341,56 +577,206 @@ class DatabaseBackupService
     {
         $filepath = $this->backupPath . DIRECTORY_SEPARATOR . $filename;
         
-        if (file_exists($filepath)) {
-            unlink($filepath);
+        try {
+            // Delete physical file
+            if (file_exists($filepath)) {
+                unlink($filepath);
+            }
             
-            Log::info('Backup deleted', ['filename' => $filename]);
+            // Delete database record
+            Backup::where('filename', $filename)->delete();
+            
+            Log::info('Backup deleted', [
+                'filename' => $filename,
+                'deleted_by' => auth()->check() ? auth()->user()->email : 'system'
+            ]);
             
             return true;
+            
+        } catch (Exception $e) {
+            Log::error('Failed to delete backup', [
+                'filename' => $filename,
+                'error' => $e->getMessage()
+            ]);
+            
+            return false;
         }
-
-        return false;
     }
 
     /**
      * Clean up old backups based on retention policy
+     * Now uses database records instead of scanning files
      *
+     * @param bool $force If true, keeps only the most recent backup and deletes all others
      * @return array
      */
-    public function cleanupOldBackups(): array
+    public function cleanupOldBackups(bool $force = false): array
     {
-        $backups = $this->listBackups();
         $retentionDays = config('backup.retention_days');
-        $maxBackups = config('backup.max_backups');
+        $maxBackups = BackupSetting::get('max_backups', null);
         
         $deleted = [];
         $kept = [];
 
-        foreach ($backups as $index => $backup) {
-            $shouldDelete = false;
-
-            // Check age-based retention
-            if ($backup['age_days'] > $retentionDays) {
-                $shouldDelete = true;
-            }
-
-            // Check max backups limit
-            if ($maxBackups && $index >= $maxBackups) {
-                $shouldDelete = true;
-            }
-
-            if ($shouldDelete) {
-                if ($this->deleteBackup($backup['filename'])) {
-                    $deleted[] = $backup['filename'];
+        // Force mode: Keep only the most recent backup, delete all others
+        if ($force) {
+            Log::info('Force cleanup initiated - will keep only most recent backup');
+            
+            // Get all backups except the newest one
+            $allBackups = Backup::orderBy('created_at', 'desc')->get();
+            
+            if ($allBackups->count() > 1) {
+                // Keep the first (newest) one, delete all others
+                $backupsToDelete = $allBackups->slice(1);
+                
+                foreach ($backupsToDelete as $backup) {
+                    try {
+                        // Delete physical file
+                        $filepath = $this->backupPath . DIRECTORY_SEPARATOR . $backup->filename;
+                        if (file_exists($filepath)) {
+                            unlink($filepath);
+                        }
+                        
+                        // Delete database record
+                        $backup->delete();
+                        $deleted[] = $backup->filename;
+                        
+                    } catch (Exception $e) {
+                        Log::error('Failed to delete backup during force cleanup', [
+                            'filename' => $backup->filename,
+                            'error' => $e->getMessage()
+                        ]);
+                    }
                 }
-            } else {
-                $kept[] = $backup['filename'];
+                
+                // Keep record of what we kept
+                if ($allBackups->count() > 0) {
+                    $kept[] = $allBackups->first()->filename;
+                }
             }
+            
+            Log::info('Force cleanup completed', [
+                'deleted' => count($deleted),
+                'kept' => count($kept),
+            ]);
+            
+            return [
+                'deleted' => $deleted,
+                'kept' => $kept,
+                'deleted_count' => count($deleted),
+                'kept_count' => count($kept),
+                'mode' => 'force'
+            ];
+        }
+
+        // Normal cleanup mode (not forced)
+        
+        // Method 1: Delete expired backups (based on expires_at)
+        $expiredBackups = Backup::expired()->get();
+        
+        foreach ($expiredBackups as $backup) {
+            try {
+                // Delete physical file
+                $filepath = $this->backupPath . DIRECTORY_SEPARATOR . $backup->filename;
+                if (file_exists($filepath)) {
+                    unlink($filepath);
+                }
+                
+                // Delete database record
+                $backup->delete();
+                $deleted[] = $backup->filename;
+                
+            } catch (Exception $e) {
+                Log::error('Failed to delete expired backup', [
+                    'filename' => $backup->filename,
+                    'error' => $e->getMessage()
+                ]);
+            }
+        }
+
+        // Method 2: Delete backups older than retention days (based on created_at)
+        if ($retentionDays && $retentionDays > 0) {
+            $cutoffDate = Carbon::now()->subDays($retentionDays);
+            
+            $oldBackups = Backup::where('created_at', '<', $cutoffDate)->get();
+            
+            foreach ($oldBackups as $backup) {
+                // Skip if already deleted
+                if (in_array($backup->filename, $deleted)) {
+                    continue;
+                }
+                
+                try {
+                    // Delete physical file
+                    $filepath = $this->backupPath . DIRECTORY_SEPARATOR . $backup->filename;
+                    if (file_exists($filepath)) {
+                        unlink($filepath);
+                    }
+                    
+                    // Delete database record
+                    $backup->delete();
+                    $deleted[] = $backup->filename;
+                    
+                } catch (Exception $e) {
+                    Log::error('Failed to delete old backup', [
+                        'filename' => $backup->filename,
+                        'age_days' => $backup->created_at->diffInDays(Carbon::now()),
+                        'error' => $e->getMessage()
+                    ]);
+                }
+            }
+        }
+
+        // Method 3: Enforce max backups limit (delete oldest if exceeds)
+        if ($maxBackups && $maxBackups > 0) {
+            $totalBackups = Backup::count();
+            
+            if ($totalBackups > $maxBackups) {
+                $excessCount = $totalBackups - $maxBackups;
+                
+                // Get oldest backups to delete
+                $oldestBackups = Backup::orderBy('created_at', 'asc')
+                    ->limit($excessCount)
+                    ->get();
+                
+                foreach ($oldestBackups as $backup) {
+                    // Skip if already deleted
+                    if (in_array($backup->filename, $deleted)) {
+                        continue;
+                    }
+                    
+                    try {
+                        // Delete physical file
+                        $filepath = $this->backupPath . DIRECTORY_SEPARATOR . $backup->filename;
+                        if (file_exists($filepath)) {
+                            unlink($filepath);
+                        }
+                        
+                        // Delete database record
+                        $backup->delete();
+                        $deleted[] = $backup->filename;
+                        
+                    } catch (Exception $e) {
+                        Log::error('Failed to delete excess backup', [
+                            'filename' => $backup->filename,
+                            'error' => $e->getMessage()
+                        ]);
+                    }
+                }
+            }
+        }
+
+        // Get list of kept backups
+        $keptBackups = Backup::orderBy('created_at', 'desc')->get();
+        foreach ($keptBackups as $backup) {
+            $kept[] = $backup->filename;
         }
 
         Log::info('Backup cleanup completed', [
             'deleted' => count($deleted),
-            'kept' => count($kept)
+            'kept' => count($kept),
+            'retention_days' => $retentionDays,
+            'max_backups' => $maxBackups,
         ]);
 
         return [
@@ -412,14 +798,24 @@ class DatabaseBackupService
         
         $totalSize = array_sum(array_column($backups, 'size'));
         
+        // Get backup frequency in days based on schedule
+        $schedule = BackupSetting::get('schedule', config('backup.schedule'));
+        $backupFrequencyDays = match($schedule) {
+            'daily' => 1,
+            'weekly' => 7,
+            'monthly' => 30,
+            default => 1
+        };
+        
         return [
             'total_backups' => count($backups),
             'total_size' => $totalSize,
             'total_size_formatted' => $this->formatBytes($totalSize),
             'oldest_backup' => !empty($backups) ? end($backups)['created_at_formatted'] : null,
             'newest_backup' => !empty($backups) ? $backups[0]['created_at_formatted'] : null,
-            'retention_days' => config('backup.retention_days'),
-            'schedule' => config('backup.schedule')
+            'retention_days' => BackupSetting::get('default_retention_days', config('backup.retention_days')),
+            'schedule' => $schedule,
+            'backup_frequency_days' => $backupFrequencyDays
         ];
     }
 
@@ -455,6 +851,112 @@ class DatabaseBackupService
         }
 
         return round($bytes, 2) . ' ' . $units[$i];
+    }
+
+    /**
+     * Format time ago in human readable format
+     *
+     * @param Carbon $date
+     * @return string
+     */
+    protected function formatTimeAgo(Carbon $date): string
+    {
+        $now = Carbon::now();
+        
+        // Get absolute differences
+        $diffInSeconds = abs($now->diffInSeconds($date, false));
+        $diffInMinutes = abs($now->diffInMinutes($date, false));
+        $diffInHours = abs($now->diffInHours($date, false));
+        $diffInDays = abs($now->diffInDays($date, false));
+        
+        // Get current locale
+        $locale = app()->getLocale();
+        
+        if ($diffInSeconds < 60) {
+            return $this->translateTimeUnit((int) $diffInSeconds, 'second', $locale);
+        } elseif ($diffInMinutes < 60) {
+            return $this->translateTimeUnit((int) $diffInMinutes, 'minute', $locale);
+        } elseif ($diffInHours < 24) {
+            return $this->translateTimeUnit((int) $diffInHours, 'hour', $locale);
+        } elseif ($diffInDays < 30) {
+            return $this->translateTimeUnit((int) $diffInDays, 'day', $locale);
+        } elseif ($diffInDays < 365) {
+            $months = (int) floor($diffInDays / 30);
+            return $this->translateTimeUnit($months, 'month', $locale);
+        } else {
+            $years = (int) floor($diffInDays / 365);
+            return $this->translateTimeUnit($years, 'year', $locale);
+        }
+    }
+
+    /**
+     * Translate time unit to current locale
+     *
+     * @param int $value
+     * @param string $unit
+     * @param string $locale
+     * @return string
+     */
+    protected function translateTimeUnit(int $value, string $unit, string $locale): string
+    {
+        $translations = [
+            'ar' => [
+                'second' => ['ثانية واحدة', 'ثانيتان', '%d ثوانٍ', '%d ثانية'],
+                'minute' => ['دقيقة واحدة', 'دقيقتان', '%d دقائق', '%d دقيقة'],
+                'hour' => ['ساعة واحدة', 'ساعتان', '%d ساعات', '%d ساعة'],
+                'day' => ['يوم واحد', 'يومان', '%d أيام', '%d يوم'],
+                'month' => ['شهر واحد', 'شهران', '%d أشهر', '%d شهر'],
+                'year' => ['سنة واحدة', 'سنتان', '%d سنوات', '%d سنة'],
+                'ago' => 'منذ %s'
+            ],
+            'en' => [
+                'second' => ['1 second', '2 seconds', '%d seconds', '%d seconds'],
+                'minute' => ['1 minute', '2 minutes', '%d minutes', '%d minutes'],
+                'hour' => ['1 hour', '2 hours', '%d hours', '%d hours'],
+                'day' => ['1 day', '2 days', '%d days', '%d days'],
+                'month' => ['1 month', '2 months', '%d months', '%d months'],
+                'year' => ['1 year', '2 years', '%d years', '%d years'],
+                'ago' => '%s ago'
+            ],
+            'he' => [
+                'second' => ['שנייה אחת', 'שתי שניות', '%d שניות', '%d שניות'],
+                'minute' => ['דקה אחת', 'שתי דקות', '%d דקות', '%d דקות'],
+                'hour' => ['שעה אחת', 'שעתיים', '%d שעות', '%d שעות'],
+                'day' => ['יום אחד', 'יומיים', '%d ימים', '%d ימים'],
+                'month' => ['חודש אחד', 'חודשיים', '%d חודשים', '%d חודשים'],
+                'year' => ['שנה אחת', 'שנתיים', '%d שנים', '%d שנים'],
+                'ago' => 'לפני %s'
+            ]
+        ];
+        
+        // Fallback to English if locale not found
+        if (!isset($translations[$locale])) {
+            $locale = 'en';
+        }
+        
+        // Get the correct plural form for Arabic
+        if ($locale === 'ar') {
+            if ($value == 1) {
+                $format = $translations[$locale][$unit][0];
+            } elseif ($value == 2) {
+                $format = $translations[$locale][$unit][1];
+            } elseif ($value >= 3 && $value <= 10) {
+                $format = sprintf($translations[$locale][$unit][2], $value);
+            } else {
+                $format = sprintf($translations[$locale][$unit][3], $value);
+            }
+        } else {
+            // English and Hebrew
+            if ($value == 1) {
+                $format = $translations[$locale][$unit][0];
+            } elseif ($value == 2) {
+                $format = $translations[$locale][$unit][1];
+            } else {
+                $format = sprintf($translations[$locale][$unit][2], $value);
+            }
+        }
+        
+        return sprintf($translations[$locale]['ago'], $format);
     }
 
     /**
@@ -528,12 +1030,27 @@ class DatabaseBackupService
 
             $filesize = filesize($filepath);
 
+            // Create database record for backup
+            $backup = Backup::create([
+                'filename' => $filename,
+                'type' => $type,
+                'size' => $filesize,
+                'expires_at' => now()->addDays(BackupSetting::get('default_retention_days', 30)),
+                'created_by' => auth()->check() ? auth()->user()->email : 'system',
+                'metadata' => [
+                    'tables' => count($tables),
+                    'modules' => $modules,
+                    'compressed' => config('backup.compress'),
+                ],
+            ]);
+
             Log::info('Advanced backup created successfully', [
                 'filename' => $filename,
                 'type' => $type,
                 'size' => $filesize,
                 'tables' => count($tables),
-                'modules' => $modules
+                'modules' => $modules,
+                'backup_id' => $backup->id,
             ]);
 
             return [
@@ -683,6 +1200,19 @@ class DatabaseBackupService
             // Restore from saved file
             $result = $this->restoreBackup($filename);
             
+            // Create database record for imported backup
+            Backup::create([
+                'filename' => $filename,
+                'type' => $validation['metadata']['type'] ?? 'unknown',
+                'size' => $validation['size'],
+                'expires_at' => now()->addDays(BackupSetting::get('default_retention_days', 30)),
+                'created_by' => auth()->check() ? auth()->user()->email : 'import',
+                'metadata' => array_merge($validation['metadata'], [
+                    'imported' => true,
+                    'original_filename' => $file->getClientOriginalName(),
+                ]),
+            ]);
+            
             Log::info('Backup imported and restored successfully', [
                 'original_filename' => $file->getClientOriginalName(),
                 'saved_filename' => $filename,
@@ -718,6 +1248,7 @@ class DatabaseBackupService
     /**
      * Check if creating a new backup would exceed max limit
      * Throws exception if limit reached
+     * Uses database locking to prevent race conditions
      *
      * @return void
      * @throws Exception
@@ -731,63 +1262,30 @@ class DatabaseBackupService
             return;
         }
 
-        $backups = $this->listBackups();
-        $currentCount = count($backups);
+        // Use database locking to prevent race condition
+        DB::beginTransaction();
         
-        // If current count is already at or above limit, prevent creation
-        if ($currentCount >= $maxBackups) {
-            throw new Exception(__('messages.Cannot create a new backup. You have reached the maximum allowed backups.'));
-        }
-    }
-
-    /**
-     * Enforce maximum backup count limit
-     * Deletes oldest backups if count exceeds max_backups setting
-     *
-     * @return void
-     */
-    protected function enforceMaxBackupLimit(): void
-    {
         try {
-            $maxBackups = BackupSetting::get('max_backups', null);
+            // Lock the backup_settings table for this check
+            $setting = DB::table('backup_settings')
+                ->where('key', 'max_backups')
+                ->lockForUpdate()
+                ->first();
             
-            // If no limit is set, return early
-            if ($maxBackups === null || $maxBackups <= 0) {
-                return;
+            // Count current backups
+            $currentCount = Backup::count();
+            
+            // If current count is already at or above limit, prevent creation
+            if ($currentCount >= $maxBackups) {
+                DB::rollBack();
+                throw new Exception(__('messages.Cannot create a new backup. You have reached the maximum allowed backups.') . " (Limit: {$maxBackups})");
             }
-
-            $backups = $this->listBackups();
-            $currentCount = count($backups);
             
-            // If current count is within limit, no action needed
-            if ($currentCount <= $maxBackups) {
-                return;
-            }
-
-            // Calculate how many to delete
-            $deleteCount = $currentCount - $maxBackups;
+            DB::commit();
             
-            // Sort backups by age (oldest first) and delete excess
-            $backupsToDelete = array_slice($backups, -$deleteCount);
-            
-            $deleted = 0;
-            foreach ($backupsToDelete as $backup) {
-                if ($this->deleteBackup($backup['filename'])) {
-                    $deleted++;
-                }
-            }
-
-            Log::info('Enforced max backup limit', [
-                'max_backups' => $maxBackups,
-                'total_before' => $currentCount,
-                'deleted' => $deleted,
-                'remaining' => $currentCount - $deleted
-            ]);
-
         } catch (Exception $e) {
-            Log::error('Failed to enforce max backup limit', [
-                'error' => $e->getMessage()
-            ]);
+            DB::rollBack();
+            throw $e;
         }
     }
 }

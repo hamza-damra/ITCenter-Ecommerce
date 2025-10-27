@@ -2253,81 +2253,16 @@
 
 <!-- Main Content Container -->
 <div class="container">
-    <!-- Featured Products -->
+    <!-- Featured Products - HORIZONTAL SCROLLER -->
     @if($featuredProducts->count() > 0)
-    <div class="section-header">
-        <h2>{{ __t('messages.featured_products') }}</h2>
-        <a href="{{ route('products') }}" class="view-more">
-            {{ __t('messages.view_more') }} <i class="fas fa-arrow-{{ is_rtl() ? 'left' : 'right' }}"></i>
-        </a>
-    </div>
-
-    <div class="product-grid">
-        @foreach($featuredProducts as $product)
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
-            <div class="product-image">
-                @if($product->is_new)
-                <div class="product-badge">{{ __t('messages.new') }}</div>
-                @elseif($product->sale_price && $product->sale_price < $product->price)
-                <div class="product-badge">{{ __t('messages.sale') }}</div>
-                @elseif($product->is_featured)
-                <div class="product-badge">{{ __t('messages.hot') }}</div>
-                @endif
-                <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
-            </div>
-            <div class="product-info">
-                <div class="product-title">{{ $product->name }}</div>
-                <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
-                <div class="product-footer">
-                    <div class="product-price">
-                        @if($product->sale_price && $product->sale_price < $product->price)
-                            <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
-                            <span>₪ {{ number_format($product->sale_price, 0) }}</span>
-                        @else
-                            <span class="original-price" style="visibility: hidden;">₪ 0</span>
-                            <span>₪ {{ number_format($product->price, 0) }}</span>
-                        @endif
-                    </div>
-                    @if($product->stock_status === 'out_of_stock')
-                    <button class="add-to-cart out-of-stock"
-                            data-product-id="{{ $product->id }}"
-                            data-product-name="{{ $product->name }}"
-                            onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
-                        @if(is_rtl())
-                            {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
-                        @else
-                            <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
-                        @endif
-                    </button>
-                    @else
-                    <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
-                            data-product-id="{{ $product->id }}"
-                            data-original-text="{{ __t('messages.add_to_cart') }}"
-                            data-added-text="{{ __t('messages.in_cart') }}"
-                            onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                        @if(in_array($product->id, $cartProductIds))
-                            @if(is_rtl())
-                                {{ __t('messages.in_cart') }} <i class="fas fa-check"></i>
-                            @else
-                                <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
-                            @endif
-                        @else
-                            @if(is_rtl())
-                                {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
-                            @else
-                                <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
-                            @endif
-                        @endif
-                    </button>
-                    @endif
-                </div>
-            </div>
-        </div>
-        @endforeach
-    </div>
+    <x-horizontal-product-scroller 
+        :products="$featuredProducts" 
+        title="{{ __t('messages.featured_products') }}"
+        :viewMoreUrl="route('products')"
+        :autoScroll="true"
+        :autoScrollInterval="4000"
+        containerId="featured-products-scroller"
+    />
     @endif
 
     <!-- Shop by Categories - Builder Cards -->
@@ -2367,241 +2302,42 @@
     </div>
     @endif
 
-    <!-- New Arrivals -->
+    <!-- New Arrivals - HORIZONTAL SCROLLER -->
     @if($newProducts->count() > 0)
-    <div class="section-header">
-        <h2>{{ __t('messages.new_arrivals') }}</h2>
-        <a href="{{ route('products') }}" class="view-more">
-            @if(app()->getLocale() === 'ar')
-                <i class="fas fa-arrow-left"></i> {{ __t('messages.view_more') }}
-            @else
-                {{ __t('messages.view_more') }} <i class="fas fa-arrow-right"></i>
-            @endif
-        </a>
-    </div>
-
-    <div class="product-grid">
-        {{-- Debug: {{ $newProducts->count() }} products --}}
-        @forelse($newProducts as $product)
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
-            <div class="product-image">
-                @if($product->is_new)
-                <div class="product-badge">{{ __t('messages.new') }}</div>
-                @elseif($product->sale_price && $product->sale_price < $product->price)
-                <div class="product-badge">{{ __t('messages.sale') }}</div>
-                @elseif($product->is_featured)
-                <div class="product-badge">{{ __t('messages.hot') }}</div>
-                @endif
-                <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
-            </div>
-            <div class="product-info">
-                <div class="product-title">{{ $product->name }}</div>
-                <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
-                <div class="product-footer">
-                    <div class="product-price">
-                        @if($product->sale_price && $product->sale_price < $product->price)
-                            <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
-                            <span>₪ {{ number_format($product->sale_price, 0) }}</span>
-                        @else
-                            <span class="original-price" style="visibility: hidden;">₪ 0</span>
-                            <span>₪ {{ number_format($product->price, 0) }}</span>
-                        @endif
-                    </div>
-                    @if($product->stock_status === 'out_of_stock')
-                    <button class="add-to-cart out-of-stock"
-                            data-product-id="{{ $product->id }}"
-                            data-product-name="{{ $product->name }}"
-                            onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
-                        @if(is_rtl())
-                            {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
-                        @else
-                            <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
-                        @endif
-                    </button>
-                    @else
-                    <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
-                            data-product-id="{{ $product->id }}"
-                            data-original-text="{{ __t('messages.add_to_cart') }}"
-                            data-added-text="{{ __t('messages.in_cart') }}"
-                            onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                        @if(in_array($product->id, $cartProductIds))
-                            @if(is_rtl())
-                                {{ __t('messages.in_cart') }} <i class="fas fa-check"></i>
-                            @else
-                                <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
-                            @endif
-                        @else
-                            @if(is_rtl())
-                                {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
-                            @else
-                                <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
-                            @endif
-                        @endif
-                    </button>
-                    @endif
-                </div>
-            </div>
-        </div>
-        @empty
-        <div style="width: 100%; text-align: center; padding: 40px; color: #999;">
-            <p>لا توجد منتجات جديدة حالياً</p>
-        </div>
-        @endforelse
-    </div>
+    <x-horizontal-product-scroller 
+        :products="$newProducts" 
+        title="{{ __t('messages.new_arrivals') }}"
+        :viewMoreUrl="route('products')"
+        :autoScroll="true"
+        :autoScrollInterval="5000"
+        :cardsToScroll="2"
+        containerId="new-arrivals-scroller"
+    />
     @endif
 
-    <!-- Bestsellers -->
+    <!-- Bestsellers - HORIZONTAL SCROLLER -->
     @if($bestsellerProducts->count() > 0)
-    <div class="section-header">
-        <h2>{{ __t('messages.best_sellers') }}</h2>
-        <a href="{{ route('products', ['filter' => 'bestseller']) }}" class="view-more">
-            @if(app()->getLocale() === 'ar')
-                <i class="fas fa-arrow-left"></i> {{ __t('messages.view_more') }}
-            @else
-                {{ __t('messages.view_more') }} <i class="fas fa-arrow-right"></i>
-            @endif
-        </a>
-    </div>
-
-    <div class="product-grid">
-        @foreach($bestsellerProducts as $product)
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
-            <div class="product-image">
-                @if($product->is_new)
-                <div class="product-badge">{{ __t('messages.new') }}</div>
-                @elseif($product->sale_price && $product->sale_price < $product->price)
-                <div class="product-badge">{{ __t('messages.sale') }}</div>
-                @elseif($product->is_featured)
-                <div class="product-badge">{{ __t('messages.hot') }}</div>
-                @endif
-                <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
-            </div>
-            <div class="product-info">
-                <div class="product-title">{{ $product->name }}</div>
-                <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
-                <div class="product-footer">
-                    <div class="product-price">
-                        @if($product->sale_price && $product->sale_price < $product->price)
-                            <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
-                            <span>₪ {{ number_format($product->sale_price, 0) }}</span>
-                        @else
-                            <span class="original-price" style="visibility: hidden;">₪ 0</span>
-                            <span>₪ {{ number_format($product->price, 0) }}</span>
-                        @endif
-                    </div>
-                    @if($product->stock_status === 'out_of_stock')
-                    <button class="add-to-cart out-of-stock"
-                            data-product-id="{{ $product->id }}"
-                            data-product-name="{{ $product->name }}"
-                            onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
-                        @if(is_rtl())
-                            {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
-                        @else
-                            <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
-                        @endif
-                    </button>
-                    @else
-                    <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
-                            data-product-id="{{ $product->id }}"
-                            data-original-text="{{ __t('messages.add_to_cart') }}"
-                            data-added-text="{{ __t('messages.in_cart') }}"
-                            onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                        @if(in_array($product->id, $cartProductIds))
-                            @if(is_rtl())
-                                {{ __t('messages.in_cart') }} <i class="fas fa-check"></i>
-                            @else
-                                <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
-                            @endif
-                        @else
-                            @if(is_rtl())
-                                {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
-                            @else
-                                <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
-                            @endif
-                        @endif
-                    </button>
-                    @endif
-                </div>
-            </div>
-        </div>
-        @endforeach
-    </div>
+    <x-horizontal-product-scroller 
+        :products="$bestsellerProducts" 
+        title="{{ __t('messages.best_sellers') }}"
+        :viewMoreUrl="route('products', ['filter' => 'bestseller'])"
+        :autoScroll="true"
+        :autoScrollInterval="6000"
+        containerId="bestsellers-scroller"
+    />
     @endif
 
-    <!-- On Sale Products -->
+    <!-- On Sale Products - HORIZONTAL SCROLLER -->
     @if($onSaleProducts->count() > 0)
-    <div class="section-header">
-        <h2>{{ __t('messages.on_sale') }}</h2>
-        <a href="{{ route('products', ['filter' => 'sale']) }}" class="view-more">
-            @if(app()->getLocale() === 'ar')
-                <i class="fas fa-arrow-left"></i> {{ __t('messages.view_more') }}
-            @else
-                {{ __t('messages.view_more') }} <i class="fas fa-arrow-right"></i>
-            @endif
-        </a>
-    </div>
-
-    <div class="product-grid">
-        @foreach($onSaleProducts as $product)
-        <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
-            <div class="product-image">
-                <div class="product-badge">{{ __t('messages.sale') }}</div>
-                <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
-                    <i class="far fa-heart"></i>
-                </div>
-                <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
-            </div>
-            <div class="product-info">
-                <div class="product-title">{{ $product->name }}</div>
-                <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
-                <div class="product-footer">
-                    <div class="product-price">
-                        <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
-                        <span>₪ {{ number_format($product->sale_price, 0) }}</span>
-                    </div>
-                    @if($product->stock_status === 'out_of_stock')
-                    <button class="add-to-cart out-of-stock"
-                            data-product-id="{{ $product->id }}"
-                            data-product-name="{{ $product->name }}"
-                            onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
-                        @if(is_rtl())
-                            {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
-                        @else
-                            <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
-                        @endif
-                    </button>
-                    @else
-                    <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
-                            data-product-id="{{ $product->id }}"
-                            data-original-text="{{ __t('messages.add_to_cart') }}"
-                            data-added-text="{{ __t('messages.in_cart') }}"
-                            onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                        @if(in_array($product->id, $cartProductIds))
-                            @if(is_rtl())
-                                {{ __t('messages.in_cart') }} <i class="fas fa-check"></i>
-                            @else
-                                <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
-                            @endif
-                        @else
-                            @if(is_rtl())
-                                {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
-                            @else
-                                <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
-                            @endif
-                        @endif
-                    </button>
-                    @endif
-                </div>
-            </div>
-        </div>
-        @endforeach
-    </div>
+    <x-horizontal-product-scroller 
+        :products="$onSaleProducts" 
+        title="{{ __t('messages.on_sale') }}"
+        :viewMoreUrl="route('products', ['filter' => 'sale'])"
+        :autoScroll="true"
+        :autoScrollInterval="3500"
+        :cardsToScroll="2"
+        containerId="on-sale-scroller"
+    />
     @endif
 </div>
 <!-- End Main Content Container -->

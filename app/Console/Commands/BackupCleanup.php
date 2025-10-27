@@ -13,7 +13,8 @@ class BackupCleanup extends Command
      * @var string
      */
     protected $signature = 'backup:cleanup
-                            {--force : Skip confirmation prompt}';
+                            {--force : Force cleanup - keeps only the most recent backup}
+                            {--yes : Skip confirmation prompt}';
 
     /**
      * The console command description.
@@ -41,21 +42,31 @@ class BackupCleanup extends Command
      */
     public function handle(): int
     {
+        $forceMode = $this->option('force');
+        
         $this->info('Starting backup cleanup...');
         $this->newLine();
 
-        $retentionDays = config('backup.retention_days');
-        $this->info("Retention policy: Keep backups for {$retentionDays} days");
+        if ($forceMode) {
+            $this->warn('⚠️  FORCE MODE: Will delete ALL backups except the most recent one!');
+        } else {
+            $retentionDays = config('backup.retention_days');
+            $this->info("Retention policy: Keep backups for {$retentionDays} days");
+        }
         $this->newLine();
 
-        if (!$this->option('force')) {
-            if (!$this->confirm('Do you want to proceed with cleanup?', true)) {
+        if (!$this->option('yes')) {
+            $confirmMessage = $forceMode 
+                ? 'This will delete ALL old backups! Are you sure?' 
+                : 'Do you want to proceed with cleanup?';
+                
+            if (!$this->confirm($confirmMessage, true)) {
                 $this->info('Cleanup cancelled.');
                 return self::SUCCESS;
             }
         }
 
-        $result = $this->backupService->cleanupOldBackups();
+        $result = $this->backupService->cleanupOldBackups($forceMode);
 
         $this->info('✓ Cleanup completed!');
         $this->newLine();

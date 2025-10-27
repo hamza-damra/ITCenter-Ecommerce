@@ -70,8 +70,18 @@
             <i class="fas fa-clock"></i>
         </div>
         <div class="stat-content">
-            <h3>{{ ucfirst($statistics['schedule']) }}</h3>
-            <p>{{ __('messages.Backup Schedule') }}</p>
+            <h3>{{ $statistics['backup_frequency_days'] }} 
+                @if($statistics['backup_frequency_days'] == 1)
+                    {{ __('messages.day') }}
+                @elseif($statistics['backup_frequency_days'] == 2)
+                    {{ __('messages.two days') }}
+                @elseif($statistics['backup_frequency_days'] >= 3 && $statistics['backup_frequency_days'] <= 10)
+                    {{ __('messages.days') }}
+                @else
+                    {{ __('messages.day') }}
+                @endif
+            </h3>
+            <p>{{ __('messages.Backup every') }}</p>
         </div>
     </div>
 </div>
@@ -130,8 +140,9 @@
                                 <td>{{ $backup['size_formatted'] }}</td>
                                 <td>{{ $backup['created_at_formatted'] }}</td>
                                 <td>
-                                    <span class="badge badge-{{ $backup['age_days'] > config('backup.retention_days') ? 'danger' : 'success' }}">
-                                        {{ $backup['age_days'] }} {{ __('messages.days ago') }}
+                                    <span class="badge badge-{{ $backup['age_days'] > config('backup.retention_days') ? 'danger' : 'success' }}" 
+                                          title="{{ $backup['age_days'] }} {{ __('messages.days') }}">
+                                        {{ $backup['age_human'] ?? ($backup['age_days'] . ' ' . __('messages.days ago')) }}
                                     </span>
                                 </td>
                                 <td>
@@ -757,6 +768,18 @@
 
 [dir="rtl"] .stat-card {
     flex-direction: row-reverse;
+}
+
+[dir="rtl"] .stat-content {
+    text-align: right;
+}
+
+[dir="rtl"] .stat-content h3 {
+    text-align: right;
+}
+
+[dir="rtl"] .stat-content p {
+    text-align: right;
 }
 
 [dir="rtl"] .info-grid {
