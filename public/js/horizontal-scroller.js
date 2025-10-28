@@ -205,7 +205,7 @@ class HorizontalScroller {
         e.preventDefault();
         
         const x = this.getPositionX(e);
-        const walk = (x - this.startX) * (this.isRTL ? -2 : 2);
+        const walk = (x - this.startX) * (this.isRTL ? -1.2 : 1.2);
         const newScrollLeft = this.scrollLeft - walk;
         
         // Calculate new index

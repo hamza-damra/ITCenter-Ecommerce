@@ -2334,8 +2334,8 @@
         title="{{ __t('messages.on_sale') }}"
         :viewMoreUrl="route('products', ['filter' => 'sale'])"
         :autoScroll="true"
-        :autoScrollInterval="3500"
-        :cardsToScroll="2"
+        :autoScrollInterval="5000"
+        :cardsToScroll="1"
         containerId="on-sale-scroller"
     />
     @endif
