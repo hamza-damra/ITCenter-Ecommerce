@@ -319,13 +319,26 @@
         .header-icon .badge {
             position: absolute;
             top: -8px;
-            right: -8px;
+            {{ is_rtl() ? 'left' : 'right' }}: -8px;
             background: #2762f3;
             color: #fff;
             font-size: 0.7rem;
             padding: 2px 6px;
             border-radius: 50%;
             transition: opacity 0.2s ease;
+            min-width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Show badge even when count is 0 */
+        .header-icon .badge:empty::after {
+            content: '0';
         }
         
         /* Prevent flash on page load */
@@ -737,6 +750,8 @@
                 width: 18px;
                 height: 18px;
                 font-size: 0.65rem;
+                top: -5px;
+                {{ is_rtl() ? 'left' : 'right' }}: -5px;
             }
         }
         
@@ -950,6 +965,8 @@
                 width: 16px;
                 height: 16px;
                 font-size: 0.6rem;
+                top: -5px;
+                {{ is_rtl() ? 'left' : 'right' }}: -5px;
             }
         }
         
@@ -994,6 +1011,8 @@
                 width: 14px;
                 height: 14px;
                 font-size: 0.55rem;
+                top: -4px;
+                {{ is_rtl() ? 'left' : 'right' }}: -4px;
             }
         }
     </style>
@@ -1088,9 +1107,10 @@
                             @php
                                 // Get initial favorites count from server to prevent flash
                                 if (Auth::check()) {
-                                    $initialFavCount = Auth::user()->favoriteProducts()->count();
+                                    $initialFavCount = \App\Models\Favorite::where('user_id', Auth::id())->count();
                                 } else {
-                                    $initialFavCount = count(Session::get('favorites', []));
+                                    $sessionId = Session::getId();
+                                    $initialFavCount = \App\Models\Favorite::where('session_id', $sessionId)->count();
                                 }
                             @endphp
                             {{ $initialFavCount }}
@@ -1111,9 +1131,9 @@
                             @php
                                 // Get initial cart count from server to prevent flash
                                 if (Auth::check()) {
-                                    $initialCartCount = Auth::user()->cartItems()->sum('quantity');
+                                    $initialCartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity');
                                 } else {
-                                    $sessionId = Session::get('cart_session_id', Session::getId());
+                                    $sessionId = Session::getId();
                                     $initialCartCount = \App\Models\CartItem::where('session_id', $sessionId)->sum('quantity');
                                 }
                             @endphp
@@ -1179,6 +1199,9 @@
     </footer>
 
     <script>
+        // Global configuration variables
+        const isRTL = {{ is_rtl() ? 'true' : 'false' }};
+        
         // Header scroll effect
         window.addEventListener('scroll', function() {
             const header = document.querySelector('header');
@@ -1195,13 +1218,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Language Dropdown
             const languageDropdown = document.querySelector('.language-dropdown');
-            const languageToggle = languageDropdown?.querySelector('.language-toggle');
-            const languageMenu = languageDropdown?.querySelector('.language-dropdown-menu');
+            const languageToggle = languageDropdown ? languageDropdown.querySelector('.language-toggle') : null;
+            const languageMenu = languageDropdown ? languageDropdown.querySelector('.language-dropdown-menu') : null;
 
             // User Dropdown
             const userDropdown = document.querySelector('.user-dropdown');
-            const userToggle = userDropdown?.querySelector('.user-toggle');
-            const userMenu = userDropdown?.querySelector('.user-dropdown-menu');
+            const userToggle = userDropdown ? userDropdown.querySelector('.user-toggle') : null;
+            const userMenu = userDropdown ? userDropdown.querySelector('.user-dropdown-menu') : null;
             
             if (languageToggle && languageMenu) {
                 languageToggle.addEventListener('click', function(e) {
@@ -1294,26 +1317,32 @@
         });
 
         // CSRF Token for AJAX requests
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+        const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
 
         /**
          * Update the favorites count in header
          */
         function updateFavoritesCount(skipButtonUpdate = false) {
+            console.log('🔄 Updating favorites count...');
             fetch('/favorites/ids')
                 .then(response => response.json())
                 .then(data => {
+                    console.log('✅ Favorites data received:', data);
                     const badge = document.getElementById('favorites-count');
                     const newCount = data.favoriteIds ? data.favoriteIds.length : 0;
+                    console.log('📊 Favorites count:', newCount, 'Badge element:', badge);
                     
                     if (badge) {
-                        // Only update if count changed to prevent unnecessary DOM updates
-                        const currentCount = parseInt(badge.textContent);
-                        if (currentCount !== newCount) {
-                            badge.textContent = newCount;
-                        }
+                        // Always update the badge text to ensure it's visible
+                        badge.textContent = newCount;
                         // Remove loading class after first update
                         badge.classList.remove('badge-loading');
+                        // Ensure badge is visible
+                        badge.style.display = 'flex';
+                        badge.style.opacity = '1';
+                        badge.style.visibility = 'visible';
+                        console.log('✨ Badge updated successfully. Current text:', badge.textContent);
                     }
                     
                     // Store favorite IDs globally for quick checks
@@ -1323,7 +1352,16 @@
                     // This fixes issues where visual state doesn't match actual state
                     updateWishlistButtonStates();
                 })
-                .catch(error => console.error('Error updating favorites count:', error));
+                .catch(error => {
+                    console.error('❌ Error updating favorites count:', error);
+                    // Even on error, ensure badge is visible with current count
+                    const badge = document.getElementById('favorites-count');
+                    if (badge) {
+                        badge.style.display = 'flex';
+                        badge.style.opacity = '1';
+                        badge.style.visibility = 'visible';
+                    }
+                });
         }
 
         /**
@@ -1447,6 +1485,10 @@
                     // Update badge count
                     if (badge) {
                         badge.textContent = window.favoriteIds.length;
+                        // Ensure badge stays visible
+                        badge.style.display = 'flex';
+                        badge.style.opacity = '1';
+                        badge.style.visibility = 'visible';
                     }
                     
                     // If we reached 0 favorites, force a full UI refresh to ensure all hearts are gray
@@ -1593,11 +1635,11 @@
                 if (data.success) {
                     // Update button state
                     button.classList.add('in-cart');
-                    @if(is_rtl())
-                    button.innerHTML = addedText + ' <i class="fas fa-check"></i>';
-                    @else
-                    button.innerHTML = '<i class="fas fa-check"></i> ' + addedText;
-                    @endif
+                    if (isRTL) {
+                        button.innerHTML = addedText + ' <i class="fas fa-check"></i>';
+                    } else {
+                        button.innerHTML = '<i class="fas fa-check"></i> ' + addedText;
+                    }
                     
                     // Add product ID to global cart array
                     if (window.cartProductIds && !window.cartProductIds.includes(productId)) {
@@ -1634,8 +1676,10 @@
             const escapedName = productName.replace(/'/g, "\\'");
 
             // Show confirmation dialog
-            if (confirm(`{{ __t('messages.request_product') }}: ${productName}?\n\n{{ __t('messages.contact_us') }}: 0599-123456`)) {
-                showNotification(`{{ __t('messages.request_product') }}: ${productName}`);
+            const requestMsg = '{{ __t("messages.request_product") }}';
+            const contactMsg = '{{ __t("messages.contact_us") }}';
+            if (confirm(requestMsg + ': ' + productName + '?\n\n' + contactMsg + ': 0599-123456')) {
+                showNotification(requestMsg + ': ' + productName);
             }
         }
 
@@ -1643,20 +1687,25 @@
          * Update cart count in header
          */
         function updateCartCount() {
+            console.log('🔄 Updating cart count...');
             fetch('/cart/count')
                 .then(response => response.json())
                 .then(data => {
+                    console.log('✅ Cart data received:', data);
                     const badge = document.getElementById('cart-count');
                     const newCount = data.count || 0;
+                    console.log('📊 Cart count:', newCount, 'Badge element:', badge);
                     
                     if (badge) {
-                        // Only update if count changed to prevent unnecessary DOM updates
-                        const currentCount = parseInt(badge.textContent);
-                        if (currentCount !== newCount) {
-                            badge.textContent = newCount;
-                        }
+                        // Always update the badge text to ensure it's visible
+                        badge.textContent = newCount;
                         // Remove loading class after first update
                         badge.classList.remove('badge-loading');
+                        // Ensure badge is visible
+                        badge.style.display = 'flex';
+                        badge.style.opacity = '1';
+                        badge.style.visibility = 'visible';
+                        console.log('✨ Badge updated successfully. Current text:', badge.textContent);
                     }
                     
                     // Store cart product IDs globally
@@ -1667,7 +1716,16 @@
                     window.cartProductIds = data.productIds || [];
                     updateCartButtonStates();
                 })
-                .catch(error => console.error('Error updating cart count:', error));
+                .catch(error => {
+                    console.error('❌ Error updating cart count:', error);
+                    // Even on error, ensure badge is visible with current count
+                    const badge = document.getElementById('cart-count');
+                    if (badge) {
+                        badge.style.display = 'flex';
+                        badge.style.opacity = '1';
+                        badge.style.visibility = 'visible';
+                    }
+                });
         }
 
         /**
@@ -1684,21 +1742,21 @@
                     button.classList.add('in-cart');
                     // Update button text if not already updated
                     if (!button.innerHTML.includes('check')) {
-                        @if(is_rtl())
-                        button.innerHTML = addedText + ' <i class="fas fa-check"></i>';
-                        @else
-                        button.innerHTML = '<i class="fas fa-check"></i> ' + addedText;
-                        @endif
+                        if (isRTL) {
+                            button.innerHTML = addedText + ' <i class="fas fa-check"></i>';
+                        } else {
+                            button.innerHTML = '<i class="fas fa-check"></i> ' + addedText;
+                        }
                     }
                 } else {
                     button.classList.remove('in-cart');
                     // Restore original text
                     if (button.innerHTML.includes('check')) {
-                        @if(is_rtl())
-                        button.innerHTML = originalText + ' <i class="fas fa-shopping-cart"></i>';
-                        @else
-                        button.innerHTML = '<i class="fas fa-shopping-cart"></i> ' + originalText;
-                        @endif
+                        if (isRTL) {
+                            button.innerHTML = originalText + ' <i class="fas fa-shopping-cart"></i>';
+                        } else {
+                            button.innerHTML = '<i class="fas fa-shopping-cart"></i> ' + originalText;
+                        }
                     }
                 }
             });

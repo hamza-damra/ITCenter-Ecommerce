@@ -78,17 +78,28 @@
                                         {{ number_format($product->price, 0) }} ₪
                                     @endif
                                 </div>
-                                @if($product->stock_status === 'in_stock')
-                                <button class="add-to-cart" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
+                                @if($product->stock_status === 'out_of_stock')
+                                <button class="add-to-cart out-of-stock"
+                                        data-product-id="{{ $product->id }}"
+                                        data-product-name="{{ $product->name }}"
+                                        onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
+                                    @if(is_rtl())
+                                        {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
+                                    @else
+                                        <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
+                                    @endif
+                                </button>
+                                @else
+                                <button class="add-to-cart"
+                                        data-product-id="{{ $product->id }}"
+                                        data-original-text="{{ __t('messages.add_to_cart') }}"
+                                        data-added-text="{{ __t('messages.in_cart') }}"
+                                        onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
                                     @if(is_rtl())
                                         {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
                                     @else
                                         <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
                                     @endif
-                                </button>
-                                @else
-                                <button class="out-of-stock" disabled>
-                                    {{ __t('messages.out_of_stock') }}
                                 </button>
                                 @endif
                             </div>
