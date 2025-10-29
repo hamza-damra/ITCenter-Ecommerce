@@ -323,11 +323,60 @@ class Product extends Model
     /**
      * Update average rating.
      */
-    public function updateRating()
+    public function updateRating(): void
     {
-        $this->avg_rating = $this->reviews()->avg('rating') ?? 0;
-        $this->reviews_count = $this->reviews()->count();
+        /** @var float|string|null $avg */
+        $avg = $this->reviews()->avg('rating');
+        $count = $this->reviews()->count();
+
+        // Convert to string format that matches decimal(2,1) column type
+        $avgRating = $avg !== null ? number_format((float)$avg, 1, '.', '') : '0.0';
+
+        $this->attributes['avg_rating'] = $avgRating;
+        $this->reviews_count = $count;
         $this->save();
+    }
+
+    /**
+     * Get rating distribution for the product.
+     */
+    public function getRatingDistributionAttribute()
+    {
+        $distribution = [];
+        $totalReviews = $this->reviews_count;
+
+        for ($i = 5; $i >= 1; $i--) {
+            $count = $this->reviews()
+                ->where('rating', $i)
+                ->count();
+
+            $percentage = $totalReviews > 0 ? round(($count / $totalReviews) * 100, 1) : 0;
+
+            $distribution[$i] = [
+                'count' => $count,
+                'percentage' => $percentage,
+            ];
+        }
+
+        return $distribution;
+    }
+
+    /**
+     * Get approved reviews for the product.
+     */
+    public function getApprovedReviewsAttribute()
+    {
+        return $this->reviews()->get();
+    }
+
+    /**
+     * Check if user has reviewed this product.
+     */
+    public function hasUserReviewed($userId)
+    {
+        return $this->reviews()
+            ->where('user_id', $userId)
+            ->exists();
     }
 
     /**
