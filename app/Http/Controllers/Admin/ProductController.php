@@ -10,6 +10,7 @@ use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -103,6 +104,10 @@ class ProductController extends Controller
             }
 
             DB::commit();
+
+            // Clear home page cache to reflect changes immediately
+            $this->clearHomeCache();
+
             return redirect()->route('admin.products.index')
                 ->with('success', 'Product created successfully with ' . ($product->images->count()) . ' image(s)!');
         } catch (\Exception $e) {
@@ -196,6 +201,10 @@ class ProductController extends Controller
             }
 
             DB::commit();
+
+            // Clear home page cache to reflect changes immediately
+            $this->clearHomeCache();
+
             return redirect()->route('admin.products.index')
                 ->with('success', 'Product updated successfully with ' . ($product->images()->count()) . ' image(s)!');
         } catch (\Exception $e) {
@@ -209,6 +218,9 @@ class ProductController extends Controller
     {
         $product->delete();
 
+        // Clear home page cache to reflect changes immediately
+        $this->clearHomeCache();
+
         return redirect()->route('admin.products.index')
             ->with('success', 'Product deleted successfully!');
     }
@@ -217,13 +229,16 @@ class ProductController extends Controller
     {
         try {
             DB::beginTransaction();
-            
+
             // Delete all products (this will also soft delete them if using SoftDeletes)
             $count = Product::count();
             Product::query()->delete();
-            
+
             DB::commit();
-            
+
+            // Clear home page cache to reflect changes immediately
+            $this->clearHomeCache();
+
             return response()->json([
                 'success' => true,
                 'message' => __('messages.all_records_deleted_successfully'),
@@ -236,6 +251,53 @@ class ProductController extends Controller
                 'message' => 'Error: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'ids' => 'required|array|min:1',
+                'ids.*' => 'required|integer|exists:products,id'
+            ]);
+
+            DB::beginTransaction();
+
+            // Delete selected products (this will also soft delete them if using SoftDeletes)
+            $count = Product::whereIn('id', $validated['ids'])->delete();
+
+            DB::commit();
+
+            // Clear home page cache to reflect changes immediately
+            $this->clearHomeCache();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('messages.selected_records_deleted_successfully', ['count' => $count]),
+                'count' => $count
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error: ' . implode(', ', $e->validator->errors()->all())
+            ], 422);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Clear home page cache for all locales
+     */
+    private function clearHomeCache()
+    {
+        Cache::forget('home_page_data_ar');
+        Cache::forget('home_page_data_en');
+        Cache::forget('home_page_data_he');
     }
 }
 

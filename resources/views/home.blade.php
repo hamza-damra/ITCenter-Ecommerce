@@ -391,93 +391,268 @@
         gap: 0.5rem;
     }
 
-    /* Builder Cards - Clean & Minimal Design */
-    .builder-cards {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 2rem;
-        margin-bottom: 4rem;
-        padding: 0 1rem;
-    }
 
-    .builder-card {
+
+    /* Explore Products Section - Carousel Design (Redragon Style) */
+    .explore-products-section {
+        padding: 4rem 0;
         background: #ffffff;
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        padding: 2.5rem 1.5rem;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        text-align: center;
         position: relative;
-        overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
 
-    .builder-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
+    /* Discover Header with Decorative Elements */
+    .discover-header {
+        text-align: center;
+        margin-bottom: 3rem;
+        position: relative;
     }
 
-    .builder-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 10px 20px rgba(0, 0, 0, 0.04);
-        border-color: #d1d5db;
+    .discover-icon {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+        animation: pulse 2s ease-in-out infinite;
     }
 
-    .builder-card:hover::before {
-        opacity: 1;
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
     }
 
-    .builder-card-image {
-        margin-bottom: 1.5rem;
-        height: 120px;
+    .discover-title {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0 0 1rem 0;
+        letter-spacing: -0.02em;
+        text-transform: capitalize;
+    }
+
+    .discover-underline {
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .underline-bar {
+        width: 60px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #e74c3c, transparent);
+    }
+
+    .underline-dot {
+        width: 8px;
+        height: 8px;
+        background: #e74c3c;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+    }
+
+    /* Category Carousel Wrapper */
+    .category-carousel-wrapper {
+        position: relative;
+        padding: 0 60px;
+        margin-bottom: 2rem;
+    }
+
+    /* Navigation Buttons */
+    .carousel-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 2px solid #e5e7eb;
+        color: #6b7280;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .carousel-nav-btn:hover {
+        background: #e74c3c;
+        border-color: #e74c3c;
+        color: #ffffff;
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+    }
+
+    .carousel-prev {
+        left: 0;
+    }
+
+    .carousel-next {
+        right: 0;
+    }
+
+    /* Carousel Container */
+    .category-carousel-container {
         overflow: hidden;
+        width: 100%;
     }
 
-    .builder-card-image img {
-        max-width: 100%;
-        max-height: 100%;
+    .category-carousel-track {
+        display: flex;
+        gap: 1.5rem;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Category Carousel Card */
+    .category-carousel-card {
+        flex: 0 0 calc(25% - 1.125rem);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        padding: 1rem;
+        border-radius: 12px;
+        background: #ffffff;
+    }
+
+    .category-carousel-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .category-carousel-image {
+        width: 100%;
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        border-radius: 8px;
+        background: #f9fafb;
+    }
+
+    .category-carousel-image img {
+        width: 100%;
+        height: 100%;
         object-fit: contain;
-        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
-        transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
-        will-change: transform;
+        transition: transform 0.4s ease;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
     }
 
-    .builder-card:hover .builder-card-image img {
-        transform: scale(1.08);
-        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08)) brightness(1.05);
+    .category-carousel-card:hover .category-carousel-image img {
+        transform: scale(1.1);
     }
 
-    .builder-card-title {
+    .category-carousel-name {
         font-size: 1.125rem;
         font-weight: 600;
         color: #1f2937;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.01em;
-    }
-
-    .builder-card-link {
-        font-size: 0.875rem;
-        color: #6b7280;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
+        text-align: center;
         transition: color 0.3s ease;
+        margin-top: 0.5rem;
     }
 
-    .builder-card:hover .builder-card-link {
-        color: #6366f1;
+    .category-carousel-card:hover .category-carousel-name {
+        color: #e74c3c;
+    }
+
+    /* Pagination Dots */
+    .category-carousel-dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 2rem;
+    }
+
+    .carousel-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #d1d5db;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .carousel-dot:hover {
+        background: #9ca3af;
+        transform: scale(1.2);
+    }
+
+    .carousel-dot.active {
+        background: #e74c3c;
+        width: 30px;
+        border-radius: 5px;
+    }
+
+    /* Responsive Design for Category Carousel */
+    @media (max-width: 1023px) {
+        .category-carousel-card {
+            flex: 0 0 calc(33.333% - 1rem);
+        }
+
+        .discover-title {
+            font-size: 1.875rem;
+        }
+
+        .category-carousel-wrapper {
+            padding: 0 50px;
+        }
+
+        .carousel-nav-btn {
+            width: 40px;
+            height: 40px;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .category-carousel-card {
+            flex: 0 0 calc(50% - 0.75rem);
+        }
+
+        .explore-products-section {
+            padding: 3rem 0;
+        }
+
+        .discover-title {
+            font-size: 1.5rem;
+        }
+
+        .discover-header {
+            margin-bottom: 2rem;
+        }
+
+        .category-carousel-wrapper {
+            padding: 0 45px;
+        }
+
+        .carousel-nav-btn {
+            width: 35px;
+            height: 35px;
+            font-size: 0.875rem;
+        }
+
+        .category-carousel-name {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 479px) {
+        .category-carousel-card {
+            flex: 0 0 100%;
+        }
+
+        .category-carousel-wrapper {
+            padding: 0 40px;
+        }
+
+        .discover-icon svg {
+            width: 30px;
+            height: 30px;
+        }
     }
 
     /* Popular Tags */
@@ -885,20 +1060,7 @@
         .special-cards {
             grid-template-columns: repeat(2, 1fr);
         }
-        
-        .builder-cards {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-        
-        .builder-card {
-            padding: 2rem 1.25rem;
-        }
-        
-        .builder-card-image {
-            height: 110px;
-        }
-        
+
         .product-grid {
             grid-template-columns: repeat(3, 1fr);
             gap: 1.25rem;
@@ -1017,21 +1179,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
         }
-        
-        .builder-cards {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            padding: 0 0.5rem;
-        }
-        
-        .builder-card {
-            padding: 2rem 1rem;
-        }
-        
-        .builder-card-image {
-            height: 100px;
-        }
-        
+
         .featured-section {
             padding: 2rem 0;
         }
@@ -1237,29 +1385,7 @@
             grid-template-columns: 1fr;
             gap: 1rem;
         }
-        
-        .builder-cards {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            padding: 0;
-        }
-        
-        .builder-card {
-            padding: 2rem 1.5rem;
-        }
-        
-        .builder-card-image {
-            height: 100px;
-        }
-        
-        .builder-card-title {
-            font-size: 1.05rem;
-        }
-        
-        .builder-card-link {
-            font-size: 0.8rem;
-        }
-        
+
         .brands-section {
             padding: 2rem 0;
         }
@@ -1392,14 +1518,6 @@
         .add-to-cart {
             padding: 0.7rem 1.25rem;
             font-size: 0.85rem;
-        }
-        
-        .builder-cards {
-            grid-template-columns: 1fr;
-        }
-        
-        .builder-card-image {
-            height: 80px;
         }
     }
 
@@ -2005,6 +2123,191 @@
     </div>
 </div>
 
+<!-- Explore Our Products Section - Carousel Design -->
+<div class="explore-products-section">
+    <div class="container">
+        <!-- Section Header with Decorative Elements -->
+        <div class="discover-header">
+            <div class="discover-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#e74c3c" stroke="#e74c3c" stroke-width="2"/>
+                </svg>
+            </div>
+            <h2 class="discover-title">{{ __t('messages.explore_our_products') }}</h2>
+            <div class="discover-underline">
+                <span class="underline-bar"></span>
+                <span class="underline-dot"></span>
+                <span class="underline-bar"></span>
+            </div>
+        </div>
+
+        <!-- Category Carousel -->
+        <div class="category-carousel-wrapper">
+            <!-- Navigation Arrow - Left -->
+            <button class="carousel-nav-btn carousel-prev" onclick="slideCategoryCarousel(-1)" aria-label="Previous categories">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <!-- Carousel Track Container -->
+            <div class="category-carousel-container">
+                <div class="category-carousel-track" id="categoryCarouselTrack">
+                    @foreach($categories as $category)
+                    <a href="{{ route('products', ['category' => $category->slug]) }}" class="category-carousel-card">
+                        <div class="category-carousel-image">
+                            @if($category->image)
+                                @if(str_starts_with($category->image, 'http'))
+                                    <img src="{{ $category->image }}" alt="{{ $category->name }}" loading="lazy">
+                                @else
+                                    <img src="{{ asset($category->image) }}" alt="{{ $category->name }}" loading="lazy">
+                                @endif
+                            @else
+                                <img src="https://via.placeholder.com/300x300/f3f4f6/9ca3af?text={{ urlencode($category->name) }}" alt="{{ $category->name }}" loading="lazy">
+                            @endif
+                        </div>
+                        <div class="category-carousel-name">{{ $category->name }}</div>
+                    </a>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Navigation Arrow - Right -->
+            <button class="carousel-nav-btn carousel-next" onclick="slideCategoryCarousel(1)" aria-label="Next categories">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Pagination Dots -->
+        <div class="category-carousel-dots" id="categoryCarouselDots">
+            <!-- Dots will be generated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- Category Carousel JavaScript -->
+<script>
+(function() {
+    let currentCategorySlide = 0;
+    const track = document.getElementById('categoryCarouselTrack');
+    const dotsContainer = document.getElementById('categoryCarouselDots');
+    const cards = track.querySelectorAll('.category-carousel-card');
+    const totalCards = cards.length;
+
+    // Responsive slides per view
+    function getSlidesPerView() {
+        const width = window.innerWidth;
+        if (width >= 1024) return 4; // Desktop
+        if (width >= 768) return 3;  // Tablet
+        if (width >= 480) return 2;  // Small tablet
+        return 1;                     // Mobile
+    }
+
+    let slidesPerView = getSlidesPerView();
+    let totalSlides = Math.ceil(totalCards / slidesPerView);
+
+    // Initialize dots
+    function initDots() {
+        dotsContainer.innerHTML = '';
+        totalSlides = Math.ceil(totalCards / slidesPerView);
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            dot.onclick = () => goToCategorySlide(i);
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    // Update carousel position
+    function updateCarousel() {
+        const cardWidth = cards[0].offsetWidth;
+        const gap = 24; // 1.5rem gap
+        const offset = -(currentCategorySlide * slidesPerView * (cardWidth + gap));
+        track.style.transform = `translateX(${offset}px)`;
+
+        // Update dots
+        const dots = dotsContainer.querySelectorAll('.carousel-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentCategorySlide);
+        });
+    }
+
+    // Slide function
+    window.slideCategoryCarousel = function(direction) {
+        currentCategorySlide += direction;
+
+        // Loop around
+        if (currentCategorySlide < 0) {
+            currentCategorySlide = totalSlides - 1;
+        } else if (currentCategorySlide >= totalSlides) {
+            currentCategorySlide = 0;
+        }
+
+        updateCarousel();
+    };
+
+    // Go to specific slide
+    window.goToCategorySlide = function(index) {
+        currentCategorySlide = index;
+        updateCarousel();
+    };
+
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            const newSlidesPerView = getSlidesPerView();
+            if (newSlidesPerView !== slidesPerView) {
+                slidesPerView = newSlidesPerView;
+                currentCategorySlide = 0;
+                initDots();
+                updateCarousel();
+            }
+        }, 250);
+    });
+
+    // Touch/Swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    track.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    track.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                slideCategoryCarousel(1); // Swipe left - next
+            } else {
+                slideCategoryCarousel(-1); // Swipe right - prev
+            }
+        }
+    }
+
+    // Auto-scroll (optional - uncomment to enable)
+    // let autoScrollInterval = setInterval(() => {
+    //     slideCategoryCarousel(1);
+    // }, 5000);
+
+    // Pause auto-scroll on hover
+    // track.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+    // track.addEventListener('mouseleave', () => {
+    //     autoScrollInterval = setInterval(() => slideCategoryCarousel(1), 5000);
+    // });
+
+    // Initialize
+    initDots();
+    updateCarousel();
+})();
+</script>
+
 <style>
 .promo-badge {
     position: absolute;
@@ -2265,42 +2568,7 @@
     />
     @endif
 
-    <!-- Shop by Categories - Builder Cards -->
-    @if($categories->count() >= 5)
-    <div class="section-header">
-        <h2>{{ __t('messages.shop_by_category') }}</h2>
-    </div>
 
-    <div class="builder-cards">
-        @foreach($categories->take(5) as $index => $category)
-        <div class="builder-card" onclick="window.location.href='{{ route('products', ['category' => $category->slug]) }}'">
-            @if($category->image)
-            <div class="builder-card-image">
-                @if(str_starts_with($category->image, 'http'))
-                    <img src="{{ $category->image }}" alt="{{ $category->name }}">
-                @else
-                    <img src="{{ asset($category->image) }}" alt="{{ $category->name }}">
-                @endif
-            </div>
-            @else
-            <div class="builder-card-image">
-                <img src="https://img.icons8.com/fluency/240/{{ 
-                    $index === 0 ? 'laptop' : 
-                    ($index === 1 ? 'smartphone' : 
-                    ($index === 2 ? 'headphones' : 
-                    ($index === 3 ? 'smartwatch' : 'camera'))) 
-                }}.png" alt="{{ $category->name }}">
-            </div>
-            @endif
-            <div class="builder-card-title">{{ $category->name }}</div>
-            <div class="builder-card-link">
-                {{ __t('messages.explore_products', ['count' => $category->products_count]) }}
-                <i class="fas fa-arrow-{{ is_rtl() ? 'left' : 'right' }}" style="font-size: 0.75rem;"></i>
-            </div>
-        </div>
-        @endforeach
-    </div>
-    @endif
 
     <!-- New Arrivals - HORIZONTAL SCROLLER -->
     @if($newProducts->count() > 0)
@@ -2430,7 +2698,7 @@
         }, observerOptions);
 
         // Observe all cards
-        const animateElements = document.querySelectorAll('.product-card, .builder-card, .special-card');
+        const animateElements = document.querySelectorAll('.product-card, .special-card');
         animateElements.forEach(el => {
             el.classList.add('scroll-animate');
             observer.observe(el);

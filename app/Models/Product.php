@@ -145,18 +145,20 @@ class Product extends Model
 
     /**
      * Get the category that owns the product.
+     * Explicitly excludes soft-deleted categories.
      */
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class)->withoutTrashed();
     }
 
     /**
      * Get the brand that owns the product.
+     * Explicitly excludes soft-deleted brands.
      */
     public function brand()
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsTo(Brand::class)->withoutTrashed();
     }
 
     /**

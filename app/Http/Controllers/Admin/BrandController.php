@@ -7,6 +7,7 @@ use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class BrandController extends Controller
 {
@@ -39,6 +40,9 @@ class BrandController extends Controller
 
         Brand::create($validated);
 
+        // Clear home page cache to reflect changes immediately
+        $this->clearHomeCache();
+
         return redirect()->route('admin.brands.index')
             ->with('success', 'Brand created successfully!');
     }
@@ -65,6 +69,9 @@ class BrandController extends Controller
 
         $brand->update($validated);
 
+        // Clear home page cache to reflect changes immediately
+        $this->clearHomeCache();
+
         return redirect()->route('admin.brands.index')
             ->with('success', 'Brand updated successfully!');
     }
@@ -72,6 +79,9 @@ class BrandController extends Controller
     public function destroy(Brand $brand)
     {
         $brand->delete();
+
+        // Clear home page cache to reflect changes immediately
+        $this->clearHomeCache();
 
         return redirect()->route('admin.brands.index')
             ->with('success', 'Brand deleted successfully!');
@@ -81,13 +91,16 @@ class BrandController extends Controller
     {
         try {
             DB::beginTransaction();
-            
+
             // Delete all brands
             $count = Brand::count();
             Brand::query()->delete();
-            
+
             DB::commit();
-            
+
+            // Clear home page cache to reflect changes immediately
+            $this->clearHomeCache();
+
             return response()->json([
                 'success' => true,
                 'message' => __('messages.all_records_deleted_successfully'),
@@ -100,6 +113,16 @@ class BrandController extends Controller
                 'message' => 'Error: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Clear home page cache for all locales
+     */
+    private function clearHomeCache()
+    {
+        Cache::forget('home_page_data_ar');
+        Cache::forget('home_page_data_en');
+        Cache::forget('home_page_data_he');
     }
 }
 

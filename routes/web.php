@@ -101,10 +101,12 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
     // Products
     Route::delete('/products/delete-all', [App\Http\Controllers\Admin\ProductController::class, 'deleteAll'])->name('products.delete-all');
+    Route::delete('/products/bulk-delete', [App\Http\Controllers\Admin\ProductController::class, 'bulkDelete'])->name('products.bulk-delete');
     Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
 
     // Categories
     Route::delete('/categories/delete-all', [App\Http\Controllers\Admin\CategoryController::class, 'deleteAll'])->name('categories.delete-all');
+    Route::delete('/categories/bulk-delete', [App\Http\Controllers\Admin\CategoryController::class, 'bulkDelete'])->name('categories.bulk-delete');
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
 
     // Brands

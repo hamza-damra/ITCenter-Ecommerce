@@ -19,6 +19,7 @@ return [
     
     // Categories Section
     'shop_by_category' => 'Shop by Category',
+    'explore_our_products' => 'Discover Our Products',
     'view_all' => 'View All',
     'view_more' => 'View More',
     'no_categories' => 'No categories available',
@@ -86,6 +87,7 @@ return [
     'availability' => 'Availability',
     'brand' => 'Brand',
     'category' => 'Category',
+    'no_category' => 'No Category',
     'sku' => 'SKU',
     'tags' => 'Tags',
     'share' => 'Share',
@@ -1098,6 +1100,14 @@ return [
     'delete_all_brands' => 'Delete All Brands',
     'no_records_to_delete' => 'No records to delete',
     'deleting_all_records' => 'Deleting all records...',
+
+    // Bulk Delete Feature
+    'delete_selected' => 'Delete Selected',
+    'delete_selected_categories' => 'Delete Selected Categories',
+    'delete_selected_products' => 'Delete Selected Products',
+    'confirm_delete_selected' => 'Are you sure you want to delete the selected items? This action cannot be undone.',
+    'please_select_items' => 'Please select at least one item to delete.',
+    'selected_records_deleted_successfully' => ':count item(s) deleted successfully!',
     
     // Backup Settings
     'Backup Settings' => 'Backup Settings',

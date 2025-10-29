@@ -19,6 +19,7 @@ return [
     
     // Categories Section
     'shop_by_category' => 'קנה לפי קטגוריה',
+    'explore_our_products' => 'גלה את המוצרים שלנו',
     'view_all' => 'צפה בהכל',
     'view_more' => 'צפה בעוד',
     'no_categories' => 'אין קטגוריות זמינות',
@@ -86,6 +87,7 @@ return [
     'availability' => 'זמינות',
     'brand' => 'מותג',
     'category' => 'קטגוריה',
+    'no_category' => 'ללא קטגוריה',
     'sku' => 'מק"ט',
     'tags' => 'תגיות',
     'share' => 'שתף',
@@ -949,6 +951,14 @@ return [
     'delete_all_brands' => 'מחק את כל המותגים',
     'no_records_to_delete' => 'אין רשומות למחיקה',
     'deleting_all_records' => 'מוחק את כל הרשומות...',
+
+    // Bulk Delete Feature
+    'delete_selected' => 'מחק נבחרים',
+    'delete_selected_categories' => 'מחק קטגוריות נבחרות',
+    'delete_selected_products' => 'מחק מוצרים נבחרים',
+    'confirm_delete_selected' => 'האם אתה בטוח שברצונך למחוק את הפריטים הנבחרים? לא ניתן לבטל פעולה זו.',
+    'please_select_items' => 'אנא בחר לפחות פריט אחד למחיקה.',
+    'selected_records_deleted_successfully' => ':count פריטים נמחקו בהצלחה!',
     
     // הגדרות גיבוי
     'Backup Settings' => 'הגדרות גיבוי',

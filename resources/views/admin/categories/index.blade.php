@@ -325,6 +325,9 @@
     </div>
     <div class="page-actions">
         @if($categories->count() > 0)
+            <button id="bulkDeleteBtn" onclick="showBulkDeleteModal()" class="btn btn-danger" style="margin-right: 10px; display: none;">
+                <i class="fas fa-trash-alt"></i> <span id="bulkDeleteText">{{ __('messages.delete_selected') }}</span>
+            </button>
             <button onclick="showDeleteAllModal()" class="btn btn-danger" style="margin-right: 10px;">
                 <i class="fas fa-trash-alt"></i> {{ __('messages.delete_all') }}
             </button>
@@ -380,6 +383,9 @@
         <table class="categories-table">
             <thead>
                 <tr>
+                    <th style="width: 40px;">
+                        <input type="checkbox" id="selectAll" onchange="toggleSelectAll()" style="cursor: pointer;">
+                    </th>
                     <th>{{ __('messages.image') }}</th>
                     <th>{{ __('messages.category_name') }}</th>
                     <th>{{ __('messages.parent_category') }}</th>
@@ -389,10 +395,14 @@
             </thead>
             <tbody>
                 @foreach($categories as $category)
-                <tr data-status="{{ $category->is_active ? 'active' : 'inactive' }}" 
+                <tr data-status="{{ $category->is_active ? 'active' : 'inactive' }}"
                     data-parent="{{ $category->parent_id ? 'subcategory' : 'root' }}"
                     data-name="{{ $category->name_en ?? $category->name }}{{ $category->slug ?? '' }}">
-                    
+
+                    <td style="text-align: center;">
+                        <input type="checkbox" class="category-checkbox" value="{{ $category->id }}" onchange="updateBulkDeleteButton()" style="cursor: pointer;">
+                    </td>
+
                     <td class="category-image-cell">
                         @if($category->image)
                             <img src="{{ $category->image }}" alt="{{ $category->name }}" class="category-image">
@@ -492,6 +502,26 @@
     </div>
 </div>
 
+<!-- Bulk Delete Confirmation Modal -->
+<div id="bulkDeleteModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+        <h3 style="margin: 0 0 15px 0; color: #dc2626; font-size: 24px;">
+            <i class="fas fa-exclamation-triangle"></i> {{ __('messages.delete_selected_categories') }}
+        </h3>
+        <p style="margin: 0 0 25px 0; font-size: 16px; color: #4b5563;">
+            {{ __('messages.confirm_delete_selected') }}
+        </p>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button onclick="hideBulkDeleteModal()" class="btn" style="background: #e5e7eb; color: #374151; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                <i class="fas fa-times"></i> {{ __('messages.cancel') }}
+            </button>
+            <button onclick="bulkDeleteRecords()" class="btn btn-danger" style="padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                <i class="fas fa-trash-alt"></i> {{ __('messages.yes_delete') }}
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Success Modal -->
 <div id="successModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
     <div style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
@@ -580,6 +610,91 @@
         })
         .catch(error => {
             hideDeleteAllModal();
+            alert('Error: ' + error.message);
+            window.location.reload();
+        });
+    }
+
+    // Bulk selection functions
+    function toggleSelectAll() {
+        const selectAllCheckbox = document.getElementById('selectAll');
+        const checkboxes = document.querySelectorAll('.category-checkbox');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+
+        updateBulkDeleteButton();
+    }
+
+    function updateBulkDeleteButton() {
+        const checkboxes = document.querySelectorAll('.category-checkbox:checked');
+        const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
+        const bulkDeleteText = document.getElementById('bulkDeleteText');
+        const selectAllCheckbox = document.getElementById('selectAll');
+
+        if (checkboxes.length > 0) {
+            bulkDeleteBtn.style.display = 'inline-block';
+            bulkDeleteText.textContent = '{{ __("messages.delete_selected") }} (' + checkboxes.length + ')';
+        } else {
+            bulkDeleteBtn.style.display = 'none';
+        }
+
+        // Update "Select All" checkbox state
+        const allCheckboxes = document.querySelectorAll('.category-checkbox');
+        const allChecked = allCheckboxes.length > 0 && checkboxes.length === allCheckboxes.length;
+        const someChecked = checkboxes.length > 0 && checkboxes.length < allCheckboxes.length;
+
+        selectAllCheckbox.checked = allChecked;
+        selectAllCheckbox.indeterminate = someChecked;
+    }
+
+    function showBulkDeleteModal() {
+        const checkboxes = document.querySelectorAll('.category-checkbox:checked');
+        if (checkboxes.length === 0) {
+            alert('{{ __("messages.please_select_items") }}');
+            return;
+        }
+        document.getElementById('bulkDeleteModal').style.display = 'flex';
+    }
+
+    function hideBulkDeleteModal() {
+        document.getElementById('bulkDeleteModal').style.display = 'none';
+    }
+
+    function bulkDeleteRecords() {
+        const checkboxes = document.querySelectorAll('.category-checkbox:checked');
+        const ids = Array.from(checkboxes).map(cb => cb.value);
+
+        if (ids.length === 0) {
+            alert('{{ __("messages.please_select_items") }}');
+            return;
+        }
+
+        event.target.disabled = true;
+        event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("messages.deleting") }}...';
+
+        fetch('{{ route("admin.categories.bulk-delete") }}', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ ids: ids })
+        })
+        .then(response => response.json())
+        .then(data => {
+            hideBulkDeleteModal();
+            if (data.success) {
+                document.getElementById('successMessage').textContent = data.message;
+                document.getElementById('successModal').style.display = 'flex';
+            } else {
+                alert('Error: ' + data.message);
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            hideBulkDeleteModal();
             alert('Error: ' + error.message);
             window.location.reload();
         });

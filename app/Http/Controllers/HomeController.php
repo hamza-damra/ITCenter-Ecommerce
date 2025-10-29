@@ -64,7 +64,6 @@ class HomeController extends Controller
                     $query->active();
                 }])
                 ->orderBy('order')
-                ->limit(20)
                 ->get();
 
             $featuredBrands = Brand::select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'logo', 'order')

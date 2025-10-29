@@ -621,9 +621,15 @@
                                 </div>
                             </td>
                             <td>
-                                <span style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: #3730a3; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px;">
-                                    {{ $product->category->name_en ?? $product->category->name }}
-                                </span>
+                                @if($product->category)
+                                    <span style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: #3730a3; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px;">
+                                        {{ $product->category->name_en ?? $product->category->name }}
+                                    </span>
+                                @else
+                                    <span style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); color: #6b7280; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px;">
+                                        {{ __('messages.no_category') }}
+                                    </span>
+                                @endif
                             </td>
                             <td>
                                 <div class="price-cell">${{ number_format($product->price, 2) }}</div>
@@ -790,9 +796,15 @@
                                 </div>
                             </td>
                             <td>
-                                <span style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: #3730a3; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px;">
-                                    {{ $product->category->name_en ?? $product->category->name }}
-                                </span>
+                                @if($product->category)
+                                    <span style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); color: #3730a3; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px;">
+                                        {{ $product->category->name_en ?? $product->category->name }}
+                                    </span>
+                                @else
+                                    <span style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); color: #6b7280; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px;">
+                                        {{ __('messages.no_category') }}
+                                    </span>
+                                @endif
                             </td>
                             <td>
                                 <span class="stock-cell {{ $product->stock_quantity == 0 ? 'out' : 'low' }}">

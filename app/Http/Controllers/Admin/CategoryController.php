@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
@@ -51,6 +52,9 @@ class CategoryController extends Controller
 
         Category::create($validated);
 
+        // Clear home page cache to reflect changes immediately
+        $this->clearHomeCache();
+
         return redirect()->route('admin.categories.index')
             ->with('success', 'Category created successfully!');
     }
@@ -90,6 +94,9 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
+        // Clear home page cache to reflect changes immediately
+        $this->clearHomeCache();
+
         return redirect()->route('admin.categories.index')
             ->with('success', 'Category updated successfully!');
     }
@@ -97,6 +104,9 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
+
+        // Clear home page cache to reflect changes immediately
+        $this->clearHomeCache();
 
         return redirect()->route('admin.categories.index')
             ->with('success', 'Category deleted successfully!');
@@ -106,13 +116,16 @@ class CategoryController extends Controller
     {
         try {
             DB::beginTransaction();
-            
+
             // Delete all categories
             $count = Category::count();
             Category::query()->delete();
-            
+
             DB::commit();
-            
+
+            // Clear home page cache to reflect changes immediately
+            $this->clearHomeCache();
+
             return response()->json([
                 'success' => true,
                 'message' => __('messages.all_records_deleted_successfully'),
@@ -125,6 +138,53 @@ class CategoryController extends Controller
                 'message' => 'Error: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'ids' => 'required|array|min:1',
+                'ids.*' => 'required|integer|exists:categories,id'
+            ]);
+
+            DB::beginTransaction();
+
+            // Delete selected categories
+            $count = Category::whereIn('id', $validated['ids'])->delete();
+
+            DB::commit();
+
+            // Clear home page cache to reflect changes immediately
+            $this->clearHomeCache();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('messages.selected_records_deleted_successfully', ['count' => $count]),
+                'count' => $count
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error: ' . implode(', ', $e->validator->errors()->all())
+            ], 422);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Clear home page cache for all locales
+     */
+    private function clearHomeCache()
+    {
+        Cache::forget('home_page_data_ar');
+        Cache::forget('home_page_data_en');
+        Cache::forget('home_page_data_he');
     }
 }
 

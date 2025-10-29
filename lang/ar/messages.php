@@ -19,6 +19,7 @@ return [
     
     // Categories Section
     'shop_by_category' => 'التسوق حسب الفئة',
+    'explore_our_products' => 'اكتشف منتجاتنا',
     'view_all' => 'عرض الكل',
     'view_more' => 'عرض المزيد',
     'no_categories' => 'لا توجد فئات متاحة',
@@ -86,6 +87,7 @@ return [
     'availability' => 'التوفر',
     'brand' => 'العلامة التجارية',
     'category' => 'الفئة',
+    'no_category' => 'بدون فئة',
     'sku' => 'رمز المنتج',
     'tags' => 'الوسوم',
     'share' => 'شارك',
@@ -1024,6 +1026,14 @@ return [
     'delete_all_brands' => 'حذف جميع العلامات التجارية',
     'no_records_to_delete' => 'لا توجد سجلات للحذف',
     'deleting_all_records' => 'جارٍ حذف جميع السجلات...',
+
+    // Bulk Delete Feature
+    'delete_selected' => 'حذف المحدد',
+    'delete_selected_categories' => 'حذف الفئات المحددة',
+    'delete_selected_products' => 'حذف المنتجات المحددة',
+    'confirm_delete_selected' => 'هل أنت متأكد أنك تريد حذف العناصر المحددة؟ هذا الإجراء لا يمكن التراجع عنه.',
+    'please_select_items' => 'يرجى تحديد عنصر واحد على الأقل للحذف.',
+    'selected_records_deleted_successfully' => 'تم حذف :count عنصر بنجاح!',
     
     // إعدادات النسخ الاحتياطي
     'Backup Settings' => 'إعدادات النسخ الاحتياطي',
