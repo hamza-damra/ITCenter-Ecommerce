@@ -25,6 +25,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'phone',
+        'avatar',
         'password',
         'role',
         'status',
@@ -83,6 +84,14 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get the user's reviews.
+     */
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 
     /**

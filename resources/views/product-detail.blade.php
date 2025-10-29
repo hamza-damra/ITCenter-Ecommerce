@@ -946,7 +946,7 @@
                 <div class="product-category">{{ $product->category->{'name_' . current_locale()} ?? $product->category->name ?? __('messages.Uncategorized') }} @if($product->brand) / {{ $product->brand->{'name_' . current_locale()} ?? $product->brand->name }}@endif</div>
                 <h1 class="product-title">{{ $product->{'name_' . current_locale()} ?? $product->name }}</h1>
 
-                <div class="product-rating">
+                <div class="product-rating" style="cursor: pointer;" onclick="document.getElementById('reviews-section').scrollIntoView({ behavior: 'smooth' })">
                     <div class="stars">
                         @for($i = 1; $i <= 5; $i++)
                             @if($i <= floor($product->avg_rating))
@@ -1085,6 +1085,9 @@
             </div>
         </div>
         @endif
+
+        <!-- Reviews Section -->
+        @include('partials.reviews-section')
     </div>
 </div>
 

@@ -14,6 +14,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\App as AppFacade;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -26,11 +27,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
         ]);
-        
+
+        // Sanctum: treat API requests from same-origin as stateful so session cookies authenticate
+        $middleware->api(prepend: [
+            EnsureFrontendRequestsAreStateful::class,
+        ]);
+
         $middleware->api(append: [
             \App\Http\Middleware\SetLocale::class,
         ]);
-        
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\IsAdmin::class,
         ]);
@@ -164,10 +170,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (QueryException $e, Request $request) {
             if ($request->is('api/*')) {
                 // Don't expose SQL errors in production
-                $message = config('app.debug') 
-                    ? $e->getMessage() 
+                $message = config('app.debug')
+                    ? $e->getMessage()
                     : 'A database error occurred.';
-                
+
                 return response()->json([
                     'success' => false,
                     'message' => $message,
@@ -180,13 +186,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (\Throwable $e, Request $request) {
             if ($request->is('api/*')) {
                 // Get status code
-                $statusCode = method_exists($e, 'getStatusCode') 
-                    ? $e->getStatusCode() 
+                $statusCode = method_exists($e, 'getStatusCode')
+                    ? $e->getStatusCode()
                     : 500;
 
                 // Get error message
-                $message = config('app.debug') 
-                    ? $e->getMessage() 
+                $message = config('app.debug')
+                    ? $e->getMessage()
                     : 'An error occurred while processing your request.';
 
                 return response()->json([

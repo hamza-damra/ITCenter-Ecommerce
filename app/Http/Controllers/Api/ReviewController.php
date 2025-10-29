@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreReviewRequest;
+use App\Http\Requests\UpdateReviewRequest;
 use App\Http\Resources\ReviewResource;
 use App\Models\Review;
 use App\Models\Product;
+use App\Models\Order;
 use App\Traits\ApiResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ReviewController extends Controller
 {
@@ -21,18 +25,46 @@ class ReviewController extends Controller
     {
         $product = Product::where('slug', $productSlug)->firstOrFail();
 
-        $reviews = Review::with(['user'])
-            ->where('product_id', $product->id)
-            ->approved()
-            ->orderBy('created_at', 'desc')
-            ->paginate($request->get('per_page', 10));
+        $query = Review::with(['user'])
+            ->where('product_id', $product->id);
+
+        // Apply sorting
+        $sortBy = $request->get('sort_by', 'recent');
+        switch ($sortBy) {
+            case 'helpful':
+                $query->mostHelpful();
+                break;
+            case 'highest':
+                $query->highestRating();
+                break;
+            case 'lowest':
+                $query->lowestRating();
+                break;
+            case 'recent':
+            default:
+                $query->mostRecent();
+                break;
+        }
+
+        // Apply rating filter
+        if ($request->has('rating') && $request->rating >= 1 && $request->rating <= 5) {
+            $query->rating($request->rating);
+        }
+
+        // Apply verified purchase filter
+        if ($request->get('verified_only') === 'true') {
+            $query->verifiedPurchase();
+        }
+
+        $perPage = min($request->get('per_page', 15), 50); // Max 50 per page
+        $reviews = $query->paginate($perPage);
 
         return response()->json([
             'success' => true,
             'data' => [
                 'reviews' => ReviewResource::collection($reviews->items()),
                 'stats' => [
-                    'average_rating' => $product->avg_rating,
+                    'average_rating' => $product->avg_rating !== null ? round((float)$product->avg_rating, 1) : 0.0,
                     'total_reviews' => $product->reviews_count,
                     'rating_distribution' => $this->getRatingDistribution($product->id),
                 ],
@@ -49,15 +81,8 @@ class ReviewController extends Controller
     /**
      * Store a new review
      */
-    public function store(Request $request, $productSlug)
+    public function store(StoreReviewRequest $request, $productSlug)
     {
-        if (!Auth::check()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You must be logged in to submit a review',
-            ], 401);
-        }
-
         $product = Product::where('slug', $productSlug)->firstOrFail();
 
         // Check if user already reviewed this product
@@ -68,89 +93,115 @@ class ReviewController extends Controller
         if ($existingReview) {
             return response()->json([
                 'success' => false,
-                'message' => 'You have already reviewed this product',
+                'message' => __('messages.review_already_exists'),
             ], 422);
         }
 
-        $validator = Validator::make($request->all(), [
-            'rating' => 'required|integer|min:1|max:5',
-            'title' => 'nullable|string|max:255',
-            'comment' => 'required|string|min:10|max:1000',
-        ]);
+        DB::beginTransaction();
+        try {
+            // Handle image uploads
+            $imagePaths = [];
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('reviews', 'public');
+                    $imagePaths[] = $path;
+                }
+            }
 
-        if ($validator->fails()) {
+            $review = Review::create([
+                'product_id' => $product->id,
+                'user_id' => Auth::id(),
+                'rating' => $request->rating,
+                'title' => $request->title,
+                'comment' => $request->comment,
+                'images' => $imagePaths,
+                'is_verified_purchase' => $this->isVerifiedPurchase($product->id, Auth::id()),
+                'is_approved' => true,
+                'status' => 'approved',
+            ]);
+
+            // Update product average rating and review count
+            $this->updateProductRatingStats($product->id);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('messages.review_submitted_success'),
+                'data' => [
+                    'review' => new ReviewResource($review->load('user')),
+                ],
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // Clean up uploaded images on error
+            foreach ($imagePaths as $path) {
+                Storage::disk('public')->delete($path);
+            }
+
             return response()->json([
                 'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
+                'message' => __('messages.review_submit_failed'),
+            ], 500);
         }
-
-        $review = Review::create([
-            'product_id' => $product->id,
-            'user_id' => Auth::id(),
-            'rating' => $request->rating,
-            'title' => $request->title,
-            'comment' => $request->comment,
-            'is_verified_purchase' => $this->isVerifiedPurchase($product->id, Auth::id()),
-            'is_approved' => false, // Requires admin approval
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Review submitted successfully. It will be published after approval.',
-            'data' => new ReviewResource($review->load('user')),
-        ], 201);
     }
 
     /**
      * Update a review
      */
-    public function update(Request $request, $reviewId)
+    public function update(UpdateReviewRequest $request, $reviewId)
     {
-        if (!Auth::check()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You must be logged in',
-            ], 401);
-        }
-
         $review = Review::findOrFail($reviewId);
 
-        // Check if user owns the review
-        if ($review->user_id !== Auth::id()) {
+        DB::beginTransaction();
+        try {
+            $data = [
+                'rating' => $request->rating,
+                'title' => $request->title,
+                'comment' => $request->comment,
+            ];
+
+            // Handle new image uploads
+            if ($request->hasFile('images')) {
+                // Delete old images
+                if ($review->images) {
+                    foreach ($review->images as $oldImage) {
+                        Storage::disk('public')->delete($oldImage);
+                    }
+                }
+
+                // Upload new images
+                $imagePaths = [];
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('reviews', 'public');
+                    $imagePaths[] = $path;
+                }
+                $data['images'] = $imagePaths;
+            }
+
+            $review->update($data);
+
+            // Update product rating stats
+            $this->updateProductRatingStats($review->product_id);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('messages.review_updated_success'),
+                'data' => [
+                    'review' => new ReviewResource($review->load('user')),
+                ],
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthorized',
-            ], 403);
+                'message' => __('messages.review_update_failed'),
+            ], 500);
         }
-
-        $validator = Validator::make($request->all(), [
-            'rating' => 'required|integer|min:1|max:5',
-            'title' => 'nullable|string|max:255',
-            'comment' => 'required|string|min:10|max:1000',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        $review->update([
-            'rating' => $request->rating,
-            'title' => $request->title,
-            'comment' => $request->comment,
-            'is_approved' => false, // Reset approval status
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Review updated successfully',
-            'data' => new ReviewResource($review->load('user')),
-        ]);
     }
 
     /**
@@ -161,7 +212,7 @@ class ReviewController extends Controller
         if (!Auth::check()) {
             return response()->json([
                 'success' => false,
-                'message' => 'You must be logged in',
+                'message' => __('messages.unauthorized'),
             ], 401);
         }
 
@@ -171,16 +222,40 @@ class ReviewController extends Controller
         if ($review->user_id !== Auth::id()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthorized',
+                'message' => __('messages.unauthorized'),
             ], 403);
         }
 
-        $review->delete();
+        DB::beginTransaction();
+        try {
+            $productId = $review->product_id;
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Review deleted successfully',
-        ]);
+            // Delete review images
+            if ($review->images) {
+                foreach ($review->images as $image) {
+                    Storage::disk('public')->delete($image);
+                }
+            }
+
+            $review->delete();
+
+            // Update product rating stats
+            $this->updateProductRatingStats($productId);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('messages.review_deleted_success'),
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.review_delete_failed'),
+            ], 500);
+        }
     }
 
     /**
@@ -189,12 +264,23 @@ class ReviewController extends Controller
     public function markHelpful($reviewId)
     {
         $review = Review::findOrFail($reviewId);
+
+        // Prevent users from voting on their own reviews
+        if (Auth::check() && $review->user_id === Auth::id()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.cannot_vote_own_review'),
+            ], 403);
+        }
+
         $review->increment('helpful_count');
 
         return response()->json([
             'success' => true,
-            'message' => 'Thank you for your feedback',
-            'helpful_count' => $review->helpful_count,
+            'message' => __('messages.review_marked_helpful'),
+            'data' => [
+                'helpful_count' => $review->helpful_count,
+            ],
         ]);
     }
 
@@ -204,11 +290,20 @@ class ReviewController extends Controller
     public function markUnhelpful($reviewId)
     {
         $review = Review::findOrFail($reviewId);
+
+        // Prevent users from voting on their own reviews
+        if (Auth::check() && $review->user_id === Auth::id()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.cannot_vote_own_review'),
+            ], 403);
+        }
+
         $review->increment('unhelpful_count');
 
         return response()->json([
             'success' => true,
-            'message' => 'Thank you for your feedback',
+            'message' => __('messages.review_marked_unhelpful'),
             'unhelpful_count' => $review->unhelpful_count,
         ]);
     }
@@ -222,7 +317,6 @@ class ReviewController extends Controller
         for ($i = 5; $i >= 1; $i--) {
             $count = Review::where('product_id', $productId)
                 ->where('rating', $i)
-                ->approved()
                 ->count();
             $distribution[$i] = $count;
         }
@@ -234,8 +328,33 @@ class ReviewController extends Controller
      */
     private function isVerifiedPurchase($productId, $userId)
     {
-        // TODO: Implement logic to check if user actually purchased the product
-        // This would typically check the orders table
-        return false;
+        // Check if user has completed order with this product
+        return Order::where('user_id', $userId)
+            ->where('status', 'completed')
+            ->whereHas('items', function ($query) use ($productId) {
+                $query->where('product_id', $productId);
+            })
+            ->exists();
+    }
+
+    /**
+     * Update product rating statistics
+     */
+    private function updateProductRatingStats($productId)
+    {
+        $product = Product::find($productId);
+        if (!$product) {
+            return;
+        }
+
+        $reviews = Review::where('product_id', $productId)
+            ->get();
+
+        $product->reviews_count = $reviews->count();
+        $product->avg_rating = $reviews->count() > 0
+            ? round($reviews->avg('rating'), 1)
+            : 0;
+
+        $product->save();
     }
 }
