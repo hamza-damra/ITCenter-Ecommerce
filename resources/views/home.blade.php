@@ -916,12 +916,13 @@
 
     .product-footer {
         display: flex;
-        flex-direction: column;
-        gap: 0.875rem;
-        align-items: stretch;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
         margin-top: auto;
-        padding-top: 0.5rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.04);
+        padding-top: 0.75rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
     }
 
     .product-price {
@@ -930,16 +931,27 @@
         color: #1e293b;
         text-align: start;
         display: flex;
-        flex-direction: row;
-        align-items: baseline;
-        gap: 0.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+        flex: 1;
     }
 
     .product-price .original-price {
         text-decoration: line-through;
         color: #94a3b8;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         font-weight: 500;
+        order: -1;
+    }
+
+    .product-price .current-price {
+        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
+        font-size: 1.35rem;
     }
 
     .product-price .discount-percentage {
@@ -1048,6 +1060,96 @@
     @keyframes cartBounce {
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.3); }
+    }
+
+    /* Icon-Only Add to Cart Button */
+    .add-to-cart-icon {
+        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
+        color: #ffffff;
+        border: none;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.25);
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+    .add-to-cart-icon::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #1a4dbf 0%, #0f3a8f 100%);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        z-index: 0;
+    }
+
+    .add-to-cart-icon i {
+        position: relative;
+        z-index: 1;
+        transition: transform 0.3s ease;
+    }
+
+    .add-to-cart-icon:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 20px rgba(39, 98, 243, 0.4), 0 2px 8px rgba(39, 98, 243, 0.2);
+    }
+
+    .add-to-cart-icon:hover::before {
+        opacity: 1;
+    }
+
+    .add-to-cart-icon:hover i {
+        transform: scale(1.1);
+    }
+
+    .add-to-cart-icon:active {
+        transform: translateY(0) scale(1);
+    }
+
+    /* Success state - green with check icon */
+    .add-to-cart-icon.in-cart {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+    }
+
+    .add-to-cart-icon.in-cart::before {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
+
+    .add-to-cart-icon.in-cart:hover {
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4), 0 2px 8px rgba(16, 185, 129, 0.2);
+    }
+
+    .add-to-cart-icon.in-cart i {
+        animation: cartBounce 0.5s ease;
+    }
+
+    /* Out of stock state - orange with bell icon */
+    .add-to-cart-icon.out-of-stock {
+        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        box-shadow: 0 2px 8px rgba(249, 115, 22, 0.25);
+        cursor: pointer;
+    }
+
+    .add-to-cart-icon.out-of-stock::before {
+        background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+    }
+
+    .add-to-cart-icon.out-of-stock:hover {
+        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4), 0 2px 8px rgba(249, 115, 22, 0.2);
     }
 
     /* Tablet Responsive */
@@ -1350,25 +1452,35 @@
         }
         
         .product-footer {
-            flex-direction: column;
+            flex-direction: row;
             gap: 0.75rem;
         }
-        
+
         .product-price {
             font-size: 1.2rem;
-            width: 100%;
-            align-items: center;
+            flex: 1;
         }
-        
+
         .product-price .original-price {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
-        
+
+        .product-price .current-price {
+            font-size: 1.2rem;
+        }
+
         .add-to-cart {
             width: 100%;
             padding: 0.7rem 1rem;
             font-size: 0.85rem;
             min-width: unset;
+        }
+
+        .add-to-cart-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            font-size: 1rem;
         }
         
         .banners-slider {
@@ -2507,42 +2619,27 @@
                             <div class="product-price">
                                 @if($product->sale_price && $product->sale_price < $product->price)
                                     <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
-                                    <span>₪ {{ number_format($product->sale_price, 0) }}</span>
+                                    <span class="current-price">₪ {{ number_format($product->sale_price, 0) }}</span>
                                 @else
-                                    <span class="original-price" style="visibility: hidden;">₪ 0</span>
-                                    <span>₪ {{ number_format($product->price, 0) }}</span>
+                                    <span class="current-price">₪ {{ number_format($product->price, 0) }}</span>
                                 @endif
                             </div>
                             @if($product->stock_status === 'out_of_stock')
-                            <button class="add-to-cart out-of-stock"
+                            <button class="add-to-cart-icon out-of-stock"
                                     data-product-id="{{ $product->id }}"
                                     data-product-name="{{ $product->name }}"
+                                    title="{{ __t('messages.request_product') }}"
+                                    aria-label="{{ __t('messages.request_product') }}"
                                     onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
-                                @if(is_rtl())
-                                    {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
-                                @else
-                                    <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
-                                @endif
+                                <i class="fas fa-bell"></i>
                             </button>
                             @else
-                            <button class="add-to-cart {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
+                            <button class="add-to-cart-icon {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
                                     data-product-id="{{ $product->id }}"
-                                    data-original-text="{{ __t('messages.add_to_cart') }}"
-                                    data-added-text="{{ __t('messages.in_cart') }}"
+                                    title="{{ in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                    aria-label="{{ in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
                                     onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                                @if(in_array($product->id, $cartProductIds))
-                                    @if(is_rtl())
-                                        {{ __t('messages.in_cart') }} <i class="fas fa-check"></i>
-                                    @else
-                                        <i class="fas fa-check"></i> {{ __t('messages.in_cart') }}
-                                    @endif
-                                @else
-                                    @if(is_rtl())
-                                        {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
-                                    @else
-                                        <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
-                                    @endif
-                                @endif
+                                <i class="fas {{ in_array($product->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
                             </button>
                             @endif
                         </div>
@@ -2558,12 +2655,13 @@
 <div class="container">
     <!-- Featured Products - HORIZONTAL SCROLLER -->
     @if($featuredProducts->count() > 0)
-    <x-horizontal-product-scroller 
-        :products="$featuredProducts" 
+    <x-horizontal-product-scroller
+        :products="$featuredProducts"
         title="{{ __t('messages.featured_products') }}"
         :viewMoreUrl="route('products')"
         :autoScroll="true"
         :autoScrollInterval="4000"
+        :cartProductIds="$cartProductIds"
         containerId="featured-products-scroller"
     />
     @endif
@@ -2572,38 +2670,41 @@
 
     <!-- New Arrivals - HORIZONTAL SCROLLER -->
     @if($newProducts->count() > 0)
-    <x-horizontal-product-scroller 
-        :products="$newProducts" 
+    <x-horizontal-product-scroller
+        :products="$newProducts"
         title="{{ __t('messages.new_arrivals') }}"
         :viewMoreUrl="route('products')"
         :autoScroll="true"
         :autoScrollInterval="5000"
         :cardsToScroll="2"
+        :cartProductIds="$cartProductIds"
         containerId="new-arrivals-scroller"
     />
     @endif
 
     <!-- Bestsellers - HORIZONTAL SCROLLER -->
     @if($bestsellerProducts->count() > 0)
-    <x-horizontal-product-scroller 
-        :products="$bestsellerProducts" 
+    <x-horizontal-product-scroller
+        :products="$bestsellerProducts"
         title="{{ __t('messages.best_sellers') }}"
         :viewMoreUrl="route('products', ['filter' => 'bestseller'])"
         :autoScroll="true"
         :autoScrollInterval="6000"
+        :cartProductIds="$cartProductIds"
         containerId="bestsellers-scroller"
     />
     @endif
 
     <!-- On Sale Products - HORIZONTAL SCROLLER -->
     @if($onSaleProducts->count() > 0)
-    <x-horizontal-product-scroller 
-        :products="$onSaleProducts" 
+    <x-horizontal-product-scroller
+        :products="$onSaleProducts"
         title="{{ __t('messages.on_sale') }}"
         :viewMoreUrl="route('products', ['filter' => 'sale'])"
         :autoScroll="true"
         :autoScrollInterval="5000"
         :cardsToScroll="1"
+        :cartProductIds="$cartProductIds"
         containerId="on-sale-scroller"
     />
     @endif

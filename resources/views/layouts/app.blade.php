@@ -1625,9 +1625,18 @@
             const originalText = button.innerHTML;
             const addedText = button.getAttribute('data-added-text') || 'Added';
             const originalTextAttr = button.getAttribute('data-original-text') || 'Add to Cart';
-            
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
-            
+
+            // Check if this is an icon-only button
+            const isIconButton = button.classList.contains('add-to-cart-icon');
+
+            if (isIconButton) {
+                // For icon-only buttons, just show spinner
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            } else {
+                // For text buttons, show spinner with text
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+            }
+
             fetch(`/cart/add/${productId}`, {
                 method: 'POST',
                 headers: {
@@ -1643,23 +1652,33 @@
                 if (data.success) {
                     // Update button state
                     button.classList.add('in-cart');
-                    if (isRTL) {
-                        button.innerHTML = addedText + ' <i class="fas fa-check"></i>';
+
+                    if (isIconButton) {
+                        // For icon-only buttons, just show check icon
+                        button.innerHTML = '<i class="fas fa-check"></i>';
+                        // Update title/aria-label for accessibility
+                        button.setAttribute('title', addedText);
+                        button.setAttribute('aria-label', addedText);
                     } else {
-                        button.innerHTML = '<i class="fas fa-check"></i> ' + addedText;
+                        // For text buttons, show check icon with text
+                        if (isRTL) {
+                            button.innerHTML = addedText + ' <i class="fas fa-check"></i>';
+                        } else {
+                            button.innerHTML = '<i class="fas fa-check"></i> ' + addedText;
+                        }
                     }
-                    
+
                     // Add product ID to global cart array
                     if (window.cartProductIds && !window.cartProductIds.includes(productId)) {
                         window.cartProductIds.push(productId);
                     }
-                    
+
                     // Update cart count
                     updateCartCount();
-                    
+
                     // Show notification
                     showNotification(data.message);
-                    
+
                     // Keep the "Added" state permanently
                     button.disabled = false;
                 } else {

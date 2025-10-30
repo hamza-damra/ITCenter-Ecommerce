@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -19,8 +20,16 @@ class ProductController extends Controller
         $query = Product::with(['category', 'brand', 'images'])
             ->active();
 
-        // Filter by category
-        if ($request->has('category')) {
+        // Filter by multiple categories (support both single and multiple)
+        if ($request->has('categories') && !empty($request->categories)) {
+            $categories = is_array($request->categories) ? $request->categories : [$request->categories];
+            $query->whereHas('category', function ($q) use ($categories) {
+                $q->whereIn('slug', $categories);
+            });
+        }
+
+        // Backward compatibility: single category filter
+        if ($request->has('category') && !$request->has('categories')) {
             $query->whereHas('category', function ($q) use ($request) {
                 $q->where('slug', $request->category);
             });
@@ -34,10 +43,10 @@ class ProductController extends Controller
         }
 
         // Filter by price range
-        if ($request->has('min_price')) {
+        if ($request->has('min_price') && $request->min_price !== null && $request->min_price !== '') {
             $query->where('price', '>=', $request->min_price);
         }
-        if ($request->has('max_price')) {
+        if ($request->has('max_price') && $request->max_price !== null && $request->max_price !== '') {
             $query->where('price', '<=', $request->max_price);
         }
 
@@ -77,10 +86,27 @@ class ProductController extends Controller
 
         $products = $query->paginate($request->get('per_page', 12));
 
+        // Preserve filter parameters in pagination links
+        $products->appends($request->except('page'));
+
         // Get cart product IDs for current user/session
         $cartProductIds = $this->getCartProductIds();
 
-        return view('products', compact('products', 'cartProductIds'));
+        // Get all active categories for filter sidebar
+        $locale = app()->getLocale();
+        $nameColumn = "name_{$locale}";
+        $categories = Category::active()
+            ->whereNull('parent_id') // Only parent categories
+            ->orderBy('order')
+            ->get();
+
+        // Get price range for slider
+        $priceRange = [
+            'min' => Product::active()->min('price') ?? 0,
+            'max' => Product::active()->max('price') ?? 10000,
+        ];
+
+        return view('products', compact('products', 'cartProductIds', 'categories', 'priceRange'));
     }
 
     public function show($slug)

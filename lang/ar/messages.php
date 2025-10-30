@@ -1112,6 +1112,11 @@ return [
     'current_password_incorrect' => 'كلمة المرور الحالية غير صحيحة.',
     'avatar_size_error' => 'يجب ألا يتجاوز حجم الصورة الشخصية 2 ميجابايت.',
     'avatar_format_error' => 'يجب أن تكون الصورة الشخصية ملف صورة صالح (JPEG أو PNG أو JPG أو WEBP).',
+
+    // Review Loading Messages
+    'submitting_review' => 'جارٍ إرسال التقييم...',
+    'updating_review' => 'جارٍ تحديث التقييم...',
+    'deleting_review' => 'جارٍ حذف التقييم...',
 ];
 
 

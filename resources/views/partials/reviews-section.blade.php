@@ -157,19 +157,36 @@
     .review-item {
         padding: 1.5rem 0;
         border-bottom: 1px solid #e0e0e0;
-        animation: fadeIn 0.5s ease-in;
         transition: all 0.3s ease;
     }
 
-    /* Fade-in animation for new reviews */
-    @keyframes fadeIn {
+    /* Smooth slide-in animation for new reviews */
+    .review-item.new-review-animation {
+        animation: slideInFromTop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    /* Highlight flash for updated reviews */
+    .review-item.updated-flash {
+        animation: highlightFlash 1s ease-out forwards;
+    }
+
+    @keyframes slideInFromTop {
         from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(-15px) scale(0.98);
         }
         to {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @keyframes highlightFlash {
+        0%, 100% {
+            background-color: transparent;
+        }
+        50% {
+            background-color: #e3f2fd;
         }
     }
 
@@ -580,6 +597,47 @@
         color: #2762f3;
     }
 
+    /* Localized loading overlay for review form and individual review items */
+    .local-loading-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 3;
+        border-radius: 12px;
+    }
+
+    .local-loading-overlay .spinner {
+        width: 28px;
+        height: 28px;
+        border: 3px solid rgba(0, 0, 0, 0.15);
+        border-top-color: #2762f3;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .review-form-container.is-loading > *:not(.local-loading-overlay),
+    .review-item.is-loading > *:not(.local-loading-overlay) {
+        opacity: 0.5;
+    }
+
+    .review-form-container.is-loading .local-loading-overlay,
+    .review-item.is-loading .local-loading-overlay {
+        display: flex;
+    }
+
+    /* Ensure containers create a stacking context for the local overlay */
+    .review-form-container,
+    .review-item {
+        position: relative;
+    }
+
     /* Inline Error Styles */
     .inline-error {
         background: #fee;
@@ -706,6 +764,8 @@
                 <input type="hidden" name="rating" id="rating-input" required>
             </div>
 
+        <div class="local-loading-overlay"><div class="spinner"></div></div>
+
             <div class="form-group">
                 <label>{{ __('messages.review_title') }}</label>
                 <input type="text" name="title" id="review-title" placeholder="{{ __('messages.review_title') }}" maxlength="100">
@@ -757,6 +817,7 @@
 </div>
 
 
+
 <script>
     // Ensure functions are defined in global scope immediately
     (function() {
@@ -769,6 +830,23 @@
         window.authUserId = @json(auth()->id());
         window.userReviewId = @json(optional($userReview)->id);
         window.hasUserReviewed = @json($hasReviewed);
+
+        // Localized loading helper: toggles a small overlay on a specific container
+        window.setLocalLoading = function(targetEl, enable = true) {
+            if (!targetEl) return;
+            let overlay = targetEl.querySelector('.local-loading-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'local-loading-overlay';
+                overlay.innerHTML = '<div class="spinner"></div>';
+                targetEl.appendChild(overlay);
+            }
+            if (enable) {
+                targetEl.classList.add('is-loading');
+            } else {
+                targetEl.classList.remove('is-loading');
+            }
+        };
 
         // Toggle review form - Define globally
         window.toggleReviewForm = function() {
@@ -847,6 +925,16 @@
                 return;
             }
 
+            // Localized loading: form when creating, specific review card when editing
+            const isEditMode = !!window.editingReviewId;
+            let localLoadingTarget = null;
+            if (isEditMode) {
+                localLoadingTarget = document.querySelector(`.review-item[data-review-id="${window.editingReviewId}"]`);
+            } else {
+                localLoadingTarget = document.getElementById('review-form-container');
+            }
+            if (localLoadingTarget) window.setLocalLoading(localLoadingTarget, true);
+
             // Disable submit button
             submitBtn.disabled = true;
             const originalButtonText = submitBtn.innerHTML;
@@ -876,6 +964,13 @@
                     body: formData
                 });
 
+                // Handle 419 CSRF token mismatch - redirect to login
+                if (response.status === 419) {
+                    console.warn('Session expired (419). Redirecting to login...');
+                    window.location.href = '/login';
+                    return;
+                }
+
                 const data = await response.json();
 
                 if (response.ok && data.success) {
@@ -897,8 +992,10 @@
 
                     // Update the UI dynamically without page reload
                     if (isEdit) {
-                        // For edit: reload reviews to show updated content
-                        await window.loadReviews(window.reviewsCurrentPage || 1);
+                        // For edit: update the review in place with flash animation
+                        if (data.data && data.data.review) {
+                            window.updateReviewInPlace(data.data.review);
+                        }
 
                         // Button should remain as "Edit Review" since user still has a review
                         const writeReviewBtn = document.querySelector('.write-review-btn');
@@ -908,14 +1005,13 @@
                             writeReviewBtn.style.background = '#6c757d';
                         }
                     } else {
-                        // For new review: update state and reload reviews
+                        // For new review: prepend with smooth animation (optimistic UI)
                         window.hasUserReviewed = true;
                         if (data.data && data.data.review) {
                             window.userReviewId = data.data.review.id;
+                            // Prepend the new review at the top with animation
+                            window.prependNewReview(data.data.review);
                         }
-
-                        // Reload reviews to show the new review with animation
-                        await window.loadReviews(1); // Go to first page to see the new review
 
                         // Update the button from "Write Review" to "Edit Review"
                         const writeReviewBtn = document.querySelector('.write-review-btn');
@@ -940,6 +1036,8 @@
                 console.error('Error submitting review:', error);
                 showToast('{{ __("messages.review_submit_failed") ?? "Failed to submit review. Please try again." }}', 'error');
             } finally {
+                // Hide localized loading overlay
+                if (typeof localLoadingTarget !== 'undefined' && localLoadingTarget) window.setLocalLoading(localLoadingTarget, false);
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalButtonText || '<i class="fas fa-paper-plane"></i> {{ __("messages.submit_review") }}';
             }
@@ -1012,7 +1110,7 @@
                     const yourBadge = isMine ? '<span class=\"your-review-badge\"><i class=\"fas fa-user-check\"></i> Your review</span>' : '';
 
                     html += `
-                        <div class="review-item ${isMine ? 'my-review' : ''}">
+                        <div class="review-item ${isMine ? 'my-review' : ''}" data-review-id="${review.id}">
                             <div class="review-header">
                                 <div class="reviewer-info">
                                     <div class="reviewer-avatar">${userInitial}</div>
@@ -1043,6 +1141,7 @@
                                     </button>
                                 ` : ''}
                             </div>
+                            <div class=\"local-loading-overlay\"><div class=\"spinner\"></div></div>
                         </div>
                     `;
                 } catch (error) {
@@ -1051,6 +1150,147 @@
             });
 
             reviewsList.innerHTML = html;
+        };
+
+        // Helper: Prepend a single new review with animation (optimistic UI)
+        window.prependNewReview = function(reviewData) {
+            const reviewsList = document.getElementById('reviews-list');
+            if (!reviewsList) return;
+
+            // Update cache: prepend to the beginning of the cache array
+            if (!window.reviewsCache) {
+                window.reviewsCache = [];
+            }
+            // Add to beginning of cache (since we're prepending to DOM)
+            window.reviewsCache.unshift(reviewData);
+
+            // Build HTML for the single review
+            const userInitial = reviewData.user?.name ? reviewData.user.name.charAt(0).toUpperCase() : 'U';
+            const stars = window.generateStars(reviewData.rating || 0);
+            const verifiedBadge = reviewData.is_verified_purchase ?
+                `<span class="verified-badge"><i class="fas fa-check-circle"></i> {{ __("messages.verified_purchase") }}</span>` : '';
+            const isMine = !!(window.authUserId && reviewData.user && String(reviewData.user.id) === String(window.authUserId));
+            const yourBadge = isMine ? '<span class="your-review-badge"><i class="fas fa-user-check"></i> Your review</span>' : '';
+
+            const reviewHTML = `
+                <div class="review-item new-review-animation ${isMine ? 'my-review' : ''}" data-review-id="${reviewData.id}">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">${userInitial}</div>
+                            <div class="reviewer-details">
+                                <h4>${window.escapeHtml(reviewData.user?.name || 'Anonymous')}</h4>
+                                <div class="review-meta">
+                                    <span class="review-rating">${stars}</span>
+                                    ${verifiedBadge}
+                                    ${yourBadge}
+                                    <span class="review-date">${window.formatDate(reviewData.created_at)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    ${reviewData.title ? `<div class="review-title">${window.escapeHtml(reviewData.title)}</div>` : ''}
+                    <div class="review-comment">${window.escapeHtml(reviewData.comment || '')}</div>
+                    <div class="review-actions">
+                        <button class="helpful-btn" onclick="markHelpful(${reviewData.id})">
+                            <i class="fas fa-thumbs-up"></i>
+                            {{ __("messages.helpful") }} (${reviewData.helpful_count || 0})
+                        </button>
+                        ${isMine ? `
+                            <button class="helpful-btn" style="border-color:#0d6efd;color:#0d6efd" onclick="startEditReviewById(${reviewData.id})">
+                                <i class="fas fa-edit"></i> {{ __("messages.edit") ?? 'Edit' }}
+                            </button>
+                            <button class="helpful-btn" style="border-color:#dc3545;color:#dc3545" onclick="deleteReviewById(${reviewData.id})">
+                                <i class="fas fa-trash"></i> {{ __("messages.delete") }}
+                            </button>
+                        ` : ''}
+                    </div>
+                    <div class="local-loading-overlay"><div class="spinner"></div></div>
+                </div>
+            `;
+
+            // Check if "no reviews" message exists and remove it
+            const noReviewsMsg = reviewsList.querySelector('.no-reviews-message');
+            if (noReviewsMsg) {
+                noReviewsMsg.remove();
+            }
+
+            // Prepend the new review at the top
+            reviewsList.insertAdjacentHTML('afterbegin', reviewHTML);
+
+            // Remove animation class after animation completes
+            setTimeout(() => {
+                const newReviewEl = reviewsList.querySelector('.new-review-animation');
+                if (newReviewEl) newReviewEl.classList.remove('new-review-animation');
+            }, 400);
+        };
+
+        // Helper: Update a single review in place with flash animation
+        window.updateReviewInPlace = function(reviewData) {
+            const reviewElement = document.querySelector(`.review-item[data-review-id="${reviewData.id}"]`);
+            if (!reviewElement) {
+                // If not found, fallback to reload
+                window.loadReviews(window.reviewsCurrentPage || 1);
+                return;
+            }
+
+            // Update cache: find and replace the review data
+            if (window.reviewsCache && Array.isArray(window.reviewsCache)) {
+                const index = window.reviewsCache.findIndex(r => String(r.id) === String(reviewData.id));
+                if (index !== -1) {
+                    window.reviewsCache[index] = reviewData;
+                }
+            }
+
+            // Build updated HTML
+            const userInitial = reviewData.user?.name ? reviewData.user.name.charAt(0).toUpperCase() : 'U';
+            const stars = window.generateStars(reviewData.rating || 0);
+            const verifiedBadge = reviewData.is_verified_purchase ?
+                `<span class="verified-badge"><i class="fas fa-check-circle"></i> {{ __("messages.verified_purchase") }}</span>` : '';
+            const isMine = !!(window.authUserId && reviewData.user && String(reviewData.user.id) === String(window.authUserId));
+            const yourBadge = isMine ? '<span class="your-review-badge"><i class="fas fa-user-check"></i> Your review</span>' : '';
+
+            const updatedHTML = `
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">${userInitial}</div>
+                        <div class="reviewer-details">
+                            <h4>${window.escapeHtml(reviewData.user?.name || 'Anonymous')}</h4>
+                            <div class="review-meta">
+                                <span class="review-rating">${stars}</span>
+                                ${verifiedBadge}
+                                ${yourBadge}
+                                <span class="review-date">${window.formatDate(reviewData.created_at)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                ${reviewData.title ? `<div class="review-title">${window.escapeHtml(reviewData.title)}</div>` : ''}
+                <div class="review-comment">${window.escapeHtml(reviewData.comment || '')}</div>
+                <div class="review-actions">
+                    <button class="helpful-btn" onclick="markHelpful(${reviewData.id})">
+                        <i class="fas fa-thumbs-up"></i>
+                        {{ __("messages.helpful") }} (${reviewData.helpful_count || 0})
+                    </button>
+                    ${isMine ? `
+                        <button class="helpful-btn" style="border-color:#0d6efd;color:#0d6efd" onclick="startEditReviewById(${reviewData.id})">
+                            <i class="fas fa-edit"></i> {{ __("messages.edit") ?? 'Edit' }}
+                        </button>
+                        <button class="helpful-btn" style="border-color:#dc3545;color:#dc3545" onclick="deleteReviewById(${reviewData.id})">
+                            <i class="fas fa-trash"></i> {{ __("messages.delete") }}
+                        </button>
+                    ` : ''}
+                </div>
+                <div class="local-loading-overlay"><div class="spinner"></div></div>
+            `;
+
+            // Replace content and add flash animation
+            reviewElement.innerHTML = updatedHTML;
+            reviewElement.classList.add('updated-flash');
+
+            // Remove flash class after animation
+            setTimeout(() => {
+                reviewElement.classList.remove('updated-flash');
+            }, 1000);
         };
 
         // Generate stars HTML - Define globally
@@ -1249,13 +1489,15 @@
 
         // Delete review by id - Define globally
         window.deleteReviewById = async function(reviewId) {
+            // Localized loading: only on the specific review card
+            const reviewElement = document.querySelector(`.review-item[data-review-id="${reviewId}"]`) || document.querySelector(`.review-item [onclick*="deleteReviewById(${reviewId})"]`)?.closest('.review-item');
+            if (reviewElement) {
+                window.setLocalLoading(reviewElement, true);
+                reviewElement.classList.add('deleting');
+            }
+
             // Remove confirmation dialog - delete immediately with animation
             try {
-                // Find the review element and add deleting animation
-                const reviewElement = document.querySelector(`.review-item [onclick*="deleteReviewById(${reviewId})"]`)?.closest('.review-item');
-                if (reviewElement) {
-                    reviewElement.classList.add('deleting');
-                }
 
                 const csrfToken = document.querySelector('meta[name="csrf-token"]');
                 const response = await fetch(`/api/v1/reviews/${reviewId}`, {
@@ -1267,6 +1509,14 @@
                         'Accept': 'application/json'
                     }
                 });
+
+                // Handle 419 CSRF token mismatch - redirect to login
+                if (response.status === 419) {
+                    console.warn('Session expired (419). Redirecting to login...');
+                    window.location.href = '/login';
+                    return;
+                }
+
                 const data = await response.json();
                 if (response.ok && data.success) {
                     // Show success toast
@@ -1276,15 +1526,26 @@
                     window.hasUserReviewed = false;
                     window.userReviewId = null;
 
-                    // Wait for animation to complete, then update UI dynamically
-                    setTimeout(async () => {
+                    // Wait for animation to complete, then remove from DOM
+                    setTimeout(() => {
+                        // Remove from cache
+                        if (window.reviewsCache && Array.isArray(window.reviewsCache)) {
+                            window.reviewsCache = window.reviewsCache.filter(r => String(r.id) !== String(reviewId));
+                        }
+
                         // Remove the review element from DOM
                         if (reviewElement) {
                             reviewElement.remove();
                         }
 
-                        // Reload reviews to update the list and stats
-                        await window.loadReviews(window.reviewsCurrentPage || 1);
+                        // Check if there are any reviews left
+                        const reviewsList = document.getElementById('reviews-list');
+                        const remainingReviews = reviewsList?.querySelectorAll('.review-item');
+
+                        // If no reviews left, show "no reviews" message
+                        if (reviewsList && (!remainingReviews || remainingReviews.length === 0)) {
+                            reviewsList.innerHTML = '<div class="no-reviews-message"><i class="fas fa-comment-slash"></i><p>{{ __("messages.no_reviews_yet") }}</p></div>';
+                        }
 
                         // Update the button from "Edit Review" to "Write Review"
                         const writeReviewBtn = document.querySelector('.write-review-btn');
@@ -1302,16 +1563,34 @@
 
                         // Reset editing state
                         window.editingReviewId = null;
+
+                        // Update review count in header if it exists
+                        const reviewCountElement = document.querySelector('.reviews-header h2');
+                        if (reviewCountElement) {
+                            const currentText = reviewCountElement.textContent;
+                            const match = currentText.match(/(\d+)/);
+                            if (match) {
+                                const currentCount = parseInt(match[1]);
+                                const newCount = Math.max(0, currentCount - 1);
+                                reviewCountElement.textContent = currentText.replace(/\d+/, newCount);
+                            }
+                        }
+
+                        /* localized overlay will be removed with the element */
                     }, 500);
                 } else {
                     // Remove deleting class if failed
                     if (reviewElement) {
                         reviewElement.classList.remove('deleting');
                     }
+                    // Hide loading overlay
+                    if (reviewElement) window.setLocalLoading(reviewElement, false);
                     showToast(data.message || '{{ __("messages.review_delete_failed") ?? "Failed to delete review" }}', 'error');
                 }
             } catch (error) {
                 console.error('Error deleting review', error);
+                // Hide loading overlay
+                if (reviewElement) window.setLocalLoading(reviewElement, false);
                 showToast('{{ __("messages.review_delete_failed") ?? "Failed to delete review" }}', 'error');
             }
         };
@@ -1337,6 +1616,13 @@
                         'Accept': 'application/json',
                     }
                 });
+
+                // Handle 419 CSRF token mismatch - redirect to login
+                if (response.status === 419) {
+                    console.warn('Session expired (419). Redirecting to login...');
+                    window.location.href = '/login';
+                    return;
+                }
 
                 const data = await response.json();
 

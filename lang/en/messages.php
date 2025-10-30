@@ -1189,6 +1189,11 @@ return [
     'avatar_size_error' => 'Avatar file size must not exceed 2MB.',
     'avatar_format_error' => 'Avatar must be a valid image file (JPEG, PNG, JPG, or WEBP).',
     'processing' => 'Processing...',
+
+    // Review Loading Messages
+    'submitting_review' => 'Submitting review...',
+    'updating_review' => 'Updating review...',
+    'deleting_review' => 'Deleting review...',
 ];
 
 

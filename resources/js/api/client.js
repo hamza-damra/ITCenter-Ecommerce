@@ -29,6 +29,15 @@ class ApiClient {
 
         try {
             const response = await fetch(url, config);
+
+            // Handle 419 CSRF token mismatch - redirect to login
+            if (response.status === 419) {
+                console.warn('Session expired (419). Redirecting to login...');
+                window.location.href = '/login';
+                // Throw error to prevent further processing
+                throw new Error('Session expired');
+            }
+
             const data = await response.json();
 
             if (!response.ok) {
@@ -37,7 +46,10 @@ class ApiClient {
 
             return data;
         } catch (error) {
-            console.error('API Error:', error);
+            // Don't log session expiration errors
+            if (error.message !== 'Session expired') {
+                console.error('API Error:', error);
+            }
             throw error;
         }
     }

@@ -1009,6 +1009,11 @@ return [
     'Failed to create backup' => 'יצירת הגיבוי נכשלה',
     'File' => 'קובץ',
     'Type' => 'סוג',
+
+    // Review Loading Messages
+    'submitting_review' => 'שולח ביקורת...',
+    'updating_review' => 'מעדכן ביקורת...',
+    'deleting_review' => 'מוחק ביקורת...',
 ];
 
 

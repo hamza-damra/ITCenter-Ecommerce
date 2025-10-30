@@ -17,7 +17,8 @@
     'autoScroll' => false,
     'autoScrollInterval' => 3000,
     'cardsToScroll' => 1,
-    'containerId' => 'scroller-' . uniqid()
+    'containerId' => 'scroller-' . uniqid(),
+    'cartProductIds' => []
 ])
 
 <div class="horizontal-scroller-section">
@@ -72,34 +73,28 @@
                             <div class="product-footer">
                                 <div class="product-price">
                                     @if($product->sale_price && $product->sale_price < $product->price)
-                                        {{ number_format($product->sale_price, 0) }} ₪
-                                        <span class="original-price">{{ number_format($product->price, 0) }} ₪</span>
+                                        <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
+                                        <span class="current-price">₪ {{ number_format($product->sale_price, 0) }}</span>
                                     @else
-                                        {{ number_format($product->price, 0) }} ₪
+                                        <span class="current-price">₪ {{ number_format($product->price, 0) }}</span>
                                     @endif
                                 </div>
                                 @if($product->stock_status === 'out_of_stock')
-                                <button class="add-to-cart out-of-stock"
+                                <button class="add-to-cart-icon out-of-stock"
                                         data-product-id="{{ $product->id }}"
                                         data-product-name="{{ $product->name }}"
+                                        title="{{ __t('messages.request_product') }}"
+                                        aria-label="{{ __t('messages.request_product') }}"
                                         onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
-                                    @if(is_rtl())
-                                        {{ __t('messages.request_product') }} <i class="fas fa-bell"></i>
-                                    @else
-                                        <i class="fas fa-bell"></i> {{ __t('messages.request_product') }}
-                                    @endif
+                                    <i class="fas fa-bell"></i>
                                 </button>
                                 @else
-                                <button class="add-to-cart"
+                                <button class="add-to-cart-icon {{ in_array($product->id, $cartProductIds ?? []) ? 'in-cart' : '' }}"
                                         data-product-id="{{ $product->id }}"
-                                        data-original-text="{{ __t('messages.add_to_cart') }}"
-                                        data-added-text="{{ __t('messages.in_cart') }}"
+                                        title="{{ in_array($product->id, $cartProductIds ?? []) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                        aria-label="{{ in_array($product->id, $cartProductIds ?? []) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
                                         onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                                    @if(is_rtl())
-                                        {{ __t('messages.add_to_cart') }} <i class="fas fa-shopping-cart"></i>
-                                    @else
-                                        <i class="fas fa-shopping-cart"></i> {{ __t('messages.add_to_cart') }}
-                                    @endif
+                                    <i class="fas {{ in_array($product->id, $cartProductIds ?? []) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
                                 </button>
                                 @endif
                             </div>
