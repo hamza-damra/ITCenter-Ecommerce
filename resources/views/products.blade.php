@@ -4,14 +4,14 @@
 
 @section('content')
 <!-- noUiSlider CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" integrity="sha512-qveKnGrvOChbSzAdtSs8p69eoLegyh+1hwOMbmpCViIwj7rn4oJjdmMvWOuyQlTOZgTlZA0N2PXA7iA8/2TUYA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
     /* Import Google Fonts - Poppins & Cairo for Arabic */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800;900&display=swap');
 
     /* Override font - exclude Font Awesome icons */
-    body, 
+    body,
     body *:not(.fa):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class*="fa-"]) {
         @if(is_rtl())
         font-family: 'Cairo', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
@@ -123,6 +123,7 @@
         align-items: center;
         margin-bottom: 1.5rem;
         padding: 0 0.25rem;
+        gap: 0.75rem;
     }
 
     .price-label-min,
@@ -130,24 +131,35 @@
         font-size: 1rem;
         font-weight: 700;
         color: #2762f3;
-        background: rgba(39, 98, 243, 0.1);
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
+        background: linear-gradient(135deg, rgba(39, 98, 243, 0.15) 0%, rgba(39, 98, 243, 0.08) 100%);
+        padding: 0.6rem 1.1rem;
+        border-radius: 12px;
         transition: all 0.3s;
+        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.1);
+        border: 1px solid rgba(39, 98, 243, 0.2);
+        min-width: 90px;
+        text-align: center;
+    }
+
+    .price-label-min:hover,
+    .price-label-max:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(39, 98, 243, 0.2);
+        background: linear-gradient(135deg, rgba(39, 98, 243, 0.2) 0%, rgba(39, 98, 243, 0.12) 100%);
     }
 
     .price-range-slider {
-        margin: 0 0 1.5rem 0;
-        padding: 0 0.25rem;
+        margin: 1.5rem 0 1.5rem 0;
+        padding: 0 0.5rem;
     }
 
     /* noUiSlider Custom Styles */
     .noUi-target {
         background: #e2e8f0;
-        border-radius: 6px;
+        border-radius: 8px;
         border: none;
-        box-shadow: none;
-        height: 6px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        height: 8px;
     }
 
     .noUi-connect {
@@ -155,15 +167,20 @@
     }
 
     .noUi-handle {
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
-        background: white;
-        border: 3px solid #2762f3;
-        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3);
-        cursor: pointer;
+        background: #ffffff;
+        border: 4px solid #2762f3;
+        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3), 0 1px 3px rgba(0, 0, 0, 0.1);
+        cursor: grab;
         transition: all 0.3s ease;
-        top: -8px;
+        top: -10px;
+        outline: none;
+    }
+
+    .noUi-handle:active {
+        cursor: grabbing;
     }
 
     .noUi-handle:before,
@@ -172,13 +189,14 @@
     }
 
     .noUi-handle:hover {
-        transform: scale(1.15);
-        box-shadow: 0 3px 12px rgba(39, 98, 243, 0.5);
+        transform: scale(1.1);
+        box-shadow: 0 3px 12px rgba(39, 98, 243, 0.4);
     }
 
     .noUi-handle:active {
-        transform: scale(1.25);
-        box-shadow: 0 4px 16px rgba(39, 98, 243, 0.6);
+        transform: scale(1.15);
+        box-shadow: 0 4px 16px rgba(39, 98, 243, 0.5);
+        cursor: grabbing;
     }
 
     .noUi-handle-lower {
@@ -190,32 +208,7 @@
     }
 
     .noUi-tooltip {
-        display: none;
-        position: absolute;
-        bottom: 30px;
-        background: #2762f3;
-        color: white;
-        padding: 0.4rem 0.8rem;
-        border-radius: 8px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        white-space: nowrap;
-        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3);
-    }
-
-    .noUi-tooltip:after {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 6px solid transparent;
-        border-top-color: #2762f3;
-    }
-
-    .noUi-handle:hover .noUi-tooltip,
-    .noUi-handle:active .noUi-tooltip {
-        display: block;
+        display: none !important;
     }
 
     .noUi-marker-horizontal.noUi-marker-large {
@@ -330,30 +323,40 @@
         margin-right: 0.5rem;
     }
 
-    /* Loading Indicator */
-    .filter-loading {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 2rem 3rem;
-        border-radius: 16px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-        z-index: 10000;
+    /* Loading Indicator - Products Area */
+    .products-loading-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         display: none;
         align-items: center;
-        gap: 1rem;
+        justify-content: center;
+        z-index: 100;
+        min-height: 400px;
+        border-radius: 20px;
     }
 
-    .filter-loading.active {
+    .products-loading-container.active {
         display: flex;
     }
 
-    .filter-loading-spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid #e2e8f0;
+    .products-loading-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 2rem;
+    }
+
+    .products-loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 5px solid #e2e8f0;
         border-top-color: #2762f3;
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
@@ -363,25 +366,21 @@
         to { transform: rotate(360deg); }
     }
 
-    .filter-loading-text {
-        font-size: 1rem;
+    .products-loading-text {
+        font-size: 1.1rem;
         font-weight: 600;
         color: #334155;
+        text-align: center;
     }
 
-    .filter-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.3);
-        z-index: 9999;
-        display: none;
+    .products-loading-subtext {
+        font-size: 0.9rem;
+        color: #64748b;
+        text-align: center;
     }
 
-    .filter-overlay.active {
-        display: block;
+    .products-content {
+        position: relative;
     }
 
     .section-header {
@@ -1211,14 +1210,14 @@
     }
 
     @keyframes iconFloat {
-        0%, 100% { 
-            transform: translateY(0) scale(1); 
+        0%, 100% {
+            transform: translateY(0) scale(1);
         }
         25% {
             transform: translateY(-15px) scale(1.02);
         }
-        50% { 
-            transform: translateY(0) scale(1); 
+        50% {
+            transform: translateY(0) scale(1);
         }
         75% {
             transform: translateY(-8px) scale(0.98);
@@ -1482,13 +1481,6 @@
     }
 </style>
 
-<!-- Loading Indicator -->
-<div class="filter-overlay" id="filterOverlay"></div>
-<div class="filter-loading" id="filterLoading">
-    <div class="filter-loading-spinner"></div>
-    <div class="filter-loading-text">{{ is_rtl() ? 'جاري التصفية...' : 'Filtering...' }}</div>
-</div>
-
 <div class="products-section">
     <div class="container">
         <!-- Mobile Filter Toggle Button -->
@@ -1502,16 +1494,18 @@
             <aside class="filter-sidebar" id="filterSidebar">
                 <div class="filter-header">
                     <h3>{{ is_rtl() ? 'تصفية' : 'Filters' }}</h3>
-                    <button class="clear-filters-btn" onclick="clearAllFilters()">
+                    <button class="clear-filters-btn" id="clearFiltersBtn" type="button">
                         {{ is_rtl() ? 'مسح الكل' : 'Clear All' }}
                     </button>
                 </div>
 
-                <form id="filterForm" method="GET" action="{{ route('products') }}">
+                <form id="filterForm">
                     <!-- Preserve search query if exists -->
                     @if(request('search'))
                         <input type="hidden" name="search" value="{{ request('search') }}">
                     @endif
+                    
+                    <!-- Note: Form submission is handled by JavaScript, not by form action -->
 
                     <!-- Price Range Filter -->
                     <div class="filter-section">
@@ -1551,12 +1545,20 @@
 
                         <div class="category-list">
                             @foreach($categories as $category)
+                            @php
+                                // Check if this category is selected (support both 'category' and 'categories[]')
+                                $selectedCategories = (array)request('categories', []);
+                                if (request('category') && !in_array(request('category'), $selectedCategories)) {
+                                    $selectedCategories[] = request('category');
+                                }
+                                $isChecked = in_array($category->slug, $selectedCategories);
+                            @endphp
                             <div class="category-checkbox">
                                 <input type="checkbox"
                                        name="categories[]"
                                        value="{{ $category->slug }}"
                                        id="category-{{ $category->slug }}"
-                                       {{ in_array($category->slug, (array)request('categories', [])) ? 'checked' : '' }}>
+                                       {{ $isChecked ? 'checked' : '' }}>
                                 <label for="category-{{ $category->slug }}">
                                     {{ $category->name }}
                                 </label>
@@ -1569,6 +1571,15 @@
 
             <!-- Products Content -->
             <div class="products-content" id="productsContent">
+                <!-- Loading Indicator -->
+                <div class="products-loading-container" id="productsLoading">
+                    <div class="products-loading-content">
+                        <div class="products-loading-spinner"></div>
+                        <div class="products-loading-text">{{ is_rtl() ? 'جاري التحميل...' : 'Loading...' }}</div>
+                        <div class="products-loading-subtext">{{ is_rtl() ? 'يرجى الانتظار' : 'Please wait' }}</div>
+                    </div>
+                </div>
+                
         @if(request('search'))
         <!-- Search Results Info Box -->
         <div class="search-results-info-box">
@@ -1710,138 +1721,157 @@
 </div><!-- End products-section -->
 
 <!-- noUiSlider JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js" integrity="sha512-UOJe4paV6hYWBnS0c9GnIRH8PLm2nFK22uhfAvsTIqd3uwnWsVri1OPm+f4tRvYGP7contYK2NHzsML0K+t5Zg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-    // Filter functionality with AJAX
-    let priceSlider;
+(function() {
+    'use strict';
+    console.log('🚀 Products Filter System Initialized');
+    
+    // Filter state
+    let priceSlider = null;
     let debounceTimer = null;
     let isFiltering = false;
+    
+    const FILTER_CONFIG = {
+        minPrice: {{ $priceRange['min'] }},
+        maxPrice: {{ $priceRange['max'] }},
+        isRTL: {{ is_rtl() ? 'true' : 'false' }},
+        productsRoute: '{{ route("products") }}'
+    };
 
-    // Show loading indicator
+    // Loading indicator functions
     function showLoading() {
-        document.getElementById('filterLoading').classList.add('active');
-        document.getElementById('filterOverlay').classList.add('active');
+        const loading = document.getElementById('productsLoading');
+        if (loading) loading.classList.add('active');
         isFiltering = true;
     }
 
-    // Hide loading indicator
     function hideLoading() {
-        document.getElementById('filterLoading').classList.remove('active');
-        document.getElementById('filterOverlay').classList.remove('active');
+        const loading = document.getElementById('productsLoading');
+        if (loading) loading.classList.remove('active');
         isFiltering = false;
     }
 
-    // Toggle mobile filters
-    function toggleMobileFilters() {
+    // Mobile filter toggle
+    window.toggleMobileFilters = function() {
         const sidebar = document.getElementById('filterSidebar');
-        sidebar.classList.toggle('active');
-
-        if (sidebar.classList.contains('active')) {
-            document.addEventListener('click', closeMobileFiltersOnOutsideClick);
+        if (sidebar) {
+            sidebar.classList.toggle('active');
         }
-    }
-
-    function closeMobileFiltersOnOutsideClick(e) {
-        const sidebar = document.getElementById('filterSidebar');
-        const toggleBtn = document.querySelector('.mobile-filter-toggle');
-
-        if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
-            sidebar.classList.remove('active');
-            document.removeEventListener('click', closeMobileFiltersOnOutsideClick);
-        }
-    }
+    };
 
     // Clear all filters
     function clearAllFilters() {
+        console.log('🗑️ Clearing all filters');
+        
+        // Uncheck all category checkboxes
         document.querySelectorAll('input[name="categories[]"]').forEach(checkbox => {
             checkbox.checked = false;
+            const label = checkbox.parentElement;
+            if (label) label.style.backgroundColor = '';
         });
 
+        // Reset price slider
         if (priceSlider) {
-            const minPrice = parseFloat(document.getElementById('minPrice').value);
-            const maxPrice = parseFloat(document.getElementById('maxPrice').value);
-            const defaultMin = {{ $priceRange['min'] }};
-            const defaultMax = {{ $priceRange['max'] }};
-            priceSlider.set([defaultMin, defaultMax]);
+            priceSlider.set([FILTER_CONFIG.minPrice, FILTER_CONFIG.maxPrice]);
         }
 
+        // Redirect to products page (preserving search if exists)
         const form = document.getElementById('filterForm');
-        const searchInput = form.querySelector('input[name="search"]');
+        const searchInput = form ? form.querySelector('input[name="search"]') : null;
         const searchValue = searchInput ? searchInput.value : '';
 
-        if (searchValue) {
-            window.location.href = '{{ route("products") }}?search=' + encodeURIComponent(searchValue);
-        } else {
-            window.location.href = '{{ route("products") }}';
-        }
+        const url = searchValue 
+            ? FILTER_CONFIG.productsRoute + '?search=' + encodeURIComponent(searchValue)
+            : FILTER_CONFIG.productsRoute;
+        
+        window.location.href = url;
     }
 
-    // Apply filters with AJAX
+    // Apply filters function
     function applyFilters() {
-        if (isFiltering) return;
+        if (isFiltering) {
+            console.log('⏳ Already filtering, skipping...');
+            return;
+        }
 
+        console.log('🔍 Applying filters...');
         showLoading();
 
         const form = document.getElementById('filterForm');
+        if (!form) {
+            console.error('❌ Filter form not found');
+            hideLoading();
+            return;
+        }
+
+        // Build URL parameters
         const formData = new FormData(form);
-        const params = new URLSearchParams(formData);
+        const params = new URLSearchParams();
 
-        // Build URL with parameters
-        const url = '{{ route("products") }}?' + params.toString();
+        for (const [key, value] of formData.entries()) {
+            if (value && String(value).trim() !== '') {
+                params.append(key, value);
+            }
+        }
 
-        // Update browser URL without reload
+        const url = FILTER_CONFIG.productsRoute + '?' + params.toString();
+        console.log('📍 Filter URL:', url);
+
+        // Update browser URL
         history.pushState({}, '', url);
 
         // Fetch filtered products
         fetch(url, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            return response.text();
+        })
         .then(html => {
-            // Parse the response HTML
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
-
-            // Extract the products content
             const newContent = doc.getElementById('productsContent');
+            const currentContent = document.getElementById('productsContent');
 
-            if (newContent) {
-                document.getElementById('productsContent').innerHTML = newContent.innerHTML;
-
-                // Re-initialize wishlist observers
-                setTimeout(observeWishlistButtons, 500);
+            if (newContent && currentContent) {
+                // Get the loading indicator before replacing content
+                const loadingIndicator = document.getElementById('productsLoading');
+                
+                // Update content
+                currentContent.innerHTML = newContent.innerHTML;
+                
+                // Re-add the loading indicator at the beginning
+                if (loadingIndicator) {
+                    currentContent.insertBefore(loadingIndicator, currentContent.firstChild);
+                }
+                
+                currentContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                console.log('✅ Products updated');
+            } else {
+                console.error('❌ Content elements not found');
             }
 
             hideLoading();
-
-            // Close mobile filters if open
-            const sidebar = document.getElementById('filterSidebar');
-            if (sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-            }
         })
         .catch(error => {
-            console.error('Filter error:', error);
+            console.error('❌ Filter error:', error);
             hideLoading();
-            // Fallback to regular form submission
-            form.submit();
+            window.location.href = url;
         });
     }
 
-    // Debounced filter application
-    function debouncedApplyFilters(delay = 500) {
+    // Debounced filter
+    function debouncedApplyFilters(delay) {
         clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            applyFilters();
-        }, delay);
+        debounceTimer = setTimeout(applyFilters, delay || 500);
     }
 
-    // Initialize on DOM ready
+    // Initialize everything
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded, initializing filters...');
+        console.log('✅ Initializing filter system...');
 
         const form = document.getElementById('filterForm');
         const minPriceInput = document.getElementById('minPrice');
@@ -1850,117 +1880,124 @@
         const maxPriceLabel = document.getElementById('maxPriceLabel');
         const sliderElement = document.getElementById('priceSlider');
 
-        // Get price range from backend
-        const minPrice = {{ $priceRange['min'] }};
-        const maxPrice = {{ $priceRange['max'] }};
-        const currentMin = parseFloat(minPriceInput.value) || minPrice;
-        const currentMax = parseFloat(maxPriceInput.value) || maxPrice;
-
-        console.log('Price range:', minPrice, '-', maxPrice);
-        console.log('Current values:', currentMin, '-', currentMax);
-
-        // Initialize noUiSlider
-        if (sliderElement) {
-            console.log('Initializing slider...');
-
-            priceSlider = noUiSlider.create(sliderElement, {
-                start: [currentMin, currentMax],
-                connect: true,
-                direction: {{ is_rtl() ? "'rtl'" : "'ltr'" }},
-                range: {
-                    'min': minPrice,
-                    'max': maxPrice
-                },
-                step: 1,
-                tooltips: [
-                    {
-                        to: function(value) {
-                            return '₪ ' + Math.round(value).toLocaleString();
-                        }
-                    },
-                    {
-                        to: function(value) {
-                            return '₪ ' + Math.round(value).toLocaleString();
-                        }
-                    }
-                ],
-                format: {
-                    to: function(value) {
-                        return Math.round(value);
-                    },
-                    from: function(value) {
-                        return Number(value);
-                    }
-                }
+        // Prevent form submission (we handle it with AJAX)
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('⛔ Form submission prevented - using AJAX instead');
+                applyFilters();
+                return false;
             });
-
-            console.log('Slider initialized successfully');
-
-            // Update hidden inputs and labels when slider changes
-            priceSlider.on('update', function(values, handle) {
-                const value = Math.round(values[handle]);
-                const formattedValue = '₪ ' + value.toLocaleString();
-
-                if (handle === 0) {
-                    minPriceInput.value = value;
-                    minPriceLabel.textContent = formattedValue;
-                } else {
-                    maxPriceInput.value = value;
-                    maxPriceLabel.textContent = formattedValue;
-                }
+            
+            // Also prevent on form reset
+            form.addEventListener('reset', function(e) {
+                e.preventDefault();
+                console.log('⛔ Form reset prevented');
+                return false;
             });
-
-            // Apply filters when slider is released (change event)
-            priceSlider.on('change', function(values, handle) {
-                console.log('Slider changed:', values);
-                debouncedApplyFilters(500);
-            });
+        } else {
+            console.error('❌ Filter form not found!');
         }
 
-        // Auto-submit on category checkbox change
-        const checkboxes = document.querySelectorAll('input[name="categories[]"]');
-        console.log('Found', checkboxes.length, 'category checkboxes');
+        const currentMin = parseFloat(minPriceInput.value) || FILTER_CONFIG.minPrice;
+        const currentMax = parseFloat(maxPriceInput.value) || FILTER_CONFIG.maxPrice;
 
-        checkboxes.forEach((checkbox, index) => {
-            console.log('Attaching listener to checkbox', index, ':', checkbox.value);
-            checkbox.addEventListener('change', function() {
-                console.log('Checkbox changed:', this.value, 'checked:', this.checked);
-                applyFilters();
-            });
-        });
+        // Initialize noUiSlider with error handling
+        if (sliderElement) {
+            try {
+                console.log('Initializing slider...');
 
-        // Initial wishlist observation
-        setTimeout(observeWishlistButtons, 500);
-    });
+                // Destroy existing slider if it exists
+                if (sliderElement.noUiSlider) {
+                    console.log('Destroying existing slider...');
+                    sliderElement.noUiSlider.destroy();
+                }
 
-    // Observer to watch for class changes on wishlist buttons
-    function observeWishlistButtons() {
-        const wishlistButtons = document.querySelectorAll('.wishlist-btn');
-        wishlistButtons.forEach(button => {
-            // Create a MutationObserver for each button
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.attributeName === 'class') {
-                        const icon = button.querySelector('i');
-                        if (button.classList.contains('active')) {
-                            // Force red color when active
-                            if (icon) {
-                                icon.style.color = '#ff0000';
-                            }
-                        } else {
-                            // Reset to gray when not active
-                            if (icon) {
-                                icon.style.color = '#666';
-                            }
+                priceSlider = noUiSlider.create(sliderElement, {
+                    start: [currentMin, currentMax],
+                    connect: true,
+                    direction: FILTER_CONFIG.isRTL ? 'rtl' : 'ltr',
+                    range: {
+                        'min': FILTER_CONFIG.minPrice,
+                        'max': FILTER_CONFIG.maxPrice
+                    },
+                    step: 1,
+                    format: {
+                        to: function(value) {
+                            return Math.round(value);
+                        },
+                        from: function(value) {
+                            return Number(value);
                         }
                     }
                 });
-            });
 
-            // Start observing
-            observer.observe(button, { attributes: true });
+                console.log('Slider initialized successfully');
+
+                // Update hidden inputs and labels when slider changes
+                priceSlider.on('update', function(values, handle) {
+                    const value = Math.round(values[handle]);
+                    const formattedValue = '₪ ' + value.toLocaleString();
+
+                    if (handle === 0) {
+                        minPriceInput.value = value;
+                        minPriceLabel.textContent = formattedValue;
+                    } else {
+                        maxPriceInput.value = value;
+                        maxPriceLabel.textContent = formattedValue;
+                    }
+                });
+
+                // Apply filters when slider is released (change event)
+                priceSlider.on('change', function(values, handle) {
+                    console.log('Slider changed:', values);
+                    debouncedApplyFilters(500);
+                });
+            } catch (error) {
+                console.error('Error initializing price slider:', error);
+                // Continue with checkbox initialization even if slider fails
+            }
+        }
+
+        // Setup category checkboxes
+        const checkboxes = document.querySelectorAll('input[name="categories[]"]');
+        console.log('📦 Found ' + checkboxes.length + ' category checkboxes');
+
+        checkboxes.forEach(function(checkbox) {
+            // Initial visual feedback
+            if (checkbox.checked) {
+                const label = checkbox.parentElement;
+                if (label) label.style.backgroundColor = 'rgba(39, 98, 243, 0.08)';
+            }
+            
+            // Add change listener  
+            checkbox.addEventListener('change', function(e) {
+                // Don't prevent default - we want the checkbox to work!
+                console.log('✔️ Checkbox changed:', e.target.value, e.target.checked);
+                
+                // Visual feedback
+                const label = e.target.parentElement;
+                if (label) {
+                    label.style.backgroundColor = e.target.checked 
+                        ? 'rgba(39, 98, 243, 0.08)' 
+                        : '';
+                }
+                
+                // Apply filters via AJAX
+                debouncedApplyFilters(300);
+            });
         });
-    }
+        
+        // Setup clear filters button
+        const clearBtn = document.getElementById('clearFiltersBtn');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', clearAllFilters);
+        }
+        
+        console.log('✅ Filter system ready');
+    });
+})();
 </script>
 
 @endsection

@@ -20,19 +20,34 @@ class ProductController extends Controller
         $query = Product::with(['category', 'brand', 'images'])
             ->active();
 
-        // Filter by multiple categories (support both single and multiple)
+        // Filter by categories (support both single 'category' and multiple 'categories[]')
+        $categoryFilters = [];
+        
+        // Check for categories[] array parameter
         if ($request->has('categories') && !empty($request->categories)) {
-            $categories = is_array($request->categories) ? $request->categories : [$request->categories];
-            $query->whereHas('category', function ($q) use ($categories) {
-                $q->whereIn('slug', $categories);
-            });
+            $categoryFilters = is_array($request->categories) ? $request->categories : [$request->categories];
         }
-
-        // Backward compatibility: single category filter
-        if ($request->has('category') && !$request->has('categories')) {
-            $query->whereHas('category', function ($q) use ($request) {
-                $q->where('slug', $request->category);
+        
+        // Check for single category parameter (backward compatibility)
+        if ($request->has('category') && !empty($request->category)) {
+            // If categories[] is not set, use single category
+            if (empty($categoryFilters)) {
+                $categoryFilters = [$request->category];
+            }
+        }
+        
+        // Apply category filter if we have any categories
+        if (!empty($categoryFilters)) {
+            // Remove empty values
+            $categoryFilters = array_filter($categoryFilters, function($value) {
+                return !empty($value);
             });
+            
+            if (!empty($categoryFilters)) {
+                $query->whereHas('category', function ($q) use ($categoryFilters) {
+                    $q->whereIn('slug', $categoryFilters);
+                });
+            }
         }
 
         // Filter by brand
@@ -114,7 +129,7 @@ class ProductController extends Controller
         $product = Product::with(['category', 'brand', 'images', 'reviews.user', 'attributes'])
             ->where('slug', $slug)
             ->firstOrFail();
-        
+
         // Get related products (same category, different product)
         $relatedProducts = Product::with(['category', 'brand', 'images'])
             ->where('category_id', $product->category_id)

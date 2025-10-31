@@ -163,7 +163,10 @@ class ProductController extends Controller
 
         DB::beginTransaction();
         try {
-            $validated['slug'] = Str::slug($validated['name_en']);
+            // Only regenerate slug if name_en has changed
+            if ($product->name_en !== $validated['name_en']) {
+                $validated['slug'] = Str::slug($validated['name_en']);
+            }
             $validated['stock_status'] = $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock';
 
             // Remove additional_images from validated data before updating product
@@ -300,4 +303,3 @@ class ProductController extends Controller
         Cache::forget('home_page_data_he');
     }
 }
-
