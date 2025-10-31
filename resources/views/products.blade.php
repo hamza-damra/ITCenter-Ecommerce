@@ -1785,10 +1785,28 @@
 
         const form = document.getElementById('filterForm');
         const formData = new FormData(form);
-        const params = new URLSearchParams(formData);
+
+        // Build URLSearchParams manually to properly handle array parameters
+        const params = new URLSearchParams();
+
+        // Add all form fields to params
+        for (const [key, value] of formData.entries()) {
+            // Handle array parameters (like categories[])
+            if (key.endsWith('[]')) {
+                params.append(key, value);
+            } else {
+                // For non-array parameters, only add if not already added
+                if (!params.has(key)) {
+                    params.set(key, value);
+                }
+            }
+        }
 
         // Build URL with parameters
         const url = '{{ route("products") }}?' + params.toString();
+
+        console.log('Filter URL:', url);
+        console.log('Parameters:', params.toString());
 
         // Update browser URL without reload
         history.pushState({}, '', url);
@@ -1922,9 +1940,10 @@
         console.log('Found', checkboxes.length, 'category checkboxes');
 
         checkboxes.forEach((checkbox, index) => {
-            console.log('Attaching listener to checkbox', index, ':', checkbox.value);
+            console.log('Attaching listener to checkbox', index, ':', checkbox.value, 'checked:', checkbox.checked);
             checkbox.addEventListener('change', function() {
                 console.log('Checkbox changed:', this.value, 'checked:', this.checked);
+                console.log('Applying filters...');
                 applyFilters();
             });
         });

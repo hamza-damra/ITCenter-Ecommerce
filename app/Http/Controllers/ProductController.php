@@ -42,12 +42,38 @@ class ProductController extends Controller
             });
         }
 
-        // Filter by price range
+        // Filter by price range (consider sale_price as effective price)
         if ($request->has('min_price') && $request->min_price !== null && $request->min_price !== '') {
-            $query->where('price', '>=', $request->min_price);
+            $query->where(function($q) use ($request) {
+                $q->where(function($subQ) use ($request) {
+                    // If has sale_price and it's lower than price, use sale_price
+                    $subQ->whereNotNull('sale_price')
+                         ->whereColumn('sale_price', '<', 'price')
+                         ->where('sale_price', '>=', $request->min_price);
+                })->orWhere(function($subQ) use ($request) {
+                    // Otherwise use price
+                    $subQ->where(function($innerQ) {
+                        $innerQ->whereNull('sale_price')
+                               ->orWhereColumn('sale_price', '>=', 'price');
+                    })->where('price', '>=', $request->min_price);
+                });
+            });
         }
         if ($request->has('max_price') && $request->max_price !== null && $request->max_price !== '') {
-            $query->where('price', '<=', $request->max_price);
+            $query->where(function($q) use ($request) {
+                $q->where(function($subQ) use ($request) {
+                    // If has sale_price and it's lower than price, use sale_price
+                    $subQ->whereNotNull('sale_price')
+                         ->whereColumn('sale_price', '<', 'price')
+                         ->where('sale_price', '<=', $request->max_price);
+                })->orWhere(function($subQ) use ($request) {
+                    // Otherwise use price
+                    $subQ->where(function($innerQ) {
+                        $innerQ->whereNull('sale_price')
+                               ->orWhereColumn('sale_price', '>=', 'price');
+                    })->where('price', '<=', $request->max_price);
+                });
+            });
         }
 
         // Filter by features
@@ -100,10 +126,18 @@ class ProductController extends Controller
             ->orderBy('order')
             ->get();
 
-        // Get price range for slider
+        // Get price range for slider (consider sale_price as effective price)
+        $products_for_range = Product::active()->get();
+        $prices = $products_for_range->map(function($product) {
+            // Use sale_price if it exists and is lower than price, otherwise use price
+            return ($product->sale_price && $product->sale_price < $product->price)
+                ? $product->sale_price
+                : $product->price;
+        });
+
         $priceRange = [
-            'min' => Product::active()->min('price') ?? 0,
-            'max' => Product::active()->max('price') ?? 10000,
+            'min' => $prices->min() ?? 0,
+            'max' => $prices->max() ?? 10000,
         ];
 
         return view('products', compact('products', 'cartProductIds', 'categories', 'priceRange'));
