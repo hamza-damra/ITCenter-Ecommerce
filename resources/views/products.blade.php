@@ -408,9 +408,6 @@
         box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
         border: 1px solid rgba(59, 130, 246, 0.2);
         animation: fadeInUp 0.6s ease-out;
-        @if(is_rtl())
-        flex-direction: row-reverse;
-        @endif
     }
 
     @keyframes fadeInUp {
@@ -428,6 +425,8 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        align-items: flex-start;
+        text-align: start;
     }
 
     .search-label {
@@ -437,9 +436,6 @@
         color: #64748b;
         font-size: 0.9rem;
         font-weight: 500;
-        @if(is_rtl())
-        flex-direction: row-reverse;
-        @endif
     }
 
     .search-label i {
@@ -454,6 +450,7 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        text-align: start;
     }
 
     .search-results-count {
@@ -1384,6 +1381,7 @@
 
         .search-query-display {
             align-items: center;
+            text-align: center;
         }
 
         .search-label {
@@ -1403,6 +1401,7 @@
 
         .search-query {
             font-size: 1.25rem;
+            text-align: center;
         }
 
         .count-number {
@@ -1582,8 +1581,13 @@
         <div class="search-results-info-box">
             <div class="search-query-display">
                 <div class="search-label">
+                    @if(is_rtl())
+                    <span>{{ 'نتائج البحث عن' }}</span>
                     <i class="fas fa-search"></i>
-                    <span>{{ is_rtl() ? 'نتائج البحث عن' : 'Search results for' }}</span>
+                    @else
+                    <i class="fas fa-search"></i>
+                    <span>{{ 'Search results for' }}</span>
+                    @endif
                 </div>
                 <div class="search-query">"{{ request('search') }}"</div>
             </div>

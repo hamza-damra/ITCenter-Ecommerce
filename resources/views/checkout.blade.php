@@ -207,6 +207,17 @@
         margin-bottom: 2rem;
     }
 
+    .summary-item-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: transform 0.2s ease;
+    }
+
+    .summary-item-link:hover {
+        transform: translateX(-3px);
+    }
+
     .summary-item {
         display: flex;
         align-items: center;
@@ -216,6 +227,13 @@
         border-radius: 12px;
         margin-bottom: 1rem;
         backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .summary-item-link:hover .summary-item {
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .summary-item-image {
@@ -657,34 +675,38 @@
 
             <div class="summary-items">
                 @foreach($cartItems as $item)
-                    <div class="summary-item">
-                        <div class="summary-item-image">
-                            @if($item->product->images->isNotEmpty())
-                                @php
-                                    $imagePath = $item->product->images->first()->image_path;
-                                    $imageUrl = (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://'))
-                                        ? $imagePath
-                                        : asset('storage/' . $imagePath);
-                                @endphp
-                                <img src="{{ $imageUrl }}" 
-                                     alt="{{ $item->product->{'name_' . current_locale()} }}">
-                            @else
-                                <img src="{{ asset('images/placeholder.png') }}" 
-                                     alt="{{ $item->product->{'name_' . current_locale()} }}">
-                            @endif
-                        </div>
-                        <div class="summary-item-details">
-                            <div class="summary-item-name">
-                                {{ $item->product->{'name_' . current_locale()} }}
+                    @if($item->product)
+                        <a href="{{ route('product.detail', $item->product->slug) }}" class="summary-item-link">
+                            <div class="summary-item">
+                                <div class="summary-item-image">
+                                    @if($item->product->images && $item->product->images->isNotEmpty())
+                                        @php
+                                            $imagePath = $item->product->images->first()->image_path;
+                                            $imageUrl = (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://'))
+                                                ? $imagePath
+                                                : asset('storage/' . $imagePath);
+                                        @endphp
+                                        <img src="{{ $imageUrl }}" 
+                                             alt="{{ $item->product->{'name_' . current_locale()} }}">
+                                    @else
+                                        <img src="{{ asset('images/products/default.png') }}" 
+                                             alt="{{ $item->product->{'name_' . current_locale()} }}">
+                                    @endif
+                                </div>
+                                <div class="summary-item-details">
+                                    <div class="summary-item-name">
+                                        {{ $item->product->{'name_' . current_locale()} }}
+                                    </div>
+                                    <div class="summary-item-qty">
+                                        {{ __('messages.quantity') }}: {{ $item->quantity }}
+                                    </div>
+                                </div>
+                                <div class="summary-item-price">
+                                    ₪{{ number_format($item->price * $item->quantity, 2) }}
+                                </div>
                             </div>
-                            <div class="summary-item-qty">
-                                {{ __('messages.quantity') }}: {{ $item->quantity }}
-                            </div>
-                        </div>
-                        <div class="summary-item-price">
-                            ₪{{ number_format($item->price * $item->quantity, 2) }}
-                        </div>
-                    </div>
+                        </a>
+                    @endif
                 @endforeach
             </div>
 

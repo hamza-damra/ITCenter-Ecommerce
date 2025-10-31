@@ -462,7 +462,7 @@
     .current-price {
         font-size: 2.5rem;
         font-weight: 700;
-        color: #4169E1;
+        color: #2762f3;
     }
 
     .original-price {

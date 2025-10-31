@@ -163,6 +163,7 @@
         flex-direction: column;
         gap: 1rem;
         align-items: center;
+        min-width: 180px;
     }
 
     .cart-item-total {
@@ -170,6 +171,8 @@
         font-weight: 700;
         color: #333;
         white-space: nowrap;
+        min-width: 150px;
+        text-align: center;
     }
 
     .remove-btn {
@@ -443,7 +446,7 @@
                     @if($item->product)
                     <div class="cart-item" data-product-id="{{ $item->product_id }}">
                         <div class="cart-item-image">
-                            @if($item->product->images->isNotEmpty())
+                            @if($item->product->images && $item->product->images->isNotEmpty())
                                 @php
                                     $imagePath = $item->product->images->first()->image_path;
                                     $imageUrl = (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://'))

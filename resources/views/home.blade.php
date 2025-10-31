@@ -1806,9 +1806,8 @@
     .current-price {
         font-size: 3.5rem;
         font-weight: 900;
-        color: #FFD700;
+        color: #2762f3;
         margin: 0;
-        text-shadow: 2px 2px 8px rgba(255, 215, 0, 0.4);
     }
 
     .original-price {
