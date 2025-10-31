@@ -133,18 +133,19 @@
     }
 
     .product-card:hover::before {
-        opacity: 1;
+        opacity: 0;
     }
 
     .product-image {
         width: 100%;
         height: 250px;
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        background: transparent;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        padding: 1rem;
     }
 
     .product-image img {

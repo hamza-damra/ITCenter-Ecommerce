@@ -543,17 +543,17 @@
     }
 
     .product-card:hover::before {
-        opacity: 1;
+        opacity: 0;
     }
 
     .product-card:hover::after {
-        opacity: 0.4;
+        opacity: 0;
     }
 
     .product-image {
         width: 100%;
         height: 240px;
-        background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+        background: transparent;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -574,7 +574,7 @@
     .product-card:hover .product-image img {
         transform: scale(1.08);
         filter: brightness(1.05);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        box-shadow: none;
     }
 
     .product-image .icon-placeholder {
@@ -735,10 +735,7 @@
     }
 
     .product-price .current-price {
-        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #2762f3;
         font-weight: 700;
         font-size: 1.35rem;
     }

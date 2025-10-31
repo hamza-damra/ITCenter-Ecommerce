@@ -201,13 +201,13 @@
 }
 
 .horizontal-scroller-section .product-card:hover::before {
-    opacity: 1;
+    opacity: 0;
 }
 
 .horizontal-scroller-section .product-image {
     width: 100%;
     height: 240px;
-    background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -359,10 +359,7 @@
 }
 
 .horizontal-scroller-section .product-price .current-price {
-    background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #2762f3;
     font-weight: 700;
     display: block;
 }
