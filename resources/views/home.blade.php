@@ -2237,6 +2237,27 @@
     .gift-banner-item {
         grid-column: span 2;
     }
+
+    /* Control banner position based on direction */
+    /* RTL: Banner appears first (on the right) */
+    body[dir="rtl"] .gift-banner-item,
+    html[dir="rtl"] .gift-banner-item,
+    [dir="rtl"] .gift-banner-item {
+        order: -1;
+    }
+
+    /* LTR: Banner appears last (on the left) */
+    body[dir="ltr"] .gift-banner-item,
+    html[dir="ltr"] .gift-banner-item,
+    [dir="ltr"] .gift-banner-item {
+        order: 1;
+    }
+
+    body[dir="ltr"] .gift-product-item,
+    html[dir="ltr"] .gift-product-item,
+    [dir="ltr"] .gift-product-item {
+        order: 2;
+    }
     
     /* Product Card Styling */
     .home-section.gift-ideas-section .product-card {
