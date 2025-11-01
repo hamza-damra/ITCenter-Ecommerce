@@ -47,6 +47,14 @@ return [
     'in_stock' => 'במלאי',
     'product' => 'מוצר',
     
+    // Gift Ideas Section
+    'gift_ideas' => [
+        'title' => 'רעיונות למתנות',
+        'headline' => 'חנות מתנות בינלאומית',
+        'desc' => 'קנו את המתנות האהובות עליכם באינטרנט ושלחו אותן לחברים בחו"ל, למשפחה ולאהובים',
+        'cta' => 'מתנה עכשיו',
+    ],
+    
     // Special Offer Section
     'special_offer' => 'הצעה מיוחדת',
     'save_amount' => 'חסוך :amount',

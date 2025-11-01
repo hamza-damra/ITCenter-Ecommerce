@@ -47,6 +47,14 @@ return [
     'in_stock' => 'متوفر',
     'product' => 'منتج',
     
+    // Gift Ideas Section
+    'gift_ideas' => [
+        'title' => 'أفكار هدايا',
+        'headline' => 'متجر الهدايا العالمية',
+        'desc' => 'اشترِ هداياك المفضلة أونلاين وأرسلها لأصدقائك بالخارج، العائلة ومحبّيك أيضًا',
+        'cta' => 'هدية الآن',
+    ],
+    
     // Special Offer Section
     'special_offer' => 'عرض خاص',
     'save_amount' => 'وفر :amount',

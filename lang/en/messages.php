@@ -47,6 +47,14 @@ return [
     'request_product' => 'Request Product',
     'product' => 'product',
     
+    // Gift Ideas Section
+    'gift_ideas' => [
+        'title' => 'Gift Ideas',
+        'headline' => 'International Gift Store',
+        'desc' => 'Shop your favorite gifts online and send them to your friends abroad, family and loved ones too',
+        'cta' => 'Gift Now',
+    ],
+    
     // Special Offer Section
     'special_offer' => 'Special Offer',
     'save_amount' => 'Save :amount',

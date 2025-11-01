@@ -87,6 +87,19 @@ class HomeController extends Controller
                 ->limit(3)
                 ->get();
 
+            // Gift Ideas Section - Featured products as fallback
+            $giftIdeas = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
+                ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
+                ->active()
+                ->when(config('site.gift_ids'), function($query) {
+                    return $query->whereIn('id', config('site.gift_ids'));
+                }, function($query) {
+                    return $query->featured();
+                })
+                ->latest()
+                ->limit(2)
+                ->get();
+
             return [
                 'featuredProducts' => $featuredProducts,
                 'newProducts' => $newProducts,
@@ -96,6 +109,7 @@ class HomeController extends Controller
                 'featuredBrands' => $featuredBrands,
                 'activeOffers' => $activeOffers,
                 'promotionalOffers' => $promotionalOffers,
+                'giftIdeas' => $giftIdeas,
             ];
         });
 
