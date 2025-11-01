@@ -2238,7 +2238,7 @@
         grid-column: span 2;
     }
 
-    /* Control banner position based on direction */
+    /* Control banner position based on direction using CSS Grid order */
     /* RTL: Banner appears first (on the right) */
     body[dir="rtl"] .gift-banner-item,
     html[dir="rtl"] .gift-banner-item,
