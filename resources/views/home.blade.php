@@ -2649,6 +2649,26 @@
         <!-- Removed section heading (icon + title) per request -->
 
         <div class="gift-ideas-grid">
+            {{-- RTL: Banner first (on the right), then products --}}
+            @if(is_rtl())
+                {{-- Banner (spans 2 columns) - appears on right in RTL --}}
+                <div class="gift-ideas-item gift-banner-item">
+                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                        {{-- Text and Button Group --}}
+                        <div class="gift-banner-content">
+                            <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
+                            <p>{{ __t('messages.gift_ideas.desc') }}</p>
+                            <a class="gift-cta" href="{{ url('/deals/global-gifts-delivery-store') }}">{{ __t('messages.gift_ideas.cta') }}</a>
+                        </div>
+                        
+                        {{-- Image --}}
+                        <div class="gift-banner-image">
+                            <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="{{ __t('messages.gift_ideas.headline') }}" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             {{-- Product 1 --}}
             @if(isset($giftIdeas[0]))
             <div class="gift-ideas-item gift-product-item">
@@ -2755,22 +2775,25 @@
             </div>
             @endif
 
-            {{-- Banner (spans 2 columns) --}}
-            <div class="gift-ideas-item gift-banner-item">
-                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
-                    {{-- Text and Button Group --}}
-                    <div class="gift-banner-content">
-                        <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
-                        <p>{{ __t('messages.gift_ideas.desc') }}</p>
-                        <a class="gift-cta" href="{{ url('/deals/global-gifts-delivery-store') }}">{{ __t('messages.gift_ideas.cta') }}</a>
-                    </div>
-                    
-                    {{-- Image --}}
-                    <div class="gift-banner-image">
-                        <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="{{ __t('messages.gift_ideas.headline') }}" loading="lazy">
+            {{-- LTR: Banner last (on the left) --}}
+            @if(!is_rtl())
+                {{-- Banner (spans 2 columns) - appears on left in LTR --}}
+                <div class="gift-ideas-item gift-banner-item">
+                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                        {{-- Text and Button Group --}}
+                        <div class="gift-banner-content">
+                            <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
+                            <p>{{ __t('messages.gift_ideas.desc') }}</p>
+                            <a class="gift-cta" href="{{ url('/deals/global-gifts-delivery-store') }}">{{ __t('messages.gift_ideas.cta') }}</a>
+                        </div>
+                        
+                        {{-- Image --}}
+                        <div class="gift-banner-image">
+                            <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="{{ __t('messages.gift_ideas.headline') }}" loading="lazy">
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 </section>
