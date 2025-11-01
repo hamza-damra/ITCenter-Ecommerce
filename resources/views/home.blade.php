@@ -392,7 +392,6 @@
     }
 
 
-
     /* Explore Products Section - Carousel Design (Redragon Style) */
     .explore-products-section {
         padding: 4rem 0;
@@ -642,7 +641,7 @@
 
     @media (max-width: 479px) {
         .category-carousel-card {
-            flex: 0 0 100%;
+            flex: 0 0 calc(100% - 0.5rem);
         }
 
         .category-carousel-wrapper {
@@ -2200,6 +2199,359 @@
         opacity: 1;
         transform: translateY(0);
     }
+    
+    /* Gift Ideas Section CSS */
+    .home-section.gift-ideas-section {
+        padding: 4rem 0;
+        background: #ffffff;
+        width: 100%;
+    }
+    
+    .home-section.gift-ideas-section .container {
+        /* Match featured products section width */
+        max-width: 1500px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+    
+    /* Gift Ideas Grid Layout */
+    .gift-ideas-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        margin-top: 0;
+        align-items: stretch; /* ensure items are equal height per row */
+    }
+
+    .gift-ideas-item {
+        min-height: auto;
+    }
+
+    /* Product items take 1 column each */
+    .gift-product-item {
+        grid-column: span 1;
+    }
+
+    /* Banner item takes 2 columns */
+    .gift-banner-item {
+        grid-column: span 2;
+    }
+    
+    /* Product Card Styling */
+    .home-section.gift-ideas-section .product-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .home-section.gift-ideas-section .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    
+    /* Gift Banner Styling - Ubuy Style */
+    .product-item-section.gift-idea-banner {
+        width: 100%;
+        margin: 0 auto;
+        border-radius: 18px;
+        padding: 40px 40px 50px;
+        position: relative;
+        background-repeat: no-repeat;
+        background-size: cover !important;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 40px;
+    }
+
+    /* Content group (title + text + button) */
+    .gift-banner-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Title styling */
+    .gift-banner-title {
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0 0 12px 0;
+        color: #0B265A;
+    }
+
+    /* Description styling */
+    .product-item-section.gift-idea-banner p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #274C7E;
+        margin: 0 0 8px 0;
+    }
+
+    /* CTA button - round and compact */
+    .product-item-section.gift-idea-banner .gift-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #0A3766;
+        color: #fff;
+        padding: 16px 36px;
+        border-radius: 35px;
+        font-weight: 700;
+        font-size: 17px;
+        text-decoration: none;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+        white-space: nowrap;
+        transition: all 0.3s ease;
+        margin-top: 8px;
+        width: fit-content;
+    }
+
+    .product-item-section.gift-idea-banner .gift-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+    }
+
+    /* Image container */
+    .gift-banner-image {
+        flex-shrink: 0;
+    }
+
+    /* Gift art image sizing */
+    .product-item-section.gift-idea-banner .gift-art {
+        width: 280px;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+
+    /* Flex wrapper - removed, now using banner direct flex */
+    .gift-banner-flex-wrapper {
+        display: contents;
+    }
+
+    /* LTR Layout - English: Content left, image right */
+    body[dir="ltr"] .product-item-section.gift-idea-banner,
+    html[dir="ltr"] .product-item-section.gift-idea-banner,
+    [dir="ltr"] .product-item-section.gift-idea-banner {
+        flex-direction: row;
+    }
+
+    body[dir="ltr"] .gift-banner-title,
+    html[dir="ltr"] .gift-banner-title,
+    [dir="ltr"] .gift-banner-title,
+    body[dir="ltr"] .gift-banner-content,
+    html[dir="ltr"] .gift-banner-content,
+    [dir="ltr"] .gift-banner-content,
+    body[dir="ltr"] .gift-banner-content p,
+    html[dir="ltr"] .gift-banner-content p,
+    [dir="ltr"] .gift-banner-content p {
+        text-align: left;
+    }
+
+    body[dir="ltr"] .gift-banner-content .gift-cta,
+    html[dir="ltr"] .gift-banner-content .gift-cta,
+    [dir="ltr"] .gift-banner-content .gift-cta {
+        margin-right: auto;
+        margin-left: 0;
+    }
+
+    /* RTL Layout - Arabic: Content right, image left */
+    body[dir="rtl"] .product-item-section.gift-idea-banner,
+    html[dir="rtl"] .product-item-section.gift-idea-banner,
+    [dir="rtl"] .product-item-section.gift-idea-banner {
+        flex-direction: row-reverse;
+    }
+
+    body[dir="rtl"] .gift-banner-title,
+    html[dir="rtl"] .gift-banner-title,
+    [dir="rtl"] .gift-banner-title,
+    body[dir="rtl"] .gift-banner-content,
+    html[dir="rtl"] .gift-banner-content,
+    [dir="rtl"] .gift-banner-content,
+    body[dir="rtl"] .gift-banner-content p,
+    html[dir="rtl"] .gift-banner-content p,
+    [dir="rtl"] .gift-banner-content p {
+        text-align: right;
+    }
+
+    body[dir="rtl"] .gift-banner-content .gift-cta,
+    html[dir="rtl"] .gift-banner-content .gift-cta,
+    [dir="rtl"] .gift-banner-content .gift-cta {
+        margin-left: auto;
+        margin-right: 0;
+    }
+    
+    /* Tablet Layout - 2 columns */
+    @media (max-width: 991px) {
+        .home-section.gift-ideas-section {
+            padding: 3rem 0;
+        }
+
+        .gift-ideas-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+        }
+
+        .gift-product-item {
+            grid-column: span 1;
+        }
+
+        .gift-banner-item {
+            grid-column: span 2;
+        }
+
+        .product-item-section.gift-idea-banner { 
+            padding: 35px; 
+            height: 100%;
+            gap: 30px;
+        }
+        
+        .gift-banner-title {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .product-item-section.gift-idea-banner .gift-cta {
+            padding: 14px 30px;
+            font-size: 16px;
+        }
+        
+        .product-item-section.gift-idea-banner .gift-art {
+            width: 240px;
+        }
+    }
+    
+    /* Mobile Layout - 1 column, vertical banner */
+    @media (max-width: 768px) {
+        .home-section.gift-ideas-section {
+            padding: 2.5rem 0;
+        }
+
+        .home-section.gift-ideas-section .container {
+            padding: 0 1rem;
+        }
+
+        .gift-ideas-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .gift-product-item,
+        .gift-banner-item {
+            grid-column: span 1;
+        }
+
+        .gift-ideas-item {
+            min-height: auto;
+        }
+
+        .product-item-section.gift-idea-banner {
+            padding: 30px 20px;
+            height: auto;
+            min-height: 280px;
+            flex-direction: column !important;
+            gap: 25px;
+        }
+
+        .gift-banner-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+            text-align: center !important;
+        }
+        
+        .product-item-section.gift-idea-banner p {
+            font-size: 14px;
+        }
+
+        /* Mobile: stack vertically, center content */
+        .gift-banner-content {
+            align-items: center;
+            text-align: center !important;
+        }
+
+        body[dir="rtl"] .gift-banner-content,
+        html[dir="rtl"] .gift-banner-content,
+        [dir="rtl"] .gift-banner-content,
+        body[dir="ltr"] .gift-banner-content,
+        html[dir="ltr"] .gift-banner-content,
+        [dir="ltr"] .gift-banner-content,
+        body[dir="rtl"] .gift-banner-content p,
+        html[dir="rtl"] .gift-banner-content p,
+        [dir="rtl"] .gift-banner-content p,
+        body[dir="ltr"] .gift-banner-content p,
+        html[dir="ltr"] .gift-banner-content p,
+        [dir="ltr"] .gift-banner-content p {
+            text-align: center !important;
+        }
+
+        body[dir="rtl"] .gift-banner-content .gift-cta,
+        html[dir="rtl"] .gift-banner-content .gift-cta,
+        [dir="rtl"] .gift-banner-content .gift-cta,
+        body[dir="ltr"] .gift-banner-content .gift-cta,
+        html[dir="ltr"] .gift-banner-content .gift-cta,
+        [dir="ltr"] .gift-banner-content .gift-cta {
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        .product-item-section.gift-idea-banner .gift-art {
+            width: 210px;
+        }
+
+        .product-item-section.gift-idea-banner .gift-cta {
+            width: auto;
+            padding: 14px 28px;
+        }
+    }
+
+    /* Small Mobile - 2 product columns */
+    @media (max-width: 576px) {
+        .home-section.gift-ideas-section {
+            padding: 2rem 0;
+        }
+
+        .gift-ideas-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .gift-product-item {
+            grid-column: span 1;
+        }
+
+        .gift-banner-item {
+            grid-column: span 2;
+        }
+
+        .product-item-section.gift-idea-banner {
+            padding: 25px 15px;
+        }
+
+        .gift-banner-title {
+            font-size: 18px;
+        }
+
+        .product-item-section.gift-idea-banner p {
+            font-size: 13px;
+        }
+
+        .product-item-section.gift-idea-banner .gift-cta {
+            padding: 10px 20px;
+            font-size: 13px;
+        }
+
+        .product-item-section.gift-idea-banner .gift-art {
+            width: 160px;
+        }
+    }
 </style>
 
 <!-- Hero Section - Slider -->
@@ -2290,6 +2642,138 @@
         </div>
     </div>
 </div>
+
+{{-- Gift Ideas Section --}}
+<section class="home-section gift-ideas-section" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
+    <div class="container">
+        <!-- Removed section heading (icon + title) per request -->
+
+        <div class="gift-ideas-grid">
+            {{-- Product 1 --}}
+            @if(isset($giftIdeas[0]))
+            <div class="gift-ideas-item gift-product-item">
+                <div class="product-card h-100" onclick="window.location.href='{{ route('product.detail', $giftIdeas[0]->slug) }}'">
+                    <div class="product-image">
+                        @if($giftIdeas[0]->is_new)
+                        <div class="product-badge">{{ __t('messages.new') }}</div>
+                        @elseif($giftIdeas[0]->sale_price && $giftIdeas[0]->sale_price < $giftIdeas[0]->price)
+                        <div class="product-badge">{{ __t('messages.sale') }}</div>
+                        @elseif($giftIdeas[0]->is_featured)
+                        <div class="product-badge">{{ __t('messages.hot') }}</div>
+                        @endif
+                        <div class="wishlist-btn" data-product-id="{{ $giftIdeas[0]->id }}" onclick="event.stopPropagation();">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <img src="{{ $giftIdeas[0]->main_image }}" alt="{{ $giftIdeas[0]->name }}" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">{{ $giftIdeas[0]->name }}</div>
+                        <div class="product-description">{{ Str::limit($giftIdeas[0]->short_description, 60) }}</div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                @if($giftIdeas[0]->sale_price && $giftIdeas[0]->sale_price < $giftIdeas[0]->price)
+                                    <span class="original-price">₪ {{ number_format($giftIdeas[0]->price, 0) }}</span>
+                                    <span class="current-price">₪ {{ number_format($giftIdeas[0]->sale_price, 0) }}</span>
+                                @else
+                                    <span class="current-price">₪ {{ number_format($giftIdeas[0]->price, 0) }}</span>
+                                @endif
+                            </div>
+                            @if($giftIdeas[0]->stock_status === 'out_of_stock')
+                            <button class="add-to-cart-icon out-of-stock"
+                                    data-product-id="{{ $giftIdeas[0]->id }}"
+                                    data-product-name="{{ $giftIdeas[0]->name }}"
+                                    title="{{ __t('messages.request_product') }}"
+                                    aria-label="{{ __t('messages.request_product') }}"
+                                    onclick="event.stopPropagation(); requestProduct({{ $giftIdeas[0]->id }}, '{{ $giftIdeas[0]->name }}');">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            @else
+                            <button class="add-to-cart-icon {{ in_array($giftIdeas[0]->id, $cartProductIds) ? 'in-cart' : '' }}"
+                                    data-product-id="{{ $giftIdeas[0]->id }}"
+                                    title="{{ in_array($giftIdeas[0]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                    aria-label="{{ in_array($giftIdeas[0]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                    onclick="event.stopPropagation(); addToCart({{ $giftIdeas[0]->id }}, this);">
+                                <i class="fas {{ in_array($giftIdeas[0]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
+                            </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Product 2 --}}
+            @if(isset($giftIdeas[1]))
+            <div class="gift-ideas-item gift-product-item">
+                <div class="product-card h-100" onclick="window.location.href='{{ route('product.detail', $giftIdeas[1]->slug) }}'">
+                    <div class="product-image">
+                        @if($giftIdeas[1]->is_new)
+                        <div class="product-badge">{{ __t('messages.new') }}</div>
+                        @elseif($giftIdeas[1]->sale_price && $giftIdeas[1]->sale_price < $giftIdeas[1]->price)
+                        <div class="product-badge">{{ __t('messages.sale') }}</div>
+                        @elseif($giftIdeas[1]->is_featured)
+                        <div class="product-badge">{{ __t('messages.hot') }}</div>
+                        @endif
+                        <div class="wishlist-btn" data-product-id="{{ $giftIdeas[1]->id }}" onclick="event.stopPropagation();">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <img src="{{ $giftIdeas[1]->main_image }}" alt="{{ $giftIdeas[1]->name }}" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">{{ $giftIdeas[1]->name }}</div>
+                        <div class="product-description">{{ Str::limit($giftIdeas[1]->short_description, 60) }}</div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                @if($giftIdeas[1]->sale_price && $giftIdeas[1]->sale_price < $giftIdeas[1]->price)
+                                    <span class="original-price">₪ {{ number_format($giftIdeas[1]->price, 0) }}</span>
+                                    <span class="current-price">₪ {{ number_format($giftIdeas[1]->sale_price, 0) }}</span>
+                                @else
+                                    <span class="current-price">₪ {{ number_format($giftIdeas[1]->price, 0) }}</span>
+                                @endif
+                            </div>
+                            @if($giftIdeas[1]->stock_status === 'out_of_stock')
+                            <button class="add-to-cart-icon out-of-stock"
+                                    data-product-id="{{ $giftIdeas[1]->id }}"
+                                    data-product-name="{{ $giftIdeas[1]->name }}"
+                                    title="{{ __t('messages.request_product') }}"
+                                    aria-label="{{ __t('messages.request_product') }}"
+                                    onclick="event.stopPropagation(); requestProduct({{ $giftIdeas[1]->id }}, '{{ $giftIdeas[1]->name }}');">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            @else
+                            <button class="add-to-cart-icon {{ in_array($giftIdeas[1]->id, $cartProductIds) ? 'in-cart' : '' }}"
+                                    data-product-id="{{ $giftIdeas[1]->id }}"
+                                    title="{{ in_array($giftIdeas[1]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                    aria-label="{{ in_array($giftIdeas[1]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                    onclick="event.stopPropagation(); addToCart({{ $giftIdeas[1]->id }}, this);">
+                                <i class="fas {{ in_array($giftIdeas[1]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
+                            </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Banner (spans 2 columns) --}}
+            <div class="gift-ideas-item gift-banner-item">
+                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                    {{-- Text and Button Group --}}
+                    <div class="gift-banner-content">
+                        <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
+                        <p>{{ __t('messages.gift_ideas.desc') }}</p>
+                        <a class="gift-cta" href="{{ url('/deals/global-gifts-delivery-store') }}">{{ __t('messages.gift_ideas.cta') }}</a>
+                    </div>
+                    
+                    {{-- Image --}}
+                    <div class="gift-banner-image">
+                        <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="{{ __t('messages.gift_ideas.headline') }}" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <!-- Category Carousel JavaScript -->
 <script>
