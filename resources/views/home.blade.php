@@ -873,6 +873,15 @@
         -webkit-backdrop-filter: blur(8px);
     }
 
+    .product-badge.discount-badge {
+        background: linear-gradient(135deg, #ff4757 0%, #d63447 100%);
+        box-shadow: 0 2px 8px rgba(255, 71, 87, 0.4);
+        font-size: 0.75rem;
+        padding: 0.4rem 0.85rem;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+    }
+
     .product-info {
         padding: 1.25rem 1.25rem 1.25rem 1.25rem;
         display: flex;
@@ -2697,8 +2706,6 @@
                     <div class="product-image">
                         @if($giftIdeas[0]->is_new)
                         <div class="product-badge">{{ __t('messages.new') }}</div>
-                        @elseif($giftIdeas[0]->sale_price && $giftIdeas[0]->sale_price < $giftIdeas[0]->price)
-                        <div class="product-badge">{{ __t('messages.sale') }}</div>
                         @elseif($giftIdeas[0]->is_featured)
                         <div class="product-badge">{{ __t('messages.hot') }}</div>
                         @endif
@@ -2750,8 +2757,6 @@
                     <div class="product-image">
                         @if($giftIdeas[1]->is_new)
                         <div class="product-badge">{{ __t('messages.new') }}</div>
-                        @elseif($giftIdeas[1]->sale_price && $giftIdeas[1]->sale_price < $giftIdeas[1]->price)
-                        <div class="product-badge">{{ __t('messages.sale') }}</div>
                         @elseif($giftIdeas[1]->is_featured)
                         <div class="product-badge">{{ __t('messages.hot') }}</div>
                         @endif
@@ -3126,8 +3131,6 @@
                     <div class="product-image">
                         @if($product->is_new)
                         <div class="product-badge">{{ __t('messages.new') }}</div>
-                        @elseif($product->sale_price && $product->sale_price < $product->price)
-                        <div class="product-badge">{{ __t('messages.sale') }}</div>
                         @elseif($product->is_featured)
                         <div class="product-badge">{{ __t('messages.hot') }}</div>
                         @endif
@@ -3177,6 +3180,21 @@
 
 <!-- Main Content Container -->
 <div class="container">
+    <!-- Special Discounts & Offers - HORIZONTAL SCROLLER -->
+    @if($specialDiscounts->count() > 0)
+    <x-horizontal-product-scroller
+        :products="$specialDiscounts"
+        title="{{ __t('messages.special_discounts') }}"
+        :viewMoreUrl="route('products', ['filter' => 'sale'])"
+        :autoScroll="true"
+        :autoScrollInterval="4500"
+        :cardsToScroll="1"
+        :cartProductIds="$cartProductIds"
+        :showDiscountPercentage="true"
+        containerId="special-discounts-scroller"
+    />
+    @endif
+
     <!-- Featured Products - HORIZONTAL SCROLLER -->
     @if($featuredProducts->count() > 0)
     <x-horizontal-product-scroller
@@ -3186,6 +3204,7 @@
         :autoScroll="true"
         :autoScrollInterval="4000"
         :cartProductIds="$cartProductIds"
+        :hideSaleBadge="true"
         containerId="featured-products-scroller"
     />
     @endif
@@ -3202,6 +3221,7 @@
         :autoScrollInterval="5000"
         :cardsToScroll="2"
         :cartProductIds="$cartProductIds"
+        :hideSaleBadge="true"
         containerId="new-arrivals-scroller"
     />
     @endif
@@ -3215,6 +3235,7 @@
         :autoScroll="true"
         :autoScrollInterval="6000"
         :cartProductIds="$cartProductIds"
+        :hideSaleBadge="true"
         containerId="bestsellers-scroller"
     />
     @endif
@@ -3229,6 +3250,7 @@
         :autoScrollInterval="5000"
         :cardsToScroll="1"
         :cartProductIds="$cartProductIds"
+        :hideSaleBadge="true"
         containerId="on-sale-scroller"
     />
     @endif

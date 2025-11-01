@@ -36,6 +36,7 @@ return [
     'best_sellers' => 'Best Sellers',
     'bestsellers' => 'Bestsellers',
     'on_sale' => 'On Sale Now',
+    'special_discounts' => 'Special Discounts and Offers',
     'no_products' => 'No products available',
     'add_to_cart' => 'Add to Cart',
     'in_cart' => 'In Cart',

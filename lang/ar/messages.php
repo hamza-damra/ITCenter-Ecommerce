@@ -36,6 +36,7 @@ return [
     'best_sellers' => 'الأكثر مبيعاً',
     'bestsellers' => 'الأكثر مبيعاً',
     'on_sale' => 'تخفيضات الآن',
+    'special_discounts' => 'خصومات وعروض خاصة',
     'no_products' => 'لا توجد منتجات متاحة',
     'add_to_cart' => 'أضف إلى السلة',
     'in_cart' => 'في السلة',

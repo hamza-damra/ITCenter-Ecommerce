@@ -1,12 +1,13 @@
 {
   "permissions": {
-    "defaultMode": "acceptEdits",
     "allow": [
       "Read(./**)",
       "Write(./**)",
       "Edit(./**)",
-      "Execute(Bash:*)"
+      "Execute(Bash:*)",
+      "Bash(php artisan cache:clear:*)"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "acceptEdits"
   }
 }

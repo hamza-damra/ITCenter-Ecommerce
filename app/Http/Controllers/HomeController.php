@@ -57,6 +57,17 @@ class HomeController extends Controller
                 ->limit(8)
                 ->get();
 
+            // Special Discounts & Offers (العروض والخصومات الخاصة)
+            $specialDiscounts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
+                ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
+                ->active()
+                ->whereNotNull('sale_price')
+                ->where('sale_price', '<', \DB::raw('price'))
+                ->whereRaw('((price - sale_price) / price * 100) >= 10') // Minimum 10% discount
+                ->orderByRaw('((price - sale_price) / price * 100) DESC') // Order by discount percentage
+                ->limit(8)
+                ->get();
+
             $categories = Category::select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'image', 'order')
                 ->active()
                 ->parent()
@@ -105,6 +116,7 @@ class HomeController extends Controller
                 'newProducts' => $newProducts,
                 'bestsellerProducts' => $bestsellerProducts,
                 'onSaleProducts' => $onSaleProducts,
+                'specialDiscounts' => $specialDiscounts,
                 'categories' => $categories,
                 'featuredBrands' => $featuredBrands,
                 'activeOffers' => $activeOffers,

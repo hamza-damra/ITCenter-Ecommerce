@@ -36,6 +36,7 @@ return [
     'best_sellers' => 'הנמכרים ביותר',
     'bestsellers' => 'הנמכרים ביותר',
     'on_sale' => 'במבצע כעת',
+    'special_discounts' => 'הנחות ומבצעים מיוחדים',
     'no_products' => 'אין מוצרים זמינים',
     'add_to_cart' => 'הוסף לסל',
     'in_cart' => 'בסל',

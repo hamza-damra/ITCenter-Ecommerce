@@ -18,7 +18,9 @@
     'autoScrollInterval' => 3000,
     'cardsToScroll' => 1,
     'containerId' => 'scroller-' . uniqid(),
-    'cartProductIds' => []
+    'cartProductIds' => [],
+    'showDiscountPercentage' => false,
+    'hideSaleBadge' => false
 ])
 
 <div class="horizontal-scroller-section">
@@ -55,11 +57,16 @@
                 <div class="scroller-card-wrapper">
                     <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
                         <div class="product-image">
-                            @if($product->is_new)
+                            @if($showDiscountPercentage && $product->sale_price && $product->sale_price < $product->price)
+                            @php
+                                $discountPercentage = round((($product->price - $product->sale_price) / $product->price) * 100);
+                            @endphp
+                            <div class="product-badge discount-badge">-{{ $discountPercentage }}%</div>
+                            @elseif(!$hideSaleBadge && $product->is_new)
                             <div class="product-badge">{{ __t('messages.new') }}</div>
-                            @elseif($product->sale_price && $product->sale_price < $product->price)
+                            @elseif(!$hideSaleBadge && $product->sale_price && $product->sale_price < $product->price)
                             <div class="product-badge">{{ __t('messages.sale') }}</div>
-                            @elseif($product->is_featured)
+                            @elseif(!$hideSaleBadge && $product->is_featured)
                             <div class="product-badge">{{ __t('messages.hot') }}</div>
                             @endif
                             <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
@@ -72,11 +79,11 @@
                             <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
                             <div class="product-footer">
                                 <div class="product-price">
-                                    @if($product->sale_price && $product->sale_price < $product->price)
+                                    @if($showDiscountPercentage && $product->sale_price && $product->sale_price < $product->price)
                                         <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
                                         <span class="current-price">₪ {{ number_format($product->sale_price, 0) }}</span>
                                     @else
-                                        <span class="current-price">₪ {{ number_format($product->price, 0) }}</span>
+                                        <span class="current-price">₪ {{ number_format($product->sale_price ?? $product->price, 0) }}</span>
                                     @endif
                                 </div>
                                 @if($product->stock_status === 'out_of_stock')
