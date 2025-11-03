@@ -396,7 +396,7 @@
                         @elseif($product->is_featured)
                         <div class="product-badge">HOT</div>
                         @endif
-                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}" loading="lazy" decoding="async">
                     </div>
                     <div class="product-info">
                         <div class="product-title">{{ $product->name }}</div>

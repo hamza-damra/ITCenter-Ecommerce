@@ -72,7 +72,7 @@
                             <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
                                 <i class="far fa-heart"></i>
                             </div>
-                            <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                            <img src="{{ $product->main_image }}" alt="{{ $product->name }}" loading="lazy" decoding="async">
                         </div>
                         <div class="product-info">
                             <div class="product-title">{{ $product->name }}</div>

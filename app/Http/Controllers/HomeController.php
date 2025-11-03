@@ -8,6 +8,7 @@ use App\Models\Brand;
 use App\Models\Offer;
 use App\Models\PromotionalOffer;
 use App\Models\CartItem;
+use App\Services\CartCacheService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -15,6 +16,12 @@ use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
+    protected $cartCache;
+
+    public function __construct(CartCacheService $cartCache)
+    {
+        $this->cartCache = $cartCache;
+    }
     public function index()
     {
         // Cache key for home page data
@@ -139,14 +146,20 @@ class HomeController extends Controller
     private function getCartProductIds()
     {
         $identifier = $this->getCartIdentifier();
-
-        return CartItem::where(function($query) use ($identifier) {
-            if (isset($identifier['user_id'])) {
-                $query->where('user_id', $identifier['user_id']);
-            } else {
-                $query->where('session_id', $identifier['session_id']);
-            }
-        })->pluck('product_id')->toArray();
+        
+        // Use cached cart data to reduce database queries
+        try {
+            return $this->cartCache->getProductIds($identifier);
+        } catch (\Exception $e) {
+            // Fallback to direct database query if cache fails
+            return CartItem::where(function($query) use ($identifier) {
+                if (isset($identifier['user_id'])) {
+                    $query->where('user_id', $identifier['user_id']);
+                } else {
+                    $query->where('session_id', $identifier['session_id']);
+                }
+            })->pluck('product_id')->toArray();
+        }
     }
 
     /**

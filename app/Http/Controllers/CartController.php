@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CartItem;
+use App\Services\CartCacheService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -14,6 +15,12 @@ use Illuminate\Support\Facades\Session;
  */
 class CartController extends Controller
 {
+    protected $cartCache;
+
+    public function __construct(CartCacheService $cartCache)
+    {
+        $this->cartCache = $cartCache;
+    }
     /**
      * Display the cart page
      */
@@ -80,6 +87,9 @@ class CartController extends Controller
             $cartItem->quantity += $quantity;
             $cartItem->save();
             
+            // Clear cart cache
+            $this->cartCache->clearCache($identifier);
+            
             return response()->json([
                 'success' => true,
                 'action' => 'updated',
@@ -99,6 +109,9 @@ class CartController extends Controller
                 'quantity' => $quantity,
                 'price' => $price,
             ]);
+
+            // Clear cart cache
+            $this->cartCache->clearCache($identifier);
 
             return response()->json([
                 'success' => true,
@@ -133,6 +146,9 @@ class CartController extends Controller
         $cartItem->quantity = $request->quantity;
         $cartItem->save();
 
+        // Clear cart cache
+        $this->cartCache->clearCache($identifier);
+
         return response()->json([
             'success' => true,
             'message' => 'Cart updated',
@@ -158,6 +174,9 @@ class CartController extends Controller
             ->delete();
 
         if ($deleted) {
+            // Clear cart cache
+            $this->cartCache->clearCache($identifier);
+            
             return response()->json([
                 'success' => true,
                 'message' => 'Product removed from cart',
