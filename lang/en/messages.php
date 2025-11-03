@@ -55,6 +55,16 @@ return [
         'desc' => 'Shop your favorite gifts online and send them to your friends abroad, family and loved ones too',
         'cta' => 'Gift Now',
     ],
+
+    // Strong Offers Section
+    'strong_offers' => [
+        'title' => 'Strong Offers',
+        'headline' => 'Strong Offers',
+        'desc' => 'Best Prices with IT Center',
+        'discount' => 'Get up to 20% off on the latest products',
+        'code' => 'Use Code: IT20',
+        'cta' => 'Shop Now',
+    ],
     
     // Special Offer Section
     'special_offer' => 'Special Offer',
