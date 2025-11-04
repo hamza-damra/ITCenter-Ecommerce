@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Favorite;
 use App\Models\Product;
+use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -33,7 +34,26 @@ class FavoriteController extends Controller
             ->pluck('product') // Extract just the products
             ->filter(); // Remove any null products
 
-        return view('favorites', compact('favorites'));
+        // Get cart product IDs for current user/session
+        $cartProductIds = $this->getCartProductIds();
+
+        return view('favorites', compact('favorites', 'cartProductIds'));
+    }
+
+    /**
+     * Get cart product IDs for current user/session
+     */
+    private function getCartProductIds()
+    {
+        $identifier = $this->getIdentifier();
+
+        return CartItem::where(function($query) use ($identifier) {
+            if (isset($identifier['user_id'])) {
+                $query->where('user_id', $identifier['user_id']);
+            } else {
+                $query->where('session_id', $identifier['session_id']);
+            }
+        })->pluck('product_id')->toArray();
     }
 
     /**

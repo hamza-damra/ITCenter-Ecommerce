@@ -240,53 +240,113 @@
         color: #2762f3;
     }
 
-    .add-to-cart {
+    /* Icon-Only Add to Cart Button */
+    .add-to-cart-icon {
         background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
-        color: #fff;
-        padding: 0.6rem 1rem;
+        color: #ffffff;
         border: none;
-        border-radius: 50px;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        border-radius: 50%;
         cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: 600;
-        font-size: 0.9rem;
-        display: inline-flex;
+        font-size: 1.1rem;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
-        box-shadow: 0 4px 12px rgba(39, 98, 243, 0.25);
+        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.25);
         position: relative;
         overflow: hidden;
+        flex-shrink: 0;
     }
 
-    .add-to-cart::before {
+    .add-to-cart-icon::before {
         content: '';
         position: absolute;
         top: 0;
-        left: -100%;
+        left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.5s ease;
+        background: linear-gradient(135deg, #1a4dbf 0%, #0f3a8f 100%);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        z-index: 0;
     }
 
-    .add-to-cart:hover::before {
-        left: 100%;
+    .add-to-cart-icon i {
+        position: relative;
+        z-index: 1;
+        transition: transform 0.3s ease;
     }
 
-    .add-to-cart:hover {
-        background: linear-gradient(135deg, #1a4dbf 0%, #133a99 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(39, 98, 243, 0.35);
-    }
-        min-width: 140px;
-        white-space: nowrap;
+    .add-to-cart-icon:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 20px rgba(39, 98, 243, 0.4), 0 2px 8px rgba(39, 98, 243, 0.2);
     }
 
-    .add-to-cart:hover {
-        background: #1E90FF;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(65, 105, 225, 0.3);
+    .add-to-cart-icon:hover::before {
+        opacity: 1;
+    }
+
+    .add-to-cart-icon:hover i {
+        transform: scale(1.1);
+    }
+
+    .add-to-cart-icon:active {
+        transform: translateY(0) scale(1);
+    }
+
+    /* Success state - green with check icon */
+    .add-to-cart-icon.in-cart {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+    }
+
+    .add-to-cart-icon.in-cart::before {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
+
+    .add-to-cart-icon.in-cart:hover {
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4), 0 2px 8px rgba(16, 185, 129, 0.2);
+    }
+
+    .add-to-cart-icon.in-cart i {
+        animation: cartBounce 0.5s ease;
+    }
+
+    /* Out of stock state - orange with bell icon */
+    .add-to-cart-icon.out-of-stock {
+        background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+        box-shadow: 0 2px 8px rgba(249, 115, 22, 0.25);
+        cursor: pointer;
+    }
+
+    .add-to-cart-icon.out-of-stock::before {
+        background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+    }
+
+    .add-to-cart-icon.out-of-stock:hover {
+        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4), 0 2px 8px rgba(249, 115, 22, 0.2);
+    }
+
+    @keyframes cartBounce {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.3); }
+    }
+
+    /* Price styling */
+    .product-price .original-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 0.9rem;
+        margin-right: 0.5rem;
+    }
+
+    .product-price .current-price {
+        color: #2762f3;
+        font-weight: 700;
+        font-size: 1.2rem;
     }
 
     /* Responsive Design */
@@ -295,20 +355,16 @@
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1rem;
         }
-        
+
         .product-footer {
-            flex-wrap: wrap;
             gap: 0.75rem;
         }
-        
-        .add-to-cart {
-            width: 100%;
-            min-width: unset;
-        }
-        
-        .product-price {
-            width: 100%;
-            text-align: center;
+
+        .add-to-cart-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            font-size: 1rem;
         }
     }
     
@@ -316,10 +372,12 @@
         .product-grid {
             grid-template-columns: 1fr;
         }
-        
-        .add-to-cart {
-            padding: 0.7rem 1rem;
-            font-size: 0.95rem;
+
+        .add-to-cart-icon {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            font-size: 1rem;
         }
 
         .favorites-header h1 {
@@ -404,13 +462,30 @@
                         <div class="product-footer">
                             <div class="product-price">
                                 @if($product->sale_price && $product->sale_price < $product->price)
-                                    <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">₪ {{ number_format($product->price, 0) }}</span>
-                                    ₪ {{ number_format($product->sale_price, 0) }}
+                                    <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
+                                    <span class="current-price">₪ {{ number_format($product->sale_price, 0) }}</span>
                                 @else
-                                    ₪ {{ number_format($product->price, 0) }}
+                                    <span class="current-price">₪ {{ number_format($product->price, 0) }}</span>
                                 @endif
                             </div>
-                            <button class="add-to-cart" onclick="event.stopPropagation();">{{ __t('messages.add_to_cart') }}</button>
+                            @if($product->stock_status === 'out_of_stock')
+                            <button class="add-to-cart-icon out-of-stock"
+                                    data-product-id="{{ $product->id }}"
+                                    data-product-name="{{ $product->name }}"
+                                    title="{{ __t('messages.request_product') }}"
+                                    aria-label="{{ __t('messages.request_product') }}"
+                                    onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            @else
+                            <button class="add-to-cart-icon {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
+                                    data-product-id="{{ $product->id }}"
+                                    title="{{ in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                    aria-label="{{ in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                    onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                                <i class="fas {{ in_array($product->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
+                            </button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -542,5 +617,100 @@ function updateFavoritesCount() {
 document.addEventListener('DOMContentLoaded', function() {
     updateFavoritesCount();
 });
+
+/**
+ * Add product to cart
+ */
+function addToCart(productId, button) {
+    // Prevent multiple rapid clicks
+    if (button.disabled) return;
+    button.disabled = true;
+
+    fetch(`/cart/add/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ quantity: 1 })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update button state
+            button.classList.add('in-cart');
+            button.title = '{{ __t("messages.in_cart") }}';
+            button.setAttribute('aria-label', '{{ __t("messages.in_cart") }}');
+
+            // Update icon
+            const icon = button.querySelector('i');
+            icon.classList.remove('fa-shopping-cart');
+            icon.classList.add('fa-check');
+
+            // Update cart count in header
+            updateCartCount();
+
+            // Show success message (optional)
+            console.log('Product added to cart successfully');
+        } else {
+            console.error('Failed to add product to cart:', data.message);
+            alert(data.message || '{{ __t("messages.error_adding_to_cart") }}');
+        }
+    })
+    .catch(error => {
+        console.error('Error adding to cart:', error);
+        alert('{{ __t("messages.error_adding_to_cart") }}');
+    })
+    .finally(() => {
+        button.disabled = false;
+    });
+}
+
+/**
+ * Request out of stock product
+ */
+function requestProduct(productId, productName) {
+    // Show a confirmation or modal for product request
+    const message = `{{ __t("messages.request_product_message") }}`.replace(':product', productName);
+
+    if (confirm(message || `Would you like to be notified when ${productName} is back in stock?`)) {
+        fetch(`/products/request/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message || '{{ __t("messages.request_product_success") }}');
+            } else {
+                alert(data.message || '{{ __t("messages.request_product_error") }}');
+            }
+        })
+        .catch(error => {
+            console.error('Error requesting product:', error);
+            alert('{{ __t("messages.request_product_error") }}');
+        });
+    }
+}
+
+/**
+ * Update cart count in header
+ */
+function updateCartCount() {
+    fetch('/cart/count')
+        .then(response => response.json())
+        .then(data => {
+            const badge = document.querySelector('.header-icon .fa-shopping-cart').parentElement.querySelector('.badge');
+            if (badge) {
+                badge.textContent = data.count;
+            }
+        })
+        .catch(error => console.error('Error updating cart count:', error));
+}
 </script>
 @endsection
