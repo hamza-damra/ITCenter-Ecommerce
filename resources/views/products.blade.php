@@ -173,44 +173,70 @@
     }
 
     /* Vertical Bar Handles - Minimal Clean Design */
-    .noUi-handle {
-        width: 3px;
-        height: 24px;
-        border-radius: 0;
-        background: #2762f3;
-        border: none;
-        box-shadow: none;
-        cursor: grab;
-        transition: background-color 0.2s ease;
-        top: -11px;
-        outline: none;
+    /* Force override all noUiSlider handle styles */
+    .noUi-target .noUi-handle,
+    .noUi-horizontal .noUi-handle,
+    div.noUi-handle {
+        width: 3px !important;
+        height: 24px !important;
+        min-width: 3px !important;
+        max-width: 3px !important;
+        min-height: 24px !important;
+        max-height: 24px !important;
+        border-radius: 0 !important;
+        background: #2762f3 !important;
+        background-color: #2762f3 !important;
+        border: none !important;
+        border-width: 0 !important;
+        box-shadow: none !important;
+        cursor: grab !important;
+        transition: background-color 0.2s ease !important;
+        top: -11px !important;
+        outline: none !important;
+        right: -1.5px !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
 
-    .noUi-handle:active {
-        cursor: grabbing;
-        background: #1a4dbf;
+    .noUi-target .noUi-handle:active,
+    .noUi-horizontal .noUi-handle:active {
+        cursor: grabbing !important;
+        background: #1a4dbf !important;
+        background-color: #1a4dbf !important;
     }
 
-    .noUi-handle:before,
-    .noUi-handle:after {
-        display: none;
+    .noUi-target .noUi-handle:before,
+    .noUi-target .noUi-handle:after,
+    .noUi-horizontal .noUi-handle:before,
+    .noUi-horizontal .noUi-handle:after {
+        display: none !important;
+        content: none !important;
+        width: 0 !important;
+        height: 0 !important;
     }
 
-    .noUi-handle:hover {
-        background: #1a4dbf;
+    .noUi-target .noUi-handle:hover,
+    .noUi-horizontal .noUi-handle:hover {
+        background: #1a4dbf !important;
+        background-color: #1a4dbf !important;
     }
 
-    .noUi-handle:focus {
-        background: #1a4dbf;
-        outline: none;
+    .noUi-target .noUi-handle:focus,
+    .noUi-horizontal .noUi-handle:focus {
+        background: #1a4dbf !important;
+        background-color: #1a4dbf !important;
+        outline: none !important;
     }
 
-    .noUi-handle-lower {
-        right: -1.5px;
-    }
-
+    .noUi-handle-lower,
     .noUi-handle-upper {
-        right: -1.5px;
+        right: -1.5px !important;
+    }
+
+    /* Remove touch area if exists */
+    .noUi-touch-area {
+        width: 3px !important;
+        height: 24px !important;
     }
 
     .noUi-tooltip {
@@ -271,64 +297,84 @@
     }
 
     /* Brand Filter Styles - Collapsible Disclosure Pattern */
-    .brand-filter-section {
-        border-top: 1px solid #f0f0f0;
-        padding-top: 1.25rem;
+    /* Brand Accordion - Matches Categories Style */
+    .filter-accordion {
+        margin-bottom: 0;
     }
 
-    .filter-disclosure-button {
+    .filter-accordion-button {
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: transparent;
-        border: none;
-        padding: 0.75rem 0.5rem;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
         cursor: pointer;
         transition: all 0.3s ease;
-        border-radius: 8px;
         margin-bottom: 0.75rem;
+        font-family: inherit;
     }
 
-    .filter-disclosure-button:hover {
+    .filter-accordion-button:hover {
+        background: rgba(39, 98, 243, 0.03);
+        border-color: #cbd5e1;
+    }
+
+    .filter-accordion-button[aria-expanded="true"] {
         background: rgba(39, 98, 243, 0.05);
+        border-color: #2762f3;
     }
 
-    .filter-disclosure-button:focus {
-        outline: 2px solid #2762f3;
-        outline-offset: 2px;
+    .filter-accordion-button:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(39, 98, 243, 0.1);
     }
 
-    .filter-disclosure-header {
+    .filter-accordion-header {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.75rem;
     }
 
-    .filter-disclosure-title {
+    .filter-accordion-title {
         font-size: 1rem;
         font-weight: 600;
-        color: #334155;
+        color: #1e293b;
     }
 
-    .filter-disclosure-header i {
+    .filter-accordion-button[aria-expanded="true"] .filter-accordion-title {
         color: #2762f3;
-        font-size: 0.9rem;
     }
 
-    .filter-disclosure-icon {
+    .filter-accordion-header i.fa-tags {
+        color: #2762f3;
+        font-size: 1rem;
+    }
+
+    .filter-accordion-icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #f1f5f9;
         color: #64748b;
-        font-size: 0.85rem;
-        transition: transform 0.3s ease;
+        font-size: 0.75rem;
+        transition: all 0.3s ease;
     }
 
-    .filter-disclosure-button[aria-expanded="true"] .filter-disclosure-icon {
+    .filter-accordion-button[aria-expanded="true"] .filter-accordion-icon {
+        background: #2762f3;
+        color: white;
         transform: rotate(45deg);
     }
 
-    .brand-filter-content {
+    .filter-accordion-content {
         border: none;
-        padding: 0;
+        padding: 0 0.5rem 1rem 0.5rem;
         margin: 0;
         animation: slideDown 0.3s ease-out;
     }
@@ -344,7 +390,7 @@
         }
     }
 
-    .brand-filter-content[hidden] {
+    .filter-accordion-content[hidden] {
         display: none;
     }
 
@@ -1763,24 +1809,25 @@
                         </div>
                     </div>
 
-                    <!-- Brand Filter -->
-                    <div class="filter-section brand-filter-section">
+                    <!-- Brand Accordion -->
+                    <div class="filter-accordion">
                         <button type="button"
-                                class="filter-disclosure-button"
-                                id="brandFilterToggle"
+                                class="filter-accordion-button"
+                                id="brandAccordionToggle"
                                 aria-expanded="false"
-                                aria-controls="brandFilterContent"
-                                onclick="toggleBrandFilter()">
-                            <span class="filter-disclosure-header">
+                                aria-controls="brandAccordionContent">
+                            <span class="filter-accordion-header">
                                 <i class="fas fa-tags"></i>
-                                <span class="filter-disclosure-title">{{ is_rtl() ? 'العلامات التجارية' : 'Brand' }}</span>
+                                <span class="filter-accordion-title">{{ is_rtl() ? 'العلامات التجارية' : 'Brands' }}</span>
                             </span>
-                            <i class="fas fa-plus filter-disclosure-icon" id="brandFilterIcon" aria-hidden="true"></i>
+                            <span class="filter-accordion-icon">
+                                <i class="fas fa-plus"></i>
+                            </span>
                         </button>
 
-                        <fieldset class="brand-filter-content"
-                                  id="brandFilterContent"
-                                  aria-labelledby="brandFilterToggle"
+                        <fieldset class="filter-accordion-content"
+                                  id="brandAccordionContent"
+                                  aria-labelledby="brandAccordionToggle"
                                   hidden>
                             <legend class="sr-only">{{ is_rtl() ? 'تصفية حسب العلامة التجارية' : 'Filter by brand' }}</legend>
 
@@ -2281,20 +2328,19 @@
     });
 
     // ============================================
-    // Brand Filter Functions
+    // Brand Accordion Functions
     // ============================================
 
     /**
-     * Toggle brand filter disclosure (expand/collapse)
-     * Implements ARIA Disclosure pattern with keyboard support
+     * Toggle brand accordion (expand/collapse)
+     * Implements ARIA accordion pattern with keyboard support
      */
-    window.toggleBrandFilter = function() {
-        const button = document.getElementById('brandFilterToggle');
-        const content = document.getElementById('brandFilterContent');
-        const icon = document.getElementById('brandFilterIcon');
+    window.toggleBrandAccordion = function() {
+        const button = document.getElementById('brandAccordionToggle');
+        const content = document.getElementById('brandAccordionContent');
 
-        if (!button || !content || !icon) {
-            console.error('Brand filter elements not found');
+        if (!button || !content) {
+            console.error('Brand accordion elements not found');
             return;
         }
 
@@ -2304,16 +2350,7 @@
         button.setAttribute('aria-expanded', !isExpanded);
         content.hidden = isExpanded;
 
-        // Update icon (+ to -)
-        if (!isExpanded) {
-            icon.classList.remove('fa-plus');
-            icon.classList.add('fa-minus');
-        } else {
-            icon.classList.remove('fa-minus');
-            icon.classList.add('fa-plus');
-        }
-
-        console.log('🏷️ Brand filter ' + (!isExpanded ? 'expanded' : 'collapsed'));
+        console.log('🏷️ Brand accordion ' + (!isExpanded ? 'expanded' : 'collapsed'));
     };
 
     /**
@@ -2366,6 +2403,20 @@
      * Setup brand checkbox event listeners
      */
     document.addEventListener('DOMContentLoaded', function() {
+        // Setup brand accordion toggle
+        const brandAccordionBtn = document.getElementById('brandAccordionToggle');
+        if (brandAccordionBtn) {
+            brandAccordionBtn.addEventListener('click', toggleBrandAccordion);
+            
+            // Keyboard support
+            brandAccordionBtn.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleBrandAccordion();
+                }
+            });
+        }
+
         // Setup brand checkboxes
         const brandCheckboxes = document.querySelectorAll('input[name="brands[]"]');
         console.log('🏷️ Found ' + brandCheckboxes.length + ' brand checkboxes');
