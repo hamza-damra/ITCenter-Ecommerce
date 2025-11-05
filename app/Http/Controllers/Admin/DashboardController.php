@@ -69,16 +69,24 @@ class DashboardController extends Controller
                 ->whereYear('created_at', now()->year)
                 ->count(),
             
-            // Online/Offline User Statistics (considering users active in last 5 minutes as online)
-            'registered_online_users' => User::where('last_activity', '>=', now()->subMinutes(5))->count(),
-            'registered_offline_users' => User::where('last_activity', '<', now()->subMinutes(5))
-                ->orWhereNull('last_activity')
-                ->count(),
+            // Online/Offline User Statistics (using sessions table - users active in last 5 minutes)
+            'registered_online_users' => DB::table('sessions')
+                ->whereNotNull('user_id')
+                ->where('last_activity', '>=', now()->subMinutes(5)->timestamp)
+                ->distinct('user_id')
+                ->count('user_id'),
             
-            // Guest/Anonymous users (from cart sessions without user_id)
-            'guest_active_sessions' => CartItem::whereNull('user_id')
-                ->distinct('session_id')
-                ->count('session_id'),
+            'registered_offline_users' => User::count() - DB::table('sessions')
+                ->whereNotNull('user_id')
+                ->where('last_activity', '>=', now()->subMinutes(5)->timestamp)
+                ->distinct('user_id')
+                ->count('user_id'),
+            
+            // Guest/Anonymous users (sessions without user_id that are active)
+            'guest_active_sessions' => DB::table('sessions')
+                ->whereNull('user_id')
+                ->where('last_activity', '>=', now()->subMinutes(5)->timestamp)
+                ->count(),
             
             // User roles breakdown
             'admin_users' => User::where('role', 'admin')->count(),
@@ -89,8 +97,12 @@ class DashboardController extends Controller
             'users_with_favorites' => User::has('favorites')->count(),
             'users_with_reviews' => User::has('reviews')->count(),
             
-            // Active users (users who logged in within last 30 days)
-            'active_users_30days' => User::where('last_activity', '>=', now()->subDays(30))->count(),
+            // Active users (users with sessions in last 30 days)
+            'active_users_30days' => DB::table('sessions')
+                ->whereNotNull('user_id')
+                ->where('last_activity', '>=', now()->subDays(30)->timestamp)
+                ->distinct('user_id')
+                ->count('user_id'),
             
             // New users this week
             'users_this_week' => User::whereBetween('created_at', [
