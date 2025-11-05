@@ -147,13 +147,13 @@ class ProductController extends Controller
             'max' => Product::active()->max('price') ?? 10000,
         ];
 
-        // Get brands with product counts, sorted by product count descending
+        // Get all active brands with product counts, sorted by product count descending then alphabetically
         $brands = Brand::active()
             ->withCount(['products' => function($q) {
                 $q->where('is_active', true);
             }])
-            ->having('products_count', '>', 0)
-            ->orderBy('products_count', 'desc')
+            ->orderByDesc('products_count')
+            ->orderBy($nameColumn)
             ->get();
 
         return view('products', compact('products', 'cartProductIds', 'categories', 'priceRange', 'brands'));
