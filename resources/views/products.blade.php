@@ -172,21 +172,23 @@
         background: #2762f3;
     }
 
+    /* Vertical Bar Handles - Minimal Clean Design */
     .noUi-handle {
-        width: 8px;
-        height: 22px;
-        border-radius: 2px;
-        background: #ffffff;
-        border: 1.5px solid #64748b;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+        width: 3px;
+        height: 24px;
+        border-radius: 0;
+        background: #2762f3;
+        border: none;
+        box-shadow: none;
         cursor: grab;
-        transition: all 0.2s ease;
-        top: -10px;
+        transition: background-color 0.2s ease;
+        top: -11px;
         outline: none;
     }
 
     .noUi-handle:active {
         cursor: grabbing;
+        background: #1a4dbf;
     }
 
     .noUi-handle:before,
@@ -195,27 +197,20 @@
     }
 
     .noUi-handle:hover {
-        border-color: #2762f3;
-        box-shadow: 0 2px 4px rgba(39, 98, 243, 0.25);
-    }
-
-    .noUi-handle:active {
-        border-color: #1a4dbf;
-        box-shadow: 0 2px 6px rgba(39, 98, 243, 0.35);
-        cursor: grabbing;
+        background: #1a4dbf;
     }
 
     .noUi-handle:focus {
-        border-color: #2762f3;
-        box-shadow: 0 0 0 2px rgba(39, 98, 243, 0.1);
+        background: #1a4dbf;
+        outline: none;
     }
 
     .noUi-handle-lower {
-        right: -4px;
+        right: -1.5px;
     }
 
     .noUi-handle-upper {
-        right: -4px;
+        right: -1.5px;
     }
 
     .noUi-tooltip {
