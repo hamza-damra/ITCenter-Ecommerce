@@ -463,7 +463,20 @@
 <!-- Page Header -->
 <div class="page-header">
     <div class="page-header-content">
-        <h1><i class="fas fa-box-open"></i> {{ __('messages.products_management') }}</h1>
+        <h1>
+            <i class="fas fa-box-open"></i> {{ __('messages.products_management') }}
+            @if(request('filter'))
+                @if(request('filter') == 'recent')
+                    <span style="font-size: 0.6em; color: #3b82f6; font-weight: 600; margin-{{ is_rtl() ? 'right' : 'left' }}: 12px;">
+                        ({{ __('messages.recent_products') }})
+                    </span>
+                @elseif(request('filter') == 'top_rated')
+                    <span style="font-size: 0.6em; color: #f59e0b; font-weight: 600; margin-{{ is_rtl() ? 'right' : 'left' }}: 12px;">
+                        ({{ __('messages.top_rated_products') }})
+                    </span>
+                @endif
+            @endif
+        </h1>
         <p>{{ __('messages.manage_product_catalog') }}</p>
     </div>
     <div class="page-actions">

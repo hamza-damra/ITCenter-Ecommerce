@@ -14,11 +14,40 @@ use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['category', 'brand', 'images'])
-            ->latest()
-            ->paginate(20);
+        $query = Product::with(['category', 'brand', 'images']);
+
+        // Apply filter based on request parameter
+        if ($request->has('filter')) {
+            switch ($request->filter) {
+                case 'recent':
+                    // Recent products (latest)
+                    $query->latest();
+                    break;
+                    
+                case 'top_rated':
+                    // Top rated products
+                    $query->withAvg('reviews', 'rating')
+                          ->withCount('reviews')
+                          ->having('reviews_count', '>', 0)
+                          ->orderByDesc('reviews_avg_rating');
+                    break;
+                    
+                default:
+                    $query->latest();
+                    break;
+            }
+        } else {
+            $query->latest();
+        }
+
+        $products = $query->paginate(20);
+        
+        // Preserve filter parameter in pagination
+        if ($request->has('filter')) {
+            $products->appends(['filter' => $request->filter]);
+        }
 
         return view('admin.products.index', compact('products'));
     }

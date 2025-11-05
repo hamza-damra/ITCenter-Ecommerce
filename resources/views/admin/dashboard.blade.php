@@ -755,7 +755,7 @@
     <div class="recent-products-card">
         <div class="card-header">
             <h2><i class="fas fa-clock"></i> {{ __('messages.recent_products') }}</h2>
-            <a href="{{ route('admin.products.index') }}" class="view-all-link">
+            <a href="{{ route('admin.products.index', ['filter' => 'recent']) }}" class="view-all-link">
                 {{ __('messages.view_all') }} <i class="fas fa-arrow-right"></i>
             </a>
         </div>
@@ -873,6 +873,9 @@
     <div class="recent-products-card">
         <div class="card-header">
             <h2><i class="fas fa-star"></i> {{ __('messages.top_rated_products') }}</h2>
+            <a href="{{ route('admin.products.index', ['filter' => 'top_rated']) }}" class="view-all-link">
+                {{ __('messages.view_all') }} <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
         <div class="card-body" style="padding: 0;">
             @if(isset($top_rated_products) && $top_rated_products->count() > 0)
