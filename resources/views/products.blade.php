@@ -332,6 +332,9 @@
         box-shadow: 0 0 0 3px rgba(39, 98, 243, 0.1);
     }
 
+    .filter-accordion-button:hover{
+        color: #2762f3;
+    }
     .filter-accordion-header {
         display: flex;
         align-items: center;
@@ -348,10 +351,12 @@
         color: #2762f3;
     }
 
-    .filter-accordion-header i.fa-tags {
-        color: #2762f3;
+    .filter-accordion-header fa-tags {
+        color: #000000ff;
         font-size: 1rem;
     }
+
+
 
     .filter-accordion-icon {
         width: 24px;
