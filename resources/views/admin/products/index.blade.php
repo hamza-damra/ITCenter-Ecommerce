@@ -307,32 +307,92 @@
 
     .empty-state {
         background: white;
-        border-radius: 16px;
-        padding: 80px 40px;
+        border-radius: 20px;
+        padding: 60px 32px;
         text-align: center;
         border: none;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 8px 30px rgba(2, 6, 23, 0.08);
+        position: relative;
+        overflow: hidden;
     }
 
-    .empty-state i {
-        font-size: 64px;
-        color: #cbd5e1;
-        margin-bottom: 20px;
-        display: block;
+    .empty-state::after {
+        content: "";
+        position: absolute;
+        inset: 0; 
+        background: radial-gradient(1200px 300px at 50% -200px, rgba(59,130,246,.10), transparent 60%),
+                    radial-gradient(600px 200px at 80% 120%, rgba(99,102,241,.10), transparent 60%);
+        pointer-events: none;
     }
+
+    .empty-illustration {
+        width: 88px;
+        height: 88px;
+        margin: 0 auto 18px;
+        border-radius: 22px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+        color: #3730a3;
+        box-shadow: 0 8px 20px rgba(55,48,163,.18);
+    }
+
+    .empty-illustration i { font-size: 40px; }
 
     .empty-state h3 {
-        font-size: 24px;
-        color: var(--dark);
-        margin-bottom: 12px;
-        font-weight: 700;
+        font-size: 26px;
+        color: #0f172a;
+        margin-bottom: 10px;
+        font-weight: 800;
     }
 
     .empty-state p {
-        color: var(--secondary);
+        color: #475569;
         margin-bottom: 28px;
-        font-size: 16px;
+        font-size: 15px;
     }
+
+    .empty-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        max-width: 680px;
+        margin: 0 auto 22px;
+    }
+
+    .empty-actions .btn-primary {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        border: none;
+        font-weight: 700;
+        padding: 14px 18px;
+    }
+
+    .empty-actions .btn-secondary {
+        background: #eef2ff; 
+        color: #3730a3;
+        border: 1px solid #e0e7ff;
+        font-weight: 700;
+        padding: 14px 18px;
+    }
+
+    .empty-tips {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+        margin-top: 8px;
+    }
+
+    .empty-tip {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 13px;
+        color: #475569;
+        display: flex; align-items: center; gap: 8px;
+    }
+
+    .empty-tip i { color: #64748b; }
 
     .stats-overview {
         display: grid;
@@ -679,11 +739,13 @@
     @endif
 @else
     <div class="empty-state">
-        <i class="fas fa-box-open"></i>
+        <div class="empty-illustration">
+            <i class="fas fa-box-open"></i>
+        </div>
         <h3>{{ __('messages.no_products_available') }}</h3>
         <p>{{ __('messages.start_adding_products') }}</p>
         <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus-circle"></i> {{ __('messages.create_product') }}
+            <i class="fas fa-plus-circle"></i> {{ __('messages.create_product') }} (N)
         </a>
     </div>
 @endif
@@ -910,6 +972,16 @@
             window.location.reload();
         });
     }
+
+    // Quick create shortcut: press 'N' to open Create Product when empty state is visible
+    document.addEventListener('keydown', function(e) {
+        const activeTag = document.activeElement?.tagName?.toLowerCase();
+        const typing = ['input','textarea','select'].includes(activeTag);
+        const emptyStateVisible = document.querySelector('.empty-state');
+        if (!typing && emptyStateVisible && (e.key === 'n' || e.key === 'N')) {
+            window.location.href = '{{ route('admin.products.create') }}';
+        }
+    });
 </script>
 
 @endsection

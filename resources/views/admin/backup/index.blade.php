@@ -197,7 +197,7 @@
 
 <!-- Export/Create Backup Modal -->
 <div id="exportModal" class="modal">
-    <div class="modal-content" style="max-width: 700px;">
+    <div class="modal-content">
         <div class="modal-header">
             <h3><i class="fas fa-download"></i> {{ __('messages.Create Backup Now') }}</h3>
             <button type="button" class="close-modal" onclick="closeExportModal()">&times;</button>
@@ -261,7 +261,7 @@
 
 <!-- Import Backup Modal -->
 <div id="importModal" class="modal">
-    <div class="modal-content" style="max-width: 700px;">
+    <div class="modal-content">
         <div class="modal-header">
             <h3><i class="fas fa-upload"></i> {{ __('messages.Import Backup') }}</h3>
             <button type="button" class="close-modal" onclick="closeImportModal()">&times;</button>
@@ -681,12 +681,18 @@
 
 .modal-content {
     background-color: white;
-    margin: 80px auto;
+    /* Use small, safe margins so content never exceeds viewport */
+    margin: 20px auto;
     border-radius: 12px;
     width: 90%;
     max-width: 600px;
+    /* Ensure the card stays within the viewport; body will scroll */
+    max-height: calc(100vh - 40px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     animation: slideDown 0.3s;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 @keyframes slideDown {
@@ -700,12 +706,33 @@
     }
 }
 
+/* Responsive adjustments for small screens */
+@media (max-width: 576px) {
+    .modal-content {
+        margin: 10px auto;
+        width: 95%;
+        max-height: calc(100vh - 20px);
+    }
+}
+
+/* Specific styles for import and export modals with larger max-width */
+#importModal .modal-content,
+#exportModal .modal-content {
+    max-width: 700px;
+}
+
+/* Ensure import modal body is scrollable even on very small heights */
+#importModal .modal-body {
+    max-height: calc(100vh - 180px); /* header+footer+safe margins */
+}
+
 .modal-header {
     padding: 24px;
     border-bottom: 1px solid #e2e8f0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .modal-header h3 {
@@ -732,6 +759,9 @@
 
 .modal-body {
     padding: 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
 }
 
 .modal-footer {
@@ -740,6 +770,7 @@
     display: flex;
     justify-content: flex-end;
     gap: 12px;
+    flex-shrink: 0;
 }
 
 .form-group {
@@ -1014,11 +1045,15 @@ function showRestoreModal(filename) {
     document.getElementById('restoreFilename').value = filename;
     document.getElementById('restoreFilenameDisplay').textContent = filename;
     document.getElementById('restoreModal').style.display = 'block';
+    // Prevent background page from scrolling while modal is open
+    document.body.style.overflow = 'hidden';
 }
 
 function closeRestoreModal() {
     document.getElementById('restoreModal').style.display = 'none';
     document.getElementById('restoreForm').reset();
+    // Restore page scroll
+    document.body.style.overflow = '';
 }
 
 // Close modal when clicking outside
@@ -1399,6 +1434,7 @@ function populateModuleCheckboxes() {
 function showExportModal() {
     loadAvailableModules();
     document.getElementById('exportModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
 }
 
 /**
@@ -1408,6 +1444,7 @@ function closeExportModal() {
     document.getElementById('exportModal').style.display = 'none';
     document.getElementById('exportForm').reset();
     document.getElementById('moduleSelection').style.display = 'none';
+    document.body.style.overflow = '';
 }
 
 /**
@@ -1452,6 +1489,7 @@ let validationResult = null;
  */
 function showImportModal() {
     document.getElementById('importModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
 }
 
 /**
@@ -1461,6 +1499,7 @@ function closeImportModal() {
     document.getElementById('importModal').style.display = 'none';
     document.getElementById('importForm').reset();
     resetImportModal();
+    document.body.style.overflow = '';
 }
 
 /**
