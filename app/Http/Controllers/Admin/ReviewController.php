@@ -22,8 +22,11 @@ class ReviewController extends Controller
         $reviews = Review::with(['product', 'user'])
             ->when($search, function ($query) use ($search) {
                 $query->whereHas('product', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('slug', 'like', "%{$search}%");
+                    $q->where('name_en', 'like', "%{$search}%")
+                      ->orWhere('name_ar', 'like', "%{$search}%")
+                      ->orWhere('name_he', 'like', "%{$search}%")
+                      ->orWhere('slug', 'like', "%{$search}%")
+                      ->orWhere('sku', 'like', "%{$search}%");
                 })->orWhereHas('user', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
                       ->orWhere('email', 'like', "%{$search}%");
