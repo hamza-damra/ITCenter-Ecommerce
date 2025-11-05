@@ -296,8 +296,12 @@
     }
 
     .filter-accordion-button:focus {
-        outline: 2px solid #2762f3;
-        outline-offset: -2px;
+        outline: none;
+        background: rgba(39, 98, 243, 0.08);
+    }
+
+    .filter-accordion-button:focus:not(:focus-visible) {
+        outline: none;
     }
 
     .filter-accordion-header {
@@ -2352,33 +2356,36 @@
 
         if (!viewMoreBtn) return;
 
-        // Show next batch of 10
-        const nextBatchStart = brandPaginationState.currentlyShowing;
-        const nextBatchEnd = nextBatchStart + brandPaginationState.itemsPerPage;
-        let shownCount = 0;
+        const totalBrands = brandItems.length;
+        const currentlyShowing = brandPaginationState.currentlyShowing;
+        const nextShow = Math.min(currentlyShowing + 10, totalBrands);
 
-        brandItems.forEach((item, index) => {
+        // Show all brands up to nextShow
+        let actuallyShown = 0;
+        brandItems.forEach((item) => {
             const brandIndex = parseInt(item.getAttribute('data-brand-index'));
-            if (brandIndex >= nextBatchStart && brandIndex < nextBatchEnd) {
+            if (brandIndex < nextShow) {
+                if (item.style.display !== 'flex') {
+                    actuallyShown++;
+                }
                 item.style.display = 'flex';
-                shownCount++;
             }
         });
 
-        brandPaginationState.currentlyShowing = nextBatchEnd;
+        brandPaginationState.currentlyShowing = nextShow;
 
-        // Check if all items are shown
-        const totalBrands = brandItems.length;
-        if (brandPaginationState.currentlyShowing >= totalBrands) {
+        console.log('📄 View more clicked. Showing', nextShow, 'of', totalBrands, 'brands. Newly revealed:', actuallyShown);
+
+        // Check if all items are now shown
+        if (nextShow >= totalBrands) {
             // Change button to "View less"
             viewMoreText.textContent = isRTL ? 'عرض أقل' : 'View less';
             viewMoreBtn.onclick = collapseAllBrands;
+            console.log('📄 All brands shown. Button changed to "View less"');
         }
 
         // Save state
-        saveBrandPaginationState(brandPaginationState.currentlyShowing);
-
-        console.log('📄 Loaded more brands. Now showing:', brandPaginationState.currentlyShowing);
+        saveBrandPaginationState(nextShow);
     };
 
     /**
@@ -2390,60 +2397,70 @@
         const viewMoreText = document.getElementById('brandViewMoreText');
         const isRTL = {{ is_rtl() ? 'true' : 'false' }};
 
-        // Hide all brands beyond first 10
-        brandItems.forEach((item, index) => {
+        // Show only first 10 brands
+        brandItems.forEach((item) => {
             const brandIndex = parseInt(item.getAttribute('data-brand-index'));
-            if (brandIndex >= 10) {
+            if (brandIndex < 10) {
+                item.style.display = 'flex';
+            } else {
                 item.style.display = 'none';
             }
         });
 
         brandPaginationState.currentlyShowing = 10;
 
-        // Reset button
+        // Reset button text to "View more"
         viewMoreText.textContent = isRTL ? 'عرض المزيد' : 'View more';
         viewMoreBtn.onclick = loadMoreBrands;
 
         // Save state
         saveBrandPaginationState(10);
 
-        console.log('📄 Collapsed brands to first 10');
+        console.log('📄 Collapsed brands back to first 10');
     }
 
     /**
-     * Show initial brands (first 10)
+     * Show initial brands (first 10, or restore saved state)
      */
     function showInitialBrands() {
         const brandItems = document.querySelectorAll('.brand-item');
         const viewMoreBtn = document.getElementById('brandViewMoreBtn');
+        const totalBrands = brandItems.length;
 
         // Check for saved pagination state
         const savedShowing = getSavedBrandPaginationState();
-        const initialShow = savedShowing > 0 ? savedShowing : 10;
+        const initialShow = (savedShowing > 0 && savedShowing <= totalBrands) ? savedShowing : 10;
 
-        brandItems.forEach((item, index) => {
+        // Show brands up to initialShow
+        brandItems.forEach((item) => {
             const brandIndex = parseInt(item.getAttribute('data-brand-index'));
             if (brandIndex < initialShow) {
                 item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
             }
         });
 
         brandPaginationState.currentlyShowing = initialShow;
 
-        // Show view more button if needed
-        if (viewMoreBtn && brandItems.length > 10) {
+        // Show "View more" button if there are more than 10 brands
+        if (viewMoreBtn && totalBrands > 10) {
             viewMoreBtn.style.display = 'flex';
 
-            // Set correct button state
-            if (initialShow >= brandItems.length) {
-                const isRTL = {{ is_rtl() ? 'true' : 'false' }};
-                const viewMoreText = document.getElementById('brandViewMoreText');
+            // Set correct button state and text
+            const isRTL = {{ is_rtl() ? 'true' : 'false' }};
+            const viewMoreText = document.getElementById('brandViewMoreText');
+
+            if (initialShow >= totalBrands) {
                 viewMoreText.textContent = isRTL ? 'عرض أقل' : 'View less';
                 viewMoreBtn.onclick = collapseAllBrands;
+            } else {
+                viewMoreText.textContent = isRTL ? 'عرض المزيد' : 'View more';
+                viewMoreBtn.onclick = loadMoreBrands;
             }
         }
 
-        console.log('📄 Showing initial brands:', brandPaginationState.currentlyShowing);
+        console.log('📄 Showing initial brands:', initialShow, 'of', totalBrands);
     }
 
     /**
