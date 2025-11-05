@@ -70,8 +70,8 @@ class DashboardController extends Controller
                 ->count(),
             
             // Online/Offline User Statistics (considering users active in last 5 minutes as online)
-            'registered_online_users' => User::where('last_activity', '>=', now()->subMinutes(5)->timestamp)->count(),
-            'registered_offline_users' => User::where('last_activity', '<', now()->subMinutes(5)->timestamp)
+            'registered_online_users' => User::where('last_activity', '>=', now()->subMinutes(5))->count(),
+            'registered_offline_users' => User::where('last_activity', '<', now()->subMinutes(5))
                 ->orWhereNull('last_activity')
                 ->count(),
             
@@ -90,7 +90,7 @@ class DashboardController extends Controller
             'users_with_reviews' => User::has('reviews')->count(),
             
             // Active users (users who logged in within last 30 days)
-            'active_users_30days' => User::where('last_activity', '>=', now()->subDays(30)->timestamp)->count(),
+            'active_users_30days' => User::where('last_activity', '>=', now()->subDays(30))->count(),
             
             // New users this week
             'users_this_week' => User::whereBetween('created_at', [
