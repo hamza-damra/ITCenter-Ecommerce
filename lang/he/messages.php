@@ -11,6 +11,7 @@ return [
     'about' => 'אודות',
     'contact' => 'צור קשר',
     'search' => 'חיפוש...',
+    'clear' => 'נקה',
     
     // Hero Section
     'hero_title' => 'גלה את הטכנולוגיה העדכנית ביותר',
@@ -179,6 +180,7 @@ return [
     'cart' => 'עגלה',
     'cart_empty' => 'עגלת הקניות ריקה',
     'cart_empty_description' => 'התחל להוסיף מוצרים לעגלת הקניות שלך!',
+    'cart_empty_cannot_checkout' => 'עגלת הקניות ריקה. אנא הוסף פריטים לפני התשלום.',
     'continue_shopping' => 'המשך בקנייה',
     'checkout' => 'תשלום',
     'proceed_to_checkout' => 'המשך לתשלום',
@@ -220,6 +222,18 @@ return [
     'processing_order' => 'מעבד',
     'order_error' => 'אירעה שגיאה בעיבוד ההזמנה שלך. אנא נסה שוב.',
     'order_placed_successfully' => 'ההזמנה שלך בוצעה בהצלחה!',
+    'return_to_orders_list' => 'לחזור לרשימת ההזמנות?',
+    
+    // Order Status Labels
+    'order_status_pending' => 'ממתין',
+    'order_status_processing' => 'בעיבוד',
+    'order_status_shipped' => 'נשלח',
+    'order_status_delivered' => 'נמסר',
+    'order_status_cancelled' => 'בוטל',
+    'payment_pending' => 'תשלום ממתין',
+    'payment_paid' => 'שולם',
+    'payment_failed' => 'תשלום נכשל',
+    'payment_refunded' => 'הוחזר',
     
     'error_removing_cart' => 'שגיאה בהסרת פריט מהעגלה',
     'checkout_coming_soon' => 'תכונת תשלום בקרוב!',

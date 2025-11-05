@@ -11,6 +11,7 @@ return [
     'about' => 'About Us',
     'contact' => 'Contact',
     'search' => 'Search...',
+    'clear' => 'Clear',
     
     // Hero Section
     'hero_title' => 'Discover the Latest Technology',
@@ -179,6 +180,7 @@ return [
     'cart' => 'Cart',
     'cart_empty' => 'Your cart is empty',
     'cart_empty_description' => 'Start adding some products to your shopping cart!',
+    'cart_empty_cannot_checkout' => 'Your cart is empty. Please add items before checkout.',
     'continue_shopping' => 'Continue Shopping',
     'checkout' => 'Checkout',
     'proceed_to_checkout' => 'Proceed to Checkout',
@@ -256,6 +258,7 @@ return [
     'processing_order' => 'Processing',
     'order_error' => 'An error occurred while processing your order. Please try again.',
     'order_placed_successfully' => 'Your order has been placed successfully!',
+    'return_to_orders_list' => 'Return to orders list?',
     
     // Footer
     'footer_about' => 'About IT Center',
@@ -830,6 +833,17 @@ return [
     'shipped_at' => 'Shipped',
     'delivered_at' => 'Delivered',
     'cancelled_at' => 'Cancelled',
+    
+    // Order Status Labels
+    'order_status_pending' => 'Pending',
+    'order_status_processing' => 'Processing',
+    'order_status_shipped' => 'Shipped',
+    'order_status_delivered' => 'Delivered',
+    'order_status_cancelled' => 'Cancelled',
+    'payment_pending' => 'Payment Pending',
+    'payment_paid' => 'Paid',
+    'payment_failed' => 'Payment Failed',
+    'payment_refunded' => 'Refunded',
     
     // Contact Page
     'get_in_touch' => 'Get in touch with our team',
