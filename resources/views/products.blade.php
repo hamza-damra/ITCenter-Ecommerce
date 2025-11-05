@@ -264,82 +264,97 @@
         font-weight: 600;
     }
 
-    /* Brand Filter Styles - Collapsible Disclosure Pattern */
-    .brand-filter-section {
+    /* Filter Accordion Styles - Top Level Pattern */
+    .filter-accordion {
         border-top: 1px solid #f0f0f0;
-        padding-top: 1.25rem;
+        padding-top: 0;
     }
 
-    .filter-disclosure-button {
+    .filter-accordion:first-of-type {
+        border-top: none;
+    }
+
+    .filter-accordion-button {
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
         background: transparent;
         border: none;
-        padding: 0.75rem 0.5rem;
+        padding: 1rem 0.75rem;
         cursor: pointer;
         transition: all 0.3s ease;
-        border-radius: 8px;
-        margin-bottom: 0.75rem;
+        border-radius: 0;
     }
 
-    .filter-disclosure-button:hover {
+    .filter-accordion-button:hover {
         background: rgba(39, 98, 243, 0.05);
     }
 
-    .filter-disclosure-button:focus {
-        outline: 2px solid #2762f3;
-        outline-offset: 2px;
+    .filter-accordion-button[aria-expanded="true"] {
+        background: rgba(39, 98, 243, 0.08);
     }
 
-    .filter-disclosure-header {
+    .filter-accordion-button:focus {
+        outline: none;
+        background: rgba(39, 98, 243, 0.08);
+    }
+
+    .filter-accordion-button:focus:not(:focus-visible) {
+        outline: none;
+    }
+
+    .filter-accordion-header {
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
 
-    .filter-disclosure-title {
+    .filter-accordion-title {
         font-size: 1rem;
-        font-weight: 600;
-        color: #334155;
+        font-weight: 700;
+        color: #1e293b;
     }
 
-    .filter-disclosure-header i {
+    .filter-accordion-header i {
         color: #2762f3;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
 
-    .filter-disclosure-icon {
+    .filter-accordion-icon {
         color: #64748b;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         transition: transform 0.3s ease;
     }
 
-    .filter-disclosure-button[aria-expanded="true"] .filter-disclosure-icon {
-        transform: rotate(45deg);
+    .filter-accordion-button[aria-expanded="true"] .filter-accordion-icon {
+        transform: rotate(180deg);
     }
 
-    .brand-filter-content {
-        border: none;
-        padding: 0;
-        margin: 0;
+    .filter-accordion-content {
         animation: slideDown 0.3s ease-out;
+        padding: 1rem 0.75rem 1.5rem 0.75rem;
     }
 
     @keyframes slideDown {
         from {
             opacity: 0;
-            transform: translateY(-10px);
+            max-height: 0;
         }
         to {
             opacity: 1;
-            transform: translateY(0);
+            max-height: 2000px;
         }
     }
 
-    .brand-filter-content[hidden] {
+    .filter-accordion-content[hidden] {
         display: none;
+    }
+
+    .filter-accordion-fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
     }
 
     .sr-only {
@@ -354,14 +369,13 @@
         border-width: 0;
     }
 
-    .brand-list {
+    .filter-checkbox-list {
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
-        margin-bottom: 0.75rem;
     }
 
-    .brand-checkbox {
+    .filter-checkbox-item {
         display: flex;
         align-items: center;
         gap: 0.75rem;
@@ -371,18 +385,18 @@
         transition: all 0.3s;
     }
 
-    .brand-checkbox:hover {
+    .filter-checkbox-item:hover {
         background: rgba(39, 98, 243, 0.05);
     }
 
-    .brand-checkbox input[type="checkbox"] {
+    .filter-checkbox-item input[type="checkbox"] {
         width: 18px;
         height: 18px;
         cursor: pointer;
         accent-color: #2762f3;
     }
 
-    .brand-checkbox label {
+    .filter-checkbox-item label {
         flex: 1;
         cursor: pointer;
         font-size: 0.9rem;
@@ -394,7 +408,7 @@
         align-items: center;
     }
 
-    .brand-checkbox input[type="checkbox"]:checked + label {
+    .filter-checkbox-item input[type="checkbox"]:checked + label {
         color: #2762f3;
         font-weight: 600;
     }
@@ -410,7 +424,7 @@
         text-align: center;
     }
 
-    .brand-checkbox input[type="checkbox"]:checked + label .item-count {
+    .filter-checkbox-item input[type="checkbox"]:checked + label .item-count {
         background: rgba(39, 98, 243, 0.15);
         color: #2762f3;
     }
@@ -430,7 +444,7 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        margin-top: 0.5rem;
+        margin-top: 1rem;
     }
 
     .view-more-btn:hover {
@@ -445,11 +459,6 @@
 
     .view-more-btn i {
         font-size: 0.75rem;
-        transition: transform 0.3s ease;
-    }
-
-    .view-more-btn.expanded i {
-        transform: rotate(180deg);
     }
 
     /* Active Filters Display */
@@ -1691,7 +1700,7 @@
                     
                     <!-- Note: Form submission is handled by JavaScript, not by form action -->
 
-                    <!-- Price Range Filter -->
+                    <!-- Price Range Filter - Always Visible -->
                     <div class="filter-section">
                         <div class="filter-section-title">
                             <i class="fas fa-dollar-sign"></i>
@@ -1720,97 +1729,114 @@
                                value="{{ request('max_price', $priceRange['max']) }}">
                     </div>
 
-                    <!-- Category Filter -->
-                    <div class="filter-section">
-                        <div class="filter-section-title">
-                            <i class="fas fa-th-large"></i>
-                            {{ is_rtl() ? 'الفئات' : 'Categories' }}
-                        </div>
+                    <!-- Brands Accordion - Top Level -->
+                    <div class="filter-accordion" id="brandsAccordion">
+                        <button type="button"
+                                class="filter-accordion-button"
+                                id="brandsAccordionToggle"
+                                aria-expanded="false"
+                                aria-controls="brandsAccordionContent"
+                                data-accordion="brands"
+                                onclick="toggleAccordion('brands')">
+                            <span class="filter-accordion-header">
+                                <i class="fas fa-tags"></i>
+                                <span class="filter-accordion-title">{{ is_rtl() ? 'العلامات التجارية' : 'Brands' }}</span>
+                            </span>
+                            <i class="fas fa-chevron-down filter-accordion-icon" aria-hidden="true"></i>
+                        </button>
 
-                        <div class="category-list">
-                            @foreach($categories as $category)
-                            @php
-                                // Check if this category is selected (support both 'category' and 'categories[]')
-                                $selectedCategories = (array)request('categories', []);
-                                if (request('category') && !in_array(request('category'), $selectedCategories)) {
-                                    $selectedCategories[] = request('category');
-                                }
-                                $isChecked = in_array($category->slug, $selectedCategories);
-                            @endphp
-                            <div class="category-checkbox">
-                                <input type="checkbox"
-                                       name="categories[]"
-                                       value="{{ $category->slug }}"
-                                       id="category-{{ $category->slug }}"
-                                       {{ $isChecked ? 'checked' : '' }}>
-                                <label for="category-{{ $category->slug }}">
-                                    {{ $category->name }}
-                                </label>
-                            </div>
-                            @endforeach
+                        <div class="filter-accordion-content" id="brandsAccordionContent" hidden>
+                            <fieldset class="filter-accordion-fieldset">
+                                <legend class="sr-only">{{ is_rtl() ? 'تصفية حسب العلامة التجارية' : 'Filter by brand' }}</legend>
+
+                                <div class="filter-checkbox-list" id="brandList">
+                                    @php
+                                        // Parse comma-separated brand parameter
+                                        $selectedBrands = [];
+                                        if (request('brand')) {
+                                            $selectedBrands = explode(',', request('brand'));
+                                        }
+                                    @endphp
+
+                                    @foreach($brands as $index => $brand)
+                                    @php
+                                        $isChecked = in_array($brand->slug, $selectedBrands);
+                                    @endphp
+                                    <div class="filter-checkbox-item brand-item" data-brand-index="{{ $index }}" style="display: none;">
+                                        <input type="checkbox"
+                                               name="brand"
+                                               value="{{ $brand->slug }}"
+                                               id="brand-{{ $brand->slug }}"
+                                               data-checkbox-group="brands"
+                                               {{ $isChecked ? 'checked' : '' }}>
+                                        <label for="brand-{{ $brand->slug }}">
+                                            {{ $brand->name }}
+                                            <span class="item-count">{{ $brand->products_count }}</span>
+                                        </label>
+                                    </div>
+                                    @endforeach
+                                </div>
+
+                                @if($brands->count() > 10)
+                                <button type="button"
+                                        class="view-more-btn"
+                                        id="brandViewMoreBtn"
+                                        onclick="loadMoreBrands()"
+                                        style="display: none;"
+                                        aria-label="{{ is_rtl() ? 'عرض المزيد من العلامات التجارية' : 'View more brands' }}">
+                                    <span id="brandViewMoreText">{{ is_rtl() ? 'عرض المزيد' : 'View more' }}</span>
+                                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                                </button>
+                                @endif
+                            </fieldset>
                         </div>
                     </div>
 
-                    <!-- Brand Filter -->
-                    <div class="filter-section brand-filter-section">
+                    <!-- Categories Accordion - Top Level -->
+                    <div class="filter-accordion" id="categoriesAccordion">
                         <button type="button"
-                                class="filter-disclosure-button"
-                                id="brandFilterToggle"
+                                class="filter-accordion-button"
+                                id="categoriesAccordionToggle"
                                 aria-expanded="false"
-                                aria-controls="brandFilterContent"
-                                onclick="toggleBrandFilter()">
-                            <span class="filter-disclosure-header">
-                                <i class="fas fa-tags"></i>
-                                <span class="filter-disclosure-title">{{ is_rtl() ? 'العلامات التجارية' : 'Brand' }}</span>
+                                aria-controls="categoriesAccordionContent"
+                                data-accordion="categories"
+                                onclick="toggleAccordion('categories')">
+                            <span class="filter-accordion-header">
+                                <i class="fas fa-th-large"></i>
+                                <span class="filter-accordion-title">{{ is_rtl() ? 'الفئات' : 'Categories' }}</span>
                             </span>
-                            <i class="fas fa-plus filter-disclosure-icon" id="brandFilterIcon" aria-hidden="true"></i>
+                            <i class="fas fa-chevron-down filter-accordion-icon" aria-hidden="true"></i>
                         </button>
 
-                        <fieldset class="brand-filter-content"
-                                  id="brandFilterContent"
-                                  aria-labelledby="brandFilterToggle"
-                                  hidden>
-                            <legend class="sr-only">{{ is_rtl() ? 'تصفية حسب العلامة التجارية' : 'Filter by brand' }}</legend>
+                        <div class="filter-accordion-content" id="categoriesAccordionContent" hidden>
+                            <fieldset class="filter-accordion-fieldset">
+                                <legend class="sr-only">{{ is_rtl() ? 'تصفية حسب الفئة' : 'Filter by category' }}</legend>
 
-                            <div class="brand-list" id="brandList">
-                                @php
-                                    // Check if any brand is selected (support both 'brand' and 'brands[]')
-                                    $selectedBrands = (array)request('brands', []);
-                                    if (request('brand') && !in_array(request('brand'), $selectedBrands)) {
-                                        $selectedBrands[] = request('brand');
-                                    }
-                                @endphp
-
-                                @foreach($brands as $index => $brand)
-                                @php
-                                    $isChecked = in_array($brand->slug, $selectedBrands);
-                                    $isInitiallyVisible = $index < 10; // Show first 10
-                                @endphp
-                                <div class="brand-checkbox" data-brand-index="{{ $index }}" style="{{ !$isInitiallyVisible ? 'display: none;' : '' }}">
-                                    <input type="checkbox"
-                                           name="brands[]"
-                                           value="{{ $brand->slug }}"
-                                           id="brand-{{ $brand->slug }}"
-                                           {{ $isChecked ? 'checked' : '' }}>
-                                    <label for="brand-{{ $brand->slug }}">
-                                        {{ $brand->name }}
-                                        <span class="item-count">{{ $brand->products_count }}</span>
-                                    </label>
+                                <div class="filter-checkbox-list">
+                                    @foreach($categories as $category)
+                                    @php
+                                        // Check if this category is selected (support both 'category' and 'categories[]')
+                                        $selectedCategories = (array)request('categories', []);
+                                        if (request('category') && !in_array(request('category'), $selectedCategories)) {
+                                            $selectedCategories[] = request('category');
+                                        }
+                                        $isChecked = in_array($category->slug, $selectedCategories);
+                                    @endphp
+                                    <div class="filter-checkbox-item">
+                                        <input type="checkbox"
+                                               name="categories[]"
+                                               value="{{ $category->slug }}"
+                                               id="category-{{ $category->slug }}"
+                                               data-checkbox-group="categories"
+                                               {{ $isChecked ? 'checked' : '' }}>
+                                        <label for="category-{{ $category->slug }}">
+                                            {{ $category->name }}
+                                        </label>
+                                    </div>
+                                    @endforeach
                                 </div>
-                                @endforeach
-                            </div>
-
-                            @if($brands->count() > 10)
-                            <button type="button"
-                                    class="view-more-btn"
-                                    id="brandViewMoreBtn"
-                                    onclick="toggleBrandPagination()"
-                                    aria-label="{{ is_rtl() ? 'عرض المزيد من العلامات التجارية' : 'View more brands' }}">
-                                <span id="brandViewMoreText">{{ is_rtl() ? 'عرض المزيد' : 'View more' }}</span>
-                                <i class="fas fa-chevron-down" id="brandViewMoreIcon" aria-hidden="true"></i>
-                            </button>
-                            @endif
-                        </fieldset>
+                            </fieldset>
+                        </div>
                     </div>
                 </form>
             </aside>
@@ -2250,100 +2276,250 @@
     });
 
     // ============================================
-    // Brand Filter Functions
+    // Accordion System - Mutual Exclusivity
     // ============================================
 
-    /**
-     * Toggle brand filter disclosure (expand/collapse)
-     * Implements ARIA Disclosure pattern with keyboard support
-     */
-    window.toggleBrandFilter = function() {
-        const button = document.getElementById('brandFilterToggle');
-        const content = document.getElementById('brandFilterContent');
-        const icon = document.getElementById('brandFilterIcon');
+    let currentOpenAccordion = null;
+    let brandPaginationState = {
+        currentlyShowing: 0,
+        itemsPerPage: 10
+    };
 
-        if (!button || !content || !icon) {
-            console.error('Brand filter elements not found');
+    /**
+     * Toggle accordion with mutual exclusivity
+     * Only one accordion can be open at a time
+     */
+    window.toggleAccordion = function(accordionName) {
+        const button = document.getElementById(accordionName + 'AccordionToggle');
+        const content = document.getElementById(accordionName + 'AccordionContent');
+
+        if (!button || !content) {
+            console.error('Accordion elements not found for:', accordionName);
             return;
         }
 
         const isExpanded = button.getAttribute('aria-expanded') === 'true';
 
-        // Toggle expanded state
-        button.setAttribute('aria-expanded', !isExpanded);
-        content.hidden = isExpanded;
-
-        // Update icon (+ to -)
-        if (!isExpanded) {
-            icon.classList.remove('fa-plus');
-            icon.classList.add('fa-minus');
-        } else {
-            icon.classList.remove('fa-minus');
-            icon.classList.add('fa-plus');
-        }
-
-        console.log('🏷️ Brand filter ' + (!isExpanded ? 'expanded' : 'collapsed'));
-    };
-
-    /**
-     * Toggle brand pagination (show more/less brands)
-     * Shows/hides brands beyond the first 10
-     */
-    window.toggleBrandPagination = function() {
-        const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
-        const viewMoreBtn = document.getElementById('brandViewMoreBtn');
-        const viewMoreText = document.getElementById('brandViewMoreText');
-        const viewMoreIcon = document.getElementById('brandViewMoreIcon');
-        const isRTL = {{ is_rtl() ? 'true' : 'false' }};
-
-        if (!viewMoreBtn) {
-            console.error('View more button not found');
+        // If clicking the currently open accordion, just close it
+        if (isExpanded) {
+            closeAccordion(accordionName);
+            currentOpenAccordion = null;
+            saveAccordionState(null);
             return;
         }
 
-        const isExpanded = viewMoreBtn.classList.contains('expanded');
+        // Close any currently open accordion
+        if (currentOpenAccordion && currentOpenAccordion !== accordionName) {
+            closeAccordion(currentOpenAccordion);
+        }
 
-        // Toggle visibility of brands after index 9
-        let visibleCount = 0;
-        brandCheckboxes.forEach((checkbox, index) => {
-            const brandIndex = parseInt(checkbox.getAttribute('data-brand-index'));
-            if (brandIndex >= 10) {
-                checkbox.style.display = isExpanded ? 'none' : 'flex';
-            }
-            if (checkbox.style.display !== 'none') {
-                visibleCount++;
+        // Open the clicked accordion
+        openAccordion(accordionName);
+        currentOpenAccordion = accordionName;
+        saveAccordionState(accordionName);
+    };
+
+    function openAccordion(name) {
+        const button = document.getElementById(name + 'AccordionToggle');
+        const content = document.getElementById(name + 'AccordionContent');
+
+        button.setAttribute('aria-expanded', 'true');
+        content.hidden = false;
+
+        // Special handling for brands: show first batch
+        if (name === 'brands') {
+            showInitialBrands();
+        }
+
+        console.log('📂 Opened accordion:', name);
+    }
+
+    function closeAccordion(name) {
+        const button = document.getElementById(name + 'AccordionToggle');
+        const content = document.getElementById(name + 'AccordionContent');
+
+        if (button && content) {
+            button.setAttribute('aria-expanded', 'false');
+            content.hidden = true;
+            console.log('📁 Closed accordion:', name);
+        }
+    }
+
+    /**
+     * Load more brands - Progressive disclosure (10 at a time)
+     */
+    window.loadMoreBrands = function() {
+        const brandItems = document.querySelectorAll('.brand-item');
+        const viewMoreBtn = document.getElementById('brandViewMoreBtn');
+        const viewMoreText = document.getElementById('brandViewMoreText');
+        const isRTL = {{ is_rtl() ? 'true' : 'false' }};
+
+        if (!viewMoreBtn) return;
+
+        const totalBrands = brandItems.length;
+        const currentlyShowing = brandPaginationState.currentlyShowing;
+        const nextShow = Math.min(currentlyShowing + 10, totalBrands);
+
+        // Show all brands up to nextShow
+        let actuallyShown = 0;
+        brandItems.forEach((item) => {
+            const brandIndex = parseInt(item.getAttribute('data-brand-index'));
+            if (brandIndex < nextShow) {
+                if (item.style.display !== 'flex') {
+                    actuallyShown++;
+                }
+                item.style.display = 'flex';
             }
         });
 
-        // Update button state
-        viewMoreBtn.classList.toggle('expanded');
-        viewMoreIcon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+        brandPaginationState.currentlyShowing = nextShow;
 
-        // Update button text
-        if (isExpanded) {
-            viewMoreText.textContent = isRTL ? 'عرض المزيد' : 'View more';
-            viewMoreBtn.setAttribute('aria-label', isRTL ? 'عرض المزيد من العلامات التجارية' : 'View more brands');
-        } else {
+        console.log('📄 View more clicked. Showing', nextShow, 'of', totalBrands, 'brands. Newly revealed:', actuallyShown);
+
+        // Check if all items are now shown
+        if (nextShow >= totalBrands) {
+            // Change button to "View less"
             viewMoreText.textContent = isRTL ? 'عرض أقل' : 'View less';
-            viewMoreBtn.setAttribute('aria-label', isRTL ? 'عرض عدد أقل من العلامات التجارية' : 'View less brands');
+            viewMoreBtn.onclick = collapseAllBrands;
+            console.log('📄 All brands shown. Button changed to "View less"');
         }
 
-        console.log('📄 Brand pagination toggled - Visible: ' + visibleCount);
+        // Save state
+        saveBrandPaginationState(nextShow);
     };
 
     /**
-     * Setup brand checkbox event listeners
+     * Collapse brands back to first 10
+     */
+    function collapseAllBrands() {
+        const brandItems = document.querySelectorAll('.brand-item');
+        const viewMoreBtn = document.getElementById('brandViewMoreBtn');
+        const viewMoreText = document.getElementById('brandViewMoreText');
+        const isRTL = {{ is_rtl() ? 'true' : 'false' }};
+
+        // Show only first 10 brands
+        brandItems.forEach((item) => {
+            const brandIndex = parseInt(item.getAttribute('data-brand-index'));
+            if (brandIndex < 10) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        brandPaginationState.currentlyShowing = 10;
+
+        // Reset button text to "View more"
+        viewMoreText.textContent = isRTL ? 'عرض المزيد' : 'View more';
+        viewMoreBtn.onclick = loadMoreBrands;
+
+        // Save state
+        saveBrandPaginationState(10);
+
+        console.log('📄 Collapsed brands back to first 10');
+    }
+
+    /**
+     * Show initial brands (first 10, or restore saved state)
+     */
+    function showInitialBrands() {
+        const brandItems = document.querySelectorAll('.brand-item');
+        const viewMoreBtn = document.getElementById('brandViewMoreBtn');
+        const totalBrands = brandItems.length;
+
+        // Check for saved pagination state
+        const savedShowing = getSavedBrandPaginationState();
+        const initialShow = (savedShowing > 0 && savedShowing <= totalBrands) ? savedShowing : 10;
+
+        // Show brands up to initialShow
+        brandItems.forEach((item) => {
+            const brandIndex = parseInt(item.getAttribute('data-brand-index'));
+            if (brandIndex < initialShow) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        brandPaginationState.currentlyShowing = initialShow;
+
+        // Show "View more" button if there are more than 10 brands
+        if (viewMoreBtn && totalBrands > 10) {
+            viewMoreBtn.style.display = 'flex';
+
+            // Set correct button state and text
+            const isRTL = {{ is_rtl() ? 'true' : 'false' }};
+            const viewMoreText = document.getElementById('brandViewMoreText');
+
+            if (initialShow >= totalBrands) {
+                viewMoreText.textContent = isRTL ? 'عرض أقل' : 'View less';
+                viewMoreBtn.onclick = collapseAllBrands;
+            } else {
+                viewMoreText.textContent = isRTL ? 'عرض المزيد' : 'View more';
+                viewMoreBtn.onclick = loadMoreBrands;
+            }
+        }
+
+        console.log('📄 Showing initial brands:', initialShow, 'of', totalBrands);
+    }
+
+    /**
+     * State Persistence using sessionStorage
+     */
+    function saveAccordionState(accordionName) {
+        sessionStorage.setItem('openAccordion', accordionName || '');
+    }
+
+    function getSavedAccordionState() {
+        return sessionStorage.getItem('openAccordion') || null;
+    }
+
+    function saveBrandPaginationState(count) {
+        sessionStorage.setItem('brandPaginationCount', count);
+    }
+
+    function getSavedBrandPaginationState() {
+        return parseInt(sessionStorage.getItem('brandPaginationCount')) || 0;
+    }
+
+    /**
+     * Setup accordion system and checkboxes
      */
     document.addEventListener('DOMContentLoaded', function() {
+        // Restore saved accordion state
+        const savedAccordion = getSavedAccordionState();
+        if (savedAccordion) {
+            // Check if any items are selected in this accordion
+            const hasSelection = document.querySelectorAll(`input[data-checkbox-group="${savedAccordion}"]:checked`).length > 0;
+            if (hasSelection) {
+                toggleAccordion(savedAccordion);
+            }
+        }
+
+        // Auto-expand accordion if items are selected
+        if (!savedAccordion) {
+            // Check brands
+            const selectedBrands = document.querySelectorAll('input[data-checkbox-group="brands"]:checked');
+            if (selectedBrands.length > 0) {
+                toggleAccordion('brands');
+            } else {
+                // Check categories
+                const selectedCategories = document.querySelectorAll('input[data-checkbox-group="categories"]:checked');
+                if (selectedCategories.length > 0) {
+                    toggleAccordion('categories');
+                }
+            }
+        }
+
         // Setup brand checkboxes
-        const brandCheckboxes = document.querySelectorAll('input[name="brands[]"]');
+        const brandCheckboxes = document.querySelectorAll('input[data-checkbox-group="brands"]');
         console.log('🏷️ Found ' + brandCheckboxes.length + ' brand checkboxes');
 
         brandCheckboxes.forEach(function(checkbox) {
             // Initial visual feedback
             if (checkbox.checked) {
-                const label = checkbox.parentElement;
-                if (label) label.style.backgroundColor = 'rgba(39, 98, 243, 0.08)';
+                const item = checkbox.closest('.filter-checkbox-item');
+                if (item) item.style.backgroundColor = 'rgba(39, 98, 243, 0.08)';
             }
 
             // Add change listener
@@ -2351,52 +2527,69 @@
                 console.log('✔️ Brand checkbox changed:', e.target.value, e.target.checked);
 
                 // Visual feedback
-                const label = e.target.parentElement;
-                if (label) {
-                    label.style.backgroundColor = e.target.checked
+                const item = e.target.closest('.filter-checkbox-item');
+                if (item) {
+                    item.style.backgroundColor = e.target.checked
                         ? 'rgba(39, 98, 243, 0.08)'
                         : '';
                 }
+
+                // Update URL format (comma-separated)
+                updateBrandFilters();
 
                 // Apply filters via AJAX
                 debouncedApplyFilters(300);
             });
         });
 
-        // Keyboard support for disclosure button
-        const brandToggle = document.getElementById('brandFilterToggle');
-        if (brandToggle) {
-            brandToggle.addEventListener('keydown', function(e) {
-                // Support Enter and Space keys for activation (WAI-ARIA APG)
+        // Setup keyboard support for all accordion buttons
+        document.querySelectorAll('.filter-accordion-button').forEach(function(button) {
+            button.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    toggleBrandFilter();
+                    const accordionName = button.getAttribute('data-accordion');
+                    toggleAccordion(accordionName);
                 }
             });
-        }
+        });
 
-        // Auto-expand brand filter if any brand is selected
-        const selectedBrands = document.querySelectorAll('input[name="brands[]"]:checked');
-        if (selectedBrands.length > 0) {
-            console.log('🏷️ Auto-expanding brand filter (brands selected)');
-            toggleBrandFilter();
-
-            // Auto-expand pagination if any selected brand is beyond first 10
-            selectedBrands.forEach(function(checkbox) {
-                const brandCheckbox = checkbox.closest('.brand-checkbox');
-                if (brandCheckbox) {
-                    const index = parseInt(brandCheckbox.getAttribute('data-brand-index'));
-                    if (index >= 10) {
-                        const viewMoreBtn = document.getElementById('brandViewMoreBtn');
-                        if (viewMoreBtn && !viewMoreBtn.classList.contains('expanded')) {
-                            console.log('📄 Auto-expanding brand pagination (selected brand index: ' + index + ')');
-                            toggleBrandPagination();
-                        }
-                    }
-                }
-            });
-        }
+        console.log('✅ Accordion system initialized');
     });
+
+    /**
+     * Update brand filters with comma-separated format
+     */
+    function updateBrandFilters() {
+        const checkedBrands = Array.from(document.querySelectorAll('input[data-checkbox-group="brands"]:checked'))
+            .map(cb => cb.value);
+
+        // Update all brand checkboxes with the comma-separated value
+        const brandCheckboxes = document.querySelectorAll('input[data-checkbox-group="brands"]');
+        brandCheckboxes.forEach(cb => {
+            // Remove old name attribute
+            cb.removeAttribute('name');
+        });
+
+        // Add hidden input with comma-separated values
+        const form = document.getElementById('filterForm');
+        let brandInput = form.querySelector('input[name="brand"][type="hidden"]');
+
+        if (checkedBrands.length > 0) {
+            if (!brandInput) {
+                brandInput = document.createElement('input');
+                brandInput.type = 'hidden';
+                brandInput.name = 'brand';
+                form.appendChild(brandInput);
+            }
+            brandInput.value = checkedBrands.join(',');
+        } else {
+            if (brandInput) {
+                brandInput.remove();
+            }
+        }
+
+        console.log('🏷️ Brand filter updated:', checkedBrands.join(','));
+    }
 })();
 </script>
 

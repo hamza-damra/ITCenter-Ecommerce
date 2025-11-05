@@ -51,26 +51,28 @@ class ProductController extends Controller
             }
         }
 
-        // Filter by brands (support both single 'brand' and multiple 'brands[]')
+        // Filter by brands (supports comma-separated format: ?brand=asus,msi,hp)
+        // Also supports legacy formats: ?brands[]=asus or ?brand=asus
         $brandFilters = [];
 
-        // Check for brands[] array parameter
-        if ($request->has('brands') && !empty($request->brands)) {
-            $brandFilters = is_array($request->brands) ? $request->brands : [$request->brands];
-        }
-
-        // Check for single brand parameter (backward compatibility)
         if ($request->has('brand') && !empty($request->brand)) {
-            // If brands[] is not set, use single brand
-            if (empty($brandFilters)) {
+            // Check if comma-separated
+            if (str_contains($request->brand, ',')) {
+                $brandFilters = explode(',', $request->brand);
+            } else {
                 $brandFilters = [$request->brand];
             }
         }
 
+        // Backward compatibility: support brands[] array parameter
+        if (empty($brandFilters) && $request->has('brands') && !empty($request->brands)) {
+            $brandFilters = is_array($request->brands) ? $request->brands : [$request->brands];
+        }
+
         // Apply brand filter if we have any brands
         if (!empty($brandFilters)) {
-            // Remove empty values
-            $brandFilters = array_filter($brandFilters, function($value) {
+            // Remove empty values and trim whitespace
+            $brandFilters = array_filter(array_map('trim', $brandFilters), function($value) {
                 return !empty($value);
             });
 
