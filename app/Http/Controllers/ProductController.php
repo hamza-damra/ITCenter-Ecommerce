@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Brand;
 use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -50,11 +51,34 @@ class ProductController extends Controller
             }
         }
 
-        // Filter by brand
-        if ($request->has('brand')) {
-            $query->whereHas('brand', function ($q) use ($request) {
-                $q->where('slug', $request->brand);
+        // Filter by brands (support both single 'brand' and multiple 'brands[]')
+        $brandFilters = [];
+
+        // Check for brands[] array parameter
+        if ($request->has('brands') && !empty($request->brands)) {
+            $brandFilters = is_array($request->brands) ? $request->brands : [$request->brands];
+        }
+
+        // Check for single brand parameter (backward compatibility)
+        if ($request->has('brand') && !empty($request->brand)) {
+            // If brands[] is not set, use single brand
+            if (empty($brandFilters)) {
+                $brandFilters = [$request->brand];
+            }
+        }
+
+        // Apply brand filter if we have any brands
+        if (!empty($brandFilters)) {
+            // Remove empty values
+            $brandFilters = array_filter($brandFilters, function($value) {
+                return !empty($value);
             });
+
+            if (!empty($brandFilters)) {
+                $query->whereHas('brand', function ($q) use ($brandFilters) {
+                    $q->whereIn('slug', $brandFilters);
+                });
+            }
         }
 
         // Filter by price range
@@ -121,7 +145,16 @@ class ProductController extends Controller
             'max' => Product::active()->max('price') ?? 10000,
         ];
 
-        return view('products', compact('products', 'cartProductIds', 'categories', 'priceRange'));
+        // Get brands with product counts, sorted by product count descending
+        $brands = Brand::active()
+            ->withCount(['products' => function($q) {
+                $q->where('is_active', true);
+            }])
+            ->having('products_count', '>', 0)
+            ->orderBy('products_count', 'desc')
+            ->get();
+
+        return view('products', compact('products', 'cartProductIds', 'categories', 'priceRange', 'brands'));
     }
 
     public function show($slug)

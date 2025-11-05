@@ -264,6 +264,194 @@
         font-weight: 600;
     }
 
+    /* Brand Filter Styles - Collapsible Disclosure Pattern */
+    .brand-filter-section {
+        border-top: 1px solid #f0f0f0;
+        padding-top: 1.25rem;
+    }
+
+    .filter-disclosure-button {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: transparent;
+        border: none;
+        padding: 0.75rem 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        margin-bottom: 0.75rem;
+    }
+
+    .filter-disclosure-button:hover {
+        background: rgba(39, 98, 243, 0.05);
+    }
+
+    .filter-disclosure-button:focus {
+        outline: 2px solid #2762f3;
+        outline-offset: 2px;
+    }
+
+    .filter-disclosure-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .filter-disclosure-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #334155;
+    }
+
+    .filter-disclosure-header i {
+        color: #2762f3;
+        font-size: 0.9rem;
+    }
+
+    .filter-disclosure-icon {
+        color: #64748b;
+        font-size: 0.85rem;
+        transition: transform 0.3s ease;
+    }
+
+    .filter-disclosure-button[aria-expanded="true"] .filter-disclosure-icon {
+        transform: rotate(45deg);
+    }
+
+    .brand-filter-content {
+        border: none;
+        padding: 0;
+        margin: 0;
+        animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .brand-filter-content[hidden] {
+        display: none;
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+
+    .brand-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .brand-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        cursor: pointer;
+        padding: 0.6rem;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .brand-checkbox:hover {
+        background: rgba(39, 98, 243, 0.05);
+    }
+
+    .brand-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: #2762f3;
+    }
+
+    .brand-checkbox label {
+        flex: 1;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: #334155;
+        font-weight: 500;
+        margin: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .brand-checkbox input[type="checkbox"]:checked + label {
+        color: #2762f3;
+        font-weight: 600;
+    }
+
+    .item-count {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        background: #f1f5f9;
+        padding: 0.2rem 0.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        min-width: 28px;
+        text-align: center;
+    }
+
+    .brand-checkbox input[type="checkbox"]:checked + label .item-count {
+        background: rgba(39, 98, 243, 0.15);
+        color: #2762f3;
+    }
+
+    .view-more-btn {
+        width: 100%;
+        padding: 0.6rem;
+        background: transparent;
+        color: #2762f3;
+        border: 1px solid rgba(39, 98, 243, 0.3);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .view-more-btn:hover {
+        background: rgba(39, 98, 243, 0.1);
+        border-color: #2762f3;
+    }
+
+    .view-more-btn:focus {
+        outline: 2px solid #2762f3;
+        outline-offset: 2px;
+    }
+
+    .view-more-btn i {
+        font-size: 0.75rem;
+        transition: transform 0.3s ease;
+    }
+
+    .view-more-btn.expanded i {
+        transform: rotate(180deg);
+    }
+
     /* Active Filters Display */
     .active-filters {
         display: flex;
@@ -1562,6 +1750,68 @@
                             @endforeach
                         </div>
                     </div>
+
+                    <!-- Brand Filter -->
+                    <div class="filter-section brand-filter-section">
+                        <button type="button"
+                                class="filter-disclosure-button"
+                                id="brandFilterToggle"
+                                aria-expanded="false"
+                                aria-controls="brandFilterContent"
+                                onclick="toggleBrandFilter()">
+                            <span class="filter-disclosure-header">
+                                <i class="fas fa-tags"></i>
+                                <span class="filter-disclosure-title">{{ is_rtl() ? 'العلامات التجارية' : 'Brand' }}</span>
+                            </span>
+                            <i class="fas fa-plus filter-disclosure-icon" id="brandFilterIcon" aria-hidden="true"></i>
+                        </button>
+
+                        <fieldset class="brand-filter-content"
+                                  id="brandFilterContent"
+                                  aria-labelledby="brandFilterToggle"
+                                  hidden>
+                            <legend class="sr-only">{{ is_rtl() ? 'تصفية حسب العلامة التجارية' : 'Filter by brand' }}</legend>
+
+                            <div class="brand-list" id="brandList">
+                                @php
+                                    // Check if any brand is selected (support both 'brand' and 'brands[]')
+                                    $selectedBrands = (array)request('brands', []);
+                                    if (request('brand') && !in_array(request('brand'), $selectedBrands)) {
+                                        $selectedBrands[] = request('brand');
+                                    }
+                                @endphp
+
+                                @foreach($brands as $index => $brand)
+                                @php
+                                    $isChecked = in_array($brand->slug, $selectedBrands);
+                                    $isInitiallyVisible = $index < 10; // Show first 10
+                                @endphp
+                                <div class="brand-checkbox" data-brand-index="{{ $index }}" style="{{ !$isInitiallyVisible ? 'display: none;' : '' }}">
+                                    <input type="checkbox"
+                                           name="brands[]"
+                                           value="{{ $brand->slug }}"
+                                           id="brand-{{ $brand->slug }}"
+                                           {{ $isChecked ? 'checked' : '' }}>
+                                    <label for="brand-{{ $brand->slug }}">
+                                        {{ $brand->name }}
+                                        <span class="item-count">{{ $brand->products_count }}</span>
+                                    </label>
+                                </div>
+                                @endforeach
+                            </div>
+
+                            @if($brands->count() > 10)
+                            <button type="button"
+                                    class="view-more-btn"
+                                    id="brandViewMoreBtn"
+                                    onclick="toggleBrandPagination()"
+                                    aria-label="{{ is_rtl() ? 'عرض المزيد من العلامات التجارية' : 'View more brands' }}">
+                                <span id="brandViewMoreText">{{ is_rtl() ? 'عرض المزيد' : 'View more' }}</span>
+                                <i class="fas fa-chevron-down" id="brandViewMoreIcon" aria-hidden="true"></i>
+                            </button>
+                            @endif
+                        </fieldset>
+                    </div>
                 </form>
             </aside>
 
@@ -1997,6 +2247,155 @@
         }
         
         console.log('✅ Filter system ready');
+    });
+
+    // ============================================
+    // Brand Filter Functions
+    // ============================================
+
+    /**
+     * Toggle brand filter disclosure (expand/collapse)
+     * Implements ARIA Disclosure pattern with keyboard support
+     */
+    window.toggleBrandFilter = function() {
+        const button = document.getElementById('brandFilterToggle');
+        const content = document.getElementById('brandFilterContent');
+        const icon = document.getElementById('brandFilterIcon');
+
+        if (!button || !content || !icon) {
+            console.error('Brand filter elements not found');
+            return;
+        }
+
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+        // Toggle expanded state
+        button.setAttribute('aria-expanded', !isExpanded);
+        content.hidden = isExpanded;
+
+        // Update icon (+ to -)
+        if (!isExpanded) {
+            icon.classList.remove('fa-plus');
+            icon.classList.add('fa-minus');
+        } else {
+            icon.classList.remove('fa-minus');
+            icon.classList.add('fa-plus');
+        }
+
+        console.log('🏷️ Brand filter ' + (!isExpanded ? 'expanded' : 'collapsed'));
+    };
+
+    /**
+     * Toggle brand pagination (show more/less brands)
+     * Shows/hides brands beyond the first 10
+     */
+    window.toggleBrandPagination = function() {
+        const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
+        const viewMoreBtn = document.getElementById('brandViewMoreBtn');
+        const viewMoreText = document.getElementById('brandViewMoreText');
+        const viewMoreIcon = document.getElementById('brandViewMoreIcon');
+        const isRTL = {{ is_rtl() ? 'true' : 'false' }};
+
+        if (!viewMoreBtn) {
+            console.error('View more button not found');
+            return;
+        }
+
+        const isExpanded = viewMoreBtn.classList.contains('expanded');
+
+        // Toggle visibility of brands after index 9
+        let visibleCount = 0;
+        brandCheckboxes.forEach((checkbox, index) => {
+            const brandIndex = parseInt(checkbox.getAttribute('data-brand-index'));
+            if (brandIndex >= 10) {
+                checkbox.style.display = isExpanded ? 'none' : 'flex';
+            }
+            if (checkbox.style.display !== 'none') {
+                visibleCount++;
+            }
+        });
+
+        // Update button state
+        viewMoreBtn.classList.toggle('expanded');
+        viewMoreIcon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+
+        // Update button text
+        if (isExpanded) {
+            viewMoreText.textContent = isRTL ? 'عرض المزيد' : 'View more';
+            viewMoreBtn.setAttribute('aria-label', isRTL ? 'عرض المزيد من العلامات التجارية' : 'View more brands');
+        } else {
+            viewMoreText.textContent = isRTL ? 'عرض أقل' : 'View less';
+            viewMoreBtn.setAttribute('aria-label', isRTL ? 'عرض عدد أقل من العلامات التجارية' : 'View less brands');
+        }
+
+        console.log('📄 Brand pagination toggled - Visible: ' + visibleCount);
+    };
+
+    /**
+     * Setup brand checkbox event listeners
+     */
+    document.addEventListener('DOMContentLoaded', function() {
+        // Setup brand checkboxes
+        const brandCheckboxes = document.querySelectorAll('input[name="brands[]"]');
+        console.log('🏷️ Found ' + brandCheckboxes.length + ' brand checkboxes');
+
+        brandCheckboxes.forEach(function(checkbox) {
+            // Initial visual feedback
+            if (checkbox.checked) {
+                const label = checkbox.parentElement;
+                if (label) label.style.backgroundColor = 'rgba(39, 98, 243, 0.08)';
+            }
+
+            // Add change listener
+            checkbox.addEventListener('change', function(e) {
+                console.log('✔️ Brand checkbox changed:', e.target.value, e.target.checked);
+
+                // Visual feedback
+                const label = e.target.parentElement;
+                if (label) {
+                    label.style.backgroundColor = e.target.checked
+                        ? 'rgba(39, 98, 243, 0.08)'
+                        : '';
+                }
+
+                // Apply filters via AJAX
+                debouncedApplyFilters(300);
+            });
+        });
+
+        // Keyboard support for disclosure button
+        const brandToggle = document.getElementById('brandFilterToggle');
+        if (brandToggle) {
+            brandToggle.addEventListener('keydown', function(e) {
+                // Support Enter and Space keys for activation (WAI-ARIA APG)
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleBrandFilter();
+                }
+            });
+        }
+
+        // Auto-expand brand filter if any brand is selected
+        const selectedBrands = document.querySelectorAll('input[name="brands[]"]:checked');
+        if (selectedBrands.length > 0) {
+            console.log('🏷️ Auto-expanding brand filter (brands selected)');
+            toggleBrandFilter();
+
+            // Auto-expand pagination if any selected brand is beyond first 10
+            selectedBrands.forEach(function(checkbox) {
+                const brandCheckbox = checkbox.closest('.brand-checkbox');
+                if (brandCheckbox) {
+                    const index = parseInt(brandCheckbox.getAttribute('data-brand-index'));
+                    if (index >= 10) {
+                        const viewMoreBtn = document.getElementById('brandViewMoreBtn');
+                        if (viewMoreBtn && !viewMoreBtn.classList.contains('expanded')) {
+                            console.log('📄 Auto-expanding brand pagination (selected brand index: ' + index + ')');
+                            toggleBrandPagination();
+                        }
+                    }
+                }
+            });
+        }
     });
 })();
 </script>
