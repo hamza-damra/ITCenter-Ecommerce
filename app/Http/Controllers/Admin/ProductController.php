@@ -29,8 +29,7 @@ class ProductController extends Controller
                 case 'top_rated':
                     // Top rated products
                     $query->withAvg('reviews', 'rating')
-                          ->withCount('reviews')
-                          ->having('reviews_count', '>', 0)
+                          ->where('reviews_count', '>', 0)
                           ->orderByDesc('reviews_avg_rating');
                     break;
                     
