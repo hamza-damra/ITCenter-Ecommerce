@@ -1232,18 +1232,44 @@
             const userDropdown = document.querySelector('.user-dropdown');
             const userToggle = userDropdown ? userDropdown.querySelector('.user-toggle') : null;
             const userMenu = userDropdown ? userDropdown.querySelector('.user-dropdown-menu') : null;
-            
+
+            // Helper function to close all dropdowns
+            function closeAllDropdowns() {
+                // Close language dropdown
+                if (languageDropdown) {
+                    languageDropdown.classList.remove('active');
+                }
+
+                // Close user dropdown
+                if (userDropdown && userMenu) {
+                    userDropdown.classList.remove('active');
+                    userMenu.style.opacity = '0';
+                    userMenu.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        userMenu.style.display = 'none';
+                    }, 300);
+                }
+            }
+
+            // Language dropdown toggle
             if (languageToggle && languageMenu) {
                 languageToggle.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    languageDropdown.classList.toggle('active');
-                });
-                
-                // Close dropdown when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!languageDropdown.contains(e.target)) {
-                        languageDropdown.classList.remove('active');
+
+                    // Close user dropdown if open
+                    if (userDropdown && userDropdown.classList.contains('active')) {
+                        userDropdown.classList.remove('active');
+                        if (userMenu) {
+                            userMenu.style.opacity = '0';
+                            userMenu.style.transform = 'translateY(-10px)';
+                            setTimeout(() => {
+                                userMenu.style.display = 'none';
+                            }, 300);
+                        }
                     }
+
+                    // Toggle language dropdown
+                    languageDropdown.classList.toggle('active');
                 });
 
                 // Close dropdown when clicking a language option
@@ -1269,28 +1295,24 @@
 
                 userToggle.addEventListener('click', function(e) {
                     e.stopPropagation();
+
+                    // Close language dropdown if open
+                    if (languageDropdown && languageDropdown.classList.contains('active')) {
+                        languageDropdown.classList.remove('active');
+                    }
+
+                    // Toggle user dropdown
+                    const isCurrentlyActive = userDropdown.classList.contains('active');
                     userDropdown.classList.toggle('active');
 
                     // Toggle menu visibility
-                    if (userDropdown.classList.contains('active')) {
+                    if (!isCurrentlyActive) {
                         userMenu.style.display = 'block';
                         setTimeout(() => {
                             userMenu.style.opacity = '1';
                             userMenu.style.transform = 'translateY(0)';
                         }, 10);
                     } else {
-                        userMenu.style.opacity = '0';
-                        userMenu.style.transform = 'translateY(-10px)';
-                        setTimeout(() => {
-                            userMenu.style.display = 'none';
-                        }, 300);
-                    }
-                });
-
-                // Close user dropdown when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!userDropdown.contains(e.target)) {
-                        userDropdown.classList.remove('active');
                         userMenu.style.opacity = '0';
                         userMenu.style.transform = 'translateY(-10px)';
                         setTimeout(() => {
@@ -1312,6 +1334,17 @@
                     });
                 });
             }
+
+            // Global click-outside handler for all dropdowns
+            document.addEventListener('click', function(e) {
+                // Check if click is outside both dropdowns
+                const isLanguageClick = languageDropdown && languageDropdown.contains(e.target);
+                const isUserClick = userDropdown && userDropdown.contains(e.target);
+
+                if (!isLanguageClick && !isUserClick) {
+                    closeAllDropdowns();
+                }
+            });
 
             // Load and update favorites count (only once on page load)
             updateFavoritesCount();

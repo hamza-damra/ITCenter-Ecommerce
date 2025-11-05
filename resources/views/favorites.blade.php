@@ -526,191 +526,120 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// CSRF Token setup for AJAX requests
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+// Override toggleFavorite for favorites page to handle card removal
+(function() {
+    // Store reference to the original global toggleFavorite function
+    const originalToggleFavorite = window.toggleFavorite;
 
-/**
- * Toggle favorite status for a product
- */
-function toggleFavorite(productId, button) {
-    const icon = button.querySelector('i');
-    const isActive = button.classList.contains('active');
-    
-    // Optimistic UI update
-    button.classList.toggle('active');
-    icon.classList.toggle('fas');
-    icon.classList.toggle('far');
-    
-    // Send request to server
-    fetch(`/favorites/toggle/${productId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken,
-            'Accept': 'application/json'
+    // Override with favorites page specific behavior
+    window.toggleFavorite = function(productId, button) {
+        // Prevent double-clicking by disabling the button temporarily
+        if (button.dataset.processing === 'true') {
+            return;
         }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Update favorites count in header
-            updateFavoritesCount();
-            
-            // If removed, remove the card from the page after a short delay
-            if (data.action === 'removed') {
-                setTimeout(() => {
-                    const card = button.closest('.product-card');
-                    card.style.opacity = '0';
-                    card.style.transform = 'scale(0.8)';
-                    
-                    setTimeout(() => {
-                        card.remove();
-                        
-                        // Check if there are no more favorites and reload the page
-                        const remainingCards = document.querySelectorAll('.product-card');
-                        if (remainingCards.length === 0) {
-                            location.reload();
-                        } else {
-                            // Update the count display
-                            const countElement = document.querySelector('.favorites-count');
-                            if (countElement) {
-                                const newCount = remainingCards.length;
-                                const itemText = newCount === 1 ? '{{ __t("messages.item") }}' : '{{ __t("messages.items") }}';
-                                countElement.textContent = `${newCount} ${itemText}`;
-                            }
-                        }
-                    }, 300);
-                }, 200);
-            }
-        } else {
-            // Revert UI if request failed
-            button.classList.toggle('active');
+
+        button.dataset.processing = 'true';
+        const icon = button.querySelector('i');
+
+        // Optimistic UI update
+        button.classList.toggle('active');
+        if (icon) {
             icon.classList.toggle('fas');
             icon.classList.toggle('far');
-        }
-    })
-    .catch(error => {
-        console.error('Error toggling favorite:', error);
-        // Revert UI on error
-        button.classList.toggle('active');
-        icon.classList.toggle('fas');
-        icon.classList.toggle('far');
-    });
-}
 
-/**
- * Update the favorites count in the header
- */
-function updateFavoritesCount() {
-    fetch('/favorites/ids')
-        .then(response => response.json())
-        .then(data => {
-            const badge = document.querySelector('.header-icon .fa-heart').parentElement.querySelector('.badge');
-            if (badge) {
-                badge.textContent = data.favoriteIds.length;
+            // Force color change with !important priority
+            if (icon.classList.contains('fas')) {
+                icon.style.setProperty('color', '#ff0000', 'important');
+            } else {
+                icon.style.setProperty('color', '#666', 'important');
             }
-        })
-        .catch(error => console.error('Error updating favorites count:', error));
-}
-
-// Update favorites count on page load
-document.addEventListener('DOMContentLoaded', function() {
-    updateFavoritesCount();
-});
-
-/**
- * Add product to cart
- */
-function addToCart(productId, button) {
-    // Prevent multiple rapid clicks
-    if (button.disabled) return;
-    button.disabled = true;
-
-    fetch(`/cart/add/${productId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken,
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({ quantity: 1 })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Update button state
-            button.classList.add('in-cart');
-            button.title = '{{ __t("messages.in_cart") }}';
-            button.setAttribute('aria-label', '{{ __t("messages.in_cart") }}');
-
-            // Update icon
-            const icon = button.querySelector('i');
-            icon.classList.remove('fa-shopping-cart');
-            icon.classList.add('fa-check');
-
-            // Update cart count in header
-            updateCartCount();
-
-            // Show success message (optional)
-            console.log('Product added to cart successfully');
-        } else {
-            console.error('Failed to add product to cart:', data.message);
-            alert(data.message || '{{ __t("messages.error_adding_to_cart") }}');
         }
-    })
-    .catch(error => {
-        console.error('Error adding to cart:', error);
-        alert('{{ __t("messages.error_adding_to_cart") }}');
-    })
-    .finally(() => {
-        button.disabled = false;
-    });
-}
 
-/**
- * Request out of stock product
- */
-function requestProduct(productId, productName) {
-    // Show a confirmation or modal for product request
-    const message = `{{ __t("messages.request_product_message") }}`.replace(':product', productName);
-
-    if (confirm(message || `Would you like to be notified when ${productName} is back in stock?`)) {
-        fetch(`/products/request/${productId}`, {
+        // Send request to server
+        fetch(`/favorites/toggle/${productId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
                 'Accept': 'application/json'
             }
         })
         .then(response => response.json())
         .then(data => {
+            button.dataset.processing = 'false';
+
             if (data.success) {
-                alert(data.message || '{{ __t("messages.request_product_success") }}');
+                // Update favorites count in header using global function
+                if (typeof updateFavoritesCount === 'function') {
+                    updateFavoritesCount();
+                }
+
+                // If removed, remove the card from the page after a short delay
+                if (data.action === 'removed') {
+                    setTimeout(() => {
+                        const card = button.closest('.product-card');
+                        if (card) {
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.8)';
+
+                            setTimeout(() => {
+                                card.remove();
+
+                                // Check if there are no more favorites and reload the page
+                                const remainingCards = document.querySelectorAll('.product-card');
+                                if (remainingCards.length === 0) {
+                                    location.reload();
+                                } else {
+                                    // Update the count display
+                                    const countElement = document.querySelector('.favorites-count');
+                                    if (countElement) {
+                                        const newCount = remainingCards.length;
+                                        const itemText = newCount === 1 ? '{{ __t("messages.item") }}' : '{{ __t("messages.items") }}';
+                                        countElement.textContent = `${newCount} ${itemText}`;
+                                    }
+                                }
+                            }, 300);
+                        }
+                    }, 200);
+                }
+
+                // Show notification using global function
+                if (typeof showNotification === 'function') {
+                    showNotification(data.message);
+                }
             } else {
-                alert(data.message || '{{ __t("messages.request_product_error") }}');
+                // Revert UI if request failed
+                button.classList.toggle('active');
+                if (icon) {
+                    icon.classList.toggle('fas');
+                    icon.classList.toggle('far');
+                    // Revert color
+                    if (icon.classList.contains('fas')) {
+                        icon.style.setProperty('color', '#ff0000', 'important');
+                    } else {
+                        icon.style.setProperty('color', '#666', 'important');
+                    }
+                }
             }
         })
         .catch(error => {
-            console.error('Error requesting product:', error);
-            alert('{{ __t("messages.request_product_error") }}');
-        });
-    }
-}
+            console.error('Error toggling favorite:', error);
+            button.dataset.processing = 'false';
 
-/**
- * Update cart count in header
- */
-function updateCartCount() {
-    fetch('/cart/count')
-        .then(response => response.json())
-        .then(data => {
-            const badge = document.querySelector('.header-icon .fa-shopping-cart').parentElement.querySelector('.badge');
-            if (badge) {
-                badge.textContent = data.count;
+            // Revert UI on error
+            button.classList.toggle('active');
+            if (icon) {
+                icon.classList.toggle('fas');
+                icon.classList.toggle('far');
+                // Revert color
+                if (icon.classList.contains('fas')) {
+                    icon.style.setProperty('color', '#ff0000', 'important');
+                } else {
+                    icon.style.setProperty('color', '#666', 'important');
+                }
             }
-        })
-        .catch(error => console.error('Error updating cart count:', error));
-}
+        });
+    };
+})();
 </script>
 @endsection
