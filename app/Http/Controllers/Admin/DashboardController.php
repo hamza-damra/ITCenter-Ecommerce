@@ -69,6 +69,35 @@ class DashboardController extends Controller
                 ->whereYear('created_at', now()->year)
                 ->count(),
             
+            // Online/Offline User Statistics (considering users active in last 5 minutes as online)
+            'registered_online_users' => User::where('last_activity', '>=', now()->subMinutes(5)->timestamp)->count(),
+            'registered_offline_users' => User::where('last_activity', '<', now()->subMinutes(5)->timestamp)
+                ->orWhereNull('last_activity')
+                ->count(),
+            
+            // Guest/Anonymous users (from cart sessions without user_id)
+            'guest_active_sessions' => CartItem::whereNull('user_id')
+                ->distinct('session_id')
+                ->count('session_id'),
+            
+            // User roles breakdown
+            'admin_users' => User::where('role', 'admin')->count(),
+            'regular_users' => User::where('role', 'user')->count(),
+            
+            // User engagement
+            'users_with_orders' => User::has('orders')->count(),
+            'users_with_favorites' => User::has('favorites')->count(),
+            'users_with_reviews' => User::has('reviews')->count(),
+            
+            // Active users (users who logged in within last 30 days)
+            'active_users_30days' => User::where('last_activity', '>=', now()->subDays(30)->timestamp)->count(),
+            
+            // New users this week
+            'users_this_week' => User::whereBetween('created_at', [
+                now()->startOfWeek(),
+                now()->endOfWeek()
+            ])->count(),
+            
             // Cart Statistics with advanced aggregations
             'total_cart_items' => CartItem::sum('quantity'),
             'active_carts' => CartItem::distinct('session_id')->count('session_id'),
