@@ -427,11 +427,31 @@
         background: rgba(39, 98, 243, 0.05);
     }
 
+    /* Disabled brand styles (no products) */
+    .brand-checkbox.brand-disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .brand-checkbox.brand-disabled:hover {
+        background: transparent;
+    }
+
+    .brand-checkbox.brand-disabled label {
+        cursor: not-allowed;
+        color: #94a3b8;
+    }
+
     .brand-checkbox input[type="checkbox"] {
         width: 18px;
         height: 18px;
         cursor: pointer;
         accent-color: #2762f3;
+    }
+
+    .brand-checkbox input[type="checkbox"]:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
     }
 
     .brand-checkbox label {
@@ -458,6 +478,14 @@
         padding: 0.2rem 0.5rem;
         border-radius: 10px;
         font-weight: 600;
+        min-width: 28px;
+        text-align: center;
+    }
+
+    .item-count.count-zero {
+        color: #cbd5e1;
+        background: #f8fafc;
+    }
         min-width: 28px;
         text-align: center;
     }
@@ -1778,35 +1806,51 @@
                                value="{{ request('max_price', $priceRange['max']) }}">
                     </div>
 
-                    <!-- Category Filter -->
-                    <div class="filter-section">
-                        <div class="filter-section-title">
-                            <i class="fas fa-th-large"></i>
-                            {{ is_rtl() ? 'الفئات' : 'Categories' }}
-                        </div>
+                    <!-- Categories Accordion -->
+                    <div class="filter-accordion">
+                        <button type="button"
+                                class="filter-accordion-button"
+                                id="categoryAccordionToggle"
+                                aria-expanded="false"
+                                aria-controls="categoryAccordionContent">
+                            <span class="filter-accordion-header">
+                                <i class="fas fa-th-large"></i>
+                                <span class="filter-accordion-title">{{ is_rtl() ? 'الفئات' : 'Categories' }}</span>
+                            </span>
+                            <span class="filter-accordion-icon">
+                                <i class="fas fa-plus"></i>
+                            </span>
+                        </button>
 
-                        <div class="category-list">
-                            @foreach($categories as $category)
-                            @php
-                                // Check if this category is selected (support both 'category' and 'categories[]')
-                                $selectedCategories = (array)request('categories', []);
-                                if (request('category') && !in_array(request('category'), $selectedCategories)) {
-                                    $selectedCategories[] = request('category');
-                                }
-                                $isChecked = in_array($category->slug, $selectedCategories);
-                            @endphp
-                            <div class="category-checkbox">
-                                <input type="checkbox"
-                                       name="categories[]"
-                                       value="{{ $category->slug }}"
-                                       id="category-{{ $category->slug }}"
-                                       {{ $isChecked ? 'checked' : '' }}>
-                                <label for="category-{{ $category->slug }}">
-                                    {{ $category->name }}
-                                </label>
+                        <fieldset class="filter-accordion-content"
+                                  id="categoryAccordionContent"
+                                  aria-labelledby="categoryAccordionToggle"
+                                  hidden>
+                            <legend class="sr-only">{{ is_rtl() ? 'تصفية حسب الفئة' : 'Filter by category' }}</legend>
+
+                            <div class="category-list">
+                                @foreach($categories as $category)
+                                @php
+                                    // Check if this category is selected (support both 'category' and 'categories[]')
+                                    $selectedCategories = (array)request('categories', []);
+                                    if (request('category') && !in_array(request('category'), $selectedCategories)) {
+                                        $selectedCategories[] = request('category');
+                                    }
+                                    $isChecked = in_array($category->slug, $selectedCategories);
+                                @endphp
+                                <div class="category-checkbox">
+                                    <input type="checkbox"
+                                           name="categories[]"
+                                           value="{{ $category->slug }}"
+                                           id="category-{{ $category->slug }}"
+                                           {{ $isChecked ? 'checked' : '' }}>
+                                    <label for="category-{{ $category->slug }}">
+                                        {{ $category->name }}
+                                    </label>
+                                </div>
+                                @endforeach
                             </div>
-                            @endforeach
-                        </div>
+                        </fieldset>
                     </div>
 
                     <!-- Brand Accordion -->
@@ -1844,16 +1888,20 @@
                                 @php
                                     $isChecked = in_array($brand->slug, $selectedBrands);
                                     $isInitiallyVisible = $index < 10; // Show first 10
+                                    $hasProducts = $brand->products_count > 0;
                                 @endphp
-                                <div class="brand-checkbox" data-brand-index="{{ $index }}" style="{{ !$isInitiallyVisible ? 'display: none;' : '' }}">
+                                <div class="brand-checkbox {{ !$hasProducts ? 'brand-disabled' : '' }}" 
+                                     data-brand-index="{{ $index }}" 
+                                     style="{{ !$isInitiallyVisible ? 'display: none;' : '' }}">
                                     <input type="checkbox"
                                            name="brands[]"
                                            value="{{ $brand->slug }}"
                                            id="brand-{{ $brand->slug }}"
+                                           {{ !$hasProducts ? 'disabled' : '' }}
                                            {{ $isChecked ? 'checked' : '' }}>
                                     <label for="brand-{{ $brand->slug }}">
                                         {{ $brand->name }}
-                                        <span class="item-count">{{ $brand->products_count }}</span>
+                                        <span class="item-count {{ !$hasProducts ? 'count-zero' : '' }}">{{ $brand->products_count }}</span>
                                     </label>
                                 </div>
                                 @endforeach
@@ -2328,8 +2376,29 @@
     });
 
     // ============================================
-    // Brand Accordion Functions
+    // Accordion Functions (Categories & Brands)
     // ============================================
+
+    /**
+     * Toggle category accordion (expand/collapse)
+     */
+    window.toggleCategoryAccordion = function() {
+        const button = document.getElementById('categoryAccordionToggle');
+        const content = document.getElementById('categoryAccordionContent');
+
+        if (!button || !content) {
+            console.error('Category accordion elements not found');
+            return;
+        }
+
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+        // Toggle expanded state
+        button.setAttribute('aria-expanded', !isExpanded);
+        content.hidden = isExpanded;
+
+        console.log('📂 Category accordion ' + (!isExpanded ? 'expanded' : 'collapsed'));
+    };
 
     /**
      * Toggle brand accordion (expand/collapse)
@@ -2400,9 +2469,23 @@
     };
 
     /**
-     * Setup brand checkbox event listeners
+     * Setup accordion and checkbox event listeners
      */
     document.addEventListener('DOMContentLoaded', function() {
+        // Setup category accordion toggle
+        const categoryAccordionBtn = document.getElementById('categoryAccordionToggle');
+        if (categoryAccordionBtn) {
+            categoryAccordionBtn.addEventListener('click', toggleCategoryAccordion);
+            
+            // Keyboard support
+            categoryAccordionBtn.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleCategoryAccordion();
+                }
+            });
+        }
+
         // Setup brand accordion toggle
         const brandAccordionBtn = document.getElementById('brandAccordionToggle');
         if (brandAccordionBtn) {
