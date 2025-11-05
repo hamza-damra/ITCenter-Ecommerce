@@ -109,6 +109,11 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        outline: none;
+    }
+
+    .filter-section-title:focus {
+        outline: none;
     }
 
     .filter-section-title i {
@@ -121,31 +126,32 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
         padding: 0 0.25rem;
         gap: 0.75rem;
     }
 
     .price-label-min,
     .price-label-max {
-        font-size: 1rem;
-        font-weight: 700;
-        color: #2762f3;
-        background: linear-gradient(135deg, rgba(39, 98, 243, 0.15) 0%, rgba(39, 98, 243, 0.08) 100%);
-        padding: 0.6rem 1.1rem;
-        border-radius: 12px;
-        transition: all 0.3s;
-        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.1);
-        border: 1px solid rgba(39, 98, 243, 0.2);
-        min-width: 90px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #334155;
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+        transition: color 0.2s;
+        box-shadow: none;
+        border: none;
+        min-width: auto;
         text-align: center;
     }
 
     .price-label-min:hover,
     .price-label-max:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(39, 98, 243, 0.2);
-        background: linear-gradient(135deg, rgba(39, 98, 243, 0.2) 0%, rgba(39, 98, 243, 0.12) 100%);
+        transform: none;
+        box-shadow: none;
+        background: transparent;
+        color: #2762f3;
     }
 
     .price-range-slider {
@@ -153,28 +159,28 @@
         padding: 0 0.5rem;
     }
 
-    /* noUiSlider Custom Styles */
+    /* noUiSlider Custom Styles - Flat Minimal Design */
     .noUi-target {
-        background: #e2e8f0;
-        border-radius: 8px;
+        background: #cbd5e1;
+        border-radius: 0;
         border: none;
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-        height: 8px;
+        box-shadow: none;
+        height: 3px;
     }
 
     .noUi-connect {
-        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
+        background: #2762f3;
     }
 
     .noUi-handle {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
+        width: 8px;
+        height: 22px;
+        border-radius: 2px;
         background: #ffffff;
-        border: 4px solid #2762f3;
-        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3), 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1.5px solid #64748b;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
         cursor: grab;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         top: -10px;
         outline: none;
     }
@@ -189,22 +195,27 @@
     }
 
     .noUi-handle:hover {
-        transform: scale(1.1);
-        box-shadow: 0 3px 12px rgba(39, 98, 243, 0.4);
+        border-color: #2762f3;
+        box-shadow: 0 2px 4px rgba(39, 98, 243, 0.25);
     }
 
     .noUi-handle:active {
-        transform: scale(1.15);
-        box-shadow: 0 4px 16px rgba(39, 98, 243, 0.5);
+        border-color: #1a4dbf;
+        box-shadow: 0 2px 6px rgba(39, 98, 243, 0.35);
         cursor: grabbing;
     }
 
+    .noUi-handle:focus {
+        border-color: #2762f3;
+        box-shadow: 0 0 0 2px rgba(39, 98, 243, 0.1);
+    }
+
     .noUi-handle-lower {
-        right: -10px;
+        right: -4px;
     }
 
     .noUi-handle-upper {
-        right: -10px;
+        right: -4px;
     }
 
     .noUi-tooltip {
@@ -1693,21 +1704,27 @@
 
                     <!-- Price Range Filter -->
                     <div class="filter-section">
-                        <div class="filter-section-title">
+                        <div class="filter-section-title" id="priceRangeLabel">
                             <i class="fas fa-dollar-sign"></i>
                             {{ is_rtl() ? 'نطاق السعر' : 'Price Range' }}
                         </div>
 
                         <!-- Live Price Labels Above Slider -->
-                        <div class="price-range-labels">
-                            <span class="price-label-min" id="minPriceLabel">₪ {{ number_format(request('min_price', $priceRange['min']), 0) }}</span>
-                            <span class="price-label-max" id="maxPriceLabel">₪ {{ number_format(request('max_price', $priceRange['max']), 0) }}</span>
+                        <div class="price-range-labels" aria-live="polite" aria-atomic="true">
+                            <span class="price-label-min" id="minPriceLabel" aria-label="{{ is_rtl() ? 'السعر الأدنى' : 'Minimum price' }}">₪ {{ number_format(request('min_price', $priceRange['min']), 0) }}</span>
+                            <span class="price-label-max" id="maxPriceLabel" aria-label="{{ is_rtl() ? 'السعر الأقصى' : 'Maximum price' }}">₪ {{ number_format(request('max_price', $priceRange['max']), 0) }}</span>
                         </div>
 
                         <!-- Dual-Handle Range Slider -->
-                        <div class="price-range-slider">
+                        <div class="price-range-slider"
+                             role="group"
+                             aria-labelledby="priceRangeLabel"
+                             aria-describedby="priceRangeDescription">
                             <div id="priceSlider"></div>
                         </div>
+                        <span id="priceRangeDescription" class="sr-only">
+                            {{ is_rtl() ? 'استخدم مفاتيح الأسهم لتعديل نطاق السعر. اضغط Shift مع السهم للتحرك بشكل أسرع.' : 'Use arrow keys to adjust price range. Hold Shift with arrow keys for faster movement.' }}
+                        </span>
 
                         <!-- Hidden Input Fields for Form Submission -->
                         <input type="hidden"
@@ -2117,7 +2134,7 @@
     // Debounced filter
     function debouncedApplyFilters(delay) {
         clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(applyFilters, delay || 500);
+        debounceTimer = setTimeout(applyFilters, delay || 300);
     }
 
     // Initialize everything
@@ -2165,6 +2182,10 @@
                     sliderElement.noUiSlider.destroy();
                 }
 
+                // Calculate smart step based on range
+                const priceRange = FILTER_CONFIG.maxPrice - FILTER_CONFIG.minPrice;
+                const smartStep = priceRange > 1000 ? Math.max(1, Math.floor(priceRange / 100)) : 1;
+
                 priceSlider = noUiSlider.create(sliderElement, {
                     start: [currentMin, currentMax],
                     connect: true,
@@ -2173,13 +2194,28 @@
                         'min': FILTER_CONFIG.minPrice,
                         'max': FILTER_CONFIG.maxPrice
                     },
-                    step: 1,
+                    step: smartStep,
+                    margin: smartStep, // Minimum gap between handles
                     format: {
                         to: function(value) {
                             return Math.round(value);
                         },
                         from: function(value) {
                             return Number(value);
+                        }
+                    },
+                    // Enable keyboard support with proper ARIA
+                    keyboardSupport: true,
+                    keyboardDefaultStep: smartStep,
+                    keyboardPageMultiplier: 10,
+                    keyboardMultiplier: 5,
+                    // Add ARIA labels
+                    ariaFormat: {
+                        to: function(value) {
+                            const isRTL = FILTER_CONFIG.isRTL;
+                            return isRTL
+                                ? 'السعر: ' + Math.round(value) + ' شيكل'
+                                : 'Price: ₪' + Math.round(value);
                         }
                     }
                 });
@@ -2203,7 +2239,7 @@
                 // Apply filters when slider is released (change event)
                 priceSlider.on('change', function(values, handle) {
                     console.log('Slider changed:', values);
-                    debouncedApplyFilters(500);
+                    debouncedApplyFilters(300);
                 });
             } catch (error) {
                 console.error('Error initializing price slider:', error);
