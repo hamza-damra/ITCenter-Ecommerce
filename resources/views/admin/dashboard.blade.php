@@ -589,7 +589,7 @@
 <!-- User Statistics Section -->
 <div style="margin-top: 32px; margin-bottom: 16px;">
     <h2 style="font-size: 20px; font-weight: 700; color: var(--dark); display: flex; align-items: center; gap: 10px;">
-        <i class="fas fa-users"></i> User Statistics
+        <i class="fas fa-users"></i> {{ __('messages.user_statistics') }}
     </h2>
 </div>
 
@@ -597,10 +597,10 @@
     <!-- Total Users - Purple Gradient -->
     <div class="stat-card-large products-sold">
         <div class="stat-card-content">
-            <div class="stat-card-label">Total Users</div>
+            <div class="stat-card-label">{{ __('messages.total_users') }}</div>
             <div class="stat-card-value">{{ $stats['total_users'] }}</div>
             <div class="stat-card-footer">
-                <i class="fas fa-user-plus"></i> All registered users
+                <i class="fas fa-user-plus"></i> {{ __('messages.all_registered_users') }}
             </div>
         </div>
         <div class="stat-card-icon-wrapper">
@@ -611,10 +611,10 @@
     <!-- Registered Online Users - Green -->
     <div class="stat-card-large success">
         <div class="stat-card-content">
-            <div class="stat-card-label">Online Users</div>
+            <div class="stat-card-label">{{ __('messages.online_users') }}</div>
             <div class="stat-card-value">{{ $stats['registered_online_users'] }}</div>
             <div class="stat-card-footer">
-                <i class="fas fa-circle" style="color: #22c55e;"></i> Active now (last 5 min)
+                <i class="fas fa-circle" style="color: #22c55e;"></i> {{ __('messages.active_now_5min') }}
             </div>
         </div>
         <div class="stat-card-icon-wrapper">
@@ -625,10 +625,10 @@
     <!-- Registered Offline Users - Blue -->
     <div class="stat-card-large satisfaction">
         <div class="stat-card-content">
-            <div class="stat-card-label">Offline Users</div>
+            <div class="stat-card-label">{{ __('messages.offline_users') }}</div>
             <div class="stat-card-value">{{ $stats['registered_offline_users'] }}</div>
             <div class="stat-card-footer">
-                <i class="fas fa-circle" style="color: #94a3b8;"></i> Inactive users
+                <i class="fas fa-circle" style="color: #94a3b8;"></i> {{ __('messages.inactive_users') }}
             </div>
         </div>
         <div class="stat-card-icon-wrapper">
@@ -639,10 +639,10 @@
     <!-- Guest Active Sessions - Orange -->
     <div class="stat-card-large customers">
         <div class="stat-card-content">
-            <div class="stat-card-label">Guest Sessions</div>
+            <div class="stat-card-label">{{ __('messages.guest_sessions') }}</div>
             <div class="stat-card-value">{{ $stats['guest_active_sessions'] }}</div>
             <div class="stat-card-footer">
-                <i class="fas fa-shopping-cart"></i> Non-registered shoppers
+                <i class="fas fa-shopping-cart"></i> {{ __('messages.non_registered_shoppers') }}
             </div>
         </div>
         <div class="stat-card-icon-wrapper">
@@ -653,10 +653,10 @@
     <!-- Admin Users - Info/Indigo -->
     <div class="stat-card-large info">
         <div class="stat-card-content">
-            <div class="stat-card-label">Admin Users</div>
+            <div class="stat-card-label">{{ __('messages.admin_users') }}</div>
             <div class="stat-card-value">{{ $stats['admin_users'] }}</div>
             <div class="stat-card-footer">
-                <i class="fas fa-shield-alt"></i> Admin accounts
+                <i class="fas fa-shield-alt"></i> {{ __('messages.admin_accounts') }}
             </div>
         </div>
         <div class="stat-card-icon-wrapper">
@@ -664,27 +664,13 @@
         </div>
     </div>
 
-    <!-- Regular Users - Pink -->
-    <div class="stat-card-large revenue">
-        <div class="stat-card-content">
-            <div class="stat-card-label">Regular Users</div>
-            <div class="stat-card-value">{{ $stats['regular_users'] }}</div>
-            <div class="stat-card-footer">
-                <i class="fas fa-user"></i> Customer accounts
-            </div>
-        </div>
-        <div class="stat-card-icon-wrapper">
-            <i class="fas fa-user-friends"></i>
-        </div>
-    </div>
-
     <!-- Active Users (30 days) - Success Green -->
     <div class="stat-card-large success">
         <div class="stat-card-content">
-            <div class="stat-card-label">Active (30 days)</div>
+            <div class="stat-card-label">{{ __('messages.active_30days') }}</div>
             <div class="stat-card-value">{{ $stats['active_users_30days'] }}</div>
             <div class="stat-card-footer">
-                <i class="fas fa-chart-line"></i> Recent activity
+                <i class="fas fa-chart-line"></i> {{ __('messages.recent_activity') }}
             </div>
         </div>
         <div class="stat-card-icon-wrapper">
@@ -695,10 +681,10 @@
     <!-- New Users This Week - Warning -->
     <div class="stat-card-large warning">
         <div class="stat-card-content">
-            <div class="stat-card-label">New This Week</div>
+            <div class="stat-card-label">{{ __('messages.new_this_week') }}</div>
             <div class="stat-card-value">{{ $stats['users_this_week'] }}</div>
             <div class="stat-card-footer">
-                <i class="fas fa-calendar-week"></i> Weekly signups
+                <i class="fas fa-calendar-week"></i> {{ __('messages.weekly_signups') }}
             </div>
         </div>
         <div class="stat-card-icon-wrapper">
@@ -709,10 +695,10 @@
     <!-- New Users This Month - Purple -->
     <div class="stat-card-large products-sold">
         <div class="stat-card-content">
-            <div class="stat-card-label">New This Month</div>
+            <div class="stat-card-label">{{ __('messages.new_this_month') }}</div>
             <div class="stat-card-value">{{ $stats['users_this_month'] }}</div>
             <div class="stat-card-footer">
-                <i class="fas fa-calendar-alt"></i> Monthly signups
+                <i class="fas fa-calendar-alt"></i> {{ __('messages.monthly_signups') }}
             </div>
         </div>
         <div class="stat-card-icon-wrapper">
@@ -723,10 +709,10 @@
     <!-- Users with Orders - Success -->
     <div class="stat-card-large success">
         <div class="stat-card-content">
-            <div class="stat-card-label">With Orders</div>
+            <div class="stat-card-label">{{ __('messages.with_orders') }}</div>
             <div class="stat-card-value">{{ $stats['users_with_orders'] }}</div>
             <div class="stat-card-footer">
-                <i class="fas fa-shopping-bag"></i> Customers who bought
+                <i class="fas fa-shopping-bag"></i> {{ __('messages.customers_who_bought') }}
             </div>
         </div>
         <div class="stat-card-icon-wrapper">
@@ -737,10 +723,10 @@
     <!-- Users with Favorites - Pink -->
     <div class="stat-card-large revenue">
         <div class="stat-card-content">
-            <div class="stat-card-label">With Favorites</div>
+            <div class="stat-card-label">{{ __('messages.with_favorites') }}</div>
             <div class="stat-card-value">{{ $stats['users_with_favorites'] }}</div>
             <div class="stat-card-footer">
-                <i class="fas fa-heart"></i> Users with wishlist
+                <i class="fas fa-heart"></i> {{ __('messages.users_with_wishlist') }}
             </div>
         </div>
         <div class="stat-card-icon-wrapper">
@@ -751,10 +737,10 @@
     <!-- Users with Reviews - Blue -->
     <div class="stat-card-large satisfaction">
         <div class="stat-card-content">
-            <div class="stat-card-label">With Reviews</div>
+            <div class="stat-card-label">{{ __('messages.with_reviews') }}</div>
             <div class="stat-card-value">{{ $stats['users_with_reviews'] }}</div>
             <div class="stat-card-footer">
-                <i class="fas fa-star"></i> Active reviewers
+                <i class="fas fa-star"></i> {{ __('messages.active_reviewers') }}
             </div>
         </div>
         <div class="stat-card-icon-wrapper">
