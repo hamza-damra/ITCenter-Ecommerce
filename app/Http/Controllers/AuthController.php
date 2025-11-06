@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\CartItem;
+use App\Services\CartCacheService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -52,7 +55,13 @@ class AuthController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
+            // Capture old session ID before regeneration
+            $oldSessionId = $request->session()->getId();
+
             $request->session()->regenerate();
+
+            // Migrate guest cart items to authenticated user
+            $this->migrateGuestCart($oldSessionId, Auth::id());
 
             return redirect()->intended(route('home'))
                 ->with('success', __t('messages.login_success'));
@@ -84,6 +93,9 @@ class AuthController extends Controller
         }
 
         try {
+            // Capture session ID before creating user
+            $oldSessionId = $request->session()->getId();
+
             $user = User::create([
                 'name' => $request->first_name . ' ' . $request->last_name,
                 'first_name' => $request->first_name,
@@ -95,6 +107,9 @@ class AuthController extends Controller
 
             // Auto login after registration
             Auth::login($user);
+
+            // Migrate guest cart items to newly registered user
+            $this->migrateGuestCart($oldSessionId, $user->id);
 
             return redirect()->route('home')
                 ->with('success', __t('messages.register_success'));
@@ -201,5 +216,51 @@ class AuthController extends Controller
         return redirect()->back()
             ->withErrors(['email' => __t('messages.password_reset_failed')])
             ->withInput($request->only('email'));
+    }
+
+    /**
+     * Migrate guest cart items to authenticated user
+     * Called after successful login or registration
+     */
+    private function migrateGuestCart($sessionId, $userId)
+    {
+        try {
+            // Find cart items associated with the session
+            $guestCartItems = CartItem::where('session_id', $sessionId)->get();
+
+            if ($guestCartItems->isEmpty()) {
+                return;
+            }
+
+            foreach ($guestCartItems as $guestItem) {
+                // Check if user already has this product in their cart
+                $existingItem = CartItem::where('user_id', $userId)
+                    ->where('product_id', $guestItem->product_id)
+                    ->first();
+
+                if ($existingItem) {
+                    // Merge quantities
+                    $existingItem->quantity += $guestItem->quantity;
+                    $existingItem->save();
+
+                    // Delete the guest cart item
+                    $guestItem->delete();
+                } else {
+                    // Transfer the cart item to the user
+                    $guestItem->user_id = $userId;
+                    $guestItem->session_id = null;
+                    $guestItem->save();
+                }
+            }
+
+            // Clear cache for both old session and new user
+            CartCacheService::clearMultiple([
+                ['session_id' => $sessionId],
+                ['user_id' => $userId]
+            ]);
+        } catch (\Exception $e) {
+            // Log error but don't fail the authentication
+            \Log::error('Failed to migrate guest cart: ' . $e->getMessage());
+        }
     }
 }
