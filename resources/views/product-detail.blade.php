@@ -1017,19 +1017,20 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn-add-cart" 
+                    <button class="btn-add-cart"
                             type="button"
-                            onclick="addToCartWithQuantity({{ $product->id }}, this)" 
+                            onclick="addToCartWithQuantity({{ $product->id }}, this)"
                             {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
                         <i class="fas fa-shopping-cart"></i>
                         {{ $product->stock_status === 'out_of_stock' ? __('messages.out_of_stock') : __('messages.add_to_cart') }}
                     </button>
-                    <button class="btn-buy-now" 
+                    <button class="btn-buy-now"
                             type="button"
+                            onclick="buyNow({{ $product->id }}, this)"
                             {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
                         {{ $product->stock_status === 'out_of_stock' ? __('messages.unavailable') : __('messages.buy_now') }}
                     </button>
-                    <button class="btn-wishlist wishlist-btn" 
+                    <button class="btn-wishlist wishlist-btn"
                             type="button"
                             data-product-id="{{ $product->id }}">
                         <i class="far fa-heart"></i>
@@ -1423,6 +1424,75 @@
 
                 // Show notification
                 showNotification(data.message || 'Product added to cart successfully!');
+            } else {
+                // Show error
+                button.disabled = false;
+                button.innerHTML = originalText;
+                showNotification(data.message || 'Failed to add product to cart');
+            }
+        })
+        .catch(error => {
+            console.error('Error details:', error);
+            button.disabled = false;
+            button.innerHTML = originalText;
+            showNotification('An error occurred. Please try again.');
+        });
+    }
+
+    // Buy Now functionality
+    function buyNow(productId, button) {
+        console.log('Buy Now clicked for product:', productId);
+
+        const quantityInput = document.getElementById('quantity');
+        const quantity = parseInt(quantityInput.value) || 1;
+        const originalText = button.innerHTML;
+
+        console.log('Quantity:', quantity);
+
+        // Disable button and show loading state
+        button.disabled = true;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        if (!csrfToken) {
+            console.error('CSRF token not found');
+            button.disabled = false;
+            button.innerHTML = originalText;
+            showNotification('Security token not found. Please refresh the page.');
+            return;
+        }
+
+        console.log('Sending request to:', `/cart/add/${productId}`);
+
+        // Add product to cart
+        fetch(`/cart/add/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrfToken.getAttribute('content')
+            },
+            body: JSON.stringify({ quantity: quantity })
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            return window.handleAccountStatus ? handleAccountStatus(response) : response;
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response data:', data);
+
+            if (data.success) {
+                // Update cart count in header
+                updateCartCount();
+
+                // Show notification
+                showNotification(data.message || 'Product added to cart! Redirecting to checkout...');
+
+                // Redirect to checkout after a brief delay
+                setTimeout(() => {
+                    window.location.href = '{{ route("checkout.index") }}';
+                }, 500);
             } else {
                 // Show error
                 button.disabled = false;
