@@ -402,7 +402,7 @@
     /* Discover Header with Decorative Elements */
     .discover-header {
         text-align: center;
-        margin-bottom: 3rem;
+        margin-bottom: 1.5rem;
         position: relative;
     }
 
@@ -419,7 +419,7 @@
     }
 
     .discover-title {
-        font-size: 2.25rem;
+        font-size: 1.75rem;
         font-weight: 700;
         color: #1f2937;
         margin: 0 0 1rem 0;
@@ -438,22 +438,22 @@
     .underline-bar {
         width: 60px;
         height: 2px;
-        background: linear-gradient(90deg, transparent, #e74c3c, transparent);
+        background: linear-gradient(90deg, transparent, #2563eb, transparent);
     }
 
     .underline-dot {
         width: 8px;
         height: 8px;
-        background: #e74c3c;
+        background: #2563eb;
         border-radius: 50%;
-        box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+        box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
     }
 
     /* Category Carousel Wrapper */
     .category-carousel-wrapper {
         position: relative;
         padding: 0 60px;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
 
     /* Navigation Buttons */
@@ -477,11 +477,11 @@
     }
 
     .carousel-nav-btn:hover {
-        background: #e74c3c;
-        border-color: #e74c3c;
+        background: #2563eb;
+        border-color: #2563eb;
         color: #ffffff;
         transform: translateY(-50%) scale(1.1);
-        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
     }
 
     .carousel-prev {
@@ -556,7 +556,7 @@
     }
 
     .category-carousel-card:hover .category-carousel-name {
-        color: #e74c3c;
+        color: #2563eb;
     }
 
     /* Pagination Dots */
@@ -564,7 +564,7 @@
         display: flex;
         justify-content: center;
         gap: 0.75rem;
-        margin-top: 2rem;
+        margin-top: 1rem;
     }
 
     .carousel-dot {
@@ -582,7 +582,7 @@
     }
 
     .carousel-dot.active {
-        background: #e74c3c;
+        background: #2563eb;
         width: 30px;
         border-radius: 5px;
     }
@@ -613,7 +613,7 @@
         }
 
         .explore-products-section {
-            padding: 3rem 0;
+            padding: 2rem 0;
         }
 
         .discover-title {
@@ -621,7 +621,7 @@
         }
 
         .discover-header {
-            margin-bottom: 2rem;
+            margin-bottom: 1.25rem;
         }
 
         .category-carousel-wrapper {
@@ -739,7 +739,7 @@
         left: -1px;
         right: -1px;
         bottom: -1px;
-        background: linear-gradient(135deg, #2762f3, #1a4dbf, #64748b);
+        background: linear-gradient(135deg, #2563eb, #1e40af, #64748b);
         border-radius: 20px;
         opacity: 0;
         z-index: -1;
@@ -748,8 +748,8 @@
 
     .product-card:hover {
         transform: translateY(-6px) scale(1.01);
-        box-shadow: 0 20px 40px rgba(39, 98, 243, 0.08), 0 8px 16px rgba(0, 0, 0, 0.06);
-        border-color: rgba(39, 98, 243, 0.15);
+        box-shadow: 0 20px 40px rgba(37, 99, 235, 0.08), 0 8px 16px rgba(0, 0, 0, 0.06);
+        border-color: rgba(37, 99, 235, 0.15);
     }
 
     .product-card:hover::before {
@@ -820,21 +820,21 @@
     .wishlist-btn:hover {
         background: rgba(255, 255, 255, 0.98);
         transform: scale(1.12);
-        box-shadow: 0 4px 16px rgba(39, 98, 243, 0.18);
-        border-color: rgba(39, 98, 243, 0.2);
+        box-shadow: 0 4px 16px rgba(37, 99, 235, 0.18);
+        border-color: rgba(37, 99, 235, 0.2);
     }
 
     .wishlist-btn:hover i {
-        color: #2762f3 !important;
+        color: #2563eb !important;
     }
 
     .wishlist-btn.active {
-        background: rgba(39, 98, 243, 0.1) !important;
-        border-color: #2762f3 !important;
+        background: rgba(37, 99, 235, 0.1) !important;
+        border-color: #2563eb !important;
     }
 
     .wishlist-btn.active i {
-        color: #2762f3 !important;
+        color: #2563eb !important;
     }
 
     .wishlist-btn i {
@@ -845,7 +845,7 @@
 
     /* Solid heart icon should be blue */
     .wishlist-btn i.fas.fa-heart {
-        color: #2762f3 !important;
+        color: #2563eb !important;
     }
 
     .product-badge {
@@ -859,14 +859,14 @@
         left: 14px !important;
         right: auto !important;
         @endif
-        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
         color: #fff;
         padding: 0.35rem 0.75rem;
         border-radius: 12px;
         font-size: 0.7rem;
         font-weight: 700;
         z-index: 5;
-        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3);
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
         letter-spacing: 0.5px;
         text-transform: uppercase;
         backdrop-filter: blur(8px);
@@ -906,11 +906,11 @@
     }
 
     .product-card:hover .product-title {
-        color: #2762f3;
+        color: #2563eb;
     }
 
     .product-description {
-        font-size: 0.8rem;
+        font-size: 0.875rem;
         color: #64748b;
         margin-bottom: 0.875rem;
         line-height: 1.4;
@@ -934,7 +934,7 @@
     }
 
     .product-price {
-        font-size: 1.35rem;
+        font-size: 1.25rem;
         font-weight: 700;
         color: #1e293b;
         text-align: start;
@@ -948,15 +948,15 @@
     .product-price .original-price {
         text-decoration: line-through;
         color: #94a3b8;
-        font-size: 0.85rem;
+        font-size: 0.875rem;
         font-weight: 500;
         order: -1;
     }
 
     .product-price .current-price {
-        color: #2762f3;
+        color: #2563eb;
         font-weight: 700;
-        font-size: 1.35rem;
+        font-size: 1.25rem;
     }
 
     .product-price .discount-percentage {
@@ -972,10 +972,10 @@
     /* Modern Outlined Button with Glow Effect */
     .add-to-cart {
         background: transparent;
-        color: #2762f3;
+        color: #2563eb;
         padding: 0.65rem 1.25rem;
         border-radius: 50px;
-        border: 1.5px solid #2762f3;
+        border: 1.5px solid #2563eb;
         cursor: pointer;
         font-weight: 600;
         transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -985,8 +985,8 @@
         gap: 0.5rem;
         width: 100%;
         white-space: nowrap;
-        font-size: 0.85rem;
-        box-shadow: 0 0 0 rgba(39, 98, 243, 0);
+        font-size: 0.875rem;
+        box-shadow: 0 0 0 rgba(37, 99, 235, 0);
         position: relative;
         overflow: hidden;
         letter-spacing: 0.3px;
@@ -1000,7 +1000,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
         opacity: 0;
         transition: opacity 0.35s ease;
         z-index: -1;
@@ -1008,8 +1008,8 @@
 
     .add-to-cart:hover {
         color: #ffffff;
-        border-color: #2762f3;
-        box-shadow: 0 0 20px rgba(39, 98, 243, 0.4), 0 4px 12px rgba(39, 98, 243, 0.2);
+        border-color: #2563eb;
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.4), 0 4px 12px rgba(37, 99, 235, 0.2);
         transform: translateY(-1px);
     }
 
@@ -1069,7 +1069,7 @@
 
     /* Icon-Only Add to Cart Button */
     .add-to-cart-icon {
-        background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
         color: #ffffff;
         border: none;
         width: 44px;
@@ -1082,7 +1082,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.25);
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
         position: relative;
         overflow: hidden;
         flex-shrink: 0;
@@ -1095,7 +1095,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #1a4dbf 0%, #0f3a8f 100%);
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
         opacity: 0;
         transition: opacity 0.35s ease;
         z-index: 0;
@@ -1814,7 +1814,7 @@
     .current-price {
         font-size: 3.5rem;
         font-weight: 900;
-        color: #2762f3;
+        color: #2563eb;
         margin: 0;
     }
 
@@ -2660,7 +2660,7 @@
         <div class="discover-header">
             <div class="discover-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#e74c3c" stroke="#e74c3c" stroke-width="2"/>
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
                 </svg>
             </div>
             <h2 class="discover-title">{{ __t('messages.explore_our_products') }}</h2>
