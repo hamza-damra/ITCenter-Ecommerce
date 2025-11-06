@@ -137,4 +137,12 @@ return [
      */
     'allowed_extensions' => ['sql', 'gz', 'zip'],
 
+    /**
+     * Safety backup behavior when performing a restore
+     * - safety_backup_on_restore: create an automatic safety backup before restore
+     * - keep_safety_backup_on_success: if true, keep the safety backup after a successful restore
+     */
+    'safety_backup_on_restore' => env('BACKUP_SAFETY_ON_RESTORE', true),
+    'keep_safety_backup_on_success' => env('BACKUP_KEEP_SAFETY_ON_SUCCESS', false),
+
 ];

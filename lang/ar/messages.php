@@ -11,6 +11,7 @@ return [
     'about' => 'من نحن',
     'contact' => 'اتصل بنا',
     'search' => 'بحث',
+    'clear' => 'مسح',
     
     // Hero Section
     'hero_title' => 'اكتشف أحدث التقنيات',
@@ -179,6 +180,7 @@ return [
     'cart' => 'السلة',
     'cart_empty' => 'سلة التسوق فارغة',
     'cart_empty_description' => 'ابدأ بإضافة بعض المنتجات إلى سلة التسوق الخاصة بك!',
+    'cart_empty_cannot_checkout' => 'سلة التسوق فارغة. يرجى إضافة منتجات قبل إتمام الطلب.',
     'continue_shopping' => 'متابعة التسوق',
     'checkout' => 'إتمام الطلب',
     'proceed_to_checkout' => 'متابعة لإتمام الطلب',
@@ -220,6 +222,7 @@ return [
     'processing_order' => 'جاري المعالجة',
     'order_error' => 'حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى.',
     'order_placed_successfully' => 'تم تقديم طلبك بنجاح!',
+    'return_to_orders_list' => 'العودة إلى قائمة الطلبات؟',
     
     // Footer
     'footer_about' => 'عن مركز تكنولوجيا المعلومات',

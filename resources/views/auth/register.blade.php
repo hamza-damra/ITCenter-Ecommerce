@@ -1,15 +1,18 @@
 @extends('layouts.app')
 
+@section('hideHeader', true)
+
 @section('title', __t('messages.register') . ' - IT Center')
 
 @section('content')
 <style>
     .auth-container {
-        min-height: calc(100vh - 400px);
+        min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 3rem 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .auth-card {

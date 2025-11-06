@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="{{ current_locale() }}" dir="{{ locale_direction() }}">
+<html lang="<?php echo e(current_locale()); ?>" dir="<?php echo e(locale_direction()); ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'IT Center')</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo $__env->yieldContent('title', 'IT Center'); ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    {{-- Horizontal Scroller CSS --}}
-    <link rel="stylesheet" href="{{ asset('css/horizontal-scroller.css') }}">
     
-    @if(is_rtl())
+    <link rel="stylesheet" href="<?php echo e(asset('css/horizontal-scroller.css')); ?>">
+    
+    <?php if(is_rtl()): ?>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    @endif
+    <?php endif; ?>
     <style>
         * {
             margin: 0;
@@ -28,11 +28,11 @@
         }
 
         body {
-            font-family: {{ is_rtl() ? "'Cairo', sans-serif" : "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }};
+            font-family: <?php echo e(is_rtl() ? "'Cairo', sans-serif" : "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"); ?>;
             line-height: 1.6;
             background-color: #f5f5f5;
             color: #333;
-            direction: {{ locale_direction() }};
+            direction: <?php echo e(locale_direction()); ?>;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -184,7 +184,7 @@
         /* Search Bar Styles - Modern & Wider Design */
         .search-bar {
             display: flex;
-            flex-direction: {{ is_rtl() ? 'row' : 'row' }};
+            flex-direction: <?php echo e(is_rtl() ? 'row' : 'row'); ?>;
             flex: 1;
             max-width: 650px;
             min-width: 400px;
@@ -215,9 +215,9 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            border-radius: {{ is_rtl() ? '0 12px 12px 0' : '12px 0 0 12px' }};
-            direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
-            text-align: {{ is_rtl() ? 'right' : 'left' }};
+            border-radius: <?php echo e(is_rtl() ? '0 12px 12px 0' : '12px 0 0 12px'); ?>;
+            direction: <?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>;
+            text-align: <?php echo e(is_rtl() ? 'right' : 'left'); ?>;
             font-weight: 400;
             letter-spacing: 0.01em;
         }
@@ -239,13 +239,13 @@
             background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             color: #ffffff;
             border: none;
-            border-radius: {{ is_rtl() ? '12px 0 0 12px' : '0 12px 12px 0' }};
+            border-radius: <?php echo e(is_rtl() ? '12px 0 0 12px' : '0 12px 12px 0'); ?>;
             font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             white-space: nowrap;
-            direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+            direction: <?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>;
             unicode-bidi: embed;
             display: inline-flex;
             align-items: center;
@@ -285,7 +285,7 @@
 
         .search-btn span {
             display: inline-block;
-            direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+            direction: <?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>;
             unicode-bidi: embed;
             position: relative;
             z-index: 1;
@@ -318,7 +318,7 @@
         .header-icon .badge {
             position: absolute;
             top: -8px;
-            {{ is_rtl() ? 'left' : 'right' }}: -8px;
+            <?php echo e(is_rtl() ? 'left' : 'right'); ?>: -8px;
             background: #2563eb;
             color: #fff;
             font-size: 0.7rem;
@@ -520,7 +520,8 @@
             display: none;
             position: absolute;
             top: calc(100% + 10px);
-            {{ is_rtl() ? 'left: 0;' : 'right: 0;' }}
+            <?php echo e(is_rtl() ? 'left: 0;' : 'right: 0;'); ?>
+
             background: #ffffff;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -545,7 +546,8 @@
             content: '';
             position: absolute;
             top: -7px;
-            {{ is_rtl() ? 'left: 20px;' : 'right: 20px;' }}
+            <?php echo e(is_rtl() ? 'left: 20px;' : 'right: 20px;'); ?>
+
             width: 12px;
             height: 12px;
             background: #ffffff;
@@ -573,7 +575,7 @@
         .language-option:hover {
             background: rgba(37, 99, 235, 0.06);
             color: #2563eb;
-            padding-{{ is_rtl() ? 'right' : 'left' }}: 1.4rem;
+            padding-<?php echo e(is_rtl() ? 'right' : 'left'); ?>: 1.4rem;
         }
 
         .language-option.active {
@@ -585,7 +587,8 @@
         .language-option.active::before {
             content: '';
             position: absolute;
-            {{ is_rtl() ? 'right: 0;' : 'left: 0;' }}
+            <?php echo e(is_rtl() ? 'right: 0;' : 'left: 0;'); ?>
+
             top: 0;
             bottom: 0;
             width: 3px;
@@ -615,7 +618,7 @@
         }
 
         /* RTL: Move checkmark to the left (after text) */
-        @if(is_rtl())
+        <?php if(is_rtl()): ?>
         .language-option {
             flex-direction: row-reverse;
         }
@@ -624,7 +627,7 @@
             margin-right: auto;
             margin-left: 0;
         }
-        @endif
+        <?php endif; ?>
 
         @keyframes checkIn {
             from {
@@ -689,7 +692,7 @@
         .user-dropdown-menu .user-menu-item:hover {
             background: rgba(37, 99, 235, 0.06) !important;
             color: #2563eb !important;
-            padding-{{ is_rtl() ? 'right' : 'left' }}: 1.4rem !important;
+            padding-<?php echo e(is_rtl() ? 'right' : 'left'); ?>: 1.4rem !important;
         }
 
         .user-dropdown-menu .user-menu-item:hover i {
@@ -750,7 +753,7 @@
                 height: 18px;
                 font-size: 0.65rem;
                 top: -5px;
-                {{ is_rtl() ? 'left' : 'right' }}: -5px;
+                <?php echo e(is_rtl() ? 'left' : 'right'); ?>: -5px;
             }
         }
         
@@ -780,7 +783,7 @@
             .header-icons {
                 order: 3;
                 gap: 0.5rem;
-                margin-{{ is_rtl() ? 'right' : 'left' }}: auto;
+                margin-<?php echo e(is_rtl() ? 'right' : 'left'); ?>: auto;
                 display: flex;
                 flex-direction: row;
             }
@@ -800,7 +803,7 @@
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 z-index: 998;
                 display: none;
-                flex-direction: {{ is_rtl() ? 'row' : 'row' }};
+                flex-direction: <?php echo e(is_rtl() ? 'row' : 'row'); ?>;
                 border-radius: 0;
             }
             
@@ -812,31 +815,31 @@
                 font-size: 0.95rem;
                 padding: 0 20px;
                 height: 48px;
-                border-radius: {{ is_rtl() ? '0 12px 12px 0' : '12px 0 0 12px' }};
+                border-radius: <?php echo e(is_rtl() ? '0 12px 12px 0' : '12px 0 0 12px'); ?>;
             }
 
             .search-btn {
                 height: 48px;
                 padding: 0 24px;
-                border-radius: {{ is_rtl() ? '12px 0 0 12px' : '0 12px 12px 0' }};
+                border-radius: <?php echo e(is_rtl() ? '12px 0 0 12px' : '0 12px 12px 0'); ?>;
             }
                 width: 100%;
-                border-radius: {{ is_rtl() ? '0 25px 25px 0' : '25px 0 0 25px' }};
+                border-radius: <?php echo e(is_rtl() ? '0 25px 25px 0' : '25px 0 0 25px'); ?>;
             }
             
             .search-btn {
-                border-radius: {{ is_rtl() ? '25px 0 0 25px' : '0 25px 25px 0' }};
+                border-radius: <?php echo e(is_rtl() ? '25px 0 0 25px' : '0 25px 25px 0'); ?>;
             }
             
             .search-input-icon {
-                {{ is_rtl() ? 'left' : 'right' }}: 1.5rem;
+                <?php echo e(is_rtl() ? 'left' : 'right'); ?>: 1.5rem;
             }
             
             /* Mobile Sidebar Menu */
             .nav-menu {
                 position: fixed;
                 top: 0;
-                {{ is_rtl() ? 'right' : 'left' }}: -100%;
+                <?php echo e(is_rtl() ? 'right' : 'left'); ?>: -100%;
                 width: 280px;
                 height: 100vh;
                 background: #1a1a1a;
@@ -845,13 +848,13 @@
                 padding: 5rem 0 2rem 0;
                 gap: 0;
                 overflow-y: auto;
-                transition: {{ is_rtl() ? 'right' : 'left' }} 0.3s ease;
+                transition: <?php echo e(is_rtl() ? 'right' : 'left'); ?> 0.3s ease;
                 z-index: 1000;
                 box-shadow: 2px 0 10px rgba(0,0,0,0.3);
             }
             
             .nav-menu.active {
-                {{ is_rtl() ? 'right' : 'left' }}: 0;
+                <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 0;
             }
             
             .nav-menu li {
@@ -870,7 +873,7 @@
             .nav-menu a:hover,
             .nav-menu a.active {
                 background: rgba(230, 146, 112, 0.1);
-                padding-{{ is_rtl() ? 'right' : 'left' }}: 2rem;
+                padding-<?php echo e(is_rtl() ? 'right' : 'left'); ?>: 2rem;
             }
             
             .header-icon {
@@ -886,13 +889,13 @@
                 height: 18px;
                 font-size: 0.65rem;
                 top: -5px;
-                {{ is_rtl() ? 'left' : 'right' }}: -5px;
+                <?php echo e(is_rtl() ? 'left' : 'right'); ?>: -5px;
             }
             
             .language-dropdown-menu,
             .user-dropdown-menu {
                 min-width: 180px;
-                {{ is_rtl() ? 'left' : 'right' }}: 0;
+                <?php echo e(is_rtl() ? 'left' : 'right'); ?>: 0;
             }
             
             .language-option,
@@ -943,21 +946,21 @@
             .search-bar {
                 top: 60px;
                 padding: 0.9rem 0.8rem;
-                flex-direction: {{ is_rtl() ? 'row' : 'row' }};
+                flex-direction: <?php echo e(is_rtl() ? 'row' : 'row'); ?>;
             }
             
             .search-bar input {
                 font-size: 0.92rem;
                 padding: 0 18px;
                 height: 46px;
-                border-radius: {{ is_rtl() ? '0 12px 12px 0' : '12px 0 0 12px' }};
+                border-radius: <?php echo e(is_rtl() ? '0 12px 12px 0' : '12px 0 0 12px'); ?>;
             }
             
             .search-btn {
                 height: 46px;
                 padding: 0 20px;
                 min-width: 80px;
-                border-radius: {{ is_rtl() ? '12px 0 0 12px' : '0 12px 12px 0' }};
+                border-radius: <?php echo e(is_rtl() ? '12px 0 0 12px' : '0 12px 12px 0'); ?>;
             }
             
             .cart-count {
@@ -965,7 +968,7 @@
                 height: 16px;
                 font-size: 0.6rem;
                 top: -5px;
-                {{ is_rtl() ? 'left' : 'right' }}: -5px;
+                <?php echo e(is_rtl() ? 'left' : 'right'); ?>: -5px;
             }
         }
         
@@ -1011,13 +1014,13 @@
                 height: 14px;
                 font-size: 0.55rem;
                 top: -4px;
-                {{ is_rtl() ? 'left' : 'right' }}: -4px;
+                <?php echo e(is_rtl() ? 'left' : 'right'); ?>: -4px;
             }
         }
     </style>
 </head>
 <body>
-    @sectionMissing('hideHeader')
+    <?php if (empty(trim($__env->yieldContent('hideHeader')))): ?>
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
     
@@ -1029,90 +1032,90 @@
             </button>
             
             <div class="logo">
-                <a href="{{ route('home') }}">
-                    <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
+                <a href="<?php echo e(route('home')); ?>">
+                    <img src="<?php echo e(asset('images/assets/logo.png')); ?>" alt="IT Center Logo">
                 </a>
             </div>
 
             <ul class="nav-menu" id="navMenu">
-                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">{{ __t('messages.home') }}</a></li>
-                <li><a href="{{ route('categories') }}" class="{{ request()->routeIs('categories') ? 'active' : '' }}">{{ __t('messages.categories') }}</a></li>
-                <li><a href="{{ route('products') }}" class="{{ request()->routeIs('products') ? 'active' : '' }}">{{ __t('messages.products') }}</a></li>
-                <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">{{ __t('messages.about') }}</a></li>
-                <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">{{ __t('messages.contact') }}</a></li>
+                <li><a href="<?php echo e(route('home')); ?>" class="<?php echo e(request()->routeIs('home') ? 'active' : ''); ?>"><?php echo e(__t('messages.home')); ?></a></li>
+                <li><a href="<?php echo e(route('categories')); ?>" class="<?php echo e(request()->routeIs('categories') ? 'active' : ''); ?>"><?php echo e(__t('messages.categories')); ?></a></li>
+                <li><a href="<?php echo e(route('products')); ?>" class="<?php echo e(request()->routeIs('products') ? 'active' : ''); ?>"><?php echo e(__t('messages.products')); ?></a></li>
+                <li><a href="<?php echo e(route('about')); ?>" class="<?php echo e(request()->routeIs('about') ? 'active' : ''); ?>"><?php echo e(__t('messages.about')); ?></a></li>
+                <li><a href="<?php echo e(route('contact')); ?>" class="<?php echo e(request()->routeIs('contact') ? 'active' : ''); ?>"><?php echo e(__t('messages.contact')); ?></a></li>
             </ul>
 
-            <form action="{{ route('products') }}" method="GET" class="search-bar" role="search">
-                <input type="search" name="search" placeholder="{{ __t('messages.search') }}">
-                <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
+            <form action="<?php echo e(route('products')); ?>" method="GET" class="search-bar" role="search">
+                <input type="search" name="search" placeholder="<?php echo e(__t('messages.search')); ?>">
+                <button class="search-btn" type="submit" aria-label="<?php echo e(__t('messages.search')); ?>">
                     <i class="fas fa-search"></i>
                 </button>
             </form>
 
             <div class="header-icons">
-                @guest
+                <?php if(auth()->guard()->guest()): ?>
                 <div class="header-icon" style="position: relative;">
-                    <a href="{{ route('login') }}" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                    <a href="<?php echo e(route('login')); ?>" style="color: inherit; text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-user"></i>
                     </a>
                 </div>
-                @else
+                <?php else: ?>
                 <div class="header-icon user-dropdown" style="position: relative;">
                     <div class="user-toggle" style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-user-circle"></i>
                         <i class="fas fa-chevron-down" style="font-size: 0.7rem; transition: transform 0.3s;"></i>
                     </div>
-                    <div class="user-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 10px); {{ is_rtl() ? 'left: 0;' : 'right: 0;' }} background: #ffffff; backdrop-filter: blur(10px); border: 2px solid #e8eef7; border-radius: 12px; min-width: 200px; box-shadow: 0 8px 24px rgba(39, 98, 243, 0.12); overflow: hidden; z-index: 1001; opacity: 0; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease;">
-                        <a href="{{ route('profile.index') }}" class="user-menu-item" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit; text-decoration: none; color: inherit;">
+                    <div class="user-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 10px); <?php echo e(is_rtl() ? 'left: 0;' : 'right: 0;'); ?> background: #ffffff; backdrop-filter: blur(10px); border: 2px solid #e8eef7; border-radius: 12px; min-width: 200px; box-shadow: 0 8px 24px rgba(39, 98, 243, 0.12); overflow: hidden; z-index: 1001; opacity: 0; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease;">
+                        <a href="<?php echo e(route('profile.index')); ?>" class="user-menu-item" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: <?php echo e(is_rtl() ? 'right' : 'left'); ?>; font-family: inherit; font-size: inherit; text-decoration: none; color: inherit;">
                             <i class="fas fa-user"></i>
-                            <span>{{ __t('messages.my_profile') }}</span>
+                            <span><?php echo e(__t('messages.my_profile')); ?></span>
                         </a>
-                        <a href="{{ route('orders.index') }}" class="user-menu-item" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit; text-decoration: none; color: inherit;">
+                        <a href="<?php echo e(route('orders.index')); ?>" class="user-menu-item" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: <?php echo e(is_rtl() ? 'right' : 'left'); ?>; font-family: inherit; font-size: inherit; text-decoration: none; color: inherit;">
                             <i class="fas fa-box"></i>
-                            <span>{{ __t('messages.my_orders') }}</span>
+                            <span><?php echo e(__t('messages.my_orders')); ?></span>
                         </a>
-                        <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
-                            @csrf
-                            <button type="submit" class="user-menu-item" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit; text-decoration: none; color: #dc3545;">
+                        <form action="<?php echo e(route('logout')); ?>" method="POST" style="margin: 0;">
+                            <?php echo csrf_field(); ?>
+                            <button type="submit" class="user-menu-item" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: <?php echo e(is_rtl() ? 'right' : 'left'); ?>; font-family: inherit; font-size: inherit; text-decoration: none; color: #dc3545;">
                                 <i class="fas fa-sign-out-alt"></i>
-                                <span>{{ __t('messages.logout') }}</span>
+                                <span><?php echo e(__t('messages.logout')); ?></span>
                             </button>
                         </form>
                     </div>
                 </div>
-                @endguest
+                <?php endif; ?>
 
                 <div class="header-icon language-dropdown" style="position: relative;">
                     <div class="language-toggle" style="cursor: pointer; display: flex; align-items: center; gap: 0.4rem;">
                         <i class="fas fa-globe"></i>
-                        <span class="current-lang" style="font-size: 0.85rem; font-weight: 600;">{{ strtoupper(current_locale()) }}</span>
+                        <span class="current-lang" style="font-size: 0.85rem; font-weight: 600;"><?php echo e(strtoupper(current_locale())); ?></span>
                         <i class="fas fa-chevron-down" style="font-size: 0.7rem; transition: transform 0.3s;"></i>
                     </div>
                     <div class="language-dropdown-menu">
-                        @foreach(available_locales() as $locale)
-                            <a href="{{ switch_locale_url($locale) }}" 
-                               class="language-option {{ $locale === current_locale() ? 'active' : '' }}"
-                               data-locale="{{ $locale }}">
+                        <?php $__currentLoopData = available_locales(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $locale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <a href="<?php echo e(switch_locale_url($locale)); ?>" 
+                               class="language-option <?php echo e($locale === current_locale() ? 'active' : ''); ?>"
+                               data-locale="<?php echo e($locale); ?>">
                                 <span class="lang-icon">
-                                    @if($locale === 'en')
+                                    <?php if($locale === 'en'): ?>
                                         🇬🇧
-                                    @else
+                                    <?php else: ?>
                                         🇵🇸
-                                    @endif
+                                    <?php endif; ?>
                                 </span>
-                                <span class="lang-name">{{ locale_name($locale) }}</span>
-                                @if($locale === current_locale())
+                                <span class="lang-name"><?php echo e(locale_name($locale)); ?></span>
+                                <?php if($locale === current_locale()): ?>
                                     <i class="fas fa-check lang-check"></i>
-                                @endif
+                                <?php endif; ?>
                             </a>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
                 </div>
                 <div class="header-icon">
-                    <a href="{{ route('favorites') }}" style="color: inherit; text-decoration: none;">
+                    <a href="<?php echo e(route('favorites')); ?>" style="color: inherit; text-decoration: none;">
                         <i class="fas fa-heart"></i>
                         <span class="badge badge-loading" id="favorites-count">
-                            @php
+                            <?php
                                 // Get initial favorites count from server to prevent flash
                                 if (Auth::check()) {
                                     $initialFavCount = \App\Models\Favorite::where('user_id', Auth::id())->count();
@@ -1120,23 +1123,24 @@
                                     $sessionId = Session::getId();
                                     $initialFavCount = \App\Models\Favorite::where('session_id', $sessionId)->count();
                                 }
-                            @endphp
-                            {{ $initialFavCount }}
+                            ?>
+                            <?php echo e($initialFavCount); ?>
+
                         </span>
                     </a>
                 </div>
-                @auth
+                <?php if(auth()->guard()->check()): ?>
                 <div class="header-icon">
-                    <a href="{{ route('orders.index') }}" style="color: inherit; text-decoration: none; position: relative;" title="{{ __t('messages.my_orders') }}">
+                    <a href="<?php echo e(route('orders.index')); ?>" style="color: inherit; text-decoration: none; position: relative;" title="<?php echo e(__t('messages.my_orders')); ?>">
                         <i class="fas fa-box"></i>
                     </a>
                 </div>
-                @endauth
+                <?php endif; ?>
                 <div class="header-icon">
-                    <a href="{{ route('cart.index') }}" style="color: inherit; text-decoration: none;">
+                    <a href="<?php echo e(route('cart.index')); ?>" style="color: inherit; text-decoration: none;">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="badge badge-loading" id="cart-count">
-                            @php
+                            <?php
                                 // Get initial cart count from server to prevent flash
                                 if (Auth::check()) {
                                     $initialCartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity');
@@ -1144,8 +1148,9 @@
                                     $sessionId = Session::getId();
                                     $initialCartCount = \App\Models\CartItem::where('session_id', $sessionId)->sum('quantity');
                                 }
-                            @endphp
-                            {{ $initialCartCount }}
+                            ?>
+                            <?php echo e($initialCartCount); ?>
+
                         </span>
                     </a>
                 </div>
@@ -1164,54 +1169,54 @@
             <i class="fab fa-whatsapp"></i>
         </div>
     </div>
-    @endif
+    <?php endif; ?>
 
     <main>
-        @yield('content')
+        <?php echo $__env->yieldContent('content'); ?>
     </main>
 
-    @sectionMissing('hideHeader')
+    <?php if (empty(trim($__env->yieldContent('hideHeader')))): ?>
     <footer>
         <div class="footer-content">
             <div class="footer-section">
                 <h3>IT Center</h3>
-                <p>{{ __('messages.footer_description') }}</p>
+                <p><?php echo e(__('messages.footer_description')); ?></p>
             </div>
             <div class="footer-section">
-                <h3>{{ __('messages.quick_links') }}</h3>
+                <h3><?php echo e(__('messages.quick_links')); ?></h3>
                 <ul>
-                    <li><a href="{{ route('home') }}">{{ __('messages.home') }}</a></li>
-                    <li><a href="{{ route('products') }}">{{ __('messages.products') }}</a></li>
-                    <li><a href="{{ route('about') }}">{{ __('messages.about') }}</a></li>
+                    <li><a href="<?php echo e(route('home')); ?>"><?php echo e(__('messages.home')); ?></a></li>
+                    <li><a href="<?php echo e(route('products')); ?>"><?php echo e(__('messages.products')); ?></a></li>
+                    <li><a href="<?php echo e(route('about')); ?>"><?php echo e(__('messages.about')); ?></a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>{{ __('messages.footer_categories') }}</h3>
+                <h3><?php echo e(__('messages.footer_categories')); ?></h3>
                 <ul>
-                    <li><a href="#">{{ __('messages.laptops') }}</a></li>
-                    <li><a href="#">{{ __('messages.desktops') }}</a></li>
-                    <li><a href="#">{{ __('messages.accessories') }}</a></li>
-                    <li><a href="#">{{ __('messages.components') }}</a></li>
+                    <li><a href="#"><?php echo e(__('messages.laptops')); ?></a></li>
+                    <li><a href="#"><?php echo e(__('messages.desktops')); ?></a></li>
+                    <li><a href="#"><?php echo e(__('messages.accessories')); ?></a></li>
+                    <li><a href="#"><?php echo e(__('messages.components')); ?></a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3>{{ __('messages.contact_us') }}</h3>
+                <h3><?php echo e(__('messages.contact_us')); ?></h3>
                 <ul>
                     <li><i class="fas fa-phone"></i>&nbsp;&nbsp;0595910045</li>
                     <li><i class="fas fa-envelope"></i>&nbsp;&nbsp;support@itcenter.vip</li>
-                    <li><i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{ __('messages.location') }}</li>
+                    <li><i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;<?php echo e(__('messages.location')); ?></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; {{ date('Y') }} IT Center. {{ __('messages.all_rights_reserved') }}</p>
+            <p>&copy; <?php echo e(date('Y')); ?> IT Center. <?php echo e(__('messages.all_rights_reserved')); ?></p>
         </div>
     </footer>
-    @endif
+    <?php endif; ?>
 
     <script>
         // Global configuration variables
-        const isRTL = {{ is_rtl() ? 'true' : 'false' }};
+        const isRTL = <?php echo e(is_rtl() ? 'true' : 'false'); ?>;
         
         // Header scroll effect
         window.addEventListener('scroll', function() {
@@ -1739,8 +1744,8 @@
             const escapedName = productName.replace(/'/g, "\\'");
 
             // Show confirmation dialog
-            const requestMsg = '{{ __t("messages.request_product") }}';
-            const contactMsg = '{{ __t("messages.contact_us") }}';
+            const requestMsg = '<?php echo e(__t("messages.request_product")); ?>';
+            const contactMsg = '<?php echo e(__t("messages.contact_us")); ?>';
             if (confirm(requestMsg + ': ' + productName + '?\n\n' + contactMsg + ': 0599-123456')) {
                 showNotification(requestMsg + ': ' + productName);
             }
@@ -1995,9 +2000,10 @@
         }, true); // Use capture phase to catch all errors
     </script>
     
-    {{-- Horizontal Scroller JavaScript --}}
-    <script src="{{ asset('js/horizontal-scroller.js') }}"></script>
     
-    @stack('scripts')
+    <script src="<?php echo e(asset('js/horizontal-scroller.js')); ?>"></script>
+    
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
+<?php /**PATH C:\Users\Hamza Damra\ITCenter-Ecommerce\resources\views/layouts/app.blade.php ENDPATH**/ ?>

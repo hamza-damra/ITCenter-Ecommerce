@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use App\Models\BackupSetting;
 use App\Models\Backup;
+use App\Exceptions\BackupRestoreException;
 
 class DatabaseBackupService
 {
@@ -42,13 +43,16 @@ class DatabaseBackupService
     /**
      * Create a full database backup
      *
+     * @param bool $isSafetyBackup Whether this is an automatic safety backup (skips limit check)
      * @return array
      * @throws Exception
      */
-    public function createBackup(): array
+    public function createBackup(bool $isSafetyBackup = false): array
     {
-        // Check max backup limit BEFORE creating file
-        $this->checkMaxBackupLimit();
+        // Check max backup limit BEFORE creating file (skip for safety backups)
+        if (!$isSafetyBackup) {
+            $this->checkMaxBackupLimit();
+        }
 
         try {
             $timestamp = Carbon::now()->format('Y-m-d_H-i-s');
@@ -276,37 +280,59 @@ class DatabaseBackupService
             // Validate backup file integrity
             $this->validateBackupFile($sqlContent, $filename);
 
-            // Create automatic safety backup before restore
-            Log::info('Creating safety backup before restore', ['target_backup' => $filename]);
-            $safetyBackup = null;
-            try {
-                $safetyResult = $this->createBackup();
-                $safetyBackup = $safetyResult['filename'];
-                Log::info('Safety backup created', ['safety_backup' => $safetyBackup]);
-            } catch (Exception $e) {
-                Log::warning('Could not create safety backup, proceeding anyway', ['error' => $e->getMessage()]);
+            // Sanitize dump to avoid nested or conflicting transaction/locking statements
+            $containsExternalTxn = $this->containsControlStatements($sqlContent);
+            if ($containsExternalTxn) {
+                Log::info('Sanitizing SQL dump to remove transaction/locking statements');
+                $sqlContent = $this->sanitizeSqlForTransaction($sqlContent);
             }
 
-            // Use transaction for restore
-            DB::beginTransaction();
+            // Create automatic safety backup before restore (configurable)
+            $safetyBackup = null;
+            if (config('backup.safety_backup_on_restore', true)) {
+                Log::info('Creating safety backup before restore', ['target_backup' => $filename]);
+                try {
+                    $safetyResult = $this->createBackup(true); // Pass true to skip backup limit check
+                    $safetyBackup = $safetyResult['filename'];
+                    Log::info('Safety backup created', ['safety_backup' => $safetyBackup]);
+                } catch (Exception $e) {
+                    Log::warning('Could not create safety backup, proceeding anyway', ['error' => $e->getMessage()]);
+                }
+            }
+
+            // Ensure any previous transactions are resolved before starting restore
+            $this->ensureNoActiveTransaction();
+
+            // Do NOT wrap full dump restore in a Laravel transaction.
+            // MySQL DDL (CREATE/ALTER) performs implicit commits, which would
+            // end the transaction and cause "There is no active transaction"
+            // when we try to commit. We rely on the dump's own safety.
             
             try {
                 // Disable foreign key checks first
                 DB::statement('SET FOREIGN_KEY_CHECKS=0');
                 
-                // Execute the entire SQL content
+                // Execute the entire sanitized SQL content
                 DB::unprepared($sqlContent);
                 
                 // Re-enable foreign key checks
                 DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-                // Commit transaction
-                DB::commit();
-
                 Log::info('Database restored successfully', [
                     'filename' => $filename,
                     'safety_backup' => $safetyBackup,
                 ]);
+
+                // Optionally delete the safety backup after success
+                if ($safetyBackup && !config('backup.keep_safety_backup_on_success', true)) {
+                    try {
+                        $this->deleteBackup($safetyBackup);
+                        Log::info('Deleted safety backup after successful restore', ['safety_backup' => $safetyBackup]);
+                        $safetyBackup = null;
+                    } catch (Exception $delEx) {
+                        Log::warning('Failed to delete safety backup after successful restore', ['error' => $delEx->getMessage()]);
+                    }
+                }
 
                 return [
                     'success' => true,
@@ -316,11 +342,13 @@ class DatabaseBackupService
                 ];
 
             } catch (Exception $e) {
-                // Rollback transaction
-                DB::rollBack();
                 
                 // Re-enable foreign key checks even on error
-                DB::statement('SET FOREIGN_KEY_CHECKS=1');
+                try {
+                    DB::statement('SET FOREIGN_KEY_CHECKS=1');
+                } catch (Exception $fkException) {
+                    Log::warning('Could not re-enable foreign key checks', ['error' => $fkException->getMessage()]);
+                }
                 
                 Log::error('Restore failed, transaction rolled back', [
                     'filename' => $filename,
@@ -328,9 +356,24 @@ class DatabaseBackupService
                     'safety_backup' => $safetyBackup,
                 ]);
                 
-                throw new Exception("Restore failed: {$e->getMessage()}. Database was not modified. Safety backup available: {$safetyBackup}");
+                // Delete safety backup if restore failed to avoid clutter
+                if ($safetyBackup) {
+                    try {
+                        $this->deleteBackup($safetyBackup);
+                        Log::info('Deleted safety backup after failed restore', ['safety_backup' => $safetyBackup]);
+                    } catch (Exception $delEx) {
+                        Log::warning('Failed to delete safety backup after failed restore', ['error' => $delEx->getMessage()]);
+                    }
+                }
+
+                $exception = new BackupRestoreException("Restore failed: {$e->getMessage()}. Database was not modified.");
+                $exception->setSafetyBackup($safetyBackup);
+                throw $exception;
             }
 
+        } catch (BackupRestoreException $e) {
+            // Re-throw our custom exception
+            throw $e;
         } catch (Exception $e) {
             Log::error('Database restore failed', [
                 'filename' => $filename,
@@ -355,14 +398,19 @@ class DatabaseBackupService
         $safetyBackup = null;
         
         try {
-            // Create safety backup
-            try {
-                $safetyResult = $this->createBackup();
-                $safetyBackup = $safetyResult['filename'];
-                Log::info('Safety backup created for streaming restore', ['safety_backup' => $safetyBackup]);
-            } catch (Exception $e) {
-                Log::warning('Could not create safety backup', ['error' => $e->getMessage()]);
+            // Create safety backup if enabled
+            if (config('backup.safety_backup_on_restore', true)) {
+                try {
+                    $safetyResult = $this->createBackup(true); // Pass true to skip backup limit check
+                    $safetyBackup = $safetyResult['filename'];
+                    Log::info('Safety backup created for streaming restore', ['safety_backup' => $safetyBackup]);
+                } catch (Exception $e) {
+                    Log::warning('Could not create safety backup', ['error' => $e->getMessage()]);
+                }
             }
+
+            // Ensure any previous transactions are resolved before starting restore
+            $this->ensureNoActiveTransaction();
 
             // Open file handle
             if ($isCompressed) {
@@ -375,8 +423,6 @@ class DatabaseBackupService
                 throw new Exception("Could not open backup file for reading");
             }
 
-            DB::beginTransaction();
-            
             try {
                 DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
@@ -397,14 +443,22 @@ class DatabaseBackupService
                         continue;
                     }
 
+                    // Skip transaction-control and locking statements from dumps
+                    if ($this->isControlStatement($trimmedLine)) {
+                        continue;
+                    }
+
                     // Accumulate lines until we hit a semicolon
                     $buffer .= $line;
 
                     // Execute when we find a complete statement
                     if (str_ends_with($trimmedLine, ';')) {
                         try {
-                            DB::unprepared($buffer);
-                            $statementCount++;
+                            $bufferToExec = $this->sanitizeStatement($buffer);
+                            if ($bufferToExec !== '') {
+                                DB::unprepared($bufferToExec);
+                                $statementCount++;
+                            }
                             $buffer = '';
                         } catch (Exception $e) {
                             Log::error('Failed to execute SQL statement during streaming restore', [
@@ -418,12 +472,14 @@ class DatabaseBackupService
 
                 // Execute any remaining buffer
                 if (!empty(trim($buffer))) {
-                    DB::unprepared($buffer);
-                    $statementCount++;
+                    $bufferToExec = $this->sanitizeStatement($buffer);
+                    if ($bufferToExec !== '') {
+                        DB::unprepared($bufferToExec);
+                        $statementCount++;
+                    }
                 }
 
                 DB::statement('SET FOREIGN_KEY_CHECKS=1');
-                DB::commit();
 
                 if ($isCompressed) {
                     gzclose($handle);
@@ -437,6 +493,17 @@ class DatabaseBackupService
                     'safety_backup' => $safetyBackup,
                 ]);
 
+                // Optionally delete the safety backup after success
+                if ($safetyBackup && !config('backup.keep_safety_backup_on_success', true)) {
+                    try {
+                        $this->deleteBackup($safetyBackup);
+                        Log::info('Deleted safety backup after successful restore (streaming)', ['safety_backup' => $safetyBackup]);
+                        $safetyBackup = null;
+                    } catch (Exception $delEx) {
+                        Log::warning('Failed to delete safety backup after successful restore (streaming)', ['error' => $delEx->getMessage()]);
+                    }
+                }
+
                 return [
                     'success' => true,
                     'filename' => $filename,
@@ -446,8 +513,13 @@ class DatabaseBackupService
                 ];
 
             } catch (Exception $e) {
-                DB::rollBack();
-                DB::statement('SET FOREIGN_KEY_CHECKS=1');
+                
+                // Re-enable foreign key checks
+                try {
+                    DB::statement('SET FOREIGN_KEY_CHECKS=1');
+                } catch (Exception $fkException) {
+                    Log::warning('Could not re-enable foreign key checks', ['error' => $fkException->getMessage()]);
+                }
                 
                 if ($isCompressed) {
                     gzclose($handle);
@@ -455,9 +527,24 @@ class DatabaseBackupService
                     fclose($handle);
                 }
                 
-                throw new Exception("Streaming restore failed: {$e->getMessage()}. Safety backup: {$safetyBackup}");
+                // Delete safety backup if restore failed to avoid clutter
+                if ($safetyBackup) {
+                    try {
+                        $this->deleteBackup($safetyBackup);
+                        Log::info('Deleted safety backup after failed restore', ['safety_backup' => $safetyBackup]);
+                    } catch (Exception $delEx) {
+                        Log::warning('Failed to delete safety backup after failed restore', ['error' => $delEx->getMessage()]);
+                    }
+                }
+
+                $exception = new BackupRestoreException("Streaming restore failed: {$e->getMessage()}");
+                $exception->setSafetyBackup($safetyBackup);
+                throw $exception;
             }
 
+        } catch (BackupRestoreException $e) {
+            // Re-throw our custom exception
+            throw $e;
         } catch (Exception $e) {
             Log::error('Streaming restore failed', [
                 'filename' => $filename,
@@ -1246,6 +1333,30 @@ class DatabaseBackupService
     }
 
     /**
+     * Ensure there are no active transactions before starting a critical operation
+     * This prevents transaction nesting issues
+     *
+     * @return void
+     */
+    protected function ensureNoActiveTransaction(): void
+    {
+        $transactionLevel = DB::transactionLevel();
+        
+        if ($transactionLevel > 0) {
+            Log::warning('Found active transaction(s) before restore operation, rolling back', [
+                'transaction_level' => $transactionLevel
+            ]);
+            
+            // Roll back all active transactions
+            while (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
+            
+            Log::info('All active transactions have been rolled back');
+        }
+    }
+
+    /**
      * Check if creating a new backup would exceed max limit
      * Throws exception if limit reached
      * Uses database locking to prevent race conditions
@@ -1277,15 +1388,74 @@ class DatabaseBackupService
             
             // If current count is already at or above limit, prevent creation
             if ($currentCount >= $maxBackups) {
-                DB::rollBack();
                 throw new Exception(__('messages.Cannot create a new backup. You have reached the maximum allowed backups.') . " (Limit: {$maxBackups})");
             }
             
             DB::commit();
             
         } catch (Exception $e) {
-            DB::rollBack();
+            // Ensure transaction is rolled back on any exception
+            if (DB::transactionLevel() > 0) {
+                DB::rollBack();
+            }
             throw $e;
         }
+    }
+
+    /**
+     * Detects whether the SQL dump contains transaction/locking control statements
+     */
+    protected function containsControlStatements(string $sql): bool
+    {
+        $pattern = '/\b(START\s+TRANSACTION|BEGIN\s+TRANSACTION|BEGIN\s+WORK|COMMIT|ROLLBACK|LOCK\s+TABLES|UNLOCK\s+TABLES|SET\s+AUTOCOMMIT\s*=\s*(0|1))\b/i';
+        return (bool) preg_match($pattern, $sql);
+    }
+
+    /**
+     * Removes transaction/locking control statements that conflict with Laravel-managed transactions
+     */
+    protected function sanitizeSqlForTransaction(string $sql): string
+    {
+        $replacements = [
+            // Remove transaction and locking statements (case-insensitive)
+            '/\bSTART\s+TRANSACTION\b\s*;?/i' => '',
+            '/\bBEGIN\s+TRANSACTION\b\s*;?/i' => '',
+            '/\bBEGIN\s+WORK\b\s*;?/i' => '',
+            '/\bCOMMIT\b\s*;?/i' => '',
+            '/\bROLLBACK\b\s*;?/i' => '',
+            '/\bLOCK\s+TABLES\b[^;]*;?/i' => '',
+            '/\bUNLOCK\s+TABLES\b\s*;?/i' => '',
+            '/\bSET\s+AUTOCOMMIT\s*=\s*(0|1)\s*;?/i' => '',
+        ];
+
+        return preg_replace(array_keys($replacements), array_values($replacements), $sql);
+    }
+
+    /**
+     * Returns true if the single trimmed line is a control statement that should be skipped
+     */
+    protected function isControlStatement(string $trimmedLine): bool
+    {
+        $upper = strtoupper($trimmedLine);
+        return (
+            str_starts_with($upper, 'START TRANSACTION') ||
+            str_starts_with($upper, 'BEGIN TRANSACTION') ||
+            str_starts_with($upper, 'BEGIN WORK') ||
+            $upper === 'COMMIT;' || $upper === 'COMMIT' ||
+            $upper === 'ROLLBACK;' || $upper === 'ROLLBACK' ||
+            str_starts_with($upper, 'LOCK TABLES') ||
+            str_starts_with($upper, 'UNLOCK TABLES') ||
+            str_starts_with($upper, 'SET AUTOCOMMIT')
+        );
+    }
+
+    /**
+     * Sanitizes an individual SQL statement string
+     */
+    protected function sanitizeStatement(string $statement): string
+    {
+        $statement = $this->sanitizeSqlForTransaction($statement);
+        // After sanitization, return empty string if only whitespace remains
+        return trim($statement) === '' ? '' : $statement;
     }
 }

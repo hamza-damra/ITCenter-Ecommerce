@@ -41,6 +41,22 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e)
     {
+        // Handle BackupRestoreException with detailed error information
+        if ($e instanceof BackupRestoreException) {
+            // For API requests, return JSON
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getDetailedMessage(),
+                    'error' => $e->getMessage(),
+                    'safety_backup' => $e->getSafetyBackup()
+                ], 500);
+            }
+
+            // For web requests, redirect back with error message
+            return back()->with('error', $e->getDetailedMessage());
+        }
+
         // Check if it's a database connection error
         if ($this->isDatabaseConnectionError($e)) {
             // Temporarily switch to file sessions to avoid cascading errors

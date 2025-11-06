@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', __t('messages.order_details') . ' - IT Center'); ?>
 
-@section('title', __t('messages.order_details') . ' - IT Center')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     /* Import Google Font - Poppins */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -49,7 +47,7 @@
 
     .back-button:hover {
         color: #2762f3;
-        transform: translateX({{ is_rtl() ? '5px' : '-5px' }});
+        transform: translateX(<?php echo e(is_rtl() ? '5px' : '-5px'); ?>);
     }
 
     /* Order Header */
@@ -400,15 +398,15 @@
 
 <div class="order-details-page">
     <!-- Back Button -->
-    <a href="{{ route('orders.index') }}" class="back-button">
-        <i class="fas fa-arrow-{{ is_rtl() ? 'right' : 'left' }}"></i>
-        @if(current_locale() === 'ar')
+    <a href="<?php echo e(route('orders.index')); ?>" class="back-button">
+        <i class="fas fa-arrow-<?php echo e(is_rtl() ? 'right' : 'left'); ?>"></i>
+        <?php if(current_locale() === 'ar'): ?>
             العودة إلى الطلبات
-        @elseif(current_locale() === 'he')
+        <?php elseif(current_locale() === 'he'): ?>
             חזרה להזמנות
-        @else
+        <?php else: ?>
             Back to Orders
-        @endif
+        <?php endif; ?>
     </a>
 
     <!-- Order Header -->
@@ -416,82 +414,87 @@
         <div class="order-header-top">
             <div class="order-number">
                 <i class="fas fa-receipt"></i>
-                {{ $order->order_number }}
+                <?php echo e($order->order_number); ?>
+
             </div>
             <div class="order-status-badge">
                 <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
-                {{ $order->status_label }}
+                <?php echo e($order->status_label); ?>
+
             </div>
         </div>
 
         <div class="order-meta-grid">
             <div class="order-meta-item">
                 <div class="order-meta-label">
-                    @if(current_locale() === 'ar')
+                    <?php if(current_locale() === 'ar'): ?>
                         تاريخ الطلب
-                    @elseif(current_locale() === 'he')
+                    <?php elseif(current_locale() === 'he'): ?>
                         תאריך הזמנה
-                    @else
+                    <?php else: ?>
                         Order Date
-                    @endif
+                    <?php endif; ?>
                 </div>
                 <div class="order-meta-value">
                     <i class="fas fa-calendar-alt"></i>
-                    {{ $order->created_at->format('d M Y, h:i A') }}
+                    <?php echo e($order->created_at->format('d M Y, h:i A')); ?>
+
                 </div>
             </div>
 
             <div class="order-meta-item">
                 <div class="order-meta-label">
-                    @if(current_locale() === 'ar')
+                    <?php if(current_locale() === 'ar'): ?>
                         حالة الدفع
-                    @elseif(current_locale() === 'he')
+                    <?php elseif(current_locale() === 'he'): ?>
                         סטטוס תשלום
-                    @else
+                    <?php else: ?>
                         Payment Status
-                    @endif
+                    <?php endif; ?>
                 </div>
                 <div class="order-meta-value">
                     <i class="fas fa-credit-card"></i>
-                    {{ $order->payment_status_label }}
+                    <?php echo e($order->payment_status_label); ?>
+
                 </div>
             </div>
 
             <div class="order-meta-item">
                 <div class="order-meta-label">
-                    @if(current_locale() === 'ar')
+                    <?php if(current_locale() === 'ar'): ?>
                         طريقة الدفع
-                    @elseif(current_locale() === 'he')
+                    <?php elseif(current_locale() === 'he'): ?>
                         אמצעי תשלום
-                    @else
+                    <?php else: ?>
                         Payment Method
-                    @endif
+                    <?php endif; ?>
                 </div>
                 <div class="order-meta-value">
                     <i class="fas fa-money-bill-wave"></i>
-                    @if(current_locale() === 'ar')
+                    <?php if(current_locale() === 'ar'): ?>
                         الدفع عند الاستلام
-                    @elseif(current_locale() === 'he')
+                    <?php elseif(current_locale() === 'he'): ?>
                         תשלום במזומן
-                    @else
+                    <?php else: ?>
                         Cash on Delivery
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
             <div class="order-meta-item">
                 <div class="order-meta-label">
-                    @if(current_locale() === 'ar')
+                    <?php if(current_locale() === 'ar'): ?>
                         عدد المنتجات
-                    @elseif(current_locale() === 'he')
+                    <?php elseif(current_locale() === 'he'): ?>
                         מספר פריטים
-                    @else
+                    <?php else: ?>
                         Total Items
-                    @endif
+                    <?php endif; ?>
                 </div>
                 <div class="order-meta-value">
                     <i class="fas fa-box"></i>
-                    {{ $order->items->sum('quantity') }}
+                    <?php echo e($order->items->sum('quantity')); ?>
+
                 </div>
             </div>
         </div>
@@ -505,18 +508,18 @@
             <div class="section-card" style="margin-bottom: 2rem;">
                 <h2 class="section-title">
                     <i class="fas fa-shopping-bag"></i>
-                    @if(current_locale() === 'ar')
+                    <?php if(current_locale() === 'ar'): ?>
                         المنتجات المطلوبة
-                    @elseif(current_locale() === 'he')
+                    <?php elseif(current_locale() === 'he'): ?>
                         פריטי הזמנה
-                    @else
+                    <?php else: ?>
                         Order Items
-                    @endif
+                    <?php endif; ?>
                 </h2>
 
-                @foreach($order->items as $item)
+                <?php $__currentLoopData = $order->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="order-item">
-                        @php
+                        <?php
                             // Handle different image path formats
                             $imageSrc = asset('images/placeholder.png'); // default fallback
                             
@@ -532,65 +535,67 @@
                                     $imageSrc = asset('storage/' . $item->product_image);
                                 }
                             }
-                        @endphp
+                        ?>
                         
-                        <img src="{{ $imageSrc }}" 
-                             alt="{{ $item->product_name }}" 
+                        <img src="<?php echo e($imageSrc); ?>" 
+                             alt="<?php echo e($item->product_name); ?>" 
                              class="item-image"
-                             onerror="this.src='{{ asset('images/placeholder.png') }}'">
+                             onerror="this.src='<?php echo e(asset('images/placeholder.png')); ?>'">
                         
                         <div class="item-content">
-                            <a href="{{ $item->product_slug ? route('product.detail', $item->product_slug) : '#' }}" 
+                            <a href="<?php echo e($item->product_slug ? route('product.detail', $item->product_slug) : '#'); ?>" 
                                class="item-name">
-                                {{ $item->product_name }}
+                                <?php echo e($item->product_name); ?>
+
                             </a>
                             
                             <div class="item-meta">
                                 <div class="item-meta-item">
                                     <i class="fas fa-hashtag"></i>
-                                    <span>{{ $item->quantity }} x ${{ number_format($item->price, 2) }}</span>
+                                    <span><?php echo e($item->quantity); ?> x $<?php echo e(number_format($item->price, 2)); ?></span>
                                 </div>
-                                @if($item->product_sku)
+                                <?php if($item->product_sku): ?>
                                     <div class="item-meta-item">
                                         <i class="fas fa-barcode"></i>
-                                        <span>{{ $item->product_sku }}</span>
+                                        <span><?php echo e($item->product_sku); ?></span>
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </div>
                         </div>
 
                         <div class="item-pricing">
-                            <div class="item-price">${{ number_format($item->subtotal, 2) }}</div>
-                            @if($item->has_discount)
+                            <div class="item-price">$<?php echo e(number_format($item->subtotal, 2)); ?></div>
+                            <?php if($item->has_discount): ?>
                                 <div class="item-original-price">
-                                    ${{ number_format($item->original_price * $item->quantity, 2) }}
+                                    $<?php echo e(number_format($item->original_price * $item->quantity, 2)); ?>
+
                                 </div>
-                            @endif
+                            <?php endif; ?>
                             <div class="item-subtotal">
-                                @if(current_locale() === 'ar')
+                                <?php if(current_locale() === 'ar'): ?>
                                     المجموع الفرعي
-                                @elseif(current_locale() === 'he')
+                                <?php elseif(current_locale() === 'he'): ?>
                                     סכום ביניים
-                                @else
+                                <?php else: ?>
                                     Subtotal
-                                @endif
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
             <!-- Customer Information -->
             <div class="section-card">
                 <h2 class="section-title">
                     <i class="fas fa-user"></i>
-                    @if(current_locale() === 'ar')
+                    <?php if(current_locale() === 'ar'): ?>
                         معلومات العميل
-                    @elseif(current_locale() === 'he')
+                    <?php elseif(current_locale() === 'he'): ?>
                         פרטי לקוח
-                    @else
+                    <?php else: ?>
                         Customer Information
-                    @endif
+                    <?php endif; ?>
                 </h2>
 
                 <div class="info-grid">
@@ -600,15 +605,15 @@
                         </div>
                         <div class="info-content">
                             <div class="info-label">
-                                @if(current_locale() === 'ar')
+                                <?php if(current_locale() === 'ar'): ?>
                                     الاسم
-                                @elseif(current_locale() === 'he')
+                                <?php elseif(current_locale() === 'he'): ?>
                                     שם
-                                @else
+                                <?php else: ?>
                                     Name
-                                @endif
+                                <?php endif; ?>
                             </div>
-                            <div class="info-value">{{ $order->customer_name }}</div>
+                            <div class="info-value"><?php echo e($order->customer_name); ?></div>
                         </div>
                     </div>
 
@@ -618,15 +623,15 @@
                         </div>
                         <div class="info-content">
                             <div class="info-label">
-                                @if(current_locale() === 'ar')
+                                <?php if(current_locale() === 'ar'): ?>
                                     البريد الإلكتروني
-                                @elseif(current_locale() === 'he')
+                                <?php elseif(current_locale() === 'he'): ?>
                                     אימייל
-                                @else
+                                <?php else: ?>
                                     Email
-                                @endif
+                                <?php endif; ?>
                             </div>
-                            <div class="info-value">{{ $order->customer_email }}</div>
+                            <div class="info-value"><?php echo e($order->customer_email); ?></div>
                         </div>
                     </div>
 
@@ -636,15 +641,15 @@
                         </div>
                         <div class="info-content">
                             <div class="info-label">
-                                @if(current_locale() === 'ar')
+                                <?php if(current_locale() === 'ar'): ?>
                                     رقم الهاتف
-                                @elseif(current_locale() === 'he')
+                                <?php elseif(current_locale() === 'he'): ?>
                                     טלפון
-                                @else
+                                <?php else: ?>
                                     Phone
-                                @endif
+                                <?php endif; ?>
                             </div>
-                            <div class="info-value">{{ $order->customer_phone }}</div>
+                            <div class="info-value"><?php echo e($order->customer_phone); ?></div>
                         </div>
                     </div>
 
@@ -654,43 +659,45 @@
                         </div>
                         <div class="info-content">
                             <div class="info-label">
-                                @if(current_locale() === 'ar')
+                                <?php if(current_locale() === 'ar'): ?>
                                     عنوان الشحن
-                                @elseif(current_locale() === 'he')
+                                <?php elseif(current_locale() === 'he'): ?>
                                     כתובת משלוח
-                                @else
+                                <?php else: ?>
                                     Shipping Address
-                                @endif
+                                <?php endif; ?>
                             </div>
                             <div class="info-value">
-                                {{ $order->shipping_address }}, {{ $order->shipping_city }}<br>
-                                {{ $order->shipping_country }}
-                                @if($order->shipping_postal_code)
-                                    , {{ $order->shipping_postal_code }}
-                                @endif
+                                <?php echo e($order->shipping_address); ?>, <?php echo e($order->shipping_city); ?><br>
+                                <?php echo e($order->shipping_country); ?>
+
+                                <?php if($order->shipping_postal_code): ?>
+                                    , <?php echo e($order->shipping_postal_code); ?>
+
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
 
-                    @if($order->notes)
+                    <?php if($order->notes): ?>
                         <div class="info-item">
                             <div class="info-icon">
                                 <i class="fas fa-sticky-note"></i>
                             </div>
                             <div class="info-content">
                                 <div class="info-label">
-                                    @if(current_locale() === 'ar')
+                                    <?php if(current_locale() === 'ar'): ?>
                                         ملاحظات
-                                    @elseif(current_locale() === 'he')
+                                    <?php elseif(current_locale() === 'he'): ?>
                                         הערות
-                                    @else
+                                    <?php else: ?>
                                         Notes
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
-                                <div class="info-value">{{ $order->notes }}</div>
+                                <div class="info-value"><?php echo e($order->notes); ?></div>
                             </div>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -700,121 +707,122 @@
             <div class="section-card order-summary">
                 <h2 class="section-title">
                     <i class="fas fa-calculator"></i>
-                    @if(current_locale() === 'ar')
+                    <?php if(current_locale() === 'ar'): ?>
                         ملخص الطلب
-                    @elseif(current_locale() === 'he')
+                    <?php elseif(current_locale() === 'he'): ?>
                         סיכום הזמנה
-                    @else
+                    <?php else: ?>
                         Order Summary
-                    @endif
+                    <?php endif; ?>
                 </h2>
 
                 <div class="summary-row">
                     <span class="summary-label">
-                        @if(current_locale() === 'ar')
+                        <?php if(current_locale() === 'ar'): ?>
                             المجموع الفرعي
-                        @elseif(current_locale() === 'he')
+                        <?php elseif(current_locale() === 'he'): ?>
                             סכום ביניים
-                        @else
+                        <?php else: ?>
                             Subtotal
-                        @endif
+                        <?php endif; ?>
                     </span>
-                    <span class="summary-value">${{ number_format($order->subtotal, 2) }}</span>
+                    <span class="summary-value">$<?php echo e(number_format($order->subtotal, 2)); ?></span>
                 </div>
 
-                @if($order->tax > 0)
+                <?php if($order->tax > 0): ?>
                     <div class="summary-row">
                         <span class="summary-label">
-                            @if(current_locale() === 'ar')
+                            <?php if(current_locale() === 'ar'): ?>
                                 الضريبة
-                            @elseif(current_locale() === 'he')
+                            <?php elseif(current_locale() === 'he'): ?>
                                 מס
-                            @else
+                            <?php else: ?>
                                 Tax
-                            @endif
+                            <?php endif; ?>
                         </span>
-                        <span class="summary-value">${{ number_format($order->tax, 2) }}</span>
+                        <span class="summary-value">$<?php echo e(number_format($order->tax, 2)); ?></span>
                     </div>
-                @endif
+                <?php endif; ?>
 
                 <div class="summary-row">
                     <span class="summary-label">
-                        @if(current_locale() === 'ar')
+                        <?php if(current_locale() === 'ar'): ?>
                             الشحن
-                        @elseif(current_locale() === 'he')
+                        <?php elseif(current_locale() === 'he'): ?>
                             משלוח
-                        @else
+                        <?php else: ?>
                             Shipping
-                        @endif
+                        <?php endif; ?>
                     </span>
                     <span class="summary-value">
-                        @if($order->shipping_cost > 0)
-                            ${{ number_format($order->shipping_cost, 2) }}
-                        @else
-                            @if(current_locale() === 'ar')
+                        <?php if($order->shipping_cost > 0): ?>
+                            $<?php echo e(number_format($order->shipping_cost, 2)); ?>
+
+                        <?php else: ?>
+                            <?php if(current_locale() === 'ar'): ?>
                                 مجاني
-                            @elseif(current_locale() === 'he')
+                            <?php elseif(current_locale() === 'he'): ?>
                                 חינם
-                            @else
+                            <?php else: ?>
                                 Free
-                            @endif
-                        @endif
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </span>
                 </div>
 
-                @if($order->discount > 0)
+                <?php if($order->discount > 0): ?>
                     <div class="summary-row">
                         <span class="summary-label">
-                            @if(current_locale() === 'ar')
+                            <?php if(current_locale() === 'ar'): ?>
                                 الخصم
-                            @elseif(current_locale() === 'he')
+                            <?php elseif(current_locale() === 'he'): ?>
                                 הנחה
-                            @else
+                            <?php else: ?>
                                 Discount
-                            @endif
+                            <?php endif; ?>
                         </span>
-                        <span class="summary-value discount">-${{ number_format($order->discount, 2) }}</span>
+                        <span class="summary-value discount">-$<?php echo e(number_format($order->discount, 2)); ?></span>
                     </div>
-                @endif
+                <?php endif; ?>
 
                 <div class="summary-row total">
                     <span class="summary-label">
-                        @if(current_locale() === 'ar')
+                        <?php if(current_locale() === 'ar'): ?>
                             المجموع الكلي
-                        @elseif(current_locale() === 'he')
+                        <?php elseif(current_locale() === 'he'): ?>
                             סה"כ
-                        @else
+                        <?php else: ?>
                             Total
-                        @endif
+                        <?php endif; ?>
                     </span>
-                    <span class="summary-value total">${{ number_format($order->total, 2) }}</span>
+                    <span class="summary-value total">$<?php echo e(number_format($order->total, 2)); ?></span>
                 </div>
 
                 <!-- Actions -->
                 <div class="order-actions">
-                    @if($order->canBeCancelled())
-                        <form action="{{ route('orders.cancel', $order->order_number) }}" method="POST" style="flex: 1;">
-                            @csrf
+                    <?php if($order->canBeCancelled()): ?>
+                        <form action="<?php echo e(route('orders.cancel', $order->order_number)); ?>" method="POST" style="flex: 1;">
+                            <?php echo csrf_field(); ?>
                             <button type="submit" class="btn btn-danger" 
-                                    onclick="return confirm('{{ __t('messages.confirm_cancel_order') }}')">
+                                    onclick="return confirm('<?php echo e(__t('messages.confirm_cancel_order')); ?>')">
                                 <i class="fas fa-times-circle"></i>
-                                @if(current_locale() === 'ar')
+                                <?php if(current_locale() === 'ar'): ?>
                                     إلغاء الطلب
-                                @elseif(current_locale() === 'he')
+                                <?php elseif(current_locale() === 'he'): ?>
                                     בטל הזמנה
-                                @else
+                                <?php else: ?>
                                     Cancel Order
-                                @endif
+                                <?php endif; ?>
                             </button>
                         </form>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@if(session('order_completed'))
+<?php if(session('order_completed')): ?>
 <script>
     // Prevent back button navigation after order completion
     // This ensures users don't accidentally return to checkout/cart with empty cart
@@ -828,12 +836,14 @@
                 window.history.pushState(null, null, window.location.href);
                 
                 // Optional: Show a message
-                if (confirm('{{ __("messages.return_to_orders_list") ?? "Return to orders list?" }}')) {
-                    window.location.href = '{{ route("orders.index") }}';
+                if (confirm('<?php echo e(__("messages.return_to_orders_list") ?? "Return to orders list?"); ?>')) {
+                    window.location.href = '<?php echo e(route("orders.index")); ?>';
                 }
             });
         }
     })();
 </script>
-@endif
-@endsection
+<?php endif; ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\ITCenter-Ecommerce\resources\views/orders/show.blade.php ENDPATH**/ ?>

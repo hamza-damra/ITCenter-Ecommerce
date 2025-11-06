@@ -29,7 +29,8 @@ class CheckoutController extends Controller
 
         $identifier = $this->getCartIdentifier();
 
-        $cartItems = CartItem::with('product.images')
+        // Fresh query - no caching to ensure we get the latest cart items
+        $cartItems = CartItem::with(['product.images', 'product'])
             ->where(function($query) use ($identifier) {
                 if (isset($identifier['user_id'])) {
                     $query->where('user_id', $identifier['user_id']);
@@ -37,12 +38,13 @@ class CheckoutController extends Controller
                     $query->where('session_id', $identifier['session_id']);
                 }
             })
+            ->orderBy('created_at', 'desc') // Show newest items first
             ->get();
 
         // Redirect to cart if empty
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')
-                ->with('error', __('messages.cart_empty'));
+                ->with('warning', __('messages.cart_empty_cannot_checkout'));
         }
 
         $subtotal = $cartItems->sum(function($item) {
@@ -145,7 +147,7 @@ class CheckoutController extends Controller
                     'product_name_ar' => $product->name_ar,
                     'product_name_he' => $product->name_he ?? $product->name_en,
                     'product_slug' => $product->slug,
-                    'product_image' => $product->main_image,
+                    'product_image' => $product->getAttributes()['main_image'] ?? null, // Get raw DB value, not accessor
                     'product_sku' => $product->sku,
                     'price' => $cartItem->price,
                     'original_price' => $product->original_price,
@@ -164,8 +166,14 @@ class CheckoutController extends Controller
 
             DB::commit();
 
+            // Clear session to prevent back button issues
+            Session::forget('cart_identifier');
+            
+            // Redirect to order confirmation
+            // Note: The order page view should handle preventing back navigation via JavaScript
             return redirect()->route('orders.show', $order->order_number)
-                ->with('success', __('messages.order_placed_successfully'));
+                ->with('success', __('messages.order_placed_successfully'))
+                ->with('order_completed', true); // Flag to indicate fresh order completion
                 
         } catch (\Exception $e) {
             DB::rollBack();

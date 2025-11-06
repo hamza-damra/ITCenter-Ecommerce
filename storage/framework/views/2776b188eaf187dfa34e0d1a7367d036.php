@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', __('messages.checkout') . ' - IT Center'); ?>
 
-@section('title', __('messages.checkout') . ' - IT Center')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     /* Import Google Font - Poppins */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -478,52 +476,55 @@
             <div class="step-circle">
                 <i class="fas fa-check"></i>
             </div>
-            <div class="step-label">{{ __('messages.cart') }}</div>
+            <div class="step-label"><?php echo e(__('messages.cart')); ?></div>
         </div>
         <div class="progress-step active">
             <div class="step-circle">2</div>
-            <div class="step-label">{{ __('messages.checkout') }}</div>
+            <div class="step-label"><?php echo e(__('messages.checkout')); ?></div>
         </div>
         <div class="progress-step">
             <div class="step-circle">3</div>
-            <div class="step-label">{{ __('messages.confirmation') }}</div>
+            <div class="step-label"><?php echo e(__('messages.confirmation')); ?></div>
         </div>
     </div>
 
     <div class="checkout-content">
         <!-- Checkout Form -->
         <div class="checkout-form-section">
-            <form id="checkout-form" method="POST" action="{{ route('checkout.process') }}">
-                @csrf
+            <form id="checkout-form" method="POST" action="<?php echo e(route('checkout.process')); ?>">
+                <?php echo csrf_field(); ?>
                 
                 <!-- Contact Information -->
                 <div class="section-title">
                     <i class="fas fa-user"></i>
-                    {{ __('messages.contact_information') }}
+                    <?php echo e(__('messages.contact_information')); ?>
+
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="first_name">
-                            {{ __('messages.first_name') }}
+                            <?php echo e(__('messages.first_name')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="text" 
                                id="first_name" 
                                name="first_name" 
-                               value="{{ old('first_name', $user->first_name ?? '') }}"
+                               value="<?php echo e(old('first_name', $user->first_name ?? '')); ?>"
                                required>
                     </div>
 
                     <div class="form-group">
                         <label for="last_name">
-                            {{ __('messages.last_name') }}
+                            <?php echo e(__('messages.last_name')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="text" 
                                id="last_name" 
                                name="last_name" 
-                               value="{{ old('last_name', $user->last_name ?? '') }}"
+                               value="<?php echo e(old('last_name', $user->last_name ?? '')); ?>"
                                required>
                     </div>
                 </div>
@@ -531,25 +532,27 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="email">
-                            {{ __('messages.email') }}
+                            <?php echo e(__('messages.email')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="email" 
                                id="email" 
                                name="email" 
-                               value="{{ old('email', $user->email ?? '') }}"
+                               value="<?php echo e(old('email', $user->email ?? '')); ?>"
                                required>
                     </div>
 
                     <div class="form-group">
                         <label for="phone">
-                            {{ __('messages.phone') }}
+                            <?php echo e(__('messages.phone')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="tel" 
                                id="phone" 
                                name="phone" 
-                               value="{{ old('phone', $user->phone ?? '') }}"
+                               value="<?php echo e(old('phone', $user->phone ?? '')); ?>"
                                required>
                     </div>
                 </div>
@@ -557,20 +560,22 @@
                 <!-- Shipping Address -->
                 <div class="section-title" style="margin-top: 2rem;">
                     <i class="fas fa-map-marker-alt"></i>
-                    {{ __('messages.shipping_address') }}
+                    <?php echo e(__('messages.shipping_address')); ?>
+
                 </div>
 
                 <div class="form-grid full">
                     <div class="form-group">
                         <label for="address">
-                            {{ __('messages.street_address') }}
+                            <?php echo e(__('messages.street_address')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="text" 
                                id="address" 
                                name="address" 
-                               value="{{ old('address') }}"
-                               placeholder="{{ __('messages.address_placeholder') }}"
+                               value="<?php echo e(old('address')); ?>"
+                               placeholder="<?php echo e(__('messages.address_placeholder')); ?>"
                                required>
                     </div>
                 </div>
@@ -578,51 +583,54 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="city">
-                            {{ __('messages.city') }}
+                            <?php echo e(__('messages.city')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="text" 
                                id="city" 
                                name="city" 
-                               value="{{ old('city') }}"
+                               value="<?php echo e(old('city')); ?>"
                                required>
                     </div>
 
                     <div class="form-group">
-                        <label for="state">{{ __('messages.state') }}</label>
+                        <label for="state"><?php echo e(__('messages.state')); ?></label>
                         <input type="text" 
                                id="state" 
                                name="state" 
-                               value="{{ old('state') }}">
+                               value="<?php echo e(old('state')); ?>">
                     </div>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="postal_code">
-                            {{ __('messages.postal_code') }}
+                            <?php echo e(__('messages.postal_code')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="text" 
                                id="postal_code" 
                                name="postal_code" 
-                               value="{{ old('postal_code') }}"
+                               value="<?php echo e(old('postal_code')); ?>"
                                required>
                     </div>
 
                     <div class="form-group">
                         <label for="country">
-                            {{ __('messages.country') }}
+                            <?php echo e(__('messages.country')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <select id="country" name="country" required>
-                            <option value="">{{ __('messages.select_country') }}</option>
-                            <option value="Israel" {{ old('country') == 'Israel' ? 'selected' : '' }}>{{ __('messages.israel') }}</option>
-                            <option value="Palestine" {{ old('country') == 'Palestine' ? 'selected' : '' }}>{{ __('messages.palestine') }}</option>
-                            <option value="Jordan" {{ old('country') == 'Jordan' ? 'selected' : '' }}>{{ __('messages.jordan') }}</option>
-                            <option value="Egypt" {{ old('country') == 'Egypt' ? 'selected' : '' }}>{{ __('messages.egypt') }}</option>
-                            <option value="Lebanon" {{ old('country') == 'Lebanon' ? 'selected' : '' }}>{{ __('messages.lebanon') }}</option>
-                            <option value="Syria" {{ old('country') == 'Syria' ? 'selected' : '' }}>{{ __('messages.syria') }}</option>
+                            <option value=""><?php echo e(__('messages.select_country')); ?></option>
+                            <option value="Israel" <?php echo e(old('country') == 'Israel' ? 'selected' : ''); ?>><?php echo e(__('messages.israel')); ?></option>
+                            <option value="Palestine" <?php echo e(old('country') == 'Palestine' ? 'selected' : ''); ?>><?php echo e(__('messages.palestine')); ?></option>
+                            <option value="Jordan" <?php echo e(old('country') == 'Jordan' ? 'selected' : ''); ?>><?php echo e(__('messages.jordan')); ?></option>
+                            <option value="Egypt" <?php echo e(old('country') == 'Egypt' ? 'selected' : ''); ?>><?php echo e(__('messages.egypt')); ?></option>
+                            <option value="Lebanon" <?php echo e(old('country') == 'Lebanon' ? 'selected' : ''); ?>><?php echo e(__('messages.lebanon')); ?></option>
+                            <option value="Syria" <?php echo e(old('country') == 'Syria' ? 'selected' : ''); ?>><?php echo e(__('messages.syria')); ?></option>
                         </select>
                     </div>
                 </div>
@@ -631,7 +639,8 @@
                 <div class="payment-methods">
                     <div class="section-title">
                         <i class="fas fa-credit-card"></i>
-                        {{ __('messages.payment_method') }}
+                        <?php echo e(__('messages.payment_method')); ?>
+
                     </div>
 
                     <label class="payment-option">
@@ -639,8 +648,8 @@
                         <div class="payment-option-label">
                             <i class="fas fa-money-bill-wave payment-icon"></i>
                             <div class="payment-info">
-                                <h4>{{ __('messages.cash_on_delivery') }}</h4>
-                                <p>{{ __('messages.cod_description') }}</p>
+                                <h4><?php echo e(__('messages.cash_on_delivery')); ?></h4>
+                                <p><?php echo e(__('messages.cod_description')); ?></p>
                             </div>
                         </div>
                     </label>
@@ -650,8 +659,8 @@
                         <div class="payment-option-label">
                             <i class="fas fa-university payment-icon"></i>
                             <div class="payment-info">
-                                <h4>{{ __('messages.bank_transfer') }}</h4>
-                                <p>{{ __('messages.bank_transfer_description') }}</p>
+                                <h4><?php echo e(__('messages.bank_transfer')); ?></h4>
+                                <p><?php echo e(__('messages.bank_transfer_description')); ?></p>
                             </div>
                         </div>
                     </label>
@@ -660,10 +669,10 @@
                 <!-- Order Notes -->
                 <div class="form-grid full" style="margin-top: 2rem;">
                     <div class="form-group">
-                        <label for="notes">{{ __('messages.order_notes') }}</label>
+                        <label for="notes"><?php echo e(__('messages.order_notes')); ?></label>
                         <textarea id="notes" 
                                   name="notes" 
-                                  placeholder="{{ __('messages.order_notes_placeholder') }}">{{ old('notes') }}</textarea>
+                                  placeholder="<?php echo e(__('messages.order_notes_placeholder')); ?>"><?php echo e(old('notes')); ?></textarea>
                     </div>
                 </div>
             </form>
@@ -671,15 +680,15 @@
 
         <!-- Order Summary -->
         <div class="order-summary-sidebar">
-            <h2 class="summary-header">{{ __('messages.order_summary') }}</h2>
+            <h2 class="summary-header"><?php echo e(__('messages.order_summary')); ?></h2>
 
             <div class="summary-items">
-                @foreach($cartItems as $item)
-                    @if($item->product)
-                        <a href="{{ route('product.detail', $item->product->slug) }}" class="summary-item-link">
+                <?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if($item->product): ?>
+                        <a href="<?php echo e(route('product.detail', $item->product->slug)); ?>" class="summary-item-link">
                             <div class="summary-item">
                                 <div class="summary-item-image">
-                                    @php
+                                    <?php
                                         // Get raw main_image value from database
                                         $mainImage = $item->product->getAttributes()['main_image'] ?? null;
                                         $imageSrc = asset('images/products/default.png'); // default
@@ -693,47 +702,52 @@
                                                 $imageSrc = asset('storage/' . $mainImage);
                                             }
                                         }
-                                    @endphp
-                                    <img src="{{ $imageSrc }}" 
-                                         alt="{{ $item->product->name }}"
-                                         onerror="this.src='{{ asset('images/products/default.png') }}'">
+                                    ?>
+                                    <img src="<?php echo e($imageSrc); ?>" 
+                                         alt="<?php echo e($item->product->name); ?>"
+                                         onerror="this.src='<?php echo e(asset('images/products/default.png')); ?>'">
                                 </div>
                                 <div class="summary-item-details">
                                     <div class="summary-item-name">
-                                        {{ $item->product->{'name_' . current_locale()} }}
+                                        <?php echo e($item->product->{'name_' . current_locale()}); ?>
+
                                     </div>
                                     <div class="summary-item-qty">
-                                        {{ __('messages.quantity') }}: {{ $item->quantity }}
+                                        <?php echo e(__('messages.quantity')); ?>: <?php echo e($item->quantity); ?>
+
                                     </div>
                                 </div>
                                 <div class="summary-item-price">
-                                    ₪{{ number_format($item->price * $item->quantity, 2) }}
+                                    ₪<?php echo e(number_format($item->price * $item->quantity, 2)); ?>
+
                                 </div>
                             </div>
                         </a>
-                    @endif
-                @endforeach
+                    <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
             <div class="summary-totals">
                 <div class="summary-row">
-                    <span class="label">{{ __('messages.subtotal') }}</span>
-                    <span class="value">₪{{ number_format($subtotal, 2) }}</span>
+                    <span class="label"><?php echo e(__('messages.subtotal')); ?></span>
+                    <span class="value">₪<?php echo e(number_format($subtotal, 2)); ?></span>
                 </div>
                 <div class="summary-row total">
-                    <span class="label">{{ __('messages.total') }}</span>
-                    <span class="value">₪{{ number_format($total, 2) }}</span>
+                    <span class="label"><?php echo e(__('messages.total')); ?></span>
+                    <span class="value">₪<?php echo e(number_format($total, 2)); ?></span>
                 </div>
             </div>
 
             <button type="submit" form="checkout-form" class="place-order-btn">
                 <i class="fas fa-check-circle"></i>
-                {{ __('messages.place_order') }}
+                <?php echo e(__('messages.place_order')); ?>
+
             </button>
 
             <div class="secure-badge">
                 <i class="fas fa-lock"></i>
-                {{ __('messages.secure_checkout') }}
+                <?php echo e(__('messages.secure_checkout')); ?>
+
             </div>
         </div>
     </div>
@@ -759,7 +773,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const submitBtn = document.querySelector('.place-order-btn');
         const originalText = submitBtn.innerHTML;
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("messages.processing_order") }}...';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <?php echo e(__("messages.processing_order")); ?>...';
         
         // Submit form
         fetch(checkoutForm.action, {
@@ -780,9 +794,11 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error:', error);
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
-            alert('{{ __("messages.order_error") }}');
+            alert('<?php echo e(__("messages.order_error")); ?>');
         });
     });
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\ITCenter-Ecommerce\resources\views/checkout.blade.php ENDPATH**/ ?>

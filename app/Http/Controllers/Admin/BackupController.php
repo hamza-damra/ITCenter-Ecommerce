@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Services\DatabaseBackupService;
+use App\Exceptions\BackupRestoreException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Exception;
@@ -101,6 +102,15 @@ class BackupController extends Controller
             return redirect()->route('admin.backup.index')
                 ->with('success', "Database restored successfully from {$result['filename']}! {$result['statements']} statements executed.");
 
+        } catch (BackupRestoreException $e) {
+            Log::error('Backup restoration failed', [
+                'filename' => $request->filename,
+                'error' => $e->getMessage(),
+                'safety_backup' => $e->getSafetyBackup()
+            ]);
+            
+            return redirect()->route('admin.backup.index')
+                ->with('error', $e->getDetailedMessage());
         } catch (Exception $e) {
             Log::error('Backup restoration failed', [
                 'filename' => $request->filename,
@@ -434,6 +444,14 @@ class BackupController extends Controller
             return redirect()->route('admin.backup.index')
                 ->with('success', "Backup imported and restored successfully! Original file: {$result['original_filename']}");
 
+        } catch (BackupRestoreException $e) {
+            Log::error('Backup import/restore failed', [
+                'error' => $e->getMessage(),
+                'safety_backup' => $e->getSafetyBackup()
+            ]);
+            
+            return redirect()->route('admin.backup.index')
+                ->with('error', $e->getDetailedMessage());
         } catch (Exception $e) {
             Log::error('Backup import/restore failed', [
                 'error' => $e->getMessage()

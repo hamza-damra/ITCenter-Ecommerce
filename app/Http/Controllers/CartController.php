@@ -28,7 +28,8 @@ class CartController extends Controller
     {
         $identifier = $this->getCartIdentifier();
 
-        $cartItems = CartItem::with('product.images')
+        // Fresh query - get latest cart items ordered by creation date (newest first)
+        $cartItems = CartItem::with(['product.images', 'product'])
             ->where(function($query) use ($identifier) {
                 if (isset($identifier['user_id'])) {
                     $query->where('user_id', $identifier['user_id']);
@@ -36,6 +37,7 @@ class CartController extends Controller
                     $query->where('session_id', $identifier['session_id']);
                 }
             })
+            ->orderBy('created_at', 'desc') // Show newest items first
             ->get()
             ->filter(function($item) {
                 // Remove cart items with missing/deleted products

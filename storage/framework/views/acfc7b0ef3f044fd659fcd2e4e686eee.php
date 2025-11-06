@@ -1,10 +1,8 @@
-@extends('layouts.app')
+<?php $__env->startSection('hideHeader', true); ?>
 
-@section('hideHeader', true)
+<?php $__env->startSection('title', __('messages.login') . ' - IT Center'); ?>
 
-@section('title', __('messages.login') . ' - IT Center')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     .auth-container {
         min-height: 100vh;
@@ -63,7 +61,8 @@
 
     .form-input-icon {
         position: absolute;
-        {{ is_rtl() ? 'right: 15px;' : 'left: 15px;' }}
+        <?php echo e(is_rtl() ? 'right: 15px;' : 'left: 15px;'); ?>
+
         top: 50%;
         transform: translateY(-50%);
         color: #999;
@@ -73,12 +72,13 @@
     .form-control {
         width: 100%;
         padding: 0.9rem 1rem;
-        {{ is_rtl() ? 'padding-right: 45px;' : 'padding-left: 45px;' }}
+        <?php echo e(is_rtl() ? 'padding-right: 45px;' : 'padding-left: 45px;'); ?>
+
         border: 2px solid #e0e0e0;
         border-radius: 10px;
         font-size: 0.95rem;
         transition: all 0.3s;
-        direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+        direction: <?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>;
     }
 
     .form-control:focus {
@@ -203,66 +203,84 @@
     <div class="auth-card">
         <div class="auth-right">
             <div class="auth-header">
-                <h3>{{ __('messages.login') }}</h3>
-                <p>{{ __('messages.enter_credentials') }}</p>
+                <h3><?php echo e(__('messages.login')); ?></h3>
+                <p><?php echo e(__('messages.enter_credentials')); ?></p>
             </div>
 
-            @if(session('error'))
+            <?php if(session('error')): ?>
             <div class="alert alert-error" style="background: #ffe6e6; color: #ff4757; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; text-align: center;">
-                {{ session('error') }}
-            </div>
-            @endif
+                <?php echo e(session('error')); ?>
 
-            @if(session('success'))
+            </div>
+            <?php endif; ?>
+
+            <?php if(session('success')): ?>
             <div class="alert alert-success" style="background: #e6ffe6; color: #4CAF50; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; text-align: center;">
-                {{ session('success') }}
-            </div>
-            @endif
+                <?php echo e(session('success')); ?>
 
-            <form action="{{ route('login.post') }}" method="POST" id="loginForm">
-                @csrf
+            </div>
+            <?php endif; ?>
+
+            <form action="<?php echo e(route('login.post')); ?>" method="POST" id="loginForm">
+                <?php echo csrf_field(); ?>
 
                 <div class="form-group">
-                    <label for="email">{{ __('messages.email') }}</label>
+                    <label for="email"><?php echo e(__('messages.email')); ?></label>
                     <div class="form-input-wrapper">
                         <i class="fas fa-envelope form-input-icon"></i>
                         <input type="email" id="email" name="email" class="form-control"
-                               placeholder="{{ __('messages.email_placeholder') }}"
-                               value="{{ old('email') }}" required>
+                               placeholder="<?php echo e(__('messages.email_placeholder')); ?>"
+                               value="<?php echo e(old('email')); ?>" required>
                     </div>
-                    @error('email')
-                    <div class="error-message show">{{ $message }}</div>
-                    @enderror
+                    <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="error-message show"><?php echo e($message); ?></div>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">{{ __('messages.password') }}</label>
+                    <label for="password"><?php echo e(__('messages.password')); ?></label>
                     <div class="form-input-wrapper">
                         <i class="fas fa-lock form-input-icon"></i>
                         <input type="password" id="password" name="password" class="form-control"
-                               placeholder="{{ __('messages.password_placeholder') }}" required>
+                               placeholder="<?php echo e(__('messages.password_placeholder')); ?>" required>
                     </div>
-                    @error('password')
-                    <div class="error-message show">{{ $message }}</div>
-                    @enderror
+                    <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="error-message show"><?php echo e($message); ?></div>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="form-options">
                     <div class="remember-me">
                         <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">{{ __('messages.remember_me') }}</label>
+                        <label for="remember"><?php echo e(__('messages.remember_me')); ?></label>
                     </div>
-                    <a href="{{ route('password.request') }}" class="forgot-password">{{ __('messages.forgot_password') }}</a>
+                    <a href="<?php echo e(route('password.request')); ?>" class="forgot-password"><?php echo e(__('messages.forgot_password')); ?></a>
                 </div>
 
                 <button type="submit" class="btn-submit">
-                    <i class="fas fa-sign-in-alt"></i> {{ __('messages.login') }}
+                    <i class="fas fa-sign-in-alt"></i> <?php echo e(__('messages.login')); ?>
+
                 </button>
             </form>
 
             <div class="auth-footer">
-                {{ __('messages.dont_have_account') }}
-                <a href="{{ route('register') }}">{{ __('messages.register_now') }}</a>
+                <?php echo e(__('messages.dont_have_account')); ?>
+
+                <a href="<?php echo e(route('register')); ?>"><?php echo e(__('messages.register_now')); ?></a>
             </div>
         </div>
     </div>
@@ -327,5 +345,7 @@
     });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\ITCenter-Ecommerce\resources\views/auth/login.blade.php ENDPATH**/ ?>
