@@ -148,13 +148,13 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #2762f3, #5b8def);
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
             transition: width 0.3s ease;
         }
 
         .nav-menu a:hover,
         .nav-menu a.active {
-            color: #2762f3;
+            color: #2563eb;
         }
 
         .nav-menu a:hover::after,
@@ -224,8 +224,8 @@
         
         .search-bar input:focus {
             background: #ffffff;
-            border-color: #5b8def;
-            box-shadow: 0 0 0 3px rgba(91, 141, 239, 0.1);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
         .search-bar input::placeholder {
@@ -236,7 +236,7 @@
         .search-btn {
             height: 50px;
             padding: 0 28px;
-            background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             color: #ffffff;
             border: none;
             border-radius: {{ is_rtl() ? '12px 0 0 12px' : '0 12px 12px 0' }};
@@ -273,14 +273,14 @@
         }
 
         .search-btn:hover {
-            background: linear-gradient(135deg, #1a4dbf 0%, #0d3a9f 100%);
+            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(39, 98, 243, 0.35);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
         }
 
         .search-btn:active {
             transform: translateY(0);
-            box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
         }
 
         .search-btn span {
@@ -311,7 +311,7 @@
         }
 
         .header-icon:hover {
-            color: #2762f3;
+            color: #2563eb;
             transform: translateY(-2px);
         }
 
@@ -319,7 +319,7 @@
             position: absolute;
             top: -8px;
             {{ is_rtl() ? 'left' : 'right' }}: -8px;
-            background: #2762f3;
+            background: #2563eb;
             color: #fff;
             font-size: 0.7rem;
             padding: 2px 6px;
@@ -419,7 +419,7 @@
 
         .footer-section h3 {
             margin-bottom: 1rem;
-            color: #2762f3;
+            color: #2563eb;
             font-weight: 600;
         }
 
@@ -438,13 +438,13 @@
         }
 
         .footer-section a:hover {
-            color: #2762f3;
+            color: #2563eb;
         }
 
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
-            border-top: 1px solid rgba(39, 98, 243, 0.2);
+            border-top: 1px solid rgba(37, 99, 235, 0.2);
             color: #64748b;
         }
 
@@ -484,7 +484,7 @@
             position: relative;
         }
         .fas:hover{
-            color: #2762f3;
+            color: #2563eb;
         }
         .language-toggle {
             display: flex;
@@ -497,13 +497,13 @@
         }
 
         .language-toggle:hover {
-            color: #2762f3;
-            background: rgba(39, 98, 243, 0.05);
+            color: #2563eb;
+            background: rgba(37, 99, 235, 0.05);
         }
 
         .language-dropdown.active .language-toggle {
-            background: rgba(39, 98, 243, 0.08);
-            color: #2762f3;
+            background: rgba(37, 99, 235, 0.08);
+            color: #2563eb;
         }
 
         .language-dropdown.active .language-toggle .fa-chevron-down {
@@ -527,7 +527,7 @@
             border: 2px solid #e8eef7;
             border-radius: 12px;
             min-width: 200px;
-            box-shadow: 0 8px 24px rgba(39, 98, 243, 0.12);
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
             overflow: hidden;
             z-index: 1001;
             opacity: 0;
@@ -563,7 +563,7 @@
             text-decoration: none;
             transition: all 0.3s ease;
             position: relative;
-            border-bottom: 1px solid rgba(39, 98, 243, 0.06);
+            border-bottom: 1px solid rgba(37, 99, 235, 0.06);
         }
 
         .language-option:last-child {
@@ -571,14 +571,14 @@
         }
 
         .language-option:hover {
-            background: rgba(39, 98, 243, 0.06);
-            color: #2762f3;
+            background: rgba(37, 99, 235, 0.06);
+            color: #2563eb;
             padding-{{ is_rtl() ? 'right' : 'left' }}: 1.4rem;
         }
 
         .language-option.active {
-            background: rgba(39, 98, 243, 0.1);
-            color: #2762f3;
+            background: rgba(37, 99, 235, 0.1);
+            color: #2563eb;
             font-weight: 600;
         }
 
@@ -589,7 +589,7 @@
             top: 0;
             bottom: 0;
             width: 3px;
-            background: linear-gradient(to bottom, #2762f3, #5b8def);
+            background: linear-gradient(to bottom, #2563eb, #3b82f6);
         }
 
         .lang-icon {
@@ -600,7 +600,7 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: rgba(39, 98, 243, 0.08);
+            background: rgba(37, 99, 235, 0.08);
         }
 
         .lang-name {
@@ -610,7 +610,7 @@
 
         .lang-check {
             font-size: 0.85rem;
-            color: #2762f3;
+            color: #2563eb;
             animation: checkIn 0.3s ease;
         }
 
@@ -662,11 +662,11 @@
         }
 
         .user-dropdown .user-toggle:hover {
-            color: #2762f3;
+            color: #2563eb;
         }
 
         .user-dropdown.active .user-toggle {
-            color: #2762f3;
+            color: #2563eb;
         }
 
         /* Default state for all menu items - Force color */
@@ -687,17 +687,17 @@
 
         /* Hover state for all menu items */
         .user-dropdown-menu .user-menu-item:hover {
-            background: rgba(39, 98, 243, 0.06) !important;
-            color: #2762f3 !important;
+            background: rgba(37, 99, 235, 0.06) !important;
+            color: #2563eb !important;
             padding-{{ is_rtl() ? 'right' : 'left' }}: 1.4rem !important;
         }
 
         .user-dropdown-menu .user-menu-item:hover i {
-            color: #2762f3 !important;
+            color: #2563eb !important;
         }
 
         .user-dropdown-menu .user-menu-item:hover span {
-            color: #2762f3 !important;
+            color: #2563eb !important;
         }
 
         /* Responsive adjustments */
