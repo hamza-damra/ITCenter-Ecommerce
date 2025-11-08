@@ -5,7 +5,13 @@
       "Write(./**)",
       "Edit(./**)",
       "Execute(Bash:*)",
-      "Bash(php artisan cache:clear:*)"
+      "Bash(php artisan cache:clear:*)",
+      "Bash(php artisan db:table:*)",
+      "Bash(php artisan db:show:*)",
+      "Bash(php -r:*)",
+      "Bash(php check_promos.php:*)",
+      "Bash(php create_promo.php:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"
