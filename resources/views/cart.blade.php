@@ -596,8 +596,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Update cart summary totals
                 updateCartSummary();
                 
-                // Update cart count in header
-                updateCartCount();
+                // Update cart count in header using global refresh function
+                if (typeof refreshHeaderCounters === 'function') {
+                    refreshHeaderCounters();
+                }
             }
         })
         .catch(error => {
@@ -634,8 +636,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Update cart summary totals
                         updateCartSummary();
                         
-                        // Update cart count in header
-                        updateCartCount();
+                        // Update cart count in header using global refresh function
+                        if (typeof refreshHeaderCounters === 'function') {
+                            refreshHeaderCounters();
+                        }
                     }
                 }, 300);
             }
@@ -670,17 +674,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Update cart count in header
+    // This function is no longer needed - using global refreshHeaderCounters() instead
+    // Keeping it here for backwards compatibility in case it's called elsewhere
     function updateCartCount() {
-        fetch('/cart/count')
-            .then(response => response.json())
-            .then(data => {
-                const cartCountBadge = document.getElementById('cart-count');
-                if (cartCountBadge) {
-                    cartCountBadge.textContent = data.count;
-                }
-            })
-            .catch(error => console.error('Error:', error));
+        if (typeof refreshHeaderCounters === 'function') {
+            refreshHeaderCounters();
+        }
     }
 });
 </script>
