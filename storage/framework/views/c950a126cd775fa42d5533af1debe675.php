@@ -1991,8 +1991,8 @@
     /* Featured Products Section */
     .featured-section {
         background: #f8f9fa;
-        padding: 3rem 0;
-        margin-bottom: 3rem;
+        padding: 2.5rem 0;
+        margin-bottom: 2.5rem;
         width: 100%;
     }
 
@@ -2005,37 +2005,65 @@
     .featured-section .product-grid {
         max-width: 1500px;
         margin: 0 auto;
-        padding: 0 1rem; /* reduce side margins */
+        padding: 0 1rem;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 1.5rem;
+        gap: 0.85rem; /* Reduced gap for tighter layout like the image */
         align-items: stretch;
     }
 
     /* Promo card that spans two product rows */
     .promo-featured-card {
         grid-row: span 2;
-        border: 1.5px solid rgba(15,23,42,.2); /* subtle dark line similar to site */
-        border-radius: 18px;
-        background: #ffffff; /* no colored background */
-        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        border: 3px solid #fbbf24; /* Yellow border like the image */
+        border-radius: 24px;
+        background: #ffffff;
+        box-shadow: 0 15px 35px rgba(251, 191, 36, 0.15);
         overflow: hidden;
         position: relative;
         display: flex;
         flex-direction: column;
-        padding: 1rem;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    .promo-featured-card:hover {
+        box-shadow: 0 20px 45px rgba(251, 191, 36, 0.25);
+        transform: translateY(-2px);
+    }
+    .promo-featured-card .special-offer-header {
+        text-align: center;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 1rem;
+        letter-spacing: 0.5px;
     }
     .promo-featured-card .badge-save {
         position: absolute;
-        top: 12px;
-        <?php echo e(is_rtl() ? 'left' : 'right'); ?>: 12px;
-        background: #f59e0b; /* keep a small warm badge */
-        color: #fff;
-        font-weight: 800;
-        padding: .4rem .8rem;
-        border-radius: 999px;
-        font-size: .9rem;
-        box-shadow: 0 6px 14px rgba(245,158,11,.35);
+        top: 15px;
+        <?php echo e(is_rtl() ? 'left' : 'right'); ?>: 15px;
+        background: #fbbf24;
+        color: #111827;
+        font-weight: 900;
+        padding: 0.75rem 1rem;
+        border-radius: 50%;
+        font-size: 0.85rem;
+        box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+        width: 75px;
+        height: 75px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        line-height: 1.2;
+    }
+    .promo-featured-card .badge-save .save-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+    }
+    .promo-featured-card .badge-save .save-amount {
+        font-size: 1.1rem;
+        font-weight: 900;
     }
     .promo-featured-card .promo-media {
         background: #fff;
@@ -2063,12 +2091,35 @@
     .promo-featured-card .promo-cta a:hover { background:#1f2937; border-color:#1f2937; }
 
     /* Countdown in promo card */
-    .promo-countdown { margin-top: .25rem; }
-    .promo-countdown .label { color:#6b7280; font-weight:600; font-size:.9rem; margin-bottom:.4rem; text-align:center; }
-    .promo-countdown .boxes { display:flex; justify-content:center; gap:.5rem; }
-    .promo-countdown .box { background:#f3f4f6; border:1px solid rgba(15,23,42,.12); border-radius:10px; padding:.6rem .8rem; min-width:60px; text-align:center; }
-    .promo-countdown .num { font-size:1.2rem; font-weight:800; color:#111827; display:block; }
-    .promo-countdown .unit { font-size:.7rem; color:#6b7280; text-transform:uppercase; letter-spacing:.05em; display:block; margin-top:.15rem; }
+    .promo-countdown { margin-top: 1rem; padding-top: 1rem; border-top: 2px solid #f3f4f6; }
+    .promo-countdown .label { color:#111827; font-weight:700; font-size:0.95rem; margin-bottom:.75rem; text-align:center; }
+    .promo-countdown .boxes { display:flex; justify-content:center; gap:.75rem; }
+    .promo-countdown .box {
+        background:#ffffff;
+        border:2px solid #fbbf24;
+        border-radius:12px;
+        padding:.8rem 1rem;
+        min-width:70px;
+        text-align:center;
+        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.15);
+    }
+    .promo-countdown .num { font-size:1.5rem; font-weight:900; color:#111827; display:block; line-height:1; }
+    .promo-countdown .unit { font-size:.75rem; color:#6b7280; text-transform:uppercase; letter-spacing:.05em; font-weight:700; display:block; margin-top:.35rem; }
+    .promo-countdown .boxes .box:not(:last-child)::after {
+        content: ':';
+        position: absolute;
+        <?php echo e(is_rtl() ? 'left' : 'right'); ?>: -0.6rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #111827;
+    }
+    [dir="rtl"] .promo-countdown .boxes .box:not(:last-child)::after {
+        left: -0.6rem;
+        right: auto;
+    }
+    .promo-countdown .box { position: relative; }
 
     /* Mobile Responsive */
     @media (max-width: 968px) {
@@ -2082,7 +2133,7 @@
 
         .featured-section .product-grid {
             grid-template-columns: repeat(3, 1fr);
-            gap: 1.25rem;
+            gap: 0.75rem;
         }
         
         .offer-card {
@@ -2190,7 +2241,7 @@
 
         .featured-section .product-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.25rem;
+            gap: 0.65rem;
             padding: 0 .75rem;
         }
     }
@@ -3252,7 +3303,11 @@
                 <?php if(isset($promotionalOffers) && $promotionalOffers->count() > 0): ?>
                     <?php $promo = $promotionalOffers->first(); ?>
                     <div class="promo-featured-card">
-                        <div class="badge-save"><?php echo e(is_rtl() ? 'وفر' : 'Save'); ?> <?php echo e(round($promo->discount_percentage)); ?>%</div>
+                        <div class="special-offer-header"><?php echo e(is_rtl() ? 'عرض خاص' : 'Special Offer'); ?></div>
+                        <div class="badge-save">
+                            <span class="save-label"><?php echo e(is_rtl() ? 'وفر' : 'Save'); ?></span>
+                            <span class="save-amount">₪<?php echo e(number_format($promo->original_price - $promo->sale_price, 0)); ?></span>
+                        </div>
                         <div class="promo-media">
                             <?php
                                 $img = null;

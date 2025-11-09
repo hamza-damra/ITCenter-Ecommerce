@@ -57,6 +57,27 @@ class FavoriteController extends Controller
     }
 
     /**
+     * Get favorites count for header badge (public endpoint)
+     */
+    public function getCount()
+    {
+        $identifier = $this->getIdentifier();
+
+        $count = Favorite::where(function($query) use ($identifier) {
+            if (isset($identifier['user_id'])) {
+                $query->where('user_id', $identifier['user_id']);
+            } else {
+                $query->where('session_id', $identifier['session_id']);
+            }
+        })->count();
+
+        return response()->json([
+            'success' => true,
+            'count' => (int) $count,
+        ]);
+    }
+
+    /**
      * Get favorite product IDs for header badge
      */
     public function getIds()

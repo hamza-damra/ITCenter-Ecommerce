@@ -54,6 +54,7 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'
 
 // Favorites Routes
 Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites');
+Route::get('/favorites/count', [FavoriteController::class, 'getCount'])->name('favorites.count');
 Route::get('/favorites/ids', [FavoriteController::class, 'getIds'])->name('favorites.ids');
 Route::post('/favorites/toggle/{product}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
 
