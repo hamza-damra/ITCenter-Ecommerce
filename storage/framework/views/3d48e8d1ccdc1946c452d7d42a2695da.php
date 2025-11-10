@@ -459,27 +459,27 @@
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        border-radius: 0;
         background: #ffffff;
-        border: 2px solid #e5e7eb;
-        color: #6b7280;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        color: #1f2937;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 10;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     }
 
     .carousel-nav-btn:hover {
-        background: #2563eb;
-        border-color: #2563eb;
+        background: #1f2937;
+        border-color: #1f2937;
         color: #ffffff;
-        transform: translateY(-50%) scale(1.1);
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        transform: translateY(-50%) scale(1.05);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     }
 
     .carousel-prev {
@@ -498,26 +498,47 @@
 
     .category-carousel-track {
         display: flex;
-        gap: 1.5rem;
+        gap: 0;
         transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* Category Carousel Card */
     .category-carousel-card {
-        flex: 0 0 calc(25% - 1.125rem);
+        flex: 0 0 25%;
         display: flex;
         flex-direction: column;
         align-items: center;
         text-decoration: none;
-        transition: all 0.3s ease;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
-        padding: 1rem;
-        border-radius: 12px;
+        padding: 2rem 1.5rem;
+        border-radius: 0;
         background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category-carousel-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #1f2937 0%, #111827 100%);
+        transform: scaleX(0);
+        transition: transform 0.35s ease;
     }
 
     .category-carousel-card:hover {
-        transform: translateY(-10px);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border-color: rgba(0, 0, 0, 0.12);
+    }
+
+    .category-carousel-card:hover::before {
+        transform: scaleX(1);
     }
 
     .category-carousel-image {
@@ -526,35 +547,38 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
         overflow: hidden;
-        border-radius: 8px;
-        background: #f9fafb;
+        border-radius: 0;
+        background: transparent;
+        position: relative;
     }
 
     .category-carousel-image img {
-        width: 100%;
-        height: 100%;
+        width: 85%;
+        height: 85%;
         object-fit: contain;
-        transition: transform 0.4s ease;
-        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        filter: none;
     }
 
     .category-carousel-card:hover .category-carousel-image img {
-        transform: scale(1.1);
+        transform: scale(1.08);
     }
 
     .category-carousel-name {
-        font-size: 1.125rem;
+        font-size: 1rem;
         font-weight: 600;
-        color: #1f2937;
+        color: #374151;
         text-align: center;
-        transition: color 0.3s ease;
-        margin-top: 0.5rem;
+        transition: all 0.3s ease;
+        margin-top: 0;
+        letter-spacing: 0.3px;
     }
 
     .category-carousel-card:hover .category-carousel-name {
-        color: #2563eb;
+        color: #1f2937;
+        font-weight: 700;
     }
 
     /* Pagination Dots */
@@ -580,7 +604,7 @@
     }
 
     .carousel-dot.active {
-        background: #2563eb;
+        background: #1f2937;
         width: 30px;
         border-radius: 5px;
     }
@@ -588,7 +612,7 @@
     /* Responsive Design for Category Carousel */
     @media (max-width: 1023px) {
         .category-carousel-card {
-            flex: 0 0 calc(33.333% - 1rem);
+            flex: 0 0 33.333%;
         }
 
         .discover-title {
@@ -607,7 +631,7 @@
 
     @media (max-width: 767px) {
         .category-carousel-card {
-            flex: 0 0 calc(50% - 0.75rem);
+            flex: 0 0 50%;
         }
 
         .explore-products-section {
@@ -639,7 +663,7 @@
 
     @media (max-width: 479px) {
         .category-carousel-card {
-            flex: 0 0 calc(100% - 0.5rem);
+            flex: 0 0 100%;
         }
 
         .category-carousel-wrapper {
@@ -700,74 +724,48 @@
     }
 
     .product-card {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-radius: 20px;
+        background: #f8f9fa;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-radius: 0;
         overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        box-shadow: none;
         transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
-        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-right: 1px solid rgba(0, 0, 0, 0.08);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         position: relative;
         display: flex;
         flex-direction: column;
     }
 
-    /* Subtle gradient overlay on hover */
+    /* Remove gradient overlay on hover */
     .product-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(39, 98, 243, 0.03) 0%, rgba(26, 77, 191, 0.02) 100%);
-        opacity: 0;
-        transition: opacity 0.35s ease;
-        pointer-events: none;
-        border-radius: 20px;
+        display: none;
     }
 
-    /* Glowing border effect on hover */
+    /* Remove glowing border effect on hover */
     .product-card::after {
-        content: '';
-        position: absolute;
-        top: -1px;
-        left: -1px;
-        right: -1px;
-        bottom: -1px;
-        background: linear-gradient(135deg, #2563eb, #1e40af, #64748b);
-        border-radius: 20px;
-        opacity: 0;
-        z-index: -1;
-        transition: opacity 0.35s ease;
+        display: none;
     }
 
     .product-card:hover {
-        transform: translateY(-6px) scale(1.01);
-        box-shadow: 0 20px 40px rgba(37, 99, 235, 0.08), 0 8px 16px rgba(0, 0, 0, 0.06);
-        border-color: rgba(37, 99, 235, 0.15);
+        transform: none;
+        box-shadow: none;
+        background: #ffffff;
     }
 
-    .product-card:hover::before {
-        opacity: 0;
-    }
-
-    .product-card:hover::after {
-        opacity: 0;
-    }
 
     .product-image {
         width: 100%;
-        height: 240px;
+        height: 200px;
         background: transparent;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
         overflow: hidden;
-        padding: 1rem;
+        padding: 0.8rem;
     }
 
 
@@ -790,20 +788,20 @@
 
     .wishlist-btn {
         position: absolute !important;
-        top: 14px !important;
+        top: 10px !important;
         bottom: auto !important;
         <?php if(is_rtl()): ?>
-        left: 14px !important;
+        left: 10px !important;
         right: auto !important;
         <?php else: ?>
-        right: 14px !important;
+        right: 10px !important;
         left: auto !important;
         <?php endif; ?>
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
         display: flex !important;
         align-items: center !important;
@@ -823,48 +821,48 @@
     }
 
     .wishlist-btn:hover i {
-        color: #2563eb !important;
+        color: #1f2937 !important;
     }
 
     .wishlist-btn.active {
-        background: rgba(37, 99, 235, 0.1) !important;
-        border-color: #2563eb !important;
+        background: rgba(31, 41, 55, 0.1) !important;
+        border-color: #1f2937 !important;
     }
 
     .wishlist-btn.active i {
-        color: #2563eb !important;
+        color: #1f2937 !important;
     }
 
     .wishlist-btn i {
-        font-size: 1rem;
+        font-size: 0.9rem;
         color: #64748b;
         transition: all 0.3s ease;
     }
 
-    /* Solid heart icon should be blue */
+    /* Solid heart icon should be black */
     .wishlist-btn i.fas.fa-heart {
-        color: #2563eb !important;
+        color: #1f2937 !important;
     }
 
     .product-badge {
         position: absolute !important;
-        top: 14px !important;
+        top: 10px !important;
         bottom: auto !important;
         <?php if(is_rtl()): ?>
-        right: 14px !important;
+        right: 10px !important;
         left: auto !important;
         <?php else: ?>
-        left: 14px !important;
+        left: 10px !important;
         right: auto !important;
         <?php endif; ?>
-        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         color: #fff;
-        padding: 0.35rem 0.75rem;
-        border-radius: 12px;
-        font-size: 0.7rem;
+        padding: 0.3rem 0.65rem;
+        border-radius: 10px;
+        font-size: 0.65rem;
         font-weight: 700;
         z-index: 5;
-        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         letter-spacing: 0.5px;
         text-transform: uppercase;
         backdrop-filter: blur(8px);
@@ -881,7 +879,7 @@
     }
 
     .product-info {
-        padding: 1.25rem 1.25rem 1.25rem 1.25rem;
+        padding: 1rem 1rem 1rem 1rem;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
@@ -889,29 +887,29 @@
     }
 
     .product-title {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
         font-weight: 600;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.3rem;
         color: #1e293b;
         text-align: start;
-        line-height: 1.35;
+        line-height: 1.3;
         transition: color 0.3s ease;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        min-height: 2.7rem;
+        min-height: 2.4rem;
     }
 
     .product-card:hover .product-title {
-        color: #2563eb;
+        color: #1f2937;
     }
 
     .product-description {
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         color: #64748b;
-        margin-bottom: 0.875rem;
-        line-height: 1.4;
+        margin-bottom: 0.7rem;
+        line-height: 1.3;
         text-align: start;
         flex-grow: 1;
         display: -webkit-box;
@@ -932,14 +930,14 @@
     }
 
     .product-price {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         font-weight: 700;
         color: #1e293b;
         text-align: start;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.25rem;
+        gap: 0.2rem;
         flex: 1;
     }
 
@@ -952,9 +950,9 @@
     }
 
     .product-price .current-price {
-        color: #2563eb;
+        color: #1f2937;
         font-weight: 700;
-        font-size: 1.25rem;
+        font-size: 1.1rem;
     }
 
     .product-price .discount-percentage {
@@ -1067,20 +1065,20 @@
 
     /* Icon-Only Add to Cart Button */
     .add-to-cart-icon {
-        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         color: #ffffff;
         border: none;
-        width: 44px;
-        height: 44px;
-        min-width: 44px;
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
         border-radius: 50%;
         cursor: pointer;
-        font-size: 1.1rem;
+        font-size: 0.95rem;
         transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         position: relative;
         overflow: hidden;
         flex-shrink: 0;
@@ -1093,7 +1091,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        background: linear-gradient(135deg, #111827 0%, #000000 100%);
         opacity: 0;
         transition: opacity 0.35s ease;
         z-index: 0;
@@ -1107,7 +1105,7 @@
 
     .add-to-cart-icon:hover {
         transform: translateY(-2px) scale(1.05);
-        box-shadow: 0 6px 20px rgba(39, 98, 243, 0.4), 0 2px 8px rgba(39, 98, 243, 0.2);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     .add-to-cart-icon:hover::before {
@@ -1992,7 +1990,7 @@
     .featured-section {
         background: #f8f9fa;
         padding: 2.5rem 0;
-        margin-bottom: 2.5rem;
+        margin-bottom: 0;
         width: 100%;
     }
 
@@ -2005,52 +2003,58 @@
     .featured-section .product-grid {
         max-width: 1500px;
         margin: 0 auto;
-        padding: 0 1rem;
+        padding: 0;
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 0.85rem; /* Reduced gap for tighter layout like the image */
+        grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr; /* 1 side card + 4 product cards */
+        grid-template-rows: 1fr 1fr;
+        gap: 0;
         align-items: stretch;
+        border: 1px solid rgba(0, 0, 0, 0.08);
     }
 
-    /* Promo card that spans two product rows */
+    /* Promo card that spans two product rows - positioned on the left */
     .promo-featured-card {
-        grid-row: span 2;
-        border: 3px solid #fbbf24; /* Yellow border like the image */
-        border-radius: 24px;
+        grid-column: 1;
+        grid-row: 1 / 3;
+        border: none;
+        border-radius: 0;
         background: #ffffff;
-        box-shadow: 0 15px 35px rgba(251, 191, 36, 0.15);
+        box-shadow: none;
         overflow: hidden;
         position: relative;
         display: flex;
         flex-direction: column;
-        padding: 1.5rem;
+        padding: 1.2rem;
         transition: all 0.3s ease;
+        margin-right: 0;
+        border-right: 1px solid rgba(0, 0, 0, 0.08);
     }
     .promo-featured-card:hover {
-        box-shadow: 0 20px 45px rgba(251, 191, 36, 0.25);
-        transform: translateY(-2px);
+        box-shadow: none;
+        transform: none;
+        background: #f8f9fa;
     }
     .promo-featured-card .special-offer-header {
         text-align: center;
-        font-size: 1.25rem;
+        font-size: 1.15rem;
         font-weight: 700;
         color: #111827;
-        margin-bottom: 1rem;
-        letter-spacing: 0.5px;
+        margin-bottom: 0.8rem;
+        letter-spacing: 0.3px;
     }
     .promo-featured-card .badge-save {
         position: absolute;
-        top: 15px;
-        <?php echo e(is_rtl() ? 'left' : 'right'); ?>: 15px;
+        top: 12px;
+        <?php echo e(is_rtl() ? 'left' : 'right'); ?>: 12px;
         background: #fbbf24;
         color: #111827;
         font-weight: 900;
-        padding: 0.75rem 1rem;
+        padding: 0.6rem 0.8rem;
         border-radius: 50%;
-        font-size: 0.85rem;
-        box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
-        width: 75px;
-        height: 75px;
+        font-size: 0.75rem;
+        box-shadow: 0 6px 16px rgba(251, 191, 36, 0.4);
+        width: 65px;
+        height: 65px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -2077,49 +2081,45 @@
     }
     .promo-featured-card .promo-media img {
         width: 100%;
-        height: 240px;
+        height: 200px;
         object-fit: contain;
     }
     .promo-featured-card .promo-body { color: #1f2937; margin-top: 1rem; display: flex; flex-direction: column; gap: .75rem; }
-    .promo-featured-card .promo-title { font-weight: 800; font-size: 1.1rem; margin-bottom: .25rem; text-align:center; }
-    .promo-featured-card .promo-product-name { color:#6b7280; font-weight:600; font-size:.95rem; text-align:center; }
-    .promo-featured-card .promo-prices { display: flex; align-items: baseline; justify-content:center; gap: .6rem; text-align:center; }
+    .promo-featured-card .promo-title { font-weight: 700; font-size: 0.95rem; margin-bottom: .2rem; text-align: center; color: #1e293b; }
+    .promo-featured-card .promo-product-name { color:#6b7280; font-weight:600; font-size:.85rem; text-align: center; }
+    .promo-featured-card .promo-prices { display: flex; align-items: baseline; justify-content: center; gap: .5rem; }
     .promo-featured-card .promo-prices .orig { text-decoration: line-through; opacity: .6; color: #6b7280; }
-    .promo-featured-card .promo-prices .sale { font-size: 1.8rem; font-weight: 900; color: #e11d48; }
+    .promo-featured-card .promo-prices .sale { font-size: 1.5rem; font-weight: 900; color: #e11d48; }
     .promo-featured-card .promo-cta { margin-top: .4rem; }
     .promo-featured-card .promo-cta a { display:block; text-align:center; padding:.8rem 1rem; background:#111827; color:#fff; border-radius:10px; font-weight:800; text-decoration:none; border: 1px solid #111827; }
     .promo-featured-card .promo-cta a:hover { background:#1f2937; border-color:#1f2937; }
 
     /* Countdown in promo card */
     .promo-countdown { margin-top: 1rem; padding-top: 1rem; border-top: 2px solid #f3f4f6; }
-    .promo-countdown .label { color:#111827; font-weight:700; font-size:0.95rem; margin-bottom:.75rem; text-align:center; }
-    .promo-countdown .boxes { display:flex; justify-content:center; gap:.75rem; }
+    .promo-countdown .label { color:#111827; font-weight:700; font-size:0.85rem; margin-bottom:.6rem; text-align: center; }
+    .promo-countdown .boxes { display:flex; justify-content: center; gap:.5rem; }
     .promo-countdown .box {
         background:#ffffff;
         border:2px solid #fbbf24;
-        border-radius:12px;
-        padding:.8rem 1rem;
-        min-width:70px;
+        border-radius:8px;
+        padding:.5rem .6rem;
+        min-width:55px;
         text-align:center;
-        box-shadow: 0 4px 12px rgba(251, 191, 36, 0.15);
+        box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15);
+        position: relative;
     }
-    .promo-countdown .num { font-size:1.5rem; font-weight:900; color:#111827; display:block; line-height:1; }
-    .promo-countdown .unit { font-size:.75rem; color:#6b7280; text-transform:uppercase; letter-spacing:.05em; font-weight:700; display:block; margin-top:.35rem; }
+    .promo-countdown .num { font-size:1.4rem; font-weight:900; color:#111827; display:block; line-height:1; margin-bottom: 0.25rem; }
+    .promo-countdown .unit { font-size:.65rem; color:#6b7280; text-transform:uppercase; letter-spacing:.05em; font-weight:700; display:block; }
     .promo-countdown .boxes .box:not(:last-child)::after {
         content: ':';
         position: absolute;
-        <?php echo e(is_rtl() ? 'left' : 'right'); ?>: -0.6rem;
+        right: -0.5rem;
         top: 50%;
         transform: translateY(-50%);
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         font-weight: 700;
         color: #111827;
     }
-    [dir="rtl"] .promo-countdown .boxes .box:not(:last-child)::after {
-        left: -0.6rem;
-        right: auto;
-    }
-    .promo-countdown .box { position: relative; }
 
     /* Mobile Responsive */
     @media (max-width: 968px) {
@@ -2132,8 +2132,16 @@
         }
 
         .featured-section .product-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.75rem;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 0;
+        }
+        
+        .promo-featured-card {
+            grid-column: 1;
+            grid-row: 1 / 3;
+            margin-right: 0.3rem;
+            margin-left: 0;
         }
         
         .offer-card {
@@ -2240,9 +2248,17 @@
         }
 
         .featured-section .product-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.65rem;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto;
+            gap: 0.5rem;
             padding: 0 .75rem;
+        }
+        
+        .promo-featured-card {
+            grid-column: 1 / -1;
+            grid-row: auto;
+            margin-left: 0;
+            margin-bottom: 1rem;
         }
     }
 
@@ -2763,157 +2779,6 @@
 </div>
 
 
-<section class="home-section gift-ideas-section" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>">
-    <div class="container">
-        <!-- Removed section heading (icon + title) per request -->
-
-        <div class="gift-ideas-grid">
-            
-            <?php if(is_rtl()): ?>
-                
-                <div class="gift-ideas-item gift-banner-item">
-                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
-                        
-                        <div class="gift-banner-content">
-                            <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
-                            <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
-                            <a class="gift-cta" href="<?php echo e(url('/deals/global-gifts-delivery-store')); ?>"><?php echo e(__t('messages.gift_ideas.cta')); ?></a>
-                        </div>
-                        
-                        
-                        <div class="gift-banner-image">
-                            <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="<?php echo e(__t('messages.gift_ideas.headline')); ?>" loading="lazy">
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-
-            
-            <?php if(isset($giftIdeas[0])): ?>
-            <div class="gift-ideas-item gift-product-item">
-                <div class="product-card h-100" onclick="window.location.href='<?php echo e(route('product.detail', $giftIdeas[0]->slug)); ?>'">
-                    <div class="product-image">
-                        <?php if($giftIdeas[0]->is_new): ?>
-                        <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
-                        <?php elseif($giftIdeas[0]->is_featured): ?>
-                        <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
-                        <?php endif; ?>
-                        <div class="wishlist-btn" data-product-id="<?php echo e($giftIdeas[0]->id); ?>" onclick="event.stopPropagation();">
-                            <i class="far fa-heart"></i>
-                        </div>
-                        <img src="<?php echo e($giftIdeas[0]->main_image); ?>" alt="<?php echo e($giftIdeas[0]->name); ?>" loading="lazy">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title"><?php echo e($giftIdeas[0]->name); ?></div>
-                        <div class="product-description"><?php echo e(Str::limit($giftIdeas[0]->short_description, 60)); ?></div>
-                        <div class="product-footer">
-                            <div class="product-price">
-                                <?php if($giftIdeas[0]->sale_price && $giftIdeas[0]->sale_price < $giftIdeas[0]->price): ?>
-                                    <span class="original-price">₪ <?php echo e(number_format($giftIdeas[0]->price, 0)); ?></span>
-                                    <span class="current-price">₪ <?php echo e(number_format($giftIdeas[0]->sale_price, 0)); ?></span>
-                                <?php else: ?>
-                                    <span class="current-price">₪ <?php echo e(number_format($giftIdeas[0]->price, 0)); ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <?php if($giftIdeas[0]->stock_status === 'out_of_stock'): ?>
-                            <button class="add-to-cart-icon out-of-stock"
-                                    data-product-id="<?php echo e($giftIdeas[0]->id); ?>"
-                                    data-product-name="<?php echo e($giftIdeas[0]->name); ?>"
-                                    title="<?php echo e(__t('messages.request_product')); ?>"
-                                    aria-label="<?php echo e(__t('messages.request_product')); ?>"
-                                    onclick="event.stopPropagation(); requestProduct(<?php echo e($giftIdeas[0]->id); ?>, '<?php echo e($giftIdeas[0]->name); ?>');">
-                                <i class="fas fa-bell"></i>
-                            </button>
-                            <?php else: ?>
-                            <button class="add-to-cart-icon <?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
-                                    data-product-id="<?php echo e($giftIdeas[0]->id); ?>"
-                                    title="<?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
-                                    aria-label="<?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
-                                    onclick="event.stopPropagation(); addToCart(<?php echo e($giftIdeas[0]->id); ?>, this);">
-                                <i class="fas <?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
-                            </button>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
-
-            
-            <?php if(isset($giftIdeas[1])): ?>
-            <div class="gift-ideas-item gift-product-item">
-                <div class="product-card h-100" onclick="window.location.href='<?php echo e(route('product.detail', $giftIdeas[1]->slug)); ?>'">
-                    <div class="product-image">
-                        <?php if($giftIdeas[1]->is_new): ?>
-                        <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
-                        <?php elseif($giftIdeas[1]->is_featured): ?>
-                        <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
-                        <?php endif; ?>
-                        <div class="wishlist-btn" data-product-id="<?php echo e($giftIdeas[1]->id); ?>" onclick="event.stopPropagation();">
-                            <i class="far fa-heart"></i>
-                        </div>
-                        <img src="<?php echo e($giftIdeas[1]->main_image); ?>" alt="<?php echo e($giftIdeas[1]->name); ?>" loading="lazy">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title"><?php echo e($giftIdeas[1]->name); ?></div>
-                        <div class="product-description"><?php echo e(Str::limit($giftIdeas[1]->short_description, 60)); ?></div>
-                        <div class="product-footer">
-                            <div class="product-price">
-                                <?php if($giftIdeas[1]->sale_price && $giftIdeas[1]->sale_price < $giftIdeas[1]->price): ?>
-                                    <span class="original-price">₪ <?php echo e(number_format($giftIdeas[1]->price, 0)); ?></span>
-                                    <span class="current-price">₪ <?php echo e(number_format($giftIdeas[1]->sale_price, 0)); ?></span>
-                                <?php else: ?>
-                                    <span class="current-price">₪ <?php echo e(number_format($giftIdeas[1]->price, 0)); ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <?php if($giftIdeas[1]->stock_status === 'out_of_stock'): ?>
-                            <button class="add-to-cart-icon out-of-stock"
-                                    data-product-id="<?php echo e($giftIdeas[1]->id); ?>"
-                                    data-product-name="<?php echo e($giftIdeas[1]->name); ?>"
-                                    title="<?php echo e(__t('messages.request_product')); ?>"
-                                    aria-label="<?php echo e(__t('messages.request_product')); ?>"
-                                    onclick="event.stopPropagation(); requestProduct(<?php echo e($giftIdeas[1]->id); ?>, '<?php echo e($giftIdeas[1]->name); ?>');">
-                                <i class="fas fa-bell"></i>
-                            </button>
-                            <?php else: ?>
-                            <button class="add-to-cart-icon <?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
-                                    data-product-id="<?php echo e($giftIdeas[1]->id); ?>"
-                                    title="<?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
-                                    aria-label="<?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
-                                    onclick="event.stopPropagation(); addToCart(<?php echo e($giftIdeas[1]->id); ?>, this);">
-                                <i class="fas <?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
-                            </button>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
-
-            
-            <?php if(!is_rtl()): ?>
-                
-                <div class="gift-ideas-item gift-banner-item">
-                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
-                        
-                        <div class="gift-banner-content">
-                            <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
-                            <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
-                            <a class="gift-cta" href="<?php echo e(url('/deals/global-gifts-delivery-store')); ?>"><?php echo e(__t('messages.gift_ideas.cta')); ?></a>
-                        </div>
-                        
-                        
-                        <div class="gift-banner-image">
-                            <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="<?php echo e(__t('messages.gift_ideas.headline')); ?>" loading="lazy">
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-        </div>
-    </div>
-</section>
-
-
 <section class="home-section gift-ideas-section strong-offers-section" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>" style="padding-top: 0;">
     <div class="container">
         <div class="gift-ideas-grid">
@@ -3358,7 +3223,8 @@
                         </div>
                     </div>
                 <?php endif; ?>
-                <?php $__currentLoopData = $featuredProducts->take(6); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                
+                <?php $__currentLoopData = $featuredProducts->take(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="product-card" onclick="window.location.href='<?php echo e(route('product.detail', $product->slug)); ?>'">
                     <div class="product-image">
                         <?php if($product->is_new): ?>
@@ -3409,6 +3275,157 @@
         </div>
     </div>
 </div>
+
+
+<section class="home-section gift-ideas-section" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>">
+    <div class="container">
+        <!-- Removed section heading (icon + title) per request -->
+
+        <div class="gift-ideas-grid">
+            
+            <?php if(is_rtl()): ?>
+                
+                <div class="gift-ideas-item gift-banner-item">
+                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                        
+                        <div class="gift-banner-content">
+                            <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
+                            <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
+                            <a class="gift-cta" href="<?php echo e(url('/deals/global-gifts-delivery-store')); ?>"><?php echo e(__t('messages.gift_ideas.cta')); ?></a>
+                        </div>
+                        
+                        
+                        <div class="gift-banner-image">
+                            <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="<?php echo e(__t('messages.gift_ideas.headline')); ?>" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            
+            <?php if(isset($giftIdeas[0])): ?>
+            <div class="gift-ideas-item gift-product-item">
+                <div class="product-card h-100" onclick="window.location.href='<?php echo e(route('product.detail', $giftIdeas[0]->slug)); ?>'">
+                    <div class="product-image">
+                        <?php if($giftIdeas[0]->is_new): ?>
+                        <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
+                        <?php elseif($giftIdeas[0]->is_featured): ?>
+                        <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
+                        <?php endif; ?>
+                        <div class="wishlist-btn" data-product-id="<?php echo e($giftIdeas[0]->id); ?>" onclick="event.stopPropagation();">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <img src="<?php echo e($giftIdeas[0]->main_image); ?>" alt="<?php echo e($giftIdeas[0]->name); ?>" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title"><?php echo e($giftIdeas[0]->name); ?></div>
+                        <div class="product-description"><?php echo e(Str::limit($giftIdeas[0]->short_description, 60)); ?></div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                <?php if($giftIdeas[0]->sale_price && $giftIdeas[0]->sale_price < $giftIdeas[0]->price): ?>
+                                    <span class="original-price">₪ <?php echo e(number_format($giftIdeas[0]->price, 0)); ?></span>
+                                    <span class="current-price">₪ <?php echo e(number_format($giftIdeas[0]->sale_price, 0)); ?></span>
+                                <?php else: ?>
+                                    <span class="current-price">₪ <?php echo e(number_format($giftIdeas[0]->price, 0)); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <?php if($giftIdeas[0]->stock_status === 'out_of_stock'): ?>
+                            <button class="add-to-cart-icon out-of-stock"
+                                    data-product-id="<?php echo e($giftIdeas[0]->id); ?>"
+                                    data-product-name="<?php echo e($giftIdeas[0]->name); ?>"
+                                    title="<?php echo e(__t('messages.request_product')); ?>"
+                                    aria-label="<?php echo e(__t('messages.request_product')); ?>"
+                                    onclick="event.stopPropagation(); requestProduct(<?php echo e($giftIdeas[0]->id); ?>, '<?php echo e($giftIdeas[0]->name); ?>');">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            <?php else: ?>
+                            <button class="add-to-cart-icon <?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
+                                    data-product-id="<?php echo e($giftIdeas[0]->id); ?>"
+                                    title="<?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    aria-label="<?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    onclick="event.stopPropagation(); addToCart(<?php echo e($giftIdeas[0]->id); ?>, this);">
+                                <i class="fas <?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
+                            </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            
+            <?php if(isset($giftIdeas[1])): ?>
+            <div class="gift-ideas-item gift-product-item">
+                <div class="product-card h-100" onclick="window.location.href='<?php echo e(route('product.detail', $giftIdeas[1]->slug)); ?>'">
+                    <div class="product-image">
+                        <?php if($giftIdeas[1]->is_new): ?>
+                        <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
+                        <?php elseif($giftIdeas[1]->is_featured): ?>
+                        <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
+                        <?php endif; ?>
+                        <div class="wishlist-btn" data-product-id="<?php echo e($giftIdeas[1]->id); ?>" onclick="event.stopPropagation();">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <img src="<?php echo e($giftIdeas[1]->main_image); ?>" alt="<?php echo e($giftIdeas[1]->name); ?>" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title"><?php echo e($giftIdeas[1]->name); ?></div>
+                        <div class="product-description"><?php echo e(Str::limit($giftIdeas[1]->short_description, 60)); ?></div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                <?php if($giftIdeas[1]->sale_price && $giftIdeas[1]->sale_price < $giftIdeas[1]->price): ?>
+                                    <span class="original-price">₪ <?php echo e(number_format($giftIdeas[1]->price, 0)); ?></span>
+                                    <span class="current-price">₪ <?php echo e(number_format($giftIdeas[1]->sale_price, 0)); ?></span>
+                                <?php else: ?>
+                                    <span class="current-price">₪ <?php echo e(number_format($giftIdeas[1]->price, 0)); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <?php if($giftIdeas[1]->stock_status === 'out_of_stock'): ?>
+                            <button class="add-to-cart-icon out-of-stock"
+                                    data-product-id="<?php echo e($giftIdeas[1]->id); ?>"
+                                    data-product-name="<?php echo e($giftIdeas[1]->name); ?>"
+                                    title="<?php echo e(__t('messages.request_product')); ?>"
+                                    aria-label="<?php echo e(__t('messages.request_product')); ?>"
+                                    onclick="event.stopPropagation(); requestProduct(<?php echo e($giftIdeas[1]->id); ?>, '<?php echo e($giftIdeas[1]->name); ?>');">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            <?php else: ?>
+                            <button class="add-to-cart-icon <?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
+                                    data-product-id="<?php echo e($giftIdeas[1]->id); ?>"
+                                    title="<?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    aria-label="<?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    onclick="event.stopPropagation(); addToCart(<?php echo e($giftIdeas[1]->id); ?>, this);">
+                                <i class="fas <?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
+                            </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            
+            <?php if(!is_rtl()): ?>
+                
+                <div class="gift-ideas-item gift-banner-item">
+                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                        
+                        <div class="gift-banner-content">
+                            <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
+                            <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
+                            <a class="gift-cta" href="<?php echo e(url('/deals/global-gifts-delivery-store')); ?>"><?php echo e(__t('messages.gift_ideas.cta')); ?></a>
+                        </div>
+                        
+                        
+                        <div class="gift-banner-image">
+                            <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="<?php echo e(__t('messages.gift_ideas.headline')); ?>" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
 
 <!-- Main Content Container -->
 <div class="container">

@@ -324,26 +324,18 @@
             font-size: 0.7rem;
             padding: 2px 6px;
             border-radius: 50%;
-            transition: opacity 0.2s ease;
+            transition: background 0.2s ease;
             min-width: 20px;
             height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            opacity: 1;
-            visibility: visible;
         }
         
-        /* Show badge even when count is 0 */
-        .header-icon .badge:empty::after {
-            content: '0';
-        }
-        
-        /* Prevent flash on page load */
-        .header-icon .badge.badge-loading {
-            /* Badge shows initial server-side count, no need to hide */
-            opacity: 1;
+        /* Hide badge only when it has the 'hidden' class */
+        .header-icon .badge.hidden {
+            display: none !important;
         }
 
         /* Ensure page loading indicator stops */
@@ -1114,19 +1106,16 @@
                 <div class="header-icon">
                     <a href="<?php echo e(route('favorites')); ?>" style="color: inherit; text-decoration: none;">
                         <i class="fas fa-heart"></i>
-                        <span class="badge badge-loading" id="favorites-count">
-                            <?php
-                                // Get initial favorites count from server to prevent flash
-                                if (Auth::check()) {
-                                    $initialFavCount = \App\Models\Favorite::where('user_id', Auth::id())->count();
-                                } else {
-                                    $sessionId = Session::getId();
-                                    $initialFavCount = \App\Models\Favorite::where('session_id', $sessionId)->count();
-                                }
-                            ?>
-                            <?php echo e($initialFavCount); ?>
-
-                        </span>
+                        <?php
+                            // Get initial favorites count from server to prevent flash
+                            if (Auth::check()) {
+                                $initialFavCount = \App\Models\Favorite::where('user_id', Auth::id())->count();
+                            } else {
+                                $sessionId = Session::getId();
+                                $initialFavCount = \App\Models\Favorite::where('session_id', $sessionId)->count();
+                            }
+                        ?>
+                        <span class="badge <?php echo e($initialFavCount > 0 ? '' : 'hidden'); ?>" id="favorites-count"><?php echo e($initialFavCount); ?></span>
                     </a>
                 </div>
                 <?php if(auth()->guard()->check()): ?>
@@ -1139,19 +1128,16 @@
                 <div class="header-icon">
                     <a href="<?php echo e(route('cart.index')); ?>" style="color: inherit; text-decoration: none;">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="badge badge-loading" id="cart-count">
-                            <?php
-                                // Get initial cart count from server to prevent flash
-                                if (Auth::check()) {
-                                    $initialCartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity');
-                                } else {
-                                    $sessionId = Session::getId();
-                                    $initialCartCount = \App\Models\CartItem::where('session_id', $sessionId)->sum('quantity');
-                                }
-                            ?>
-                            <?php echo e($initialCartCount); ?>
-
-                        </span>
+                        <?php
+                            // Get initial cart count from server to prevent flash
+                            if (Auth::check()) {
+                                $initialCartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity');
+                            } else {
+                                $sessionId = Session::getId();
+                                $initialCartCount = \App\Models\CartItem::where('session_id', $sessionId)->sum('quantity');
+                            }
+                        ?>
+                        <span class="badge <?php echo e($initialCartCount > 0 ? '' : 'hidden'); ?>" id="cart-count"><?php echo e($initialCartCount); ?></span>
                     </a>
                 </div>
             </div>
@@ -1355,10 +1341,14 @@
                 }
             });
 
-            // Load and update favorites count (only once on page load)
+            // Sync header counters on page load (server-side values already rendered)
+            // This ensures any session changes are reflected
+            refreshHeaderCounters();
+
+            // Load favorites IDs for wishlist button states
             updateFavoritesCount();
 
-            // Load and update cart count (only once on page load)
+            // Load cart product IDs for button states
             updateCartCount();
 
             // Initialize all wishlist buttons on the page
@@ -1368,6 +1358,49 @@
         // CSRF Token for AJAX requests
         const csrfMeta = document.querySelector('meta[name="csrf-token"]');
         const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
+
+        /**
+         * GLOBAL FUNCTION: Refresh both cart and favorites counters
+         * This is the single source of truth for updating header badges
+         */
+        async function refreshHeaderCounters() {
+            try {
+                const [cartRes, favRes] = await Promise.all([
+                    fetch('/cart/count', { credentials: 'same-origin' }),
+                    fetch('/favorites/count', { credentials: 'same-origin' }),
+                ]);
+
+                const cart = await cartRes.json();
+                const fav = await favRes.json();
+
+                const cartEl = document.getElementById('cart-count');
+                const favEl = document.getElementById('favorites-count');
+
+                // Update cart counter
+                if (cartEl && typeof cart.count !== 'undefined') {
+                    cartEl.textContent = cart.count;
+                    if (cart.count > 0) {
+                        cartEl.classList.remove('hidden');
+                    } else {
+                        cartEl.classList.add('hidden');
+                    }
+                }
+
+                // Update favorites counter
+                if (favEl && typeof fav.count !== 'undefined') {
+                    favEl.textContent = fav.count;
+                    if (fav.count > 0) {
+                        favEl.classList.remove('hidden');
+                    } else {
+                        favEl.classList.add('hidden');
+                    }
+                }
+
+                console.log('✅ Header counters updated - Cart:', cart.count, 'Favorites:', fav.count);
+            } catch (error) {
+                console.error('❌ Failed to refresh header counters:', error);
+            }
+        }
 
         /**
          * Update the favorites count in header
@@ -1383,14 +1416,16 @@
                     console.log('📊 Favorites count:', newCount, 'Badge element:', badge);
                     
                     if (badge) {
-                        // Always update the badge text to ensure it's visible
+                        // Update the badge text
                         badge.textContent = newCount;
-                        // Remove loading class after first update
-                        badge.classList.remove('badge-loading');
-                        // Ensure badge is visible
-                        badge.style.display = 'flex';
-                        badge.style.opacity = '1';
-                        badge.style.visibility = 'visible';
+                        
+                        // Show/hide badge based on count (same as cart)
+                        if (newCount > 0) {
+                            badge.classList.remove('hidden');
+                        } else {
+                            badge.classList.add('hidden');
+                        }
+                        
                         console.log('✨ Badge updated successfully. Current text:', badge.textContent);
                     }
                     
@@ -1403,13 +1438,6 @@
                 })
                 .catch(error => {
                     console.error('❌ Error updating favorites count:', error);
-                    // Even on error, ensure badge is visible with current count
-                    const badge = document.getElementById('favorites-count');
-                    if (badge) {
-                        badge.style.display = 'flex';
-                        badge.style.opacity = '1';
-                        badge.style.visibility = 'visible';
-                    }
                 });
         }
 
@@ -1531,13 +1559,17 @@
                         window.favoriteIds = window.favoriteIds.filter(id => id !== productIdInt);
                     }
                     
-                    // Update badge count
+                    // Update badge count (same as cart counter logic)
                     if (badge) {
-                        badge.textContent = window.favoriteIds.length;
-                        // Ensure badge stays visible
-                        badge.style.display = 'flex';
-                        badge.style.opacity = '1';
-                        badge.style.visibility = 'visible';
+                        const newCount = window.favoriteIds.length;
+                        badge.textContent = newCount;
+                        
+                        // Show/hide badge based on count
+                        if (newCount > 0) {
+                            badge.classList.remove('hidden');
+                        } else {
+                            badge.classList.add('hidden');
+                        }
                     }
                     
                     // If we reached 0 favorites, force a full UI refresh to ensure all hearts are gray
@@ -1714,8 +1746,8 @@
                         window.cartProductIds.push(productId);
                     }
 
-                    // Update cart count
-                    updateCartCount();
+                    // Update cart count using global refresh function
+                    refreshHeaderCounters();
 
                     // Show notification
                     showNotification(data.message);
@@ -1752,47 +1784,21 @@
         }
 
         /**
-         * Update cart count in header
+         * Update cart count in header and load product IDs for button states
          */
         function updateCartCount() {
-            console.log('🔄 Updating cart count...');
-            fetch('/cart/count')
-                .then(response => response.json())
-                .then(data => {
-                    console.log('✅ Cart data received:', data);
-                    const badge = document.getElementById('cart-count');
-                    const newCount = data.count || 0;
-                    console.log('📊 Cart count:', newCount, 'Badge element:', badge);
-                    
-                    if (badge) {
-                        // Always update the badge text to ensure it's visible
-                        badge.textContent = newCount;
-                        // Remove loading class after first update
-                        badge.classList.remove('badge-loading');
-                        // Ensure badge is visible
-                        badge.style.display = 'flex';
-                        badge.style.opacity = '1';
-                        badge.style.visibility = 'visible';
-                        console.log('✨ Badge updated successfully. Current text:', badge.textContent);
-                    }
-                    
-                    // Store cart product IDs globally
-                    return fetch('/cart/products');
-                })
+            console.log('� Loading cart products for button states...');
+            
+            // Store cart product IDs globally
+            fetch('/cart/products')
                 .then(response => response.json())
                 .then(data => {
                     window.cartProductIds = data.productIds || [];
                     updateCartButtonStates();
+                    console.log('✅ Cart product IDs loaded:', window.cartProductIds.length);
                 })
                 .catch(error => {
-                    console.error('❌ Error updating cart count:', error);
-                    // Even on error, ensure badge is visible with current count
-                    const badge = document.getElementById('cart-count');
-                    if (badge) {
-                        badge.style.display = 'flex';
-                        badge.style.opacity = '1';
-                        badge.style.visibility = 'visible';
-                    }
+                    console.error('❌ Error loading cart products:', error);
                 });
         }
 
