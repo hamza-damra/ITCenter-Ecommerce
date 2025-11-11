@@ -63,7 +63,97 @@
         left: 0;
         width: 100%;
         height: 100%;
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.1) 100%);
         z-index: 1;
+    }
+    
+    /* Hero Slide Content */
+    .hero-slide-content {
+        position: absolute;
+        top: 50%;
+        {{ is_rtl() ? 'right' : 'left' }}: 5%;
+        transform: translateY(-50%);
+        z-index: 2;
+        max-width: 550px;
+        color: white;
+        padding: 2rem;
+    }
+    
+    .hero-slide-content h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    }
+    
+    .hero-slide-content p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .hero-cta-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .hero-cta-btn {
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .hero-cta-btn.primary {
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        color: white;
+        border: 2px solid transparent;
+    }
+    
+    .hero-cta-btn.primary:hover {
+        background: linear-gradient(135deg, #111827 0%, #000000 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .hero-cta-btn.secondary {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(10px);
+    }
+    
+    .hero-cta-btn.secondary:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.8);
+        transform: translateY(-2px);
+    }
+    
+    /* Progress Bar */
+    .slider-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.2);
+        z-index: 10;
+    }
+    
+    .slider-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #1f2937 0%, #4b5563 100%);
+        width: 0%;
+        transition: width 0.1s linear;
     }
 
     .hero-container {
@@ -516,7 +606,6 @@
         padding: 2rem 1.5rem;
         border-radius: 0;
         background: #ffffff;
-        border: 1px solid rgba(0, 0, 0, 0.08);
         position: relative;
         overflow: hidden;
     }
@@ -757,6 +846,115 @@
         background: #ffffff;
     }
 
+    /* Quick View & Compare Buttons */
+    .product-actions {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        gap: 0.5rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 15;
+    }
+
+    .product-card:hover .product-actions {
+        opacity: 1;
+    }
+
+    .quick-view-btn, .compare-btn {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .quick-view-btn:hover, .compare-btn:hover {
+        background: #1f2937;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .quick-view-btn i, .compare-btn i {
+        font-size: 1rem;
+        color: #1f2937;
+        transition: color 0.3s ease;
+    }
+
+    .quick-view-btn:hover i, .compare-btn:hover i {
+        color: white;
+    }
+
+    /* Product Rating */
+    .product-rating {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .product-rating .stars {
+        display: flex;
+        gap: 0.15rem;
+        color: #fbbf24;
+    }
+
+    .product-rating .rating-count {
+        color: #6b7280;
+        font-size: 0.8rem;
+    }
+
+    /* Stock Indicator */
+    .stock-indicator {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        padding: 0.25rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .stock-indicator.low-stock {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+    }
+
+    .stock-indicator.in-stock {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        animation: none;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.8;
+        }
+    }
+
+    .stock-indicator i {
+        font-size: 0.65rem;
+    }
 
     .product-image {
         width: 100%;
@@ -2695,13 +2893,58 @@
 <div class="hero-section">
     <div class="hero-slider">
         <!-- Slide 1 - Banner.jpg -->
-        <div class="hero-slide active" style="background-image: url('{{ asset('images/assets/Banner.jpg') }}');"></div>
+        <div class="hero-slide active" style="background-image: url('{{ asset('images/assets/Banner.jpg') }}');">
+            <div class="hero-slide-content">
+                <h1>{{ is_rtl() ? 'أحدث التقنيات' : 'Latest Technology' }}</h1>
+                <p>{{ is_rtl() ? 'اكتشف أفضل الأجهزة الإلكترونية والإكسسوارات بأسعار لا تقبل المنافسة' : 'Discover the best electronics and accessories at unbeatable prices' }}</p>
+                <div class="hero-cta-buttons">
+                    <a href="{{ route('products') }}" class="hero-cta-btn primary">
+                        <i class="fas fa-shopping-bag"></i>
+                        {{ is_rtl() ? 'تسوق الآن' : 'Shop Now' }}
+                    </a>
+                    <a href="{{ route('products', ['filter' => 'sale']) }}" class="hero-cta-btn secondary">
+                        <i class="fas fa-tags"></i>
+                        {{ is_rtl() ? 'العروض الخاصة' : 'Special Offers' }}
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <!-- Slide 2 - wallpaper.png -->
-        <div class="hero-slide" style="background-image: url('{{ asset('images/assets/wallpaper.png') }}');"></div>
+        <div class="hero-slide" style="background-image: url('{{ asset('images/assets/wallpaper.png') }}');">
+            <div class="hero-slide-content">
+                <h1>{{ is_rtl() ? 'عروض حصرية' : 'Exclusive Deals' }}</h1>
+                <p>{{ is_rtl() ? 'خصومات تصل إلى 50% على منتجات مختارة' : 'Up to 50% off on selected products' }}</p>
+                <div class="hero-cta-buttons">
+                    <a href="{{ route('products', ['filter' => 'sale']) }}" class="hero-cta-btn primary">
+                        <i class="fas fa-fire"></i>
+                        {{ is_rtl() ? 'اكتشف العروض' : 'Discover Deals' }}
+                    </a>
+                    <a href="{{ route('products', ['filter' => 'bestseller']) }}" class="hero-cta-btn secondary">
+                        <i class="fas fa-star"></i>
+                        {{ is_rtl() ? 'الأكثر مبيعاً' : 'Best Sellers' }}
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <!-- Slide 3 - wallpaper2.png -->
-        <div class="hero-slide" style="background-image: url('{{ asset('images/assets/wallpaper2.png') }}');"></div>
+        <div class="hero-slide" style="background-image: url('{{ asset('images/assets/wallpaper2.png') }}');">
+            <div class="hero-slide-content">
+                <h1>{{ is_rtl() ? 'شحن مجاني' : 'Free Shipping' }}</h1>
+                <p>{{ is_rtl() ? 'شحن مجاني على جميع الطلبات فوق 200 شيكل' : 'Free shipping on all orders over ₪200' }}</p>
+                <div class="hero-cta-buttons">
+                    <a href="{{ route('products') }}" class="hero-cta-btn primary">
+                        <i class="fas fa-truck"></i>
+                        {{ is_rtl() ? 'ابدأ التسوق' : 'Start Shopping' }}
+                    </a>
+                    <a href="{{ url('/about') }}" class="hero-cta-btn secondary">
+                        <i class="fas fa-info-circle"></i>
+                        {{ is_rtl() ? 'المزيد' : 'Learn More' }}
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <!-- Navigation Arrows -->
         <div class="slider-arrow prev" onclick="changeSlide(-1)">
@@ -2716,6 +2959,11 @@
             <div class="slider-dot active" onclick="goToSlide(0)"></div>
             <div class="slider-dot" onclick="goToSlide(1)"></div>
             <div class="slider-dot" onclick="goToSlide(2)"></div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="slider-progress">
+            <div class="slider-progress-bar" id="sliderProgressBar"></div>
         </div>
     </div>
 </div>
@@ -3098,9 +3346,56 @@
                         <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.stopPropagation();">
                             <i class="far fa-heart"></i>
                         </div>
+                        
+                        {{-- Stock Indicator --}}
+                        @php
+                            $stockQty = $product->stock_quantity ?? 0;
+                            $stockClass = $stockQty <= 3 ? '' : ($stockQty <= 10 ? 'low-stock' : 'in-stock');
+                            $stockText = $stockQty <= 3 ? (is_rtl() ? 'متبقي ' . $stockQty . ' فقط!' : 'Only ' . $stockQty . ' left!') : 
+                                        ($stockQty <= 10 ? (is_rtl() ? 'مخزون محدود' : 'Low Stock') : 
+                                        (is_rtl() ? 'متوفر' : 'In Stock'));
+                        @endphp
+                        @if($product->stock_status !== 'out_of_stock' && $stockQty <= 10)
+                        <div class="stock-indicator {{ $stockClass }}">
+                            <i class="fas fa-fire"></i>
+                            <span>{{ $stockText }}</span>
+                        </div>
+                        @endif
+                        
+                        {{-- Quick View & Compare Buttons --}}
+                        <div class="product-actions">
+                            <button class="quick-view-btn" onclick="event.stopPropagation(); quickView({{ $product->id }})" title="{{ is_rtl() ? 'معاينة سريعة' : 'Quick View' }}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="compare-btn" onclick="event.stopPropagation(); addToCompare({{ $product->id }})" title="{{ is_rtl() ? 'مقارنة' : 'Compare' }}">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                        </div>
+                        
                         <img src="{{ $product->main_image }}" alt="{{ $product->name }}" loading="lazy" decoding="async">
                     </div>
                     <div class="product-info">
+                        {{-- Product Rating --}}
+                        <div class="product-rating">
+                            <div class="stars">
+                                @php
+                                    $rating = $product->average_rating ?? 4.5;
+                                    $fullStars = floor($rating);
+                                    $hasHalfStar = ($rating - $fullStars) >= 0.5;
+                                @endphp
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= $fullStars)
+                                        <i class="fas fa-star"></i>
+                                    @elseif($i == $fullStars + 1 && $hasHalfStar)
+                                        <i class="fas fa-star-half-alt"></i>
+                                    @else
+                                        <i class="far fa-star"></i>
+                                    @endif
+                                @endfor
+                            </div>
+                            <span class="rating-count">({{ $product->reviews_count ?? rand(10, 150) }})</span>
+                        </div>
+                        
                         <div class="product-title">{{ $product->name }}</div>
                         <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
                         <div class="product-footer">
@@ -3495,6 +3790,101 @@
     // Store cart product IDs from server
     window.cartProductIds = @json($cartProductIds);
     
+    // Quick View Function
+    window.quickView = function(productId) {
+        // Show loading
+        Swal.fire({
+            title: '{{ is_rtl() ? "جاري التحميل..." : "Loading..." }}',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        
+        // Fetch product details and show in modal
+        fetch(`/api/products/${productId}/quick-view`)
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({
+                    html: `
+                        <div class="quick-view-modal" style="text-align: {{ is_rtl() ? 'right' : 'left' }};">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+                                <div>
+                                    <img src="${data.main_image}" alt="${data.name}" style="width: 100%; border-radius: 8px;">
+                                </div>
+                                <div>
+                                    <h2 style="margin-bottom: 1rem; font-size: 1.5rem;">${data.name}</h2>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                                        <div style="color: #fbbf24;">★★★★☆</div>
+                                        <span style="color: #6b7280; font-size: 0.9rem;">(${data.reviews_count || 0} {{ is_rtl() ? 'تقييم' : 'reviews' }})</span>
+                                    </div>
+                                    <p style="color: #6b7280; margin-bottom: 1.5rem;">${data.short_description}</p>
+                                    <div style="font-size: 1.8rem; font-weight: bold; color: #1f2937; margin-bottom: 1.5rem;">
+                                        ₪${data.sale_price || data.price}
+                                        ${data.sale_price ? `<span style="text-decoration: line-through; color: #9ca3af; font-size: 1.2rem; margin-left: 0.5rem;">₪${data.price}</span>` : ''}
+                                    </div>
+                                    <a href="/products/${data.slug}" class="swal2-confirm swal2-styled" style="margin-top: 1rem;">
+                                        {{ is_rtl() ? 'عرض التفاصيل الكاملة' : 'View Full Details' }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    width: '800px',
+                    customClass: {
+                        container: 'quick-view-container'
+                    }
+                });
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: '{{ is_rtl() ? "خطأ" : "Error" }}',
+                    text: '{{ is_rtl() ? "حدث خطأ أثناء تحميل المنتج" : "Error loading product" }}'
+                });
+            });
+    };
+    
+    // Compare Function
+    let compareList = JSON.parse(localStorage.getItem('compareList') || '[]');
+    
+    window.addToCompare = function(productId) {
+        if (compareList.includes(productId)) {
+            Swal.fire({
+                icon: 'info',
+                title: '{{ is_rtl() ? "موجود مسبقاً" : "Already Added" }}',
+                text: '{{ is_rtl() ? "هذا المنتج موجود في قائمة المقارنة" : "This product is already in compare list" }}',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            return;
+        }
+        
+        if (compareList.length >= 4) {
+            Swal.fire({
+                icon: 'warning',
+                title: '{{ is_rtl() ? "القائمة ممتلئة" : "List Full" }}',
+                text: '{{ is_rtl() ? "يمكنك مقارنة 4 منتجات كحد أقصى" : "You can compare maximum 4 products" }}',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            return;
+        }
+        
+        compareList.push(productId);
+        localStorage.setItem('compareList', JSON.stringify(compareList));
+        
+        Swal.fire({
+            icon: 'success',
+            title: '{{ is_rtl() ? "تمت الإضافة!" : "Added!" }}',
+            text: '{{ is_rtl() ? "تمت إضافة المنتج لقائمة المقارنة" : "Product added to compare list" }}',
+            timer: 1500,
+            showConfirmButton: false
+        });
+    };
+    
     document.addEventListener('DOMContentLoaded', function() {
         // Hide page loader when everything is ready
         const pageLoader = document.getElementById('page-loader');
@@ -3512,12 +3902,16 @@
         let currentSlide = 0;
         const slides = document.querySelectorAll('.hero-slide');
         const dots = document.querySelectorAll('.slider-dot');
+        const progressBar = document.getElementById('sliderProgressBar');
         const totalSlides = slides.length;
         let slideInterval;
+        let progressInterval;
+        const slideDuration = 5000; // 5 seconds
 
         // Function to change slide
         window.changeSlide = function(direction) {
             clearInterval(slideInterval);
+            clearInterval(progressInterval);
             currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
             updateSlider();
             startAutoSlide();
@@ -3526,6 +3920,7 @@
         // Function to go to specific slide
         window.goToSlide = function(slideIndex) {
             clearInterval(slideInterval);
+            clearInterval(progressInterval);
             currentSlide = slideIndex;
             updateSlider();
             startAutoSlide();
@@ -3537,17 +3932,44 @@
                 slide.classList.remove('active');
                 dots[index].classList.remove('active');
             });
+            
+            // Reset progress bar
+            if (progressBar) {
+                progressBar.style.width = '0%';
+            }
             slides[currentSlide].classList.add('active');
             dots[currentSlide].classList.add('active');
+        }
+
+        // Function to animate progress bar
+        function animateProgressBar() {
+            if (!progressBar) return;
+            
+            clearInterval(progressInterval);
+            let progress = 0;
+            const increment = 100 / (slideDuration / 50); // Update every 50ms
+            
+            progressInterval = setInterval(() => {
+                progress += increment;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                }
+                progressBar.style.width = progress + '%';
+            }, 50);
         }
 
         // Function to start auto sliding
         function startAutoSlide() {
             clearInterval(slideInterval);
+            clearInterval(progressInterval);
+            animateProgressBar();
+            
             slideInterval = setInterval(() => {
                 currentSlide = (currentSlide + 1) % totalSlides;
                 updateSlider();
-            }, 5000); // Change slide every 5 seconds
+                animateProgressBar();
+            }, slideDuration);
         }
 
         // Start auto sliding
@@ -3557,6 +3979,7 @@
         const heroSection = document.querySelector('.hero-section');
         heroSection.addEventListener('mouseenter', () => {
             clearInterval(slideInterval);
+            clearInterval(progressInterval);
         });
 
         // Resume auto sliding when mouse leaves the slider
