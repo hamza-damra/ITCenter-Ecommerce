@@ -2780,142 +2780,6 @@
     </div>
 </div>
 
-{{-- Strong Offers Banner Section --}}
-<section class="home-section gift-ideas-section strong-offers-section" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}" style="padding-top: 0;">
-    <div class="container">
-        <div class="gift-ideas-grid">
-            {{-- Banner appears on the LEFT side for both RTL and LTR --}}
-            {{-- Banner (spans 2 columns) --}}
-            <div class="gift-ideas-item gift-banner-item strong-offers-banner">
-                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
-                    {{-- Text and Button Group --}}
-                    <div class="gift-banner-content">
-                        <h3 class="gift-banner-title">{{ __t('messages.strong_offers.headline') }}</h3>
-                        <p>
-                            {{ __t('messages.strong_offers.desc') }}<br>
-                            @if(app()->getLocale() === 'ar')
-                                {{ __t('messages.strong_offers.discount') }}<br>
-                                {{ __t('messages.strong_offers.code') }}
-                            @else
-                                {{ __t('messages.strong_offers.discount') }}<br>
-                                {{ __t('messages.strong_offers.code') }}
-                            @endif
-                        </p>
-                        <a class="gift-cta" href="{{ url('/deals') }}">{{ __t('messages.strong_offers.cta') }}</a>
-                    </div>
-                    
-                    {{-- Image --}}
-                    <div class="gift-banner-image">
-                        <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/daily-deal/daily-deals.png.webp?v=1.0" alt="{{ __t('messages.strong_offers.headline') }}" loading="lazy">
-                    </div>
-                </div>
-            </div>
-
-            {{-- Product 1 --}}
-            @if(isset($featuredProducts[6]))
-            <div class="gift-ideas-item gift-product-item strong-offers-product">
-                <div class="product-card h-100" onclick="window.location.href='{{ route('product.detail', $featuredProducts[6]->slug) }}'">
-                    <div class="product-image">
-                        @if($featuredProducts[6]->is_new)
-                        <div class="product-badge">{{ __t('messages.new') }}</div>
-                        @elseif($featuredProducts[6]->is_featured)
-                        <div class="product-badge">{{ __t('messages.hot') }}</div>
-                        @endif
-                        <div class="wishlist-btn" data-product-id="{{ $featuredProducts[6]->id }}" onclick="event.stopPropagation();">
-                            <i class="far fa-heart"></i>
-                        </div>
-                        <img src="{{ $featuredProducts[6]->main_image }}" alt="{{ $featuredProducts[6]->name }}" loading="lazy">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">{{ $featuredProducts[6]->name }}</div>
-                        <div class="product-description">{{ Str::limit($featuredProducts[6]->short_description, 60) }}</div>
-                        <div class="product-footer">
-                            <div class="product-price">
-                                @if($featuredProducts[6]->sale_price && $featuredProducts[6]->sale_price < $featuredProducts[6]->price)
-                                    <span class="original-price">₪ {{ number_format($featuredProducts[6]->price, 0) }}</span>
-                                    <span class="current-price">₪ {{ number_format($featuredProducts[6]->sale_price, 0) }}</span>
-                                @else
-                                    <span class="current-price">₪ {{ number_format($featuredProducts[6]->price, 0) }}</span>
-                                @endif
-                            </div>
-                            @if($featuredProducts[6]->stock_status === 'out_of_stock')
-                            <button class="add-to-cart-icon out-of-stock"
-                                    data-product-id="{{ $featuredProducts[6]->id }}"
-                                    data-product-name="{{ $featuredProducts[6]->name }}"
-                                    title="{{ __t('messages.request_product') }}"
-                                    aria-label="{{ __t('messages.request_product') }}"
-                                    onclick="event.stopPropagation(); requestProduct({{ $featuredProducts[6]->id }}, '{{ $featuredProducts[6]->name }}');">
-                                <i class="fas fa-bell"></i>
-                            </button>
-                            @else
-                            <button class="add-to-cart-icon {{ in_array($featuredProducts[6]->id, $cartProductIds) ? 'in-cart' : '' }}"
-                                    data-product-id="{{ $featuredProducts[6]->id }}"
-                                    title="{{ in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                    aria-label="{{ in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                    onclick="event.stopPropagation(); addToCart({{ $featuredProducts[6]->id }}, this);">
-                                <i class="fas {{ in_array($featuredProducts[6]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
-                            </button>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            {{-- Product 2 --}}
-            @if(isset($featuredProducts[7]))
-            <div class="gift-ideas-item gift-product-item strong-offers-product">
-                <div class="product-card h-100" onclick="window.location.href='{{ route('product.detail', $featuredProducts[7]->slug) }}'">
-                    <div class="product-image">
-                        @if($featuredProducts[7]->is_new)
-                        <div class="product-badge">{{ __t('messages.new') }}</div>
-                        @elseif($featuredProducts[7]->is_featured)
-                        <div class="product-badge">{{ __t('messages.hot') }}</div>
-                        @endif
-                        <div class="wishlist-btn" data-product-id="{{ $featuredProducts[7]->id }}" onclick="event.stopPropagation();">
-                            <i class="far fa-heart"></i>
-                        </div>
-                        <img src="{{ $featuredProducts[7]->main_image }}" alt="{{ $featuredProducts[7]->name }}" loading="lazy">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title">{{ $featuredProducts[7]->name }}</div>
-                        <div class="product-description">{{ Str::limit($featuredProducts[7]->short_description, 60) }}</div>
-                        <div class="product-footer">
-                            <div class="product-price">
-                                @if($featuredProducts[7]->sale_price && $featuredProducts[7]->sale_price < $featuredProducts[7]->price)
-                                    <span class="original-price">₪ {{ number_format($featuredProducts[7]->price, 0) }}</span>
-                                    <span class="current-price">₪ {{ number_format($featuredProducts[7]->sale_price, 0) }}</span>
-                                @else
-                                    <span class="current-price">₪ {{ number_format($featuredProducts[7]->price, 0) }}</span>
-                                @endif
-                            </div>
-                            @if($featuredProducts[7]->stock_status === 'out_of_stock')
-                            <button class="add-to-cart-icon out-of-stock"
-                                    data-product-id="{{ $featuredProducts[7]->id }}"
-                                    data-product-name="{{ $featuredProducts[7]->name }}"
-                                    title="{{ __t('messages.request_product') }}"
-                                    aria-label="{{ __t('messages.request_product') }}"
-                                    onclick="event.stopPropagation(); requestProduct({{ $featuredProducts[7]->id }}, '{{ $featuredProducts[7]->name }}');">
-                                <i class="fas fa-bell"></i>
-                            </button>
-                            @else
-                            <button class="add-to-cart-icon {{ in_array($featuredProducts[7]->id, $cartProductIds) ? 'in-cart' : '' }}"
-                                    data-product-id="{{ $featuredProducts[7]->id }}"
-                                    title="{{ in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                    aria-label="{{ in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                    onclick="event.stopPropagation(); addToCart({{ $featuredProducts[7]->id }}, this);">
-                                <i class="fas {{ in_array($featuredProducts[7]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
-                            </button>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
-        </div>
-    </div>
-</section>
-
 <!-- Category Carousel JavaScript -->
 <script>
 (function() {
@@ -3275,11 +3139,193 @@
     </div>
 </div>
 
-{{-- Gift Ideas Section - Moved here after Featured Products --}}
+{{-- Strong Offers Banner Section --}}
+<section class="home-section gift-ideas-section strong-offers-section" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
+    <div class="container">
+        <div class="gift-ideas-grid">
+            {{-- Banner appears on the LEFT side for both RTL and LTR --}}
+            {{-- Banner (spans 2 columns) --}}
+            <div class="gift-ideas-item gift-banner-item strong-offers-banner">
+                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                    {{-- Text and Button Group --}}
+                    <div class="gift-banner-content">
+                        <h3 class="gift-banner-title">{{ __t('messages.strong_offers.headline') }}</h3>
+                        <p>
+                            {{ __t('messages.strong_offers.desc') }}<br>
+                            @if(app()->getLocale() === 'ar')
+                                {{ __t('messages.strong_offers.discount') }}<br>
+                                {{ __t('messages.strong_offers.code') }}
+                            @else
+                                {{ __t('messages.strong_offers.discount') }}<br>
+                                {{ __t('messages.strong_offers.code') }}
+                            @endif
+                        </p>
+                        <a class="gift-cta" href="{{ url('/deals') }}">{{ __t('messages.strong_offers.cta') }}</a>
+                    </div>
+                    
+                    {{-- Image --}}
+                    <div class="gift-banner-image">
+                        <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/daily-deal/daily-deals.png.webp?v=1.0" alt="{{ __t('messages.strong_offers.headline') }}" loading="lazy">
+                    </div>
+                </div>
+            </div>
+
+            {{-- Product 1 --}}
+            @if(isset($featuredProducts[6]))
+            <div class="gift-ideas-item gift-product-item strong-offers-product">
+                <div class="product-card h-100" onclick="window.location.href='{{ route('product.detail', $featuredProducts[6]->slug) }}'">
+                    <div class="product-image">
+                        @if($featuredProducts[6]->is_new)
+                        <div class="product-badge">{{ __t('messages.new') }}</div>
+                        @elseif($featuredProducts[6]->is_featured)
+                        <div class="product-badge">{{ __t('messages.hot') }}</div>
+                        @endif
+                        <div class="wishlist-btn" data-product-id="{{ $featuredProducts[6]->id }}" onclick="event.stopPropagation();">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <img src="{{ $featuredProducts[6]->main_image }}" alt="{{ $featuredProducts[6]->name }}" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">{{ $featuredProducts[6]->name }}</div>
+                        <div class="product-description">{{ Str::limit($featuredProducts[6]->short_description, 60) }}</div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                @if($featuredProducts[6]->sale_price && $featuredProducts[6]->sale_price < $featuredProducts[6]->price)
+                                    <span class="original-price">₪ {{ number_format($featuredProducts[6]->price, 0) }}</span>
+                                    <span class="current-price">₪ {{ number_format($featuredProducts[6]->sale_price, 0) }}</span>
+                                @else
+                                    <span class="current-price">₪ {{ number_format($featuredProducts[6]->price, 0) }}</span>
+                                @endif
+                            </div>
+                            @if($featuredProducts[6]->stock_status === 'out_of_stock')
+                            <button class="add-to-cart-icon out-of-stock"
+                                    data-product-id="{{ $featuredProducts[6]->id }}"
+                                    data-product-name="{{ $featuredProducts[6]->name }}"
+                                    title="{{ __t('messages.request_product') }}"
+                                    aria-label="{{ __t('messages.request_product') }}"
+                                    onclick="event.stopPropagation(); requestProduct({{ $featuredProducts[6]->id }}, '{{ $featuredProducts[6]->name }}');">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            @else
+                            <button class="add-to-cart-icon {{ in_array($featuredProducts[6]->id, $cartProductIds) ? 'in-cart' : '' }}"
+                                    data-product-id="{{ $featuredProducts[6]->id }}"
+                                    title="{{ in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                    aria-label="{{ in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                    onclick="event.stopPropagation(); addToCart({{ $featuredProducts[6]->id }}, this);">
+                                <i class="fas {{ in_array($featuredProducts[6]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
+                            </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Product 2 --}}
+            @if(isset($featuredProducts[7]))
+            <div class="gift-ideas-item gift-product-item strong-offers-product">
+                <div class="product-card h-100" onclick="window.location.href='{{ route('product.detail', $featuredProducts[7]->slug) }}'">
+                    <div class="product-image">
+                        @if($featuredProducts[7]->is_new)
+                        <div class="product-badge">{{ __t('messages.new') }}</div>
+                        @elseif($featuredProducts[7]->is_featured)
+                        <div class="product-badge">{{ __t('messages.hot') }}</div>
+                        @endif
+                        <div class="wishlist-btn" data-product-id="{{ $featuredProducts[7]->id }}" onclick="event.stopPropagation();">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <img src="{{ $featuredProducts[7]->main_image }}" alt="{{ $featuredProducts[7]->name }}" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">{{ $featuredProducts[7]->name }}</div>
+                        <div class="product-description">{{ Str::limit($featuredProducts[7]->short_description, 60) }}</div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                @if($featuredProducts[7]->sale_price && $featuredProducts[7]->sale_price < $featuredProducts[7]->price)
+                                    <span class="original-price">₪ {{ number_format($featuredProducts[7]->price, 0) }}</span>
+                                    <span class="current-price">₪ {{ number_format($featuredProducts[7]->sale_price, 0) }}</span>
+                                @else
+                                    <span class="current-price">₪ {{ number_format($featuredProducts[7]->price, 0) }}</span>
+                                @endif
+                            </div>
+                            @if($featuredProducts[7]->stock_status === 'out_of_stock')
+                            <button class="add-to-cart-icon out-of-stock"
+                                    data-product-id="{{ $featuredProducts[7]->id }}"
+                                    data-product-name="{{ $featuredProducts[7]->name }}"
+                                    title="{{ __t('messages.request_product') }}"
+                                    aria-label="{{ __t('messages.request_product') }}"
+                                    onclick="event.stopPropagation(); requestProduct({{ $featuredProducts[7]->id }}, '{{ $featuredProducts[7]->name }}');">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            @else
+                            <button class="add-to-cart-icon {{ in_array($featuredProducts[7]->id, $cartProductIds) ? 'in-cart' : '' }}"
+                                    data-product-id="{{ $featuredProducts[7]->id }}"
+                                    title="{{ in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                    aria-label="{{ in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
+                                    onclick="event.stopPropagation(); addToCart({{ $featuredProducts[7]->id }}, this);">
+                                <i class="fas {{ in_array($featuredProducts[7]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
+                            </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+        </div>
+    </div>
+</section>
+
+<!-- Main Content Container -->
+<div class="container">
+    <!-- Special Discounts & Offers - HORIZONTAL SCROLLER -->
+    @if($specialDiscounts->count() > 0)
+    <x-horizontal-product-scroller
+        :products="$specialDiscounts"
+        title="{{ __t('messages.special_discounts') }}"
+        :viewMoreUrl="route('products', ['filter' => 'sale'])"
+        :autoScroll="true"
+        :autoScrollInterval="4500"
+        :cardsToScroll="1"
+        :cartProductIds="$cartProductIds"
+        :showDiscountPercentage="true"
+        containerId="special-discounts-scroller"
+    />
+    @endif
+
+    <!-- New Arrivals - HORIZONTAL SCROLLER -->
+    @if($newProducts->count() > 0)
+    <x-horizontal-product-scroller
+        :products="$newProducts"
+        title="{{ __t('messages.new_arrivals') }}"
+        :viewMoreUrl="route('products')"
+        :autoScroll="true"
+        :autoScrollInterval="5000"
+        :cardsToScroll="2"
+        :cartProductIds="$cartProductIds"
+        :hideSaleBadge="true"
+        containerId="new-arrivals-scroller"
+    />
+    @endif
+
+    <!-- Bestsellers - HORIZONTAL SCROLLER -->
+    @if($bestsellerProducts->count() > 0)
+    <x-horizontal-product-scroller
+        :products="$bestsellerProducts"
+        title="{{ __t('messages.best_sellers') }}"
+        :viewMoreUrl="route('products', ['filter' => 'bestseller'])"
+        :autoScroll="true"
+        :autoScrollInterval="6000"
+        :cartProductIds="$cartProductIds"
+        :hideSaleBadge="true"
+        containerId="bestsellers-scroller"
+    />
+    @endif
+</div>
+<!-- End Main Content Container -->
+
+{{-- Gift Ideas Section --}}
 <section class="home-section gift-ideas-section" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
     <div class="container">
-        <!-- Removed section heading (icon + title) per request -->
-
         <div class="gift-ideas-grid">
             {{-- RTL: Banner first (on the right), then products --}}
             @if(is_rtl())
@@ -3426,68 +3472,8 @@
     </div>
 </section>
 
-<!-- Main Content Container -->
+<!-- Continue Main Content Container -->
 <div class="container">
-    <!-- Special Discounts & Offers - HORIZONTAL SCROLLER -->
-    @if($specialDiscounts->count() > 0)
-    <x-horizontal-product-scroller
-        :products="$specialDiscounts"
-        title="{{ __t('messages.special_discounts') }}"
-        :viewMoreUrl="route('products', ['filter' => 'sale'])"
-        :autoScroll="true"
-        :autoScrollInterval="4500"
-        :cardsToScroll="1"
-        :cartProductIds="$cartProductIds"
-        :showDiscountPercentage="true"
-        containerId="special-discounts-scroller"
-    />
-    @endif
-
-    <!-- Featured Products - HORIZONTAL SCROLLER -->
-    @if($featuredProducts->count() > 0)
-    <x-horizontal-product-scroller
-        :products="$featuredProducts"
-        title="{{ __t('messages.featured_products') }}"
-        :viewMoreUrl="route('products')"
-        :autoScroll="true"
-        :autoScrollInterval="4000"
-        :cartProductIds="$cartProductIds"
-        :hideSaleBadge="true"
-        containerId="featured-products-scroller"
-    />
-    @endif
-
-
-
-    <!-- New Arrivals - HORIZONTAL SCROLLER -->
-    @if($newProducts->count() > 0)
-    <x-horizontal-product-scroller
-        :products="$newProducts"
-        title="{{ __t('messages.new_arrivals') }}"
-        :viewMoreUrl="route('products')"
-        :autoScroll="true"
-        :autoScrollInterval="5000"
-        :cardsToScroll="2"
-        :cartProductIds="$cartProductIds"
-        :hideSaleBadge="true"
-        containerId="new-arrivals-scroller"
-    />
-    @endif
-
-    <!-- Bestsellers - HORIZONTAL SCROLLER -->
-    @if($bestsellerProducts->count() > 0)
-    <x-horizontal-product-scroller
-        :products="$bestsellerProducts"
-        title="{{ __t('messages.best_sellers') }}"
-        :viewMoreUrl="route('products', ['filter' => 'bestseller'])"
-        :autoScroll="true"
-        :autoScrollInterval="6000"
-        :cartProductIds="$cartProductIds"
-        :hideSaleBadge="true"
-        containerId="bestsellers-scroller"
-    />
-    @endif
-
     <!-- On Sale Products - HORIZONTAL SCROLLER -->
     @if($onSaleProducts->count() > 0)
     <x-horizontal-product-scroller

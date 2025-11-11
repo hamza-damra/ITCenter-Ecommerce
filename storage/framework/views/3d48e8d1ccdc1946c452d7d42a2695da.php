@@ -2778,144 +2778,6 @@
     </div>
 </div>
 
-
-<section class="home-section gift-ideas-section strong-offers-section" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>" style="padding-top: 0;">
-    <div class="container">
-        <div class="gift-ideas-grid">
-            
-            
-            <div class="gift-ideas-item gift-banner-item strong-offers-banner">
-                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
-                    
-                    <div class="gift-banner-content">
-                        <h3 class="gift-banner-title"><?php echo e(__t('messages.strong_offers.headline')); ?></h3>
-                        <p>
-                            <?php echo e(__t('messages.strong_offers.desc')); ?><br>
-                            <?php if(app()->getLocale() === 'ar'): ?>
-                                <?php echo e(__t('messages.strong_offers.discount')); ?><br>
-                                <?php echo e(__t('messages.strong_offers.code')); ?>
-
-                            <?php else: ?>
-                                <?php echo e(__t('messages.strong_offers.discount')); ?><br>
-                                <?php echo e(__t('messages.strong_offers.code')); ?>
-
-                            <?php endif; ?>
-                        </p>
-                        <a class="gift-cta" href="<?php echo e(url('/deals')); ?>"><?php echo e(__t('messages.strong_offers.cta')); ?></a>
-                    </div>
-                    
-                    
-                    <div class="gift-banner-image">
-                        <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/daily-deal/daily-deals.png.webp?v=1.0" alt="<?php echo e(__t('messages.strong_offers.headline')); ?>" loading="lazy">
-                    </div>
-                </div>
-            </div>
-
-            
-            <?php if(isset($featuredProducts[6])): ?>
-            <div class="gift-ideas-item gift-product-item strong-offers-product">
-                <div class="product-card h-100" onclick="window.location.href='<?php echo e(route('product.detail', $featuredProducts[6]->slug)); ?>'">
-                    <div class="product-image">
-                        <?php if($featuredProducts[6]->is_new): ?>
-                        <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
-                        <?php elseif($featuredProducts[6]->is_featured): ?>
-                        <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
-                        <?php endif; ?>
-                        <div class="wishlist-btn" data-product-id="<?php echo e($featuredProducts[6]->id); ?>" onclick="event.stopPropagation();">
-                            <i class="far fa-heart"></i>
-                        </div>
-                        <img src="<?php echo e($featuredProducts[6]->main_image); ?>" alt="<?php echo e($featuredProducts[6]->name); ?>" loading="lazy">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title"><?php echo e($featuredProducts[6]->name); ?></div>
-                        <div class="product-description"><?php echo e(Str::limit($featuredProducts[6]->short_description, 60)); ?></div>
-                        <div class="product-footer">
-                            <div class="product-price">
-                                <?php if($featuredProducts[6]->sale_price && $featuredProducts[6]->sale_price < $featuredProducts[6]->price): ?>
-                                    <span class="original-price">₪ <?php echo e(number_format($featuredProducts[6]->price, 0)); ?></span>
-                                    <span class="current-price">₪ <?php echo e(number_format($featuredProducts[6]->sale_price, 0)); ?></span>
-                                <?php else: ?>
-                                    <span class="current-price">₪ <?php echo e(number_format($featuredProducts[6]->price, 0)); ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <?php if($featuredProducts[6]->stock_status === 'out_of_stock'): ?>
-                            <button class="add-to-cart-icon out-of-stock"
-                                    data-product-id="<?php echo e($featuredProducts[6]->id); ?>"
-                                    data-product-name="<?php echo e($featuredProducts[6]->name); ?>"
-                                    title="<?php echo e(__t('messages.request_product')); ?>"
-                                    aria-label="<?php echo e(__t('messages.request_product')); ?>"
-                                    onclick="event.stopPropagation(); requestProduct(<?php echo e($featuredProducts[6]->id); ?>, '<?php echo e($featuredProducts[6]->name); ?>');">
-                                <i class="fas fa-bell"></i>
-                            </button>
-                            <?php else: ?>
-                            <button class="add-to-cart-icon <?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
-                                    data-product-id="<?php echo e($featuredProducts[6]->id); ?>"
-                                    title="<?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
-                                    aria-label="<?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
-                                    onclick="event.stopPropagation(); addToCart(<?php echo e($featuredProducts[6]->id); ?>, this);">
-                                <i class="fas <?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
-                            </button>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
-
-            
-            <?php if(isset($featuredProducts[7])): ?>
-            <div class="gift-ideas-item gift-product-item strong-offers-product">
-                <div class="product-card h-100" onclick="window.location.href='<?php echo e(route('product.detail', $featuredProducts[7]->slug)); ?>'">
-                    <div class="product-image">
-                        <?php if($featuredProducts[7]->is_new): ?>
-                        <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
-                        <?php elseif($featuredProducts[7]->is_featured): ?>
-                        <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
-                        <?php endif; ?>
-                        <div class="wishlist-btn" data-product-id="<?php echo e($featuredProducts[7]->id); ?>" onclick="event.stopPropagation();">
-                            <i class="far fa-heart"></i>
-                        </div>
-                        <img src="<?php echo e($featuredProducts[7]->main_image); ?>" alt="<?php echo e($featuredProducts[7]->name); ?>" loading="lazy">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-title"><?php echo e($featuredProducts[7]->name); ?></div>
-                        <div class="product-description"><?php echo e(Str::limit($featuredProducts[7]->short_description, 60)); ?></div>
-                        <div class="product-footer">
-                            <div class="product-price">
-                                <?php if($featuredProducts[7]->sale_price && $featuredProducts[7]->sale_price < $featuredProducts[7]->price): ?>
-                                    <span class="original-price">₪ <?php echo e(number_format($featuredProducts[7]->price, 0)); ?></span>
-                                    <span class="current-price">₪ <?php echo e(number_format($featuredProducts[7]->sale_price, 0)); ?></span>
-                                <?php else: ?>
-                                    <span class="current-price">₪ <?php echo e(number_format($featuredProducts[7]->price, 0)); ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <?php if($featuredProducts[7]->stock_status === 'out_of_stock'): ?>
-                            <button class="add-to-cart-icon out-of-stock"
-                                    data-product-id="<?php echo e($featuredProducts[7]->id); ?>"
-                                    data-product-name="<?php echo e($featuredProducts[7]->name); ?>"
-                                    title="<?php echo e(__t('messages.request_product')); ?>"
-                                    aria-label="<?php echo e(__t('messages.request_product')); ?>"
-                                    onclick="event.stopPropagation(); requestProduct(<?php echo e($featuredProducts[7]->id); ?>, '<?php echo e($featuredProducts[7]->name); ?>');">
-                                <i class="fas fa-bell"></i>
-                            </button>
-                            <?php else: ?>
-                            <button class="add-to-cart-icon <?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
-                                    data-product-id="<?php echo e($featuredProducts[7]->id); ?>"
-                                    title="<?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
-                                    aria-label="<?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
-                                    onclick="event.stopPropagation(); addToCart(<?php echo e($featuredProducts[7]->id); ?>, this);">
-                                <i class="fas <?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
-                            </button>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
-        </div>
-    </div>
-</section>
-
 <!-- Category Carousel JavaScript -->
 <script>
 (function() {
@@ -3277,10 +3139,222 @@
 </div>
 
 
+<section class="home-section gift-ideas-section strong-offers-section" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>">
+    <div class="container">
+        <div class="gift-ideas-grid">
+            
+            
+            <div class="gift-ideas-item gift-banner-item strong-offers-banner">
+                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                    
+                    <div class="gift-banner-content">
+                        <h3 class="gift-banner-title"><?php echo e(__t('messages.strong_offers.headline')); ?></h3>
+                        <p>
+                            <?php echo e(__t('messages.strong_offers.desc')); ?><br>
+                            <?php if(app()->getLocale() === 'ar'): ?>
+                                <?php echo e(__t('messages.strong_offers.discount')); ?><br>
+                                <?php echo e(__t('messages.strong_offers.code')); ?>
+
+                            <?php else: ?>
+                                <?php echo e(__t('messages.strong_offers.discount')); ?><br>
+                                <?php echo e(__t('messages.strong_offers.code')); ?>
+
+                            <?php endif; ?>
+                        </p>
+                        <a class="gift-cta" href="<?php echo e(url('/deals')); ?>"><?php echo e(__t('messages.strong_offers.cta')); ?></a>
+                    </div>
+                    
+                    
+                    <div class="gift-banner-image">
+                        <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/daily-deal/daily-deals.png.webp?v=1.0" alt="<?php echo e(__t('messages.strong_offers.headline')); ?>" loading="lazy">
+                    </div>
+                </div>
+            </div>
+
+            
+            <?php if(isset($featuredProducts[6])): ?>
+            <div class="gift-ideas-item gift-product-item strong-offers-product">
+                <div class="product-card h-100" onclick="window.location.href='<?php echo e(route('product.detail', $featuredProducts[6]->slug)); ?>'">
+                    <div class="product-image">
+                        <?php if($featuredProducts[6]->is_new): ?>
+                        <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
+                        <?php elseif($featuredProducts[6]->is_featured): ?>
+                        <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
+                        <?php endif; ?>
+                        <div class="wishlist-btn" data-product-id="<?php echo e($featuredProducts[6]->id); ?>" onclick="event.stopPropagation();">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <img src="<?php echo e($featuredProducts[6]->main_image); ?>" alt="<?php echo e($featuredProducts[6]->name); ?>" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title"><?php echo e($featuredProducts[6]->name); ?></div>
+                        <div class="product-description"><?php echo e(Str::limit($featuredProducts[6]->short_description, 60)); ?></div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                <?php if($featuredProducts[6]->sale_price && $featuredProducts[6]->sale_price < $featuredProducts[6]->price): ?>
+                                    <span class="original-price">₪ <?php echo e(number_format($featuredProducts[6]->price, 0)); ?></span>
+                                    <span class="current-price">₪ <?php echo e(number_format($featuredProducts[6]->sale_price, 0)); ?></span>
+                                <?php else: ?>
+                                    <span class="current-price">₪ <?php echo e(number_format($featuredProducts[6]->price, 0)); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <?php if($featuredProducts[6]->stock_status === 'out_of_stock'): ?>
+                            <button class="add-to-cart-icon out-of-stock"
+                                    data-product-id="<?php echo e($featuredProducts[6]->id); ?>"
+                                    data-product-name="<?php echo e($featuredProducts[6]->name); ?>"
+                                    title="<?php echo e(__t('messages.request_product')); ?>"
+                                    aria-label="<?php echo e(__t('messages.request_product')); ?>"
+                                    onclick="event.stopPropagation(); requestProduct(<?php echo e($featuredProducts[6]->id); ?>, '<?php echo e($featuredProducts[6]->name); ?>');">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            <?php else: ?>
+                            <button class="add-to-cart-icon <?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
+                                    data-product-id="<?php echo e($featuredProducts[6]->id); ?>"
+                                    title="<?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    aria-label="<?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    onclick="event.stopPropagation(); addToCart(<?php echo e($featuredProducts[6]->id); ?>, this);">
+                                <i class="fas <?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
+                            </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+
+            
+            <?php if(isset($featuredProducts[7])): ?>
+            <div class="gift-ideas-item gift-product-item strong-offers-product">
+                <div class="product-card h-100" onclick="window.location.href='<?php echo e(route('product.detail', $featuredProducts[7]->slug)); ?>'">
+                    <div class="product-image">
+                        <?php if($featuredProducts[7]->is_new): ?>
+                        <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
+                        <?php elseif($featuredProducts[7]->is_featured): ?>
+                        <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
+                        <?php endif; ?>
+                        <div class="wishlist-btn" data-product-id="<?php echo e($featuredProducts[7]->id); ?>" onclick="event.stopPropagation();">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <img src="<?php echo e($featuredProducts[7]->main_image); ?>" alt="<?php echo e($featuredProducts[7]->name); ?>" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title"><?php echo e($featuredProducts[7]->name); ?></div>
+                        <div class="product-description"><?php echo e(Str::limit($featuredProducts[7]->short_description, 60)); ?></div>
+                        <div class="product-footer">
+                            <div class="product-price">
+                                <?php if($featuredProducts[7]->sale_price && $featuredProducts[7]->sale_price < $featuredProducts[7]->price): ?>
+                                    <span class="original-price">₪ <?php echo e(number_format($featuredProducts[7]->price, 0)); ?></span>
+                                    <span class="current-price">₪ <?php echo e(number_format($featuredProducts[7]->sale_price, 0)); ?></span>
+                                <?php else: ?>
+                                    <span class="current-price">₪ <?php echo e(number_format($featuredProducts[7]->price, 0)); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <?php if($featuredProducts[7]->stock_status === 'out_of_stock'): ?>
+                            <button class="add-to-cart-icon out-of-stock"
+                                    data-product-id="<?php echo e($featuredProducts[7]->id); ?>"
+                                    data-product-name="<?php echo e($featuredProducts[7]->name); ?>"
+                                    title="<?php echo e(__t('messages.request_product')); ?>"
+                                    aria-label="<?php echo e(__t('messages.request_product')); ?>"
+                                    onclick="event.stopPropagation(); requestProduct(<?php echo e($featuredProducts[7]->id); ?>, '<?php echo e($featuredProducts[7]->name); ?>');">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            <?php else: ?>
+                            <button class="add-to-cart-icon <?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
+                                    data-product-id="<?php echo e($featuredProducts[7]->id); ?>"
+                                    title="<?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    aria-label="<?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    onclick="event.stopPropagation(); addToCart(<?php echo e($featuredProducts[7]->id); ?>, this);">
+                                <i class="fas <?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
+                            </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content Container -->
+<div class="container">
+    <!-- Special Discounts & Offers - HORIZONTAL SCROLLER -->
+    <?php if($specialDiscounts->count() > 0): ?>
+    <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.horizontal-product-scroller','data' => ['products' => $specialDiscounts,'title' => ''.e(__t('messages.special_discounts')).'','viewMoreUrl' => route('products', ['filter' => 'sale']),'autoScroll' => true,'autoScrollInterval' => 4500,'cardsToScroll' => 1,'cartProductIds' => $cartProductIds,'showDiscountPercentage' => true,'containerId' => 'special-discounts-scroller']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('horizontal-product-scroller'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['products' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($specialDiscounts),'title' => ''.e(__t('messages.special_discounts')).'','viewMoreUrl' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('products', ['filter' => 'sale'])),'autoScroll' => true,'autoScrollInterval' => 4500,'cardsToScroll' => 1,'cartProductIds' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($cartProductIds),'showDiscountPercentage' => true,'containerId' => 'special-discounts-scroller']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $attributes = $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $component = $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+    <?php endif; ?>
+
+    <!-- New Arrivals - HORIZONTAL SCROLLER -->
+    <?php if($newProducts->count() > 0): ?>
+    <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.horizontal-product-scroller','data' => ['products' => $newProducts,'title' => ''.e(__t('messages.new_arrivals')).'','viewMoreUrl' => route('products'),'autoScroll' => true,'autoScrollInterval' => 5000,'cardsToScroll' => 2,'cartProductIds' => $cartProductIds,'hideSaleBadge' => true,'containerId' => 'new-arrivals-scroller']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('horizontal-product-scroller'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['products' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($newProducts),'title' => ''.e(__t('messages.new_arrivals')).'','viewMoreUrl' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('products')),'autoScroll' => true,'autoScrollInterval' => 5000,'cardsToScroll' => 2,'cartProductIds' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($cartProductIds),'hideSaleBadge' => true,'containerId' => 'new-arrivals-scroller']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $attributes = $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $component = $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+    <?php endif; ?>
+
+    <!-- Bestsellers - HORIZONTAL SCROLLER -->
+    <?php if($bestsellerProducts->count() > 0): ?>
+    <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.horizontal-product-scroller','data' => ['products' => $bestsellerProducts,'title' => ''.e(__t('messages.best_sellers')).'','viewMoreUrl' => route('products', ['filter' => 'bestseller']),'autoScroll' => true,'autoScrollInterval' => 6000,'cartProductIds' => $cartProductIds,'hideSaleBadge' => true,'containerId' => 'bestsellers-scroller']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('horizontal-product-scroller'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['products' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($bestsellerProducts),'title' => ''.e(__t('messages.best_sellers')).'','viewMoreUrl' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('products', ['filter' => 'bestseller'])),'autoScroll' => true,'autoScrollInterval' => 6000,'cartProductIds' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($cartProductIds),'hideSaleBadge' => true,'containerId' => 'bestsellers-scroller']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $attributes = $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $component = $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+    <?php endif; ?>
+</div>
+<!-- End Main Content Container -->
+
+
 <section class="home-section gift-ideas-section" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>">
     <div class="container">
-        <!-- Removed section heading (icon + title) per request -->
-
         <div class="gift-ideas-grid">
             
             <?php if(is_rtl()): ?>
@@ -3427,106 +3501,8 @@
     </div>
 </section>
 
-<!-- Main Content Container -->
+<!-- Continue Main Content Container -->
 <div class="container">
-    <!-- Special Discounts & Offers - HORIZONTAL SCROLLER -->
-    <?php if($specialDiscounts->count() > 0): ?>
-    <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.horizontal-product-scroller','data' => ['products' => $specialDiscounts,'title' => ''.e(__t('messages.special_discounts')).'','viewMoreUrl' => route('products', ['filter' => 'sale']),'autoScroll' => true,'autoScrollInterval' => 4500,'cardsToScroll' => 1,'cartProductIds' => $cartProductIds,'showDiscountPercentage' => true,'containerId' => 'special-discounts-scroller']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('horizontal-product-scroller'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['products' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($specialDiscounts),'title' => ''.e(__t('messages.special_discounts')).'','viewMoreUrl' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('products', ['filter' => 'sale'])),'autoScroll' => true,'autoScrollInterval' => 4500,'cardsToScroll' => 1,'cartProductIds' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($cartProductIds),'showDiscountPercentage' => true,'containerId' => 'special-discounts-scroller']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
-<?php $attributes = $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
-<?php unset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
-<?php $component = $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
-<?php unset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
-<?php endif; ?>
-    <?php endif; ?>
-
-    <!-- Featured Products - HORIZONTAL SCROLLER -->
-    <?php if($featuredProducts->count() > 0): ?>
-    <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.horizontal-product-scroller','data' => ['products' => $featuredProducts,'title' => ''.e(__t('messages.featured_products')).'','viewMoreUrl' => route('products'),'autoScroll' => true,'autoScrollInterval' => 4000,'cartProductIds' => $cartProductIds,'hideSaleBadge' => true,'containerId' => 'featured-products-scroller']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('horizontal-product-scroller'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['products' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($featuredProducts),'title' => ''.e(__t('messages.featured_products')).'','viewMoreUrl' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('products')),'autoScroll' => true,'autoScrollInterval' => 4000,'cartProductIds' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($cartProductIds),'hideSaleBadge' => true,'containerId' => 'featured-products-scroller']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
-<?php $attributes = $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
-<?php unset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
-<?php $component = $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
-<?php unset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
-<?php endif; ?>
-    <?php endif; ?>
-
-
-
-    <!-- New Arrivals - HORIZONTAL SCROLLER -->
-    <?php if($newProducts->count() > 0): ?>
-    <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.horizontal-product-scroller','data' => ['products' => $newProducts,'title' => ''.e(__t('messages.new_arrivals')).'','viewMoreUrl' => route('products'),'autoScroll' => true,'autoScrollInterval' => 5000,'cardsToScroll' => 2,'cartProductIds' => $cartProductIds,'hideSaleBadge' => true,'containerId' => 'new-arrivals-scroller']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('horizontal-product-scroller'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['products' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($newProducts),'title' => ''.e(__t('messages.new_arrivals')).'','viewMoreUrl' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('products')),'autoScroll' => true,'autoScrollInterval' => 5000,'cardsToScroll' => 2,'cartProductIds' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($cartProductIds),'hideSaleBadge' => true,'containerId' => 'new-arrivals-scroller']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
-<?php $attributes = $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
-<?php unset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
-<?php $component = $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
-<?php unset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
-<?php endif; ?>
-    <?php endif; ?>
-
-    <!-- Bestsellers - HORIZONTAL SCROLLER -->
-    <?php if($bestsellerProducts->count() > 0): ?>
-    <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.horizontal-product-scroller','data' => ['products' => $bestsellerProducts,'title' => ''.e(__t('messages.best_sellers')).'','viewMoreUrl' => route('products', ['filter' => 'bestseller']),'autoScroll' => true,'autoScrollInterval' => 6000,'cartProductIds' => $cartProductIds,'hideSaleBadge' => true,'containerId' => 'bestsellers-scroller']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('horizontal-product-scroller'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['products' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($bestsellerProducts),'title' => ''.e(__t('messages.best_sellers')).'','viewMoreUrl' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('products', ['filter' => 'bestseller'])),'autoScroll' => true,'autoScrollInterval' => 6000,'cartProductIds' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($cartProductIds),'hideSaleBadge' => true,'containerId' => 'bestsellers-scroller']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
-<?php $attributes = $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
-<?php unset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
-<?php $component = $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
-<?php unset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
-<?php endif; ?>
-    <?php endif; ?>
-
     <!-- On Sale Products - HORIZONTAL SCROLLER -->
     <?php if($onSaleProducts->count() > 0): ?>
     <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
