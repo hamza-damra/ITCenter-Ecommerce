@@ -596,14 +596,14 @@
 
     /* Category Carousel Card */
     .category-carousel-card {
-        flex: 0 0 25%;
+        flex: 0 0 20%;
         display: flex;
         flex-direction: column;
         align-items: center;
         text-decoration: none;
         transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
-        padding: 2rem 1.5rem;
+        padding: 1.5rem 1rem;
         border-radius: 0;
         background: #ffffff;
         position: relative;
@@ -638,7 +638,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
         overflow: hidden;
         border-radius: 0;
         background: transparent;
@@ -646,8 +646,8 @@
     }
 
     .category-carousel-image img {
-        width: 85%;
-        height: 85%;
+        width: 75%;
+        height: 75%;
         object-fit: contain;
         transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         filter: none;
@@ -658,7 +658,7 @@
     }
 
     .category-carousel-name {
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-weight: 600;
         color: #374151;
         text-align: center;
@@ -703,7 +703,7 @@
     /* Responsive Design for Category Carousel */
     @media (max-width: 1023px) {
         .category-carousel-card {
-            flex: 0 0 33.333%;
+            flex: 0 0 25%;
         }
 
         .discover-title {
@@ -722,7 +722,7 @@
 
     @media (max-width: 767px) {
         .category-carousel-card {
-            flex: 0 0 50%;
+            flex: 0 0 33.333%;
         }
 
         .explore-products-section {
@@ -754,7 +754,7 @@
 
     @media (max-width: 479px) {
         .category-carousel-card {
-            flex: 0 0 100%;
+            flex: 0 0 50%;
         }
 
         .category-carousel-wrapper {
@@ -2972,7 +2972,7 @@
 <div class="explore-products-section">
     <div class="container">
         <!-- Section Header with Decorative Elements -->
-        <div class="discover-header">
+       <!-- <div class="discover-header">
             <div class="discover-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
@@ -2984,7 +2984,7 @@
                 <span class="underline-dot"></span>
                 <span class="underline-bar"></span>
             </div>
-        </div>
+        </div>-->
 
         <!-- Category Carousel -->
         <div class="category-carousel-wrapper">
@@ -3040,10 +3040,10 @@
     // Responsive slides per view
     function getSlidesPerView() {
         const width = window.innerWidth;
-        if (width >= 1024) return 4; // Desktop
-        if (width >= 768) return 3;  // Tablet
-        if (width >= 480) return 2;  // Small tablet
-        return 1;                     // Mobile
+        if (width >= 1024) return 5; // Desktop - 5 cards
+        if (width >= 768) return 4;  // Tablet - 4 cards
+        if (width >= 480) return 3;  // Small tablet - 3 cards
+        return 2;                     // Mobile - 2 cards
     }
 
     let slidesPerView = getSlidesPerView();
@@ -3064,8 +3064,7 @@
     // Update carousel position
     function updateCarousel() {
         const cardWidth = cards[0].offsetWidth;
-        const gap = 24; // 1.5rem gap
-        const offset = -(currentCategorySlide * slidesPerView * (cardWidth + gap));
+        const offset = -(currentCategorySlide * slidesPerView * cardWidth);
         track.style.transform = `translateX(${offset}px)`;
 
         // Update dots

@@ -209,85 +209,116 @@
             opacity: 1;
         }
 
-        /* Search Bar Styles - Modern & Wider Design */
+        /* Search Bar Styles - Modern & Professional Design */
         .search-bar {
             display: flex;
             flex-direction: {{ is_rtl() ? 'row' : 'row' }};
             flex: 1;
-            max-width: 650px;
-            min-width: 400px;
+            max-width: 600px;
+            min-width: 350px;
             gap: 0;
             align-items: center;
             position: relative;
             margin: 0 2rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            border-radius: 12px;
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            background: #ffffff;
         }
 
         .search-bar:focus-within {
-            box-shadow: 0 4px 16px rgba(39, 98, 243, 0.15);
-            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(31, 41, 55, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        header.scrolled .search-bar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        header.scrolled .search-bar:focus-within {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
         }
 
         .search-bar input {
             flex: 1;
-            height: 50px;
-            padding: 0 24px;
-            border: 2px solid #e8eef7;
-            background: #ffffff;
-            color: #1a1a2e;
-            font-size: 0.98rem;
+            height: 48px;
+            padding: 0 20px;
+            border: none;
+            background: transparent;
+            color: #1f2937;
+            font-size: 0.95rem;
             outline: none;
             transition: all 0.3s ease;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            border-radius: {{ is_rtl() ? '0 12px 12px 0' : '12px 0 0 12px' }};
+            border-radius: 50px;
             direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
             text-align: {{ is_rtl() ? 'right' : 'left' }};
             font-weight: 400;
             letter-spacing: 0.01em;
+            line-height: 48px;
         }
         
         header.scrolled .search-bar input {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
             color: #ffffff;
         }
         
         header.scrolled .search-bar input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-        
-        header.scrolled .search-bar input:focus {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-        }
-        
-        .search-bar input:focus {
-            background: #ffffff;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            color: rgba(255, 255, 255, 0.7);
         }
         
         .search-bar input::placeholder {
             color: #9ca3af;
             font-weight: 400;
         }
+        
+        /* Search Icon */
+        .search-bar::before {
+            content: '\f002';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            {{ is_rtl() ? 'right' : 'left' }}: 24px;
+            color: #9ca3af;
+            font-size: 1rem;
+            pointer-events: none;
+            transition: color 0.3s ease;
+            z-index: 1;
+        }
+        
+        header.scrolled .search-bar::before {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .search-bar:focus-within::before {
+            color: #1f2937;
+        }
+        
+        header.scrolled .search-bar:focus-within::before {
+            color: #ffffff;
+        }
+        
+        .search-bar input {
+            padding-{{ is_rtl() ? 'right' : 'left' }}: 52px !important;
+        }
 
         .search-btn {
-            height: 50px;
-            padding: 0 28px;
-            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            height: 40px;
+            padding: 0 24px;
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
             color: #ffffff;
             border: none;
-            border-radius: {{ is_rtl() ? '12px 0 0 12px' : '0 12px 12px 0' }};
-            font-size: 0.95rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
             direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
             unicode-bidi: embed;
@@ -295,17 +326,22 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            min-width: 90px;
+            min-width: 100px;
             position: relative;
             overflow: hidden;
+            margin: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
         
         header.scrolled .search-btn {
-            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+            color: #1f2937;
+            box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
         }
         
         header.scrolled .search-btn:hover {
-            background: linear-gradient(135deg, #111827 0%, #000000 100%);
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #111827;
         }
 
         .search-btn::before {
@@ -325,14 +361,14 @@
         }
 
         .search-btn:hover {
-            background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+            background: linear-gradient(135deg, #111827 0%, #000000 100%);
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
         }
 
         .search-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .search-btn span {
@@ -1177,9 +1213,9 @@
 
             <form action="{{ route('products') }}" method="GET" class="search-bar" role="search">
                 <input type="search" name="search" placeholder="{{ __t('messages.search') }}">
-                <button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
+                <!--<button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
                     <i class="fas fa-search"></i>
-                </button>
+                </button>-->
             </form>
 
             <div class="header-icons">
