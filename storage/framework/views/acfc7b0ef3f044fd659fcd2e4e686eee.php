@@ -1,0 +1,351 @@
+<?php $__env->startSection('hideHeader', true); ?>
+
+<?php $__env->startSection('title', __('messages.login') . ' - IT Center'); ?>
+
+<?php $__env->startSection('content'); ?>
+<style>
+    .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .auth-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        overflow: hidden;
+        max-width: 500px;
+        width: 100%;
+    }
+
+    .auth-right {
+        padding: 3rem;
+    }
+
+    .auth-header {
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    .auth-header h3 {
+        font-size: 2rem;
+        color: #333;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .auth-header p {
+        color: #666;
+        font-size: 0.95rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #333;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .form-input-wrapper {
+        position: relative;
+    }
+
+    .form-input-icon {
+        position: absolute;
+        <?php echo e(is_rtl() ? 'right: 15px;' : 'left: 15px;'); ?>
+
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 1rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        <?php echo e(is_rtl() ? 'padding-right: 45px;' : 'padding-left: 45px;'); ?>
+
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+        direction: <?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-control.error {
+        border-color: #ff4757;
+    }
+
+    .error-message {
+        color: #ff4757;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+        display: none;
+    }
+
+    .error-message.show {
+        display: block;
+    }
+
+    .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .remember-me {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    .remember-me input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+
+    .remember-me label {
+        margin: 0;
+        cursor: pointer;
+        font-weight: 500;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .forgot-password {
+        color: #667eea;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+
+    .forgot-password:hover {
+        color: #764ba2;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e0e0e0;
+        color: #666;
+        font-size: 0.95rem;
+    }
+
+    .auth-footer a {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+    }
+
+    .auth-footer a:hover {
+        color: #764ba2;
+    }
+
+    @media (max-width: 768px) {
+        .auth-right {
+            padding: 2rem;
+        }
+
+        .form-options {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-right">
+            <div class="auth-header">
+                <h3><?php echo e(__('messages.login')); ?></h3>
+                <p><?php echo e(__('messages.enter_credentials')); ?></p>
+            </div>
+
+            <?php if(session('error')): ?>
+            <div class="alert alert-error" style="background: #ffe6e6; color: #ff4757; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; text-align: center;">
+                <?php echo e(session('error')); ?>
+
+            </div>
+            <?php endif; ?>
+
+            <?php if(session('success')): ?>
+            <div class="alert alert-success" style="background: #e6ffe6; color: #4CAF50; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; text-align: center;">
+                <?php echo e(session('success')); ?>
+
+            </div>
+            <?php endif; ?>
+
+            <form action="<?php echo e(route('login.post')); ?>" method="POST" id="loginForm">
+                <?php echo csrf_field(); ?>
+
+                <div class="form-group">
+                    <label for="email"><?php echo e(__('messages.email')); ?></label>
+                    <div class="form-input-wrapper">
+                        <i class="fas fa-envelope form-input-icon"></i>
+                        <input type="email" id="email" name="email" class="form-control"
+                               placeholder="<?php echo e(__('messages.email_placeholder')); ?>"
+                               value="<?php echo e(old('email')); ?>" required>
+                    </div>
+                    <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="error-message show"><?php echo e($message); ?></div>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><?php echo e(__('messages.password')); ?></label>
+                    <div class="form-input-wrapper">
+                        <i class="fas fa-lock form-input-icon"></i>
+                        <input type="password" id="password" name="password" class="form-control"
+                               placeholder="<?php echo e(__('messages.password_placeholder')); ?>" required>
+                    </div>
+                    <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="error-message show"><?php echo e($message); ?></div>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                </div>
+
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember"><?php echo e(__('messages.remember_me')); ?></label>
+                    </div>
+                    <a href="<?php echo e(route('password.request')); ?>" class="forgot-password"><?php echo e(__('messages.forgot_password')); ?></a>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-sign-in-alt"></i> <?php echo e(__('messages.login')); ?>
+
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <?php echo e(__('messages.dont_have_account')); ?>
+
+                <a href="<?php echo e(route('register')); ?>"><?php echo e(__('messages.register_now')); ?></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('loginForm');
+        const inputs = form.querySelectorAll('.form-control');
+        const submitBtn = form.querySelector('.btn-submit');
+
+        // Convert NodeList to Array for easier manipulation
+        const inputArray = Array.from(inputs);
+
+        // Add focus/blur effects
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // Handle Enter key to move to next field
+        inputs.forEach((input, index) => {
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    
+                    const nextIndex = index + 1;
+                    
+                    // If this is the last input field, submit the form
+                    if (nextIndex >= inputArray.length) {
+                        form.submit();
+                    } else {
+                        // Move to next input field
+                        inputArray[nextIndex].focus();
+                    }
+                }
+            });
+        });
+
+        // Form validation
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.classList.add('error');
+                    isValid = false;
+                } else {
+                    input.classList.remove('error');
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+
+<?php $__env->stopSection(); ?>
+
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\ITCenter-Ecommerce\resources\views/auth/login.blade.php ENDPATH**/ ?>

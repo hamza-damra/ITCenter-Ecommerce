@@ -71,6 +71,14 @@ class Kernel extends ConsoleKernel
             ->onSuccess(function () {
                 \Log::info('Automatic backup cleanup completed');
             });
+
+        // CRITICAL FIX: Clean expired cart items daily
+        $schedule->command('cart:clean')
+            ->daily()
+            ->at('02:00')
+            ->onSuccess(function () {
+                \Log::info('Cart cleanup completed successfully');
+            });
     }
 
     /**

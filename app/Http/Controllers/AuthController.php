@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -54,6 +57,9 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
+            // CRITICAL FIX: Merge guest cart with user cart
+            $this->mergeGuestCart(Auth::user());
+
             return redirect()->intended(route('home'))
                 ->with('success', __t('messages.login_success'));
         }
@@ -95,6 +101,9 @@ class AuthController extends Controller
 
             // Auto login after registration
             Auth::login($user);
+
+            // CRITICAL FIX: Merge guest cart after registration
+            $this->mergeGuestCart($user);
 
             return redirect()->route('home')
                 ->with('success', __t('messages.register_success'));
@@ -201,5 +210,41 @@ class AuthController extends Controller
         return redirect()->back()
             ->withErrors(['email' => __t('messages.password_reset_failed')])
             ->withInput($request->only('email'));
+    }
+
+    /**
+     * CRITICAL FIX: Merge guest cart with user cart on login
+     */
+    protected function mergeGuestCart($user)
+    {
+        $sessionId = Session::getId();
+        
+        if (!$sessionId) {
+            return;
+        }
+
+        DB::transaction(function() use ($user, $sessionId) {
+            $guestCartItems = CartItem::where('session_id', $sessionId)
+                ->whereNull('user_id')
+                ->get();
+
+            foreach ($guestCartItems as $guestItem) {
+                $existingItem = CartItem::where('user_id', $user->id)
+                    ->where('product_id', $guestItem->product_id)
+                    ->first();
+
+                if ($existingItem) {
+                    // Merge quantities
+                    $existingItem->increment('quantity', $guestItem->quantity);
+                    $guestItem->delete();
+                } else {
+                    // Transfer to user cart
+                    $guestItem->update([
+                        'user_id' => $user->id,
+                        'session_id' => null,
+                    ]);
+                }
+            }
+        });
     }
 }

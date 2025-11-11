@@ -141,6 +141,23 @@ class Product extends Model
                 $product->sku = 'SKU-' . strtoupper(Str::random(10));
             }
         });
+
+        // CRITICAL FIX: Auto-update stock status when stock quantity changes
+        static::updating(function ($product) {
+            if (!$product->isDirty('stock_quantity')) {
+                return;
+            }
+
+            if ($product->track_stock) {
+                $oldStatus = $product->getOriginal('stock_status');
+                
+                if ($product->stock_quantity <= 0 && $oldStatus !== 'out_of_stock') {
+                    $product->stock_status = 'out_of_stock';
+                } elseif ($product->stock_quantity > 0 && $oldStatus === 'out_of_stock') {
+                    $product->stock_status = 'in_stock';
+                }
+            }
+        });
     }
 
     /**

@@ -38,11 +38,21 @@ class CartController extends Controller
                 }
             })
             ->orderBy('created_at', 'desc') // Show newest items first
-            ->get()
-            ->filter(function($item) {
-                // Remove cart items with missing/deleted products
-                return $item->product !== null;
-            });
+            ->get();
+
+        // CRITICAL FIX: Detect and clean up items with deleted products
+        $invalidItems = $cartItems->filter(fn($item) => $item->product === null);
+        
+        if ($invalidItems->isNotEmpty()) {
+            CartItem::whereIn('id', $invalidItems->pluck('id'))->delete();
+            
+            session()->flash('warning', 
+                __('messages.cart_items_removed', ['count' => $invalidItems->count()])
+            );
+        }
+
+        // Filter out invalid items
+        $cartItems = $cartItems->filter(fn($item) => $item->product !== null);
 
         $total = $cartItems->sum(function($item) {
             return $item->price * $item->quantity;
@@ -56,10 +66,6 @@ class CartController extends Controller
      */
     public function add(Request $request, $productId)
     {
-        $request->validate([
-            'quantity' => 'nullable|integer|min:1',
-        ]);
-
         $product = Product::findOrFail($productId);
         
         // Check if product is in stock
@@ -69,6 +75,15 @@ class CartController extends Controller
                 'message' => 'Product is out of stock'
             ], 400);
         }
+
+        // CRITICAL FIX: Calculate max allowed quantity
+        $maxQuantity = $product->track_stock 
+            ? min($product->stock_quantity, 100) // Max 100 or available stock
+            : 100; // Max 100 for non-tracked items
+
+        $request->validate([
+            'quantity' => "nullable|integer|min:1|max:{$maxQuantity}",
+        ]);
 
         $identifier = $this->getCartIdentifier();
         $quantity = $request->input('quantity', 1);
@@ -85,8 +100,26 @@ class CartController extends Controller
             ->first();
 
         if ($cartItem) {
+            // CRITICAL FIX: Check total quantity won't exceed stock
+            $newQuantity = $cartItem->quantity + $quantity;
+            
+            if ($product->track_stock && $newQuantity > $product->stock_quantity) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Only {$product->stock_quantity} items available",
+                    'max_quantity' => $product->stock_quantity,
+                ], 400);
+            }
+            
+            if ($newQuantity > $maxQuantity) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Maximum {$maxQuantity} items per order",
+                ], 400);
+            }
+
             // Update quantity
-            $cartItem->quantity += $quantity;
+            $cartItem->quantity = $newQuantity;
             $cartItem->save();
             
             // Clear cart cache

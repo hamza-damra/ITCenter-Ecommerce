@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -96,6 +97,25 @@ class CheckoutController extends Controller
             ->where('user_id', $userId)
             ->get();
 
+        // Remove cart items with deleted products
+        $deletedProductIds = [];
+        foreach ($cartItems as $cartItem) {
+            if (!$cartItem->product || $cartItem->product->trashed()) {
+                $deletedProductIds[] = $cartItem->product_id;
+                $cartItem->delete();
+            }
+        }
+        
+        // Reload cart items after cleanup
+        if (!empty($deletedProductIds)) {
+            $cartItems = CartItem::with('product')
+                ->where('user_id', $userId)
+                ->get();
+                
+            return redirect()->route('cart.index')
+                ->with('warning', __('messages.deleted_products_removed_from_cart'));
+        }
+
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')
                 ->with('error', __('messages.cart_empty'));
@@ -113,6 +133,23 @@ class CheckoutController extends Controller
 
         DB::beginTransaction();
         try {
+            // CRITICAL FIX: Validate stock with locking BEFORE creating order
+            foreach ($cartItems as $cartItem) {
+                $product = Product::lockForUpdate()->find($cartItem->product_id);
+                
+                if (!$product) {
+                    throw new \Exception("Product not found: {$cartItem->product_id}");
+                }
+                
+                if ($product->track_stock && $cartItem->quantity > $product->stock_quantity) {
+                    throw new \App\Exceptions\OutOfStockException(
+                        $product,
+                        $cartItem->quantity,
+                        $product->stock_quantity
+                    );
+                }
+            }
+
             // Create the order - ONLY for authenticated users
             $order = Order::create([
                 'order_number' => Order::generateOrderNumber(),
@@ -136,7 +173,7 @@ class CheckoutController extends Controller
                 'notes' => $validated['notes'] ?? null,
             ]);
 
-            // Create order items
+            // Create order items AND decrement stock atomically
             foreach ($cartItems as $cartItem) {
                 $product = $cartItem->product;
                 
@@ -155,9 +192,24 @@ class CheckoutController extends Controller
                     'subtotal' => $cartItem->price * $cartItem->quantity,
                 ]);
 
-                // Update product stock
-                if ($product->stock_quantity > 0) {
-                    $product->decrement('stock_quantity', $cartItem->quantity);
+                // CRITICAL FIX: Decrement stock using database-level operation
+                if ($product->track_stock && $product->stock_quantity > 0) {
+                    $affected = DB::table('products')
+                        ->where('id', $product->id)
+                        ->where('stock_quantity', '>=', $cartItem->quantity)
+                        ->decrement('stock_quantity', $cartItem->quantity);
+                    
+                    if ($affected === 0) {
+                        throw new \App\Exceptions\OutOfStockException($product, $cartItem->quantity, 0);
+                    }
+                    
+                    // Update stock status if stock reaches zero
+                    $newStock = $product->stock_quantity - $cartItem->quantity;
+                    if ($newStock <= 0) {
+                        DB::table('products')
+                            ->where('id', $product->id)
+                            ->update(['stock_status' => 'out_of_stock']);
+                    }
                 }
             }
 
@@ -175,8 +227,12 @@ class CheckoutController extends Controller
                 ->with('success', __('messages.order_placed_successfully'))
                 ->with('order_completed', true); // Flag to indicate fresh order completion
                 
+        } catch (\App\Exceptions\OutOfStockException $e) {
+            DB::rollBack();
+            return $e->render($request);
         } catch (\Exception $e) {
             DB::rollBack();
+            \Log::error('Order creation failed: ' . $e->getMessage());
             return redirect()->back()
                 ->with('error', __('messages.order_error'))
                 ->withInput();
