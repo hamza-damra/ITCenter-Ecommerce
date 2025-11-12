@@ -823,20 +823,34 @@
         box-shadow: none;
         transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
-        border-right: 1px solid rgba(0, 0, 0, 0.08);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         position: relative;
         display: flex;
         flex-direction: column;
     }
+    
+    /* Border between cards - not full height */
+    .product-card::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 15%;
+        height: 70%;
+        width: 1px;
+        background: rgba(0, 0, 0, 0.08);
+        transition: opacity 0.3s ease;
+    }
+    
+    /* Remove border from last card in each row */
+    .product-card:nth-child(4n)::after {
+        display: none;
+    }
+    
+    .product-card:hover::after {
+        opacity: 0;
+    }
 
     /* Remove gradient overlay on hover */
     .product-card::before {
-        display: none;
-    }
-
-    /* Remove glowing border effect on hover */
-    .product-card::after {
         display: none;
     }
 

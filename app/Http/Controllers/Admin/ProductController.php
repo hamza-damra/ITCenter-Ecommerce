@@ -88,11 +88,13 @@ class ProductController extends Controller
             'description_ar' => 'nullable|string',
             'description_he' => 'nullable|string',
             'search_keywords' => 'nullable|string',
-            'is_active' => 'boolean',
-            'is_featured' => 'boolean',
-            'is_new' => 'boolean',
-            'is_bestseller' => 'boolean',
         ]);
+
+        // Handle checkboxes properly - convert to boolean
+        $validated['is_active'] = $request->input('is_active') == '1';
+        $validated['is_featured'] = $request->input('is_featured') == '1';
+        $validated['is_new'] = $request->input('is_new') == '1';
+        $validated['is_bestseller'] = $request->input('is_bestseller') == '1';
 
         DB::beginTransaction();
         try {
@@ -183,11 +185,13 @@ class ProductController extends Controller
             'description_ar' => 'nullable|string',
             'description_he' => 'nullable|string',
             'search_keywords' => 'nullable|string',
-            'is_active' => 'boolean',
-            'is_featured' => 'boolean',
-            'is_new' => 'boolean',
-            'is_bestseller' => 'boolean',
         ]);
+
+        // Handle checkboxes properly - convert to boolean
+        $validated['is_active'] = $request->input('is_active') == '1';
+        $validated['is_featured'] = $request->input('is_featured') == '1';
+        $validated['is_new'] = $request->input('is_new') == '1';
+        $validated['is_bestseller'] = $request->input('is_bestseller') == '1';
 
         DB::beginTransaction();
         try {

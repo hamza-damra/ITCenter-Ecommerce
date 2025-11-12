@@ -129,7 +129,7 @@
                             <option value="">{{ __('messages.select_category') }}</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name_en ?? $category->name }}
+                                    {{ $category->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -146,7 +146,7 @@
                             <option value="">{{ __('messages.select_brand') }}</option>
                             @foreach($brands as $brand)
                                 <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
-                                    {{ $brand->name_en ?? $brand->name }}
+                                    {{ $brand->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -419,6 +419,12 @@
             </div>
             <div class="card-body">
                 <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <!-- Hidden inputs to ensure unchecked values are sent -->
+                    <input type="hidden" name="is_active" value="0">
+                    <input type="hidden" name="is_featured" value="0">
+                    <input type="hidden" name="is_new" value="0">
+                    <input type="hidden" name="is_bestseller" value="0">
+                    
                     <label class="checkbox-group">
                         <input 
                             type="checkbox" 
