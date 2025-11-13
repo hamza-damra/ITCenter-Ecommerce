@@ -3045,11 +3045,12 @@
 <!-- Category Carousel JavaScript -->
 <script>
 (function() {
-    let currentCategorySlide = 0;
+    let currentPosition = 0;
     const track = document.getElementById('categoryCarouselTrack');
     const dotsContainer = document.getElementById('categoryCarouselDots');
-    const cards = track.querySelectorAll('.category-carousel-card');
-    const totalCards = cards.length;
+    const originalCards = track.querySelectorAll('.category-carousel-card');
+    const totalCards = originalCards.length;
+    let isTransitioning = false;
 
     // Responsive slides per view
     function getSlidesPerView() {
@@ -3061,13 +3062,24 @@
     }
 
     let slidesPerView = getSlidesPerView();
-    let totalSlides = Math.ceil(totalCards / slidesPerView);
 
-    // Initialize dots
+    // Create infinite loop by duplicating cards
+    function createInfiniteLoop() {
+        // Store original cards HTML
+        const originalHTML = track.innerHTML;
+        
+        // Create seamless loop by duplicating all cards
+        track.innerHTML = originalHTML + originalHTML + originalHTML;
+        
+        // Set initial position to middle set (original cards)
+        currentPosition = totalCards;
+        updateCarouselPosition(false);
+    }
+
+    // Initialize dots (only for original cards)
     function initDots() {
         dotsContainer.innerHTML = '';
-        totalSlides = Math.ceil(totalCards / slidesPerView);
-        for (let i = 0; i < totalSlides; i++) {
+        for (let i = 0; i < totalCards; i++) {
             const dot = document.createElement('div');
             dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
             dot.onclick = () => goToCategorySlide(i);
@@ -3076,36 +3088,59 @@
     }
 
     // Update carousel position
-    function updateCarousel() {
-        const cardWidth = cards[0].offsetWidth;
-        const offset = -(currentCategorySlide * slidesPerView * cardWidth);
+    function updateCarouselPosition(animate = true) {
+        const allCards = track.querySelectorAll('.category-carousel-card');
+        if (allCards.length === 0) return;
+        
+        const cardWidth = allCards[0].offsetWidth;
+        const offset = -(currentPosition * cardWidth);
+        
+        if (animate) {
+            track.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        } else {
+            track.style.transition = 'none';
+        }
+        
         track.style.transform = `translateX(${offset}px)`;
 
-        // Update dots
+        // Update dots (map to original cards)
         const dots = dotsContainer.querySelectorAll('.carousel-dot');
+        const activeIndex = (currentPosition - totalCards + totalCards) % totalCards;
+        
         dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentCategorySlide);
+            dot.classList.toggle('active', index === activeIndex);
         });
     }
 
-    // Slide function
+    // Slide function with seamless loop
     window.slideCategoryCarousel = function(direction) {
-        currentCategorySlide += direction;
-
-        // Loop around
-        if (currentCategorySlide < 0) {
-            currentCategorySlide = totalSlides - 1;
-        } else if (currentCategorySlide >= totalSlides) {
-            currentCategorySlide = 0;
-        }
-
-        updateCarousel();
+        if (isTransitioning) return;
+        
+        isTransitioning = true;
+        currentPosition += direction;
+        updateCarouselPosition(true);
+        
+        // Handle seamless loop
+        setTimeout(() => {
+            if (currentPosition <= 0) {
+                // Jump to end of middle set
+                currentPosition = totalCards * 2;
+                updateCarouselPosition(false);
+            } else if (currentPosition >= totalCards * 2) {
+                // Jump to start of middle set
+                currentPosition = totalCards;
+                updateCarouselPosition(false);
+            }
+            isTransitioning = false;
+        }, 300);
     };
 
     // Go to specific slide
     window.goToCategorySlide = function(index) {
-        currentCategorySlide = index;
-        updateCarousel();
+        if (isTransitioning) return;
+        
+        currentPosition = totalCards + index;
+        updateCarouselPosition(true);
     };
 
     // Handle window resize
@@ -3116,9 +3151,8 @@
             const newSlidesPerView = getSlidesPerView();
             if (newSlidesPerView !== slidesPerView) {
                 slidesPerView = newSlidesPerView;
-                currentCategorySlide = 0;
+                createInfiniteLoop();
                 initDots();
-                updateCarousel();
             }
         }, 250);
     });
@@ -3161,8 +3195,10 @@
     // });
 
     // Initialize
-    initDots();
-    updateCarousel();
+    if (totalCards > 0) {
+        createInfiniteLoop();
+        initDots();
+    }
 })();
 </script>
 
