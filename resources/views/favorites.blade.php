@@ -31,7 +31,7 @@
         align-items: center;
         margin-bottom: 2rem;
         padding-bottom: 1rem;
-        border-bottom: 2px solid #1f2937;
+        border-bottom: 2px solid #4169E1;
     }
 
     .favorites-header h1 {
@@ -44,7 +44,7 @@
     }
 
     .favorites-header h1 i {
-        color: #1f2937;
+        color: #4169E1;
         font-size: 2rem;
     }
 

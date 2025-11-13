@@ -26,7 +26,7 @@
     }
     
     .page-header {
-        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 3rem 0;
         text-align: center;
         color: #fff;

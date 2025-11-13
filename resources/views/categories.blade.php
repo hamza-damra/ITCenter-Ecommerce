@@ -46,7 +46,7 @@
     }
 
     .view-more:hover {
-        color: #1f2937;
+        color: #667eea;
     }
 
     .categories-grid {

@@ -38,7 +38,7 @@
 
     .cart-header i {
         font-size: 2rem;
-        color: #1f2937;
+        color: #4169E1;
     }
 
     .cart-content {
