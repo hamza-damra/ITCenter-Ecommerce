@@ -27,7 +27,7 @@
 
     .products-section {
         padding: 3rem 2rem;
-        background: #F9FAFB;
+        background: #ffffff;
         min-height: 100vh;
     }
 
@@ -665,26 +665,9 @@
 
     .section-header h2 {
         font-size: 2rem;
-        color: #333;
-    }
 
-    /* Search Results Info Box */
-    .search-results-info-box {
-        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
-        border-radius: 20px;
-        padding: 2rem;
-        margin-bottom: 3rem;
-        margin-top: 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
-        border: 1px solid rgba(59, 130, 246, 0.2);
-        animation: fadeInUp 0.6s ease-out;
-    }
-
-    @keyframes fadeInUp {
-        from {
+@keyframes fadeInUp {
+    from {
             opacity: 0;
             transform: translateY(20px);
         }
@@ -712,14 +695,14 @@
     }
 
     .search-label i {
-        color: #3B82F6;
+        color: #1f2937;
     }
 
     .search-query {
         font-size: 1.5rem;
         font-weight: 700;
         color: #1e293b;
-        background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -740,7 +723,7 @@
     .count-number {
         font-size: 2rem;
         font-weight: 800;
-        background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -1536,7 +1519,7 @@
     }
 
     .btn-primary-action {
-        background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         color: white;
         padding: 1.1rem 3rem;
         border-radius: 50px;
@@ -1546,7 +1529,7 @@
         align-items: center;
         gap: 0.75rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.35);
+        box-shadow: 0 8px 25px rgba(31, 41, 55, 0.35);
         font-size: 1.05rem;
         border: none;
         @if(is_rtl())
@@ -1556,7 +1539,7 @@
 
     .btn-primary-action:hover {
         transform: translateY(-3px);
-        box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45);
+        box-shadow: 0 12px 35px rgba(31, 41, 55, 0.45);
         color: white;
     }
 
@@ -1566,7 +1549,7 @@
 
     .btn-secondary-action {
         background: white;
-        color: #3B82F6;
+        color: #1f2937;
         padding: 1.1rem 3rem;
         border-radius: 50px;
         text-decoration: none;
@@ -1575,7 +1558,7 @@
         align-items: center;
         gap: 0.75rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 2px solid #3B82F6;
+        border: 2px solid #1f2937;
         font-size: 1.05rem;
         @if(is_rtl())
         flex-direction: row-reverse;
@@ -1583,10 +1566,10 @@
     }
 
     .btn-secondary-action:hover {
-        background: #3B82F6;
+        background: #1f2937;
         color: white;
         transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 8px 25px rgba(31, 41, 55, 0.3);
     }
 
     .btn-secondary-action:active {

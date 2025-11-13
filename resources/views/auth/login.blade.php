@@ -12,7 +12,7 @@
         align-items: center;
         justify-content: center;
         padding: 3rem 2rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
     }
 
     .auth-card {
@@ -83,8 +83,8 @@
 
     .form-control:focus {
         outline: none;
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        border-color: #1f2937;
+        box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
     }
 
     .form-control.error {
@@ -133,7 +133,7 @@
     }
 
     .forgot-password {
-        color: #667eea;
+        color: #1f2937;
         text-decoration: none;
         font-size: 0.9rem;
         font-weight: 500;
@@ -141,13 +141,13 @@
     }
 
     .forgot-password:hover {
-        color: #764ba2;
+        color: #111827;
     }
 
     .btn-submit {
         width: 100%;
         padding: 1rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         color: #fff;
         border: none;
         border-radius: 10px;
@@ -155,12 +155,12 @@
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 15px rgba(31, 41, 55, 0.3);
     }
 
     .btn-submit:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 6px 20px rgba(31, 41, 55, 0.4);
     }
 
     .btn-submit:active {
@@ -177,14 +177,14 @@
     }
 
     .auth-footer a {
-        color: #667eea;
+        color: #1f2937;
         text-decoration: none;
         font-weight: 600;
         transition: color 0.3s;
     }
 
     .auth-footer a:hover {
-        color: #764ba2;
+        color: #111827;
     }
 
     @media (max-width: 768px) {
