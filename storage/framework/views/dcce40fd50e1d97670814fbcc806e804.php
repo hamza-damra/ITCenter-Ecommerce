@@ -25,7 +25,7 @@
 
     .products-section {
         padding: 3rem 2rem;
-        background: #ffffff;
+        background: #F9FAFB;
         min-height: 100vh;
     }
 
@@ -81,18 +81,18 @@
 
     .clear-filters-btn {
         background: transparent;
-        color: #2762f3;
+        color: #6366f1;
         border: none;
         font-size: 0.85rem;
-        font-weight: 600;
+        font-weight: 500;
         cursor: pointer;
-        padding: 0.4rem 0.8rem;
-        border-radius: 8px;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
         transition: all 0.3s;
     }
 
     .clear-filters-btn:hover {
-        background: rgba(39, 98, 243, 0.1);
+        background: rgba(99, 102, 241, 0.1);
     }
 
     .filter-section {
