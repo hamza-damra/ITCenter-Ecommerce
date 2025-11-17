@@ -1,6 +1,8 @@
 <?php $__env->startSection('title', 'Our Products - IT Center'); ?>
 
 <?php $__env->startSection('content'); ?>
+<!-- Import shared components CSS -->
+<link rel="stylesheet" href="<?php echo e(asset('css/components.css')); ?>">
 <!-- noUiSlider CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -24,29 +26,37 @@
     }
 
     .products-section {
-        padding: 3rem 2rem;
-        background: #F9FAFB;
+        padding: var(--space-12) 0;
+        background: var(--bg-primary);
         min-height: 100vh;
     }
 
     .products-container {
         display: flex;
-        gap: 2rem;
+        gap: var(--space-8);
         align-items: flex-start;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 var(--space-8);
     }
 
     /* Filter Sidebar Styles */
     .filter-sidebar {
         width: 280px;
         min-width: 280px;
-        background: white;
-        border-radius: 20px;
-        padding: 1.5rem;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        background: var(--bg-card);
+        border-radius: var(--radius-xl);
+        padding: var(--space-6);
+        box-shadow: var(--shadow-md);
         position: sticky;
         top: 100px;
         max-height: calc(100vh - 120px);
         overflow-y: auto;
+        transition: all var(--transition-bounce);
+    }
+
+    .filter-sidebar:hover {
+        box-shadow: var(--shadow-lg);
     }
 
     .filter-sidebar::-webkit-scrollbar {
@@ -54,45 +64,54 @@
     }
 
     .filter-sidebar::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
+        background: #f1f5f9;
+        border-radius: var(--radius-md);
     }
 
     .filter-sidebar::-webkit-scrollbar-thumb {
-        background: #2762f3;
-        border-radius: 10px;
+        background: var(--primary-blue);
+        border-radius: var(--radius-md);
+    }
+
+    .filter-sidebar::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-light-blue);
     }
 
     .filter-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #f0f0f0;
+        margin-bottom: var(--space-6);
+        padding-bottom: var(--space-4);
+        border-bottom: 2px solid #e2e8f0;
     }
 
     .filter-header h3 {
-        font-size: 1.25rem;
+        font-size: var(--text-xl);
         font-weight: 700;
-        color: #1e293b;
+        color: var(--text-primary);
         margin: 0;
     }
 
     .clear-filters-btn {
         background: transparent;
-        color: #6366f1;
-        border: none;
-        font-size: 0.85rem;
-        font-weight: 500;
+        color: var(--primary-blue);
+        border: 1px solid var(--primary-blue);
+        font-size: var(--text-xs);
+        font-weight: 600;
         cursor: pointer;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        transition: all 0.3s;
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-md);
+        transition: all var(--transition-bounce);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .clear-filters-btn:hover {
-        background: rgba(99, 102, 241, 0.1);
+        background: var(--primary-blue);
+        color: var(--text-white);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-sm);
     }
 
     .filter-section {

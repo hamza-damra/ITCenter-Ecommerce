@@ -24,6 +24,7 @@
         margin: 0 auto;
         padding: 3rem 2rem;
         min-height: calc(100vh - 200px);
+        background: #f5f5f5;
     }
 
     /* Progress Steps */
@@ -45,7 +46,7 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: linear-gradient(to right, #4169E1 50%, #e0e0e0 50%);
+        background: linear-gradient(to right, #1f2937 50%, #e2e8f0 50%);
         z-index: 0;
     }
 
@@ -75,10 +76,10 @@
     }
 
     .progress-step.active .step-circle {
-        background: linear-gradient(135deg, #4169E1 0%, #1E90FF 100%);
-        border-color: #4169E1;
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        border-color: #1f2937;
         color: #fff;
-        box-shadow: 0 4px 15px rgba(65, 105, 225, 0.4);
+        box-shadow: 0 4px 15px rgba(31, 41, 55, 0.4);
     }
 
     .progress-step.completed .step-circle {
@@ -95,7 +96,7 @@
     }
 
     .progress-step.active .step-label {
-        color: #4169E1;
+        color: #1f2937;
         font-weight: 600;
     }
 

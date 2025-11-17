@@ -20,29 +20,30 @@
 
     /* Contact Page Styles */
     .contact-page {
-        background: linear-gradient(135deg, #f8f9ff 0%, #fff8e1 100%);
+        background: #f5f5f5;
         min-height: calc(100vh - 200px);
-        padding: 2rem 0;
+        padding: 0;
     }
     
     .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 3rem 0;
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        padding: 4rem 2rem;
         text-align: center;
         color: #fff;
-        margin-bottom: 3rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        margin: 1.5rem 1.5rem 3rem 1.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
     }
     
     .page-header h1 {
         font-size: 2.5rem;
-        font-weight: 800;
-        margin: 0 0 0.5rem 0;
+        font-weight: 700;
+        margin: 0 0 0.75rem 0;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
     
     .page-header p {
-        font-size: 1.2rem;
+        font-size: 1.125rem;
         margin: 0;
         opacity: 0.95;
     }
@@ -50,28 +51,42 @@
     .contact-container {
         max-width: 1400px;
         margin: 0 auto;
-        padding: 0 2rem;
+        padding: 0 2rem 3rem;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 3rem;
+        gap: 2rem;
     }
     
     .contact-form-section,
     .contact-info-section {
         background: #fff;
-        border-radius: 20px;
+        border-radius: 16px;
         padding: 2.5rem;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
+    }
+
+    .contact-form-section:hover,
+    .contact-info-section:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.10);
     }
     
     .contact-form-section h2,
     .contact-info-section h2 {
-        font-size: 1.8rem;
+        font-size: 1.875rem;
         font-weight: 700;
-        color: #333;
+        color: #1f2937;
         margin: 0 0 1.5rem 0;
         padding-bottom: 1rem;
-        border-bottom: 3px solid #4CAF50;
+        border-bottom: 2px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .contact-form-section h2 i,
+    .contact-info-section h2 i {
+        color: #1f2937;
     }
     
     /* Form Styles */
@@ -83,23 +98,23 @@
         display: block;
         margin-bottom: 0.5rem;
         font-weight: 600;
-        color: #333;
-        font-size: 0.95rem;
+        color: #1f2937;
+        font-size: 0.9375rem;
     }
     
     .form-group label .required {
-        color: #ff4757;
+        color: #1f2937;
         margin-{{ is_rtl() ? 'right' : 'left' }}: 0.25rem;
     }
     
     .form-group input,
     .form-group textarea {
         width: 100%;
-        padding: 0.9rem 1rem;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
+        padding: 0.875rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
         font-size: 1rem;
-        transition: all 0.3s;
+        transition: all 0.3s ease;
         font-family: inherit;
         box-sizing: border-box;
     }
@@ -107,8 +122,8 @@
     .form-group input:focus,
     .form-group textarea:focus {
         outline: none;
-        border-color: #4CAF50;
-        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        border-color: #1f2937;
+        box-shadow: 0 0 0 3px rgba(31, 41, 55, 0.1);
     }
     
     .form-group textarea {
@@ -117,22 +132,24 @@
     }
     
     .error-text {
-        color: #ff4757;
-        font-size: 0.85rem;
+        color: #1f2937;
+        font-size: 0.8125rem;
         margin-top: 0.5rem;
         display: block;
+        font-weight: 500;
     }
     
     /* Alert Messages */
     .alert {
         padding: 1rem 1.2rem;
         margin-bottom: 1.5rem;
-        border-radius: 10px;
+        border-radius: 12px;
         font-weight: 500;
         display: flex;
         align-items: center;
         gap: 0.8rem;
         animation: slideDown 0.3s ease;
+        border: 2px solid;
     }
     
     @keyframes slideDown {
@@ -147,15 +164,15 @@
     }
     
     .alert-success {
-        background: #d4edda;
-        border: 2px solid #c3e6cb;
-        color: #155724;
+        background: #f0fdf4;
+        border-color: #86efac;
+        color: #166534;
     }
     
     .alert-error {
-        background: #f8d7da;
-        border: 2px solid #f5c6cb;
-        color: #721c24;
+        background: #fef2f2;
+        border-color: #fca5a5;
+        color: #991b1b;
     }
     
     .alert i {
@@ -164,27 +181,26 @@
     
     /* Submit Button */
     .submit-btn {
-        background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         color: #fff;
         padding: 1rem 2.5rem;
         border: none;
         border-radius: 50px;
-        font-size: 1.1rem;
-        font-weight: 700;
+        font-size: 1rem;
+        font-weight: 600;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: all 0.3s ease;
         display: inline-flex;
         align-items: center;
         gap: 0.8rem;
-        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        box-shadow: 0 4px 12px rgba(31, 41, 55, 0.3);
+        letter-spacing: 0.3px;
     }
     
     .submit-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
-        background: linear-gradient(135deg, #45a049 0%, #388e3c 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(31, 41, 55, 0.4);
+        background: linear-gradient(135deg, #111827 0%, #000000 100%);
     }
     
     .submit-btn:disabled {
@@ -194,44 +210,45 @@
     }
     
     .submit-btn i {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
     
     /* Contact Info Cards */
     .contact-info-card {
         margin-bottom: 1.5rem;
         padding: 1.5rem;
-        border-{{ is_rtl() ? 'right' : 'left' }}: 4px solid #4CAF50;
-        background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
-        border-radius: 10px;
-        transition: all 0.3s;
+        border-{{ is_rtl() ? 'right' : 'left' }}: 4px solid #1f2937;
+        background: #f9fafb;
+        border-radius: 12px;
+        transition: all 0.3s ease;
     }
     
     .contact-info-card:hover {
         transform: translateX({{ is_rtl() ? '-' : '' }}5px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        background: #fff;
     }
     
     .contact-info-card h3 {
-        font-size: 1.2rem;
+        font-size: 1.125rem;
         font-weight: 700;
-        color: #4CAF50;
-        margin: 0 0 0.8rem 0;
+        color: #1f2937;
+        margin: 0 0 0.75rem 0;
         display: flex;
         align-items: center;
-        gap: 0.8rem;
+        gap: 0.75rem;
     }
     
     .contact-info-card h3 i {
-        font-size: 1.5rem;
-        color: #4CAF50;
+        font-size: 1.25rem;
+        color: #1f2937;
     }
     
     .contact-info-card p {
         margin: 0;
-        color: #666;
+        color: #6b7280;
         line-height: 1.8;
-        font-size: 1rem;
+        font-size: 0.9375rem;
     }
     
     /* Responsive Design */
@@ -388,7 +405,10 @@
 
     <div class="contact-container">
         <div class="contact-form-section">
-            <h2>{{ __t('messages.send_us_message') }}</h2>
+            <h2>
+                <i class="fas fa-envelope"></i>
+                {{ __t('messages.send_us_message') }}
+            </h2>
             
             <!-- Session Success Message -->
             @if(session('success'))
@@ -481,7 +501,10 @@
         </div>
 
         <div class="contact-info-section">
-            <h2>{{ __t('messages.contact_information') }}</h2>
+            <h2>
+                <i class="fas fa-info-circle"></i>
+                {{ __t('messages.contact_information') }}
+            </h2>
             
             <div class="contact-info-card">
                 <h3>

@@ -19,21 +19,24 @@
     }
 
     .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         color: white;
-        padding: 4rem 0;
+        padding: 4rem 2rem;
         text-align: center;
-        margin-bottom: 3rem;
+        margin: 1.5rem 1.5rem 3rem 1.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
     }
 
     .page-header h1 {
         font-size: 2.5rem;
         font-weight: 700;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
 
     .page-header p {
-        font-size: 1.1rem;
+        font-size: 1.125rem;
         opacity: 0.95;
     }
 
@@ -41,82 +44,114 @@
         direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
         text-align: {{ is_rtl() ? 'right' : 'left' }};
         padding: 2rem 0 4rem 0;
+        background: #f5f5f5;
     }
 
     .content-section {
-        max-width: 800px;
+        max-width: 1000px;
         margin: 0 auto;
+        padding: 0 2rem;
+        background: #fff;
+        border-radius: 16px;
+        padding: 3rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
     .content-section h2 {
-        font-size: 1.8rem;
+        font-size: 1.875rem;
         font-weight: 700;
-        color: #333;
-        margin-top: 2rem;
+        color: #1f2937;
+        margin-top: 2.5rem;
         margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
     }
 
     .content-section h2:first-child {
         margin-top: 0;
     }
 
+    .content-section h2 i {
+        color: #1f2937;
+        font-size: 1.5rem;
+    }
+
     .content-section p {
         margin: 1rem 0;
         line-height: 1.8;
-        color: #555;
-        font-size: 1rem;
+        color: #4b5563;
+        font-size: 1.0625rem;
     }
 
     .content-section ul {
         margin: 1rem 0;
         line-height: 1.8;
-        color: #555;
+        color: #4b5563;
         list-style-position: {{ is_rtl() ? 'inside' : 'outside' }};
         padding-{{ is_rtl() ? 'right' : 'left' }}: {{ is_rtl() ? '0' : '2rem' }};
     }
 
     .content-section ul li {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+        padding-{{ is_rtl() ? 'right' : 'left' }}: 0.5rem;
+    }
+
+    .content-section ul li::marker {
+        color: #1f2937;
     }
 
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-        margin-top: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
     }
 
     .stat-card {
         text-align: center;
-        padding: 1.5rem;
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        transition: all 0.3s;
+        padding: 2rem 1.5rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 16px;
+        transition: all 0.3s ease;
         background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
 
     .stat-card:hover {
-        border-color: #4169E1;
-        box-shadow: 0 4px 15px rgba(65, 105, 225, 0.2);
+        border-color: #1f2937;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
         transform: translateY(-5px);
     }
 
     .stat-card h3 {
-        color: #4169E1;
-        font-size: 2rem;
+        color: #1f2937;
+        font-size: 2.25rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
     }
 
     .stat-card p {
-        color: #666;
+        color: #6b7280;
         font-size: 1rem;
         margin: 0;
+        font-weight: 500;
     }
 
     @media (max-width: 768px) {
+        .page-header {
+            padding: 3rem 1.5rem;
+            margin: 1rem 1rem 2rem 1rem;
+        }
+
         .page-header h1 {
             font-size: 2rem;
+        }
+
+        .content-section {
+            padding: 2rem 1.5rem;
         }
 
         .content-section h2 {
@@ -125,6 +160,7 @@
 
         .stats-grid {
             grid-template-columns: 1fr;
+            gap: 1.5rem;
         }
     }
 </style>
@@ -138,17 +174,26 @@
 
 <div class="container page-container">
     <div class="content-section">
-        <h2>{{ __('messages.who_we_are') }}</h2>
+        <h2>
+            <i class="fas fa-info-circle"></i>
+            {{ __('messages.who_we_are') }}
+        </h2>
         <p>
             {{ __('messages.who_we_are_text') }}
         </p>
 
-        <h2>{{ __('messages.our_mission') }}</h2>
+        <h2>
+            <i class="fas fa-bullseye"></i>
+            {{ __('messages.our_mission') }}
+        </h2>
         <p>
             {{ __('messages.our_mission_text') }}
         </p>
 
-        <h2>{{ __('messages.what_we_offer') }}</h2>
+        <h2>
+            <i class="fas fa-gift"></i>
+            {{ __('messages.what_we_offer') }}
+        </h2>
         <ul>
             <li>{{ __('messages.offer_computers') }}</li>
             <li>{{ __('messages.offer_components') }}</li>
@@ -158,7 +203,10 @@
             <li>{{ __('messages.offer_custom_pc') }}</li>
         </ul>
 
-        <h2>{{ __('messages.why_choose_us') }}</h2>
+        <h2>
+            <i class="fas fa-star"></i>
+            {{ __('messages.why_choose_us') }}
+        </h2>
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>{{ __('messages.years_experience') }}</h3>

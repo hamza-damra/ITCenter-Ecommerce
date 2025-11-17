@@ -20,39 +20,61 @@
 
     .categories-section {
         padding: 3rem 2rem;
-        background: #fff;
+        background: #f5f5f5;
         direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+        min-height: calc(100vh - 200px);
     }
 
     .section-header {
+        max-width: 1400px;
+        margin: 0 auto 3rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 3rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid #e2e8f0;
     }
 
     .section-header h2 {
+        font-size: 2.5rem;
+        color: #1f2937;
+        font-weight: 700;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .section-header h2 i {
+        color: #1f2937;
         font-size: 2rem;
-        color: #333;
     }
 
     .view-more {
-        color: #333;
+        color: #1f2937;
         text-decoration: none;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        font-weight: 500;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
     }
 
     .view-more:hover {
-        color: #667eea;
+        background: #1f2937;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     .categories-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 3rem;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 2rem;
         max-width: 1400px;
         margin: 0 auto;
     }
@@ -63,52 +85,97 @@
         align-items: center;
         text-align: center;
         cursor: pointer;
-        transition: transform 0.3s;
+        transition: all 0.3s ease;
+        background: #fff;
+        padding: 2rem 1.5rem;
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
     .category-item:hover {
-        transform: translateY(-10px);
+        transform: translateY(-8px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     }
 
     .category-icon {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
+        width: 100px;
+        height: 100px;
+        border-radius: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: all 0.3s;
-        background: #fff;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+        border: 2px solid #e2e8f0;
     }
 
     .category-item:hover .category-icon {
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        transform: scale(1.05);
+        background: #fff;
+        border-color: #1f2937;
     }
 
     .category-icon i {
-        font-size: 3rem;
+        font-size: 2.5rem;
+    }
+
+    .category-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 18px;
     }
 
     .category-name {
-        font-size: 0.95rem;
-        color: #333;
+        font-size: 1rem;
+        color: #1f2937;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .category-count {
+        color: #6b7280;
+        font-size: 0.875rem;
         font-weight: 500;
     }
 
-    .icon-computers { color: #ff4757; }
-    .icon-printer { color: #5f27cd; }
-    .icon-mobile { color: #00d2d3; }
-    .icon-bag { color: #1e90ff; }
-    .icon-laptop { color: #ff6348; }
-    .icon-accessories { color: #2e86de; }
-    .icon-monitor { color: #341f97; }
-    .icon-case { color: #ee5a6f; }
-    .icon-motherboard { color: #0abde3; }
-    .icon-cpu { color: #2d3436; }
-    .icon-cooler { color: #00a8ff; }
-    .icon-gpu { color: #e74c3c; }
+    .icon-computers { color: #1f2937; }
+    .icon-printer { color: #374151; }
+    .icon-mobile { color: #4b5563; }
+    .icon-bag { color: #1f2937; }
+    .icon-laptop { color: #374151; }
+    .icon-accessories { color: #4b5563; }
+    .icon-monitor { color: #1f2937; }
+    .icon-case { color: #374151; }
+    .icon-motherboard { color: #4b5563; }
+    .icon-cpu { color: #1f2937; }
+    .icon-cooler { color: #374151; }
+    .icon-gpu { color: #4b5563; }
+
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: #d1d5db;
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+
+    .empty-state p {
+        color: #6b7280;
+        font-size: 1.125rem;
+        font-weight: 500;
+    }
 
     /* RTL Support */
     [dir="rtl"] .section-header {
@@ -126,13 +193,41 @@
     [dir="rtl"] .category-item {
         direction: rtl;
     }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .categories-grid {
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+        }
+
+        .category-item {
+            padding: 1.5rem 1rem;
+        }
+
+        .category-icon {
+            width: 80px;
+            height: 80px;
+        }
+
+        .category-icon i {
+            font-size: 2rem;
+        }
+    }
 </style>
 
 <div class="categories-section">
     <div class="container">
         <div class="section-header">
-            <h2>{{ __('messages.categories') }}</h2>
-            <a href="#" class="view-more">
+            <h2>
+                <i class="fas fa-th-large"></i>
+                {{ __('messages.categories') }}
+            </h2>
+            <a href="{{ route('products') }}" class="view-more">
                 {{ __('messages.view_more') }} <i class="fas fa-arrow-{{ is_rtl() ? 'left' : 'right' }}"></i>
             </a>
         </div>
@@ -143,9 +238,9 @@
                 <div class="category-icon">
                     @if($category->image)
                         @if(str_starts_with($category->image, 'http'))
-                            <img src="{{ $category->image }}" alt="{{ $category->{'name_' . current_locale()} ?? $category->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            <img src="{{ $category->image }}" alt="{{ $category->{'name_' . current_locale()} ?? $category->name }}">
                         @else
-                            <img src="{{ asset($category->image) }}" alt="{{ $category->{'name_' . current_locale()} ?? $category->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            <img src="{{ asset($category->image) }}" alt="{{ $category->{'name_' . current_locale()} ?? $category->name }}">
                         @endif
                     @else
                         <i class="fas fa-folder icon-computers"></i>
@@ -153,12 +248,12 @@
                 </div>
                 <div class="category-name">{{ $category->{'name_' . current_locale()} ?? $category->name }}</div>
                 @if($category->products_count > 0)
-                    <small style="color: #999; font-size: 0.85rem;">({{ $category->products_count }} {{ $category->products_count == 1 ? __('messages.product') : __('messages.products') }})</small>
+                    <small class="category-count">({{ $category->products_count }} {{ $category->products_count == 1 ? __('messages.product') : __('messages.products') }})</small>
                 @endif
             </div>
             @empty
-            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: #999;">
-                <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
                 <p>{{ __('messages.no_categories') }}</p>
             </div>
             @endforelse

@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', __t('messages.favorites') . ' - IT Center'); ?>
 
-@section('title', __t('messages.favorites') . ' - IT Center')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     /* Import Google Font - Poppins */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -156,7 +154,7 @@
     .wishlist-btn {
         position: absolute;
         top: 10px;
-        {{ is_rtl() ? 'right' : 'left' }}: 10px;
+        <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 10px;
         background: rgba(255, 255, 255, 0.95);
         width: 35px;
         height: 35px;
@@ -192,7 +190,7 @@
     .product-badge {
         position: absolute;
         top: 10px;
-        {{ is_rtl() ? 'left' : 'right' }}: 10px;
+        <?php echo e(is_rtl() ? 'left' : 'right'); ?>: 10px;
         background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         color: #fff;
         padding: 0.3rem 0.8rem;
@@ -426,78 +424,80 @@
 
 <div class="favorites-container">
     <div class="container">
-        @if($favorites->count() > 0)
+        <?php if($favorites->count() > 0): ?>
             <div class="favorites-header">
                 <h1>
                     <i class="fas fa-heart"></i>
-                    {{ __t('messages.my_favorites') }}
+                    <?php echo e(__t('messages.my_favorites')); ?>
+
                 </h1>
                 <div class="favorites-count">
-                    {{ $favorites->count() }} {{ $favorites->count() == 1 ? __t('messages.item') : __t('messages.items') }}
+                    <?php echo e($favorites->count()); ?> <?php echo e($favorites->count() == 1 ? __t('messages.item') : __t('messages.items')); ?>
+
                 </div>
             </div>
 
             <div class="product-grid">
-                @foreach($favorites as $product)
-                <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
+                <?php $__currentLoopData = $favorites; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div class="product-card" onclick="window.location.href='<?php echo e(route('product.detail', $product->slug)); ?>'">
                     <div class="product-image">
                         <button class="wishlist-btn active" 
-                                data-product-id="{{ $product->id }}"
-                                onclick="event.stopPropagation(); toggleFavorite({{ $product->id }}, this);">
+                                data-product-id="<?php echo e($product->id); ?>"
+                                onclick="event.stopPropagation(); toggleFavorite(<?php echo e($product->id); ?>, this);">
                             <i class="fas fa-heart"></i>
                         </button>
-                        @if($product->is_new)
+                        <?php if($product->is_new): ?>
                         <div class="product-badge">NEW</div>
-                        @elseif($product->sale_price && $product->sale_price < $product->price)
+                        <?php elseif($product->sale_price && $product->sale_price < $product->price): ?>
                         <div class="product-badge">SALE</div>
-                        @elseif($product->is_featured)
+                        <?php elseif($product->is_featured): ?>
                         <div class="product-badge">HOT</div>
-                        @endif
-                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}" loading="lazy" decoding="async">
+                        <?php endif; ?>
+                        <img src="<?php echo e($product->main_image); ?>" alt="<?php echo e($product->name); ?>" loading="lazy" decoding="async">
                     </div>
                     <div class="product-info">
-                        <div class="product-title">{{ $product->name }}</div>
-                        <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
+                        <div class="product-title"><?php echo e($product->name); ?></div>
+                        <div class="product-description"><?php echo e(Str::limit($product->short_description, 60)); ?></div>
                         <div class="product-footer">
                             <div class="product-price">
-                                @if($product->sale_price && $product->sale_price < $product->price)
-                                    <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
-                                    <span class="current-price">₪ {{ number_format($product->sale_price, 0) }}</span>
-                                @else
-                                    <span class="current-price">₪ {{ number_format($product->price, 0) }}</span>
-                                @endif
+                                <?php if($product->sale_price && $product->sale_price < $product->price): ?>
+                                    <span class="original-price">₪ <?php echo e(number_format($product->price, 0)); ?></span>
+                                    <span class="current-price">₪ <?php echo e(number_format($product->sale_price, 0)); ?></span>
+                                <?php else: ?>
+                                    <span class="current-price">₪ <?php echo e(number_format($product->price, 0)); ?></span>
+                                <?php endif; ?>
                             </div>
-                            @if($product->stock_status === 'out_of_stock')
+                            <?php if($product->stock_status === 'out_of_stock'): ?>
                             <button class="add-to-cart-icon out-of-stock"
-                                    data-product-id="{{ $product->id }}"
-                                    data-product-name="{{ $product->name }}"
-                                    title="{{ __t('messages.request_product') }}"
-                                    aria-label="{{ __t('messages.request_product') }}"
-                                    onclick="event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
+                                    data-product-id="<?php echo e($product->id); ?>"
+                                    data-product-name="<?php echo e($product->name); ?>"
+                                    title="<?php echo e(__t('messages.request_product')); ?>"
+                                    aria-label="<?php echo e(__t('messages.request_product')); ?>"
+                                    onclick="event.stopPropagation(); requestProduct(<?php echo e($product->id); ?>, '<?php echo e($product->name); ?>');">
                                 <i class="fas fa-bell"></i>
                             </button>
-                            @else
-                            <button class="add-to-cart-icon {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
-                                    data-product-id="{{ $product->id }}"
-                                    title="{{ in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                    aria-label="{{ in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                    onclick="event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                                <i class="fas {{ in_array($product->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
+                            <?php else: ?>
+                            <button class="add-to-cart-icon <?php echo e(in_array($product->id, $cartProductIds) ? 'in-cart' : ''); ?>"
+                                    data-product-id="<?php echo e($product->id); ?>"
+                                    title="<?php echo e(in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    aria-label="<?php echo e(in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    onclick="event.stopPropagation(); addToCart(<?php echo e($product->id); ?>, this);">
+                                <i class="fas <?php echo e(in_array($product->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
                             </button>
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
-        @else
+        <?php else: ?>
             <div class="empty-favorites">
                 <i class="far fa-heart"></i>
-                <h2>{{ __t('messages.no_favorites') }}</h2>
-                <p>{{ __t('messages.no_favorites_description') }}</p>
-                <a href="{{ route('products') }}" class="btn-primary">{{ __t('messages.start_shopping') }}</a>
+                <h2><?php echo e(__t('messages.no_favorites')); ?></h2>
+                <p><?php echo e(__t('messages.no_favorites_description')); ?></p>
+                <a href="<?php echo e(route('products')); ?>" class="btn-primary"><?php echo e(__t('messages.start_shopping')); ?></a>
             </div>
-        @endif
+        <?php endif; ?>
     </div>
 </div>
 
@@ -593,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     const countElement = document.querySelector('.favorites-count');
                                     if (countElement) {
                                         const newCount = remainingCards.length;
-                                        const itemText = newCount === 1 ? '{{ __t("messages.item") }}' : '{{ __t("messages.items") }}';
+                                        const itemText = newCount === 1 ? '<?php echo e(__t("messages.item")); ?>' : '<?php echo e(__t("messages.items")); ?>';
                                         countElement.textContent = `${newCount} ${itemText}`;
                                     }
                                 }
@@ -641,4 +641,6 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 })();
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/favorites.blade.php ENDPATH**/ ?>

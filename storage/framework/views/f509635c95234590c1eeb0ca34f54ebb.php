@@ -1,10 +1,8 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', __('messages.cart') . ' - IT Center'); ?>
 
-@section('title', __('messages.cart') . ' - IT Center')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- Import shared components CSS -->
-<link rel="stylesheet" href="{{ asset('css/components.css') }}">
+<link rel="stylesheet" href="<?php echo e(asset('css/components.css')); ?>">
 
 <style>
     /* Import Google Font - Poppins */
@@ -267,7 +265,7 @@
     }
     .continue-shopping-btn i {
         font-size: 1rem;
-        margin-{{ is_rtl() ? 'left' : 'right' }}: 0.5rem;
+        margin-<?php echo e(is_rtl() ? 'left' : 'right'); ?>: 0.5rem;
     }
 
     /* Cart Summary */
@@ -446,57 +444,59 @@
 <div class="cart-container">
     <div class="cart-header">
         <i class="fas fa-shopping-cart"></i>
-        <h1>{{ __('messages.shopping_cart') }}</h1>
+        <h1><?php echo e(__('messages.shopping_cart')); ?></h1>
     </div>
 
-    @if($cartItems->isEmpty())
+    <?php if($cartItems->isEmpty()): ?>
         <div class="cart-items-section">
             <div class="empty-cart">
                 <i class="fas fa-shopping-cart"></i>
-                <h2>{{ __('messages.cart_empty') }}</h2>
-                <p>{{ __('messages.cart_empty_description') }}</p>
-                <a href="{{ route('products') }}" class="continue-shopping-btn">
-                    {{ __('messages.continue_shopping') }}
+                <h2><?php echo e(__('messages.cart_empty')); ?></h2>
+                <p><?php echo e(__('messages.cart_empty_description')); ?></p>
+                <a href="<?php echo e(route('products')); ?>" class="continue-shopping-btn">
+                    <?php echo e(__('messages.continue_shopping')); ?>
+
                 </a>
             </div>
         </div>
-    @else
+    <?php else: ?>
         <div class="cart-content">
             <div class="cart-items-section">
-                @foreach($cartItems as $item)
-                    @if($item->product)
-                    <div class="cart-item" data-product-id="{{ $item->product_id }}">
+                <?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if($item->product): ?>
+                    <div class="cart-item" data-product-id="<?php echo e($item->product_id); ?>">
                         <div class="cart-item-image">
-                            @if($item->product->images && $item->product->images->isNotEmpty())
-                                @php
+                            <?php if($item->product->images && $item->product->images->isNotEmpty()): ?>
+                                <?php
                                     $imagePath = $item->product->images->first()->image_path;
                                     $imageUrl = (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://'))
                                         ? $imagePath
                                         : asset('storage/' . $imagePath);
-                                @endphp
-                                <img src="{{ $imageUrl }}" 
-                                     alt="{{ $item->product->name }}" 
+                                ?>
+                                <img src="<?php echo e($imageUrl); ?>" 
+                                     alt="<?php echo e($item->product->name); ?>" 
                                      loading="lazy"
                                      onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-image\'></i></div>';">
-                            @else
+                            <?php else: ?>
                                 <div class="no-image">
                                     <i class="fas fa-image"></i>
                                 </div>
-                            @endif
+                            <?php endif; ?>
                         </div>
                         
                         <div class="cart-item-details">
-                            <a href="{{ route('product.detail', $item->product->slug) }}" class="cart-item-title">
-                                {{ $item->product->name }}
+                            <a href="<?php echo e(route('product.detail', $item->product->slug)); ?>" class="cart-item-title">
+                                <?php echo e($item->product->name); ?>
+
                             </a>
-                            <div class="cart-item-price">${{ number_format($item->price, 2) }}</div>
+                            <div class="cart-item-price">$<?php echo e(number_format($item->price, 2)); ?></div>
                             
                             <div class="quantity-controls">
-                                <button class="quantity-btn decrease-qty" data-product-id="{{ $item->product_id }}">
+                                <button class="quantity-btn decrease-qty" data-product-id="<?php echo e($item->product_id); ?>">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <span class="quantity-display">{{ $item->quantity }}</span>
-                                <button class="quantity-btn increase-qty" data-product-id="{{ $item->product_id }}">
+                                <span class="quantity-display"><?php echo e($item->quantity); ?></span>
+                                <button class="quantity-btn increase-qty" data-product-id="<?php echo e($item->product_id); ?>">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
@@ -504,47 +504,51 @@
                         
                         <div class="cart-item-actions">
                             <div class="cart-item-total">
-                                ${{ number_format($item->price * $item->quantity, 2) }}
+                                $<?php echo e(number_format($item->price * $item->quantity, 2)); ?>
+
                             </div>
-                            <button class="remove-btn" data-product-id="{{ $item->product_id }}">
+                            <button class="remove-btn" data-product-id="<?php echo e($item->product_id); ?>">
                                 <i class="fas fa-trash"></i>
-                                {{ __('messages.remove') }}
+                                <?php echo e(__('messages.remove')); ?>
+
                             </button>
                         </div>
                     </div>
-                    @endif
-                @endforeach
+                    <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
             <div class="cart-summary">
-                <h3 class="summary-title">{{ __('messages.order_summary') }}</h3>
+                <h3 class="summary-title"><?php echo e(__('messages.order_summary')); ?></h3>
                 
                 <div class="summary-row">
-                    <span>{{ __('messages.subtotal') }}</span>
-                    <span class="amount" id="subtotal-amount">${{ number_format($total, 2) }}</span>
+                    <span><?php echo e(__('messages.subtotal')); ?></span>
+                    <span class="amount" id="subtotal-amount">$<?php echo e(number_format($total, 2)); ?></span>
                 </div>
                 
                 <div class="summary-row">
-                    <span>{{ __('messages.shipping') }}</span>
-                    <span class="amount">{{ __('messages.calculated_at_checkout') }}</span>
+                    <span><?php echo e(__('messages.shipping')); ?></span>
+                    <span class="amount"><?php echo e(__('messages.calculated_at_checkout')); ?></span>
                 </div>
                 
                 <div class="summary-row total">
-                    <span>{{ __('messages.total') }}</span>
-                    <span class="amount" id="total-amount">${{ number_format($total, 2) }}</span>
+                    <span><?php echo e(__('messages.total')); ?></span>
+                    <span class="amount" id="total-amount">$<?php echo e(number_format($total, 2)); ?></span>
                 </div>
                 
-                <a href="{{ route('checkout.index') }}" class="checkout-btn" style="text-decoration: none;">
+                <a href="<?php echo e(route('checkout.index')); ?>" class="checkout-btn" style="text-decoration: none;">
                     <i class="fas fa-lock"></i>
-                    {{ __('messages.proceed_to_checkout') }}
+                    <?php echo e(__('messages.proceed_to_checkout')); ?>
+
                 </a>
                 
-                <a href="{{ route('products') }}" class="continue-shopping-link">
-                    {{ __('messages.continue_shopping') }}
+                <a href="<?php echo e(route('products')); ?>" class="continue-shopping-link">
+                    <?php echo e(__('messages.continue_shopping')); ?>
+
                 </a>
             </div>
         </div>
-    @endif
+    <?php endif; ?>
 </div>
 
 <script>
@@ -626,7 +630,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error:', error);
             itemTotal.classList.remove('updating');
-            alert('{{ __('messages.error_updating_cart') }}');
+            alert('<?php echo e(__('messages.error_updating_cart')); ?>');
         });
     }
 
@@ -667,7 +671,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('{{ __('messages.error_removing_cart') }}');
+            alert('<?php echo e(__('messages.error_removing_cart')); ?>');
         });
     }
 
@@ -704,4 +708,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/cart.blade.php ENDPATH**/ ?>

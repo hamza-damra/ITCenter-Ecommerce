@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', $product->name . ' - IT Center'); ?>
 
-@section('title', $product->name . ' - IT Center')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     /* Import Google Font - Poppins */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -21,7 +19,7 @@
     .product-detail-container {
         padding: 3rem 0;
         background: #f5f5f5;
-        direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+        direction: <?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>;
         min-height: calc(100vh - 200px);
     }
 
@@ -93,7 +91,7 @@
         z-index: 9999;
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
-        direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+        direction: <?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>;
     }
 
     .image-zoom-modal.active {
@@ -247,18 +245,21 @@
     }
 
     .modal-nav-arrow.prev {
-        {{ is_rtl() ? 'right: 1rem;' : 'left: 1rem;' }}
+        <?php echo e(is_rtl() ? 'right: 1rem;' : 'left: 1rem;'); ?>
+
     }
 
     .modal-nav-arrow.next {
-        {{ is_rtl() ? 'left: 1rem;' : 'right: 1rem;' }}
+        <?php echo e(is_rtl() ? 'left: 1rem;' : 'right: 1rem;'); ?>
+
     }
 
     /* Close Button */
     .modal-close-btn {
         position: absolute;
         top: 1.5rem;
-        {{ is_rtl() ? 'left: 1.5rem;' : 'right: 1.5rem;' }}
+        <?php echo e(is_rtl() ? 'left: 1.5rem;' : 'right: 1.5rem;'); ?>
+
         width: 45px;
         height: 45px;
         background: rgba(255, 255, 255, 0.95);
@@ -342,16 +343,19 @@
         }
 
         .modal-nav-arrow.prev {
-            {{ is_rtl() ? 'right: 0.5rem;' : 'left: 0.5rem;' }}
+            <?php echo e(is_rtl() ? 'right: 0.5rem;' : 'left: 0.5rem;'); ?>
+
         }
 
         .modal-nav-arrow.next {
-            {{ is_rtl() ? 'left: 0.5rem;' : 'right: 0.5rem;' }}
+            <?php echo e(is_rtl() ? 'left: 0.5rem;' : 'right: 0.5rem;'); ?>
+
         }
 
         .modal-close-btn {
             top: 1rem;
-            {{ is_rtl() ? 'left: 1rem;' : 'right: 1rem;' }}
+            <?php echo e(is_rtl() ? 'left: 1rem;' : 'right: 1rem;'); ?>
+
             width: 38px;
             height: 38px;
             font-size: 1.2rem;
@@ -917,108 +921,109 @@
             <!-- Product Images -->
             <div class="product-images">
                 <div class="main-image">
-                    @php
+                    <?php
                         $mainImageUrl = $product->main_image 
                             ? (filter_var($product->main_image, FILTER_VALIDATE_URL) 
                                 ? $product->main_image 
                                 : asset('storage/' . $product->main_image))
                             : 'https://via.placeholder.com/800x800/f5f5f5/666666?text=' . urlencode($product->name);
-                    @endphp
-                    <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}" id="mainImage" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22800%22%3E%3Crect width=%22800%22 height=%22800%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2224%22%3ENo Image%3C/text%3E%3C/svg%3E';">
+                    ?>
+                    <img src="<?php echo e($mainImageUrl); ?>" alt="<?php echo e($product->name); ?>" id="mainImage" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22800%22%3E%3Crect width=%22800%22 height=%22800%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2224%22%3ENo Image%3C/text%3E%3C/svg%3E';">
                 </div>
                 <div class="thumbnail-images">
-                    @if($product->images->count() > 0)
-                        @foreach($product->images->take(4) as $index => $image)
-                            <div class="thumbnail {{ $index === 0 ? 'active' : '' }}">
-                                @php
+                    <?php if($product->images->count() > 0): ?>
+                        <?php $__currentLoopData = $product->images->take(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="thumbnail <?php echo e($index === 0 ? 'active' : ''); ?>">
+                                <?php
                                     $thumbnailUrl = $image->image_path 
                                         ? (filter_var($image->image_path, FILTER_VALIDATE_URL) 
                                             ? $image->image_path 
                                             : asset('storage/' . $image->image_path))
                                         : 'https://via.placeholder.com/200x200/f5f5f5/666666?text=Image+' . ($index + 1);
-                                @endphp
-                                <img src="{{ $thumbnailUrl }}" alt="{{ $product->name }}" onclick="changeImage(this)" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
+                                ?>
+                                <img src="<?php echo e($thumbnailUrl); ?>" alt="<?php echo e($product->name); ?>" onclick="changeImage(this)" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
                             </div>
-                        @endforeach
-                    @else
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php else: ?>
                         <div class="thumbnail active">
-                            <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}" onclick="changeImage(this)" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
+                            <img src="<?php echo e($mainImageUrl); ?>" alt="<?php echo e($product->name); ?>" onclick="changeImage(this)" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
             <!-- Product Info -->
             <div class="product-info">
-                <div class="product-category">{{ $product->category->{'name_' . current_locale()} ?? $product->category->name ?? __('messages.Uncategorized') }} @if($product->brand) / {{ $product->brand->{'name_' . current_locale()} ?? $product->brand->name }}@endif</div>
-                <h1 class="product-title">{{ $product->{'name_' . current_locale()} ?? $product->name }}</h1>
+                <div class="product-category"><?php echo e($product->category->{'name_' . current_locale()} ?? $product->category->name ?? __('messages.Uncategorized')); ?> <?php if($product->brand): ?> / <?php echo e($product->brand->{'name_' . current_locale()} ?? $product->brand->name); ?><?php endif; ?></div>
+                <h1 class="product-title"><?php echo e($product->{'name_' . current_locale()} ?? $product->name); ?></h1>
 
                 <div class="product-rating" style="cursor: pointer;" onclick="document.getElementById('reviews-section').scrollIntoView({ behavior: 'smooth' })">
                     <div class="stars">
-                        @for($i = 1; $i <= 5; $i++)
-                            @if($i <= floor($product->avg_rating))
+                        <?php for($i = 1; $i <= 5; $i++): ?>
+                            <?php if($i <= floor($product->avg_rating)): ?>
                                 <i class="fas fa-star"></i>
-                            @elseif($i - $product->avg_rating < 1)
+                            <?php elseif($i - $product->avg_rating < 1): ?>
                                 <i class="fas fa-star-half-alt"></i>
-                            @else
+                            <?php else: ?>
                                 <i class="far fa-star"></i>
-                            @endif
-                        @endfor
+                            <?php endif; ?>
+                        <?php endfor; ?>
                     </div>
-                    <span class="rating-text">{{ number_format($product->avg_rating, 1) }} ({{ $product->reviews_count }} {{ __('messages.reviews') }})</span>
+                    <span class="rating-text"><?php echo e(number_format($product->avg_rating, 1)); ?> (<?php echo e($product->reviews_count); ?> <?php echo e(__('messages.reviews')); ?>)</span>
                 </div>
 
                 <div class="product-price">
-                    <span class="current-price">${{ number_format($product->final_price, 2) }}</span>
-                    @if($product->is_on_sale)
-                        <span class="original-price">${{ number_format($product->price, 2) }}</span>
-                        <span class="discount-badge">-{{ $product->discount_percentage }}%</span>
-                    @endif
+                    <span class="current-price">$<?php echo e(number_format($product->final_price, 2)); ?></span>
+                    <?php if($product->is_on_sale): ?>
+                        <span class="original-price">$<?php echo e(number_format($product->price, 2)); ?></span>
+                        <span class="discount-badge">-<?php echo e($product->discount_percentage); ?>%</span>
+                    <?php endif; ?>
                 </div>
 
-                <div class="stock-status {{ $product->stock_status === 'out_of_stock' ? 'out-of-stock' : '' }}">
-                    @if($product->stock_status === 'in_stock')
+                <div class="stock-status <?php echo e($product->stock_status === 'out_of_stock' ? 'out-of-stock' : ''); ?>">
+                    <?php if($product->stock_status === 'in_stock'): ?>
                         <i class="fas fa-check-circle"></i>
-                        <span>{{ __('messages.in_stock') }}</span>
-                    @else
+                        <span><?php echo e(__('messages.in_stock')); ?></span>
+                    <?php else: ?>
                         <i class="fas fa-times-circle"></i>
-                        <span>{{ __('messages.out_of_stock') }}</span>
-                    @endif
+                        <span><?php echo e(__('messages.out_of_stock')); ?></span>
+                    <?php endif; ?>
                 </div>
 
                 <p class="product-description">
-                    {{ $product->{'short_description_' . current_locale()} ?? $product->short_description ?? $product->{'description_' . current_locale()} ?? $product->description }}
+                    <?php echo e($product->{'short_description_' . current_locale()} ?? $product->short_description ?? $product->{'description_' . current_locale()} ?? $product->description); ?>
+
                 </p>
 
                 <div class="product-features">
                     <div class="feature-item">
                         <i class="fas fa-shipping-fast feature-icon"></i>
-                        <span class="feature-text">{{ __('messages.free_shipping') }}</span>
+                        <span class="feature-text"><?php echo e(__('messages.free_shipping')); ?></span>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-undo feature-icon"></i>
-                        <span class="feature-text">{{ __('messages.return_policy') }}</span>
+                        <span class="feature-text"><?php echo e(__('messages.return_policy')); ?></span>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-shield-alt feature-icon"></i>
-                        <span class="feature-text">{{ __('messages.warranty') }}</span>
+                        <span class="feature-text"><?php echo e(__('messages.warranty')); ?></span>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-headset feature-icon"></i>
-                        <span class="feature-text">{{ __('messages.customer_support') }}</span>
+                        <span class="feature-text"><?php echo e(__('messages.customer_support')); ?></span>
                     </div>
                 </div>
 
                 <div class="quantity-section">
-                    <label class="quantity-label">{{ __('messages.quantity') }}:</label>
+                    <label class="quantity-label"><?php echo e(__('messages.quantity')); ?>:</label>
                     <div class="quantity-selector">
                         <div class="quantity-controls">
-                            <button class="quantity-btn" onclick="decreaseQuantity()" {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>-</button>
+                            <button class="quantity-btn" onclick="decreaseQuantity()" <?php echo e($product->stock_status === 'out_of_stock' ? 'disabled' : ''); ?>>-</button>
                             <input type="number" class="quantity-input" value="1" min="1" 
-                                   max="{{ $product->track_stock ? $product->stock_quantity : 999 }}" 
+                                   max="<?php echo e($product->track_stock ? $product->stock_quantity : 999); ?>" 
                                    id="quantity" 
-                                   {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
-                            <button class="quantity-btn" onclick="increaseQuantity()" {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>+</button>
+                                   <?php echo e($product->stock_status === 'out_of_stock' ? 'disabled' : ''); ?>>
+                            <button class="quantity-btn" onclick="increaseQuantity()" <?php echo e($product->stock_status === 'out_of_stock' ? 'disabled' : ''); ?>>+</button>
                         </div>
                     </div>
                 </div>
@@ -1026,20 +1031,22 @@
                 <div class="action-buttons">
                     <button class="btn-add-cart"
                             type="button"
-                            onclick="addToCartWithQuantity({{ $product->id }}, this)"
-                            {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
+                            onclick="addToCartWithQuantity(<?php echo e($product->id); ?>, this)"
+                            <?php echo e($product->stock_status === 'out_of_stock' ? 'disabled' : ''); ?>>
                         <i class="fas fa-shopping-cart"></i>
-                        {{ $product->stock_status === 'out_of_stock' ? __('messages.out_of_stock') : __('messages.add_to_cart') }}
+                        <?php echo e($product->stock_status === 'out_of_stock' ? __('messages.out_of_stock') : __('messages.add_to_cart')); ?>
+
                     </button>
                     <button class="btn-buy-now"
                             type="button"
-                            onclick="buyNow({{ $product->id }}, this)"
-                            {{ $product->stock_status === 'out_of_stock' ? 'disabled' : '' }}>
-                        {{ $product->stock_status === 'out_of_stock' ? __('messages.unavailable') : __('messages.buy_now') }}
+                            onclick="buyNow(<?php echo e($product->id); ?>, this)"
+                            <?php echo e($product->stock_status === 'out_of_stock' ? 'disabled' : ''); ?>>
+                        <?php echo e($product->stock_status === 'out_of_stock' ? __('messages.unavailable') : __('messages.buy_now')); ?>
+
                     </button>
                     <button class="btn-wishlist wishlist-btn"
                             type="button"
-                            data-product-id="{{ $product->id }}">
+                            data-product-id="<?php echo e($product->id); ?>">
                         <i class="far fa-heart"></i>
                     </button>
                 </div>
@@ -1048,88 +1055,89 @@
 
         <!-- Specifications -->
         <div class="specifications-section">
-            <h2 class="section-title">{{ __('messages.technical_specifications') }}</h2>
+            <h2 class="section-title"><?php echo e(__('messages.technical_specifications')); ?></h2>
             <div class="specs-grid">
-                @if($product->specifications && is_array($product->specifications))
-                    @foreach($product->specifications as $key => $value)
+                <?php if($product->specifications && is_array($product->specifications)): ?>
+                    <?php $__currentLoopData = $product->specifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="spec-item">
-                            <span class="spec-label">{{ ucfirst(str_replace('_', ' ', $key)) }}:</span>
-                            <span class="spec-value">{{ $value }}</span>
+                            <span class="spec-label"><?php echo e(ucfirst(str_replace('_', ' ', $key))); ?>:</span>
+                            <span class="spec-value"><?php echo e($value); ?></span>
                         </div>
-                    @endforeach
-                @else
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php else: ?>
                     <div class="spec-item">
                         <span class="spec-label">SKU:</span>
-                        <span class="spec-value">{{ $product->sku }}</span>
+                        <span class="spec-value"><?php echo e($product->sku); ?></span>
                     </div>
-                    @if($product->weight)
+                    <?php if($product->weight): ?>
                         <div class="spec-item">
                             <span class="spec-label">Weight:</span>
-                            <span class="spec-value">{{ $product->weight }} kg</span>
+                            <span class="spec-value"><?php echo e($product->weight); ?> kg</span>
                         </div>
-                    @endif
-                    @if($product->warranty)
+                    <?php endif; ?>
+                    <?php if($product->warranty): ?>
                         <div class="spec-item">
                             <span class="spec-label">Warranty:</span>
-                            <span class="spec-value">{{ $product->warranty }}</span>
+                            <span class="spec-value"><?php echo e($product->warranty); ?></span>
                         </div>
-                    @endif
-                    @if($product->length && $product->width && $product->height)
+                    <?php endif; ?>
+                    <?php if($product->length && $product->width && $product->height): ?>
                         <div class="spec-item">
                             <span class="spec-label">Dimensions:</span>
-                            <span class="spec-value">{{ $product->length }} x {{ $product->width }} x {{ $product->height }} cm</span>
+                            <span class="spec-value"><?php echo e($product->length); ?> x <?php echo e($product->width); ?> x <?php echo e($product->height); ?> cm</span>
                         </div>
-                    @endif
-                @endif
+                    <?php endif; ?>
+                <?php endif; ?>
             </div>
         </div>
 
         <!-- Full Description -->
-        @if($product->{'description_' . current_locale()} ?? $product->description && ($product->{'description_' . current_locale()} ?? $product->description) != ($product->{'short_description_' . current_locale()} ?? $product->short_description))
+        <?php if($product->{'description_' . current_locale()} ?? $product->description && ($product->{'description_' . current_locale()} ?? $product->description) != ($product->{'short_description_' . current_locale()} ?? $product->short_description)): ?>
         <div class="specifications-section" style="margin-top: 2rem;">
-            <h2 class="section-title">{{ __('messages.product_description') }}</h2>
+            <h2 class="section-title"><?php echo e(__('messages.product_description')); ?></h2>
             <div style="color: #555; line-height: 1.8; font-size: 1rem;">
-                {!! nl2br(e($product->{'description_' . current_locale()} ?? $product->description)) !!}
+                <?php echo nl2br(e($product->{'description_' . current_locale()} ?? $product->description)); ?>
+
             </div>
         </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Reviews Section -->
-        @include('partials.reviews-section')
+        <?php echo $__env->make('partials.reviews-section', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 </div>
 
 <!-- Related Products -->
 <div class="related-products">
     <div class="container">
-        <h2 class="related-title">{{ __('messages.related_products') }}</h2>
+        <h2 class="related-title"><?php echo e(__('messages.related_products')); ?></h2>
         <div class="products-grid">
-            @foreach($relatedProducts as $relatedProduct)
-                <a href="{{ route('product.detail', $relatedProduct->slug) }}" style="text-decoration: none; color: inherit;">
+            <?php $__currentLoopData = $relatedProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $relatedProduct): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <a href="<?php echo e(route('product.detail', $relatedProduct->slug)); ?>" style="text-decoration: none; color: inherit;">
                     <div class="product-card">
                         <div class="product-card-image">
-                            @php
+                            <?php
                                 $relatedImageUrl = $relatedProduct->main_image 
                                     ? (filter_var($relatedProduct->main_image, FILTER_VALIDATE_URL) 
                                         ? $relatedProduct->main_image 
                                         : asset('storage/' . $relatedProduct->main_image))
                                     : 'https://via.placeholder.com/300x200/f5f5f5/666666?text=' . urlencode($relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name);
-                            @endphp
-                            <img src="{{ $relatedImageUrl }}" alt="{{ $relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name }}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect width=%22300%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
+                            ?>
+                            <img src="<?php echo e($relatedImageUrl); ?>" alt="<?php echo e($relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name); ?>" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect width=%22300%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
                         </div>
                         <div class="product-card-content">
-                            <h3 class="product-card-title">{{ $relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name }}</h3>
-                            <div class="product-card-price">${{ number_format($relatedProduct->final_price, 2) }}</div>
+                            <h3 class="product-card-title"><?php echo e($relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name); ?></h3>
+                            <div class="product-card-price">$<?php echo e(number_format($relatedProduct->final_price, 2)); ?></div>
                         </div>
                     </div>
                 </a>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
     </div>
 </div>
 
 <!-- Image Zoom Modal -->
-@php
+<?php
     $allImages = collect([$product->main_image]);
     if($product->images->count() > 0) {
         $allImages = $allImages->merge($product->images->pluck('image_path'));
@@ -1142,7 +1150,7 @@
             ? $firstImagePath
             : asset('storage/' . $firstImagePath))
         : 'https://via.placeholder.com/1000x800/f5f5f5/666666?text=' . urlencode($product->name);
-@endphp
+?>
 <div class="image-zoom-modal" id="imageZoomModal">
     <div class="modal-container">
         <!-- Close Button -->
@@ -1152,40 +1160,40 @@
 
         <!-- Navigation Arrows -->
         <button class="modal-nav-arrow prev" onclick="navigateModalImage(-1)">
-            <i class="fas fa-chevron-{{ is_rtl() ? 'right' : 'left' }}"></i>
+            <i class="fas fa-chevron-<?php echo e(is_rtl() ? 'right' : 'left'); ?>"></i>
         </button>
         <button class="modal-nav-arrow next" onclick="navigateModalImage(1)">
-            <i class="fas fa-chevron-{{ is_rtl() ? 'left' : 'right' }}"></i>
+            <i class="fas fa-chevron-<?php echo e(is_rtl() ? 'left' : 'right'); ?>"></i>
         </button>
 
         <!-- Image Counter -->
         <div class="image-counter" id="imageCounter">
             <i class="fas fa-images"></i>
-            <span id="currentImageNumber">1</span> / <span id="totalImages">{{ $allImages->count() }}</span>
+            <span id="currentImageNumber">1</span> / <span id="totalImages"><?php echo e($allImages->count()); ?></span>
         </div>
 
         <div class="modal-main-content">
             <!-- Main Image -->
             <div class="modal-image-wrapper" id="modalImageWrapper">
                 <div class="modal-main-image" id="modalMainImage">
-                    <img src="{{ $firstImageUrl }}" alt="{{ $product->name }}" id="modalImage" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221000%22 height=%22800%22%3E%3Crect width=%221000%22 height=%22800%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2224%22%3ENo Image%3C/text%3E%3C/svg%3E';">
+                    <img src="<?php echo e($firstImageUrl); ?>" alt="<?php echo e($product->name); ?>" id="modalImage" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221000%22 height=%22800%22%3E%3Crect width=%221000%22 height=%22800%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2224%22%3ENo Image%3C/text%3E%3C/svg%3E';">
                 </div>
             </div>
 
             <!-- Thumbnails Sidebar -->
             <div class="modal-thumbnails" id="modalThumbnails">
-                @foreach($allImages as $index => $imagePath)
-                    @php
+                <?php $__currentLoopData = $allImages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $imagePath): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
                         $imageUrl = $imagePath 
                             ? (filter_var($imagePath, FILTER_VALIDATE_URL) 
                                 ? $imagePath 
                                 : asset('storage/' . $imagePath))
                             : 'https://via.placeholder.com/200x200/f5f5f5/666666?text=Image+' . ($index + 1);
-                    @endphp
-                    <div class="modal-thumbnail {{ $index === 0 ? 'active' : '' }}" onclick="selectModalImage({{ $index }})">
-                        <img src="{{ $imageUrl }}" alt="{{ $product->name }}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
+                    ?>
+                    <div class="modal-thumbnail <?php echo e($index === 0 ? 'active' : ''); ?>" onclick="selectModalImage(<?php echo e($index); ?>)">
+                        <img src="<?php echo e($imageUrl); ?>" alt="<?php echo e($product->name); ?>" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
                     </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
     </div>
@@ -1335,9 +1343,9 @@
             if (e.key === 'Escape') {
                 closeZoomModal();
             } else if (e.key === 'ArrowLeft') {
-                navigateModalImage({{ is_rtl() ? '1' : '-1' }});
+                navigateModalImage(<?php echo e(is_rtl() ? '1' : '-1'); ?>);
             } else if (e.key === 'ArrowRight') {
-                navigateModalImage({{ is_rtl() ? '-1' : '1' }});
+                navigateModalImage(<?php echo e(is_rtl() ? '-1' : '1'); ?>);
             }
         }
     });
@@ -1500,7 +1508,7 @@
                 // Then redirect to checkout
                 setTimeout(() => {
                     // Force a full page reload to checkout to ensure fresh cart data
-                    window.location.href = '{{ route("checkout.index") }}?fresh=1';
+                    window.location.href = '<?php echo e(route("checkout.index")); ?>?fresh=1';
                 }, 800);
             } else {
                 // Show error
@@ -1519,4 +1527,6 @@
 
     // Wishlist functionality is handled by the global script in layout
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/product-detail.blade.php ENDPATH**/ ?>
