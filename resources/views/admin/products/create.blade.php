@@ -424,6 +424,7 @@
                     <input type="hidden" name="is_featured" value="0">
                     <input type="hidden" name="is_new" value="0">
                     <input type="hidden" name="is_bestseller" value="0">
+                    <input type="hidden" name="is_special_offer" value="0">
                     
                     <label class="checkbox-group">
                         <input 
@@ -468,6 +469,28 @@
                         <input 
                             type="checkbox" 
                             id="is_bestseller" 
+                            name="is_bestseller" 
+                            value="1" 
+                            {{ old('is_bestseller') ? 'checked' : '' }}>
+                        <span>
+                            <strong><i class="fas fa-fire"></i> {{ __('messages.bestseller') }}</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.mark_bestselling_product') }}</p>
+                        </span>
+                    </label>
+
+                    <label class="checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="is_special_offer" 
+                            name="is_special_offer" 
+                            value="1" 
+                            {{ old('is_special_offer') ? 'checked' : '' }}>
+                        <span>
+                            <strong><i class="fas fa-gift"></i> {{ __('messages.special_offer') ?? 'Special Offer' }}</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.show_as_special_offer_card') ?? 'عرض كبطاقة عرض خاص في الصفحة الرئيسية' }}</p>
+                        </span>
+                    </label>
+                </div>
                             name="is_bestseller" 
                             value="1" 
                             {{ old('is_bestseller') ? 'checked' : '' }}>

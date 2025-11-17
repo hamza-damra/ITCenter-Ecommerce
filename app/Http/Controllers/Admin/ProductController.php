@@ -18,6 +18,33 @@ class ProductController extends Controller
     {
         $query = Product::with(['category', 'brand', 'images']);
 
+        // Search functionality
+        if ($request->has('search') && $request->search != '') {
+            $searchTerm = $request->search;
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('name_en', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('name_ar', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('name_he', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('sku', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('search_keywords', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        // Status filter
+        if ($request->has('status') && $request->status != '') {
+            $query->where('is_active', $request->status === 'active');
+        }
+
+        // Stock filter
+        if ($request->has('stock') && $request->stock != '') {
+            if ($request->stock === 'low') {
+                $query->where('stock_quantity', '>', 0)
+                      ->where('stock_quantity', '<=', 5);
+            } elseif ($request->stock === 'out') {
+                $query->where('stock_quantity', 0);
+            }
+        }
+
         // Apply filter based on request parameter
         if ($request->has('filter')) {
             switch ($request->filter) {
@@ -43,10 +70,8 @@ class ProductController extends Controller
 
         $products = $query->paginate(20);
         
-        // Preserve filter parameter in pagination
-        if ($request->has('filter')) {
-            $products->appends(['filter' => $request->filter]);
-        }
+        // Preserve all parameters in pagination
+        $products->appends($request->except('page'));
 
         return view('admin.products.index', compact('products'));
     }
@@ -95,6 +120,7 @@ class ProductController extends Controller
         $validated['is_featured'] = $request->input('is_featured') == '1';
         $validated['is_new'] = $request->input('is_new') == '1';
         $validated['is_bestseller'] = $request->input('is_bestseller') == '1';
+        $validated['is_special_offer'] = $request->input('is_special_offer') == '1';
 
         DB::beginTransaction();
         try {
@@ -192,6 +218,7 @@ class ProductController extends Controller
         $validated['is_featured'] = $request->input('is_featured') == '1';
         $validated['is_new'] = $request->input('is_new') == '1';
         $validated['is_bestseller'] = $request->input('is_bestseller') == '1';
+        $validated['is_special_offer'] = $request->input('is_special_offer') == '1';
 
         DB::beginTransaction();
         try {

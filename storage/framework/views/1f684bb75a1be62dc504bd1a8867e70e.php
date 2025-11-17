@@ -582,23 +582,26 @@
 </div>
 
 <!-- Search & Filter -->
-<div class="search-filter-box">
-    <input type="text" id="searchInput" placeholder="🔍 <?php echo e(__('messages.search_by_name_sku')); ?>" onkeyup="filterProducts()">
-    <select id="statusFilter" onchange="filterProducts()">
-        <option value=""><?php echo e(__('messages.all_status')); ?></option>
-        <option value="active"><?php echo e(__('messages.active_only')); ?></option>
-        <option value="inactive"><?php echo e(__('messages.inactive_only')); ?></option>
-    </select>
-    <select id="stockFilter" onchange="filterProducts()">
-        <option value=""><?php echo e(__('messages.all_stock')); ?></option>
-        <option value="low"><?php echo e(__('messages.low_stock')); ?></option>
-        <option value="out"><?php echo e(__('messages.out_of_stock')); ?></option>
-    </select>
-    <button class="filter-reset-btn" onclick="resetFilters()">
-        <i class="fas fa-redo"></i> <?php echo e(__('messages.reset')); ?>
+<form method="GET" action="<?php echo e(route('admin.products.index')); ?>" id="searchFilterForm">
+    <div class="search-filter-box">
+        <input type="text" name="search" id="searchInput" placeholder="🔍 <?php echo e(__('messages.search_by_name_sku')); ?>" 
+               value="<?php echo e(request('search')); ?>" oninput="debounceSearch()">
+        <select name="status" id="statusFilter" onchange="filterProducts()">
+            <option value=""><?php echo e(__('messages.all_status')); ?></option>
+            <option value="active" <?php echo e(request('status') === 'active' ? 'selected' : ''); ?>><?php echo e(__('messages.active_only')); ?></option>
+            <option value="inactive" <?php echo e(request('status') === 'inactive' ? 'selected' : ''); ?>><?php echo e(__('messages.inactive_only')); ?></option>
+        </select>
+        <select name="stock" id="stockFilter" onchange="filterProducts()">
+            <option value=""><?php echo e(__('messages.all_stock')); ?></option>
+            <option value="low" <?php echo e(request('stock') === 'low' ? 'selected' : ''); ?>><?php echo e(__('messages.low_stock')); ?></option>
+            <option value="out" <?php echo e(request('stock') === 'out' ? 'selected' : ''); ?>><?php echo e(__('messages.out_of_stock')); ?></option>
+        </select>
+        <button type="button" class="filter-reset-btn" onclick="resetFilters()">
+            <i class="fas fa-redo"></i> <?php echo e(__('messages.reset')); ?>
 
-    </button>
-</div>
+        </button>
+    </div>
+</form>
 
 <!-- Products Table -->
 <?php if($products->count() > 0): ?>
@@ -870,46 +873,24 @@
         });
     }
 
+    // Debounce timer for search
+    let searchTimeout;
+
+    function debounceSearch() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() {
+            filterProducts();
+        }, 500); // Wait 500ms after user stops typing
+    }
+
     function filterProducts() {
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        const statusFilter = document.getElementById('statusFilter').value;
-        const stockFilter = document.getElementById('stockFilter').value;
-        const rows = document.querySelectorAll('.products-table tbody tr');
-
-        rows.forEach(row => {
-            let matches = true;
-
-            // Search filter
-            if (searchTerm) {
-                const name = row.getAttribute('data-name').toLowerCase();
-                matches = matches && name.includes(searchTerm);
-            }
-
-            // Status filter
-            if (statusFilter) {
-                const status = row.getAttribute('data-status');
-                matches = matches && status === statusFilter;
-            }
-
-            // Stock filter
-            if (stockFilter) {
-                const stock = parseInt(row.getAttribute('data-stock'));
-                if (stockFilter === 'low') {
-                    matches = matches && stock > 0 && stock <= 5;
-                } else if (stockFilter === 'out') {
-                    matches = matches && stock === 0;
-                }
-            }
-
-            row.style.display = matches ? '' : 'none';
-        });
+        // Submit the form to apply server-side filtering
+        document.getElementById('searchFilterForm').submit();
     }
 
     function resetFilters() {
-        document.getElementById('searchInput').value = '';
-        document.getElementById('statusFilter').value = '';
-        document.getElementById('stockFilter').value = '';
-        filterProducts();
+        // Redirect to the index page without any parameters
+        window.location.href = '<?php echo e(route('admin.products.index')); ?>';
     }
 
     // Bulk selection functions

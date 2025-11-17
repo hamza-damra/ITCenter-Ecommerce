@@ -3326,7 +3326,34 @@
 <div class="featured-section">
     <div class="container">
         <div class="product-grid" id="featuredProducts">
-                @if(isset($promotionalOffers) && $promotionalOffers->count() > 0)
+                @if(isset($specialOfferProduct) && $specialOfferProduct)
+                    <div class="promo-featured-card">
+                        <div class="special-offer-header">{{ is_rtl() ? 'عرض خاص' : 'Special Offer' }}</div>
+                        @if($specialOfferProduct->sale_price && $specialOfferProduct->sale_price < $specialOfferProduct->price)
+                        <div class="badge-save">
+                            <span class="save-label">{{ is_rtl() ? 'وفر' : 'Save' }}</span>
+                            <span class="save-amount">₪{{ number_format($specialOfferProduct->price - $specialOfferProduct->sale_price, 0) }}</span>
+                        </div>
+                        @endif
+                        <div class="promo-media">
+                            <img src="{{ $specialOfferProduct->main_image }}" alt="{{ $specialOfferProduct->name }}">
+                        </div>
+                        <div class="promo-body">
+                            <div class="promo-product-name">{{ $specialOfferProduct->name }}</div>
+                            <div class="promo-prices">
+                                @if($specialOfferProduct->sale_price && $specialOfferProduct->sale_price < $specialOfferProduct->price)
+                                    <span class="orig">₪{{ number_format($specialOfferProduct->price, 0) }}</span>
+                                    <span class="sale">₪{{ number_format($specialOfferProduct->sale_price, 0) }}</span>
+                                @else
+                                    <span class="sale">₪{{ number_format($specialOfferProduct->price, 0) }}</span>
+                                @endif
+                            </div>
+                            <div class="promo-cta">
+                                <a href="{{ route('product.detail', $specialOfferProduct->slug) }}">{{ is_rtl() ? 'تسوق الآن' : 'Shop Now' }}</a>
+                            </div>
+                        </div>
+                    </div>
+                @elseif(isset($promotionalOffers) && $promotionalOffers->count() > 0)
                     @php $promo = $promotionalOffers->first(); @endphp
                     <div class="promo-featured-card">
                         <div class="special-offer-header">{{ is_rtl() ? 'عرض خاص' : 'Special Offer' }}</div>

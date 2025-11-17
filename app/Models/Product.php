@@ -35,6 +35,7 @@ class Product extends Model
         'is_featured',
         'is_new',
         'is_bestseller',
+        'is_special_offer',
         'track_stock',
         'stock_status',
         'weight',

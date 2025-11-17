@@ -518,6 +518,7 @@
                     <input type="hidden" name="is_featured" value="0">
                     <input type="hidden" name="is_new" value="0">
                     <input type="hidden" name="is_bestseller" value="0">
+                    <input type="hidden" name="is_special_offer" value="0">
                     
                     <label class="checkbox-group">
                         <input 
@@ -568,6 +569,19 @@
                         <span>
                             <strong><i class="fas fa-fire"></i> Bestseller</strong>
                             <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Mark as popular/bestselling product</p>
+                        </span>
+                    </label>
+
+                    <label class="checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="is_special_offer" 
+                            name="is_special_offer" 
+                            value="1" 
+                            {{ old('is_special_offer', $product->is_special_offer ?? false) ? 'checked' : '' }}>
+                        <span>
+                            <strong><i class="fas fa-gift"></i> Special Offer</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Show as special offer card on homepage</p>
                         </span>
                     </label>
                 </div>

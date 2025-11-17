@@ -3330,7 +3330,34 @@
 <div class="featured-section">
     <div class="container">
         <div class="product-grid" id="featuredProducts">
-                <?php if(isset($promotionalOffers) && $promotionalOffers->count() > 0): ?>
+                <?php if(isset($specialOfferProduct) && $specialOfferProduct): ?>
+                    <div class="promo-featured-card">
+                        <div class="special-offer-header"><?php echo e(is_rtl() ? 'عرض خاص' : 'Special Offer'); ?></div>
+                        <?php if($specialOfferProduct->sale_price && $specialOfferProduct->sale_price < $specialOfferProduct->price): ?>
+                        <div class="badge-save">
+                            <span class="save-label"><?php echo e(is_rtl() ? 'وفر' : 'Save'); ?></span>
+                            <span class="save-amount">₪<?php echo e(number_format($specialOfferProduct->price - $specialOfferProduct->sale_price, 0)); ?></span>
+                        </div>
+                        <?php endif; ?>
+                        <div class="promo-media">
+                            <img src="<?php echo e($specialOfferProduct->main_image); ?>" alt="<?php echo e($specialOfferProduct->name); ?>">
+                        </div>
+                        <div class="promo-body">
+                            <div class="promo-product-name"><?php echo e($specialOfferProduct->name); ?></div>
+                            <div class="promo-prices">
+                                <?php if($specialOfferProduct->sale_price && $specialOfferProduct->sale_price < $specialOfferProduct->price): ?>
+                                    <span class="orig">₪<?php echo e(number_format($specialOfferProduct->price, 0)); ?></span>
+                                    <span class="sale">₪<?php echo e(number_format($specialOfferProduct->sale_price, 0)); ?></span>
+                                <?php else: ?>
+                                    <span class="sale">₪<?php echo e(number_format($specialOfferProduct->price, 0)); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="promo-cta">
+                                <a href="<?php echo e(route('product.detail', $specialOfferProduct->slug)); ?>"><?php echo e(is_rtl() ? 'تسوق الآن' : 'Shop Now'); ?></a>
+                            </div>
+                        </div>
+                    </div>
+                <?php elseif(isset($promotionalOffers) && $promotionalOffers->count() > 0): ?>
                     <?php $promo = $promotionalOffers->first(); ?>
                     <div class="promo-featured-card">
                         <div class="special-offer-header"><?php echo e(is_rtl() ? 'عرض خاص' : 'Special Offer'); ?></div>
