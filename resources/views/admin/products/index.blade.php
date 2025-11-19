@@ -595,6 +595,26 @@
             <option value="low" {{ request('stock') === 'low' ? 'selected' : '' }}>{{ __('messages.low_stock') }}</option>
             <option value="out" {{ request('stock') === 'out' ? 'selected' : '' }}>{{ __('messages.out_of_stock') }}</option>
         </select>
+        <select name="featured" id="featuredFilter" onchange="filterProducts()">
+            <option value="">{{ __('messages.all_featured') }}</option>
+            <option value="1" {{ request('featured') === '1' ? 'selected' : '' }}>⭐ {{ __('messages.featured_only') }}</option>
+            <option value="0" {{ request('featured') === '0' ? 'selected' : '' }}>{{ __('messages.not_featured') }}</option>
+        </select>
+        <select name="new" id="newFilter" onchange="filterProducts()">
+            <option value="">{{ __('messages.all_new') }}</option>
+            <option value="1" {{ request('new') === '1' ? 'selected' : '' }}>🆕 {{ __('messages.new_only') }}</option>
+            <option value="0" {{ request('new') === '0' ? 'selected' : '' }}>{{ __('messages.not_new') }}</option>
+        </select>
+        <select name="bestseller" id="bestsellerFilter" onchange="filterProducts()">
+            <option value="">{{ __('messages.all_bestseller') }}</option>
+            <option value="1" {{ request('bestseller') === '1' ? 'selected' : '' }}>🔥 {{ __('messages.bestseller_only') }}</option>
+            <option value="0" {{ request('bestseller') === '0' ? 'selected' : '' }}>{{ __('messages.not_bestseller') }}</option>
+        </select>
+        <select name="special_offer" id="specialOfferFilter" onchange="filterProducts()">
+            <option value="">{{ __('messages.all_special_offers') }}</option>
+            <option value="1" {{ request('special_offer') === '1' ? 'selected' : '' }}>🎁 {{ __('messages.special_offer_only') }}</option>
+            <option value="0" {{ request('special_offer') === '0' ? 'selected' : '' }}>{{ __('messages.not_special_offer') }}</option>
+        </select>
         <button type="button" class="filter-reset-btn" onclick="resetFilters()">
             <i class="fas fa-redo"></i> {{ __('messages.reset') }}
         </button>

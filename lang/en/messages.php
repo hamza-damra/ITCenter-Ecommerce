@@ -1252,6 +1252,20 @@ return [
     'submitting_review' => 'Submitting review...',
     'updating_review' => 'Updating review...',
     'deleting_review' => 'Deleting review...',
+
+    // Admin Product Filters
+    'all_featured' => 'All',
+    'featured_only' => 'Featured Only',
+    'not_featured' => 'Not Featured',
+    'all_new' => 'All',
+    'new_only' => 'New Only',
+    'not_new' => 'Not New',
+    'all_bestseller' => 'All',
+    'bestseller_only' => 'Bestseller Only',
+    'not_bestseller' => 'Not Bestseller',
+    'all_special_offers' => 'All',
+    'special_offer_only' => 'Special Offer Only',
+    'not_special_offer' => 'Not Special Offer',
 ];
 
 

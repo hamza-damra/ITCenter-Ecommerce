@@ -91,23 +91,19 @@
         }
 
         .sidebar-header {
-            padding: 28px 24px;
+            padding: 20px 24px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(0, 0, 0, 0.3) 100%);
-        }
-
-        .sidebar-header h2 {
-            font-size: 20px;
-            font-weight: 700;
-            color: #fff;
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
         }
 
-        .sidebar-header h2 i {
-            font-size: 24px;
-            color: var(--primary-light);
+        .sidebar-header img {
+            max-width: 85%;
+            height: auto;
+            max-height: 45px;
+            object-fit: contain;
         }
 
         .sidebar-menu {
@@ -988,7 +984,7 @@
     <div class="admin-container">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2><i class="fas fa-cube"></i> IT Center</h2>
+                <img src="<?php echo e(asset('images/assets/logo.png')); ?>" alt="IT Center Logo">
             </div>
             <ul class="sidebar-menu">
                 <li><a href="<?php echo e(route('admin.dashboard')); ?>" class="<?php echo e(request()->routeIs('admin.dashboard') ? 'active' : ''); ?>"><i class="fas fa-chart-line"></i> <?php echo e(__('messages.dashboard')); ?></a></li>

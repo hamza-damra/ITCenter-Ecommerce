@@ -1164,6 +1164,20 @@ return [
     'submitting_review' => 'جارٍ إرسال التقييم...',
     'updating_review' => 'جارٍ تحديث التقييم...',
     'deleting_review' => 'جارٍ حذف التقييم...',
+
+    // Admin Product Filters
+    'all_featured' => 'الكل',
+    'featured_only' => 'مميز فقط',
+    'not_featured' => 'غير مميز',
+    'all_new' => 'الكل',
+    'new_only' => 'جديد فقط',
+    'not_new' => 'غير جديد',
+    'all_bestseller' => 'الكل',
+    'bestseller_only' => 'الأكثر مبيعاً فقط',
+    'not_bestseller' => 'غير الأكثر مبيعاً',
+    'all_special_offers' => 'الكل',
+    'special_offer_only' => 'عرض خاص فقط',
+    'not_special_offer' => 'غير عرض خاص',
 ];
 
 

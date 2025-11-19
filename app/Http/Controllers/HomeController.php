@@ -105,12 +105,12 @@ class HomeController extends Controller
                 ->limit(3)
                 ->get();
 
-            // Special Offer Product - Get first product marked as special offer
-            $specialOfferProduct = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
+            // Special Offer Products - Get ALL products marked as special offer
+            $specialOfferProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
                 ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
                 ->active()
                 ->where('is_special_offer', true)
-                ->first();
+                ->get();
 
             // Gift Ideas Section - Featured products as fallback
             $giftIdeas = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
@@ -135,10 +135,18 @@ class HomeController extends Controller
                 'featuredBrands' => $featuredBrands,
                 'activeOffers' => $activeOffers,
                 'promotionalOffers' => $promotionalOffers,
-                'specialOfferProduct' => $specialOfferProduct,
+                'specialOfferProducts' => $specialOfferProducts,
                 'giftIdeas' => $giftIdeas,
             ];
         });
+
+        // Pick random special offer product on each page load (outside cache)
+        $specialOfferProduct = null;
+        if (isset($data['specialOfferProducts']) && $data['specialOfferProducts']->count() > 0) {
+            $specialOfferProduct = $data['specialOfferProducts']->random();
+        }
+        
+        $data['specialOfferProduct'] = $specialOfferProduct;
 
         // Get cart product IDs for current user/session (not cached as it's user-specific)
         $cartProductIds = $this->getCartProductIds();

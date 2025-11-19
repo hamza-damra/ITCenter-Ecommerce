@@ -596,6 +596,26 @@
             <option value="low" <?php echo e(request('stock') === 'low' ? 'selected' : ''); ?>><?php echo e(__('messages.low_stock')); ?></option>
             <option value="out" <?php echo e(request('stock') === 'out' ? 'selected' : ''); ?>><?php echo e(__('messages.out_of_stock')); ?></option>
         </select>
+        <select name="featured" id="featuredFilter" onchange="filterProducts()">
+            <option value=""><?php echo e(__('messages.all_featured')); ?></option>
+            <option value="1" <?php echo e(request('featured') === '1' ? 'selected' : ''); ?>>⭐ <?php echo e(__('messages.featured_only')); ?></option>
+            <option value="0" <?php echo e(request('featured') === '0' ? 'selected' : ''); ?>><?php echo e(__('messages.not_featured')); ?></option>
+        </select>
+        <select name="new" id="newFilter" onchange="filterProducts()">
+            <option value=""><?php echo e(__('messages.all_new')); ?></option>
+            <option value="1" <?php echo e(request('new') === '1' ? 'selected' : ''); ?>>🆕 <?php echo e(__('messages.new_only')); ?></option>
+            <option value="0" <?php echo e(request('new') === '0' ? 'selected' : ''); ?>><?php echo e(__('messages.not_new')); ?></option>
+        </select>
+        <select name="bestseller" id="bestsellerFilter" onchange="filterProducts()">
+            <option value=""><?php echo e(__('messages.all_bestseller')); ?></option>
+            <option value="1" <?php echo e(request('bestseller') === '1' ? 'selected' : ''); ?>>🔥 <?php echo e(__('messages.bestseller_only')); ?></option>
+            <option value="0" <?php echo e(request('bestseller') === '0' ? 'selected' : ''); ?>><?php echo e(__('messages.not_bestseller')); ?></option>
+        </select>
+        <select name="special_offer" id="specialOfferFilter" onchange="filterProducts()">
+            <option value=""><?php echo e(__('messages.all_special_offers')); ?></option>
+            <option value="1" <?php echo e(request('special_offer') === '1' ? 'selected' : ''); ?>>🎁 <?php echo e(__('messages.special_offer_only')); ?></option>
+            <option value="0" <?php echo e(request('special_offer') === '0' ? 'selected' : ''); ?>><?php echo e(__('messages.not_special_offer')); ?></option>
+        </select>
         <button type="button" class="filter-reset-btn" onclick="resetFilters()">
             <i class="fas fa-redo"></i> <?php echo e(__('messages.reset')); ?>
 

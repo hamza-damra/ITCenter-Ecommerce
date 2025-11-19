@@ -45,6 +45,26 @@ class ProductController extends Controller
             }
         }
 
+        // Featured filter
+        if ($request->has('featured') && $request->featured != '') {
+            $query->where('is_featured', $request->featured === '1');
+        }
+
+        // New Product filter
+        if ($request->has('new') && $request->new != '') {
+            $query->where('is_new', $request->new === '1');
+        }
+
+        // Bestseller filter
+        if ($request->has('bestseller') && $request->bestseller != '') {
+            $query->where('is_bestseller', $request->bestseller === '1');
+        }
+
+        // Special Offer filter
+        if ($request->has('special_offer') && $request->special_offer != '') {
+            $query->where('is_special_offer', $request->special_offer === '1');
+        }
+
         // Apply filter based on request parameter
         if ($request->has('filter')) {
             switch ($request->filter) {

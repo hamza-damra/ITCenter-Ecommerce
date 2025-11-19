@@ -229,7 +229,6 @@
 
         .search-bar:focus-within {
             box-shadow: 0 4px 20px rgba(31, 41, 55, 0.12);
-            transform: translateY(-2px);
         }
         
         header.scrolled .search-bar {
@@ -403,12 +402,11 @@
         }
 
         .header-icon:hover {
-            color: #2563eb;
-            transform: translateY(-2px);
+            color: #60a5fa;
         }
         
         header.scrolled .header-icon:hover {
-            color: #3b82f6;
+            color: #60a5fa;
         }
 
         .header-icon .badge {
