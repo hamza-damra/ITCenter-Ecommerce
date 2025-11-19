@@ -45,26 +45,6 @@ class ProductController extends Controller
             }
         }
 
-        // Featured filter
-        if ($request->has('featured') && $request->featured === '1') {
-            $query->where('is_featured', true);
-        }
-
-        // New filter
-        if ($request->has('new') && $request->new === '1') {
-            $query->where('is_new', true);
-        }
-
-        // Bestseller filter
-        if ($request->has('bestseller') && $request->bestseller === '1') {
-            $query->where('is_bestseller', true);
-        }
-
-        // Special Offer filter
-        if ($request->has('special_offer') && $request->special_offer === '1') {
-            $query->where('is_special_offer', true);
-        }
-
         // Apply filter based on request parameter
         if ($request->has('filter')) {
             switch ($request->filter) {
