@@ -247,7 +247,7 @@
     }
 
     .continue-shopping-btn {
-        background: #4169E1;
+        background: #000000ff;
         color: #fff;
         padding: 1rem 2.5rem;
         border-radius: 50px;

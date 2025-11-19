@@ -411,11 +411,11 @@
 
         .header-icon .badge {
             position: absolute;
-            top: -8px;
+            top: -4px;
             {{ is_rtl() ? 'left' : 'right' }}: -8px;
-            background: #2563eb;
+            background: #d43c3cff;
             color: #fff;
-            font-size: 0.7rem;
+            font-size: 0.5rem;
             padding: 2px 6px;
             border-radius: 50%;
             transition: background 0.2s ease;
@@ -651,7 +651,7 @@
             position: relative;
         }
         .fas:hover{
-            color: #2563eb;
+            color: #60a5fa;
         }
         .language-toggle {
             display: flex;
@@ -664,13 +664,13 @@
         }
 
         .language-toggle:hover {
-            color: #2563eb;
+            color: #60a5fa;
             background: rgba(37, 99, 235, 0.05);
         }
 
         .language-dropdown.active .language-toggle {
             background: rgba(37, 99, 235, 0.08);
-            color: #2563eb;
+            color: #60a5fa;
         }
 
         .language-dropdown.active .language-toggle .fa-chevron-down {
@@ -739,13 +739,13 @@
 
         .language-option:hover {
             background: rgba(37, 99, 235, 0.06);
-            color: #2563eb;
+            color: #60a5fa;
             padding-{{ is_rtl() ? 'right' : 'left' }}: 1.4rem;
         }
 
         .language-option.active {
             background: rgba(37, 99, 235, 0.1);
-            color: #2563eb;
+            color: #60a5fa;
             font-weight: 600;
         }
 
@@ -818,6 +818,69 @@
         }
 
         /* User Dropdown Menu Styles */
+        .user-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            {{ is_rtl() ? 'left: 0;' : 'right: 0;' }}
+            background: #ffffff;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 2px solid #e8eef7;
+            border-radius: 12px;
+            min-width: 180px;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
+            overflow: hidden;
+            z-index: 1001;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .user-dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -7px;
+            {{ is_rtl() ? 'left: 20px;' : 'right: 20px;' }}
+            width: 12px;
+            height: 12px;
+            background: #ffffff;
+            border-top: 2px solid #e8eef7;
+            border-left: 2px solid #e8eef7;
+            transform: rotate(45deg);
+        }
+
+        .user-menu-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: {{ is_rtl() ? 'right' : 'left' }};
+            font-family: inherit;
+            font-size: 0.85rem;
+            text-decoration: none;
+            color: #1a1a2e;
+            border-bottom: 1px solid rgba(37, 99, 235, 0.06);
+        }
+
+        .user-menu-item:last-child,
+        .user-dropdown-menu form:last-child .user-menu-item {
+            border-bottom: none;
+        }
+
+        .user-menu-item i {
+            font-size: 0.9rem;
+            width: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .user-dropdown.active .user-dropdown-menu {
             display: block !important;
             opacity: 1 !important;
@@ -828,43 +891,56 @@
             margin: 0 !important;
         }
 
+        .user-dropdown .user-toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.6rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
         .user-dropdown .user-toggle:hover {
-            color: #2563eb;
+            color: #60a5fa;
+            background: rgba(37, 99, 235, 0.05);
         }
 
         .user-dropdown.active .user-toggle {
-            color: #2563eb;
+            color: #60a5fa;
+            background: rgba(37, 99, 235, 0.08);
+        }
+
+        .user-dropdown.active .user-toggle .fa-chevron-down {
+            transform: rotate(180deg);
         }
 
         /* Default state for all menu items - Force color */
         .user-dropdown-menu .user-menu-item {
             color: #1a1a2e !important;
-            transition: background 0.3s ease, padding 0.3s ease, color 0.3s ease !important;
         }
 
         .user-dropdown-menu .user-menu-item i {
             color: #1a1a2e !important;
-            transition: color 0.3s ease !important;
         }
 
         .user-dropdown-menu .user-menu-item span {
             color: #1a1a2e !important;
-            transition: color 0.3s ease !important;
         }
 
         /* Hover state for all menu items */
         .user-dropdown-menu .user-menu-item:hover {
             background: rgba(37, 99, 235, 0.06) !important;
-            color: #2563eb !important;
-            padding-{{ is_rtl() ? 'right' : 'left' }}: 1.4rem !important;
+            color: #60a5fa !important;
+            padding-{{ is_rtl() ? 'right' : 'left' }}: 1.2rem !important;
         }
 
         .user-dropdown-menu .user-menu-item:hover i {
-            color: #2563eb !important;
+            color: #60a5fa !important;
         }
 
         .user-dropdown-menu .user-menu-item:hover span {
-            color: #2563eb !important;
+            color: #60a5fa !important;
         }
 
         /* Responsive adjustments */
@@ -1229,18 +1305,18 @@
                         <i class="fas fa-user-circle"></i>
                         <i class="fas fa-chevron-down" style="font-size: 0.7rem; transition: transform 0.3s;"></i>
                     </div>
-                    <div class="user-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 10px); {{ is_rtl() ? 'left: 0;' : 'right: 0;' }} background: #ffffff; backdrop-filter: blur(10px); border: 2px solid #e8eef7; border-radius: 12px; min-width: 200px; box-shadow: 0 8px 24px rgba(39, 98, 243, 0.12); overflow: hidden; z-index: 1001; opacity: 0; transform: translateY(-10px); transition: opacity 0.3s ease, transform 0.3s ease;">
-                        <a href="{{ route('profile.index') }}" class="user-menu-item" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit; text-decoration: none; color: inherit;">
+                    <div class="user-dropdown-menu">
+                        <a href="{{ route('profile.index') }}" class="user-menu-item">
                             <i class="fas fa-user"></i>
                             <span>{{ __t('messages.my_profile') }}</span>
                         </a>
-                        <a href="{{ route('orders.index') }}" class="user-menu-item" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit; text-decoration: none; color: inherit;">
+                        <a href="{{ route('orders.index') }}" class="user-menu-item">
                             <i class="fas fa-box"></i>
                             <span>{{ __t('messages.my_orders') }}</span>
                         </a>
                         <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
                             @csrf
-                            <button type="submit" class="user-menu-item" style="width: 100%; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.2rem; background: none; border: none; cursor: pointer; transition: background 0.3s ease, padding 0.3s ease; text-align: {{ is_rtl() ? 'right' : 'left' }}; font-family: inherit; font-size: inherit; text-decoration: none; color: #dc3545;">
+                            <button type="submit" class="user-menu-item" style="color: #dc3545;">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span>{{ __t('messages.logout') }}</span>
                             </button>

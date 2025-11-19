@@ -352,7 +352,13 @@ return [
     'products_management' => 'إدارة المنتجات',
     'categories_management' => 'إدارة الفئات',
     'brands_management' => 'إدارة العلامات التجارية',
+    'banners_management' => 'إدارة البانرات',
     'promotional_management' => 'إدارة الإعلانات',
+    
+    // Banners
+    'banner_created_successfully' => 'تم إنشاء البانر بنجاح',
+    'banner_updated_successfully' => 'تم تحديث البانر بنجاح',
+    'banner_deleted_successfully' => 'تم حذف البانر بنجاح',
     
     // Promotional Offers
     'promotional_offers_title' => 'إدارة الإعلانات الترويجية',

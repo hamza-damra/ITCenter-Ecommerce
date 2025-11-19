@@ -114,6 +114,9 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::delete('/brands/delete-all', [App\Http\Controllers\Admin\BrandController::class, 'deleteAll'])->name('brands.delete-all');
     Route::resource('brands', App\Http\Controllers\Admin\BrandController::class);
 
+    // Banners
+    Route::resource('banners', App\Http\Controllers\Admin\BannerController::class);
+
     // Orders
     Route::get('/orders', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [App\Http\Controllers\Admin\OrderController::class, 'show'])->name('orders.show');
