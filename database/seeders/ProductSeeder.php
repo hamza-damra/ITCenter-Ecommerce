@@ -8,6 +8,8 @@ use App\Models\Review;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\User;
+use App\Models\Attribute;
+use App\Models\AttributeValue;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -26,132 +28,166 @@ class ProductSeeder extends Seeder
         }
 
         // Create 50 products
-        $products = Product::factory()
-            ->count(50)
-            ->create()
-            ->each(function ($product) use ($categories, $brands) {
-                // Assign random category and brand
-                $product->update([
-                    'category_id' => $categories->random()->id,
-                    'brand_id' => $brands->random()->id,
-                ]);
+        for ($i = 0; $i < 50; $i++) {
+            $category = $categories->random();
+            $product = Product::factory()->create([
+                'category_id' => $category->id,
+                'brand_id' => $brands->random()->id,
+            ]);
 
-                // Create primary image
+            // Assign attributes based on category
+            $this->assignAttributesToProduct($product, $category);
+
+            // Create primary image
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image_path' => $product->main_image,
+                'order' => 0,
+                'is_primary' => true,
+                'alt_text' => $product->name . ' - Main Image',
+            ]);
+
+            // Create 2-4 additional images for each product
+            for ($j = 1; $j <= rand(2, 4); $j++) {
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'image_path' => $product->main_image,
-                    'order' => 0,
-                    'is_primary' => true,
-                    'alt_text' => $product->name . ' - Main Image',
+                    'image_path' => 'https://picsum.photos/seed/' . \Illuminate\Support\Str::random(10) . '/800/800',
+                    'order' => $j,
+                    'is_primary' => false,
+                    'alt_text' => $product->name . ' - Image ' . $j,
                 ]);
-
-                // Create 2-4 additional images for each product
-                for ($i = 1; $i <= rand(2, 4); $i++) {
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_path' => 'https://picsum.photos/seed/' . \Illuminate\Support\Str::random(10) . '/800/800',
-                        'order' => $i,
-                        'is_primary' => false,
-                        'alt_text' => $product->name . ' - Image ' . $i,
-                    ]);
-                }
-            });
+            }
+        }
 
         // Create some featured products
-        Product::factory()
-            ->count(10)
-            ->featured()
-            ->create()
-            ->each(function ($product) use ($categories, $brands) {
-                $product->update([
-                    'category_id' => $categories->random()->id,
-                    'brand_id' => $brands->random()->id,
-                ]);
+        for ($i = 0; $i < 10; $i++) {
+            $category = $categories->random();
+            $product = Product::factory()->featured()->create([
+                'category_id' => $category->id,
+                'brand_id' => $brands->random()->id,
+            ]);
 
-                // Create primary image
+            // Assign attributes based on category
+            $this->assignAttributesToProduct($product, $category);
+
+            // Create primary image
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image_path' => $product->main_image,
+                'order' => 0,
+                'is_primary' => true,
+                'alt_text' => $product->name . ' - Main Image',
+            ]);
+
+            // Create additional images
+            for ($j = 1; $j <= rand(2, 4); $j++) {
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'image_path' => $product->main_image,
-                    'order' => 0,
-                    'is_primary' => true,
-                    'alt_text' => $product->name . ' - Main Image',
+                    'image_path' => 'https://picsum.photos/seed/' . \Illuminate\Support\Str::random(10) . '/800/800',
+                    'order' => $j,
+                    'is_primary' => false,
+                    'alt_text' => $product->name . ' - Image ' . $j,
                 ]);
-
-                // Create additional images
-                for ($i = 1; $i <= rand(2, 4); $i++) {
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_path' => 'https://picsum.photos/seed/' . \Illuminate\Support\Str::random(10) . '/800/800',
-                        'order' => $i,
-                        'is_primary' => false,
-                        'alt_text' => $product->name . ' - Image ' . $i,
-                    ]);
-                }
-            });
+            }
+        }
 
         // Create some products on sale
-        Product::factory()
-            ->count(15)
-            ->onSale()
-            ->create()
-            ->each(function ($product) use ($categories, $brands) {
-                $product->update([
-                    'category_id' => $categories->random()->id,
-                    'brand_id' => $brands->random()->id,
-                ]);
+        for ($i = 0; $i < 15; $i++) {
+            $category = $categories->random();
+            $product = Product::factory()->onSale()->create([
+                'category_id' => $category->id,
+                'brand_id' => $brands->random()->id,
+            ]);
 
-                // Create primary image
+            // Assign attributes based on category
+            $this->assignAttributesToProduct($product, $category);
+
+            // Create primary image
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image_path' => $product->main_image,
+                'order' => 0,
+                'is_primary' => true,
+                'alt_text' => $product->name . ' - Main Image',
+            ]);
+
+            // Create additional images
+            for ($j = 1; $j <= rand(2, 4); $j++) {
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'image_path' => $product->main_image,
-                    'order' => 0,
-                    'is_primary' => true,
-                    'alt_text' => $product->name . ' - Main Image',
+                    'image_path' => 'https://picsum.photos/seed/' . \Illuminate\Support\Str::random(10) . '/800/800',
+                    'order' => $j,
+                    'is_primary' => false,
+                    'alt_text' => $product->name . ' - Image ' . $j,
                 ]);
-
-                // Create additional images
-                for ($i = 1; $i <= rand(2, 4); $i++) {
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_path' => 'https://picsum.photos/seed/' . \Illuminate\Support\Str::random(10) . '/800/800',
-                        'order' => $i,
-                        'is_primary' => false,
-                        'alt_text' => $product->name . ' - Image ' . $i,
-                    ]);
-                }
-            });
+            }
+        }
 
         // Create some bestseller products
-        Product::factory()
-            ->count(10)
-            ->bestseller()
-            ->create()
-            ->each(function ($product) use ($categories, $brands) {
-                $product->update([
-                    'category_id' => $categories->random()->id,
-                    'brand_id' => $brands->random()->id,
-                ]);
+        for ($i = 0; $i < 10; $i++) {
+            $category = $categories->random();
+            $product = Product::factory()->bestseller()->create([
+                'category_id' => $category->id,
+                'brand_id' => $brands->random()->id,
+            ]);
 
-                // Create primary image
+            // Assign attributes based on category
+            $this->assignAttributesToProduct($product, $category);
+
+            // Create primary image
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image_path' => $product->main_image,
+                'order' => 0,
+                'is_primary' => true,
+                'alt_text' => $product->name . ' - Main Image',
+            ]);
+
+            // Create additional images
+            for ($j = 1; $j <= rand(2, 4); $j++) {
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'image_path' => $product->main_image,
-                    'order' => 0,
-                    'is_primary' => true,
-                    'alt_text' => $product->name . ' - Main Image',
+                    'image_path' => 'https://picsum.photos/seed/' . \Illuminate\Support\Str::random(10) . '/800/800',
+                    'order' => $j,
+                    'is_primary' => false,
+                    'alt_text' => $product->name . ' - Image ' . $j,
                 ]);
+            }
+        }
 
-                // Create additional images
-                for ($i = 1; $i <= rand(2, 4); $i++) {
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_path' => 'https://picsum.photos/seed/' . \Illuminate\Support\Str::random(10) . '/800/800',
-                        'order' => $i,
-                        'is_primary' => false,
-                        'alt_text' => $product->name . ' - Image ' . $i,
-                    ]);
-                }
-            });
+        // Create some strong offers products
+        for ($i = 0; $i < 20; $i++) {
+            $category = $categories->random();
+            $product = Product::factory()->create([
+                'category_id' => $category->id,
+                'brand_id' => $brands->random()->id,
+                'is_strong_offer' => true,
+                'discount_percentage' => rand(10, 50),
+            ]);
+
+            // Assign attributes based on category
+            $this->assignAttributesToProduct($product, $category);
+
+            // Create primary image
+            ProductImage::create([
+                'product_id' => $product->id,
+                'image_path' => $product->main_image,
+                'order' => 0,
+                'is_primary' => true,
+                'alt_text' => $product->name . ' - Main Image',
+            ]);
+
+            // Create additional images
+            for ($j = 1; $j <= rand(2, 4); $j++) {
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_path' => 'https://picsum.photos/seed/' . \Illuminate\Support\Str::random(10) . '/800/800',
+                    'order' => $j,
+                    'is_primary' => false,
+                    'alt_text' => $product->name . ' - Image ' . $j,
+                ]);
+            }
+        }
 
         // Create reviews for some products
         $allProducts = Product::all();
@@ -168,6 +204,36 @@ class ProductSeeder extends Seeder
                     // Update product rating after each review
                     $product->updateRating();
                 });
+        }
+    }
+
+    /**
+     * Assign attributes to a product based on its category
+     */
+    protected function assignAttributesToProduct(Product $product, Category $category): void
+    {
+        // Get attributes assigned to this category
+        $attributes = $category->attributes;
+
+        if ($attributes->isEmpty()) {
+            return;
+        }
+
+        // For each attribute, randomly select 1-2 values
+        foreach ($attributes as $attribute) {
+            $values = $attribute->values()->active()->get();
+            
+            if ($values->isEmpty()) {
+                continue;
+            }
+
+            // Randomly select 1-2 values for this attribute
+            $selectedValues = $values->random(min(rand(1, 2), $values->count()));
+            
+            // Attach the selected values to the product
+            foreach ($selectedValues as $value) {
+                $product->attributeValues()->attach($value->id);
+            }
         }
     }
 }

@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->text('search_keywords')->nullable()->after('meta_keywords');
-            $table->index('search_keywords');
+            // Use fulltext index for TEXT columns (MySQL only)
+            if (config('database.default') !== 'sqlite') {
+                $table->fullText('search_keywords');
+            }
         });
     }
 
@@ -23,7 +26,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropIndex(['search_keywords']);
+            if (config('database.default') !== 'sqlite') {
+                $table->dropIndex(['search_keywords']);
+            }
             $table->dropColumn('search_keywords');
         });
     }

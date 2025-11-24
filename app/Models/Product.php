@@ -36,6 +36,8 @@ class Product extends Model
         'is_new',
         'is_bestseller',
         'is_special_offer',
+        'is_strong_offer',
+        'discount_percentage',
         'track_stock',
         'stock_status',
         'weight',
@@ -64,6 +66,8 @@ class Product extends Model
         'is_featured' => 'boolean',
         'is_new' => 'boolean',
         'is_bestseller' => 'boolean',
+        'is_strong_offer' => 'boolean',
+        'discount_percentage' => 'decimal:2',
         'track_stock' => 'boolean',
         'weight' => 'decimal:2',
         'length' => 'decimal:2',
@@ -206,6 +210,15 @@ class Product extends Model
     }
 
     /**
+     * Get all attribute values for the product (for filtering).
+     */
+    public function attributeValues()
+    {
+        return $this->belongsToMany(AttributeValue::class, 'product_attribute_values')
+            ->withTimestamps();
+    }
+
+    /**
      * Get the offers associated with the product.
      */
     public function offers()
@@ -244,6 +257,14 @@ class Product extends Model
     public function scopeBestseller($query)
     {
         return $query->where('is_bestseller', true);
+    }
+
+    /**
+     * Scope a query to only include strong offers products.
+     */
+    public function scopeStrongOffers($query)
+    {
+        return $query->where('is_strong_offer', true);
     }
 
     /**

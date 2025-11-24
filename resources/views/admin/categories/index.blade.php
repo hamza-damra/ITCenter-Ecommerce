@@ -404,7 +404,11 @@
                     </td>
 
                     <td class="category-image-cell">
-                        @if($category->image)
+                        @if($category->icon)
+                            <div class="category-image-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                                <i class="{{ $category->icon }}"></i>
+                            </div>
+                        @elseif($category->image)
                             <img src="{{ $category->image }}" alt="{{ $category->name }}" class="category-image">
                         @else
                             <div class="category-image-placeholder">
@@ -444,6 +448,9 @@
                     <td class="action-cell" style="text-align: right;">
                         <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i> {{ __('messages.edit') }}
+                        </a>
+                        <a href="{{ route('admin.categories.attributes.edit', $category) }}" class="btn btn-info btn-sm">
+                            <i class="fas fa-filter"></i> {{ __('messages.attributes') }}
                         </a>
                         <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" style="display: inline;" 
                               onsubmit="handleFormConfirm(event, {

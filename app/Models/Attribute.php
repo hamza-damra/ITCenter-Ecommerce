@@ -11,9 +11,13 @@ class Attribute extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'name_en',
+        'name_ar',
+        'name_he',
         'slug',
         'type',
+        'unit',
+        'is_filterable',
         'order',
         'is_active',
     ];
@@ -21,7 +25,17 @@ class Attribute extends Model
     protected $casts = [
         'order' => 'integer',
         'is_active' => 'boolean',
+        'is_filterable' => 'boolean',
     ];
+
+    /**
+     * Get the name attribute based on current locale.
+     */
+    public function getNameAttribute()
+    {
+        $locale = app()->getLocale();
+        return $this->{"name_$locale"} ?? $this->name_en;
+    }
 
     /**
      * Boot the model.
@@ -32,7 +46,7 @@ class Attribute extends Model
 
         static::creating(function ($attribute) {
             if (empty($attribute->slug)) {
-                $attribute->slug = Str::slug($attribute->name);
+                $attribute->slug = Str::slug($attribute->name_en);
             }
         });
     }
@@ -43,6 +57,15 @@ class Attribute extends Model
     public function values()
     {
         return $this->hasMany(AttributeValue::class);
+    }
+
+    /**
+     * Get the categories this attribute is assigned to.
+     */
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'attribute_category')
+            ->withTimestamps();
     }
 
     /**

@@ -39,5 +39,18 @@ class AppServiceProvider extends ServiceProvider
         Validator::replacer('exists_in_config', function ($message, $attribute, $rule, $parameters) {
             return str_replace(':attribute', $attribute, 'The selected :attribute is invalid.');
         });
+
+        // Share categories with all views for navigation
+        view()->composer('*', function ($view) {
+            $categories = \App\Models\Category::with(['children' => function ($query) {
+                $query->where('is_active', true)->orderBy('position');
+            }])
+            ->whereNull('parent_id')
+            ->where('is_active', true)
+            ->orderBy('position')
+            ->get();
+            
+            $view->with('navigationCategories', $categories);
+        });
     }
 }

@@ -69,6 +69,10 @@ return [
     
     // Special Offer Section
     'special_offer' => 'عرض خاص',
+    'strong_offer' => 'عرض قوي',
+    'mark_as_strong_promotional_offer' => 'وضع علامة كعرض ترويجي قوي للتصفية',
+    'discount_percentage' => 'نسبة الخصم',
+    'discount_percentage_help' => 'أدخل نسبة الخصم بين 0 و 100',
     'save_amount' => 'وفر :amount',
     'game_controller_offer' => 'جهاز تحكم الألعاب + كابل USB 3.0',
     'hurry_up_offer_ends' => 'أسرع! العرض ينتهي خلال:',
@@ -1178,15 +1182,62 @@ return [
     'all_special_offers' => 'الكل',
     'special_offer_only' => 'عرض خاص فقط',
     'not_special_offer' => 'غير عرض خاص',
+
+    // Filter Sidebar
+    'filters' => 'الفلاتر',
+    'filter_by' => 'تصفية حسب',
+    'clear_all_filters' => 'مسح الكل',
+    'apply_filters' => 'تطبيق الفلاتر',
+    'strong_offers_filter' => 'العروض القوية',
+    'strong_offers_only' => 'عروض قوية فقط',
+    'stock_filter' => 'حالة المخزون',
+    'in_stock_filter' => 'متوفر',
+    'out_of_stock_filter' => 'غير متوفر',
+    'brand_filter' => 'العلامة التجارية',
+    'brands_filter' => 'العلامات التجارية',
+    'categories_filter' => 'الفئات',
+    'price_filter' => 'نطاق السعر',
+    'price_range' => 'نطاق السعر',
+    'price_min' => 'الحد الأدنى',
+    'price_max' => 'الحد الأقصى',
+    'minimum_price' => 'السعر الأدنى',
+    'maximum_price' => 'السعر الأقصى',
+    'attributes_filter' => 'الخصائص',
+    'no_results_found' => 'لم يتم العثور على نتائج',
+    'no_products_match_filters' => 'لا توجد منتجات تطابق الفلاتر الحالية. حاول تعديل اختيارك.',
+    'no_products_found' => 'لم يتم العثور على منتجات',
+    'no_products_available_category' => 'لا توجد منتجات متاحة في هذه الفئة حالياً.',
+    'try_other_categories' => 'جرب تصفح فئات أخرى أو عرض جميع المنتجات.',
+    'showing_results' => 'عرض :count نتيجة',
+    'view_more_brands' => 'عرض المزيد',
+    'view_less_brands' => 'عرض أقل',
+    'view_more' => 'عرض المزيد',
+    'view_less' => 'عرض أقل',
+    'all' => 'الكل',
+    'open_filters' => 'فتح التصفية',
+    'close_filters' => 'إغلاق',
+    'filter_products' => 'تصفية المنتجات',
+    'active_filters' => ':count مرشحات نشطة',
+    'filter_by_brand' => 'تصفية حسب العلامة التجارية',
+    'filter_by_category' => 'تصفية حسب الفئة',
+    'use_arrow_keys_price' => 'استخدم مفاتيح الأسهم لتعديل نطاق السعر. اضغط Shift مع السهم للتحرك بشكل أسرع.',
+    'please_wait' => 'يرجى الانتظار',
+    'back_to_home' => 'العودة للرئيسية',
+    
+    // Category Attributes
+    'manage_category_attributes' => 'إدارة سمات الفئة',
+    'assign_attributes_to_category_subtitle' => 'تعيين السمات القابلة للتصفية لهذه الفئة',
+    'back_to_categories' => 'العودة إلى الفئات',
+    'attributes' => 'السمات',
+    'available_attributes' => 'السمات المتاحة',
+    'attributes_selected' => 'سمات محددة',
+    'no_filterable_attributes_available' => 'لا توجد سمات قابلة للتصفية متاحة',
+    'create_attribute' => 'إنشاء سمة',
+    'save_assignments' => 'حفظ التعيينات',
+    'category_attributes_updated_successfully' => 'تم تحديث سمات الفئة بنجاح',
+
+    // Category icon and position fields
+    'category_icon' => 'أيقونة الفئة',
+    'icon_help_text' => 'أدخل فئة أيقونة FontAwesome (مثل: fas fa-laptop، fas fa-tshirt)',
+    'display_position' => 'موضع العرض',
 ];
-
-
-
-
-
-
-
-
-
-
-

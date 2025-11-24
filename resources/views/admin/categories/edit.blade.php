@@ -164,25 +164,47 @@
                     @enderror
                 </div>
 
-                <div class="form-group">
-                    <label for="order" class="form-label">
-                        {{ __('messages.display_order') }}
-                        <span style="color: #64748b; font-size: 12px;">{{ __('messages.optional') }}</span>
-                    </label>
-                    <input 
-                        type="number" 
-                        id="order" 
-                        name="order" 
-                        class="form-control @error('order') is-invalid @enderror" 
-                        value="{{ old('order', $category->order ?? 0) }}" 
-                        placeholder="0"
-                        min="0">
-                    <p class="form-text">
-                        <i class="fas fa-sort-numeric-down"></i> {{ __('messages.lower_numbers_first') }}
-                    </p>
-                    @error('order')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="icon" class="form-label">
+                            {{ __('messages.category_icon') }}
+                            <span style="color: #64748b; font-size: 12px;">{{ __('messages.optional') }}</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="icon" 
+                            name="icon" 
+                            class="form-control @error('icon') is-invalid @enderror" 
+                            value="{{ old('icon', $category->icon) }}" 
+                            placeholder="e.g., fas fa-laptop, fas fa-tshirt">
+                        <p class="form-text">
+                            <i class="fas fa-info-circle"></i> {{ __('messages.icon_help_text') }}
+                        </p>
+                        @error('icon')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="position" class="form-label">
+                            {{ __('messages.display_position') }}
+                            <span style="color: #64748b; font-size: 12px;">{{ __('messages.optional') }}</span>
+                        </label>
+                        <input 
+                            type="number" 
+                            id="position" 
+                            name="position" 
+                            class="form-control @error('position') is-invalid @enderror" 
+                            value="{{ old('position', $category->position ?? 0) }}" 
+                            placeholder="0"
+                            min="0">
+                        <p class="form-text">
+                            <i class="fas fa-sort-numeric-down"></i> {{ __('messages.lower_numbers_first') }}
+                        </p>
+                        @error('position')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>

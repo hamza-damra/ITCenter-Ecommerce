@@ -33,7 +33,6 @@ class CheckoutAuthenticationTest extends TestCase
             'name_ar' => 'منتج تجريبي',
             'name_he' => 'מוצר בדיקה',
             'price' => 100.00,
-            'original_price' => 100.00,
             'stock_quantity' => 10,
             'stock_status' => 'in_stock',
             'is_active' => true,

@@ -41,10 +41,14 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name_en' => 'required|string|max:255',
             'name_ar' => 'required|string|max:255',
+            'name_he' => 'nullable|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
             'description_en' => 'nullable|string',
             'description_ar' => 'nullable|string',
+            'description_he' => 'nullable|string',
             'image' => 'nullable|url',
+            'icon' => 'nullable|string|max:255',
+            'position' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ]);
 
@@ -83,10 +87,14 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name_en' => 'required|string|max:255',
             'name_ar' => 'required|string|max:255',
+            'name_he' => 'nullable|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
             'description_en' => 'nullable|string',
             'description_ar' => 'nullable|string',
+            'description_he' => 'nullable|string',
             'image' => 'nullable|url',
+            'icon' => 'nullable|string|max:255',
+            'position' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ]);
 
@@ -103,6 +111,14 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        // Check if category has products assigned (directly or through sub-categories)
+        $productCount = $category->allProducts()->count();
+        
+        if ($productCount > 0) {
+            return redirect()->route('admin.categories.index')
+                ->with('error', "Cannot delete category with {$productCount} assigned products. Please remove or reassign products first.");
+        }
+
         $category->delete();
 
         // Clear home page cache to reflect changes immediately

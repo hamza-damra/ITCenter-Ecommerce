@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class HomePageTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test that homepage does not contain raw CSS text leakage.
      *

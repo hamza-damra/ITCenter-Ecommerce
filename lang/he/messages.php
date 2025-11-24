@@ -69,6 +69,10 @@ return [
     
     // Special Offer Section
     'special_offer' => 'הצעה מיוחדת',
+    'strong_offer' => 'הצעה חזקה',
+    'mark_as_strong_promotional_offer' => 'סמן כהצעה קידומית חזקה לסינון',
+    'discount_percentage' => 'אחוז הנחה',
+    'discount_percentage_help' => 'הזן אחוז הנחה בין 0 ל-100',
     'save_amount' => 'חסוך :amount',
     'game_controller_offer' => 'בקר משחקים + כבל USB 3.0',
     'hurry_up_offer_ends' => 'מהרו! ההצעה מסתיימת בעוד:',
@@ -1072,11 +1076,62 @@ return [
     'submitting_review' => 'שולח ביקורת...',
     'updating_review' => 'מעדכן ביקורת...',
     'deleting_review' => 'מוחק ביקורת...',
+
+    // Filter Sidebar
+    'filters' => 'מסננים',
+    'filter_by' => 'סנן לפי',
+    'clear_all_filters' => 'נקה הכל',
+    'apply_filters' => 'החל מסננים',
+    'strong_offers_filter' => 'מבצעים חזקים',
+    'strong_offers_only' => 'מבצעים חזקים בלבד',
+    'stock_filter' => 'מצב מלאי',
+    'in_stock_filter' => 'במלאי',
+    'out_of_stock_filter' => 'אזל מהמלאי',
+    'brand_filter' => 'מותג',
+    'brands_filter' => 'מותגים',
+    'categories_filter' => 'קטגוריות',
+    'price_filter' => 'טווח מחירים',
+    'price_range' => 'טווח מחירים',
+    'price_min' => 'מינימום',
+    'price_max' => 'מקסימום',
+    'minimum_price' => 'מחיר מינימלי',
+    'maximum_price' => 'מחיר מקסימלי',
+    'attributes_filter' => 'מאפיינים',
+    'no_results_found' => 'לא נמצאו תוצאות',
+    'no_products_match_filters' => 'אין מוצרים התואמים את המסננים הנוכחיים. נסה לשנות את הבחירה שלך.',
+    'no_products_found' => 'לא נמצאו מוצרים',
+    'no_products_available_category' => 'אין מוצרים זמינים כרגע בקטגוריה זו.',
+    'try_other_categories' => 'נסה לעיין בקטגוריות אחרות או צפה בכל המוצרים.',
+    'showing_results' => 'מציג :count תוצאות',
+    'view_more_brands' => 'הצג עוד',
+    'view_less_brands' => 'הצג פחות',
+    'view_more' => 'הצג עוד',
+    'view_less' => 'הצג פחות',
+    'all' => 'הכל',
+    'open_filters' => 'פתח מסננים',
+    'close_filters' => 'סגור',
+    'filter_products' => 'סנן מוצרים',
+    'active_filters' => ':count מסננים פעילים',
+    'filter_by_brand' => 'סנן לפי מותג',
+    'filter_by_category' => 'סנן לפי קטגוריה',
+    'use_arrow_keys_price' => 'השתמש במקשי החצים כדי להתאים את טווח המחירים. החזק Shift עם מקשי החצים לתנועה מהירה יותר.',
+    'please_wait' => 'אנא המתן',
+    'back_to_home' => 'חזרה לדף הבית',
+    
+    // Category Attributes
+    'manage_category_attributes' => 'ניהול תכונות קטגוריה',
+    'assign_attributes_to_category_subtitle' => 'הקצה תכונות ניתנות לסינון לקטגוריה זו',
+    'back_to_categories' => 'חזרה לקטגוריות',
+    'attributes' => 'תכונות',
+    'available_attributes' => 'תכונות זמינות',
+    'attributes_selected' => 'תכונות נבחרו',
+    'no_filterable_attributes_available' => 'אין תכונות ניתנות לסינון זמינות',
+    'create_attribute' => 'צור תכונה',
+    'save_assignments' => 'שמור הקצאות',
+    'category_attributes_updated_successfully' => 'תכונות הקטגוריה עודכנו בהצלחה',
+
+    // Category icon and position fields
+    'category_icon' => 'סמל קטגוריה',
+    'icon_help_text' => 'הזן מחלקת סמל FontAwesome (למשל: fas fa-laptop, fas fa-tshirt)',
+    'display_position' => 'מיקום תצוגה',
 ];
-
-
-
-
-
-
-

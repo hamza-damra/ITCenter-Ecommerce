@@ -519,6 +519,7 @@
                     <input type="hidden" name="is_new" value="0">
                     <input type="hidden" name="is_bestseller" value="0">
                     <input type="hidden" name="is_special_offer" value="0">
+                    <input type="hidden" name="is_strong_offer" value="0">
                     
                     <label class="checkbox-group">
                         <input 
@@ -584,6 +585,95 @@
                             <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Show as special offer card on homepage</p>
                         </span>
                     </label>
+
+                    <label class="checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="is_strong_offer" 
+                            name="is_strong_offer" 
+                            value="1" 
+                            {{ old('is_strong_offer', $product->is_strong_offer ?? false) ? 'checked' : '' }}>
+                        <span>
+                            <strong><i class="fas fa-bolt"></i> {{ __('messages.strong_offer') ?? 'Strong Offer' }}</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.mark_as_strong_promotional_offer') ?? 'Mark as strong promotional offer for filtering' }}</p>
+                        </span>
+                    </label>
+                </div>
+
+                <!-- Strong Offer Discount Percentage -->
+                <div class="form-group" id="discount-percentage-group" style="margin-top: 16px; {{ old('is_strong_offer', $product->is_strong_offer ?? false) ? '' : 'display: none;' }}">
+                    <label for="discount_percentage" class="form-label">
+                        {{ __('messages.discount_percentage') ?? 'Discount Percentage' }}
+                        <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                    </label>
+                    <div style="position: relative;">
+                        <input 
+                            type="number" 
+                            id="discount_percentage" 
+                            name="discount_percentage" 
+                            class="form-control @error('discount_percentage') is-invalid @enderror" 
+                            step="0.01" 
+                            min="0"
+                            max="100"
+                            value="{{ old('discount_percentage', $product->discount_percentage) }}" 
+                            placeholder="0.00"
+                            style="padding-right: 32px;">
+                        <span style="position: absolute; right: 12px; top: 12px; color: var(--secondary); font-weight: 600;">%</span>
+                    </div>
+                    <p class="form-text">
+                        <i class="fas fa-info-circle"></i> {{ __('messages.discount_percentage_help') ?? 'Enter discount percentage between 0 and 100' }}
+                    </p>
+                    @error('discount_percentage')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Attributes Card -->
+        <div class="card" id="attributes-card" style="{{ !empty($categoryAttributes) && $categoryAttributes->count() > 0 ? '' : 'display: none;' }}">
+            <div class="card-header">
+                <h2><i class="fas fa-tags"></i> Product Attributes</h2>
+                <p style="color: #64748b; font-size: 13px; margin-top: 4px;">Select attributes specific to this product's category</p>
+            </div>
+            <div class="card-body">
+                <div id="attributes-container">
+                    @if(!empty($categoryAttributes) && $categoryAttributes->count() > 0)
+                        <div style="display: flex; flex-direction: column; gap: 24px;">
+                            @foreach($categoryAttributes as $attribute)
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <strong>{{ $attribute->name }}</strong>
+                                        @if($attribute->unit)
+                                            <span style="color: #64748b; font-size: 12px;">({{ $attribute->unit }})</span>
+                                        @endif
+                                    </label>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 8px;">
+                                        @foreach($attribute->values as $value)
+                                            <label class="checkbox-group" style="margin: 0;">
+                                                <input 
+                                                    type="checkbox" 
+                                                    id="attr_{{ $attribute->id }}_{{ $value->id }}" 
+                                                    name="attribute_values[]" 
+                                                    value="{{ $value->id }}"
+                                                    {{ in_array($value->id, old('attribute_values', $selectedAttributeValues)) ? 'checked' : '' }}>
+                                                <span>
+                                                    @if($value->color_code)
+                                                        <span style="display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: {{ $value->color_code }}; border: 1px solid #ddd; margin-right: 6px; vertical-align: middle;"></span>
+                                                    @endif
+                                                    {{ $value->value }}
+                                                </span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p style="color: #64748b; text-align: center; padding: 20px;">
+                            <i class="fas fa-info-circle"></i> No attributes configured for this category
+                        </p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -626,6 +716,124 @@
             document.getElementById('deleteForm').submit();
         }
     }
+
+    // Dynamic attribute loading on category change
+    document.addEventListener('DOMContentLoaded', function() {
+        const categorySelect = document.getElementById('category_id');
+        const attributesCard = document.getElementById('attributes-card');
+        const attributesContainer = document.getElementById('attributes-container');
+        const currentCategoryId = '{{ $product->category_id }}';
+        
+        // Strong Offer checkbox toggle for discount percentage field
+        const strongOfferCheckbox = document.getElementById('is_strong_offer');
+        const discountPercentageGroup = document.getElementById('discount-percentage-group');
+        
+        if (strongOfferCheckbox && discountPercentageGroup) {
+            // Show/hide discount percentage field based on checkbox state
+            function toggleDiscountField() {
+                if (strongOfferCheckbox.checked) {
+                    discountPercentageGroup.style.display = 'block';
+                } else {
+                    discountPercentageGroup.style.display = 'none';
+                    document.getElementById('discount_percentage').value = '';
+                }
+            }
+            
+            // Initial state
+            toggleDiscountField();
+            
+            // Listen for changes
+            strongOfferCheckbox.addEventListener('change', toggleDiscountField);
+        }
+        
+        // Store currently selected attribute values
+        let selectedValues = [];
+        
+        function getSelectedValues() {
+            const checkboxes = document.querySelectorAll('input[name="attribute_values[]"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        // Load attributes when category changes
+        categorySelect.addEventListener('change', function() {
+            const categoryId = this.value;
+            
+            // Store selected values before reload
+            selectedValues = getSelectedValues();
+            
+            if (!categoryId) {
+                attributesCard.style.display = 'none';
+                return;
+            }
+
+            // Show loading state
+            attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading attributes...</p>';
+            attributesCard.style.display = 'block';
+
+            // Fetch attributes for this category
+            fetch(`/admin/products/category-attributes/${categoryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.attributes && data.attributes.length > 0) {
+                        renderAttributes(data.attributes, categoryId === currentCategoryId);
+                    } else {
+                        attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> No attributes configured for this category</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading attributes:', error);
+                    attributesContainer.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i> Error loading attributes</p>';
+                });
+        });
+
+        function renderAttributes(attributes, keepSelection) {
+            let html = '<div style="display: flex; flex-direction: column; gap: 24px;">';
+
+            attributes.forEach(attribute => {
+                html += `
+                    <div class="form-group">
+                        <label class="form-label">
+                            <strong>${escapeHtml(attribute.name)}</strong>
+                            ${attribute.unit ? `<span style="color: #64748b; font-size: 12px;">(${escapeHtml(attribute.unit)})</span>` : ''}
+                        </label>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 8px;">
+                `;
+
+                attribute.values.forEach(value => {
+                    const inputId = `attr_${attribute.id}_${value.id}`;
+                    const isChecked = keepSelection && selectedValues.includes(value.id.toString());
+                    html += `
+                        <label class="checkbox-group" style="margin: 0;">
+                            <input 
+                                type="checkbox" 
+                                id="${inputId}" 
+                                name="attribute_values[]" 
+                                value="${value.id}"
+                                ${isChecked ? 'checked' : ''}>
+                            <span>
+                                ${value.color_code ? `<span style="display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: ${escapeHtml(value.color_code)}; border: 1px solid #ddd; margin-right: 6px; vertical-align: middle;"></span>` : ''}
+                                ${escapeHtml(value.value)}
+                            </span>
+                        </label>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            attributesContainer.innerHTML = html;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    });
 </script>
 
 @endsection

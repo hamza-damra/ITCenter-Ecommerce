@@ -13,31 +13,25 @@ return new class extends Migration
     public function up(): void
     {
         // Products table indexes
-        Schema::table('products', function (Blueprint $table) {
-            // Composite indexes for common filter queries
-            $table->index(['is_active', 'is_featured'], 'idx_active_featured');
-            $table->index(['is_active', 'is_new'], 'idx_active_new');
-            $table->index(['is_active', 'is_bestseller'], 'idx_active_bestseller');
-            $table->index(['is_active', 'sale_price'], 'idx_active_sale');
-            $table->index(['stock_status'], 'idx_stock_status');
-            $table->index(['created_at'], 'idx_created_at');
-        });
+        $this->addIndexIfNotExists('products', ['is_active', 'is_featured'], 'idx_active_featured');
+        $this->addIndexIfNotExists('products', ['is_active', 'is_new'], 'idx_active_new');
+        $this->addIndexIfNotExists('products', ['is_active', 'is_bestseller'], 'idx_active_bestseller');
+        $this->addIndexIfNotExists('products', ['is_active', 'sale_price'], 'idx_active_sale');
+        $this->addIndexIfNotExists('products', 'stock_status', 'idx_stock_status');
+        $this->addIndexIfNotExists('products', 'created_at', 'idx_created_at');
 
         // Check and add foreign key indexes if they don't exist
         $this->addIndexIfNotExists('products', 'brand_id', 'products_brand_id_index');
         $this->addIndexIfNotExists('products', 'category_id', 'products_category_id_index');
 
         // Categories table indexes
-        Schema::table('categories', function (Blueprint $table) {
-            $table->index(['is_active', 'parent_id'], 'idx_active_parent');
-            $table->index(['order'], 'idx_order');
-        });
+        $this->addIndexIfNotExists('categories', ['is_active', 'parent_id'], 'idx_active_parent');
+        $this->addIndexIfNotExists('categories', 'order', 'idx_order');
+        $this->addIndexIfNotExists('categories', ['parent_id', 'is_active', 'position'], 'idx_parent_active_position');
 
         // Brands table indexes
-        Schema::table('brands', function (Blueprint $table) {
-            $table->index(['is_active', 'is_featured'], 'idx_active_featured');
-            $table->index(['order'], 'idx_order');
-        });
+        $this->addIndexIfNotExists('brands', ['is_active', 'is_featured'], 'idx_active_featured');
+        $this->addIndexIfNotExists('brands', 'order', 'idx_order');
 
         // Cart items table indexes
         $this->addIndexIfNotExists('cart_items', 'user_id', 'idx_user_id');
@@ -55,14 +49,25 @@ return new class extends Migration
     /**
      * Add index if it doesn't exist
      */
-    private function addIndexIfNotExists(string $table, string $column, string $indexName): void
+    private function addIndexIfNotExists(string $table, string|array $column, string $indexName): void
     {
-        $indexes = DB::select("SHOW INDEX FROM {$table} WHERE Key_name = ?", [$indexName]);
+        // Skip if index already exists by checking if we can drop it
+        try {
+            DB::statement("SELECT 1 FROM sqlite_master WHERE type='index' AND name='{$indexName}'");
+            $exists = DB::select("SELECT name FROM sqlite_master WHERE type='index' AND name=?", [$indexName]);
+            if (!empty($exists)) {
+                return; // Index exists, skip
+            }
+        } catch (\Exception $e) {
+            // Continue to create index
+        }
         
-        if (empty($indexes)) {
+        try {
             Schema::table($table, function (Blueprint $table) use ($column, $indexName) {
                 $table->index($column, $indexName);
             });
+        } catch (\Exception $e) {
+            // Index already exists or other error, ignore
         }
     }
 
@@ -84,6 +89,8 @@ return new class extends Migration
             $table->dropIndex('idx_active_parent');
             $table->dropIndex('idx_order');
         });
+        
+        $this->dropIndexIfExists('categories', 'idx_parent_active_position');
 
         Schema::table('brands', function (Blueprint $table) {
             $table->dropIndex('idx_active_featured');
@@ -108,12 +115,12 @@ return new class extends Migration
      */
     private function dropIndexIfExists(string $table, string $indexName): void
     {
-        $indexes = DB::select("SHOW INDEX FROM {$table} WHERE Key_name = ?", [$indexName]);
-        
-        if (!empty($indexes)) {
+        try {
             Schema::table($table, function (Blueprint $table) use ($indexName) {
                 $table->dropIndex($indexName);
             });
+        } catch (\Exception $e) {
+            // Index doesn't exist, ignore
         }
     }
 };

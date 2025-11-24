@@ -411,9 +411,9 @@
 
         .header-icon .badge {
             position: absolute;
-            top: -8px;
+            top: -6px;
             {{ is_rtl() ? 'left' : 'right' }}: -8px;
-            background: #2563eb;
+            background: #e11e1eff;
             color: #fff;
             font-size: 0.7rem;
             padding: 2px 6px;
@@ -651,7 +651,7 @@
             position: relative;
         }
         .fas:hover{
-            color: #2563eb;
+            color: #60a5fa;
         }
         .language-toggle {
             display: flex;
@@ -664,7 +664,7 @@
         }
 
         .language-toggle:hover {
-            color: #2563eb;
+            color: #60a5fa;
             background: rgba(37, 99, 235, 0.05);
         }
 
@@ -1315,6 +1315,11 @@
             </div>
         </div>
     </header>
+
+    {{-- Category Navigation --}}
+    @if(isset($navigationCategories) && $navigationCategories->count() > 0)
+        <x-category-nav :categories="$navigationCategories" />
+    @endif
 
     <div class="social-icons">
         <div class="social-icon">

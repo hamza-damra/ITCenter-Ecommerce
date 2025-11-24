@@ -20,6 +20,8 @@ class Category extends Model
         'description_ar',
         'description_he',
         'image',
+        'icon',
+        'position',
         'parent_id',
         'is_active',
         'order',
@@ -111,6 +113,25 @@ class Category extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    /**
+     * Get all products including sub-category products.
+     */
+    public function allProducts()
+    {
+        $categoryIds = $this->children()->pluck('id')->push($this->id);
+        return Product::whereIn('category_id', $categoryIds);
+    }
+
+    /**
+     * Get the attributes assigned to this category (for filtering).
+     */
+    public function attributes()
+    {
+        return $this->belongsToMany(Attribute::class, 'attribute_category')
+            ->withTimestamps()
+            ->orderBy('order');
     }
 
     /**

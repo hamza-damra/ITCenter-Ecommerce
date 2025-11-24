@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\CartItem;
+use App\Services\ProductFilterService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -16,11 +17,22 @@ use Illuminate\Support\Facades\Session;
  */
 class ProductController extends Controller
 {
+    protected $filterService;
+
+    public function __construct(ProductFilterService $filterService)
+    {
+        $this->filterService = $filterService;
+    }
+
     public function index(Request $request)
     {
         $query = Product::with(['category', 'brand', 'images'])
             ->active();
 
+        // Apply filters via ProductFilterService
+        $query = $this->filterService->applyFilters($query, $request);
+
+        // Legacy filters for backward compatibility
         // Filter by categories (support both single 'category' and multiple 'categories[]')
         $categoryFilters = [];
         
@@ -51,46 +63,6 @@ class ProductController extends Controller
             }
         }
 
-        // Filter by brands (supports comma-separated format: ?brand=asus,msi,hp)
-        // Also supports legacy formats: ?brands[]=asus or ?brand=asus
-        $brandFilters = [];
-
-        if ($request->has('brand') && !empty($request->brand)) {
-            // Check if comma-separated
-            if (str_contains($request->brand, ',')) {
-                $brandFilters = explode(',', $request->brand);
-            } else {
-                $brandFilters = [$request->brand];
-            }
-        }
-
-        // Backward compatibility: support brands[] array parameter
-        if (empty($brandFilters) && $request->has('brands') && !empty($request->brands)) {
-            $brandFilters = is_array($request->brands) ? $request->brands : [$request->brands];
-        }
-
-        // Apply brand filter if we have any brands
-        if (!empty($brandFilters)) {
-            // Remove empty values and trim whitespace
-            $brandFilters = array_filter(array_map('trim', $brandFilters), function($value) {
-                return !empty($value);
-            });
-
-            if (!empty($brandFilters)) {
-                $query->whereHas('brand', function ($q) use ($brandFilters) {
-                    $q->whereIn('slug', $brandFilters);
-                });
-            }
-        }
-
-        // Filter by price range
-        if ($request->has('min_price') && $request->min_price !== null && $request->min_price !== '') {
-            $query->where('price', '>=', $request->min_price);
-        }
-        if ($request->has('max_price') && $request->max_price !== null && $request->max_price !== '') {
-            $query->where('price', '<=', $request->max_price);
-        }
-
         // Filter by features
         if ($request->has('featured') && $request->featured) {
             $query->featured();
@@ -100,6 +72,30 @@ class ProductController extends Controller
         }
         if ($request->has('bestseller') && $request->bestseller) {
             $query->bestseller();
+        }
+
+        // Filter by special offer
+        if ($request->has('special_offer') && $request->special_offer) {
+            $query->where('is_special_offer', true);
+        }
+
+        // Handle filter parameter (for banner clicks)
+        if ($request->has('filter')) {
+            switch ($request->filter) {
+                case 'gifts':
+                    // Show featured products as gifts
+                    $query->featured();
+                    break;
+                case 'special_offer':
+                    $query->where('is_special_offer', true);
+                    break;
+                case 'bestseller':
+                    $query->bestseller();
+                    break;
+                case 'new':
+                    $query->new();
+                    break;
+            }
         }
 
         // Search
@@ -133,7 +129,10 @@ class ProductController extends Controller
         // Get cart product IDs for current user/session
         $cartProductIds = $this->getCartProductIds();
 
-        // Get all active categories for filter sidebar
+        // Get available filters with counts from service
+        $availableFilters = $this->filterService->getAvailableFilters();
+
+        // Get all active categories for filter sidebar (legacy)
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
         $categories = Category::active()
@@ -141,22 +140,18 @@ class ProductController extends Controller
             ->orderBy('order')
             ->get();
 
-        // Get price range for slider
-        $priceRange = [
-            'min' => Product::active()->min('price') ?? 0,
-            'max' => Product::active()->max('price') ?? 10000,
+        // Get price range for slider (from service)
+        $priceRange = $availableFilters['price_range'] ?? [
+            'min' => 0,
+            'max' => 10000,
         ];
 
-        // Get all active brands with product counts, sorted by product count descending then alphabetically
-        $brands = Brand::active()
-            ->withCount(['products' => function($q) {
-                $q->where('is_active', true);
-            }])
-            ->orderByDesc('products_count')
-            ->orderBy($nameColumn)
-            ->get();
+        // Get all active brands with product counts (from service)
+        $brands = collect($availableFilters['brands'] ?? [])->map(function ($brand) {
+            return (object) $brand;
+        });
 
-        return view('products', compact('products', 'cartProductIds', 'categories', 'priceRange', 'brands'));
+        return view('products', compact('products', 'cartProductIds', 'categories', 'priceRange', 'brands', 'availableFilters'));
     }
 
     public function show($slug)

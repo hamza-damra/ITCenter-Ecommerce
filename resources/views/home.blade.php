@@ -928,48 +928,6 @@
         font-size: 0.8rem;
     }
 
-    /* Stock Indicator */
-    .stock-indicator {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        color: white;
-        padding: 0.25rem 0.6rem;
-        border-radius: 12px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
-        animation: pulse 2s ease-in-out infinite;
-    }
-
-    .stock-indicator.low-stock {
-        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
-    }
-
-    .stock-indicator.in-stock {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-        animation: none;
-    }
-
-    @keyframes pulse {
-        0%, 100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: 0.8;
-        }
-    }
-
-    .stock-indicator i {
-        font-size: 0.65rem;
-    }
-
     .product-image {
         width: 100%;
         height: 200px;
@@ -2226,9 +2184,9 @@
         border: 1px solid rgba(0, 0, 0, 0.08);
     }
 
-    /* Promo card that spans two product rows - positioned on the left */
+    /* Promo card that spans two product rows - positioned on the left for LTR, right for RTL */
     .promo-featured-card {
-        grid-column: 1;
+        grid-column: {{ is_rtl() ? '5' : '1' }};
         grid-row: 1 / 3;
         border: none;
         border-radius: 0;
@@ -2240,8 +2198,8 @@
         flex-direction: column;
         padding: 1.2rem;
         transition: all 0.3s ease;
-        margin-right: 0;
-        border-right: 1px solid rgba(0, 0, 0, 0.08);
+        {{ is_rtl() ? 'margin-left' : 'margin-right' }}: 0;
+        {{ is_rtl() ? 'border-left' : 'border-right' }}: 1px solid rgba(0, 0, 0, 0.08);
     }
     .promo-featured-card:hover {
         box-shadow: none;
@@ -2352,10 +2310,10 @@
         }
         
         .promo-featured-card {
-            grid-column: 1;
+            grid-column: {{ is_rtl() ? '4' : '1' }};
             grid-row: 1 / 3;
-            margin-right: 0.3rem;
-            margin-left: 0;
+            {{ is_rtl() ? 'margin-left' : 'margin-right' }}: 0.3rem;
+            {{ is_rtl() ? 'margin-right' : 'margin-left' }}: 0;
         }
         
         .offer-card {
@@ -3423,21 +3381,6 @@
                             <i class="far fa-heart"></i>
                         </div>
                         
-                        {{-- Stock Indicator --}}
-                        @php
-                            $stockQty = $product->stock_quantity ?? 0;
-                            $stockClass = $stockQty <= 3 ? '' : ($stockQty <= 10 ? 'low-stock' : 'in-stock');
-                            $stockText = $stockQty <= 3 ? (is_rtl() ? 'متبقي ' . $stockQty . ' فقط!' : 'Only ' . $stockQty . ' left!') : 
-                                        ($stockQty <= 10 ? (is_rtl() ? 'مخزون محدود' : 'Low Stock') : 
-                                        (is_rtl() ? 'متوفر' : 'In Stock'));
-                        @endphp
-                        @if($product->stock_status !== 'out_of_stock' && $stockQty <= 10)
-                        <div class="stock-indicator {{ $stockClass }}">
-                            <i class="fas fa-fire"></i>
-                            <span>{{ $stockText }}</span>
-                        </div>
-                        @endif
-                        
                         {{-- Quick View & Compare Buttons --}}
                         <div class="product-actions">
                             <button class="quick-view-btn" onclick="event.stopPropagation(); quickView({{ $product->id }})" title="{{ is_rtl() ? 'معاينة سريعة' : 'Quick View' }}">
@@ -3517,7 +3460,7 @@
             {{-- Banner appears on the LEFT side for both RTL and LTR --}}
             {{-- Banner (spans 2 columns) --}}
             <div class="gift-ideas-item gift-banner-item strong-offers-banner">
-                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='{{ route('products', ['strong_offers' => 1]) }}'">
                     {{-- Text and Button Group --}}
                     <div class="gift-banner-content">
                         <h3 class="gift-banner-title">{{ __t('messages.strong_offers.headline') }}</h3>
@@ -3531,7 +3474,7 @@
                                 {{ __t('messages.strong_offers.code') }}
                             @endif
                         </p>
-                        <a class="gift-cta" href="{{ url('/deals') }}">{{ __t('messages.strong_offers.cta') }}</a>
+                        <a class="gift-cta" href="{{ route('products', ['strong_offers' => 1]) }}" onclick="event.stopPropagation();">{{ __t('messages.strong_offers.cta') }}</a>
                     </div>
                     
                     {{-- Image --}}
@@ -3702,12 +3645,12 @@
             @if(is_rtl())
                 {{-- Banner (spans 2 columns) - appears on right in RTL --}}
                 <div class="gift-ideas-item gift-banner-item">
-                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='{{ route('products', ['filter' => 'gifts']) }}'">
                         {{-- Text and Button Group --}}
                         <div class="gift-banner-content">
                             <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
                             <p>{{ __t('messages.gift_ideas.desc') }}</p>
-                            <a class="gift-cta" href="{{ url('/deals/global-gifts-delivery-store') }}">{{ __t('messages.gift_ideas.cta') }}</a>
+                            <a class="gift-cta" href="{{ route('products', ['filter' => 'gifts']) }}" onclick="event.stopPropagation();">{{ __t('messages.gift_ideas.cta') }}</a>
                         </div>
                         
                         {{-- Image --}}
@@ -3824,12 +3767,12 @@
             @if(!is_rtl())
                 {{-- Banner (spans 2 columns) - appears on left in LTR --}}
                 <div class="gift-ideas-item gift-banner-item">
-                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='{{ route('products', ['filter' => 'gifts']) }}'">
                         {{-- Text and Button Group --}}
                         <div class="gift-banner-content">
                             <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
                             <p>{{ __t('messages.gift_ideas.desc') }}</p>
-                            <a class="gift-cta" href="{{ url('/deals/global-gifts-delivery-store') }}">{{ __t('messages.gift_ideas.cta') }}</a>
+                            <a class="gift-cta" href="{{ route('products', ['filter' => 'gifts']) }}" onclick="event.stopPropagation();">{{ __t('messages.gift_ideas.cta') }}</a>
                         </div>
                         
                         {{-- Image --}}

@@ -1,0 +1,1 @@
+<?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views\components\category-card.blade.php ENDPATH**/ ?>

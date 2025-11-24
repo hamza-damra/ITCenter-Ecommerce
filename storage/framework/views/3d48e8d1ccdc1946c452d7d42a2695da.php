@@ -926,48 +926,6 @@
         font-size: 0.8rem;
     }
 
-    /* Stock Indicator */
-    .stock-indicator {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        color: white;
-        padding: 0.25rem 0.6rem;
-        border-radius: 12px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
-        animation: pulse 2s ease-in-out infinite;
-    }
-
-    .stock-indicator.low-stock {
-        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
-    }
-
-    .stock-indicator.in-stock {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-        animation: none;
-    }
-
-    @keyframes pulse {
-        0%, 100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: 0.8;
-        }
-    }
-
-    .stock-indicator i {
-        font-size: 0.65rem;
-    }
-
     .product-image {
         width: 100%;
         height: 200px;
@@ -2224,9 +2182,9 @@
         border: 1px solid rgba(0, 0, 0, 0.08);
     }
 
-    /* Promo card that spans two product rows - positioned on the left */
+    /* Promo card that spans two product rows - positioned on the left for LTR, right for RTL */
     .promo-featured-card {
-        grid-column: 1;
+        grid-column: <?php echo e(is_rtl() ? '5' : '1'); ?>;
         grid-row: 1 / 3;
         border: none;
         border-radius: 0;
@@ -2238,8 +2196,8 @@
         flex-direction: column;
         padding: 1.2rem;
         transition: all 0.3s ease;
-        margin-right: 0;
-        border-right: 1px solid rgba(0, 0, 0, 0.08);
+        <?php echo e(is_rtl() ? 'margin-left' : 'margin-right'); ?>: 0;
+        <?php echo e(is_rtl() ? 'border-left' : 'border-right'); ?>: 1px solid rgba(0, 0, 0, 0.08);
     }
     .promo-featured-card:hover {
         box-shadow: none;
@@ -2350,10 +2308,10 @@
         }
         
         .promo-featured-card {
-            grid-column: 1;
+            grid-column: <?php echo e(is_rtl() ? '4' : '1'); ?>;
             grid-row: 1 / 3;
-            margin-right: 0.3rem;
-            margin-left: 0;
+            <?php echo e(is_rtl() ? 'margin-left' : 'margin-right'); ?>: 0.3rem;
+            <?php echo e(is_rtl() ? 'margin-right' : 'margin-left'); ?>: 0;
         }
         
         .offer-card {
@@ -3429,21 +3387,6 @@
                         </div>
                         
                         
-                        <?php
-                            $stockQty = $product->stock_quantity ?? 0;
-                            $stockClass = $stockQty <= 3 ? '' : ($stockQty <= 10 ? 'low-stock' : 'in-stock');
-                            $stockText = $stockQty <= 3 ? (is_rtl() ? 'متبقي ' . $stockQty . ' فقط!' : 'Only ' . $stockQty . ' left!') : 
-                                        ($stockQty <= 10 ? (is_rtl() ? 'مخزون محدود' : 'Low Stock') : 
-                                        (is_rtl() ? 'متوفر' : 'In Stock'));
-                        ?>
-                        <?php if($product->stock_status !== 'out_of_stock' && $stockQty <= 10): ?>
-                        <div class="stock-indicator <?php echo e($stockClass); ?>">
-                            <i class="fas fa-fire"></i>
-                            <span><?php echo e($stockText); ?></span>
-                        </div>
-                        <?php endif; ?>
-                        
-                        
                         <div class="product-actions">
                             <button class="quick-view-btn" onclick="event.stopPropagation(); quickView(<?php echo e($product->id); ?>)" title="<?php echo e(is_rtl() ? 'معاينة سريعة' : 'Quick View'); ?>">
                                 <i class="fas fa-eye"></i>
@@ -3522,7 +3465,7 @@
             
             
             <div class="gift-ideas-item gift-banner-item strong-offers-banner">
-                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='<?php echo e(route('products', ['strong_offers' => 1])); ?>'">
                     
                     <div class="gift-banner-content">
                         <h3 class="gift-banner-title"><?php echo e(__t('messages.strong_offers.headline')); ?></h3>
@@ -3538,7 +3481,7 @@
 
                             <?php endif; ?>
                         </p>
-                        <a class="gift-cta" href="<?php echo e(url('/deals')); ?>"><?php echo e(__t('messages.strong_offers.cta')); ?></a>
+                        <a class="gift-cta" href="<?php echo e(route('products', ['strong_offers' => 1])); ?>" onclick="event.stopPropagation();"><?php echo e(__t('messages.strong_offers.cta')); ?></a>
                     </div>
                     
                     
@@ -3737,12 +3680,12 @@
             <?php if(is_rtl()): ?>
                 
                 <div class="gift-ideas-item gift-banner-item">
-                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='<?php echo e(route('products', ['filter' => 'gifts'])); ?>'">
                         
                         <div class="gift-banner-content">
                             <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
                             <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
-                            <a class="gift-cta" href="<?php echo e(url('/deals/global-gifts-delivery-store')); ?>"><?php echo e(__t('messages.gift_ideas.cta')); ?></a>
+                            <a class="gift-cta" href="<?php echo e(route('products', ['filter' => 'gifts'])); ?>" onclick="event.stopPropagation();"><?php echo e(__t('messages.gift_ideas.cta')); ?></a>
                         </div>
                         
                         
@@ -3859,12 +3802,12 @@
             <?php if(!is_rtl()): ?>
                 
                 <div class="gift-ideas-item gift-banner-item">
-                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg)">
+                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='<?php echo e(route('products', ['filter' => 'gifts'])); ?>'">
                         
                         <div class="gift-banner-content">
                             <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
                             <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
-                            <a class="gift-cta" href="<?php echo e(url('/deals/global-gifts-delivery-store')); ?>"><?php echo e(__t('messages.gift_ideas.cta')); ?></a>
+                            <a class="gift-cta" href="<?php echo e(route('products', ['filter' => 'gifts'])); ?>" onclick="event.stopPropagation();"><?php echo e(__t('messages.gift_ideas.cta')); ?></a>
                         </div>
                         
                         

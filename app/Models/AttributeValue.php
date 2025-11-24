@@ -11,7 +11,10 @@ class AttributeValue extends Model
 
     protected $fillable = [
         'attribute_id',
-        'value',
+        'value_en',
+        'value_ar',
+        'value_he',
+        'slug',
         'color_code',
         'order',
         'is_active',
@@ -21,6 +24,15 @@ class AttributeValue extends Model
         'order' => 'integer',
         'is_active' => 'boolean',
     ];
+
+    /**
+     * Get the value attribute based on current locale.
+     */
+    public function getValueAttribute()
+    {
+        $locale = app()->getLocale();
+        return $this->{"value_$locale"} ?? $this->value_en;
+    }
 
     /**
      * Get the attribute that owns this value.
@@ -35,8 +47,7 @@ class AttributeValue extends Model
      */
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_attributes')
-            ->withPivot('price_adjustment', 'stock_quantity')
+        return $this->belongsToMany(Product::class, 'product_attribute_values')
             ->withTimestamps();
     }
 

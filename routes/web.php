@@ -28,7 +28,7 @@ Route::get('/test-home', [HomeController::class, 'index'])->name('test.home');
 Route::get('/clear-cache', [HomeController::class, 'clearHomeCache'])->name('clear.cache');
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
-Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
+Route::get('/category/{parentSlug}/{childSlug?}', [CategoryController::class, 'show'])->name('category.show');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.detail');
@@ -103,16 +103,29 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Products
     Route::delete('/products/delete-all', [App\Http\Controllers\Admin\ProductController::class, 'deleteAll'])->name('products.delete-all');
     Route::delete('/products/bulk-delete', [App\Http\Controllers\Admin\ProductController::class, 'bulkDelete'])->name('products.bulk-delete');
+    Route::get('/products/category-attributes/{categoryId}', [App\Http\Controllers\Admin\ProductController::class, 'getCategoryAttributes'])->name('products.category-attributes');
     Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
 
     // Categories
     Route::delete('/categories/delete-all', [App\Http\Controllers\Admin\CategoryController::class, 'deleteAll'])->name('categories.delete-all');
     Route::delete('/categories/bulk-delete', [App\Http\Controllers\Admin\CategoryController::class, 'bulkDelete'])->name('categories.bulk-delete');
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
+    
+    // Category Attributes
+    Route::get('/categories/{category}/attributes', [App\Http\Controllers\Admin\CategoryAttributeController::class, 'edit'])->name('categories.attributes.edit');
+    Route::put('/categories/{category}/attributes', [App\Http\Controllers\Admin\CategoryAttributeController::class, 'update'])->name('categories.attributes.update');
 
     // Brands
     Route::delete('/brands/delete-all', [App\Http\Controllers\Admin\BrandController::class, 'deleteAll'])->name('brands.delete-all');
     Route::resource('brands', App\Http\Controllers\Admin\BrandController::class);
+
+    // Attributes
+    Route::delete('/attributes/delete-all', [App\Http\Controllers\Admin\AttributeController::class, 'deleteAll'])->name('attributes.delete-all');
+    Route::resource('attributes', App\Http\Controllers\Admin\AttributeController::class);
+
+    // Attribute Values
+    Route::resource('attributes.attribute-values', App\Http\Controllers\Admin\AttributeValueController::class)
+        ->except(['show']);
 
     // Orders
     Route::get('/orders', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');

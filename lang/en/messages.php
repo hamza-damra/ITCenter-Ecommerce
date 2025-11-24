@@ -69,6 +69,10 @@ return [
     
     // Special Offer Section
     'special_offer' => 'Special Offer',
+    'strong_offer' => 'Strong Offer',
+    'mark_as_strong_promotional_offer' => 'Mark as strong promotional offer for filtering',
+    'discount_percentage' => 'Discount Percentage',
+    'discount_percentage_help' => 'Enter discount percentage between 0 and 100',
     'save_amount' => 'Save :amount',
     'game_controller_offer' => 'Game Console Controller + USB 3.0 Cable',
     'hurry_up_offer_ends' => 'Hurry Up! Offer ends in:',
@@ -1266,13 +1270,63 @@ return [
     'all_special_offers' => 'All',
     'special_offer_only' => 'Special Offer Only',
     'not_special_offer' => 'Not Special Offer',
+
+    // Filter Sidebar
+    'filters' => 'Filters',
+    'filter_by' => 'Filter By',
+    'clear_all_filters' => 'Clear All',
+    'apply_filters' => 'Apply Filters',
+    'strong_offers_filter' => 'Strong Offers',
+    'strong_offers_only' => 'Strong Offers Only',
+    'stock_filter' => 'Stock Status',
+    'in_stock_filter' => 'In Stock',
+    'out_of_stock_filter' => 'Out of Stock',
+    'brand_filter' => 'Brand',
+    'brands_filter' => 'Brands',
+    'categories_filter' => 'Categories',
+    'price_filter' => 'Price Range',
+    'price_range' => 'Price Range',
+    'price_min' => 'Min',
+    'price_max' => 'Max',
+    'minimum_price' => 'Minimum price',
+    'maximum_price' => 'Maximum price',
+    'attributes_filter' => 'Attributes',
+    'no_results_found' => 'No Results Found',
+    'no_products_match_filters' => 'No products match your current filters. Try adjusting your selection.',
+    'no_products_found' => 'No Products Found',
+    'no_products_available_category' => 'No products are currently available in this category.',
+    'try_other_categories' => 'Try browsing other categories or view all products.',
+    'showing_results' => 'Showing :count results',
+    'view_more_brands' => 'View More',
+    'view_less_brands' => 'View Less',
+    'view_more' => 'View more',
+    'view_less' => 'View less',
+    'all' => 'All',
+    'open_filters' => 'Open filters',
+    'close_filters' => 'Close',
+    'filter_products' => 'Filter Products',
+    'active_filters' => ':count active filters',
+    'filter_by_brand' => 'Filter by brand',
+    'filter_by_category' => 'Filter by category',
+    'use_arrow_keys_price' => 'Use arrow keys to adjust price range. Hold Shift with arrow keys for faster movement.',
+    'please_wait' => 'Please wait',
+    'back_to_home' => 'Back to Home',
+    
+    // Category Attributes
+    'manage_category_attributes' => 'Manage Category Attributes',
+    'assign_attributes_to_category_subtitle' => 'Assign filterable attributes to this category',
+    'back_to_categories' => 'Back to Categories',
+    'attributes' => 'Attributes',
+    'available_attributes' => 'Available Attributes',
+    'attributes_selected' => 'attributes selected',
+    'no_filterable_attributes_available' => 'No filterable attributes available',
+    'create_attribute' => 'Create Attribute',
+    'save_assignments' => 'Save Assignments',
+    'category_attributes_updated_successfully' => 'Category attributes updated successfully',
+
+    // Category icon and position fields
+    'category_icon' => 'Category Icon',
+    'icon_help_text' => 'Enter a FontAwesome icon class (e.g., fas fa-laptop, fas fa-tshirt)',
+    'display_position' => 'Display Position',
 ];
-
-
-
-
-
-
-
-
 

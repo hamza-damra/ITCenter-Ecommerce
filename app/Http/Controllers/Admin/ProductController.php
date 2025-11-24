@@ -7,10 +7,13 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Attribute;
+use App\Models\AttributeValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -113,6 +116,43 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories', 'brands'));
     }
 
+    /**
+     * Get category-specific attributes via AJAX
+     */
+    public function getCategoryAttributes($categoryId)
+    {
+        $category = Category::findOrFail($categoryId);
+        
+        $attributes = $category->attributes()
+            ->where('is_filterable', true)
+            ->where('is_active', true)
+            ->with(['values' => function ($query) {
+                $query->where('is_active', true)->orderBy('order');
+            }])
+            ->orderBy('order')
+            ->get();
+
+        return response()->json([
+            'attributes' => $attributes->map(function ($attribute) {
+                return [
+                    'id' => $attribute->id,
+                    'name' => $attribute->name,
+                    'slug' => $attribute->slug,
+                    'type' => $attribute->type,
+                    'unit' => $attribute->unit,
+                    'values' => $attribute->values->map(function ($value) {
+                        return [
+                            'id' => $value->id,
+                            'value' => $value->value,
+                            'slug' => $value->slug,
+                            'color_code' => $value->color_code,
+                        ];
+                    }),
+                ];
+            }),
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -133,7 +173,15 @@ class ProductController extends Controller
             'description_ar' => 'nullable|string',
             'description_he' => 'nullable|string',
             'search_keywords' => 'nullable|string',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'attribute_values' => 'nullable|array',
+            'attribute_values.*' => 'exists:attribute_values,id',
         ]);
+
+        // Validate that selected attribute values belong to category attributes
+        if (!empty($validated['attribute_values'])) {
+            $this->validateAttributeValues($validated['category_id'], $validated['attribute_values']);
+        }
 
         // Handle checkboxes properly - convert to boolean
         $validated['is_active'] = $request->input('is_active') == '1';
@@ -141,6 +189,7 @@ class ProductController extends Controller
         $validated['is_new'] = $request->input('is_new') == '1';
         $validated['is_bestseller'] = $request->input('is_bestseller') == '1';
         $validated['is_special_offer'] = $request->input('is_special_offer') == '1';
+        $validated['is_strong_offer'] = $request->input('is_strong_offer') == '1';
 
         DB::beginTransaction();
         try {
@@ -148,11 +197,17 @@ class ProductController extends Controller
             $validated['sku'] = 'SKU-' . strtoupper(Str::random(10));
             $validated['stock_status'] = $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock';
 
-            // Remove additional_images from validated data before creating product
+            // Remove additional_images and attribute_values from validated data before creating product
             $additionalImages = $validated['additional_images'] ?? null;
-            unset($validated['additional_images']);
+            $attributeValues = $validated['attribute_values'] ?? [];
+            unset($validated['additional_images'], $validated['attribute_values']);
 
             $product = Product::create($validated);
+
+            // Sync attribute values
+            if (!empty($attributeValues)) {
+                $product->attributeValues()->sync($attributeValues);
+            }
 
             // Create main image as first product image
             ProductImage::create([
@@ -195,7 +250,7 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $product->load('images');
+        $product->load(['images', 'attributeValues.attribute', 'category.attributes.values']);
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
         
@@ -208,7 +263,23 @@ class ProductController extends Controller
         $categories = Category::active()->orderBy($nameColumn)->get();
         $brands = Brand::active()->orderBy($nameColumn)->get();
 
-        return view('admin.products.edit', compact('product', 'categories', 'brands'));
+        // Get category-specific attributes
+        $categoryAttributes = [];
+        if ($product->category) {
+            $categoryAttributes = $product->category->attributes()
+                ->where('is_filterable', true)
+                ->where('is_active', true)
+                ->with(['values' => function ($query) {
+                    $query->where('is_active', true)->orderBy('order');
+                }])
+                ->orderBy('order')
+                ->get();
+        }
+
+        // Get selected attribute value IDs
+        $selectedAttributeValues = $product->attributeValues->pluck('id')->toArray();
+
+        return view('admin.products.edit', compact('product', 'categories', 'brands', 'categoryAttributes', 'selectedAttributeValues'));
     }
 
     public function update(Request $request, Product $product)
@@ -231,7 +302,15 @@ class ProductController extends Controller
             'description_ar' => 'nullable|string',
             'description_he' => 'nullable|string',
             'search_keywords' => 'nullable|string',
+            'discount_percentage' => 'nullable|numeric|min:0|max:100',
+            'attribute_values' => 'nullable|array',
+            'attribute_values.*' => 'exists:attribute_values,id',
         ]);
+
+        // Validate that selected attribute values belong to category attributes
+        if (!empty($validated['attribute_values'])) {
+            $this->validateAttributeValues($validated['category_id'], $validated['attribute_values']);
+        }
 
         // Handle checkboxes properly - convert to boolean
         $validated['is_active'] = $request->input('is_active') == '1';
@@ -239,6 +318,7 @@ class ProductController extends Controller
         $validated['is_new'] = $request->input('is_new') == '1';
         $validated['is_bestseller'] = $request->input('is_bestseller') == '1';
         $validated['is_special_offer'] = $request->input('is_special_offer') == '1';
+        $validated['is_strong_offer'] = $request->input('is_strong_offer') == '1';
 
         DB::beginTransaction();
         try {
@@ -248,11 +328,15 @@ class ProductController extends Controller
             }
             $validated['stock_status'] = $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock';
 
-            // Remove additional_images from validated data before updating product
+            // Remove additional_images and attribute_values from validated data before updating product
             $additionalImages = $validated['additional_images'] ?? null;
-            unset($validated['additional_images']);
+            $attributeValues = $validated['attribute_values'] ?? [];
+            unset($validated['additional_images'], $validated['attribute_values']);
 
             $product->update($validated);
+
+            // Sync attribute values
+            $product->attributeValues()->sync($attributeValues);
 
             // Delete existing images
             ProductImage::where('product_id', $product->id)->delete();
@@ -369,6 +453,30 @@ class ProductController extends Controller
                 'success' => false,
                 'message' => 'Error: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    /**
+     * Validate that selected attribute values belong to category attributes
+     */
+    private function validateAttributeValues($categoryId, array $attributeValueIds)
+    {
+        $category = Category::findOrFail($categoryId);
+        
+        // Get all valid attribute value IDs for this category
+        $validAttributeValueIds = AttributeValue::whereHas('attribute', function ($query) use ($category) {
+            $query->whereHas('categories', function ($q) use ($category) {
+                $q->where('categories.id', $category->id);
+            });
+        })->pluck('id')->toArray();
+
+        // Check if all selected values are valid
+        $invalidValues = array_diff($attributeValueIds, $validAttributeValueIds);
+        
+        if (!empty($invalidValues)) {
+            throw ValidationException::withMessages([
+                'attribute_values' => ['Selected attribute values do not belong to the product\'s category attributes.'],
+            ]);
         }
     }
 

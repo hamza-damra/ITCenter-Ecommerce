@@ -30,9 +30,21 @@ return new class extends Migration
             
             // Re-add the foreign key constraint without onDelete('set null')
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            
+        });
+        
+        // Drop session_id index and column separately for SQLite compatibility
+        Schema::table('orders', function (Blueprint $table) {
+            // Drop the index first if it exists
+            if (Schema::hasColumn('orders', 'session_id')) {
+                $table->dropIndex(['session_id']);
+            }
+        });
+        
+        Schema::table('orders', function (Blueprint $table) {
             // Remove session_id column (no longer tracking guest orders)
-            $table->dropColumn('session_id');
+            if (Schema::hasColumn('orders', 'session_id')) {
+                $table->dropColumn('session_id');
+            }
         });
     }
 

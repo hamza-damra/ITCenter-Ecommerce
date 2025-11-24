@@ -590,30 +590,7 @@
         min-width: 0;
     }
 
-    /* Mobile Filter Toggle */
-    .mobile-filter-toggle {
-        display: none;
-        width: 100%;
-        padding: 1rem;
-        background: white;
-        border: 2px solid #2762f3;
-        color: #2762f3;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        margin-bottom: 1.5rem;
-        transition: all 0.3s;
-    }
 
-    .mobile-filter-toggle:hover {
-        background: #2762f3;
-        color: white;
-    }
-
-    .mobile-filter-toggle i {
-        margin-right: 0.5rem;
-    }
 
     /* Loading Indicator - Products Area */
     .products-loading-container {
@@ -1659,11 +1636,7 @@
             display: block;
         }
 
-        .mobile-filter-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+
 
         .search-results-info-box {
             flex-direction: column;
@@ -1771,180 +1744,12 @@
 
 <div class="products-section">
     <div class="container">
-        <!-- Mobile Filter Toggle Button -->
-        <button class="mobile-filter-toggle" onclick="toggleMobileFilters()">
-            <i class="fas fa-filter"></i>
-            {{ is_rtl() ? 'تصفية المنتجات' : 'Filter Products' }}
-        </button>
-
         <div class="products-container">
-            <!-- Filter Sidebar -->
-            <aside class="filter-sidebar" id="filterSidebar">
-                <div class="filter-header">
-                    <h3>{{ is_rtl() ? 'تصفية' : 'Filters' }}</h3>
-                    <button class="clear-filters-btn" id="clearFiltersBtn" type="button">
-                        {{ is_rtl() ? 'مسح الكل' : 'Clear All' }}
-                    </button>
-                </div>
-
-                <form id="filterForm">
-                    <!-- Preserve search query if exists -->
-                    @if(request('search'))
-                        <input type="hidden" name="search" value="{{ request('search') }}">
-                    @endif
-                    
-                    <!-- Note: Form submission is handled by JavaScript, not by form action -->
-
-                    <!-- Price Range Filter -->
-                    <div class="filter-section">
-                        <div class="filter-section-title" id="priceRangeLabel">
-                            <i class="fas fa-dollar-sign"></i>
-                            {{ is_rtl() ? 'نطاق السعر' : 'Price Range' }}
-                        </div>
-
-                        <!-- Live Price Labels Above Slider -->
-                        <div class="price-range-labels" aria-live="polite" aria-atomic="true">
-                            <span class="price-label-min" id="minPriceLabel" aria-label="{{ is_rtl() ? 'السعر الأدنى' : 'Minimum price' }}">₪ {{ number_format(request('min_price', $priceRange['min']), 0) }}</span>
-                            <span class="price-label-max" id="maxPriceLabel" aria-label="{{ is_rtl() ? 'السعر الأقصى' : 'Maximum price' }}">₪ {{ number_format(request('max_price', $priceRange['max']), 0) }}</span>
-                        </div>
-
-                        <!-- Dual-Handle Range Slider -->
-                        <div class="price-range-slider"
-                             role="group"
-                             aria-labelledby="priceRangeLabel"
-                             aria-describedby="priceRangeDescription">
-                            <div id="priceSlider"></div>
-                        </div>
-                        <span id="priceRangeDescription" class="sr-only">
-                            {{ is_rtl() ? 'استخدم مفاتيح الأسهم لتعديل نطاق السعر. اضغط Shift مع السهم للتحرك بشكل أسرع.' : 'Use arrow keys to adjust price range. Hold Shift with arrow keys for faster movement.' }}
-                        </span>
-
-                        <!-- Hidden Input Fields for Form Submission -->
-                        <input type="hidden"
-                               name="min_price"
-                               id="minPrice"
-                               value="{{ request('min_price', $priceRange['min']) }}">
-                        <input type="hidden"
-                               name="max_price"
-                               id="maxPrice"
-                               value="{{ request('max_price', $priceRange['max']) }}">
-                    </div>
-
-                    <!-- Categories Accordion -->
-                    <div class="filter-accordion">
-                        <button type="button"
-                                class="filter-accordion-button"
-                                id="categoryAccordionToggle"
-                                aria-expanded="false"
-                                aria-controls="categoryAccordionContent">
-                            <span class="filter-accordion-header">
-                                <i class="fas fa-th-large"></i>
-                                <span class="filter-accordion-title">{{ is_rtl() ? 'الفئات' : 'Categories' }}</span>
-                            </span>
-                            <span class="filter-accordion-icon">
-                                <i class="fas fa-plus"></i>
-                            </span>
-                        </button>
-
-                        <fieldset class="filter-accordion-content"
-                                  id="categoryAccordionContent"
-                                  aria-labelledby="categoryAccordionToggle"
-                                  hidden>
-                            <legend class="sr-only">{{ is_rtl() ? 'تصفية حسب الفئة' : 'Filter by category' }}</legend>
-
-                            <div class="category-list">
-                                @foreach($categories as $category)
-                                @php
-                                    // Check if this category is selected (support both 'category' and 'categories[]')
-                                    $selectedCategories = (array)request('categories', []);
-                                    if (request('category') && !in_array(request('category'), $selectedCategories)) {
-                                        $selectedCategories[] = request('category');
-                                    }
-                                    $isChecked = in_array($category->slug, $selectedCategories);
-                                @endphp
-                                <div class="category-checkbox">
-                                    <input type="checkbox"
-                                           name="categories[]"
-                                           value="{{ $category->slug }}"
-                                           id="category-{{ $category->slug }}"
-                                           {{ $isChecked ? 'checked' : '' }}>
-                                    <label for="category-{{ $category->slug }}">
-                                        {{ $category->name }}
-                                    </label>
-                                </div>
-                                @endforeach
-                            </div>
-                        </fieldset>
-                    </div>
-
-                    <!-- Brand Accordion -->
-                    <div class="filter-accordion">
-                        <button type="button"
-                                class="filter-accordion-button"
-                                id="brandAccordionToggle"
-                                aria-expanded="false"
-                                aria-controls="brandAccordionContent">
-                            <span class="filter-accordion-header">
-                                <i class="fas fa-tags"></i>
-                                <span class="filter-accordion-title">{{ is_rtl() ? 'العلامات التجارية' : 'Brands' }}</span>
-                            </span>
-                            <span class="filter-accordion-icon">
-                                <i class="fas fa-plus"></i>
-                            </span>
-                        </button>
-
-                        <fieldset class="filter-accordion-content"
-                                  id="brandAccordionContent"
-                                  aria-labelledby="brandAccordionToggle"
-                                  hidden>
-                            <legend class="sr-only">{{ is_rtl() ? 'تصفية حسب العلامة التجارية' : 'Filter by brand' }}</legend>
-
-                            <div class="brand-list" id="brandList">
-                                @php
-                                    // Check if any brand is selected (support both 'brand' and 'brands[]')
-                                    $selectedBrands = (array)request('brands', []);
-                                    if (request('brand') && !in_array(request('brand'), $selectedBrands)) {
-                                        $selectedBrands[] = request('brand');
-                                    }
-                                @endphp
-
-                                @foreach($brands as $index => $brand)
-                                @php
-                                    $isChecked = in_array($brand->slug, $selectedBrands);
-                                    $isInitiallyVisible = $index < 10; // Show first 10
-                                    $hasProducts = $brand->products_count > 0;
-                                @endphp
-                                <div class="brand-checkbox {{ !$hasProducts ? 'brand-disabled' : '' }}" 
-                                     data-brand-index="{{ $index }}" 
-                                     style="{{ !$isInitiallyVisible ? 'display: none;' : '' }}">
-                                    <input type="checkbox"
-                                           name="brands[]"
-                                           value="{{ $brand->slug }}"
-                                           id="brand-{{ $brand->slug }}"
-                                           {{ !$hasProducts ? 'disabled' : '' }}
-                                           {{ $isChecked ? 'checked' : '' }}>
-                                    <label for="brand-{{ $brand->slug }}">
-                                        {{ $brand->name }}
-                                        <span class="item-count {{ !$hasProducts ? 'count-zero' : '' }}">{{ $brand->products_count }}</span>
-                                    </label>
-                                </div>
-                                @endforeach
-                            </div>
-
-                            @if($brands->count() > 10)
-                            <button type="button"
-                                    class="view-more-btn"
-                                    id="brandViewMoreBtn"
-                                    onclick="toggleBrandPagination()"
-                                    aria-label="{{ is_rtl() ? 'عرض المزيد من العلامات التجارية' : 'View more brands' }}">
-                                <span id="brandViewMoreText">{{ is_rtl() ? 'عرض المزيد' : 'View more' }}</span>
-                                <i class="fas fa-chevron-down" id="brandViewMoreIcon" aria-hidden="true"></i>
-                            </button>
-                            @endif
-                        </fieldset>
-                    </div>
-                </form>
-            </aside>
+            <!-- Filter Sidebar Component (includes mobile toggle button) -->
+            <x-filter-sidebar 
+                :filters="$availableFilters" 
+                :current="request()->all()"
+            />
 
             <!-- Products Content -->
             <div class="products-content" id="productsContent">
