@@ -1319,6 +1319,30 @@
         </div>
     </header>
 
+    
+    <?php if(isset($navigationCategories) && $navigationCategories->count() > 0): ?>
+        <?php if (isset($component)) { $__componentOriginal3abf49ce9a3dee012fc0cb151cc636d5 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal3abf49ce9a3dee012fc0cb151cc636d5 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.category-nav','data' => ['categories' => $navigationCategories]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('category-nav'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['categories' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($navigationCategories)]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal3abf49ce9a3dee012fc0cb151cc636d5)): ?>
+<?php $attributes = $__attributesOriginal3abf49ce9a3dee012fc0cb151cc636d5; ?>
+<?php unset($__attributesOriginal3abf49ce9a3dee012fc0cb151cc636d5); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal3abf49ce9a3dee012fc0cb151cc636d5)): ?>
+<?php $component = $__componentOriginal3abf49ce9a3dee012fc0cb151cc636d5; ?>
+<?php unset($__componentOriginal3abf49ce9a3dee012fc0cb151cc636d5); ?>
+<?php endif; ?>
+    <?php endif; ?>
+
     <div class="social-icons">
         <div class="social-icon">
             <i class="fab fa-facebook-f"></i>

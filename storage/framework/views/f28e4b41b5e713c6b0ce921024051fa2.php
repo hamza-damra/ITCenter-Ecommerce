@@ -210,17 +210,18 @@ endif;
 unset($__errorArgs, $__bag); ?>
                 </div>
 
-                <div class="form-group">
-                    <label for="order" class="form-label">
-                        <?php echo e(__('messages.display_order')); ?>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="icon" class="form-label">
+                            <?php echo e(__('messages.category_icon')); ?>
 
-                        <span style="color: #64748b; font-size: 12px;"><?php echo e(__('messages.optional')); ?></span>
-                    </label>
-                    <input 
-                        type="number" 
-                        id="order" 
-                        name="order" 
-                        class="form-control <?php $__errorArgs = ['order'];
+                            <span style="color: #64748b; font-size: 12px;"><?php echo e(__('messages.optional')); ?></span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="icon" 
+                            name="icon" 
+                            class="form-control <?php $__errorArgs = ['icon'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -228,23 +229,60 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                        value="<?php echo e(old('order', $category->order ?? 0)); ?>" 
-                        placeholder="0"
-                        min="0">
-                    <p class="form-text">
-                        <i class="fas fa-sort-numeric-down"></i> <?php echo e(__('messages.lower_numbers_first')); ?>
+                            value="<?php echo e(old('icon', $category->icon)); ?>" 
+                            placeholder="e.g., fas fa-laptop, fas fa-tshirt">
+                        <p class="form-text">
+                            <i class="fas fa-info-circle"></i> <?php echo e(__('messages.icon_help_text')); ?>
 
-                    </p>
-                    <?php $__errorArgs = ['order'];
+                        </p>
+                        <?php $__errorArgs = ['icon'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                        <span class="error-message"><?php echo e($message); ?></span>
-                    <?php unset($message);
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="position" class="form-label">
+                            <?php echo e(__('messages.display_position')); ?>
+
+                            <span style="color: #64748b; font-size: 12px;"><?php echo e(__('messages.optional')); ?></span>
+                        </label>
+                        <input 
+                            type="number" 
+                            id="position" 
+                            name="position" 
+                            class="form-control <?php $__errorArgs = ['position'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                            value="<?php echo e(old('position', $category->position ?? 0)); ?>" 
+                            placeholder="0"
+                            min="0">
+                        <p class="form-text">
+                            <i class="fas fa-sort-numeric-down"></i> <?php echo e(__('messages.lower_numbers_first')); ?>
+
+                        </p>
+                        <?php $__errorArgs = ['position'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
                 </div>
             </div>
         </div>

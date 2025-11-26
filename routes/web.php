@@ -155,6 +155,9 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::resource('promotional-offers', App\Http\Controllers\Admin\PromotionalOfferController::class);
     Route::post('/promotional-offers/{promotionalOffer}/toggle-active', [App\Http\Controllers\Admin\PromotionalOfferController::class, 'toggleActive'])->name('promotional-offers.toggle-active');
 
+    // Banners
+    Route::resource('banners', App\Http\Controllers\Admin\BannerController::class);
+
     // Database Backup Management
     Route::get('/backup', [App\Http\Controllers\Admin\BackupController::class, 'index'])->name('backup.index');
     Route::post('/backup/create', [App\Http\Controllers\Admin\BackupController::class, 'create'])->name('backup.create');

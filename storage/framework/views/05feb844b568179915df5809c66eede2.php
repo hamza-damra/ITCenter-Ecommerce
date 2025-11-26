@@ -80,21 +80,6 @@ unset($__defined_vars, $__key, $__value); ?>
                 </button>
             </div>
         <?php endif; ?>
-
-        
-        <?php if($product->stock_quantity <= 0): ?>
-            <div class="stock-indicator">
-                <i class="fas fa-times-circle"></i>
-                <?php echo e(__('messages.out_of_stock')); ?>
-
-            </div>
-        <?php elseif($product->stock_quantity <= 5): ?>
-            <div class="stock-indicator low-stock">
-                <i class="fas fa-exclamation-triangle"></i>
-                <?php echo e($product->stock_quantity); ?> <?php echo e(__('messages.left')); ?>
-
-            </div>
-        <?php endif; ?>
     </div>
 
     
@@ -287,25 +272,6 @@ unset($__defined_vars, $__key, $__value); ?>
         background: var(--primary-dark);
         color: var(--text-white);
         transform: scale(1.1);
-    }
-
-    .stock-indicator {
-        position: absolute;
-        bottom: var(--space-3);
-        left: var(--space-3);
-        background: linear-gradient(135deg, var(--secondary-red) 0%, #dc2626 100%);
-        color: var(--text-white);
-        padding: var(--space-1) var(--space-3);
-        border-radius: var(--radius-md);
-        font-size: var(--text-xs);
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: var(--space-1);
-    }
-
-    .stock-indicator.low-stock {
-        background: linear-gradient(135deg, var(--secondary-yellow) 0%, #d97706 100%);
     }
 
     .product-card-content {

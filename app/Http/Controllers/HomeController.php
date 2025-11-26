@@ -8,6 +8,7 @@ use App\Models\Brand;
 use App\Models\Offer;
 use App\Models\PromotionalOffer;
 use App\Models\CartItem;
+use App\Models\Banner;
 use App\Services\CartCacheService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -125,6 +126,11 @@ class HomeController extends Controller
                 ->limit(2)
                 ->get();
 
+            // Dynamic Banners - Active banners ordered by display_order and created_at
+            $banners = Banner::active()
+                ->ordered()
+                ->get();
+
             return [
                 'featuredProducts' => $featuredProducts,
                 'newProducts' => $newProducts,
@@ -137,6 +143,7 @@ class HomeController extends Controller
                 'promotionalOffers' => $promotionalOffers,
                 'specialOfferProducts' => $specialOfferProducts,
                 'giftIdeas' => $giftIdeas,
+                'banners' => $banners,
             ];
         });
 

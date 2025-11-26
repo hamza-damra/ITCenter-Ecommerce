@@ -405,7 +405,11 @@
                     </td>
 
                     <td class="category-image-cell">
-                        <?php if($category->image): ?>
+                        <?php if($category->icon): ?>
+                            <div class="category-image-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                                <i class="<?php echo e($category->icon); ?>"></i>
+                            </div>
+                        <?php elseif($category->image): ?>
                             <img src="<?php echo e($category->image); ?>" alt="<?php echo e($category->name); ?>" class="category-image">
                         <?php else: ?>
                             <div class="category-image-placeholder">
@@ -448,6 +452,10 @@
                     <td class="action-cell" style="text-align: right;">
                         <a href="<?php echo e(route('admin.categories.edit', $category)); ?>" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i> <?php echo e(__('messages.edit')); ?>
+
+                        </a>
+                        <a href="<?php echo e(route('admin.categories.attributes.edit', $category)); ?>" class="btn btn-info btn-sm">
+                            <i class="fas fa-filter"></i> <?php echo e(__('messages.attributes')); ?>
 
                         </a>
                         <form action="<?php echo e(route('admin.categories.destroy', $category)); ?>" method="POST" style="display: inline;" 

@@ -62,16 +62,57 @@ unset($__defined_vars, $__key, $__value); ?>
     
     // Get attributes with values
     $attributes = $filters['attributes'] ?? [];
+    
+    // Calculate active filter count
+    $activeFilterCount = 0;
+    if ($currentStrongOffers) $activeFilterCount++;
+    if ($currentStock) $activeFilterCount++;
+    $activeFilterCount += count((array)$currentBrands);
+    if ($currentMinPrice && $currentMinPrice != $priceRange['min']) $activeFilterCount++;
+    if ($currentMaxPrice && $currentMaxPrice != $priceRange['max']) $activeFilterCount++;
+    foreach ((array)$currentAttributes as $attrValues) {
+        $activeFilterCount += count((array)$attrValues);
+    }
 ?>
+
+
+<?php if (isset($component)) { $__componentOriginald6ef9e8a134c0e9365bc8c39cc85b3cd = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald6ef9e8a134c0e9365bc8c39cc85b3cd = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.mobile-filter-toggle','data' => ['count' => $activeFilterCount]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('mobile-filter-toggle'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['count' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($activeFilterCount)]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald6ef9e8a134c0e9365bc8c39cc85b3cd)): ?>
+<?php $attributes = $__attributesOriginald6ef9e8a134c0e9365bc8c39cc85b3cd; ?>
+<?php unset($__attributesOriginald6ef9e8a134c0e9365bc8c39cc85b3cd); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald6ef9e8a134c0e9365bc8c39cc85b3cd)): ?>
+<?php $component = $__componentOriginald6ef9e8a134c0e9365bc8c39cc85b3cd; ?>
+<?php unset($__componentOriginald6ef9e8a134c0e9365bc8c39cc85b3cd); ?>
+<?php endif; ?>
+
+
+<div class="mobile-filter-overlay" id="mobileFilterOverlay" onclick="closeMobileFilters()"></div>
 
 <aside class="filter-sidebar" id="filterSidebar" dir="<?php echo e($isRtl ? 'rtl' : 'ltr'); ?>">
     
     <div class="filter-header">
         <h3><?php echo e($isRtl ? 'تصفية' : 'Filters'); ?></h3>
-        <button type="button" class="clear-filters-btn" id="clearFiltersBtn">
-            <?php echo e($isRtl ? 'مسح الكل' : 'Clear All'); ?>
+        <div class="filter-header-actions">
+            <button type="button" class="clear-filters-btn" id="clearFiltersBtn" onclick="clearAllFilters()">
+                <?php echo e($isRtl ? 'مسح الكل' : 'Clear All'); ?>
 
-        </button>
+            </button>
+            <button type="button" class="mobile-close-btn" id="mobileCloseBtn" onclick="closeMobileFilters()" aria-label="<?php echo e($isRtl ? 'إغلاق' : 'Close'); ?>">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
     </div>
 
     <form id="filterForm" method="GET" action="<?php echo e(url()->current()); ?>">
@@ -729,25 +770,109 @@ unset($__defined_vars, $__key, $__value); ?>
         flex-direction: row-reverse;
     }
 
+    /* Mobile Filter Overlay */
+    .mobile-filter-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .mobile-filter-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    /* Mobile Close Button */
+    .mobile-close-btn {
+        display: none;
+        background: transparent;
+        border: none;
+        color: #64748b;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        transition: all 0.3s ease;
+        width: 36px;
+        height: 36px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+    }
+
+    .mobile-close-btn:hover {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+
+    .filter-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
     /* Mobile Responsive */
     @media (max-width: 1024px) {
         .filter-sidebar {
-            display: none;
-            width: 100%;
-            max-width: 100%;
             position: fixed;
             top: 0;
-            left: 0;
-            right: 0;
+            <?php if($isRtl): ?>
+            right: -100%;
+            left: auto;
+            <?php else: ?>
+            left: -100%;
+            right: auto;
+            <?php endif; ?>
             bottom: 0;
+            width: 85%;
+            max-width: 380px;
             z-index: 1000;
             max-height: 100vh;
             border-radius: 0;
-            padding: 2rem;
+            padding: 1.5rem;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(0);
         }
 
         .filter-sidebar.active {
-            display: block;
+            <?php if($isRtl): ?>
+            transform: translateX(-100%);
+            <?php else: ?>
+            transform: translateX(100%);
+            <?php endif; ?>
+        }
+
+        .mobile-close-btn {
+            display: flex;
+        }
+
+        .filter-header {
+            margin-bottom: 1.25rem;
+        }
+
+        .filter-header h3 {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .filter-sidebar {
+            width: 90%;
+            max-width: 100%;
+            padding: 1.25rem;
+        }
+
+        .filter-header h3 {
+            font-size: 1.25rem;
         }
     }
 </style>
@@ -760,6 +885,60 @@ unset($__defined_vars, $__key, $__value); ?>
         
         button.setAttribute('aria-expanded', !isExpanded);
         content.hidden = isExpanded;
+    }
+
+    // Mobile filter drawer functions
+    window.openMobileFilters = function() {
+        const sidebar = document.getElementById('filterSidebar');
+        const overlay = document.getElementById('mobileFilterOverlay');
+        
+        if (sidebar && overlay) {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+    };
+
+    window.closeMobileFilters = function() {
+        const sidebar = document.getElementById('filterSidebar');
+        const overlay = document.getElementById('mobileFilterOverlay');
+        
+        if (sidebar && overlay) {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+    };
+
+    window.toggleMobileFilters = function() {
+        const sidebar = document.getElementById('filterSidebar');
+        
+        if (sidebar && sidebar.classList.contains('active')) {
+            closeMobileFilters();
+        } else {
+            openMobileFilters();
+        }
+    };
+
+    // Close drawer on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeMobileFilters();
+        }
+    });
+
+    // Close drawer after filter is applied (on mobile)
+    if (window.innerWidth <= 1024) {
+        const filterForm = document.getElementById('filterForm');
+        if (filterForm) {
+            // Store original submit handler
+            const originalSubmit = filterForm.onsubmit;
+            
+            // Add close drawer before form submission
+            filterForm.addEventListener('submit', function() {
+                closeMobileFilters();
+            });
+        }
     }
 </script>
 <?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views\components\filter-sidebar.blade.php ENDPATH**/ ?>

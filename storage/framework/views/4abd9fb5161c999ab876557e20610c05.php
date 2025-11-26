@@ -684,6 +684,7 @@ unset($__errorArgs, $__bag); ?>
                     <input type="hidden" name="is_new" value="0">
                     <input type="hidden" name="is_bestseller" value="0">
                     <input type="hidden" name="is_special_offer" value="0">
+                    <input type="hidden" name="is_strong_offer" value="0">
                     
                     <label class="checkbox-group">
                         <input 
@@ -749,15 +750,78 @@ unset($__errorArgs, $__bag); ?>
                             <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.show_as_special_offer_card') ?? 'عرض كبطاقة عرض خاص في الصفحة الرئيسية'); ?></p>
                         </span>
                     </label>
-                </div>
-                            name="is_bestseller" 
+
+                    <label class="checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="is_strong_offer" 
+                            name="is_strong_offer" 
                             value="1" 
-                            <?php echo e(old('is_bestseller') ? 'checked' : ''); ?>>
+                            <?php echo e(old('is_strong_offer') ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-fire"></i> <?php echo e(__('messages.bestseller')); ?></strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.mark_bestselling_product')); ?></p>
+                            <strong><i class="fas fa-bolt"></i> <?php echo e(__('messages.strong_offer') ?? 'Strong Offer'); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.mark_as_strong_promotional_offer') ?? 'Mark as strong promotional offer for filtering'); ?></p>
                         </span>
                     </label>
+                </div>
+
+                <!-- Strong Offer Discount Percentage -->
+                <div class="form-group" id="discount-percentage-group" style="margin-top: 16px; display: none;">
+                    <label for="discount_percentage" class="form-label">
+                        <?php echo e(__('messages.discount_percentage') ?? 'Discount Percentage'); ?>
+
+                        <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
+                    </label>
+                    <div style="position: relative;">
+                        <input 
+                            type="number" 
+                            id="discount_percentage" 
+                            name="discount_percentage" 
+                            class="form-control <?php $__errorArgs = ['discount_percentage'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                            step="0.01" 
+                            min="0"
+                            max="100"
+                            value="<?php echo e(old('discount_percentage')); ?>" 
+                            placeholder="0.00"
+                            style="padding-right: 32px;">
+                        <span style="position: absolute; right: 12px; top: 12px; color: var(--secondary); font-weight: 600;">%</span>
+                    </div>
+                    <p class="form-text">
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.discount_percentage_help') ?? 'Enter discount percentage between 0 and 100'); ?>
+
+                    </p>
+                    <?php $__errorArgs = ['discount_percentage'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Attributes Card -->
+        <div class="card" id="attributes-card" style="display: none;">
+            <div class="card-header">
+                <h2><i class="fas fa-tags"></i> Product Attributes</h2>
+                <p style="color: #64748b; font-size: 13px; margin-top: 4px;">Select attributes specific to this product's category</p>
+            </div>
+            <div class="card-body">
+                <div id="attributes-container">
+                    <p style="color: #64748b; text-align: center; padding: 20px;">
+                        <i class="fas fa-info-circle"></i> Select a category to see available attributes
+                    </p>
                 </div>
             </div>
         </div>
@@ -777,5 +841,117 @@ unset($__errorArgs, $__bag); ?>
 </form>
 
 <?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('scripts'); ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const categorySelect = document.getElementById('category_id');
+    const attributesCard = document.getElementById('attributes-card');
+    const attributesContainer = document.getElementById('attributes-container');
+    
+    // Strong Offer checkbox toggle for discount percentage field
+    const strongOfferCheckbox = document.getElementById('is_strong_offer');
+    const discountPercentageGroup = document.getElementById('discount-percentage-group');
+    
+    if (strongOfferCheckbox && discountPercentageGroup) {
+        // Show/hide discount percentage field based on checkbox state
+        function toggleDiscountField() {
+            if (strongOfferCheckbox.checked) {
+                discountPercentageGroup.style.display = 'block';
+            } else {
+                discountPercentageGroup.style.display = 'none';
+                document.getElementById('discount_percentage').value = '';
+            }
+        }
+        
+        // Initial state
+        toggleDiscountField();
+        
+        // Listen for changes
+        strongOfferCheckbox.addEventListener('change', toggleDiscountField);
+    }
+
+    // Load attributes when category changes
+    categorySelect.addEventListener('change', function() {
+        const categoryId = this.value;
+        
+        if (!categoryId) {
+            attributesCard.style.display = 'none';
+            return;
+        }
+
+        // Show loading state
+        attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading attributes...</p>';
+        attributesCard.style.display = 'block';
+
+        // Fetch attributes for this category
+        fetch(`/admin/products/category-attributes/${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.attributes && data.attributes.length > 0) {
+                    renderAttributes(data.attributes);
+                } else {
+                    attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> No attributes configured for this category</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading attributes:', error);
+                attributesContainer.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i> Error loading attributes</p>';
+            });
+    });
+
+    function renderAttributes(attributes) {
+        let html = '<div style="display: flex; flex-direction: column; gap: 24px;">';
+
+        attributes.forEach(attribute => {
+            html += `
+                <div class="form-group">
+                    <label class="form-label">
+                        <strong>${escapeHtml(attribute.name)}</strong>
+                        ${attribute.unit ? `<span style="color: #64748b; font-size: 12px;">(${escapeHtml(attribute.unit)})</span>` : ''}
+                    </label>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 8px;">
+            `;
+
+            attribute.values.forEach(value => {
+                const inputId = `attr_${attribute.id}_${value.id}`;
+                html += `
+                    <label class="checkbox-group" style="margin: 0;">
+                        <input 
+                            type="checkbox" 
+                            id="${inputId}" 
+                            name="attribute_values[]" 
+                            value="${value.id}">
+                        <span>
+                            ${value.color_code ? `<span style="display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: ${escapeHtml(value.color_code)}; border: 1px solid #ddd; margin-right: 6px; vertical-align: middle;"></span>` : ''}
+                            ${escapeHtml(value.value)}
+                        </span>
+                    </label>
+                `;
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+        });
+
+        html += '</div>';
+        attributesContainer.innerHTML = html;
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Trigger change event if category is already selected (for old() values)
+    if (categorySelect.value) {
+        categorySelect.dispatchEvent(new Event('change'));
+    }
+});
+</script>
+<?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views\admin\products\create.blade.php ENDPATH**/ ?>

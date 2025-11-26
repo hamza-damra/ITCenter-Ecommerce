@@ -16,17 +16,18 @@
         font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 6 Pro" !important;
     }
 
-    /* Hero Section - Slider */
+    /* Hero Section - Modern Slider */
     .hero-section {
         padding: 0;
         margin: 1.5rem 1.5rem 3rem 1.5rem;
-        border-radius: 20px;
+        border-radius: 24px;
         position: relative;
-        height: 500px;
+        height: 550px;
         overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
         max-width: 100%;
         width: calc(100% - 3rem);
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     }
 
     .hero-slider {
@@ -43,7 +44,8 @@
         width: 100%;
         height: 100%;
         opacity: 0;
-        transition: opacity 1s ease-in-out;
+        transform: scale(1.1);
+        transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
@@ -51,6 +53,7 @@
 
     .hero-slide.active {
         opacity: 1;
+        transform: scale(1);
         z-index: 1;
     }
 
@@ -61,79 +64,152 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.1) 100%);
+        background: linear-gradient(135deg, 
+            rgba(15, 23, 42, 0.85) 0%, 
+            rgba(30, 41, 59, 0.6) 40%, 
+            rgba(51, 65, 85, 0.3) 70%,
+            rgba(71, 85, 105, 0.1) 100%);
         z-index: 1;
+    }
+    
+    .hero-slide::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 30% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+        z-index: 1;
+        animation: pulse-glow 4s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-glow {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.6; }
     }
     
     /* Hero Slide Content */
     .hero-slide-content {
         position: absolute;
         top: 50%;
-        <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 5%;
+        <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 6%;
         transform: translateY(-50%);
-        z-index: 2;
-        max-width: 550px;
+        z-index: 3;
+        max-width: 600px;
         color: white;
-        padding: 2rem;
+        padding: 2.5rem;
+        animation: slideInContent 0.8s ease-out 0.3s both;
+    }
+    
+    @keyframes slideInContent {
+        from {
+            opacity: 0;
+            transform: translateY(-50%) translateX(<?php echo e(is_rtl() ? '50px' : '-50px'); ?>);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
     }
     
     .hero-slide-content h1 {
-        font-size: 3rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
-        line-height: 1.2;
-        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        font-size: 3.5rem;
+        font-weight: 900;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.02em;
     }
     
     .hero-slide-content p {
-        font-size: 1.2rem;
-        margin-bottom: 2rem;
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
         opacity: 0.95;
-        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        line-height: 1.6;
+        color: #e2e8f0;
     }
     
     .hero-cta-buttons {
         display: flex;
-        gap: 1rem;
+        gap: 1.2rem;
         flex-wrap: wrap;
+        animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
     
     .hero-cta-btn {
-        padding: 1rem 2.5rem;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 1rem;
+        padding: 1.1rem 2.8rem;
+        border-radius: 60px;
+        font-weight: 700;
+        font-size: 1.05rem;
         text-decoration: none;
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        gap: 0.6rem;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-cta-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+    
+    .hero-cta-btn:hover::before {
+        width: 300px;
+        height: 300px;
     }
     
     .hero-cta-btn.primary {
-        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
         color: white;
         border: 2px solid transparent;
     }
     
     .hero-cta-btn.primary:hover {
-        background: linear-gradient(135deg, #111827 0%, #000000 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(59, 130, 246, 0.4);
     }
     
     .hero-cta-btn.secondary {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.1);
         color: white;
-        border: 2px solid rgba(255, 255, 255, 0.5);
-        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(15px);
     }
     
     .hero-cta-btn.secondary:hover {
-        background: rgba(255, 255, 255, 0.25);
-        border-color: rgba(255, 255, 255, 0.8);
-        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.9);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(255, 255, 255, 0.2);
     }
     
     /* Progress Bar */
@@ -142,16 +218,39 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 4px;
-        background: rgba(255, 255, 255, 0.2);
+        height: 5px;
+        background: rgba(255, 255, 255, 0.15);
         z-index: 10;
+        overflow: hidden;
+    }
+    
+    .slider-progress::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(59, 130, 246, 0.3) 50%, 
+            transparent 100%);
+        animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
     }
     
     .slider-progress-bar {
         height: 100%;
-        background: linear-gradient(90deg, #1f2937 0%, #4b5563 100%);
+        background: linear-gradient(90deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
         width: 0%;
         transition: width 0.1s linear;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+        position: relative;
+        z-index: 1;
     }
 
     .hero-container {
@@ -177,33 +276,60 @@
     /* Slider Navigation Controls */
     .slider-dots {
         position: absolute;
-        bottom: 30px;
+        bottom: 35px;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
-        gap: 12px;
+        gap: 14px;
         z-index: 10;
+        padding: 12px 20px;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(15px);
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .slider-dot {
-        width: 12px;
-        height: 12px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.4);
-        border: 2px solid rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.5);
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+    
+    .slider-dot::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(59, 130, 246, 0.3);
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
 
     .slider-dot:hover {
         background: rgba(255, 255, 255, 0.6);
-        transform: scale(1.2);
+        transform: scale(1.3);
+        border-color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .slider-dot:hover::before {
+        opacity: 1;
     }
 
     .slider-dot.active {
-        background: #fff;
-        width: 30px;
-        border-radius: 6px;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        width: 32px;
+        border-radius: 8px;
+        border-color: rgba(59, 130, 246, 0.8);
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
     }
 
     /* Slider Arrow Controls */
@@ -211,37 +337,43 @@
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        width: 50px;
-        height: 50px;
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.2);
-        border: 2px solid rgba(255, 255, 255, 0.4);
+        background: rgba(15, 23, 42, 0.6);
+        border: 2px solid rgba(255, 255, 255, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         z-index: 10;
-        transition: all 0.3s ease;
-        backdrop-filter: blur(5px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(15px);
     }
 
     .slider-arrow:hover {
-        background: rgba(255, 255, 255, 0.4);
-        border-color: rgba(255, 255, 255, 0.8);
-        transform: translateY(-50%) scale(1.1);
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        border-color: rgba(59, 130, 246, 0.8);
+        transform: translateY(-50%) scale(1.15);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
     }
 
     .slider-arrow i {
-        font-size: 20px;
+        font-size: 22px;
         color: #fff;
+        transition: transform 0.3s ease;
+    }
+    
+    .slider-arrow:hover i {
+        transform: scale(1.1);
     }
 
     .slider-arrow.prev {
-        left: 30px;
+        left: 35px;
     }
 
     .slider-arrow.next {
-        right: 30px;
+        right: 35px;
     }
 
     .hero-content h1 {
@@ -924,48 +1056,6 @@
     .product-rating .rating-count {
         color: #6b7280;
         font-size: 0.8rem;
-    }
-
-    /* Stock Indicator */
-    .stock-indicator {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-        color: white;
-        padding: 0.25rem 0.6rem;
-        border-radius: 12px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
-        animation: pulse 2s ease-in-out infinite;
-    }
-
-    .stock-indicator.low-stock {
-        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
-    }
-
-    .stock-indicator.in-stock {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-        animation: none;
-    }
-
-    @keyframes pulse {
-        0%, 100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: 0.8;
-        }
-    }
-
-    .stock-indicator i {
-        font-size: 0.65rem;
     }
 
     .product-image {
@@ -2224,9 +2314,9 @@
         border: 1px solid rgba(0, 0, 0, 0.08);
     }
 
-    /* Promo card that spans two product rows - positioned on the left */
+    /* Promo card that spans two product rows - positioned on the left for LTR, right for RTL */
     .promo-featured-card {
-        grid-column: 1;
+        grid-column: <?php echo e(is_rtl() ? '5' : '1'); ?>;
         grid-row: 1 / 3;
         border: none;
         border-radius: 0;
@@ -2238,8 +2328,8 @@
         flex-direction: column;
         padding: 1.2rem;
         transition: all 0.3s ease;
-        margin-right: 0;
-        border-right: 1px solid rgba(0, 0, 0, 0.08);
+        <?php echo e(is_rtl() ? 'margin-left' : 'margin-right'); ?>: 0;
+        <?php echo e(is_rtl() ? 'border-left' : 'border-right'); ?>: 1px solid rgba(0, 0, 0, 0.08);
     }
     .promo-featured-card:hover {
         box-shadow: none;
@@ -2350,10 +2440,10 @@
         }
         
         .promo-featured-card {
-            grid-column: 1;
+            grid-column: <?php echo e(is_rtl() ? '4' : '1'); ?>;
             grid-row: 1 / 3;
-            margin-right: 0.3rem;
-            margin-left: 0;
+            <?php echo e(is_rtl() ? 'margin-left' : 'margin-right'); ?>: 0.3rem;
+            <?php echo e(is_rtl() ? 'margin-right' : 'margin-left'); ?>: 0;
         }
         
         .offer-card {
@@ -2902,9 +2992,74 @@
 </style>
 
 <!-- Hero Section - Slider -->
+<?php if(isset($banners) && $banners->count() > 0): ?>
 <div class="hero-section">
     <div class="hero-slider">
-        <!-- Slide 1 - Banner.jpg -->
+        <?php $__currentLoopData = $banners; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $banner): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if($banner->link): ?>
+        <a href="<?php echo e($banner->link); ?>" class="hero-slide <?php echo e($index === 0 ? 'active' : ''); ?>" style="background-image: url('<?php echo e($banner->image_url); ?>');">
+        <?php else: ?>
+        <div class="hero-slide <?php echo e($index === 0 ? 'active' : ''); ?>" style="background-image: url('<?php echo e($banner->image_url); ?>');">
+        <?php endif; ?>
+            <div class="hero-slide-content">
+                <?php if($banner->title): ?>
+                <h1><?php echo e($banner->title); ?></h1>
+                <?php endif; ?>
+                <?php if($banner->subtitle): ?>
+                <p><?php echo e($banner->subtitle); ?></p>
+                <?php endif; ?>
+                <?php if($banner->button_text || $banner->link): ?>
+                <div class="hero-cta-buttons">
+                    <?php if($banner->link && $banner->button_text): ?>
+                    <a href="<?php echo e($banner->link); ?>" class="hero-cta-btn primary">
+                        <i class="fas fa-shopping-bag"></i>
+                        <?php echo e($banner->button_text); ?>
+
+                    </a>
+                    <?php elseif($banner->link): ?>
+                    <a href="<?php echo e($banner->link); ?>" class="hero-cta-btn primary">
+                        <i class="fas fa-arrow-right"></i>
+                        <?php echo e(__t('messages.learn_more') ?? 'Learn More'); ?>
+
+                    </a>
+                    <?php endif; ?>
+                </div>
+                <?php endif; ?>
+            </div>
+        <?php if($banner->link): ?>
+        </a>
+        <?php else: ?>
+        </div>
+        <?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+        <!-- Navigation Arrows -->
+        <?php if($banners->count() > 1): ?>
+        <div class="slider-arrow prev" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="slider-arrow next" onclick="changeSlide(1)">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="slider-dots">
+            <?php $__currentLoopData = $banners; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $banner): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div class="slider-dot <?php echo e($index === 0 ? 'active' : ''); ?>" onclick="goToSlide(<?php echo e($index); ?>)"></div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </div>
+        <?php endif; ?>
+        
+        <!-- Progress Bar -->
+        <div class="slider-progress">
+            <div class="slider-progress-bar" id="sliderProgressBar"></div>
+        </div>
+    </div>
+</div>
+<?php else: ?>
+<!-- Fallback: Static Hero Section when no banners exist -->
+<div class="hero-section">
+    <div class="hero-slider">
         <div class="hero-slide active" style="background-image: url('<?php echo e(asset('images/assets/Banner.jpg')); ?>');">
             <div class="hero-slide-content">
                 <h1><?php echo e(is_rtl() ? 'أحدث التقنيات' : 'Latest Technology'); ?></h1>
@@ -2923,61 +3078,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Slide 2 - wallpaper.png -->
-        <div class="hero-slide" style="background-image: url('<?php echo e(asset('images/assets/wallpaper.png')); ?>');">
-            <div class="hero-slide-content">
-                <h1><?php echo e(is_rtl() ? 'عروض حصرية' : 'Exclusive Deals'); ?></h1>
-                <p><?php echo e(is_rtl() ? 'خصومات تصل إلى 50% على منتجات مختارة' : 'Up to 50% off on selected products'); ?></p>
-                <div class="hero-cta-buttons">
-                    <a href="<?php echo e(route('products', ['filter' => 'sale'])); ?>" class="hero-cta-btn primary">
-                        <i class="fas fa-fire"></i>
-                        <?php echo e(is_rtl() ? 'اكتشف العروض' : 'Discover Deals'); ?>
-
-                    </a>
-                    <a href="<?php echo e(route('products', ['filter' => 'bestseller'])); ?>" class="hero-cta-btn secondary">
-                        <i class="fas fa-star"></i>
-                        <?php echo e(is_rtl() ? 'الأكثر مبيعاً' : 'Best Sellers'); ?>
-
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 3 - wallpaper2.png -->
-        <div class="hero-slide" style="background-image: url('<?php echo e(asset('images/assets/wallpaper2.png')); ?>');">
-            <div class="hero-slide-content">
-                <h1><?php echo e(is_rtl() ? 'شحن مجاني' : 'Free Shipping'); ?></h1>
-                <p><?php echo e(is_rtl() ? 'شحن مجاني على جميع الطلبات فوق 200 شيكل' : 'Free shipping on all orders over ₪200'); ?></p>
-                <div class="hero-cta-buttons">
-                    <a href="<?php echo e(route('products')); ?>" class="hero-cta-btn primary">
-                        <i class="fas fa-truck"></i>
-                        <?php echo e(is_rtl() ? 'ابدأ التسوق' : 'Start Shopping'); ?>
-
-                    </a>
-                    <a href="<?php echo e(url('/about')); ?>" class="hero-cta-btn secondary">
-                        <i class="fas fa-info-circle"></i>
-                        <?php echo e(is_rtl() ? 'المزيد' : 'Learn More'); ?>
-
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Navigation Arrows -->
-        <div class="slider-arrow prev" onclick="changeSlide(-1)">
-            <i class="fas fa-chevron-left"></i>
-        </div>
-        <div class="slider-arrow next" onclick="changeSlide(1)">
-            <i class="fas fa-chevron-right"></i>
-        </div>
-
-        <!-- Navigation Dots -->
-        <div class="slider-dots">
-            <div class="slider-dot active" onclick="goToSlide(0)"></div>
-            <div class="slider-dot" onclick="goToSlide(1)"></div>
-            <div class="slider-dot" onclick="goToSlide(2)"></div>
-        </div>
         
         <!-- Progress Bar -->
         <div class="slider-progress">
@@ -2985,6 +3085,7 @@
         </div>
     </div>
 </div>
+<?php endif; ?>
 
 <!-- Explore Our Products Section - Carousel Design -->
 <div class="explore-products-section">
@@ -3429,21 +3530,6 @@
                         </div>
                         
                         
-                        <?php
-                            $stockQty = $product->stock_quantity ?? 0;
-                            $stockClass = $stockQty <= 3 ? '' : ($stockQty <= 10 ? 'low-stock' : 'in-stock');
-                            $stockText = $stockQty <= 3 ? (is_rtl() ? 'متبقي ' . $stockQty . ' فقط!' : 'Only ' . $stockQty . ' left!') : 
-                                        ($stockQty <= 10 ? (is_rtl() ? 'مخزون محدود' : 'Low Stock') : 
-                                        (is_rtl() ? 'متوفر' : 'In Stock'));
-                        ?>
-                        <?php if($product->stock_status !== 'out_of_stock' && $stockQty <= 10): ?>
-                        <div class="stock-indicator <?php echo e($stockClass); ?>">
-                            <i class="fas fa-fire"></i>
-                            <span><?php echo e($stockText); ?></span>
-                        </div>
-                        <?php endif; ?>
-                        
-                        
                         <div class="product-actions">
                             <button class="quick-view-btn" onclick="event.stopPropagation(); quickView(<?php echo e($product->id); ?>)" title="<?php echo e(is_rtl() ? 'معاينة سريعة' : 'Quick View'); ?>">
                                 <i class="fas fa-eye"></i>
@@ -3522,7 +3608,7 @@
             
             
             <div class="gift-ideas-item gift-banner-item strong-offers-banner">
-                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='<?php echo e(route('products', ['filter' => 'special_offer'])); ?>'">
+                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='<?php echo e(route('products', ['strong_offers' => 1])); ?>'">
                     
                     <div class="gift-banner-content">
                         <h3 class="gift-banner-title"><?php echo e(__t('messages.strong_offers.headline')); ?></h3>
@@ -3538,7 +3624,7 @@
 
                             <?php endif; ?>
                         </p>
-                        <a class="gift-cta" href="<?php echo e(route('products', ['filter' => 'special_offer'])); ?>" onclick="event.stopPropagation();"><?php echo e(__t('messages.strong_offers.cta')); ?></a>
+                        <a class="gift-cta" href="<?php echo e(route('products', ['strong_offers' => 1])); ?>" onclick="event.stopPropagation();"><?php echo e(__t('messages.strong_offers.cta')); ?></a>
                     </div>
                     
                     
@@ -4031,6 +4117,7 @@
 
         // Function to change slide
         window.changeSlide = function(direction) {
+            if (totalSlides <= 1) return; // No sliding needed for single banner
             clearInterval(slideInterval);
             clearInterval(progressInterval);
             currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
@@ -4040,6 +4127,7 @@
 
         // Function to go to specific slide
         window.goToSlide = function(slideIndex) {
+            if (totalSlides <= 1) return; // No sliding needed for single banner
             clearInterval(slideInterval);
             clearInterval(progressInterval);
             currentSlide = slideIndex;
@@ -4049,17 +4137,27 @@
 
         // Function to update slider display
         function updateSlider() {
+            if (totalSlides === 0) return; // No banners to display
+            
             slides.forEach((slide, index) => {
                 slide.classList.remove('active');
-                dots[index].classList.remove('active');
+            });
+            
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
             });
             
             // Reset progress bar
             if (progressBar) {
                 progressBar.style.width = '0%';
             }
-            slides[currentSlide].classList.add('active');
-            dots[currentSlide].classList.add('active');
+            
+            if (slides[currentSlide]) {
+                slides[currentSlide].classList.add('active');
+            }
+            if (dots[currentSlide]) {
+                dots[currentSlide].classList.add('active');
+            }
         }
 
         // Function to animate progress bar
@@ -4082,6 +4180,8 @@
 
         // Function to start auto sliding
         function startAutoSlide() {
+            if (totalSlides <= 1) return; // No auto-sliding for single banner
+            
             clearInterval(slideInterval);
             clearInterval(progressInterval);
             animateProgressBar();
@@ -4093,8 +4193,10 @@
             }, slideDuration);
         }
 
-        // Start auto sliding
-        startAutoSlide();
+        // Start auto sliding (only if multiple banners)
+        if (totalSlides > 1) {
+            startAutoSlide();
+        }
 
         // Pause auto sliding when mouse is over the slider
         const heroSection = document.querySelector('.hero-section');

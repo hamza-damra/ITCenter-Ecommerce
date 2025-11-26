@@ -588,30 +588,7 @@
         min-width: 0;
     }
 
-    /* Mobile Filter Toggle */
-    .mobile-filter-toggle {
-        display: none;
-        width: 100%;
-        padding: 1rem;
-        background: white;
-        border: 2px solid #2762f3;
-        color: #2762f3;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        margin-bottom: 1.5rem;
-        transition: all 0.3s;
-    }
 
-    .mobile-filter-toggle:hover {
-        background: #2762f3;
-        color: white;
-    }
-
-    .mobile-filter-toggle i {
-        margin-right: 0.5rem;
-    }
 
     /* Loading Indicator - Products Area */
     .products-loading-container {
@@ -1657,11 +1634,7 @@
             display: block;
         }
 
-        .mobile-filter-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+
 
         .search-results-info-box {
             flex-direction: column;
@@ -1769,15 +1742,8 @@
 
 <div class="products-section">
     <div class="container">
-        <!-- Mobile Filter Toggle Button -->
-        <button class="mobile-filter-toggle" onclick="toggleMobileFilters()">
-            <i class="fas fa-filter"></i>
-            <?php echo e(is_rtl() ? 'تصفية المنتجات' : 'Filter Products'); ?>
-
-        </button>
-
         <div class="products-container">
-            <!-- Filter Sidebar Component -->
+            <!-- Filter Sidebar Component (includes mobile toggle button) -->
             <?php if (isset($component)) { $__componentOriginalbe8e3a5154d26c68e645d9e6759b4422 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalbe8e3a5154d26c68e645d9e6759b4422 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-sidebar','data' => ['filters' => $availableFilters,'current' => request()->all()]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>

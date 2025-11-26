@@ -2994,9 +2994,72 @@
 </style>
 
 <!-- Hero Section - Slider -->
+@if(isset($banners) && $banners->count() > 0)
 <div class="hero-section">
     <div class="hero-slider">
-        <!-- Slide 1 - Banner.jpg -->
+        @foreach($banners as $index => $banner)
+        @if($banner->link)
+        <a href="{{ $banner->link }}" class="hero-slide {{ $index === 0 ? 'active' : '' }}" style="background-image: url('{{ $banner->image_url }}');">
+        @else
+        <div class="hero-slide {{ $index === 0 ? 'active' : '' }}" style="background-image: url('{{ $banner->image_url }}');">
+        @endif
+            <div class="hero-slide-content">
+                @if($banner->title)
+                <h1>{{ $banner->title }}</h1>
+                @endif
+                @if($banner->subtitle)
+                <p>{{ $banner->subtitle }}</p>
+                @endif
+                @if($banner->button_text || $banner->link)
+                <div class="hero-cta-buttons">
+                    @if($banner->link && $banner->button_text)
+                    <a href="{{ $banner->link }}" class="hero-cta-btn primary">
+                        <i class="fas fa-shopping-bag"></i>
+                        {{ $banner->button_text }}
+                    </a>
+                    @elseif($banner->link)
+                    <a href="{{ $banner->link }}" class="hero-cta-btn primary">
+                        <i class="fas fa-arrow-right"></i>
+                        {{ __t('messages.learn_more') ?? 'Learn More' }}
+                    </a>
+                    @endif
+                </div>
+                @endif
+            </div>
+        @if($banner->link)
+        </a>
+        @else
+        </div>
+        @endif
+        @endforeach
+
+        <!-- Navigation Arrows -->
+        @if($banners->count() > 1)
+        <div class="slider-arrow prev" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="slider-arrow next" onclick="changeSlide(1)">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="slider-dots">
+            @foreach($banners as $index => $banner)
+            <div class="slider-dot {{ $index === 0 ? 'active' : '' }}" onclick="goToSlide({{ $index }})"></div>
+            @endforeach
+        </div>
+        @endif
+        
+        <!-- Progress Bar -->
+        <div class="slider-progress">
+            <div class="slider-progress-bar" id="sliderProgressBar"></div>
+        </div>
+    </div>
+</div>
+@else
+<!-- Fallback: Static Hero Section when no banners exist -->
+<div class="hero-section">
+    <div class="hero-slider">
         <div class="hero-slide active" style="background-image: url('{{ asset('images/assets/Banner.jpg') }}');">
             <div class="hero-slide-content">
                 <h1>{{ is_rtl() ? 'أحدث التقنيات' : 'Latest Technology' }}</h1>
@@ -3013,57 +3076,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Slide 2 - wallpaper.png -->
-        <div class="hero-slide" style="background-image: url('{{ asset('images/assets/wallpaper.png') }}');">
-            <div class="hero-slide-content">
-                <h1>{{ is_rtl() ? 'عروض حصرية' : 'Exclusive Deals' }}</h1>
-                <p>{{ is_rtl() ? 'خصومات تصل إلى 50% على منتجات مختارة' : 'Up to 50% off on selected products' }}</p>
-                <div class="hero-cta-buttons">
-                    <a href="{{ route('products', ['filter' => 'sale']) }}" class="hero-cta-btn primary">
-                        <i class="fas fa-fire"></i>
-                        {{ is_rtl() ? 'اكتشف العروض' : 'Discover Deals' }}
-                    </a>
-                    <a href="{{ route('products', ['filter' => 'bestseller']) }}" class="hero-cta-btn secondary">
-                        <i class="fas fa-star"></i>
-                        {{ is_rtl() ? 'الأكثر مبيعاً' : 'Best Sellers' }}
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 3 - wallpaper2.png -->
-        <div class="hero-slide" style="background-image: url('{{ asset('images/assets/wallpaper2.png') }}');">
-            <div class="hero-slide-content">
-                <h1>{{ is_rtl() ? 'شحن مجاني' : 'Free Shipping' }}</h1>
-                <p>{{ is_rtl() ? 'شحن مجاني على جميع الطلبات فوق 200 شيكل' : 'Free shipping on all orders over ₪200' }}</p>
-                <div class="hero-cta-buttons">
-                    <a href="{{ route('products') }}" class="hero-cta-btn primary">
-                        <i class="fas fa-truck"></i>
-                        {{ is_rtl() ? 'ابدأ التسوق' : 'Start Shopping' }}
-                    </a>
-                    <a href="{{ url('/about') }}" class="hero-cta-btn secondary">
-                        <i class="fas fa-info-circle"></i>
-                        {{ is_rtl() ? 'المزيد' : 'Learn More' }}
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Navigation Arrows -->
-        <div class="slider-arrow prev" onclick="changeSlide(-1)">
-            <i class="fas fa-chevron-left"></i>
-        </div>
-        <div class="slider-arrow next" onclick="changeSlide(1)">
-            <i class="fas fa-chevron-right"></i>
-        </div>
-
-        <!-- Navigation Dots -->
-        <div class="slider-dots">
-            <div class="slider-dot active" onclick="goToSlide(0)"></div>
-            <div class="slider-dot" onclick="goToSlide(1)"></div>
-            <div class="slider-dot" onclick="goToSlide(2)"></div>
-        </div>
         
         <!-- Progress Bar -->
         <div class="slider-progress">
@@ -3071,6 +3083,7 @@
         </div>
     </div>
 </div>
+@endif
 
 <!-- Explore Our Products Section - Carousel Design -->
 <div class="explore-products-section">
@@ -4061,6 +4074,7 @@
 
         // Function to change slide
         window.changeSlide = function(direction) {
+            if (totalSlides <= 1) return; // No sliding needed for single banner
             clearInterval(slideInterval);
             clearInterval(progressInterval);
             currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
@@ -4070,6 +4084,7 @@
 
         // Function to go to specific slide
         window.goToSlide = function(slideIndex) {
+            if (totalSlides <= 1) return; // No sliding needed for single banner
             clearInterval(slideInterval);
             clearInterval(progressInterval);
             currentSlide = slideIndex;
@@ -4079,17 +4094,27 @@
 
         // Function to update slider display
         function updateSlider() {
+            if (totalSlides === 0) return; // No banners to display
+            
             slides.forEach((slide, index) => {
                 slide.classList.remove('active');
-                dots[index].classList.remove('active');
+            });
+            
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
             });
             
             // Reset progress bar
             if (progressBar) {
                 progressBar.style.width = '0%';
             }
-            slides[currentSlide].classList.add('active');
-            dots[currentSlide].classList.add('active');
+            
+            if (slides[currentSlide]) {
+                slides[currentSlide].classList.add('active');
+            }
+            if (dots[currentSlide]) {
+                dots[currentSlide].classList.add('active');
+            }
         }
 
         // Function to animate progress bar
@@ -4112,6 +4137,8 @@
 
         // Function to start auto sliding
         function startAutoSlide() {
+            if (totalSlides <= 1) return; // No auto-sliding for single banner
+            
             clearInterval(slideInterval);
             clearInterval(progressInterval);
             animateProgressBar();
@@ -4123,8 +4150,10 @@
             }, slideDuration);
         }
 
-        // Start auto sliding
-        startAutoSlide();
+        // Start auto sliding (only if multiple banners)
+        if (totalSlides > 1) {
+            startAutoSlide();
+        }
 
         // Pause auto sliding when mouse is over the slider
         const heroSection = document.querySelector('.hero-section');

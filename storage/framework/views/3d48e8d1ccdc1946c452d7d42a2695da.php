@@ -2992,9 +2992,74 @@
 </style>
 
 <!-- Hero Section - Slider -->
+<?php if(isset($banners) && $banners->count() > 0): ?>
 <div class="hero-section">
     <div class="hero-slider">
-        <!-- Slide 1 - Banner.jpg -->
+        <?php $__currentLoopData = $banners; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $banner): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <?php if($banner->link): ?>
+        <a href="<?php echo e($banner->link); ?>" class="hero-slide <?php echo e($index === 0 ? 'active' : ''); ?>" style="background-image: url('<?php echo e($banner->image_url); ?>');">
+        <?php else: ?>
+        <div class="hero-slide <?php echo e($index === 0 ? 'active' : ''); ?>" style="background-image: url('<?php echo e($banner->image_url); ?>');">
+        <?php endif; ?>
+            <div class="hero-slide-content">
+                <?php if($banner->title): ?>
+                <h1><?php echo e($banner->title); ?></h1>
+                <?php endif; ?>
+                <?php if($banner->subtitle): ?>
+                <p><?php echo e($banner->subtitle); ?></p>
+                <?php endif; ?>
+                <?php if($banner->button_text || $banner->link): ?>
+                <div class="hero-cta-buttons">
+                    <?php if($banner->link && $banner->button_text): ?>
+                    <a href="<?php echo e($banner->link); ?>" class="hero-cta-btn primary">
+                        <i class="fas fa-shopping-bag"></i>
+                        <?php echo e($banner->button_text); ?>
+
+                    </a>
+                    <?php elseif($banner->link): ?>
+                    <a href="<?php echo e($banner->link); ?>" class="hero-cta-btn primary">
+                        <i class="fas fa-arrow-right"></i>
+                        <?php echo e(__t('messages.learn_more') ?? 'Learn More'); ?>
+
+                    </a>
+                    <?php endif; ?>
+                </div>
+                <?php endif; ?>
+            </div>
+        <?php if($banner->link): ?>
+        </a>
+        <?php else: ?>
+        </div>
+        <?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+        <!-- Navigation Arrows -->
+        <?php if($banners->count() > 1): ?>
+        <div class="slider-arrow prev" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="slider-arrow next" onclick="changeSlide(1)">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="slider-dots">
+            <?php $__currentLoopData = $banners; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $banner): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div class="slider-dot <?php echo e($index === 0 ? 'active' : ''); ?>" onclick="goToSlide(<?php echo e($index); ?>)"></div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </div>
+        <?php endif; ?>
+        
+        <!-- Progress Bar -->
+        <div class="slider-progress">
+            <div class="slider-progress-bar" id="sliderProgressBar"></div>
+        </div>
+    </div>
+</div>
+<?php else: ?>
+<!-- Fallback: Static Hero Section when no banners exist -->
+<div class="hero-section">
+    <div class="hero-slider">
         <div class="hero-slide active" style="background-image: url('<?php echo e(asset('images/assets/Banner.jpg')); ?>');">
             <div class="hero-slide-content">
                 <h1><?php echo e(is_rtl() ? 'أحدث التقنيات' : 'Latest Technology'); ?></h1>
@@ -3013,61 +3078,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Slide 2 - wallpaper.png -->
-        <div class="hero-slide" style="background-image: url('<?php echo e(asset('images/assets/wallpaper.png')); ?>');">
-            <div class="hero-slide-content">
-                <h1><?php echo e(is_rtl() ? 'عروض حصرية' : 'Exclusive Deals'); ?></h1>
-                <p><?php echo e(is_rtl() ? 'خصومات تصل إلى 50% على منتجات مختارة' : 'Up to 50% off on selected products'); ?></p>
-                <div class="hero-cta-buttons">
-                    <a href="<?php echo e(route('products', ['filter' => 'sale'])); ?>" class="hero-cta-btn primary">
-                        <i class="fas fa-fire"></i>
-                        <?php echo e(is_rtl() ? 'اكتشف العروض' : 'Discover Deals'); ?>
-
-                    </a>
-                    <a href="<?php echo e(route('products', ['filter' => 'bestseller'])); ?>" class="hero-cta-btn secondary">
-                        <i class="fas fa-star"></i>
-                        <?php echo e(is_rtl() ? 'الأكثر مبيعاً' : 'Best Sellers'); ?>
-
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 3 - wallpaper2.png -->
-        <div class="hero-slide" style="background-image: url('<?php echo e(asset('images/assets/wallpaper2.png')); ?>');">
-            <div class="hero-slide-content">
-                <h1><?php echo e(is_rtl() ? 'شحن مجاني' : 'Free Shipping'); ?></h1>
-                <p><?php echo e(is_rtl() ? 'شحن مجاني على جميع الطلبات فوق 200 شيكل' : 'Free shipping on all orders over ₪200'); ?></p>
-                <div class="hero-cta-buttons">
-                    <a href="<?php echo e(route('products')); ?>" class="hero-cta-btn primary">
-                        <i class="fas fa-truck"></i>
-                        <?php echo e(is_rtl() ? 'ابدأ التسوق' : 'Start Shopping'); ?>
-
-                    </a>
-                    <a href="<?php echo e(url('/about')); ?>" class="hero-cta-btn secondary">
-                        <i class="fas fa-info-circle"></i>
-                        <?php echo e(is_rtl() ? 'المزيد' : 'Learn More'); ?>
-
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Navigation Arrows -->
-        <div class="slider-arrow prev" onclick="changeSlide(-1)">
-            <i class="fas fa-chevron-left"></i>
-        </div>
-        <div class="slider-arrow next" onclick="changeSlide(1)">
-            <i class="fas fa-chevron-right"></i>
-        </div>
-
-        <!-- Navigation Dots -->
-        <div class="slider-dots">
-            <div class="slider-dot active" onclick="goToSlide(0)"></div>
-            <div class="slider-dot" onclick="goToSlide(1)"></div>
-            <div class="slider-dot" onclick="goToSlide(2)"></div>
-        </div>
         
         <!-- Progress Bar -->
         <div class="slider-progress">
@@ -3075,6 +3085,7 @@
         </div>
     </div>
 </div>
+<?php endif; ?>
 
 <!-- Explore Our Products Section - Carousel Design -->
 <div class="explore-products-section">
@@ -4106,6 +4117,7 @@
 
         // Function to change slide
         window.changeSlide = function(direction) {
+            if (totalSlides <= 1) return; // No sliding needed for single banner
             clearInterval(slideInterval);
             clearInterval(progressInterval);
             currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
@@ -4115,6 +4127,7 @@
 
         // Function to go to specific slide
         window.goToSlide = function(slideIndex) {
+            if (totalSlides <= 1) return; // No sliding needed for single banner
             clearInterval(slideInterval);
             clearInterval(progressInterval);
             currentSlide = slideIndex;
@@ -4124,17 +4137,27 @@
 
         // Function to update slider display
         function updateSlider() {
+            if (totalSlides === 0) return; // No banners to display
+            
             slides.forEach((slide, index) => {
                 slide.classList.remove('active');
-                dots[index].classList.remove('active');
+            });
+            
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
             });
             
             // Reset progress bar
             if (progressBar) {
                 progressBar.style.width = '0%';
             }
-            slides[currentSlide].classList.add('active');
-            dots[currentSlide].classList.add('active');
+            
+            if (slides[currentSlide]) {
+                slides[currentSlide].classList.add('active');
+            }
+            if (dots[currentSlide]) {
+                dots[currentSlide].classList.add('active');
+            }
         }
 
         // Function to animate progress bar
@@ -4157,6 +4180,8 @@
 
         // Function to start auto sliding
         function startAutoSlide() {
+            if (totalSlides <= 1) return; // No auto-sliding for single banner
+            
             clearInterval(slideInterval);
             clearInterval(progressInterval);
             animateProgressBar();
@@ -4168,8 +4193,10 @@
             }, slideDuration);
         }
 
-        // Start auto sliding
-        startAutoSlide();
+        // Start auto sliding (only if multiple banners)
+        if (totalSlides > 1) {
+            startAutoSlide();
+        }
 
         // Pause auto sliding when mouse is over the slider
         const heroSection = document.querySelector('.hero-section');
