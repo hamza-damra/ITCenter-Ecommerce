@@ -485,13 +485,15 @@
             background-color: #fafafaff;
         }
 
+        /* Footer - Matching Header Style */
         footer {
-            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-            color: #ffffff;
+            background: #f5f5f5;
+            color: #1f2937;
             padding: 4rem 0 1.5rem;
             margin-top: 4rem;
             position: relative;
             overflow: hidden;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
         }
         
         footer::before {
@@ -500,8 +502,19 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+        }
+        
+        footer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
+            pointer-events: none;
         }
 
         .footer-content {
@@ -512,6 +525,8 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 3rem;
             margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
         }
         
         @media (max-width: 768px) {
@@ -530,7 +545,7 @@
 
         .footer-section h3 {
             margin-bottom: 1.5rem;
-            color: #ffffff;
+            color: #1f2937;
             font-weight: 700;
             font-size: 1.2rem;
             position: relative;
@@ -541,7 +556,7 @@
             content: '';
             position: absolute;
             bottom: 0;
-            left: 0;
+            <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 0;
             width: 50px;
             height: 3px;
             background: linear-gradient(90deg, #3b82f6, #2563eb);
@@ -549,38 +564,47 @@
         }
         
         .footer-section p {
-            color: rgba(255, 255, 255, 0.8);
+            color: #4b5563;
             line-height: 1.8;
             font-size: 0.95rem;
         }
 
         .footer-section ul {
             list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
         .footer-section ul li {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.85rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            transition: transform 0.2s ease;
+            gap: 0.6rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .footer-section ul li:hover {
-            transform: translateX(<?php echo e(is_rtl() ? '-5px' : '5px'); ?>);
+            transform: translateX(<?php echo e(is_rtl() ? '-8px' : '8px'); ?>);
         }
         
         .footer-section ul li i {
             color: #3b82f6;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             width: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .footer-section ul li:hover i {
+            transform: scale(1.2);
+            color: #2563eb;
         }
 
         .footer-section a {
-            color: rgba(255, 255, 255, 0.7);
+            color: #4b5563;
             text-decoration: none;
             transition: all 0.3s ease;
             position: relative;
+            font-weight: 500;
         }
 
         .footer-section a:hover {
@@ -591,28 +615,97 @@
             content: '';
             position: absolute;
             bottom: -2px;
-            left: 0;
+            <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 0;
             width: 0;
             height: 2px;
-            background: #3b82f6;
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
             transition: width 0.3s ease;
+            border-radius: 1px;
         }
         
         .footer-section a:hover::before {
             width: 100%;
         }
+        
+        /* Footer Social Icons */
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .footer-social a {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1f2937;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .footer-social a:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .footer-social a::before {
+            display: none;
+        }
 
         .footer-bottom {
             text-align: center;
             padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            color: #6b7280;
             font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
         }
         
         .footer-bottom p {
             margin: 0;
             letter-spacing: 0.5px;
+        }
+        
+        .footer-bottom a {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        
+        .footer-bottom a:hover {
+            color: #2563eb;
+        }
+        
+        /* Footer Logo */
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-logo img {
+            height: 45px;
+            width: auto;
+        }
+        
+        .footer-logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1f2937;
+            letter-spacing: -0.5px;
+        }
+        
+        .footer-logo-text span {
+            color: #3b82f6;
         }
 
         .social-icons {
@@ -1364,37 +1457,47 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>IT Center</h3>
+                <div class="footer-logo">
+                    <img src="<?php echo e(asset('images/assets/logo.png')); ?>" alt="IT Center Logo">
+                    <span class="footer-logo-text">IT <span>Center</span></span>
+                </div>
                 <p><?php echo e(__('messages.footer_description')); ?></p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
             </div>
             <div class="footer-section">
                 <h3><?php echo e(__('messages.quick_links')); ?></h3>
                 <ul>
-                    <li><a href="<?php echo e(route('home')); ?>"><?php echo e(__('messages.home')); ?></a></li>
-                    <li><a href="<?php echo e(route('products')); ?>"><?php echo e(__('messages.products')); ?></a></li>
-                    <li><a href="<?php echo e(route('about')); ?>"><?php echo e(__('messages.about')); ?></a></li>
+                    <li><i class="fas fa-chevron-<?php echo e(is_rtl() ? 'left' : 'right'); ?>"></i><a href="<?php echo e(route('home')); ?>"><?php echo e(__('messages.home')); ?></a></li>
+                    <li><i class="fas fa-chevron-<?php echo e(is_rtl() ? 'left' : 'right'); ?>"></i><a href="<?php echo e(route('products')); ?>"><?php echo e(__('messages.products')); ?></a></li>
+                    <li><i class="fas fa-chevron-<?php echo e(is_rtl() ? 'left' : 'right'); ?>"></i><a href="<?php echo e(route('about')); ?>"><?php echo e(__('messages.about')); ?></a></li>
+                    <li><i class="fas fa-chevron-<?php echo e(is_rtl() ? 'left' : 'right'); ?>"></i><a href="<?php echo e(route('contact')); ?>"><?php echo e(__('messages.contact_us')); ?></a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h3><?php echo e(__('messages.footer_categories')); ?></h3>
                 <ul>
-                    <li><a href="#"><?php echo e(__('messages.laptops')); ?></a></li>
-                    <li><a href="#"><?php echo e(__('messages.desktops')); ?></a></li>
-                    <li><a href="#"><?php echo e(__('messages.accessories')); ?></a></li>
-                    <li><a href="#"><?php echo e(__('messages.components')); ?></a></li>
+                    <li><i class="fas fa-chevron-<?php echo e(is_rtl() ? 'left' : 'right'); ?>"></i><a href="#"><?php echo e(__('messages.laptops')); ?></a></li>
+                    <li><i class="fas fa-chevron-<?php echo e(is_rtl() ? 'left' : 'right'); ?>"></i><a href="#"><?php echo e(__('messages.desktops')); ?></a></li>
+                    <li><i class="fas fa-chevron-<?php echo e(is_rtl() ? 'left' : 'right'); ?>"></i><a href="#"><?php echo e(__('messages.accessories')); ?></a></li>
+                    <li><i class="fas fa-chevron-<?php echo e(is_rtl() ? 'left' : 'right'); ?>"></i><a href="#"><?php echo e(__('messages.components')); ?></a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h3><?php echo e(__('messages.contact_us')); ?></h3>
                 <ul>
-                    <li><i class="fas fa-phone"></i>&nbsp;&nbsp;0595910045</li>
-                    <li><i class="fas fa-envelope"></i>&nbsp;&nbsp;support@itcenter.vip</li>
-                    <li><i class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;<?php echo e(__('messages.location')); ?></li>
+                    <li><i class="fas fa-phone"></i><a href="tel:0595910045">0595910045</a></li>
+                    <li><i class="fas fa-envelope"></i><a href="mailto:support@itcenter.vip">support@itcenter.vip</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i><span style="color: #4b5563;"><?php echo e(__('messages.location')); ?></span></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; <?php echo e(date('Y')); ?> IT Center. <?php echo e(__('messages.all_rights_reserved')); ?></p>
+            <p>&copy; <?php echo e(date('Y')); ?> <a href="<?php echo e(route('home')); ?>">IT Center</a>. <?php echo e(__('messages.all_rights_reserved')); ?></p>
         </div>
     </footer>
     <?php endif; ?>
