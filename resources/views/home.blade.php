@@ -3599,34 +3599,38 @@
 </div>
 
 {{-- Strong Offers Banner Section --}}
+@if(isset($promotionalAds['left']))
 <section class="home-section gift-ideas-section strong-offers-section" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
     <div class="container">
         <div class="gift-ideas-grid">
-            {{-- Banner appears on the LEFT side for both RTL and LTR --}}
-            {{-- Banner (spans 2 columns) --}}
+            {{-- Dynamic Promotional Ad - Left Position --}}
             <div class="gift-ideas-item gift-banner-item strong-offers-banner">
-                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='{{ route('products', ['strong_offers' => 1]) }}'">
+                @if($promotionalAds['left']->link)
+                <a href="{{ $promotionalAds['left']->link }}" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('{{ $promotionalAds['left']->image_url }}'); cursor: pointer; display: flex; text-decoration: none;">
                     {{-- Text and Button Group --}}
                     <div class="gift-banner-content">
                         <h3 class="gift-banner-title">{{ __t('messages.strong_offers.headline') }}</h3>
                         <p>
                             {{ __t('messages.strong_offers.desc') }}<br>
-                            @if(app()->getLocale() === 'ar')
-                                {{ __t('messages.strong_offers.discount') }}<br>
-                                {{ __t('messages.strong_offers.code') }}
-                            @else
-                                {{ __t('messages.strong_offers.discount') }}<br>
-                                {{ __t('messages.strong_offers.code') }}
-                            @endif
+                            {{ __t('messages.strong_offers.discount') }}<br>
+                            {{ __t('messages.strong_offers.code') }}
                         </p>
-                        <a class="gift-cta" href="{{ route('products', ['strong_offers' => 1]) }}" onclick="event.stopPropagation();">{{ __t('messages.strong_offers.cta') }}</a>
+                        <span class="gift-cta">{{ __t('messages.strong_offers.cta') }}</span>
                     </div>
-                    
-                    {{-- Image --}}
-                    <div class="gift-banner-image">
-                        <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/daily-deal/daily-deals.png.webp?v=1.0" alt="{{ __t('messages.strong_offers.headline') }}" loading="lazy">
+                </a>
+                @else
+                <div class="product-item-section gift-idea-banner" style="background-image: url('{{ $promotionalAds['left']->image_url }}');">
+                    {{-- Text and Button Group --}}
+                    <div class="gift-banner-content">
+                        <h3 class="gift-banner-title">{{ __t('messages.strong_offers.headline') }}</h3>
+                        <p>
+                            {{ __t('messages.strong_offers.desc') }}<br>
+                            {{ __t('messages.strong_offers.discount') }}<br>
+                            {{ __t('messages.strong_offers.code') }}
+                        </p>
                     </div>
                 </div>
+                @endif
             </div>
 
             {{-- Product 1 --}}
@@ -3733,6 +3737,7 @@
         </div>
     </div>
 </section>
+@endif
 
 <!-- Main Content Container -->
 <div class="container">
@@ -3783,26 +3788,32 @@
 <!-- End Main Content Container -->
 
 {{-- Gift Ideas Section --}}
+@if(isset($promotionalAds['right']))
 <section class="home-section gift-ideas-section" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
     <div class="container">
         <div class="gift-ideas-grid">
             {{-- RTL: Banner first (on the right), then products --}}
             @if(is_rtl())
-                {{-- Banner (spans 2 columns) - appears on right in RTL --}}
+                {{-- Dynamic Promotional Ad - Right Position (RTL) --}}
                 <div class="gift-ideas-item gift-banner-item">
-                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='{{ route('products', ['filter' => 'gifts']) }}'">
+                    @if($promotionalAds['right']->link)
+                    <a href="{{ $promotionalAds['right']->link }}" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('{{ $promotionalAds['right']->image_url }}'); cursor: pointer; display: flex; text-decoration: none;">
                         {{-- Text and Button Group --}}
                         <div class="gift-banner-content">
                             <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
                             <p>{{ __t('messages.gift_ideas.desc') }}</p>
-                            <a class="gift-cta" href="{{ route('products', ['filter' => 'gifts']) }}" onclick="event.stopPropagation();">{{ __t('messages.gift_ideas.cta') }}</a>
+                            <span class="gift-cta">{{ __t('messages.gift_ideas.cta') }}</span>
                         </div>
-                        
-                        {{-- Image --}}
-                        <div class="gift-banner-image">
-                            <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="{{ __t('messages.gift_ideas.headline') }}" loading="lazy">
+                    </a>
+                    @else
+                    <div class="product-item-section gift-idea-banner" style="background-image: url('{{ $promotionalAds['right']->image_url }}');">
+                        {{-- Text and Button Group --}}
+                        <div class="gift-banner-content">
+                            <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
+                            <p>{{ __t('messages.gift_ideas.desc') }}</p>
                         </div>
                     </div>
+                    @endif
                 </div>
             @endif
 
@@ -3910,26 +3921,32 @@
 
             {{-- LTR: Banner last (on the left) --}}
             @if(!is_rtl())
-                {{-- Banner (spans 2 columns) - appears on left in LTR --}}
+                {{-- Dynamic Promotional Ad - Right Position (LTR) --}}
                 <div class="gift-ideas-item gift-banner-item">
-                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='{{ route('products', ['filter' => 'gifts']) }}'">
+                    @if($promotionalAds['right']->link)
+                    <a href="{{ $promotionalAds['right']->link }}" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('{{ $promotionalAds['right']->image_url }}'); cursor: pointer; display: flex; text-decoration: none;">
                         {{-- Text and Button Group --}}
                         <div class="gift-banner-content">
                             <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
                             <p>{{ __t('messages.gift_ideas.desc') }}</p>
-                            <a class="gift-cta" href="{{ route('products', ['filter' => 'gifts']) }}" onclick="event.stopPropagation();">{{ __t('messages.gift_ideas.cta') }}</a>
+                            <span class="gift-cta">{{ __t('messages.gift_ideas.cta') }}</span>
                         </div>
-                        
-                        {{-- Image --}}
-                        <div class="gift-banner-image">
-                            <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="{{ __t('messages.gift_ideas.headline') }}" loading="lazy">
+                    </a>
+                    @else
+                    <div class="product-item-section gift-idea-banner" style="background-image: url('{{ $promotionalAds['right']->image_url }}');">
+                        {{-- Text and Button Group --}}
+                        <div class="gift-banner-content">
+                            <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
+                            <p>{{ __t('messages.gift_ideas.desc') }}</p>
                         </div>
                     </div>
+                    @endif
                 </div>
             @endif
         </div>
     </div>
 </section>
+@endif
 
 <!-- Continue Main Content Container -->
 <div class="container">

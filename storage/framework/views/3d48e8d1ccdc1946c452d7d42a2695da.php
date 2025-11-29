@@ -3602,36 +3602,40 @@
 </div>
 
 
+<?php if(isset($promotionalAds['left'])): ?>
 <section class="home-section gift-ideas-section strong-offers-section" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>">
     <div class="container">
         <div class="gift-ideas-grid">
             
-            
             <div class="gift-ideas-item gift-banner-item strong-offers-banner">
-                <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='<?php echo e(route('products', ['strong_offers' => 1])); ?>'">
+                <?php if($promotionalAds['left']->link): ?>
+                <a href="<?php echo e($promotionalAds['left']->link); ?>" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('<?php echo e($promotionalAds['left']->image_url); ?>'); cursor: pointer; display: flex; text-decoration: none;">
                     
                     <div class="gift-banner-content">
                         <h3 class="gift-banner-title"><?php echo e(__t('messages.strong_offers.headline')); ?></h3>
                         <p>
                             <?php echo e(__t('messages.strong_offers.desc')); ?><br>
-                            <?php if(app()->getLocale() === 'ar'): ?>
-                                <?php echo e(__t('messages.strong_offers.discount')); ?><br>
-                                <?php echo e(__t('messages.strong_offers.code')); ?>
+                            <?php echo e(__t('messages.strong_offers.discount')); ?><br>
+                            <?php echo e(__t('messages.strong_offers.code')); ?>
 
-                            <?php else: ?>
-                                <?php echo e(__t('messages.strong_offers.discount')); ?><br>
-                                <?php echo e(__t('messages.strong_offers.code')); ?>
-
-                            <?php endif; ?>
                         </p>
-                        <a class="gift-cta" href="<?php echo e(route('products', ['strong_offers' => 1])); ?>" onclick="event.stopPropagation();"><?php echo e(__t('messages.strong_offers.cta')); ?></a>
+                        <span class="gift-cta"><?php echo e(__t('messages.strong_offers.cta')); ?></span>
                     </div>
+                </a>
+                <?php else: ?>
+                <div class="product-item-section gift-idea-banner" style="background-image: url('<?php echo e($promotionalAds['left']->image_url); ?>');">
                     
-                    
-                    <div class="gift-banner-image">
-                        <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/daily-deal/daily-deals.png.webp?v=1.0" alt="<?php echo e(__t('messages.strong_offers.headline')); ?>" loading="lazy">
+                    <div class="gift-banner-content">
+                        <h3 class="gift-banner-title"><?php echo e(__t('messages.strong_offers.headline')); ?></h3>
+                        <p>
+                            <?php echo e(__t('messages.strong_offers.desc')); ?><br>
+                            <?php echo e(__t('messages.strong_offers.discount')); ?><br>
+                            <?php echo e(__t('messages.strong_offers.code')); ?>
+
+                        </p>
                     </div>
                 </div>
+                <?php endif; ?>
             </div>
 
             
@@ -3738,6 +3742,7 @@
         </div>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- Main Content Container -->
 <div class="container">
@@ -3816,6 +3821,7 @@
 <!-- End Main Content Container -->
 
 
+<?php if(isset($promotionalAds['right'])): ?>
 <section class="home-section gift-ideas-section" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>">
     <div class="container">
         <div class="gift-ideas-grid">
@@ -3823,19 +3829,24 @@
             <?php if(is_rtl()): ?>
                 
                 <div class="gift-ideas-item gift-banner-item">
-                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='<?php echo e(route('products', ['filter' => 'gifts'])); ?>'">
+                    <?php if($promotionalAds['right']->link): ?>
+                    <a href="<?php echo e($promotionalAds['right']->link); ?>" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>'); cursor: pointer; display: flex; text-decoration: none;">
                         
                         <div class="gift-banner-content">
                             <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
                             <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
-                            <a class="gift-cta" href="<?php echo e(route('products', ['filter' => 'gifts'])); ?>" onclick="event.stopPropagation();"><?php echo e(__t('messages.gift_ideas.cta')); ?></a>
+                            <span class="gift-cta"><?php echo e(__t('messages.gift_ideas.cta')); ?></span>
                         </div>
+                    </a>
+                    <?php else: ?>
+                    <div class="product-item-section gift-idea-banner" style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>');">
                         
-                        
-                        <div class="gift-banner-image">
-                            <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="<?php echo e(__t('messages.gift_ideas.headline')); ?>" loading="lazy">
+                        <div class="gift-banner-content">
+                            <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
+                            <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
                         </div>
                     </div>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
 
@@ -3945,24 +3956,30 @@
             <?php if(!is_rtl()): ?>
                 
                 <div class="gift-ideas-item gift-banner-item">
-                    <div class="product-item-section gift-idea-banner" style="background-image: url(https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.jpg); cursor: pointer;" onclick="window.location.href='<?php echo e(route('products', ['filter' => 'gifts'])); ?>'">
+                    <?php if($promotionalAds['right']->link): ?>
+                    <a href="<?php echo e($promotionalAds['right']->link); ?>" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>'); cursor: pointer; display: flex; text-decoration: none;">
                         
                         <div class="gift-banner-content">
                             <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
                             <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
-                            <a class="gift-cta" href="<?php echo e(route('products', ['filter' => 'gifts'])); ?>" onclick="event.stopPropagation();"><?php echo e(__t('messages.gift_ideas.cta')); ?></a>
+                            <span class="gift-cta"><?php echo e(__t('messages.gift_ideas.cta')); ?></span>
                         </div>
+                    </a>
+                    <?php else: ?>
+                    <div class="product-item-section gift-idea-banner" style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>');">
                         
-                        
-                        <div class="gift-banner-image">
-                            <img class="gift-art" src="https://d2ati23fc66y9j.cloudfront.net/ubuycom/home_v5/gift-ideas/international-gifting-store.png.webp?v=1.0" alt="<?php echo e(__t('messages.gift_ideas.headline')); ?>" loading="lazy">
+                        <div class="gift-banner-content">
+                            <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
+                            <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
                         </div>
                     </div>
+                    <?php endif; ?>
                 </div>
             <?php endif; ?>
         </div>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- Continue Main Content Container -->
 <div class="container">

@@ -992,6 +992,7 @@
                 <li><a href="{{ route('admin.contacts.index') }}" class="{{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}"><i class="fas fa-envelope"></i> {{ __('messages.contact_messages') }}</a></li>
                 <li><a href="{{ route('admin.promotional-offers.index') }}" class="{{ request()->routeIs('admin.promotional-offers.*') ? 'active' : '' }}"><i class="fas fa-bullhorn"></i> {{ __('messages.promotional_management') }}</a></li>
                 <li><a href="{{ route('admin.banners.index') }}" class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}"><i class="fas fa-images"></i> {{ __('messages.banner_management') }}</a></li>
+                <li><a href="{{ route('admin.promotional-ads.index') }}" class="{{ request()->routeIs('admin.promotional-ads.*') ? 'active' : '' }}"><i class="fas fa-ad"></i> {{ __('messages.promotional_ads') }}</a></li>
                 <li><a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><i class="fas fa-box"></i> {{ __('messages.products') }}</a></li>
                 <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-folder"></i> {{ __('messages.categories') }}</a></li>
                 <li><a href="{{ route('admin.brands.index') }}" class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}"><i class="fas fa-tag"></i> {{ __('messages.brands') }}</a></li>

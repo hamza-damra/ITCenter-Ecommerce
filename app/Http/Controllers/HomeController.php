@@ -9,6 +9,7 @@ use App\Models\Offer;
 use App\Models\PromotionalOffer;
 use App\Models\CartItem;
 use App\Models\Banner;
+use App\Models\PromotionalAd;
 use App\Services\CartCacheService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -131,6 +132,13 @@ class HomeController extends Controller
                 ->ordered()
                 ->get();
 
+            // Promotional Ads - Active ads grouped by position (left/right)
+            // Uses the most recently updated active ad for each position
+            $promotionalAds = PromotionalAd::active()
+                ->orderBy('updated_at', 'desc')
+                ->get()
+                ->keyBy('position');
+
             return [
                 'featuredProducts' => $featuredProducts,
                 'newProducts' => $newProducts,
@@ -144,6 +152,7 @@ class HomeController extends Controller
                 'specialOfferProducts' => $specialOfferProducts,
                 'giftIdeas' => $giftIdeas,
                 'banners' => $banners,
+                'promotionalAds' => $promotionalAds,
             ];
         });
 

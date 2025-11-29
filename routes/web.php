@@ -158,6 +158,9 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Banners
     Route::resource('banners', App\Http\Controllers\Admin\BannerController::class);
 
+    // Promotional Ads
+    Route::resource('promotional-ads', App\Http\Controllers\Admin\PromotionalAdController::class);
+
     // Database Backup Management
     Route::get('/backup', [App\Http\Controllers\Admin\BackupController::class, 'index'])->name('backup.index');
     Route::post('/backup/create', [App\Http\Controllers\Admin\BackupController::class, 'create'])->name('backup.create');
