@@ -3606,29 +3606,10 @@
             {{-- Dynamic Promotional Ad - Left Position --}}
             <div class="gift-ideas-item gift-banner-item strong-offers-banner">
                 @if($promotionalAds['left']->link)
-                <a href="{{ $promotionalAds['left']->link }}" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('{{ $promotionalAds['left']->image_url }}'); cursor: pointer; display: flex; text-decoration: none;">
-                    {{-- Text and Button Group --}}
-                    <div class="gift-banner-content">
-                        <h3 class="gift-banner-title">{{ __t('messages.strong_offers.headline') }}</h3>
-                        <p>
-                            {{ __t('messages.strong_offers.desc') }}<br>
-                            {{ __t('messages.strong_offers.discount') }}<br>
-                            {{ __t('messages.strong_offers.code') }}
-                        </p>
-                        <span class="gift-cta">{{ __t('messages.strong_offers.cta') }}</span>
-                    </div>
+                <a href="{{ $promotionalAds['left']->link }}" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('{{ $promotionalAds['left']->image_url }}'); cursor: pointer; display: block; text-decoration: none;">
                 </a>
                 @else
                 <div class="product-item-section gift-idea-banner" style="background-image: url('{{ $promotionalAds['left']->image_url }}');">
-                    {{-- Text and Button Group --}}
-                    <div class="gift-banner-content">
-                        <h3 class="gift-banner-title">{{ __t('messages.strong_offers.headline') }}</h3>
-                        <p>
-                            {{ __t('messages.strong_offers.desc') }}<br>
-                            {{ __t('messages.strong_offers.discount') }}<br>
-                            {{ __t('messages.strong_offers.code') }}
-                        </p>
-                    </div>
                 </div>
                 @endif
             </div>
@@ -3797,21 +3778,10 @@
                 {{-- Dynamic Promotional Ad - Right Position (RTL) --}}
                 <div class="gift-ideas-item gift-banner-item">
                     @if($promotionalAds['right']->link)
-                    <a href="{{ $promotionalAds['right']->link }}" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('{{ $promotionalAds['right']->image_url }}'); cursor: pointer; display: flex; text-decoration: none;">
-                        {{-- Text and Button Group --}}
-                        <div class="gift-banner-content">
-                            <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
-                            <p>{{ __t('messages.gift_ideas.desc') }}</p>
-                            <span class="gift-cta">{{ __t('messages.gift_ideas.cta') }}</span>
-                        </div>
+                    <a href="{{ $promotionalAds['right']->link }}" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('{{ $promotionalAds['right']->image_url }}'); cursor: pointer; display: block; text-decoration: none;">
                     </a>
                     @else
                     <div class="product-item-section gift-idea-banner" style="background-image: url('{{ $promotionalAds['right']->image_url }}');">
-                        {{-- Text and Button Group --}}
-                        <div class="gift-banner-content">
-                            <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
-                            <p>{{ __t('messages.gift_ideas.desc') }}</p>
-                        </div>
                     </div>
                     @endif
                 </div>
@@ -3924,21 +3894,10 @@
                 {{-- Dynamic Promotional Ad - Right Position (LTR) --}}
                 <div class="gift-ideas-item gift-banner-item">
                     @if($promotionalAds['right']->link)
-                    <a href="{{ $promotionalAds['right']->link }}" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('{{ $promotionalAds['right']->image_url }}'); cursor: pointer; display: flex; text-decoration: none;">
-                        {{-- Text and Button Group --}}
-                        <div class="gift-banner-content">
-                            <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
-                            <p>{{ __t('messages.gift_ideas.desc') }}</p>
-                            <span class="gift-cta">{{ __t('messages.gift_ideas.cta') }}</span>
-                        </div>
+                    <a href="{{ $promotionalAds['right']->link }}" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('{{ $promotionalAds['right']->image_url }}'); cursor: pointer; display: block; text-decoration: none;">
                     </a>
                     @else
                     <div class="product-item-section gift-idea-banner" style="background-image: url('{{ $promotionalAds['right']->image_url }}');">
-                        {{-- Text and Button Group --}}
-                        <div class="gift-banner-content">
-                            <h3 class="gift-banner-title">{{ __t('messages.gift_ideas.headline') }}</h3>
-                            <p>{{ __t('messages.gift_ideas.desc') }}</p>
-                        </div>
                     </div>
                     @endif
                 </div>

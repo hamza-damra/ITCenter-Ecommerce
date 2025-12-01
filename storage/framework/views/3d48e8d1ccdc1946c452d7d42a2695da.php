@@ -3609,31 +3609,10 @@
             
             <div class="gift-ideas-item gift-banner-item strong-offers-banner">
                 <?php if($promotionalAds['left']->link): ?>
-                <a href="<?php echo e($promotionalAds['left']->link); ?>" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('<?php echo e($promotionalAds['left']->image_url); ?>'); cursor: pointer; display: flex; text-decoration: none;">
-                    
-                    <div class="gift-banner-content">
-                        <h3 class="gift-banner-title"><?php echo e(__t('messages.strong_offers.headline')); ?></h3>
-                        <p>
-                            <?php echo e(__t('messages.strong_offers.desc')); ?><br>
-                            <?php echo e(__t('messages.strong_offers.discount')); ?><br>
-                            <?php echo e(__t('messages.strong_offers.code')); ?>
-
-                        </p>
-                        <span class="gift-cta"><?php echo e(__t('messages.strong_offers.cta')); ?></span>
-                    </div>
+                <a href="<?php echo e($promotionalAds['left']->link); ?>" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('<?php echo e($promotionalAds['left']->image_url); ?>'); cursor: pointer; display: block; text-decoration: none;">
                 </a>
                 <?php else: ?>
                 <div class="product-item-section gift-idea-banner" style="background-image: url('<?php echo e($promotionalAds['left']->image_url); ?>');">
-                    
-                    <div class="gift-banner-content">
-                        <h3 class="gift-banner-title"><?php echo e(__t('messages.strong_offers.headline')); ?></h3>
-                        <p>
-                            <?php echo e(__t('messages.strong_offers.desc')); ?><br>
-                            <?php echo e(__t('messages.strong_offers.discount')); ?><br>
-                            <?php echo e(__t('messages.strong_offers.code')); ?>
-
-                        </p>
-                    </div>
                 </div>
                 <?php endif; ?>
             </div>
@@ -3830,21 +3809,10 @@
                 
                 <div class="gift-ideas-item gift-banner-item">
                     <?php if($promotionalAds['right']->link): ?>
-                    <a href="<?php echo e($promotionalAds['right']->link); ?>" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>'); cursor: pointer; display: flex; text-decoration: none;">
-                        
-                        <div class="gift-banner-content">
-                            <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
-                            <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
-                            <span class="gift-cta"><?php echo e(__t('messages.gift_ideas.cta')); ?></span>
-                        </div>
+                    <a href="<?php echo e($promotionalAds['right']->link); ?>" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>'); cursor: pointer; display: block; text-decoration: none;">
                     </a>
                     <?php else: ?>
                     <div class="product-item-section gift-idea-banner" style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>');">
-                        
-                        <div class="gift-banner-content">
-                            <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
-                            <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
-                        </div>
                     </div>
                     <?php endif; ?>
                 </div>
@@ -3957,21 +3925,10 @@
                 
                 <div class="gift-ideas-item gift-banner-item">
                     <?php if($promotionalAds['right']->link): ?>
-                    <a href="<?php echo e($promotionalAds['right']->link); ?>" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>'); cursor: pointer; display: flex; text-decoration: none;">
-                        
-                        <div class="gift-banner-content">
-                            <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
-                            <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
-                            <span class="gift-cta"><?php echo e(__t('messages.gift_ideas.cta')); ?></span>
-                        </div>
+                    <a href="<?php echo e($promotionalAds['right']->link); ?>" class="product-item-section gift-idea-banner promotional-ad-link" style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>'); cursor: pointer; display: block; text-decoration: none;">
                     </a>
                     <?php else: ?>
                     <div class="product-item-section gift-idea-banner" style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>');">
-                        
-                        <div class="gift-banner-content">
-                            <h3 class="gift-banner-title"><?php echo e(__t('messages.gift_ideas.headline')); ?></h3>
-                            <p><?php echo e(__t('messages.gift_ideas.desc')); ?></p>
-                        </div>
                     </div>
                     <?php endif; ?>
                 </div>
