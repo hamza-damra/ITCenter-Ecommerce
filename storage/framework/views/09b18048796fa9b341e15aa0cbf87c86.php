@@ -503,7 +503,7 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+            background: linear-gradient(90deg, #60a5fa 0%, #3b82f6 50%, #60a5fa 100%);
         }
         
         footer::after {
@@ -1459,7 +1459,6 @@
             <div class="footer-section">
                 <div class="footer-logo">
                     <img src="<?php echo e(asset('images/assets/logo.png')); ?>" alt="IT Center Logo">
-                    <span class="footer-logo-text">IT <span>Center</span></span>
                 </div>
                 <p><?php echo e(__('messages.footer_description')); ?></p>
                 <div class="footer-social">
