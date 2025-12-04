@@ -3112,8 +3112,8 @@
                 <i class="fas fa-chevron-left"></i>
             </button>
 
-            <!-- Carousel Track Container -->
-            <div class="category-carousel-container">
+            <!-- Carousel Track Container - Always LTR for proper sliding -->
+            <div class="category-carousel-container" dir="ltr">
                 <div class="category-carousel-track" id="categoryCarouselTrack">
                     <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <a href="<?php echo e(route('products', ['category' => $category->slug])); ?>" class="category-carousel-card">
@@ -3128,7 +3128,7 @@
                                 <img src="https://via.placeholder.com/300x300/f3f4f6/9ca3af?text=<?php echo e(urlencode($category->name)); ?>" alt="<?php echo e($category->name); ?>" loading="lazy">
                             <?php endif; ?>
                         </div>
-                        <div class="category-carousel-name"><?php echo e($category->name); ?></div>
+                        <div class="category-carousel-name" dir="auto"><?php echo e($category->name); ?></div>
                     </a>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>

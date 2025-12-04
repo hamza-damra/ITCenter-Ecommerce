@@ -3110,8 +3110,8 @@
                 <i class="fas fa-chevron-left"></i>
             </button>
 
-            <!-- Carousel Track Container -->
-            <div class="category-carousel-container">
+            <!-- Carousel Track Container - Always LTR for proper sliding -->
+            <div class="category-carousel-container" dir="ltr">
                 <div class="category-carousel-track" id="categoryCarouselTrack">
                     @foreach($categories as $category)
                     <a href="{{ route('products', ['category' => $category->slug]) }}" class="category-carousel-card">
@@ -3126,7 +3126,7 @@
                                 <img src="https://via.placeholder.com/300x300/f3f4f6/9ca3af?text={{ urlencode($category->name) }}" alt="{{ $category->name }}" loading="lazy">
                             @endif
                         </div>
-                        <div class="category-carousel-name">{{ $category->name }}</div>
+                        <div class="category-carousel-name" dir="auto">{{ $category->name }}</div>
                     </a>
                     @endforeach
                 </div>
