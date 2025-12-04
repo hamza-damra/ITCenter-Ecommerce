@@ -764,7 +764,7 @@
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-radius: 20px;
-        overflow: hidden;
+        overflow: visible;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
@@ -930,7 +930,7 @@
     }
 
     .product-info {
-        padding: 1.25rem 1.25rem 1.25rem 1.25rem;
+        padding: 1.25rem 1.25rem 1.75rem 1.25rem;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
@@ -978,6 +978,14 @@
         margin-top: auto;
         padding-top: 0.75rem;
         border-top: 1px solid rgba(0, 0, 0, 0.06);
+        position: relative;
+    }
+    
+    /* Position the add-to-cart button at bottom-right corner, half outside the card */
+    .product-footer .add-to-cart-icon {
+        position: absolute;
+        bottom: -22px;
+        right: 16px;
     }
 
     .product-price {
@@ -1740,6 +1748,7 @@
             font-size: 0.95rem;
         }
     }
+    
 </style>
 
 <div class="products-section">
