@@ -92,6 +92,7 @@ unset($__defined_vars, $__key, $__value); ?>
 
     .category-nav-list {
         display: flex;
+        justify-content: center;
         list-style: none;
         margin: 0;
         padding: 0;

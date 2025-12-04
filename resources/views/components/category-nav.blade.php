@@ -63,6 +63,7 @@
 
     .category-nav-list {
         display: flex;
+        justify-content: center;
         list-style: none;
         margin: 0;
         padding: 0;
