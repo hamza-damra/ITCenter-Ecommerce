@@ -1348,4 +1348,14 @@ return [
     'ad_active' => 'نشط',
     'ad_active_help' => 'عرض هذا الإعلان في الصفحة الرئيسية',
     'updated_at' => 'آخر تحديث',
+    
+    // Category Display Mode
+    'display_mode' => 'وضع العرض',
+    'carousel' => 'كاروسيل',
+    'nav_bar' => 'شريط التنقل',
+    'carousel_description' => 'عرض في كاروسيل الصور',
+    'nav_bar_description' => 'عرض في شريط التنقل',
+    'display_mode_help' => 'اختر كيف تظهر هذه الفئة في الصفحة الرئيسية',
+    'all_display_modes' => 'جميع أوضاع العرض',
+    'inherits_parent' => 'يرث من الأب',
 ];

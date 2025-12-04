@@ -206,6 +206,27 @@
                         @enderror
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="display_mode" class="form-label">
+                        {{ __('messages.display_mode') }}
+                        <span class="required">*</span>
+                    </label>
+                    <select id="display_mode" name="display_mode" class="form-control @error('display_mode') is-invalid @enderror">
+                        <option value="carousel" {{ old('display_mode', $category->display_mode) == 'carousel' ? 'selected' : '' }}>
+                            {{ __('messages.carousel') }} - {{ __('messages.carousel_description') }}
+                        </option>
+                        <option value="nav" {{ old('display_mode', $category->display_mode) == 'nav' ? 'selected' : '' }}>
+                            {{ __('messages.nav_bar') }} - {{ __('messages.nav_bar_description') }}
+                        </option>
+                    </select>
+                    <p class="form-text">
+                        <i class="fas fa-info-circle"></i> {{ __('messages.display_mode_help') }}
+                    </p>
+                    @error('display_mode')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
         </div>
 

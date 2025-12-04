@@ -40,17 +40,19 @@ class AppServiceProvider extends ServiceProvider
             return str_replace(':attribute', $attribute, 'The selected :attribute is invalid.');
         });
 
-        // Share categories with all views for navigation
+        // Share nav categories with all views for navigation bar
+        // Only categories with display_mode 'nav' appear in the navigation bar
         view()->composer('*', function ($view) {
-            $categories = \App\Models\Category::with(['children' => function ($query) {
+            $navigationCategories = \App\Models\Category::with(['children' => function ($query) {
                 $query->where('is_active', true)->orderBy('position');
             }])
             ->whereNull('parent_id')
             ->where('is_active', true)
+            ->where('display_mode', 'nav')
             ->orderBy('position')
             ->get();
             
-            $view->with('navigationCategories', $categories);
+            $view->with('navigationCategories', $navigationCategories);
         });
     }
 }

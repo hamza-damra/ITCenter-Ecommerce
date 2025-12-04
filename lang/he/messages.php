@@ -1242,4 +1242,14 @@ return [
     'ad_active' => 'פעיל',
     'ad_active_help' => 'הצג פרסומת זו בדף הבית',
     'updated_at' => 'עודכן ב',
+    
+    // Category Display Mode
+    'display_mode' => 'מצב תצוגה',
+    'carousel' => 'קרוסלה',
+    'nav_bar' => 'סרגל ניווט',
+    'carousel_description' => 'הצג בקרוסלת תמונות',
+    'nav_bar_description' => 'הצג בסרגל הניווט',
+    'display_mode_help' => 'בחר כיצד קטגוריה זו תופיע בדף הבית',
+    'all_display_modes' => 'כל מצבי התצוגה',
+    'inherits_parent' => 'יורש מהאב',
 ];

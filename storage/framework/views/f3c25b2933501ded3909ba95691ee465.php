@@ -1,8 +1,6 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', __('messages.categories_management')); ?>
 
-@section('title', __('messages.categories_management'))
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     /* Categories Page Specific Styles */
     .categories-header {
@@ -320,70 +318,68 @@
 <!-- Page Header -->
 <div class="page-header">
     <div class="page-header-content">
-        <h1>{{ __('messages.categories_management_title') }}</h1>
-        <p>{{ __('messages.organize_categories_subtitle') }}</p>
+        <h1><?php echo e(__('messages.categories_management_title')); ?></h1>
+        <p><?php echo e(__('messages.organize_categories_subtitle')); ?></p>
     </div>
     <div class="page-actions">
-        @if($categories->count() > 0)
+        <?php if($categories->count() > 0): ?>
             <button id="bulkDeleteBtn" onclick="showBulkDeleteModal()" class="btn btn-danger" style="margin-right: 10px; display: none;">
-                <i class="fas fa-trash-alt"></i> <span id="bulkDeleteText">{{ __('messages.delete_selected') }}</span>
+                <i class="fas fa-trash-alt"></i> <span id="bulkDeleteText"><?php echo e(__('messages.delete_selected')); ?></span>
             </button>
             <button onclick="showDeleteAllModal()" class="btn btn-danger" style="margin-right: 10px;">
-                <i class="fas fa-trash-alt"></i> {{ __('messages.delete_all') }}
+                <i class="fas fa-trash-alt"></i> <?php echo e(__('messages.delete_all')); ?>
+
             </button>
-        @endif
-        <a href="{{ route('admin.categories.create') }}" class="btn btn-success">
-            <i class="fas fa-plus-circle"></i> {{ __('messages.add_new_category') }}
+        <?php endif; ?>
+        <a href="<?php echo e(route('admin.categories.create')); ?>" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> <?php echo e(__('messages.add_new_category')); ?>
+
         </a>
     </div>
 </div>
 
 <!-- Stats Overview -->
-@php
+<?php
     $totalCategories = $categories->total() ?? count($categories);
     $activeCategories = $categories->where('is_active', true)->count() ?? 0;
     $rootCategories = $categories->where('parent_id', null)->count() ?? 0;
-@endphp
+?>
 <div class="stats-overview">
     <div class="stat-mini-card">
-        <h4><i class="fas fa-folder"></i> {{ __('messages.total_categories_stat') }}</h4>
-        <div class="number">{{ $totalCategories }}</div>
+        <h4><i class="fas fa-folder"></i> <?php echo e(__('messages.total_categories_stat')); ?></h4>
+        <div class="number"><?php echo e($totalCategories); ?></div>
     </div>
     <div class="stat-mini-card" style="border-left-color: var(--success);">
-        <h4><i class="fas fa-check-circle"></i> {{ __('messages.active_categories') }}</h4>
-        <div class="number" style="color: var(--success);">{{ $activeCategories }}</div>
+        <h4><i class="fas fa-check-circle"></i> <?php echo e(__('messages.active_categories')); ?></h4>
+        <div class="number" style="color: var(--success);"><?php echo e($activeCategories); ?></div>
     </div>
     <div class="stat-mini-card" style="border-left-color: var(--primary-light);">
-        <h4><i class="fas fa-sitemap"></i> {{ __('messages.root_categories') }}</h4>
-        <div class="number" style="color: var(--primary-light);">{{ $rootCategories }}</div>
+        <h4><i class="fas fa-sitemap"></i> <?php echo e(__('messages.root_categories')); ?></h4>
+        <div class="number" style="color: var(--primary-light);"><?php echo e($rootCategories); ?></div>
     </div>
 </div>
 
 <!-- Search & Filter -->
 <div class="search-filter-box">
-    <input type="text" id="searchInput" placeholder="{{ __('messages.search_categories') }}" onkeyup="filterCategories()">
+    <input type="text" id="searchInput" placeholder="<?php echo e(__('messages.search_categories')); ?>" onkeyup="filterCategories()">
     <select id="statusFilter" onchange="filterCategories()">
-        <option value="">{{ __('messages.all_status') }}</option>
-        <option value="active">{{ __('messages.active_only') }}</option>
-        <option value="inactive">{{ __('messages.inactive_only') }}</option>
+        <option value=""><?php echo e(__('messages.all_status')); ?></option>
+        <option value="active"><?php echo e(__('messages.active_only')); ?></option>
+        <option value="inactive"><?php echo e(__('messages.inactive_only')); ?></option>
     </select>
     <select id="parentFilter" onchange="filterCategories()">
-        <option value="">{{ __('messages.all_categories_filter') }}</option>
-        <option value="root">{{ __('messages.root_only') }}</option>
-        <option value="subcategory">{{ __('messages.subcategories_only') }}</option>
-    </select>
-    <select id="displayModeFilter" onchange="filterCategories()">
-        <option value="">{{ __('messages.all_display_modes') }}</option>
-        <option value="carousel">{{ __('messages.carousel') }}</option>
-        <option value="nav">{{ __('messages.nav_bar') }}</option>
+        <option value=""><?php echo e(__('messages.all_categories_filter')); ?></option>
+        <option value="root"><?php echo e(__('messages.root_only')); ?></option>
+        <option value="subcategory"><?php echo e(__('messages.subcategories_only')); ?></option>
     </select>
     <button class="filter-reset-btn" onclick="resetFilters()">
-        <i class="fas fa-redo"></i> {{ __('messages.reset_filters') }}
+        <i class="fas fa-redo"></i> <?php echo e(__('messages.reset_filters')); ?>
+
     </button>
 </div>
 
 <!-- Categories Table -->
-@if($categories->count() > 0)
+<?php if($categories->count() > 0): ?>
     <div class="categories-table-wrapper">
         <table class="categories-table">
             <thead>
@@ -391,144 +387,136 @@
                     <th style="width: 40px;">
                         <input type="checkbox" id="selectAll" onchange="toggleSelectAll()" style="cursor: pointer;">
                     </th>
-                    <th>{{ __('messages.image') }}</th>
-                    <th>{{ __('messages.category_name') }}</th>
-                    <th>{{ __('messages.parent_category') }}</th>
-                    <th>{{ __('messages.display_mode') }}</th>
-                    <th>{{ __('messages.status') }}</th>
-                    <th style="text-align: right;">{{ __('messages.actions') }}</th>
+                    <th><?php echo e(__('messages.image')); ?></th>
+                    <th><?php echo e(__('messages.category_name')); ?></th>
+                    <th><?php echo e(__('messages.parent_category')); ?></th>
+                    <th><?php echo e(__('messages.status')); ?></th>
+                    <th style="text-align: right;"><?php echo e(__('messages.actions')); ?></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($categories as $category)
-                <tr data-status="{{ $category->is_active ? 'active' : 'inactive' }}"
-                    data-parent="{{ $category->parent_id ? 'subcategory' : 'root' }}"
-                    data-display-mode="{{ $category->display_mode ?? 'carousel' }}"
-                    data-name="{{ $category->name_en ?? $category->name }}{{ $category->slug ?? '' }}">
+                <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <tr data-status="<?php echo e($category->is_active ? 'active' : 'inactive'); ?>"
+                    data-parent="<?php echo e($category->parent_id ? 'subcategory' : 'root'); ?>"
+                    data-name="<?php echo e($category->name_en ?? $category->name); ?><?php echo e($category->slug ?? ''); ?>">
 
                     <td style="text-align: center;">
-                        <input type="checkbox" class="category-checkbox" value="{{ $category->id }}" onchange="updateBulkDeleteButton()" style="cursor: pointer;">
+                        <input type="checkbox" class="category-checkbox" value="<?php echo e($category->id); ?>" onchange="updateBulkDeleteButton()" style="cursor: pointer;">
                     </td>
 
                     <td class="category-image-cell">
-                        @if($category->icon)
+                        <?php if($category->icon): ?>
                             <div class="category-image-placeholder" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-                                <i class="{{ $category->icon }}"></i>
+                                <i class="<?php echo e($category->icon); ?>"></i>
                             </div>
-                        @elseif($category->image)
-                            <img src="{{ $category->image }}" alt="{{ $category->name }}" class="category-image">
-                        @else
+                        <?php elseif($category->image): ?>
+                            <img src="<?php echo e($category->image); ?>" alt="<?php echo e($category->name); ?>" class="category-image">
+                        <?php else: ?>
                             <div class="category-image-placeholder">
                                 <i class="fas fa-image"></i>
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </td>
 
                     <td>
                         <div class="category-name-cell">
-                            <div class="category-name">{{ $category->name_en ?? $category->name }}</div>
-                            @if($category->slug)
-                                <div class="category-slug">{{ $category->slug }}</div>
-                            @endif
+                            <div class="category-name"><?php echo e($category->name_en ?? $category->name); ?></div>
+                            <?php if($category->slug): ?>
+                                <div class="category-slug"><?php echo e($category->slug); ?></div>
+                            <?php endif; ?>
                         </div>
                     </td>
 
                     <td>
-                        @if($category->parent)
+                        <?php if($category->parent): ?>
                             <span class="category-parent-badge">
-                                <i class="fas fa-arrow-right"></i> {{ $category->parent->name_en ?? $category->parent->name }}
+                                <i class="fas fa-arrow-right"></i> <?php echo e($category->parent->name_en ?? $category->parent->name); ?>
+
                             </span>
-                        @else
+                        <?php else: ?>
                             <span class="category-parent-root">
-                                <i class="fas fa-folder-open"></i> {{ __('messages.root_category') }}
+                                <i class="fas fa-folder-open"></i> <?php echo e(__('messages.root_category')); ?>
+
                             </span>
-                        @endif
+                        <?php endif; ?>
                     </td>
 
                     <td>
-                        @if(!$category->parent_id)
-                            @if($category->display_mode === 'nav')
-                                <span class="status-badge" style="background: #dbeafe; color: #1e40af;">
-                                    <i class="fas fa-bars"></i> {{ __('messages.nav_bar') }}
-                                </span>
-                            @else
-                                <span class="status-badge" style="background: #fef3c7; color: #92400e;">
-                                    <i class="fas fa-images"></i> {{ __('messages.carousel') }}
-                                </span>
-                            @endif
-                        @else
-                            <span class="status-badge" style="background: #f3f4f6; color: #6b7280;">
-                                <i class="fas fa-level-down-alt"></i> {{ __('messages.inherits_parent') }}
-                            </span>
-                        @endif
-                    </td>
+                        <span class="status-badge <?php echo e($category->is_active ? 'status-active' : 'status-inactive'); ?>">
+                            <i class="fas <?php echo e($category->is_active ? 'fa-check-circle' : 'fa-times-circle'); ?>"></i>
+                            <?php echo e($category->is_active ? __('messages.active') : __('messages.inactive')); ?>
 
-                    <td>
-                        <span class="status-badge {{ $category->is_active ? 'status-active' : 'status-inactive' }}">
-                            <i class="fas {{ $category->is_active ? 'fa-check-circle' : 'fa-times-circle' }}"></i>
-                            {{ $category->is_active ? __('messages.active') : __('messages.inactive') }}
                         </span>
                     </td>
 
                     <td class="action-cell" style="text-align: right;">
-                        <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-edit"></i> {{ __('messages.edit') }}
+                        <a href="<?php echo e(route('admin.categories.edit', $category)); ?>" class="btn btn-primary btn-sm">
+                            <i class="fas fa-edit"></i> <?php echo e(__('messages.edit')); ?>
+
                         </a>
-                        <a href="{{ route('admin.categories.attributes.edit', $category) }}" class="btn btn-info btn-sm">
-                            <i class="fas fa-filter"></i> {{ __('messages.attributes') }}
+                        <a href="<?php echo e(route('admin.categories.attributes.edit', $category)); ?>" class="btn btn-info btn-sm">
+                            <i class="fas fa-filter"></i> <?php echo e(__('messages.attributes')); ?>
+
                         </a>
-                        <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" style="display: inline;" 
+                        <form action="<?php echo e(route('admin.categories.destroy', $category)); ?>" method="POST" style="display: inline;" 
                               onsubmit="handleFormConfirm(event, {
-                                  message: '{{ __('messages.delete_category_confirm') }}',
-                                  confirmText: '{{ __('messages.yes_delete') }}',
+                                  message: '<?php echo e(__('messages.delete_category_confirm')); ?>',
+                                  confirmText: '<?php echo e(__('messages.yes_delete')); ?>',
                                   type: 'danger',
                                   confirmButtonType: 'danger'
                               })">
-                            @csrf
-                            @method('DELETE')
+                            <?php echo csrf_field(); ?>
+                            <?php echo method_field('DELETE'); ?>
                             <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash"></i> {{ __('messages.delete') }}
+                                <i class="fas fa-trash"></i> <?php echo e(__('messages.delete')); ?>
+
                             </button>
                         </form>
                     </td>
                 </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>
         </table>
     </div>
 
     <!-- Pagination -->
-    @if($categories->hasPages())
+    <?php if($categories->hasPages()): ?>
         <div class="pagination-wrapper">
-            {{ $categories->links() }}
+            <?php echo e($categories->links()); ?>
+
         </div>
-    @endif
-@else
+    <?php endif; ?>
+<?php else: ?>
     <div class="empty-state">
         <i class="fas fa-folder-open"></i>
-        <h3>{{ __('messages.no_categories_found') }}</h3>
-        <p>{{ __('messages.no_categories_description') }}</p>
-        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus-circle"></i> {{ __('messages.create_first_category') }}
+        <h3><?php echo e(__('messages.no_categories_found')); ?></h3>
+        <p><?php echo e(__('messages.no_categories_description')); ?></p>
+        <a href="<?php echo e(route('admin.categories.create')); ?>" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> <?php echo e(__('messages.create_first_category')); ?>
+
         </a>
     </div>
-@endif
+<?php endif; ?>
 
 <!-- Delete All Confirmation Modal -->
 <div id="deleteAllModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
     <div style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
         <h3 style="margin: 0 0 15px 0; color: #dc2626; font-size: 24px;">
-            <i class="fas fa-exclamation-triangle"></i> {{ __('messages.delete_all_categories') }}
+            <i class="fas fa-exclamation-triangle"></i> <?php echo e(__('messages.delete_all_categories')); ?>
+
         </h3>
         <p style="margin: 0 0 25px 0; font-size: 16px; color: #4b5563;">
-            {{ __('messages.confirm_delete_all') }}
+            <?php echo e(__('messages.confirm_delete_all')); ?>
+
         </p>
         <div style="display: flex; gap: 10px; justify-content: flex-end;">
             <button onclick="hideDeleteAllModal()" class="btn" style="background: #e5e7eb; color: #374151; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                <i class="fas fa-times"></i> {{ __('messages.cancel') }}
+                <i class="fas fa-times"></i> <?php echo e(__('messages.cancel')); ?>
+
             </button>
             <button onclick="deleteAllRecords()" class="btn btn-danger" style="padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                <i class="fas fa-trash-alt"></i> {{ __('messages.yes_delete') }}
+                <i class="fas fa-trash-alt"></i> <?php echo e(__('messages.yes_delete')); ?>
+
             </button>
         </div>
     </div>
@@ -538,17 +526,21 @@
 <div id="bulkDeleteModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
     <div style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
         <h3 style="margin: 0 0 15px 0; color: #dc2626; font-size: 24px;">
-            <i class="fas fa-exclamation-triangle"></i> {{ __('messages.delete_selected_categories') }}
+            <i class="fas fa-exclamation-triangle"></i> <?php echo e(__('messages.delete_selected_categories')); ?>
+
         </h3>
         <p style="margin: 0 0 25px 0; font-size: 16px; color: #4b5563;">
-            {{ __('messages.confirm_delete_selected') }}
+            <?php echo e(__('messages.confirm_delete_selected')); ?>
+
         </p>
         <div style="display: flex; gap: 10px; justify-content: flex-end;">
             <button onclick="hideBulkDeleteModal()" class="btn" style="background: #e5e7eb; color: #374151; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                <i class="fas fa-times"></i> {{ __('messages.cancel') }}
+                <i class="fas fa-times"></i> <?php echo e(__('messages.cancel')); ?>
+
             </button>
             <button onclick="bulkDeleteRecords()" class="btn btn-danger" style="padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                <i class="fas fa-trash-alt"></i> {{ __('messages.yes_delete') }}
+                <i class="fas fa-trash-alt"></i> <?php echo e(__('messages.yes_delete')); ?>
+
             </button>
         </div>
     </div>
@@ -558,14 +550,17 @@
 <div id="successModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
     <div style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
         <h3 style="margin: 0 0 15px 0; color: #10b981; font-size: 24px;">
-            <i class="fas fa-check-circle"></i> {{ __('messages.success') }}
+            <i class="fas fa-check-circle"></i> <?php echo e(__('messages.success')); ?>
+
         </h3>
         <p id="successMessage" style="margin: 0 0 25px 0; font-size: 16px; color: #4b5563;">
-            {{ __('messages.all_records_deleted_successfully') }}
+            <?php echo e(__('messages.all_records_deleted_successfully')); ?>
+
         </p>
         <div style="display: flex; justify-content: flex-end;">
             <button onclick="window.location.reload()" class="btn btn-success" style="padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                <i class="fas fa-check"></i> {{ __('messages.OK') }}
+                <i class="fas fa-check"></i> <?php echo e(__('messages.OK')); ?>
+
             </button>
         </div>
     </div>
@@ -576,7 +571,6 @@
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
         const statusFilter = document.getElementById('statusFilter').value;
         const parentFilter = document.getElementById('parentFilter').value;
-        const displayModeFilter = document.getElementById('displayModeFilter').value;
         const rows = document.querySelectorAll('.categories-table tbody tr');
 
         rows.forEach(row => {
@@ -600,12 +594,6 @@
                 matches = matches && parent === parentFilter;
             }
 
-            // Display mode filter
-            if (displayModeFilter) {
-                const displayMode = row.getAttribute('data-display-mode');
-                matches = matches && displayMode === displayModeFilter;
-            }
-
             row.style.display = matches ? '' : 'none';
         });
     }
@@ -614,7 +602,6 @@
         document.getElementById('searchInput').value = '';
         document.getElementById('statusFilter').value = '';
         document.getElementById('parentFilter').value = '';
-        document.getElementById('displayModeFilter').value = '';
         filterCategories();
     }
 
@@ -628,13 +615,13 @@
 
     function deleteAllRecords() {
         event.target.disabled = true;
-        event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("messages.deleting_all_records") }}';
+        event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <?php echo e(__("messages.deleting_all_records")); ?>';
 
-        fetch('{{ route("admin.categories.delete-all") }}', {
+        fetch('<?php echo e(route("admin.categories.delete-all")); ?>', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
             }
         })
         .then(response => response.json())
@@ -675,7 +662,7 @@
 
         if (checkboxes.length > 0) {
             bulkDeleteBtn.style.display = 'inline-block';
-            bulkDeleteText.textContent = '{{ __("messages.delete_selected") }} (' + checkboxes.length + ')';
+            bulkDeleteText.textContent = '<?php echo e(__("messages.delete_selected")); ?> (' + checkboxes.length + ')';
         } else {
             bulkDeleteBtn.style.display = 'none';
         }
@@ -692,7 +679,7 @@
     function showBulkDeleteModal() {
         const checkboxes = document.querySelectorAll('.category-checkbox:checked');
         if (checkboxes.length === 0) {
-            alert('{{ __("messages.please_select_items") }}');
+            alert('<?php echo e(__("messages.please_select_items")); ?>');
             return;
         }
         document.getElementById('bulkDeleteModal').style.display = 'flex';
@@ -707,18 +694,18 @@
         const ids = Array.from(checkboxes).map(cb => cb.value);
 
         if (ids.length === 0) {
-            alert('{{ __("messages.please_select_items") }}');
+            alert('<?php echo e(__("messages.please_select_items")); ?>');
             return;
         }
 
         event.target.disabled = true;
-        event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("messages.deleting") }}...';
+        event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <?php echo e(__("messages.deleting")); ?>...';
 
-        fetch('{{ route("admin.categories.bulk-delete") }}', {
+        fetch('<?php echo e(route("admin.categories.bulk-delete")); ?>', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
             },
             body: JSON.stringify({ ids: ids })
         })
@@ -741,4 +728,6 @@
     }
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/admin/categories/index.blade.php ENDPATH**/ ?>

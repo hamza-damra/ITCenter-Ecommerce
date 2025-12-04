@@ -1436,5 +1436,15 @@ return [
     'ad_active' => 'Active',
     'ad_active_help' => 'Display this ad on the home page',
     'updated_at' => 'Updated At',
+    
+    // Category Display Mode
+    'display_mode' => 'Display Mode',
+    'carousel' => 'Carousel',
+    'nav_bar' => 'Nav Bar',
+    'carousel_description' => 'Show in image carousel',
+    'nav_bar_description' => 'Show in navigation bar',
+    'display_mode_help' => 'Choose how this category appears on the homepage',
+    'all_display_modes' => 'All Display Modes',
+    'inherits_parent' => 'Inherits Parent',
 ];
 

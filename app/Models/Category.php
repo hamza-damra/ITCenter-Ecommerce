@@ -24,6 +24,7 @@ class Category extends Model
         'position',
         'parent_id',
         'is_active',
+        'display_mode',
         'order',
         'meta_title',
         'meta_description',
@@ -33,6 +34,10 @@ class Category extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'order' => 'integer',
+    ];
+
+    protected $attributes = [
+        'display_mode' => 'carousel',
     ];
 
     /**
@@ -148,6 +153,33 @@ class Category extends Model
     public function scopeParent($query)
     {
         return $query->whereNull('parent_id');
+    }
+
+    /**
+     * Scope a query to only include carousel display mode categories.
+     */
+    public function scopeCarousel($query)
+    {
+        return $query->where('display_mode', 'carousel');
+    }
+
+    /**
+     * Scope a query to only include nav display mode categories.
+     */
+    public function scopeNav($query)
+    {
+        return $query->where('display_mode', 'nav');
+    }
+
+    /**
+     * Get the display mode badge HTML.
+     */
+    public function getDisplayModeBadgeAttribute()
+    {
+        if ($this->display_mode === 'nav') {
+            return '<span class="status-badge" style="background: #dbeafe; color: #1e40af;"><i class="fas fa-bars"></i> ' . __('messages.nav_bar') . '</span>';
+        }
+        return '<span class="status-badge" style="background: #fef3c7; color: #92400e;"><i class="fas fa-images"></i> ' . __('messages.carousel') . '</span>';
     }
 
     /**

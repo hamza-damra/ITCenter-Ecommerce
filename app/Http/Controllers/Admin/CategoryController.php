@@ -49,10 +49,12 @@ class CategoryController extends Controller
             'image' => 'nullable|url',
             'icon' => 'nullable|string|max:255',
             'position' => 'nullable|integer|min:0',
+            'display_mode' => 'nullable|in:carousel,nav',
             'is_active' => 'boolean',
         ]);
 
         $validated['slug'] = Str::slug($validated['name_en']);
+        $validated['display_mode'] = $validated['display_mode'] ?? 'carousel';
 
         Category::create($validated);
 
@@ -95,10 +97,12 @@ class CategoryController extends Controller
             'image' => 'nullable|url',
             'icon' => 'nullable|string|max:255',
             'position' => 'nullable|integer|min:0',
+            'display_mode' => 'nullable|in:carousel,nav',
             'is_active' => 'boolean',
         ]);
 
         $validated['slug'] = Str::slug($validated['name_en']);
+        $validated['display_mode'] = $validated['display_mode'] ?? $category->display_mode;
 
         $category->update($validated);
 

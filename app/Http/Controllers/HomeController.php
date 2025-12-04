@@ -77,13 +77,28 @@ class HomeController extends Controller
                 ->limit(8)
                 ->get();
 
-            $categories = Category::select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'image', 'order')
+            // Carousel categories - parent categories with display_mode 'carousel'
+            $categories = Category::select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'image', 'order', 'display_mode')
                 ->active()
                 ->parent()
+                ->carousel()
                 ->withCount(['products' => function($query) {
                     $query->active();
                 }])
                 ->orderBy('order')
+                ->get();
+
+            // Nav categories - parent categories with display_mode 'nav' and their children
+            $navCategories = Category::select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'icon', 'position', 'display_mode')
+                ->active()
+                ->parent()
+                ->nav()
+                ->with(['children' => function($query) {
+                    $query->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'parent_id', 'position')
+                        ->active()
+                        ->orderBy('position');
+                }])
+                ->orderBy('position')
                 ->get();
 
             $featuredBrands = Brand::select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'logo', 'order')
@@ -146,6 +161,7 @@ class HomeController extends Controller
                 'onSaleProducts' => $onSaleProducts,
                 'specialDiscounts' => $specialDiscounts,
                 'categories' => $categories,
+                'navCategories' => $navCategories,
                 'featuredBrands' => $featuredBrands,
                 'activeOffers' => $activeOffers,
                 'promotionalOffers' => $promotionalOffers,
