@@ -53,7 +53,7 @@ class CategoryController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name_en']);
+        $validated['slug'] = $this->generateUniqueSlug($validated['name_en']);
         $validated['display_mode'] = $validated['display_mode'] ?? 'carousel';
 
         Category::create($validated);
@@ -101,7 +101,7 @@ class CategoryController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        $validated['slug'] = Str::slug($validated['name_en']);
+        $validated['slug'] = $this->generateUniqueSlug($validated['name_en'], $category->id);
         $validated['display_mode'] = $validated['display_mode'] ?? $category->display_mode;
 
         $category->update($validated);
@@ -205,6 +205,33 @@ class CategoryController extends Controller
         Cache::forget('home_page_data_ar');
         Cache::forget('home_page_data_en');
         Cache::forget('home_page_data_he');
+    }
+
+    /**
+     * Generate a unique slug for the category
+     */
+    private function generateUniqueSlug(string $name, ?int $excludeId = null): string
+    {
+        $slug = Str::slug($name);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        while (true) {
+            $query = Category::where('slug', $slug);
+            
+            if ($excludeId) {
+                $query->where('id', '!=', $excludeId);
+            }
+            
+            if (!$query->exists()) {
+                break;
+            }
+            
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 }
 

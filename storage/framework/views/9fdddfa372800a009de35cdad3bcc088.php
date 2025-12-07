@@ -1,8 +1,8 @@
-<?php $__env->startSection('title', __('messages.create_category')); ?>
+<?php $__env->startSection('title', __('messages.edit_category')); ?>
 
 <?php $__env->startSection('content'); ?>
 <style>
-    /* Category Create Page Specific Styles */
+    /* Category Edit Page Specific Styles */
     .category-form-grid {
         max-width: 900px;
         margin: 0 auto;
@@ -21,12 +21,66 @@
     .image-preview.visible {
         display: block;
     }
+
+    .current-image-container {
+        margin-top: 12px;
+        padding: 12px;
+        background: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+    }
+
+    .current-image-container img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 8px;
+        display: block;
+    }
+
+    .current-image-label {
+        font-size: 12px;
+        color: var(--secondary);
+        margin-bottom: 8px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .delete-section {
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 2px solid #fee2e2;
+    }
+
+    .danger-zone {
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        border: 1px solid #fca5a5;
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .danger-zone h3 {
+        color: #dc2626;
+        font-size: 16px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .danger-zone p {
+        color: #7f1d1d;
+        font-size: 13px;
+        margin-bottom: 16px;
+    }
 </style>
 
 <div class="page-header">
     <div class="page-header-content">
-        <h1><?php echo e(__('messages.create_new_category')); ?></h1>
-        <p><?php echo e(__('messages.add_category_subtitle')); ?></p>
+        <h1><i class="fas fa-edit"></i> <?php echo e(__('messages.edit_category')); ?></h1>
+        <p><?php echo e(__('messages.update_category_information')); ?>: <strong><?php echo e($category->name); ?></strong></p>
     </div>
     <div class="page-actions">
         <a href="<?php echo e(route('admin.categories.index')); ?>" class="btn btn-secondary">
@@ -36,8 +90,9 @@
     </div>
 </div>
 
-<form action="<?php echo e(route('admin.categories.store')); ?>" method="POST" class="category-form-grid">
+<form action="<?php echo e(route('admin.categories.update', $category)); ?>" method="POST" class="category-form-grid">
     <?php echo csrf_field(); ?>
+    <?php echo method_field('PUT'); ?>
 
     <!-- Main Form Content -->
     <div style="display: flex; flex-direction: column; gap: 24px;">
@@ -45,7 +100,7 @@
         <!-- Basic Information Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-folder-plus"></i> <?php echo e(__('messages.category_information')); ?></h2>
+                <h2><i class="fas fa-folder"></i> <?php echo e(__('messages.category_information')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
@@ -67,7 +122,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                            value="<?php echo e(old('name_en')); ?>" 
+                            value="<?php echo e(old('name_en', $category->name_en)); ?>" 
                             placeholder="e.g., Electronics, Clothing, Food"
                             required>
                         <?php $__errorArgs = ['name_en'];
@@ -100,7 +155,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                            value="<?php echo e(old('name_ar')); ?>" 
+                            value="<?php echo e(old('name_ar', $category->name_ar)); ?>" 
                             placeholder="أدخل اسم الفئة بالعربية"
                             required 
                             dir="rtl">
@@ -133,7 +188,7 @@ endif;
 unset($__errorArgs, $__bag); ?>">
                         <option value=""><?php echo e(__('messages.root_category_no_parent')); ?></option>
                         <?php $__currentLoopData = $parentCategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $parent): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <option value="<?php echo e($parent->id); ?>" <?php echo e(old('parent_id') == $parent->id ? 'selected' : ''); ?>>
+                            <option value="<?php echo e($parent->id); ?>" <?php echo e(old('parent_id', $category->parent_id) == $parent->id ? 'selected' : ''); ?>>
                                 <?php echo e($parent->name_en ?? $parent->name); ?>
 
                             </option>
@@ -174,7 +229,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                            value="<?php echo e(old('icon')); ?>" 
+                            value="<?php echo e(old('icon', $category->icon)); ?>" 
                             placeholder="e.g., fas fa-laptop, fas fa-tshirt">
                         <p class="form-text">
                             <i class="fas fa-info-circle"></i> <?php echo e(__('messages.icon_help_text')); ?>
@@ -210,7 +265,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                            value="<?php echo e(old('position', 0)); ?>" 
+                            value="<?php echo e(old('position', $category->position ?? 0)); ?>" 
                             placeholder="0"
                             min="0">
                         <p class="form-text">
@@ -244,11 +299,11 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
-                        <option value="carousel" <?php echo e(old('display_mode', 'carousel') == 'carousel' ? 'selected' : ''); ?>>
+                        <option value="carousel" <?php echo e(old('display_mode', $category->display_mode) == 'carousel' ? 'selected' : ''); ?>>
                             <?php echo e(__('messages.carousel')); ?> - <?php echo e(__('messages.carousel_description')); ?>
 
                         </option>
-                        <option value="nav" <?php echo e(old('display_mode') == 'nav' ? 'selected' : ''); ?>>
+                        <option value="nav" <?php echo e(old('display_mode', $category->display_mode) == 'nav' ? 'selected' : ''); ?>>
                             <?php echo e(__('messages.nav_bar')); ?> - <?php echo e(__('messages.nav_bar_description')); ?>
 
                         </option>
@@ -295,7 +350,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                        value="<?php echo e(old('image')); ?>" 
+                        value="<?php echo e(old('image', $category->image)); ?>" 
                         placeholder="<?php echo e(__('messages.image_url_placeholder')); ?>"
                         oninput="previewImage(this.value)">
                     <p class="form-text">
@@ -312,6 +367,18 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
+                    
+                    <?php if($category->image): ?>
+                        <div class="current-image-container">
+                            <div class="current-image-label">
+                                <i class="fas fa-image"></i>
+                                <?php echo e(__('messages.current_image')); ?>
+
+                            </div>
+                            <img src="<?php echo e($category->image); ?>" alt="<?php echo e($category->name); ?>">
+                        </div>
+                    <?php endif; ?>
+                    
                     <img id="imagePreview" class="image-preview" alt="Category preview">
                 </div>
             </div>
@@ -342,7 +409,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                             placeholder="<?php echo e(__('messages.description_placeholder')); ?>"
-                            style="min-height: 100px;"><?php echo e(old('description_en')); ?></textarea>
+                            style="min-height: 100px;"><?php echo e(old('description_en', $category->description_en)); ?></textarea>
                         <?php $__errorArgs = ['description_en'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -374,7 +441,7 @@ endif;
 unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
                             placeholder="<?php echo e(__('messages.description_placeholder_ar')); ?>"
-                            style="min-height: 100px;"><?php echo e(old('description_ar')); ?></textarea>
+                            style="min-height: 100px;"><?php echo e(old('description_ar', $category->description_ar)); ?></textarea>
                         <?php $__errorArgs = ['description_ar'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -415,7 +482,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                            value="<?php echo e(old('meta_title')); ?>" 
+                            value="<?php echo e(old('meta_title', $category->meta_title ?? '')); ?>" 
                             placeholder="<?php echo e(__('messages.meta_title_placeholder')); ?>"
                             maxlength="60">
                         <p class="form-text">
@@ -452,7 +519,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                            value="<?php echo e(old('meta_keywords')); ?>" 
+                            value="<?php echo e(old('meta_keywords', $category->meta_keywords ?? '')); ?>" 
                             placeholder="<?php echo e(__('messages.meta_keywords_placeholder')); ?>">
                         <p class="form-text">
                             <i class="fas fa-info-circle"></i> <?php echo e(__('messages.meta_keywords_tip')); ?>
@@ -489,7 +556,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                         placeholder="<?php echo e(__('messages.meta_description_placeholder')); ?>"
-                        style="min-height: 80px;"><?php echo e(old('meta_description')); ?></textarea>
+                        style="min-height: 80px;"><?php echo e(old('meta_description', $category->meta_description ?? '')); ?></textarea>
                     <p class="form-text">
                         <i class="fas fa-info-circle"></i> <?php echo e(__('messages.meta_description_tip')); ?>
 
@@ -521,7 +588,7 @@ unset($__errorArgs, $__bag); ?>
                             id="is_active" 
                             name="is_active" 
                             value="1" 
-                            <?php echo e(old('is_active', true) ? 'checked' : ''); ?>>
+                            <?php echo e(old('is_active', $category->is_active) ? 'checked' : ''); ?>>
                         <span>
                             <strong><i class="fas fa-eye"></i> <?php echo e(__('messages.active_label')); ?></strong>
                             <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.display_category_in_store')); ?></p>
@@ -534,7 +601,7 @@ unset($__errorArgs, $__bag); ?>
         <!-- Form Actions -->
         <div style="display: flex; gap: 12px; padding-top: 24px;">
             <button type="submit" class="btn btn-success">
-                <i class="fas fa-save"></i> <?php echo e(__('messages.create_category_button')); ?>
+                <i class="fas fa-save"></i> <?php echo e(__('messages.update_category')); ?>
 
             </button>
             <a href="<?php echo e(route('admin.categories.index')); ?>" class="btn btn-secondary">
@@ -542,9 +609,29 @@ unset($__errorArgs, $__bag); ?>
 
             </a>
         </div>
+
+        <!-- Danger Zone -->
+        <div class="delete-section">
+            <div class="danger-zone">
+                <h3>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <?php echo e(__('messages.danger_zone')); ?>
+
+                </h3>
+                <p><?php echo e(__('messages.delete_category_warning')); ?></p>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+                    <i class="fas fa-trash-alt"></i> <?php echo e(__('messages.delete_category')); ?>
+
+                </button>
+            </div>
+        </div>
     </div>
+</form>
 
-
+<!-- Delete Form (Hidden) -->
+<form id="deleteForm" action="<?php echo e(route('admin.categories.destroy', $category)); ?>" method="POST" style="display: none;">
+    <?php echo csrf_field(); ?>
+    <?php echo method_field('DELETE'); ?>
 </form>
 
 <script>
@@ -558,6 +645,12 @@ unset($__errorArgs, $__bag); ?>
             };
         } else {
             preview.classList.remove('visible');
+        }
+    }
+
+    function confirmDelete() {
+        if (confirm('<?php echo e(__('messages.confirm_delete_category')); ?> "<?php echo e($category->name); ?>"?\n\n<?php echo e(__('messages.action_cannot_be_undone')); ?>')) {
+            document.getElementById('deleteForm').submit();
         }
     }
 
@@ -597,4 +690,4 @@ unset($__errorArgs, $__bag); ?>
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/admin/categories/create.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/admin/categories/edit.blade.php ENDPATH**/ ?>
