@@ -3545,16 +3545,6 @@
                             <i class="far fa-heart"></i>
                         </div>
                         
-                        {{-- Quick View & Compare Buttons --}}
-                        <div class="product-actions">
-                            <button class="quick-view-btn" onclick="event.stopPropagation(); quickView({{ $product->id }})" title="{{ is_rtl() ? 'معاينة سريعة' : 'Quick View' }}">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="compare-btn" onclick="event.stopPropagation(); addToCompare({{ $product->id }})" title="{{ is_rtl() ? 'مقارنة' : 'Compare' }}">
-                                <i class="fas fa-exchange-alt"></i>
-                            </button>
-                        </div>
-                        
                         <img src="{{ $product->main_image }}" alt="{{ $product->name }}" loading="lazy" decoding="async">
                     </div>
                     <div class="product-info">

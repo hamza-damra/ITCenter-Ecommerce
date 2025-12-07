@@ -3548,16 +3548,6 @@
                             <i class="far fa-heart"></i>
                         </div>
                         
-                        
-                        <div class="product-actions">
-                            <button class="quick-view-btn" onclick="event.stopPropagation(); quickView(<?php echo e($product->id); ?>)" title="<?php echo e(is_rtl() ? 'معاينة سريعة' : 'Quick View'); ?>">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="compare-btn" onclick="event.stopPropagation(); addToCompare(<?php echo e($product->id); ?>)" title="<?php echo e(is_rtl() ? 'مقارنة' : 'Compare'); ?>">
-                                <i class="fas fa-exchange-alt"></i>
-                            </button>
-                        </div>
-                        
                         <img src="<?php echo e($product->main_image); ?>" alt="<?php echo e($product->name); ?>" loading="lazy" decoding="async">
                     </div>
                     <div class="product-info">

@@ -90,7 +90,7 @@
     }
 
     .empty-favorites .btn-primary {
-        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        background: #4169E1;
         color: #fff;
         padding: 1rem 2.5rem;
         border-radius: 50px;
@@ -102,7 +102,7 @@
     }
 
     .empty-favorites .btn-primary:hover {
-        background: linear-gradient(135deg, #111827 0%, #000000 100%);
+        background: #1E90FF;
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(31, 41, 55, 0.4);
     }
