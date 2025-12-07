@@ -175,8 +175,8 @@
             </div>
         </div>
 
-        <!-- Category Image Card -->
-        <div class="card">
+        <!-- Category Image Card (Only for Carousel mode) -->
+        <div class="card" id="imageCard">
             <div class="card-header">
                 <h2><i class="fas fa-image"></i> {{ __('messages.category_image') }}</h2>
             </div>
@@ -205,8 +205,8 @@
             </div>
         </div>
 
-        <!-- Descriptions Card -->
-        <div class="card">
+        <!-- Descriptions Card (Only for Carousel mode) -->
+        <div class="card" id="descriptionsCard">
             <div class="card-header">
                 <h2><i class="fas fa-align-left"></i> {{ __('messages.descriptions') }}</h2>
             </div>
@@ -248,8 +248,8 @@
             </div>
         </div>
 
-        <!-- SEO Card -->
-        <div class="card">
+        <!-- SEO Card (Only for Carousel mode) -->
+        <div class="card" id="seoCard">
             <div class="card-header">
                 <h2><i class="fas fa-search"></i> {{ __('messages.seo_settings') }}</h2>
             </div>
@@ -369,12 +369,37 @@
         }
     }
 
+    function toggleDisplayModeFields() {
+        const displayMode = document.getElementById('display_mode').value;
+        const imageCard = document.getElementById('imageCard');
+        const descriptionsCard = document.getElementById('descriptionsCard');
+        const seoCard = document.getElementById('seoCard');
+        
+        if (displayMode === 'nav') {
+            // Hide cards not needed for nav mode
+            imageCard.style.display = 'none';
+            descriptionsCard.style.display = 'none';
+            seoCard.style.display = 'none';
+        } else {
+            // Show all cards for carousel mode
+            imageCard.style.display = 'block';
+            descriptionsCard.style.display = 'block';
+            seoCard.style.display = 'block';
+        }
+    }
+
     // Preview on load if image exists
     document.addEventListener('DOMContentLoaded', function() {
         const imageInput = document.getElementById('image');
         if (imageInput.value) {
             previewImage(imageInput.value);
         }
+        
+        // Toggle fields based on display mode
+        toggleDisplayModeFields();
+        
+        // Listen for display mode changes
+        document.getElementById('display_mode').addEventListener('change', toggleDisplayModeFields);
     });
 </script>
 
