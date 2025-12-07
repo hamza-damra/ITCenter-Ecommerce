@@ -372,6 +372,11 @@
         <option value="root"><?php echo e(__('messages.root_only')); ?></option>
         <option value="subcategory"><?php echo e(__('messages.subcategories_only')); ?></option>
     </select>
+    <select id="displayModeFilter" onchange="filterCategories()">
+        <option value=""><?php echo e(__('messages.all_display_modes')); ?></option>
+        <option value="carousel"><?php echo e(__('messages.carousel')); ?></option>
+        <option value="nav"><?php echo e(__('messages.nav_bar')); ?></option>
+    </select>
     <button class="filter-reset-btn" onclick="resetFilters()">
         <i class="fas fa-redo"></i> <?php echo e(__('messages.reset_filters')); ?>
 
@@ -390,6 +395,7 @@
                     <th><?php echo e(__('messages.image')); ?></th>
                     <th><?php echo e(__('messages.category_name')); ?></th>
                     <th><?php echo e(__('messages.parent_category')); ?></th>
+                    <th><?php echo e(__('messages.display_mode')); ?></th>
                     <th><?php echo e(__('messages.status')); ?></th>
                     <th style="text-align: right;"><?php echo e(__('messages.actions')); ?></th>
                 </tr>
@@ -398,6 +404,7 @@
                 <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr data-status="<?php echo e($category->is_active ? 'active' : 'inactive'); ?>"
                     data-parent="<?php echo e($category->parent_id ? 'subcategory' : 'root'); ?>"
+                    data-display-mode="<?php echo e($category->display_mode ?? 'carousel'); ?>"
                     data-name="<?php echo e($category->name_en ?? $category->name); ?><?php echo e($category->slug ?? ''); ?>">
 
                     <td style="text-align: center;">
@@ -436,6 +443,27 @@
                         <?php else: ?>
                             <span class="category-parent-root">
                                 <i class="fas fa-folder-open"></i> <?php echo e(__('messages.root_category')); ?>
+
+                            </span>
+                        <?php endif; ?>
+                    </td>
+
+                    <td>
+                        <?php if(!$category->parent_id): ?>
+                            <?php if($category->display_mode === 'nav'): ?>
+                                <span class="status-badge" style="background: #dbeafe; color: #1e40af;">
+                                    <i class="fas fa-bars"></i> <?php echo e(__('messages.nav_bar')); ?>
+
+                                </span>
+                            <?php else: ?>
+                                <span class="status-badge" style="background: #fef3c7; color: #92400e;">
+                                    <i class="fas fa-images"></i> <?php echo e(__('messages.carousel')); ?>
+
+                                </span>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <span class="status-badge" style="background: #f3f4f6; color: #6b7280;">
+                                <i class="fas fa-level-down-alt"></i> <?php echo e(__('messages.inherits_parent')); ?>
 
                             </span>
                         <?php endif; ?>
@@ -571,6 +599,7 @@
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
         const statusFilter = document.getElementById('statusFilter').value;
         const parentFilter = document.getElementById('parentFilter').value;
+        const displayModeFilter = document.getElementById('displayModeFilter').value;
         const rows = document.querySelectorAll('.categories-table tbody tr');
 
         rows.forEach(row => {
@@ -594,6 +623,12 @@
                 matches = matches && parent === parentFilter;
             }
 
+            // Display mode filter
+            if (displayModeFilter) {
+                const displayMode = row.getAttribute('data-display-mode');
+                matches = matches && displayMode === displayModeFilter;
+            }
+
             row.style.display = matches ? '' : 'none';
         });
     }
@@ -602,6 +637,7 @@
         document.getElementById('searchInput').value = '';
         document.getElementById('statusFilter').value = '';
         document.getElementById('parentFilter').value = '';
+        document.getElementById('displayModeFilter').value = '';
         filterCategories();
     }
 
