@@ -164,8 +164,8 @@
                     @enderror
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
+                <div class="form-row" id="iconPositionRow">
+                    <div class="form-group" id="iconGroup">
                         <label for="icon" class="form-label">
                             {{ __('messages.category_icon') }}
                             <span style="color: #64748b; font-size: 12px;">{{ __('messages.optional') }}</span>
@@ -464,17 +464,20 @@
         const imageCard = document.getElementById('imageCard');
         const descriptionsCard = document.getElementById('descriptionsCard');
         const seoCard = document.getElementById('seoCard');
+        const iconGroup = document.getElementById('iconGroup');
         
         if (displayMode === 'nav') {
             // Hide cards not needed for nav mode
             imageCard.style.display = 'none';
             descriptionsCard.style.display = 'none';
             seoCard.style.display = 'none';
+            iconGroup.style.display = 'none';
         } else {
             // Show all cards for carousel mode
             imageCard.style.display = 'block';
             descriptionsCard.style.display = 'block';
             seoCard.style.display = 'block';
+            iconGroup.style.display = 'block';
         }
     }
 
