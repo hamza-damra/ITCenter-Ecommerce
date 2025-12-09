@@ -996,6 +996,7 @@
                 <li><a href="<?php echo e(route('admin.products.index')); ?>" class="<?php echo e(request()->routeIs('admin.products.*') ? 'active' : ''); ?>"><i class="fas fa-box"></i> <?php echo e(__('messages.products')); ?></a></li>
                 <li><a href="<?php echo e(route('admin.categories.index')); ?>" class="<?php echo e(request()->routeIs('admin.categories.*') ? 'active' : ''); ?>"><i class="fas fa-folder"></i> <?php echo e(__('messages.categories')); ?></a></li>
                 <li><a href="<?php echo e(route('admin.brands.index')); ?>" class="<?php echo e(request()->routeIs('admin.brands.*') ? 'active' : ''); ?>"><i class="fas fa-tag"></i> <?php echo e(__('messages.brands')); ?></a></li>
+                <li><a href="<?php echo e(route('admin.tags.index')); ?>" class="<?php echo e(request()->routeIs('admin.tags.*') ? 'active' : ''); ?>"><i class="fas fa-tags"></i> <?php echo e(__('messages.tags_management')); ?></a></li>
                 <li><a href="<?php echo e(route('admin.backup.index')); ?>" class="<?php echo e(request()->routeIs('admin.backup.*') ? 'active' : ''); ?>"><i class="fas fa-database"></i> <?php echo e(__('messages.Database Backup Management')); ?></a></li>
                 <li><a href="<?php echo e(route('admin.reviews.index')); ?>" class="<?php echo e(request()->routeIs('admin.reviews.*') ? 'active' : ''); ?>"><i class="fas fa-star"></i> <?php echo e(__('messages.reviews')); ?></a></li>
 

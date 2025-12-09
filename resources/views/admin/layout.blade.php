@@ -996,6 +996,7 @@
                 <li><a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><i class="fas fa-box"></i> {{ __('messages.products') }}</a></li>
                 <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-folder"></i> {{ __('messages.categories') }}</a></li>
                 <li><a href="{{ route('admin.brands.index') }}" class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}"><i class="fas fa-tag"></i> {{ __('messages.brands') }}</a></li>
+                <li><a href="{{ route('admin.tags.index') }}" class="{{ request()->routeIs('admin.tags.*') ? 'active' : '' }}"><i class="fas fa-tags"></i> {{ __('messages.tags_management') }}</a></li>
                 <li><a href="{{ route('admin.backup.index') }}" class="{{ request()->routeIs('admin.backup.*') ? 'active' : '' }}"><i class="fas fa-database"></i> {{ __('messages.Database Backup Management') }}</a></li>
                 <li><a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}"><i class="fas fa-star"></i> {{ __('messages.reviews') }}</a></li>
 

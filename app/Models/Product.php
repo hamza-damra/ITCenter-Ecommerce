@@ -435,4 +435,23 @@ class Product extends Model
     {
         return $this->hasMany(Favorite::class);
     }
+
+    /**
+     * Get all tags for this product.
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'product_tag')
+            ->withTimestamps();
+    }
+
+    /**
+     * Scope a query to filter by tag.
+     */
+    public function scopeWithTag($query, $tagSlug)
+    {
+        return $query->whereHas('tags', function ($q) use ($tagSlug) {
+            $q->where('slug', $tagSlug)->where('is_active', true);
+        });
+    }
 }

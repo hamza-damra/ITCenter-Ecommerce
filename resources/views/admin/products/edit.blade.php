@@ -506,6 +506,328 @@
             </div>
         </div>
 
+        <!-- Product Tags Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-tags"></i> {{ __('messages.product_tags') }}</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="form-label">{{ __('messages.select_tags') }}</label>
+                    
+                    <!-- Tag Input with Autocomplete -->
+                    <div class="tag-input-wrapper">
+                        <div class="selected-tags" id="selectedTags">
+                            <!-- Pre-populated tags will appear here -->
+                        </div>
+                        <div class="tag-input-container">
+                            <input type="text" 
+                                   id="tagSearchInput" 
+                                   class="tag-search-input" 
+                                   placeholder="{{ __('messages.type_to_search_or_add_tag') }}"
+                                   autocomplete="off">
+                            <div class="tag-suggestions" id="tagSuggestions"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden inputs container -->
+                    <div id="tagHiddenInputs"></div>
+                    
+                    <p class="form-text">
+                        <i class="fas fa-info-circle"></i> {{ __('messages.tag_input_help') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <style>
+        .tag-input-wrapper {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px;
+            background: #f9fafb;
+            min-height: 50px;
+        }
+        .selected-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .selected-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 13px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .selected-tag .tag-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .selected-tag .remove-tag {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 4px;
+            font-size: 14px;
+            line-height: 1;
+        }
+        .selected-tag .remove-tag:hover {
+            color: #ef4444;
+        }
+        .selected-tag.new-tag {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+        .selected-tag.new-tag::after {
+            content: '{{ __("messages.new") }}';
+            font-size: 10px;
+            background: #3b82f6;
+            color: white;
+            padding: 1px 5px;
+            border-radius: 10px;
+            margin-left: 4px;
+        }
+        .tag-input-container {
+            position: relative;
+        }
+        .tag-search-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+        .tag-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        .tag-suggestion {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .tag-suggestion:last-child {
+            border-bottom: none;
+        }
+        .tag-suggestion:hover {
+            background: #f9fafb;
+        }
+        .tag-suggestion .tag-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .tag-suggestion.create-new {
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .tag-suggestion.create-new:hover {
+            background: #dbeafe;
+        }
+        .tag-suggestion.create-new i {
+            color: #3b82f6;
+        }
+        </style>
+        
+        @php
+            $existingTags = $product->tags->map(function($tag) {
+                return [
+                    'id' => $tag->id,
+                    'name' => $tag->name_en,
+                    'color' => $tag->color,
+                    'icon' => $tag->icon,
+                    'isNew' => false
+                ];
+            })->values();
+        @endphp
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const availableTags = @json($tags ?? []);
+            // Pre-populate with existing product tags
+            let selectedTags = @json($existingTags);
+            
+            const searchInput = document.getElementById('tagSearchInput');
+            const suggestionsDiv = document.getElementById('tagSuggestions');
+            const selectedTagsDiv = document.getElementById('selectedTags');
+            const hiddenInputsDiv = document.getElementById('tagHiddenInputs');
+            
+            // Initial render
+            renderSelectedTags();
+            
+            // Search input handler
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase().trim();
+                
+                if (query.length === 0) {
+                    suggestionsDiv.style.display = 'none';
+                    return;
+                }
+                
+                // Filter available tags
+                const filtered = availableTags.filter(tag => 
+                    !selectedTags.some(s => s.id === tag.id) &&
+                    (tag.name_en.toLowerCase().includes(query) || 
+                     tag.name_ar.toLowerCase().includes(query))
+                );
+                
+                let html = '';
+                
+                // Show matching tags
+                filtered.slice(0, 8).forEach(tag => {
+                    const icon = tag.icon 
+                        ? `<i class="${tag.icon}" style="color: ${tag.color}"></i>`
+                        : `<span class="tag-color" style="background: ${tag.color}"></span>`;
+                    html += `<div class="tag-suggestion" data-id="${tag.id}" data-name="${tag.name_en}" data-color="${tag.color}" data-icon="${tag.icon || ''}">
+                        ${icon}
+                        <span>${tag.name_en}</span>
+                        <span style="color: #9ca3af; font-size: 12px;">(${tag.name_ar})</span>
+                    </div>`;
+                });
+                
+                // Show "Create new tag" option
+                const exactMatch = availableTags.some(tag => 
+                    tag.name_en.toLowerCase() === query || tag.name_ar.toLowerCase() === query
+                );
+                
+                if (!exactMatch && query.length >= 2) {
+                    html += `<div class="tag-suggestion create-new" data-new="true" data-name="${this.value.trim()}">
+                        <i class="fas fa-plus"></i>
+                        <span>{{ __('messages.create_tag') }}: "${this.value.trim()}"</span>
+                    </div>`;
+                }
+                
+                if (html) {
+                    suggestionsDiv.innerHTML = html;
+                    suggestionsDiv.style.display = 'block';
+                    
+                    // Add click handlers
+                    suggestionsDiv.querySelectorAll('.tag-suggestion').forEach(el => {
+                        el.addEventListener('click', function() {
+                            if (this.dataset.new === 'true') {
+                                addNewTag(this.dataset.name);
+                            } else {
+                                addExistingTag(parseInt(this.dataset.id), this.dataset.name, this.dataset.color, this.dataset.icon);
+                            }
+                            searchInput.value = '';
+                            suggestionsDiv.style.display = 'none';
+                        });
+                    });
+                } else {
+                    suggestionsDiv.style.display = 'none';
+                }
+            });
+            
+            // Handle Enter key
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const query = this.value.trim();
+                    if (query.length >= 2) {
+                        // Check if exact match exists
+                        const exactMatch = availableTags.find(tag => 
+                            tag.name_en.toLowerCase() === query.toLowerCase() || 
+                            tag.name_ar.toLowerCase() === query.toLowerCase()
+                        );
+                        
+                        if (exactMatch && !selectedTags.some(s => s.id === exactMatch.id)) {
+                            addExistingTag(exactMatch.id, exactMatch.name_en, exactMatch.color, exactMatch.icon);
+                        } else if (!exactMatch) {
+                            addNewTag(query);
+                        }
+                        this.value = '';
+                        suggestionsDiv.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Hide suggestions on click outside
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                    suggestionsDiv.style.display = 'none';
+                }
+            });
+            
+            function addExistingTag(id, name, color, icon) {
+                if (selectedTags.some(t => t.id === id)) return;
+                
+                selectedTags.push({ id, name, color, icon, isNew: false });
+                renderSelectedTags();
+            }
+            
+            function addNewTag(name) {
+                if (selectedTags.some(t => t.name.toLowerCase() === name.toLowerCase())) return;
+                
+                const tempId = 'new_' + Date.now();
+                selectedTags.push({ id: tempId, name, color: '#3b82f6', icon: '', isNew: true });
+                renderSelectedTags();
+            }
+            
+            function removeTag(id) {
+                selectedTags = selectedTags.filter(t => t.id !== id);
+                renderSelectedTags();
+            }
+            
+            function renderSelectedTags() {
+                // Render visual tags
+                selectedTagsDiv.innerHTML = selectedTags.map(tag => {
+                    const icon = tag.icon 
+                        ? `<i class="${tag.icon}" style="color: ${tag.color}"></i>`
+                        : `<span class="tag-color" style="background: ${tag.color}"></span>`;
+                    return `<span class="selected-tag ${tag.isNew ? 'new-tag' : ''}" data-id="${tag.id}">
+                        ${icon}
+                        <span>${tag.name}</span>
+                        <button type="button" class="remove-tag" onclick="window.removeTagById('${tag.id}')">&times;</button>
+                    </span>`;
+                }).join('');
+                
+                // Render hidden inputs
+                let hiddenHtml = '';
+                selectedTags.forEach(tag => {
+                    if (tag.isNew) {
+                        hiddenHtml += `<input type="hidden" name="new_tags_array[]" value="${tag.name}">`;
+                    } else {
+                        hiddenHtml += `<input type="hidden" name="tags[]" value="${tag.id}">`;
+                    }
+                });
+                hiddenInputsDiv.innerHTML = hiddenHtml;
+            }
+            
+            // Global function for remove button
+            window.removeTagById = function(id) {
+                if (typeof id === 'string' && id.startsWith('new_')) {
+                    selectedTags = selectedTags.filter(t => t.id !== id);
+                } else {
+                    selectedTags = selectedTags.filter(t => t.id !== parseInt(id));
+                }
+                renderSelectedTags();
+            };
+        });
+        </script>
+
         <!-- Product Settings Card -->
         <div class="card">
             <div class="card-header">

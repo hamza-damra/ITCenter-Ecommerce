@@ -79,6 +79,11 @@ class ProductController extends Controller
             $query->where('is_special_offer', true);
         }
 
+        // Filter by tag
+        if ($request->has('tag') && !empty($request->tag)) {
+            $query->withTag($request->tag);
+        }
+
         // Handle filter parameter (for banner clicks)
         if ($request->has('filter')) {
             switch ($request->filter) {

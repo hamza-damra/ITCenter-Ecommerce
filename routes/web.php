@@ -123,6 +123,9 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::delete('/attributes/delete-all', [App\Http\Controllers\Admin\AttributeController::class, 'deleteAll'])->name('attributes.delete-all');
     Route::resource('attributes', App\Http\Controllers\Admin\AttributeController::class);
 
+    // Tags
+    Route::resource('tags', App\Http\Controllers\Admin\TagController::class);
+
     // Attribute Values
     Route::resource('attributes.attribute-values', App\Http\Controllers\Admin\AttributeValueController::class)
         ->except(['show']);

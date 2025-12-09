@@ -112,8 +112,9 @@ class ProductController extends Controller
         
         $categories = Category::active()->orderBy($nameColumn)->get();
         $brands = Brand::active()->orderBy($nameColumn)->get();
+        $tags = \App\Models\Tag::active()->ordered()->get();
 
-        return view('admin.products.create', compact('categories', 'brands'));
+        return view('admin.products.create', compact('categories', 'brands', 'tags'));
     }
 
     /**
@@ -209,6 +210,24 @@ class ProductController extends Controller
                 $product->attributeValues()->sync($attributeValues);
             }
 
+            // Handle tags - both existing and new
+            $tagIds = $request->input('tags', []);
+            
+            // Create new tags if provided (from comma-separated string)
+            if ($request->filled('new_tags')) {
+                $newTagIds = $this->createNewTags($request->input('new_tags'));
+                $tagIds = array_merge($tagIds, $newTagIds);
+            }
+            
+            // Create new tags from array (from tag input component)
+            if ($request->has('new_tags_array')) {
+                $newTagIds = $this->createNewTagsFromArray($request->input('new_tags_array', []));
+                $tagIds = array_merge($tagIds, $newTagIds);
+            }
+            
+            // Sync all tags
+            $product->tags()->sync($tagIds);
+
             // Create main image as first product image
             ProductImage::create([
                 'product_id' => $product->id,
@@ -250,7 +269,7 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $product->load(['images', 'attributeValues.attribute', 'category.attributes.values']);
+        $product->load(['images', 'attributeValues.attribute', 'category.attributes.values', 'tags']);
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
         
@@ -262,6 +281,7 @@ class ProductController extends Controller
         
         $categories = Category::active()->orderBy($nameColumn)->get();
         $brands = Brand::active()->orderBy($nameColumn)->get();
+        $tags = \App\Models\Tag::active()->ordered()->get();
 
         // Get category-specific attributes
         $categoryAttributes = [];
@@ -279,7 +299,7 @@ class ProductController extends Controller
         // Get selected attribute value IDs
         $selectedAttributeValues = $product->attributeValues->pluck('id')->toArray();
 
-        return view('admin.products.edit', compact('product', 'categories', 'brands', 'categoryAttributes', 'selectedAttributeValues'));
+        return view('admin.products.edit', compact('product', 'categories', 'brands', 'tags', 'categoryAttributes', 'selectedAttributeValues'));
     }
 
     public function update(Request $request, Product $product)
@@ -337,6 +357,24 @@ class ProductController extends Controller
 
             // Sync attribute values
             $product->attributeValues()->sync($attributeValues);
+
+            // Handle tags - both existing and new
+            $tagIds = $request->input('tags', []);
+            
+            // Create new tags if provided (from comma-separated string)
+            if ($request->filled('new_tags')) {
+                $newTagIds = $this->createNewTags($request->input('new_tags'));
+                $tagIds = array_merge($tagIds, $newTagIds);
+            }
+            
+            // Create new tags from array (from tag input component)
+            if ($request->has('new_tags_array')) {
+                $newTagIds = $this->createNewTagsFromArray($request->input('new_tags_array', []));
+                $tagIds = array_merge($tagIds, $newTagIds);
+            }
+            
+            // Sync all tags
+            $product->tags()->sync($tagIds);
 
             // Delete existing images
             ProductImage::where('product_id', $product->id)->delete();
@@ -488,5 +526,89 @@ class ProductController extends Controller
         Cache::forget('home_page_data_ar');
         Cache::forget('home_page_data_en');
         Cache::forget('home_page_data_he');
+    }
+
+    /**
+     * Create new tags from array (from tag input component)
+     * Returns array of created tag IDs
+     */
+    private function createNewTagsFromArray(array $tagNames): array
+    {
+        $tagIds = [];
+        
+        foreach ($tagNames as $tagName) {
+            $tagName = trim($tagName);
+            if (empty($tagName)) continue;
+            
+            // Check if tag already exists
+            $existingTag = \App\Models\Tag::where('name_en', $tagName)
+                ->orWhere('name_ar', $tagName)
+                ->first();
+            
+            if ($existingTag) {
+                $tagIds[] = $existingTag->id;
+            } else {
+                // Create new tag
+                $newTag = \App\Models\Tag::create([
+                    'name_en' => $tagName,
+                    'name_ar' => $tagName,
+                    'slug' => \Illuminate\Support\Str::slug($tagName),
+                    'color' => $this->generateRandomColor(),
+                    'is_active' => true,
+                ]);
+                $tagIds[] = $newTag->id;
+            }
+        }
+        
+        return $tagIds;
+    }
+
+    /**
+     * Create new tags from comma-separated string
+     * Returns array of created tag IDs
+     */
+    private function createNewTags(string $tagsString): array
+    {
+        $tagIds = [];
+        $tagNames = array_filter(array_map('trim', explode(',', $tagsString)));
+        
+        foreach ($tagNames as $tagName) {
+            if (empty($tagName)) continue;
+            
+            // Check if tag already exists
+            $existingTag = \App\Models\Tag::where('name_en', $tagName)
+                ->orWhere('name_ar', $tagName)
+                ->first();
+            
+            if ($existingTag) {
+                $tagIds[] = $existingTag->id;
+            } else {
+                // Create new tag
+                $newTag = \App\Models\Tag::create([
+                    'name_en' => $tagName,
+                    'name_ar' => $tagName,
+                    'slug' => \Illuminate\Support\Str::slug($tagName),
+                    'color' => $this->generateRandomColor(),
+                    'is_active' => true,
+                ]);
+                $tagIds[] = $newTag->id;
+            }
+        }
+        
+        return $tagIds;
+    }
+
+    /**
+     * Generate a random color for new tags
+     */
+    private function generateRandomColor(): string
+    {
+        $colors = [
+            '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16',
+            '#22c55e', '#10b981', '#14b8a6', '#06b6d4', '#0ea5e9',
+            '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#d946ef',
+            '#ec4899', '#f43f5e'
+        ];
+        return $colors[array_rand($colors)];
     }
 }
