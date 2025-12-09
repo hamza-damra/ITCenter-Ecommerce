@@ -1446,5 +1446,16 @@ return [
     'display_mode_help' => 'Choose how this category appears on the homepage',
     'all_display_modes' => 'All Display Modes',
     'inherits_parent' => 'Inherits Parent',
+    
+    // Nav Type (Parent/Child)
+    'nav_type' => 'Navigation Type',
+    'nav_parent' => 'Parent Item',
+    'nav_child' => 'Child Item',
+    'nav_parent_description' => 'Shows in main navigation bar',
+    'nav_child_description' => 'Shows under a parent item',
+    'nav_type_help' => 'Choose if this is a parent or child item in the navigation bar',
+    'select_nav_parent' => 'Select Parent Item',
+    'choose_parent_category' => 'Choose parent category',
+    'nav_parent_select_help' => 'Select the parent category under which this item will appear',
 ];
 

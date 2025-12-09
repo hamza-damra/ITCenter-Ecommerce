@@ -31,9 +31,17 @@ class CategoryController extends Controller
             $nameColumn = 'name_en';
         }
         
+        // Parent categories for carousel mode (regular parent dropdown)
         $parentCategories = Category::whereNull('parent_id')->orderBy($nameColumn)->get();
+        
+        // Nav parent categories for nav mode (only nav mode parents without parent)
+        $navParentCategories = Category::where('display_mode', 'nav')
+            ->whereNull('parent_id')
+            ->orderBy('position')
+            ->orderBy($nameColumn)
+            ->get();
 
-        return view('admin.categories.create', compact('parentCategories'));
+        return view('admin.categories.create', compact('parentCategories', 'navParentCategories'));
     }
 
     public function store(Request $request)
@@ -43,6 +51,8 @@ class CategoryController extends Controller
             'name_ar' => 'required|string|max:255',
             'name_he' => 'nullable|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
+            'nav_type' => 'nullable|in:parent,child',
+            'nav_parent_id' => 'nullable|exists:categories,id',
             'description_en' => 'nullable|string',
             'description_ar' => 'nullable|string',
             'description_he' => 'nullable|string',
@@ -55,6 +65,18 @@ class CategoryController extends Controller
 
         $validated['slug'] = $this->generateUniqueSlug($validated['name_en']);
         $validated['display_mode'] = $validated['display_mode'] ?? 'carousel';
+
+        // Handle nav mode parent/child logic
+        if ($validated['display_mode'] === 'nav') {
+            if (isset($validated['nav_type']) && $validated['nav_type'] === 'child' && !empty($validated['nav_parent_id'])) {
+                $validated['parent_id'] = $validated['nav_parent_id'];
+            } else {
+                $validated['parent_id'] = null; // Nav parent has no parent
+            }
+        }
+        
+        // Remove nav-specific fields before creating
+        unset($validated['nav_type'], $validated['nav_parent_id']);
 
         Category::create($validated);
 
@@ -76,12 +98,21 @@ class CategoryController extends Controller
             $nameColumn = 'name_en';
         }
         
+        // Parent categories for carousel mode (regular parent dropdown)
         $parentCategories = Category::whereNull('parent_id')
             ->where('id', '!=', $category->id)
             ->orderBy($nameColumn)
             ->get();
+        
+        // Nav parent categories for nav mode (only nav mode parents without parent, excluding current category)
+        $navParentCategories = Category::where('display_mode', 'nav')
+            ->whereNull('parent_id')
+            ->where('id', '!=', $category->id)
+            ->orderBy('position')
+            ->orderBy($nameColumn)
+            ->get();
 
-        return view('admin.categories.edit', compact('category', 'parentCategories'));
+        return view('admin.categories.edit', compact('category', 'parentCategories', 'navParentCategories'));
     }
 
     public function update(Request $request, Category $category)
@@ -91,6 +122,8 @@ class CategoryController extends Controller
             'name_ar' => 'required|string|max:255',
             'name_he' => 'nullable|string|max:255',
             'parent_id' => 'nullable|exists:categories,id',
+            'nav_type' => 'nullable|in:parent,child',
+            'nav_parent_id' => 'nullable|exists:categories,id',
             'description_en' => 'nullable|string',
             'description_ar' => 'nullable|string',
             'description_he' => 'nullable|string',
@@ -103,6 +136,18 @@ class CategoryController extends Controller
 
         $validated['slug'] = $this->generateUniqueSlug($validated['name_en'], $category->id);
         $validated['display_mode'] = $validated['display_mode'] ?? $category->display_mode;
+
+        // Handle nav mode parent/child logic
+        if ($validated['display_mode'] === 'nav') {
+            if (isset($validated['nav_type']) && $validated['nav_type'] === 'child' && !empty($validated['nav_parent_id'])) {
+                $validated['parent_id'] = $validated['nav_parent_id'];
+            } else {
+                $validated['parent_id'] = null; // Nav parent has no parent
+            }
+        }
+        
+        // Remove nav-specific fields before updating
+        unset($validated['nav_type'], $validated['nav_parent_id']);
 
         $category->update($validated);
 
@@ -217,7 +262,8 @@ class CategoryController extends Controller
         $counter = 1;
 
         while (true) {
-            $query = Category::where('slug', $slug);
+            // Include soft deleted categories to avoid conflicts
+            $query = Category::withTrashed()->where('slug', $slug);
             
             if ($excludeId) {
                 $query->where('id', '!=', $excludeId);

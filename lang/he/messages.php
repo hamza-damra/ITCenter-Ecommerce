@@ -1252,4 +1252,15 @@ return [
     'display_mode_help' => 'בחר כיצד קטגוריה זו תופיע בדף הבית',
     'all_display_modes' => 'כל מצבי התצוגה',
     'inherits_parent' => 'יורש מהאב',
+    
+    // Nav Type (Parent/Child)
+    'nav_type' => 'סוג ניווט',
+    'nav_parent' => 'פריט ראשי',
+    'nav_child' => 'פריט משני',
+    'nav_parent_description' => 'מוצג בסרגל הניווט הראשי',
+    'nav_child_description' => 'מוצג תחת פריט ראשי',
+    'nav_type_help' => 'בחר אם זה פריט ראשי או משני בסרגל הניווט',
+    'select_nav_parent' => 'בחר פריט ראשי',
+    'choose_parent_category' => 'בחר קטגוריה ראשית',
+    'nav_parent_select_help' => 'בחר את הקטגוריה הראשית שתחתיה יופיע פריט זה',
 ];

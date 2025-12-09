@@ -1,8 +1,8 @@
-<?php $__env->startSection('title', 'Edit Product'); ?>
+<?php $__env->startSection('title', 'Create Product'); ?>
 
 <?php $__env->startSection('content'); ?>
 <style>
-    /* Product Edit Page Specific Styles */
+    /* Product Create Page Specific Styles */
     .product-form-grid {
         max-width: 900px;
         margin: 0 auto;
@@ -14,105 +14,43 @@
         gap: 20px;
     }
 
-    .current-image-container {
-        margin-top: 12px;
-        padding: 12px;
-        background: #f8fafc;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-    }
-
-    .current-image-container img {
-        width: 100%;
-        max-width: 300px;
-        height: auto;
-        border-radius: 8px;
-        display: block;
-    }
-
-    .current-image-label {
-        font-size: 12px;
-        color: var(--secondary);
-        margin-bottom: 8px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .additional-images-preview {
-        margin-top: 15px;
-    }
-
-    .additional-images-preview strong {
-        font-size: 12px;
-        color: var(--secondary);
-        margin-bottom: 8px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .images-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    .images-grid img {
-        width: 100%;
-        height: 100px;
-        object-fit: cover;
-        border-radius: 8px;
-        border: 2px solid var(--border);
-    }
-
-    .delete-section {
-        margin-top: 24px;
-        padding-top: 24px;
-        border-top: 2px solid #fee2e2;
-    }
-
-    .danger-zone {
-        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-        border: 1px solid #fca5a5;
+    .image-preview-box {
+        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        border: 2px dashed var(--primary);
         border-radius: 8px;
         padding: 20px;
-    }
-
-    .danger-zone h3 {
-        color: #dc2626;
-        font-size: 16px;
-        margin-bottom: 8px;
+        text-align: center;
+        min-height: 200px;
         display: flex;
         align-items: center;
-        gap: 8px;
+        justify-content: center;
+        flex-direction: column;
+        color: var(--secondary);
     }
 
-    .danger-zone p {
-        color: #7f1d1d;
-        font-size: 13px;
-        margin-bottom: 16px;
+    .image-preview-box i {
+        font-size: 48px;
+        color: var(--primary);
+        margin-bottom: 12px;
+        opacity: 0.5;
     }
 </style>
 
 <div class="page-header">
     <div class="page-header-content">
-        <h1><i class="fas fa-edit"></i> Edit Product</h1>
-        <p>Update product information: <strong><?php echo e($product->name); ?></strong></p>
+        <h1><?php echo e(__('messages.add_new_product')); ?></h1>
+        <p><?php echo e(__('messages.create_configure_product')); ?></p>
     </div>
     <div class="page-actions">
         <a href="<?php echo e(route('admin.products.index')); ?>" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Products
+            <i class="fas fa-arrow-left"></i> <?php echo e(__('messages.back_to_products')); ?>
+
         </a>
     </div>
 </div>
 
-<form action="<?php echo e(route('admin.products.update', $product)); ?>" method="POST" class="product-form-grid">
+<form action="<?php echo e(route('admin.products.store')); ?>" method="POST" class="product-form-grid">
     <?php echo csrf_field(); ?>
-    <?php echo method_field('PUT'); ?>
 
     <!-- Main Form Content -->
     <div style="display: flex; flex-direction: column; gap: 24px;">
@@ -120,13 +58,14 @@
         <!-- Basic Information Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-info-circle"></i> Basic Information</h2>
+                <h2><i class="fas fa-info-circle"></i> <?php echo e(__('messages.basic_information')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name_en" class="form-label">
-                            Product Name (English)
+                            <?php echo e(__('messages.product_name_english')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input 
@@ -141,8 +80,8 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                            value="<?php echo e(old('name_en', $product->name_en)); ?>" 
-                            placeholder="Enter product name in English"
+                            value="<?php echo e(old('name_en')); ?>" 
+                            placeholder="<?php echo e(__('messages.enter_product_name_english')); ?>"
                             required>
                         <?php $__errorArgs = ['name_en'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -158,7 +97,8 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group">
                         <label for="name_ar" class="form-label">
-                            اسم المنتج (عربي)
+                            <?php echo e(__('messages.product_name_arabic')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input 
@@ -173,8 +113,8 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                            value="<?php echo e(old('name_ar', $product->name_ar)); ?>" 
-                            placeholder="أدخل اسم المنتج بالعربية"
+                            value="<?php echo e(old('name_ar')); ?>" 
+                            placeholder="<?php echo e(__('messages.enter_product_name_arabic')); ?>"
                             required 
                             dir="rtl">
                         <?php $__errorArgs = ['name_ar'];
@@ -207,7 +147,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                            value="<?php echo e(old('name_he', $product->name_he)); ?>"
+                            value="<?php echo e(old('name_he')); ?>"
                             placeholder="<?php echo e(__('messages.enter_product_name_hebrew')); ?>"
                             dir="rtl">
                         <?php $__errorArgs = ['name_he'];
@@ -226,7 +166,8 @@ unset($__errorArgs, $__bag); ?>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="category_id" class="form-label">
-                            Category
+                            <?php echo e(__('messages.category')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <select id="category_id" name="category_id" class="form-control <?php $__errorArgs = ['category_id'];
@@ -237,9 +178,9 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" required>
-                            <option value="">Select a Category</option>
+                            <option value=""><?php echo e(__('messages.select_category')); ?></option>
                             <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($category->id); ?>" <?php echo e(old('category_id', $product->category_id) == $category->id ? 'selected' : ''); ?>>
+                                <option value="<?php echo e($category->id); ?>" <?php echo e(old('category_id') == $category->id ? 'selected' : ''); ?>>
                                     <?php echo e($category->name); ?>
 
                                 </option>
@@ -259,8 +200,8 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group">
                         <label for="brand_id" class="form-label">
-                            Brand
-                            <span style="color: #64748b; font-size: 12px;">(Optional)</span>
+                            <?php echo e(__('messages.brand')); ?>
+
                         </label>
                         <select id="brand_id" name="brand_id" class="form-control <?php $__errorArgs = ['brand_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -270,9 +211,9 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
-                            <option value="">Select a Brand</option>
+                            <option value=""><?php echo e(__('messages.select_brand')); ?></option>
                             <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <option value="<?php echo e($brand->id); ?>" <?php echo e(old('brand_id', $product->brand_id) == $brand->id ? 'selected' : ''); ?>>
+                                <option value="<?php echo e($brand->id); ?>" <?php echo e(old('brand_id') == $brand->id ? 'selected' : ''); ?>>
                                     <?php echo e($brand->name); ?>
 
                                 </option>
@@ -296,13 +237,14 @@ unset($__errorArgs, $__bag); ?>
         <!-- Pricing & Inventory Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-dollar-sign"></i> Pricing & Inventory</h2>
+                <h2><i class="fas fa-dollar-sign"></i> <?php echo e(__('messages.pricing_inventory')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="price" class="form-label">
-                            Regular Price
+                            <?php echo e(__('messages.regular_price')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <div style="position: relative;">
@@ -320,7 +262,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
                                 step="0.01" 
-                                value="<?php echo e(old('price', $product->price)); ?>" 
+                                value="<?php echo e(old('price')); ?>" 
                                 placeholder="0.00"
                                 style="padding-left: 28px;"
                                 required>
@@ -339,8 +281,9 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group">
                         <label for="sale_price" class="form-label">
-                            Sale Price
-                            <span style="color: #64748b; font-size: 12px;">(Optional)</span>
+                            <?php echo e(__('messages.sale_price')); ?>
+
+                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                         </label>
                         <div style="position: relative;">
                             <span style="position: absolute; left: 12px; top: 12px; color: var(--secondary); font-weight: 600;">$</span>
@@ -357,7 +300,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
                                 step="0.01" 
-                                value="<?php echo e(old('sale_price', $product->sale_price)); ?>"
+                                value="<?php echo e(old('sale_price')); ?>"
                                 placeholder="0.00"
                                 style="padding-left: 28px;">
                         </div>
@@ -375,7 +318,8 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group">
                         <label for="stock_quantity" class="form-label">
-                            Stock Quantity
+                            <?php echo e(__('messages.stock_quantity')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input 
@@ -390,7 +334,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                            value="<?php echo e(old('stock_quantity', $product->stock_quantity)); ?>" 
+                            value="<?php echo e(old('stock_quantity', 0)); ?>" 
                             placeholder="0"
                             required>
                         <?php $__errorArgs = ['stock_quantity'];
@@ -411,12 +355,13 @@ unset($__errorArgs, $__bag); ?>
         <!-- Images Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-images"></i> Product Images</h2>
+                <h2><i class="fas fa-images"></i> <?php echo e(__('messages.product_images')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <label for="main_image" class="form-label">
-                        Main Product Image
+                        <?php echo e(__('messages.main_product_image')); ?>
+
                         <span class="required">*</span>
                     </label>
                     <input 
@@ -431,11 +376,12 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
-                        value="<?php echo e(old('main_image', $product->main_image)); ?>" 
+                        value="<?php echo e(old('main_image')); ?>" 
                         placeholder="https://picsum.photos/800/800"
                         required>
                     <p class="form-text">
-                        <i class="fas fa-lightbulb"></i> Recommended: Use services like <strong>picsum.photos</strong> or <strong>placehold.co</strong>
+                        <i class="fas fa-lightbulb"></i> <?php echo e(__('messages.image_services_recommendation')); ?>
+
                     </p>
                     <?php $__errorArgs = ['main_image'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -447,22 +393,13 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                    
-                    <?php if($product->main_image): ?>
-                        <div class="current-image-container">
-                            <div class="current-image-label">
-                                <i class="fas fa-image"></i>
-                                Current Main Image
-                            </div>
-                            <img src="<?php echo e($product->main_image); ?>" alt="<?php echo e($product->name); ?>">
-                        </div>
-                    <?php endif; ?>
                 </div>
 
                 <div class="form-group">
                     <label for="additional_images" class="form-label">
-                        Additional Images
-                        <span style="color: #64748b; font-size: 12px;">(Optional - One URL per line)</span>
+                        <?php echo e(__('messages.additional_images')); ?>
+
+                        <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional_one_url_per_line')); ?>)</span>
                     </label>
                     <textarea 
                         id="additional_images" 
@@ -476,9 +413,10 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" 
                         rows="5" 
-                        placeholder="https://picsum.photos/800/801&#10;https://picsum.photos/800/802&#10;https://picsum.photos/800/803"><?php echo e(old('additional_images', $product->images->where('is_primary', false)->pluck('image_path')->implode("\n"))); ?></textarea>
+                        placeholder="https://picsum.photos/800/801&#10;https://picsum.photos/800/802&#10;https://picsum.photos/800/803"><?php echo e(old('additional_images')); ?></textarea>
                     <p class="form-text">
-                        <i class="fas fa-info-circle"></i> Enter each image URL on a new line for the product gallery
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.enter_each_image_url')); ?>
+
                     </p>
                     <?php $__errorArgs = ['additional_images'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -490,20 +428,6 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                    
-                    <?php if($product->images->where('is_primary', false)->count() > 0): ?>
-                        <div class="additional-images-preview">
-                            <strong>
-                                <i class="fas fa-images"></i>
-                                Current Additional Images (<?php echo e($product->images->where('is_primary', false)->count()); ?>)
-                            </strong>
-                            <div class="images-grid">
-                                <?php $__currentLoopData = $product->images->where('is_primary', false); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <img src="<?php echo e($image->image_path); ?>" alt="Product Image">
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </div>
-                        </div>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -532,7 +456,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                         placeholder="<?php echo e(__('messages.search_keywords_placeholder')); ?>"
-                        style="min-height: 100px;"><?php echo e(old('search_keywords', $product->search_keywords)); ?></textarea>
+                        style="min-height: 100px;"><?php echo e(old('search_keywords')); ?></textarea>
                     <p class="form-text">
                         <i class="fas fa-info-circle"></i> <?php echo e(__('messages.search_keywords_help')); ?>
 
@@ -554,14 +478,14 @@ unset($__errorArgs, $__bag); ?>
         <!-- Descriptions Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-align-left"></i> Descriptions</h2>
+                <h2><i class="fas fa-align-left"></i> <?php echo e(__('messages.descriptions')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="short_description_en" class="form-label">
-                            Short Description (English)
-                            <span style="color: #64748b; font-size: 12px;">(Optional)</span>
+                            <?php echo e(__('messages.short_description_english')); ?>
+
                         </label>
                         <textarea 
                             id="short_description_en" 
@@ -574,8 +498,8 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                            placeholder="Brief description for product listings"
-                            style="min-height: 80px;"><?php echo e(old('short_description_en', $product->short_description_en)); ?></textarea>
+                            placeholder="<?php echo e(__('messages.brief_description_listings')); ?>"
+                            style="min-height: 80px;"><?php echo e(old('short_description_en')); ?></textarea>
                         <?php $__errorArgs = ['short_description_en'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -590,8 +514,8 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group">
                         <label for="short_description_ar" class="form-label">
-                            وصف قصير (عربي)
-                            <span style="color: #64748b; font-size: 12px;">(اختياري)</span>
+                            <?php echo e(__('messages.short_description_arabic')); ?>
+
                         </label>
                         <textarea 
                             id="short_description_ar" 
@@ -605,8 +529,8 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
-                            placeholder="وصف قصير للمنتج"
-                            style="min-height: 80px;"><?php echo e(old('short_description_ar', $product->short_description_ar)); ?></textarea>
+                            placeholder="<?php echo e(__('messages.brief_description_arabic')); ?>"
+                            style="min-height: 80px;"><?php echo e(old('short_description_ar')); ?></textarea>
                         <?php $__errorArgs = ['short_description_ar'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -623,7 +547,6 @@ unset($__errorArgs, $__bag); ?>
                         <label for="short_description_he" class="form-label">
                             <?php echo e(__('messages.short_description_hebrew')); ?>
 
-                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                         </label>
                         <textarea
                             id="short_description_he"
@@ -638,7 +561,7 @@ endif;
 unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
                             placeholder="<?php echo e(__('messages.brief_description_hebrew')); ?>"
-                            style="min-height: 80px;"><?php echo e(old('short_description_he', $product->short_description_he)); ?></textarea>
+                            style="min-height: 80px;"><?php echo e(old('short_description_he')); ?></textarea>
                         <?php $__errorArgs = ['short_description_he'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -655,8 +578,8 @@ unset($__errorArgs, $__bag); ?>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="description_en" class="form-label">
-                            Full Description (English)
-                            <span style="color: #64748b; font-size: 12px;">(Optional)</span>
+                            <?php echo e(__('messages.full_description_english')); ?>
+
                         </label>
                         <textarea 
                             id="description_en" 
@@ -669,8 +592,8 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                            placeholder="Complete product description with details"
-                            style="min-height: 150px;"><?php echo e(old('description_en', $product->description_en)); ?></textarea>
+                            placeholder="<?php echo e(__('messages.complete_product_description')); ?>"
+                            style="min-height: 150px;"><?php echo e(old('description_en')); ?></textarea>
                         <?php $__errorArgs = ['description_en'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -685,8 +608,8 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group">
                         <label for="description_ar" class="form-label">
-                            وصف كامل (عربي)
-                            <span style="color: #64748b; font-size: 12px;">(اختياري)</span>
+                            <?php echo e(__('messages.full_description_arabic')); ?>
+
                         </label>
                         <textarea 
                             id="description_ar" 
@@ -700,8 +623,8 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
-                            placeholder="وصف المنتج الكامل بالتفاصيل"
-                            style="min-height: 150px;"><?php echo e(old('description_ar', $product->description_ar)); ?></textarea>
+                            placeholder="<?php echo e(__('messages.complete_description_arabic')); ?>"
+                            style="min-height: 150px;"><?php echo e(old('description_ar')); ?></textarea>
                         <?php $__errorArgs = ['description_ar'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -718,7 +641,6 @@ unset($__errorArgs, $__bag); ?>
                         <label for="description_he" class="form-label">
                             <?php echo e(__('messages.full_description_hebrew')); ?>
 
-                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                         </label>
                         <textarea
                             id="description_he"
@@ -733,7 +655,7 @@ endif;
 unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
                             placeholder="<?php echo e(__('messages.complete_description_hebrew')); ?>"
-                            style="min-height: 150px;"><?php echo e(old('description_he', $product->description_he)); ?></textarea>
+                            style="min-height: 150px;"><?php echo e(old('description_he')); ?></textarea>
                         <?php $__errorArgs = ['description_he'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -752,7 +674,7 @@ unset($__errorArgs, $__bag); ?>
         <!-- Product Settings Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-cog"></i> Product Settings</h2>
+                <h2><i class="fas fa-cog"></i> <?php echo e(__('messages.product_settings')); ?></h2>
             </div>
             <div class="card-body">
                 <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -770,10 +692,10 @@ unset($__errorArgs, $__bag); ?>
                             id="is_active" 
                             name="is_active" 
                             value="1" 
-                            <?php echo e(old('is_active', $product->is_active) ? 'checked' : ''); ?>>
+                            <?php echo e(old('is_active', true) ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-eye"></i> Active</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Display this product in the store</p>
+                            <strong><i class="fas fa-eye"></i> <?php echo e(__('messages.active')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.display_product_in_store')); ?></p>
                         </span>
                     </label>
 
@@ -783,10 +705,10 @@ unset($__errorArgs, $__bag); ?>
                             id="is_featured" 
                             name="is_featured" 
                             value="1" 
-                            <?php echo e(old('is_featured', $product->is_featured) ? 'checked' : ''); ?>>
+                            <?php echo e(old('is_featured') ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-star"></i> Featured</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Show on homepage featured section</p>
+                            <strong><i class="fas fa-star"></i> <?php echo e(__('messages.featured')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.show_homepage_featured')); ?></p>
                         </span>
                     </label>
 
@@ -796,10 +718,10 @@ unset($__errorArgs, $__bag); ?>
                             id="is_new" 
                             name="is_new" 
                             value="1" 
-                            <?php echo e(old('is_new', $product->is_new) ? 'checked' : ''); ?>>
+                            <?php echo e(old('is_new') ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-badge"></i> New Product</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Mark as new to highlight in store</p>
+                            <strong><i class="fas fa-badge"></i> <?php echo e(__('messages.new_product')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.mark_new_highlight')); ?></p>
                         </span>
                     </label>
 
@@ -809,10 +731,10 @@ unset($__errorArgs, $__bag); ?>
                             id="is_bestseller" 
                             name="is_bestseller" 
                             value="1" 
-                            <?php echo e(old('is_bestseller', $product->is_bestseller) ? 'checked' : ''); ?>>
+                            <?php echo e(old('is_bestseller') ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-fire"></i> Bestseller</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Mark as popular/bestselling product</p>
+                            <strong><i class="fas fa-fire"></i> <?php echo e(__('messages.bestseller')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.mark_bestselling_product')); ?></p>
                         </span>
                     </label>
 
@@ -822,10 +744,10 @@ unset($__errorArgs, $__bag); ?>
                             id="is_special_offer" 
                             name="is_special_offer" 
                             value="1" 
-                            <?php echo e(old('is_special_offer', $product->is_special_offer ?? false) ? 'checked' : ''); ?>>
+                            <?php echo e(old('is_special_offer') ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-gift"></i> Special Offer</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Show as special offer card on homepage</p>
+                            <strong><i class="fas fa-gift"></i> <?php echo e(__('messages.special_offer') ?? 'Special Offer'); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.show_as_special_offer_card') ?? 'عرض كبطاقة عرض خاص في الصفحة الرئيسية'); ?></p>
                         </span>
                     </label>
 
@@ -835,7 +757,7 @@ unset($__errorArgs, $__bag); ?>
                             id="is_strong_offer" 
                             name="is_strong_offer" 
                             value="1" 
-                            <?php echo e(old('is_strong_offer', $product->is_strong_offer ?? false) ? 'checked' : ''); ?>>
+                            <?php echo e(old('is_strong_offer') ? 'checked' : ''); ?>>
                         <span>
                             <strong><i class="fas fa-bolt"></i> <?php echo e(__('messages.strong_offer') ?? 'Strong Offer'); ?></strong>
                             <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.mark_as_strong_promotional_offer') ?? 'Mark as strong promotional offer for filtering'); ?></p>
@@ -844,7 +766,7 @@ unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <!-- Strong Offer Discount Percentage -->
-                <div class="form-group" id="discount-percentage-group" style="margin-top: 16px; <?php echo e(old('is_strong_offer', $product->is_strong_offer ?? false) ? '' : 'display: none;'); ?>">
+                <div class="form-group" id="discount-percentage-group" style="margin-top: 16px; display: none;">
                     <label for="discount_percentage" class="form-label">
                         <?php echo e(__('messages.discount_percentage') ?? 'Discount Percentage'); ?>
 
@@ -866,7 +788,7 @@ unset($__errorArgs, $__bag); ?>"
                             step="0.01" 
                             min="0"
                             max="100"
-                            value="<?php echo e(old('discount_percentage', $product->discount_percentage)); ?>" 
+                            value="<?php echo e(old('discount_percentage')); ?>" 
                             placeholder="0.00"
                             style="padding-right: 32px;">
                         <span style="position: absolute; right: 12px; top: 12px; color: var(--secondary); font-weight: 600;">%</span>
@@ -890,50 +812,16 @@ unset($__errorArgs, $__bag); ?>
         </div>
 
         <!-- Product Attributes Card -->
-        <div class="card" id="attributes-card" style="<?php echo e(!empty($categoryAttributes) && $categoryAttributes->count() > 0 ? '' : 'display: none;'); ?>">
+        <div class="card" id="attributes-card" style="display: none;">
             <div class="card-header">
                 <h2><i class="fas fa-tags"></i> Product Attributes</h2>
                 <p style="color: #64748b; font-size: 13px; margin-top: 4px;">Select attributes specific to this product's category</p>
             </div>
             <div class="card-body">
                 <div id="attributes-container">
-                    <?php if(!empty($categoryAttributes) && $categoryAttributes->count() > 0): ?>
-                        <div style="display: flex; flex-direction: column; gap: 24px;">
-                            <?php $__currentLoopData = $categoryAttributes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attribute): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <div class="form-group">
-                                    <label class="form-label">
-                                        <strong><?php echo e($attribute->name); ?></strong>
-                                        <?php if($attribute->unit): ?>
-                                            <span style="color: #64748b; font-size: 12px;">(<?php echo e($attribute->unit); ?>)</span>
-                                        <?php endif; ?>
-                                    </label>
-                                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 8px;">
-                                        <?php $__currentLoopData = $attribute->values; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <label class="checkbox-group" style="margin: 0;">
-                                                <input 
-                                                    type="checkbox" 
-                                                    id="attr_<?php echo e($attribute->id); ?>_<?php echo e($value->id); ?>" 
-                                                    name="attribute_values[]" 
-                                                    value="<?php echo e($value->id); ?>"
-                                                    <?php echo e(in_array($value->id, old('attribute_values', $selectedAttributeValues)) ? 'checked' : ''); ?>>
-                                                <span>
-                                                    <?php if($value->color_code): ?>
-                                                        <span style="display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: <?php echo e($value->color_code); ?>; border: 1px solid #ddd; margin-right: 6px; vertical-align: middle;"></span>
-                                                    <?php endif; ?>
-                                                    <?php echo e($value->value); ?>
-
-                                                </span>
-                                            </label>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </div>
-                                </div>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </div>
-                    <?php else: ?>
-                        <p style="color: #64748b; text-align: center; padding: 20px;">
-                            <i class="fas fa-info-circle"></i> No attributes configured for this category
-                        </p>
-                    <?php endif; ?>
+                    <p style="color: #64748b; text-align: center; padding: 20px;">
+                        <i class="fas fa-info-circle"></i> Select a category to see available attributes
+                    </p>
                 </div>
             </div>
         </div>
@@ -941,161 +829,129 @@ unset($__errorArgs, $__bag); ?>
         <!-- Form Actions -->
         <div style="display: flex; gap: 12px; padding-top: 24px;">
             <button type="submit" class="btn btn-success">
-                <i class="fas fa-save"></i> Update Product
+                <i class="fas fa-save"></i> <?php echo e(__('messages.create_product')); ?>
+
             </button>
             <a href="<?php echo e(route('admin.products.index')); ?>" class="btn btn-secondary">
-                <i class="fas fa-times"></i> Cancel
-            </a>
-        </div>
+                <i class="fas fa-times"></i> <?php echo e(__('messages.cancel')); ?>
 
-        <!-- Danger Zone -->
-        <div class="delete-section">
-            <div class="danger-zone">
-                <h3>
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Danger Zone
-                </h3>
-                <p>Deleting this product will permanently remove it from your store. This action cannot be undone.</p>
-                <button type="button" class="btn btn-danger" onclick="confirmDelete()">
-                    <i class="fas fa-trash-alt"></i> Delete Product
-                </button>
-            </div>
+            </a>
         </div>
     </div>
 </form>
 
-<!-- Delete Form (Hidden) -->
-<form id="deleteForm" action="<?php echo e(route('admin.products.destroy', $product)); ?>" method="POST" style="display: none;">
-    <?php echo csrf_field(); ?>
-    <?php echo method_field('DELETE'); ?>
-</form>
+<?php $__env->stopSection(); ?>
 
+<?php $__env->startPush('scripts'); ?>
 <script>
-    function confirmDelete() {
-        if (confirm('Are you sure you want to delete "<?php echo e($product->name); ?>"?\n\nThis action cannot be undone and will permanently remove this product from your store.')) {
-            document.getElementById('deleteForm').submit();
+document.addEventListener('DOMContentLoaded', function() {
+    const categorySelect = document.getElementById('category_id');
+    const attributesCard = document.getElementById('attributes-card');
+    const attributesContainer = document.getElementById('attributes-container');
+    
+    // Strong Offer checkbox toggle for discount percentage field
+    const strongOfferCheckbox = document.getElementById('is_strong_offer');
+    const discountPercentageGroup = document.getElementById('discount-percentage-group');
+    
+    if (strongOfferCheckbox && discountPercentageGroup) {
+        // Show/hide discount percentage field based on checkbox state
+        function toggleDiscountField() {
+            if (strongOfferCheckbox.checked) {
+                discountPercentageGroup.style.display = 'block';
+            } else {
+                discountPercentageGroup.style.display = 'none';
+                document.getElementById('discount_percentage').value = '';
+            }
         }
+        
+        // Initial state
+        toggleDiscountField();
+        
+        // Listen for changes
+        strongOfferCheckbox.addEventListener('change', toggleDiscountField);
     }
 
-    // Dynamic attribute loading on category change
-    document.addEventListener('DOMContentLoaded', function() {
-        const categorySelect = document.getElementById('category_id');
-        const attributesCard = document.getElementById('attributes-card');
-        const attributesContainer = document.getElementById('attributes-container');
-        const currentCategoryId = '<?php echo e($product->category_id); ?>';
+    // Load attributes when category changes
+    categorySelect.addEventListener('change', function() {
+        const categoryId = this.value;
         
-        // Strong Offer checkbox toggle for discount percentage field
-        const strongOfferCheckbox = document.getElementById('is_strong_offer');
-        const discountPercentageGroup = document.getElementById('discount-percentage-group');
-        
-        if (strongOfferCheckbox && discountPercentageGroup) {
-            // Show/hide discount percentage field based on checkbox state
-            function toggleDiscountField() {
-                if (strongOfferCheckbox.checked) {
-                    discountPercentageGroup.style.display = 'block';
+        if (!categoryId) {
+            attributesCard.style.display = 'none';
+            return;
+        }
+
+        // Show loading state
+        attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading attributes...</p>';
+        attributesCard.style.display = 'block';
+
+        // Fetch attributes for this category
+        fetch(`/admin/products/category-attributes/${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.attributes && data.attributes.length > 0) {
+                    renderAttributes(data.attributes);
                 } else {
-                    discountPercentageGroup.style.display = 'none';
-                    document.getElementById('discount_percentage').value = '';
+                    attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> No attributes configured for this category</p>';
                 }
-            }
-            
-            // Initial state
-            toggleDiscountField();
-            
-            // Listen for changes
-            strongOfferCheckbox.addEventListener('change', toggleDiscountField);
-        }
-        
-        // Store currently selected attribute values
-        let selectedValues = [];
-        
-        function getSelectedValues() {
-            const checkboxes = document.querySelectorAll('input[name="attribute_values[]"]:checked');
-            return Array.from(checkboxes).map(cb => cb.value);
-        }
+            })
+            .catch(error => {
+                console.error('Error loading attributes:', error);
+                attributesContainer.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i> Error loading attributes</p>';
+            });
+    });
 
-        // Load attributes when category changes
-        categorySelect.addEventListener('change', function() {
-            const categoryId = this.value;
-            
-            // Store selected values before reload
-            selectedValues = getSelectedValues();
-            
-            if (!categoryId) {
-                attributesCard.style.display = 'none';
-                return;
-            }
+    function renderAttributes(attributes) {
+        let html = '<div style="display: flex; flex-direction: column; gap: 24px;">';
 
-            // Show loading state
-            attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading attributes...</p>';
-            attributesCard.style.display = 'block';
+        attributes.forEach(attribute => {
+            html += `
+                <div class="form-group">
+                    <label class="form-label">
+                        <strong>${escapeHtml(attribute.name)}</strong>
+                        ${attribute.unit ? `<span style="color: #64748b; font-size: 12px;">(${escapeHtml(attribute.unit)})</span>` : ''}
+                    </label>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 8px;">
+            `;
 
-            // Fetch attributes for this category
-            fetch(`/admin/products/category-attributes/${categoryId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.attributes && data.attributes.length > 0) {
-                        renderAttributes(data.attributes, categoryId === currentCategoryId);
-                    } else {
-                        attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> No attributes configured for this category</p>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading attributes:', error);
-                    attributesContainer.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i> Error loading attributes</p>';
-                });
-        });
-
-        function renderAttributes(attributes, keepSelection) {
-            let html = '<div style="display: flex; flex-direction: column; gap: 24px;">';
-
-            attributes.forEach(attribute => {
+            attribute.values.forEach(value => {
+                const inputId = `attr_${attribute.id}_${value.id}`;
                 html += `
-                    <div class="form-group">
-                        <label class="form-label">
-                            <strong>${escapeHtml(attribute.name)}</strong>
-                            ${attribute.unit ? `<span style="color: #64748b; font-size: 12px;">(${escapeHtml(attribute.unit)})</span>` : ''}
-                        </label>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 8px;">
-                `;
-
-                attribute.values.forEach(value => {
-                    const inputId = `attr_${attribute.id}_${value.id}`;
-                    const isChecked = keepSelection && selectedValues.includes(value.id.toString());
-                    html += `
-                        <label class="checkbox-group" style="margin: 0;">
-                            <input 
-                                type="checkbox" 
-                                id="${inputId}" 
-                                name="attribute_values[]" 
-                                value="${value.id}"
-                                ${isChecked ? 'checked' : ''}>
-                            <span>
-                                ${value.color_code ? `<span style="display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: ${escapeHtml(value.color_code)}; border: 1px solid #ddd; margin-right: 6px; vertical-align: middle;"></span>` : ''}
-                                ${escapeHtml(value.value)}
-                            </span>
-                        </label>
-                    `;
-                });
-
-                html += `
-                        </div>
-                    </div>
+                    <label class="checkbox-group" style="margin: 0;">
+                        <input 
+                            type="checkbox" 
+                            id="${inputId}" 
+                            name="attribute_values[]" 
+                            value="${value.id}">
+                        <span>
+                            ${value.color_code ? `<span style="display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: ${escapeHtml(value.color_code)}; border: 1px solid #ddd; margin-right: 6px; vertical-align: middle;"></span>` : ''}
+                            ${escapeHtml(value.value)}
+                        </span>
+                    </label>
                 `;
             });
 
-            html += '</div>';
-            attributesContainer.innerHTML = html;
-        }
+            html += `
+                    </div>
+                </div>
+            `;
+        });
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-    });
+        html += '</div>';
+        attributesContainer.innerHTML = html;
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Trigger change event if category is already selected (for old() values)
+    if (categorySelect.value) {
+        categorySelect.dispatchEvent(new Event('change'));
+    }
+});
 </script>
+<?php $__env->stopPush(); ?>
 
-<?php $__env->stopSection(); ?>
-
-<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/admin/products/edit.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/admin/products/create.blade.php ENDPATH**/ ?>

@@ -210,8 +210,8 @@ endif;
 unset($__errorArgs, $__bag); ?>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
+                <div class="form-row" id="iconPositionRow">
+                    <div class="form-group" id="iconGroup">
                         <label for="icon" class="form-label">
                             <?php echo e(__('messages.category_icon')); ?>
 
@@ -313,6 +313,91 @@ unset($__errorArgs, $__bag); ?>">
 
                     </p>
                     <?php $__errorArgs = ['display_mode'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                </div>
+
+                <!-- Nav Type Selection (Parent/Child) - Only for Nav mode -->
+                <?php
+                    $isNavChild = $category->display_mode === 'nav' && $category->parent_id !== null;
+                    $currentNavType = $isNavChild ? 'child' : 'parent';
+                ?>
+                <div class="form-group" id="navTypeGroup" style="display: none;">
+                    <label for="nav_type" class="form-label">
+                        <?php echo e(__('messages.nav_type')); ?>
+
+                        <span class="required">*</span>
+                    </label>
+                    <select id="nav_type" name="nav_type" class="form-control <?php $__errorArgs = ['nav_type'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+                        <option value="parent" <?php echo e(old('nav_type', $currentNavType) == 'parent' ? 'selected' : ''); ?>>
+                            <?php echo e(__('messages.nav_parent')); ?> - <?php echo e(__('messages.nav_parent_description')); ?>
+
+                        </option>
+                        <option value="child" <?php echo e(old('nav_type', $currentNavType) == 'child' ? 'selected' : ''); ?>>
+                            <?php echo e(__('messages.nav_child')); ?> - <?php echo e(__('messages.nav_child_description')); ?>
+
+                        </option>
+                    </select>
+                    <p class="form-text">
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.nav_type_help')); ?>
+
+                    </p>
+                    <?php $__errorArgs = ['nav_type'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                </div>
+
+                <!-- Nav Parent Selection - Only for Nav Child type -->
+                <div class="form-group" id="navParentGroup" style="display: none;">
+                    <label for="nav_parent_id" class="form-label">
+                        <?php echo e(__('messages.select_nav_parent')); ?>
+
+                        <span class="required">*</span>
+                    </label>
+                    <select id="nav_parent_id" name="nav_parent_id" class="form-control <?php $__errorArgs = ['nav_parent_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+                        <option value=""><?php echo e(__('messages.choose_parent_category')); ?></option>
+                        <?php $__currentLoopData = $navParentCategories ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $navParent): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if($navParent->id !== $category->id): ?>
+                                <option value="<?php echo e($navParent->id); ?>" <?php echo e(old('nav_parent_id', $category->parent_id) == $navParent->id ? 'selected' : ''); ?>>
+                                    <?php echo e($navParent->name_en ?? $navParent->name); ?>
+
+                                </option>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+                    <p class="form-text">
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.nav_parent_select_help')); ?>
+
+                    </p>
+                    <?php $__errorArgs = ['nav_parent_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -659,17 +744,46 @@ unset($__errorArgs, $__bag); ?>
         const imageCard = document.getElementById('imageCard');
         const descriptionsCard = document.getElementById('descriptionsCard');
         const seoCard = document.getElementById('seoCard');
+        const iconGroup = document.getElementById('iconGroup');
+        const navTypeGroup = document.getElementById('navTypeGroup');
+        const parentIdGroup = document.getElementById('parent_id').closest('.form-group');
         
         if (displayMode === 'nav') {
             // Hide cards not needed for nav mode
             imageCard.style.display = 'none';
             descriptionsCard.style.display = 'none';
             seoCard.style.display = 'none';
+            iconGroup.style.display = 'none';
+            navTypeGroup.style.display = 'block';
+            parentIdGroup.style.display = 'none'; // Hide regular parent dropdown for nav mode
+            
+            // Toggle nav type fields
+            toggleNavTypeFields();
         } else {
             // Show all cards for carousel mode
             imageCard.style.display = 'block';
             descriptionsCard.style.display = 'block';
             seoCard.style.display = 'block';
+            iconGroup.style.display = 'block';
+            navTypeGroup.style.display = 'none';
+            parentIdGroup.style.display = 'block'; // Show regular parent dropdown for carousel mode
+            
+            // Hide nav parent selection
+            document.getElementById('navParentGroup').style.display = 'none';
+        }
+    }
+
+    function toggleNavTypeFields() {
+        const navType = document.getElementById('nav_type').value;
+        const navParentGroup = document.getElementById('navParentGroup');
+        const navParentSelect = document.getElementById('nav_parent_id');
+        
+        if (navType === 'child') {
+            navParentGroup.style.display = 'block';
+            navParentSelect.setAttribute('required', 'required');
+        } else {
+            navParentGroup.style.display = 'none';
+            navParentSelect.removeAttribute('required');
         }
     }
 
@@ -685,6 +799,9 @@ unset($__errorArgs, $__bag); ?>
         
         // Listen for display mode changes
         document.getElementById('display_mode').addEventListener('change', toggleDisplayModeFields);
+        
+        // Listen for nav type changes
+        document.getElementById('nav_type').addEventListener('change', toggleNavTypeFields);
     });
 </script>
 

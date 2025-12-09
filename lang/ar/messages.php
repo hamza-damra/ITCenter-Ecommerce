@@ -1358,4 +1358,15 @@ return [
     'display_mode_help' => 'اختر كيف تظهر هذه الفئة في الصفحة الرئيسية',
     'all_display_modes' => 'جميع أوضاع العرض',
     'inherits_parent' => 'يرث من الأب',
+    
+    // Nav Type (Parent/Child)
+    'nav_type' => 'نوع التنقل',
+    'nav_parent' => 'عنصر رئيسي',
+    'nav_child' => 'عنصر فرعي',
+    'nav_parent_description' => 'يظهر في شريط التنقل الرئيسي',
+    'nav_child_description' => 'يظهر تحت عنصر رئيسي',
+    'nav_type_help' => 'اختر إذا كان هذا عنصر رئيسي أو فرعي في شريط التنقل',
+    'select_nav_parent' => 'اختر العنصر الرئيسي',
+    'choose_parent_category' => 'اختر الفئة الرئيسية',
+    'nav_parent_select_help' => 'اختر الفئة الرئيسية التي سيظهر تحتها هذا العنصر',
 ];

@@ -227,6 +227,56 @@
                         <span class="error-message">{{ $message }}</span>
                     @enderror
                 </div>
+
+                <!-- Nav Type Selection (Parent/Child) - Only for Nav mode -->
+                @php
+                    $isNavChild = $category->display_mode === 'nav' && $category->parent_id !== null;
+                    $currentNavType = $isNavChild ? 'child' : 'parent';
+                @endphp
+                <div class="form-group" id="navTypeGroup" style="display: none;">
+                    <label for="nav_type" class="form-label">
+                        {{ __('messages.nav_type') }}
+                        <span class="required">*</span>
+                    </label>
+                    <select id="nav_type" name="nav_type" class="form-control @error('nav_type') is-invalid @enderror">
+                        <option value="parent" {{ old('nav_type', $currentNavType) == 'parent' ? 'selected' : '' }}>
+                            {{ __('messages.nav_parent') }} - {{ __('messages.nav_parent_description') }}
+                        </option>
+                        <option value="child" {{ old('nav_type', $currentNavType) == 'child' ? 'selected' : '' }}>
+                            {{ __('messages.nav_child') }} - {{ __('messages.nav_child_description') }}
+                        </option>
+                    </select>
+                    <p class="form-text">
+                        <i class="fas fa-info-circle"></i> {{ __('messages.nav_type_help') }}
+                    </p>
+                    @error('nav_type')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Nav Parent Selection - Only for Nav Child type -->
+                <div class="form-group" id="navParentGroup" style="display: none;">
+                    <label for="nav_parent_id" class="form-label">
+                        {{ __('messages.select_nav_parent') }}
+                        <span class="required">*</span>
+                    </label>
+                    <select id="nav_parent_id" name="nav_parent_id" class="form-control @error('nav_parent_id') is-invalid @enderror">
+                        <option value="">{{ __('messages.choose_parent_category') }}</option>
+                        @foreach($navParentCategories ?? [] as $navParent)
+                            @if($navParent->id !== $category->id)
+                                <option value="{{ $navParent->id }}" {{ old('nav_parent_id', $category->parent_id) == $navParent->id ? 'selected' : '' }}>
+                                    {{ $navParent->name_en ?? $navParent->name }}
+                                </option>
+                            @endif
+                        @endforeach
+                    </select>
+                    <p class="form-text">
+                        <i class="fas fa-info-circle"></i> {{ __('messages.nav_parent_select_help') }}
+                    </p>
+                    @error('nav_parent_id')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
         </div>
 
@@ -465,6 +515,8 @@
         const descriptionsCard = document.getElementById('descriptionsCard');
         const seoCard = document.getElementById('seoCard');
         const iconGroup = document.getElementById('iconGroup');
+        const navTypeGroup = document.getElementById('navTypeGroup');
+        const parentIdGroup = document.getElementById('parent_id').closest('.form-group');
         
         if (displayMode === 'nav') {
             // Hide cards not needed for nav mode
@@ -472,12 +524,36 @@
             descriptionsCard.style.display = 'none';
             seoCard.style.display = 'none';
             iconGroup.style.display = 'none';
+            navTypeGroup.style.display = 'block';
+            parentIdGroup.style.display = 'none'; // Hide regular parent dropdown for nav mode
+            
+            // Toggle nav type fields
+            toggleNavTypeFields();
         } else {
             // Show all cards for carousel mode
             imageCard.style.display = 'block';
             descriptionsCard.style.display = 'block';
             seoCard.style.display = 'block';
             iconGroup.style.display = 'block';
+            navTypeGroup.style.display = 'none';
+            parentIdGroup.style.display = 'block'; // Show regular parent dropdown for carousel mode
+            
+            // Hide nav parent selection
+            document.getElementById('navParentGroup').style.display = 'none';
+        }
+    }
+
+    function toggleNavTypeFields() {
+        const navType = document.getElementById('nav_type').value;
+        const navParentGroup = document.getElementById('navParentGroup');
+        const navParentSelect = document.getElementById('nav_parent_id');
+        
+        if (navType === 'child') {
+            navParentGroup.style.display = 'block';
+            navParentSelect.setAttribute('required', 'required');
+        } else {
+            navParentGroup.style.display = 'none';
+            navParentSelect.removeAttribute('required');
         }
     }
 
@@ -493,6 +569,9 @@
         
         // Listen for display mode changes
         document.getElementById('display_mode').addEventListener('change', toggleDisplayModeFields);
+        
+        // Listen for nav type changes
+        document.getElementById('nav_type').addEventListener('change', toggleNavTypeFields);
     });
 </script>
 
