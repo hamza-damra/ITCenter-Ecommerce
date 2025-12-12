@@ -24,6 +24,16 @@ class ProductFilterService
             $query = $this->applyCategoryFilter($query, $category);
         }
 
+        // Apply tag filter (single or multiple)
+        if ($request->has('tag') && !empty($request->tag)) {
+            $query = $this->applyTagFilter($query, $request->tag);
+        }
+        
+        // Apply multiple tags filter (AND logic)
+        if ($request->has('tags') && !empty($request->tags)) {
+            $query = $this->applyMultipleTagsFilter($query, $request->tags);
+        }
+
         // Apply strong offers filter
         if ($request->has('strong_offers') && $request->strong_offers) {
             $query = $this->applyStrongOffersFilter($query);
@@ -49,6 +59,41 @@ class ProductFilterService
             $query = $this->applyAttributeFilters($query, $request->attr);
         }
 
+        return $query;
+    }
+    
+    /**
+     * Apply single tag filter to query
+     *
+     * @param Builder $query
+     * @param string $tagSlug
+     * @return Builder
+     */
+    protected function applyTagFilter(Builder $query, string $tagSlug): Builder
+    {
+        return $query->whereHas('tags', function ($q) use ($tagSlug) {
+            $q->where('slug', $tagSlug)->where('is_active', true);
+        });
+    }
+    
+    /**
+     * Apply multiple tags filter with AND logic
+     *
+     * @param Builder $query
+     * @param array|string $tags
+     * @return Builder
+     */
+    protected function applyMultipleTagsFilter(Builder $query, $tags): Builder
+    {
+        $tags = is_array($tags) ? $tags : [$tags];
+        $tags = array_filter($tags);
+        
+        foreach ($tags as $tagSlug) {
+            $query->whereHas('tags', function ($q) use ($tagSlug) {
+                $q->where('slug', $tagSlug)->where('is_active', true);
+            });
+        }
+        
         return $query;
     }
 
@@ -175,6 +220,9 @@ class ProductFilterService
         // Get categories with product counts
         $filters['categories'] = $this->getCategoryFilters();
 
+        // Get tags with product counts
+        $filters['tags'] = $this->getTagFilters($category);
+
         // Get brands with product counts
         $filters['brands'] = $this->getBrandFilters($category);
 
@@ -193,6 +241,42 @@ class ProductFilterService
         $filters['strong_offers'] = true;
 
         return $filters;
+    }
+    
+    /**
+     * Get tag filters with product counts
+     *
+     * @param Category|null $category
+     * @return array
+     */
+    protected function getTagFilters(?Category $category = null): array
+    {
+        $query = \App\Models\Tag::active()->ordered();
+        
+        return $query->get()->map(function ($tag) use ($category) {
+            $productQuery = Product::active()->whereHas('tags', function ($q) use ($tag) {
+                $q->where('tags.id', $tag->id);
+            });
+            
+            if ($category) {
+                $productQuery->where('category_id', $category->id);
+            }
+            
+            $count = $productQuery->count();
+            
+            return [
+                'id' => $tag->id,
+                'slug' => $tag->slug,
+                'name' => $tag->name,
+                'name_en' => $tag->name_en,
+                'name_ar' => $tag->name_ar,
+                'color' => $tag->color,
+                'icon' => $tag->icon,
+                'count' => $count,
+            ];
+        })->filter(function ($tag) {
+            return $tag['count'] > 0;
+        })->values()->all();
     }
 
     /**

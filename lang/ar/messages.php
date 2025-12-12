@@ -426,6 +426,9 @@ return [
     'inactive' => 'غير نشط',
     
     'all_products' => 'جميع المنتجات',
+    'filter_by_tags' => 'تصفية حسب الوسوم',
+    'clear_filter' => 'مسح الفلتر',
+    'products_found' => 'منتج',
     'add_product' => 'إضافة منتج',
     'all_categories' => 'جميع الفئات',
     'add_category' => 'إضافة فئة',

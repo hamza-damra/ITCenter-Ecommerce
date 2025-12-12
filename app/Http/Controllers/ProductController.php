@@ -156,7 +156,18 @@ class ProductController extends Controller
             return (object) $brand;
         });
 
-        return view('products', compact('products', 'cartProductIds', 'categories', 'priceRange', 'brands', 'availableFilters'));
+        // Get active tags for filter carousel
+        $tags = collect($availableFilters['tags'] ?? [])->map(function ($tag) {
+            return (object) $tag;
+        });
+        
+        // Get current active tag if filtering by tag
+        $activeTag = null;
+        if ($request->has('tag') && !empty($request->tag)) {
+            $activeTag = \App\Models\Tag::where('slug', $request->tag)->first();
+        }
+
+        return view('products', compact('products', 'cartProductIds', 'categories', 'priceRange', 'brands', 'availableFilters', 'tags', 'activeTag'));
     }
 
     public function show($slug)

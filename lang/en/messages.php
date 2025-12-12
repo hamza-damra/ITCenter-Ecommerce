@@ -462,6 +462,9 @@ return [
     'inactive' => 'Inactive',
     
     'all_products' => 'All Products',
+    'filter_by_tags' => 'Filter by Tags',
+    'clear_filter' => 'Clear Filter',
+    'products_found' => 'products found',
     'add_product' => 'Add Product',
     'all_categories' => 'All Categories',
     'add_category' => 'Add Category',

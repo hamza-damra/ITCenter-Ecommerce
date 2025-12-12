@@ -189,6 +189,66 @@ unset($__defined_vars, $__key, $__value); ?>
         <?php endif; ?>
 
         
+        <?php if(!empty($filters['tags'])): ?>
+        <div class="filter-accordion">
+            <button type="button"
+                    class="filter-accordion-button"
+                    id="tagAccordionToggle"
+                    aria-expanded="false"
+                    aria-controls="tagAccordionContent">
+                <span class="filter-accordion-header">
+                    <i class="fas fa-tags"></i>
+                    <span class="filter-accordion-title"><?php echo e($isRtl ? 'الوسوم' : 'Tags'); ?></span>
+                </span>
+                <span class="filter-accordion-icon">
+                    <i class="fas fa-plus"></i>
+                </span>
+            </button>
+
+            <fieldset class="filter-accordion-content"
+                      id="tagAccordionContent"
+                      aria-labelledby="tagAccordionToggle"
+                      hidden>
+                <legend class="sr-only"><?php echo e($isRtl ? 'تصفية حسب الوسم' : 'Filter by tag'); ?></legend>
+
+                <div class="category-list tag-filter-list">
+                    <?php $__currentLoopData = $filters['tags']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tag): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
+                        $currentTag = request('tag', '');
+                        $isChecked = $currentTag === $tag['slug'];
+                    ?>
+                    <div class="category-checkbox tag-checkbox-item">
+                        <input type="radio"
+                               name="tag"
+                               value="<?php echo e($tag['slug']); ?>"
+                               id="tag-<?php echo e($tag['slug']); ?>"
+                               <?php echo e($isChecked ? 'checked' : ''); ?>>
+                        <label for="tag-<?php echo e($tag['slug']); ?>">
+                            <span class="tag-label-content">
+                                <?php if($tag['icon']): ?>
+                                    <i class="<?php echo e($tag['icon']); ?>" style="color: <?php echo e($tag['color']); ?>;"></i>
+                                <?php else: ?>
+                                    <span class="tag-color-dot" style="background: <?php echo e($tag['color']); ?>;"></span>
+                                <?php endif; ?>
+                                <?php echo e($tag['name']); ?>
+
+                            </span>
+                            <span class="item-count"><?php echo e($tag['count']); ?></span>
+                        </label>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(request('tag')): ?>
+                        <div class="category-checkbox">
+                            <input type="radio" name="tag" value="" id="tag-all">
+                            <label for="tag-all"><?php echo e($isRtl ? 'الكل' : 'All'); ?></label>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </fieldset>
+        </div>
+        <?php endif; ?>
+
+        
         <?php if(!empty($filters['categories'])): ?>
         <div class="filter-accordion">
             <button type="button"
@@ -573,6 +633,35 @@ unset($__defined_vars, $__key, $__value); ?>
         color: #2762f3;
     }
 
+    /* Tag Filter Styles */
+    .tag-filter-list {
+        gap: 0.5rem;
+    }
+    
+    .tag-checkbox-item label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .tag-label-content {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .tag-color-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+    
+    .tag-checkbox-item input:checked + label .tag-label-content {
+        font-weight: 600;
+    }
+
     /* Brand Disabled State */
     .brand-checkbox.brand-disabled {
         opacity: 0.5;
@@ -886,6 +975,30 @@ unset($__defined_vars, $__key, $__value); ?>
         button.setAttribute('aria-expanded', !isExpanded);
         content.hidden = isExpanded;
     }
+    
+    // Initialize all accordion buttons
+    document.addEventListener('DOMContentLoaded', function() {
+        // Setup accordion toggles for tags, categories, brands, and attributes
+        const accordionButtons = document.querySelectorAll('.filter-accordion-button');
+        accordionButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                toggleAttributeAccordion(this);
+            });
+        });
+        
+        // Auto-expand accordion if it has active filters
+        const tagAccordion = document.getElementById('tagAccordionToggle');
+        if (tagAccordion && document.querySelector('input[name="tag"]:checked')) {
+            tagAccordion.setAttribute('aria-expanded', 'true');
+            document.getElementById('tagAccordionContent').hidden = false;
+        }
+        
+        const categoryAccordion = document.getElementById('categoryAccordionToggle');
+        if (categoryAccordion && document.querySelector('input[name="categories[]"]:checked')) {
+            categoryAccordion.setAttribute('aria-expanded', 'true');
+            document.getElementById('categoryAccordionContent').hidden = false;
+        }
+    });
 
     // Mobile filter drawer functions
     window.openMobileFilters = function() {
