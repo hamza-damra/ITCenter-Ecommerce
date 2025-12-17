@@ -1263,4 +1263,16 @@ return [
     'select_nav_parent' => 'בחר פריט ראשי',
     'choose_parent_category' => 'בחר קטגוריה ראשית',
     'nav_parent_select_help' => 'בחר את הקטגוריה הראשית שתחתיה יופיע פריט זה',
+
+    // Empty States
+    'no_data_title' => 'בקרוב',
+    'no_data_subtitle' => 'אנחנו עובדים על להביא לכם מוצרים וקטגוריות מדהימים. בדקו שוב בקרוב!',
+    'no_categories_title' => 'אין קטגוריות עדיין',
+    'no_categories_subtitle' => 'אנחנו מארגנים את קטגוריות המוצרים. קטגוריות חדשות יתווספו בקרוב!',
+    'no_products_title' => 'אין מוצרים עדיין',
+    'no_products_subtitle' => 'קטלוג המוצרים שלנו מתעדכן. מוצרים מרגשים בקרוב!',
+    'browse_categories' => 'עיין בקטגוריות',
+    'contact_support' => 'צור קשר עם התמיכה',
+    'stay_tuned' => 'הישארו מעודכנים',
+    'notify_me' => 'הודע לי',
 ];

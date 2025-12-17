@@ -1373,6 +1373,18 @@ return [
     'choose_parent_category' => 'اختر الفئة الرئيسية',
     'nav_parent_select_help' => 'اختر الفئة الرئيسية التي سيظهر تحتها هذا العنصر',
     
+    // Empty States
+    'no_data_title' => 'قريباً',
+    'no_data_subtitle' => 'نعمل على تقديم منتجات وفئات رائعة لكم. تابعونا قريباً!',
+    'no_categories_title' => 'لا توجد فئات بعد',
+    'no_categories_subtitle' => 'نقوم بتنظيم فئات المنتجات. سيتم إضافة فئات جديدة قريباً!',
+    'no_products_title' => 'لا توجد منتجات بعد',
+    'no_products_subtitle' => 'يتم تحديث كتالوج المنتجات. منتجات رائعة قادمة قريباً!',
+    'browse_categories' => 'تصفح الفئات',
+    'contact_support' => 'اتصل بالدعم',
+    'stay_tuned' => 'تابعونا',
+    'notify_me' => 'أعلمني',
+
     // Tags Management
     'tags_management' => 'إدارة الوسوم',
     'manage_product_tags' => 'إدارة وسوم المنتجات لتصنيف أفضل',

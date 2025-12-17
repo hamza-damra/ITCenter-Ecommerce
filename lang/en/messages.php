@@ -1461,6 +1461,18 @@ return [
     'choose_parent_category' => 'Choose parent category',
     'nav_parent_select_help' => 'Select the parent category under which this item will appear',
     
+    // Empty States
+    'no_data_title' => 'Coming Soon',
+    'no_data_subtitle' => 'We\'re working on bringing you amazing products and categories. Check back soon!',
+    'no_categories_title' => 'No Categories Yet',
+    'no_categories_subtitle' => 'We\'re organizing our product categories. New categories will be added soon!',
+    'no_products_title' => 'No Products Yet',
+    'no_products_subtitle' => 'Our product catalog is being updated. Exciting products are coming soon!',
+    'browse_categories' => 'Browse Categories',
+    'contact_support' => 'Contact Support',
+    'stay_tuned' => 'Stay Tuned',
+    'notify_me' => 'Notify Me',
+
     // Tags Management
     'tags_management' => 'Tags Management',
     'manage_product_tags' => 'Manage product tags for better categorization',
