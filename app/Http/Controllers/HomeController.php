@@ -28,11 +28,11 @@ class HomeController extends Controller
     {
         // Cache key for home page data
         $cacheKey = 'home_page_data_' . app()->getLocale();
-        
+
         // Try to get data from cache first (cache for 30 minutes)
         $data = Cache::remember($cacheKey, 1800, function () {
             // Optimize queries with eager loading - only fetch non-empty collections
-            
+
             // Featured Products (المنتجات المميزة)
             $featuredProducts = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
                 ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
@@ -82,9 +82,11 @@ class HomeController extends Controller
                 ->active()
                 ->parent()
                 ->carousel()
-                ->withCount(['products' => function($query) {
-                    $query->active();
-                }])
+                ->withCount([
+                    'products' => function ($query) {
+                        $query->active();
+                    }
+                ])
                 ->orderBy('order')
                 ->get();
 
@@ -93,11 +95,13 @@ class HomeController extends Controller
                 ->active()
                 ->parent()
                 ->nav()
-                ->with(['children' => function($query) {
-                    $query->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'parent_id', 'position')
-                        ->active()
-                        ->orderBy('position');
-                }])
+                ->with([
+                    'children' => function ($query) {
+                        $query->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'parent_id', 'position')
+                            ->active()
+                            ->orderBy('position');
+                    }
+                ])
                 ->orderBy('position')
                 ->get();
 
@@ -113,9 +117,11 @@ class HomeController extends Controller
                 ->limit(3)
                 ->get();
 
-            $promotionalOffers = PromotionalOffer::with(['product' => function($query) {
+            $promotionalOffers = PromotionalOffer::with([
+                'product' => function ($query) {
                     $query->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'main_image', 'stock_status');
-                }])
+                }
+            ])
                 ->select('id', 'product_id', 'title_en', 'title_ar', 'title_he', 'original_price', 'sale_price', 'discount_percentage', 'features_en', 'features_ar', 'features_he', 'start_date', 'end_date', 'display_order')
                 ->active()
                 ->orderBy('display_order')
@@ -133,9 +139,9 @@ class HomeController extends Controller
             $giftIdeas = Product::with(['brand:id,name_en,name_ar,name_he,slug', 'category:id,name_en,name_ar,name_he,slug'])
                 ->select('id', 'name_en', 'name_ar', 'name_he', 'slug', 'price', 'sale_price', 'main_image', 'short_description_en', 'short_description_ar', 'short_description_he', 'is_new', 'is_featured', 'brand_id', 'category_id', 'stock_status')
                 ->active()
-                ->when(config('site.gift_ids'), function($query) {
+                ->when(config('site.gift_ids'), function ($query) {
                     return $query->whereIn('id', config('site.gift_ids'));
-                }, function($query) {
+                }, function ($query) {
                     return $query->featured();
                 })
                 ->latest()
@@ -174,17 +180,19 @@ class HomeController extends Controller
 
         // Pick random special offer product on each page load (outside cache)
         $specialOfferProduct = null;
-        if (isset($data['specialOfferProducts']) && $data['specialOfferProducts']->count() > 0) {
-            $specialOfferProduct = $data['specialOfferProducts']->random();
+        $specialOfferProducts = $data['specialOfferProducts'] ?? collect();
+        if ($specialOfferProducts->count() > 0) {
+            $specialOfferProduct = $specialOfferProducts->random();
         }
-        
+
         $data['specialOfferProduct'] = $specialOfferProduct;
 
         // Get cart product IDs for current user/session (not cached as it's user-specific)
         $cartProductIds = $this->getCartProductIds();
 
         return view('home', array_merge($data, [
-            'cartProductIds' => $cartProductIds
+            'cartProductIds' => $cartProductIds,
+            'specialOfferProducts' => $specialOfferProducts,
         ]));
     }
 
@@ -194,13 +202,13 @@ class HomeController extends Controller
     private function getCartProductIds()
     {
         $identifier = $this->getCartIdentifier();
-        
+
         // Use cached cart data to reduce database queries
         try {
             return $this->cartCache->getProductIds($identifier);
         } catch (\Exception $e) {
             // Fallback to direct database query if cache fails
-            return CartItem::where(function($query) use ($identifier) {
+            return CartItem::where(function ($query) use ($identifier) {
                 if (isset($identifier['user_id'])) {
                     $query->where('user_id', $identifier['user_id']);
                 } else {
@@ -235,7 +243,7 @@ class HomeController extends Controller
         Cache::forget('home_page_data_ar');
         Cache::forget('home_page_data_en');
         Cache::forget('home_page_data_he');
-        
+
         return response()->json(['success' => true, 'message' => 'Cache cleared successfully']);
     }
 }
