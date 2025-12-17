@@ -399,4 +399,4 @@ unset($__defined_vars, $__key, $__value); ?>
         }
     });
 </script>
-<?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/components/category-nav.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/components/category-nav.blade.php ENDPATH**/ ?>

@@ -44,16 +44,15 @@
         width: 100%;
         height: 100%;
         opacity: 0;
-        transform: scale(1.1);
-        transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: opacity 0.8s ease-in-out;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+        z-index: 0;
     }
 
     .hero-slide.active {
         opacity: 1;
-        transform: scale(1);
         z-index: 1;
     }
 
@@ -3008,6 +3007,274 @@
             width: 160px;
         }
     }
+
+    /* Empty State Styles */
+    .empty-state-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+        text-align: center;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        border-radius: 24px;
+        margin: 2rem auto;
+        max-width: 800px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .empty-state-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23cbd5e1' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    .empty-state-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+        animation: pulse-icon 2s ease-in-out infinite;
+        position: relative;
+        z-index: 1;
+    }
+
+    @keyframes pulse-icon {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .empty-state-icon i {
+        font-size: 3rem;
+        color: white;
+    }
+
+    .empty-state-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .empty-state-subtitle {
+        font-size: 1.1rem;
+        color: #64748b;
+        max-width: 500px;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .empty-state-actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .empty-state-btn {
+        padding: 0.875rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        border: none;
+    }
+
+    .empty-state-btn.primary {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        color: white;
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    .empty-state-btn.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
+    }
+
+    .empty-state-btn.secondary {
+        background: white;
+        color: #3b82f6;
+        border: 2px solid #e2e8f0;
+    }
+
+    .empty-state-btn.secondary:hover {
+        border-color: #3b82f6;
+        background: #f8fafc;
+        transform: translateY(-2px);
+    }
+
+    /* Mini Empty State (for sections) */
+    .empty-state-mini {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 2rem;
+        text-align: center;
+        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        border-radius: 16px;
+        margin: 1rem 0;
+    }
+
+    .empty-state-mini .empty-state-icon {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1.5rem;
+    }
+
+    .empty-state-mini .empty-state-icon i {
+        font-size: 2rem;
+    }
+
+    .empty-state-mini .empty-state-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .empty-state-mini .empty-state-subtitle {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Full Page Empty State (when both categories and products are empty) */
+    .empty-state-full {
+        min-height: 60vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+        text-align: center;
+        background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 50%, #f8fafc 100%);
+        position: relative;
+    }
+
+    .empty-state-full::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .empty-state-full .empty-state-icon {
+        width: 140px;
+        height: 140px;
+        margin-bottom: 2.5rem;
+    }
+
+    .empty-state-full .empty-state-icon i {
+        font-size: 4rem;
+    }
+
+    .empty-state-full .empty-state-title {
+        font-size: 2.5rem;
+    }
+
+    .empty-state-full .empty-state-subtitle {
+        font-size: 1.2rem;
+        max-width: 600px;
+    }
+
+    .empty-state-decoration {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        opacity: 0.6;
+    }
+
+    .empty-state-decoration span {
+        width: 10px;
+        height: 10px;
+        background: #3b82f6;
+        border-radius: 50%;
+        animation: bounce-dot 1.4s ease-in-out infinite;
+    }
+
+    .empty-state-decoration span:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .empty-state-decoration span:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    @keyframes bounce-dot {
+        0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+        40% { transform: scale(1.2); opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+        .empty-state-container {
+            padding: 3rem 1.5rem;
+            margin: 1rem;
+        }
+
+        .empty-state-icon {
+            width: 100px;
+            height: 100px;
+        }
+
+        .empty-state-icon i {
+            font-size: 2.5rem;
+        }
+
+        .empty-state-title {
+            font-size: 1.5rem;
+        }
+
+        .empty-state-subtitle {
+            font-size: 1rem;
+        }
+
+        .empty-state-actions {
+            flex-direction: column;
+        }
+
+        .empty-state-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .empty-state-full .empty-state-icon {
+            width: 100px;
+            height: 100px;
+        }
+
+        .empty-state-full .empty-state-icon i {
+            font-size: 3rem;
+        }
+
+        .empty-state-full .empty-state-title {
+            font-size: 1.75rem;
+        }
+    }
 </style>
 
 <!-- Hero Section - Slider -->
@@ -3027,21 +3294,13 @@
                 <?php if($banner->subtitle): ?>
                 <p><?php echo e($banner->subtitle); ?></p>
                 <?php endif; ?>
-                <?php if($banner->button_text || $banner->link): ?>
+                <?php if($banner->button_text && $banner->link): ?>
                 <div class="hero-cta-buttons">
-                    <?php if($banner->link && $banner->button_text): ?>
                     <a href="<?php echo e($banner->link); ?>" class="hero-cta-btn primary">
                         <i class="fas fa-shopping-bag"></i>
                         <?php echo e($banner->button_text); ?>
 
                     </a>
-                    <?php elseif($banner->link): ?>
-                    <a href="<?php echo e($banner->link); ?>" class="hero-cta-btn primary">
-                        <i class="fas fa-arrow-right"></i>
-                        <?php echo e(__t('messages.learn_more') ?? 'Learn More'); ?>
-
-                    </a>
-                    <?php endif; ?>
                 </div>
                 <?php endif; ?>
             </div>
@@ -3106,7 +3365,46 @@
 </div>
 <?php endif; ?>
 
+
+<?php
+    $hasCategories = isset($categories) && $categories->count() > 0;
+    $hasProducts = (isset($featuredProducts) && $featuredProducts->count() > 0) || 
+                   (isset($newProducts) && $newProducts->count() > 0) || 
+                   (isset($bestsellerProducts) && $bestsellerProducts->count() > 0) ||
+                   (isset($onSaleProducts) && $onSaleProducts->count() > 0);
+    $hasNeitherCategoriesNorProducts = !$hasCategories && !$hasProducts;
+?>
+
+<?php if($hasNeitherCategoriesNorProducts): ?>
+<!-- Full Page Empty State - No Categories and No Products -->
+<div class="empty-state-full">
+    <div class="empty-state-icon">
+        <i class="fas fa-store"></i>
+    </div>
+    <h2 class="empty-state-title"><?php echo e(__t('messages.no_data_title')); ?></h2>
+    <p class="empty-state-subtitle"><?php echo e(__t('messages.no_data_subtitle')); ?></p>
+    <div class="empty-state-actions">
+        <a href="<?php echo e(route('contact')); ?>" class="empty-state-btn primary">
+            <i class="fas fa-envelope"></i>
+            <?php echo e(__t('messages.contact_support')); ?>
+
+        </a>
+        <a href="<?php echo e(route('about')); ?>" class="empty-state-btn secondary">
+            <i class="fas fa-info-circle"></i>
+            <?php echo e(__t('messages.about')); ?>
+
+        </a>
+    </div>
+    <div class="empty-state-decoration">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<?php else: ?>
+
 <!-- Explore Our Products Section - Carousel Design -->
+<?php if(isset($categories) && $categories->count() > 0): ?>
 <div class="explore-products-section">
     <div class="container">
         <!-- Section Header with Decorative Elements -->
@@ -3165,6 +3463,27 @@
         </div>
     </div>
 </div>
+<?php else: ?>
+<!-- Empty State for Categories -->
+<div class="explore-products-section">
+    <div class="container">
+        <div class="empty-state-mini">
+            <div class="empty-state-icon">
+                <i class="fas fa-th-large"></i>
+            </div>
+            <h3 class="empty-state-title"><?php echo e(__t('messages.no_categories_title')); ?></h3>
+            <p class="empty-state-subtitle"><?php echo e(__t('messages.no_categories_subtitle')); ?></p>
+            <div class="empty-state-actions">
+                <a href="<?php echo e(route('products')); ?>" class="empty-state-btn primary">
+                    <i class="fas fa-shopping-bag"></i>
+                    <?php echo e(__t('messages.view_all_products')); ?>
+
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
 
 <!-- Category Carousel JavaScript -->
 <script>
@@ -3447,6 +3766,7 @@
 <!-- Removed top categories section - keeping only the middle one -->
 
 <!-- Featured Products Section -->
+<?php if(isset($featuredProducts) && $featuredProducts->count() > 0): ?>
 <div class="featured-section">
     <div class="container">
         <div class="product-grid" id="featuredProducts">
@@ -3609,6 +3929,27 @@
         </div>
     </div>
 </div>
+<?php else: ?>
+<!-- Empty State for Featured Products -->
+<div class="featured-section">
+    <div class="container">
+        <div class="empty-state-mini">
+            <div class="empty-state-icon">
+                <i class="fas fa-box-open"></i>
+            </div>
+            <h3 class="empty-state-title"><?php echo e(__t('messages.no_products_title')); ?></h3>
+            <p class="empty-state-subtitle"><?php echo e(__t('messages.no_products_subtitle')); ?></p>
+            <div class="empty-state-actions">
+                <a href="<?php echo e(route('contact')); ?>" class="empty-state-btn secondary">
+                    <i class="fas fa-envelope"></i>
+                    <?php echo e(__t('messages.contact_support')); ?>
+
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
 
 
 <?php if(isset($promotionalAds['left'])): ?>
@@ -4316,6 +4657,8 @@
     });
 </script>
 
+<?php endif; ?> 
+
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/home.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/home.blade.php ENDPATH**/ ?>

@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Helpers\ImageHelper;
 use App\Models\Banner;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 
 class BannerController extends Controller
 {
@@ -36,9 +35,9 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-        // Base validation rules
+        // Base validation rules - only database and url options
         $rules = [
-            'image_source' => 'required|in:file,database,url',
+            'image_source' => 'required|in:database,url',
             'title_en' => 'nullable|string|max:255',
             'title_ar' => 'nullable|string|max:255',
             'title_he' => 'nullable|string|max:255',
@@ -59,8 +58,9 @@ class BannerController extends Controller
         if ($imageSource === 'url') {
             $rules['image_url'] = 'required|url|max:2048';
         } else {
-            // Both 'file' and 'database' sources require file upload
-            $rules['image'] = 'required|image|mimes:jpg,jpeg,png,gif,webp|max:10240'; // Max 10MB for database storage
+            // Database storage requires file upload
+            // Max 2MB to prevent MySQL packet errors (without GD compression)
+            $rules['image'] = 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048';
         }
 
         $validated = $request->validate($rules);
@@ -90,38 +90,21 @@ class BannerController extends Controller
         ];
 
         // Handle image based on source type
-        switch ($imageSource) {
-            case Banner::SOURCE_URL:
-                // Store the external URL
-                $bannerData['image_path'] = $validated['image_url'];
-                $bannerData['image_data'] = null;
-                $bannerData['image_filename'] = null;
-                $bannerData['image_mime_type'] = null;
-                break;
-
-            case Banner::SOURCE_DATABASE:
-                // Store image directly in database as base64
-                $image = $request->file('image');
-                $imageContent = file_get_contents($image->getRealPath());
-                
-                $bannerData['image_path'] = null;
-                $bannerData['image_data'] = base64_encode($imageContent);
-                $bannerData['image_filename'] = $image->getClientOriginalName();
-                $bannerData['image_mime_type'] = $image->getMimeType();
-                break;
-
-            case Banner::SOURCE_FILE:
-            default:
-                // Traditional file storage
-                $image = $request->file('image');
-                $filename = $this->generateUniqueFilename($image);
-                $path = $image->storeAs('banners', $filename, 'public');
-                
-                $bannerData['image_path'] = $path;
-                $bannerData['image_data'] = null;
-                $bannerData['image_filename'] = $image->getClientOriginalName();
-                $bannerData['image_mime_type'] = $image->getMimeType();
-                break;
+        if ($imageSource === Banner::SOURCE_URL) {
+            // Store the external URL
+            $bannerData['image_path'] = $validated['image_url'];
+            $bannerData['image_data'] = null;
+            $bannerData['image_filename'] = null;
+            $bannerData['image_mime_type'] = null;
+        } else {
+            // Store image directly in database as compressed base64
+            $image = $request->file('image');
+            $compressed = ImageHelper::compressForDatabase($image);
+            
+            $bannerData['image_path'] = null;
+            $bannerData['image_data'] = $compressed['data'];
+            $bannerData['image_filename'] = $compressed['original_name'];
+            $bannerData['image_mime_type'] = $compressed['mime_type'];
         }
 
         // Create banner record
@@ -146,9 +129,9 @@ class BannerController extends Controller
      */
     public function update(Request $request, Banner $banner)
     {
-        // Base validation rules
+        // Base validation rules - only database and url options
         $rules = [
-            'image_source' => 'required|in:file,database,url',
+            'image_source' => 'required|in:database,url',
             'title_en' => 'nullable|string|max:255',
             'title_ar' => 'nullable|string|max:255',
             'title_he' => 'nullable|string|max:255',
@@ -166,16 +149,18 @@ class BannerController extends Controller
         $imageSource = $request->input('image_source', $banner->image_source);
         $hasNewImage = $request->hasFile('image');
         $hasNewUrl = $request->filled('image_url');
+        $sourceChanged = $imageSource !== $banner->image_source;
 
         // Add conditional validation for new images
         if ($imageSource === 'url') {
-            // URL is required if changing to URL source or if current is URL and changing it
-            if ($hasNewUrl || $banner->image_source !== 'url') {
-                $rules['image_url'] = $hasNewUrl ? 'required|url|max:2048' : 'nullable|url|max:2048';
+            // URL is required if changing to URL source
+            if ($sourceChanged || $hasNewUrl) {
+                $rules['image_url'] = 'required|url|max:2048';
             }
         } else {
-            // File upload is optional for updates (keep existing if not provided)
-            $rules['image'] = 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:10240';
+            // Database storage - image optional for updates unless source changed
+            // Max 2MB to prevent MySQL packet errors (without GD compression)
+            $rules['image'] = 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048';
         }
 
         $validated = $request->validate($rules);
@@ -204,79 +189,33 @@ class BannerController extends Controller
             'is_active' => $request->boolean('is_active', true),
         ];
 
-        // Track if we need to clean up old file
-        $oldFilePath = null;
-        if ($banner->image_source === Banner::SOURCE_FILE && $banner->image_path) {
-            $oldFilePath = $banner->image_path;
-        }
-
         // Handle image based on source type
-        $sourceChanged = $imageSource !== $banner->image_source;
-
-        switch ($imageSource) {
-            case Banner::SOURCE_URL:
-                if ($hasNewUrl || $sourceChanged) {
-                    $bannerData['image_path'] = $validated['image_url'] ?? $banner->image_path;
-                    $bannerData['image_data'] = null;
-                    $bannerData['image_filename'] = null;
-                    $bannerData['image_mime_type'] = null;
-                    
-                    // Clean up old file if source changed from file
-                    if ($oldFilePath && $sourceChanged) {
-                        $this->deleteOldImage($oldFilePath);
-                    }
-                }
-                break;
-
-            case Banner::SOURCE_DATABASE:
-                if ($hasNewImage) {
-                    $image = $request->file('image');
-                    $imageContent = file_get_contents($image->getRealPath());
-                    
-                    $bannerData['image_path'] = null;
-                    $bannerData['image_data'] = base64_encode($imageContent);
-                    $bannerData['image_filename'] = $image->getClientOriginalName();
-                    $bannerData['image_mime_type'] = $image->getMimeType();
-                    
-                    // Clean up old file if source changed from file
-                    if ($oldFilePath) {
-                        $this->deleteOldImage($oldFilePath);
-                    }
-                    
-                    // Clear image cache
-                    Cache::forget("banner_image_{$banner->id}_{$banner->updated_at->timestamp}");
-                } elseif ($sourceChanged && !$hasNewImage) {
-                    // Switching to database but no new image - require image
-                    return back()->withInput()->withErrors([
-                        'image' => __('messages.image_required_for_database_storage'),
-                    ]);
-                }
-                break;
-
-            case Banner::SOURCE_FILE:
-            default:
-                if ($hasNewImage) {
-                    // Delete old image if exists
-                    if ($oldFilePath) {
-                        $this->deleteOldImage($oldFilePath);
-                    }
-                    
-                    // Store new image
-                    $image = $request->file('image');
-                    $filename = $this->generateUniqueFilename($image);
-                    $path = $image->storeAs('banners', $filename, 'public');
-                    
-                    $bannerData['image_path'] = $path;
-                    $bannerData['image_data'] = null;
-                    $bannerData['image_filename'] = $image->getClientOriginalName();
-                    $bannerData['image_mime_type'] = $image->getMimeType();
-                } elseif ($sourceChanged && !$hasNewImage) {
-                    // Switching to file but no new image - require image
-                    return back()->withInput()->withErrors([
-                        'image' => __('messages.image_required_for_file_storage'),
-                    ]);
-                }
-                break;
+        if ($imageSource === Banner::SOURCE_URL) {
+            if ($hasNewUrl || $sourceChanged) {
+                $bannerData['image_path'] = $validated['image_url'] ?? $banner->image_path;
+                $bannerData['image_data'] = null;
+                $bannerData['image_filename'] = null;
+                $bannerData['image_mime_type'] = null;
+            }
+        } else {
+            // Database storage
+            if ($hasNewImage) {
+                $image = $request->file('image');
+                $compressed = ImageHelper::compressForDatabase($image);
+                
+                $bannerData['image_path'] = null;
+                $bannerData['image_data'] = $compressed['data'];
+                $bannerData['image_filename'] = $compressed['original_name'];
+                $bannerData['image_mime_type'] = $compressed['mime_type'];
+                
+                // Clear image cache
+                Cache::forget("banner_image_{$banner->id}_{$banner->updated_at->timestamp}");
+            } elseif ($sourceChanged && !$hasNewImage) {
+                // Switching to database but no new image - require image
+                return back()->withInput()->withErrors([
+                    'image' => __('messages.image_required_for_database_storage'),
+                ]);
+            }
         }
 
         // Update banner record
@@ -293,11 +232,6 @@ class BannerController extends Controller
      */
     public function destroy(Banner $banner)
     {
-        // Delete associated image file if stored as file
-        if ($banner->image_source === Banner::SOURCE_FILE && $banner->image_path) {
-            $this->deleteOldImage($banner->image_path);
-        }
-
         // Clear image cache if stored in database
         if ($banner->image_source === Banner::SOURCE_DATABASE) {
             Cache::forget("banner_image_{$banner->id}_{$banner->updated_at->timestamp}");
@@ -309,28 +243,6 @@ class BannerController extends Controller
 
         return redirect()->route('admin.banners.index')
             ->with('success', __('messages.banner_deleted_successfully'));
-    }
-
-    /**
-     * Generate a unique filename for uploaded images.
-     */
-    private function generateUniqueFilename($file): string
-    {
-        $extension = $file->getClientOriginalExtension();
-        $timestamp = now()->format('Y-m-d_H-i-s');
-        $random = Str::random(8);
-        
-        return "banner_{$timestamp}_{$random}.{$extension}";
-    }
-
-    /**
-     * Delete old image from storage.
-     */
-    private function deleteOldImage(string $path): void
-    {
-        if (Storage::disk('public')->exists($path)) {
-            Storage::disk('public')->delete($path);
-        }
     }
 
     /**

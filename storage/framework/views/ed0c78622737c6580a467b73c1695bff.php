@@ -2313,4 +2313,4 @@
     <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
-<?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/layouts/app.blade.php ENDPATH**/ ?>

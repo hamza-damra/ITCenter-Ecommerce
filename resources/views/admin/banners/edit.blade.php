@@ -444,7 +444,7 @@
                         
                         <div class="storage-info info-database">
                             <i class="fas fa-info-circle"></i>
-                            {{ __('messages.database_storage_info') ?? 'Image will be stored directly in the database. Max size: 10MB' }}
+                            {{ __('messages.database_storage_info') }}
                         </div>
                         
                         <p class="change-image-hint">

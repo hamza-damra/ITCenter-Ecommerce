@@ -151,4 +151,4 @@ unset($__defined_vars, $__key, $__value); ?>
     <!-- Progress Dots (optional) -->
     <div class="scroller-dots"></div>
 </div>
-<?php /**PATH C:\Users\rashe\Desktop\it-center\laravel-app\resources\views/components/horizontal-product-scroller.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/components/horizontal-product-scroller.blade.php ENDPATH**/ ?>

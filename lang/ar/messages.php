@@ -407,6 +407,24 @@ return [
     'cancel' => 'إلغاء',
     'required' => 'مطلوب',
     
+    // New UI translations
+    'new_offer' => 'عرض جديد',
+    'selected_product' => 'المنتج المحدد',
+    'current_price' => 'السعر الحالي',
+    'arabic' => 'العربية',
+    'english' => 'الإنجليزية',
+    'hebrew' => 'العبرية',
+    'title_hint_ar' => 'اكتب عنواناً جذاباً بالعربية',
+    'title_hint_en' => 'اكتب عنواناً جذاباً بالإنجليزية',
+    'optional' => 'اختياري',
+    'features_hint' => 'ميزة واحدة في كل سطر',
+    'days' => 'أيام',
+    'hours' => 'ساعات',
+    'and' => 'و',
+    'offer_lasts' => 'مدة العرض',
+    'sale_price_must_be_less' => 'سعر البيع يجب أن يكون أقل من السعر الأصلي!',
+    'end_date_must_be_after_start' => 'تاريخ الانتهاء يجب أن يكون بعد تاريخ البداية!',
+    
     'edit_promotional_offer' => 'تعديل العرض الترويجي',
     'update_promotional_subtitle' => 'قم بتحديث معلومات العرض الترويجي',
     'back' => 'رجوع',
@@ -702,6 +720,18 @@ return [
     'users_with_wishlist' => 'مستخدمين لديهم قائمة رغبات',
     'with_reviews' => 'لديهم مراجعات',
     'active_reviewers' => 'مراجعين نشطين',
+    
+    // Dashboard new keys
+    'store_overview' => 'نظرة عامة على المتجر',
+    'online_now' => 'متصل الآن',
+    'online' => 'متصل',
+    'offline' => 'غير متصل',
+    'analytics_overview' => 'نظرة عامة على التحليلات',
+    'view_orders' => 'عرض الطلبات',
+    'good_morning' => 'صباح الخير',
+    'good_afternoon' => 'مساء الخير',
+    'good_evening' => 'مساء الخير',
+    'in_stock' => 'متوفر',
 
     // Authentication - المصادقة (duplicates removed)
     'my_orders' => 'طلباتي',
@@ -772,6 +802,15 @@ return [
     'update_selected' => 'تحديث المحدد',
     'no_orders_found' => 'لا توجد طلبات',
     'no_orders_match_filters' => 'لا توجد طلبات تطابق الفلاتر الحالية.',
+    'filters' => 'الفلاتر',
+    'orders_list' => 'قائمة الطلبات',
+    'order' => 'طلب',
+    'change_status' => 'تغيير الحالة',
+    'apply' => 'تطبيق',
+    'clear_filters' => 'مسح الفلاتر',
+    'select_date' => 'اختر التاريخ',
+    'select_orders' => 'يرجى تحديد الطلبات أولاً',
+    'revenue' => 'الإيرادات',
     'pending_status' => 'قيد الانتظار',
     'processing_status' => 'قيد المعالجة',
     'shipped_status' => 'تم الشحن',
@@ -1272,6 +1311,7 @@ return [
     'button_text_english' => 'نص الزر (إنجليزي)',
     'button_text_arabic' => 'نص الزر (عربي)',
     'button_text_hebrew' => 'نص الزر (عبري)',
+    'link' => 'الرابط',
     'banner_link_url' => 'رابط URL',
     'banner_link_placeholder' => 'https://example.com/page',
     'banner_link_help' => 'رابط اختياري للانتقال عند النقر على البانر',
@@ -1312,7 +1352,7 @@ return [
     'upload_image' => 'رفع صورة',
     'image_url' => 'رابط الصورة',
     'enter_image_url' => 'https://example.com/image.jpg',
-    'database_storage_info' => 'سيتم تخزين الصورة مباشرة في قاعدة البيانات. الحد الأقصى: 10 ميجابايت',
+    'database_storage_info' => 'سيتم تخزين الصورة مباشرة في قاعدة البيانات. الحد الأقصى: 2 ميجابايت',
     'url_storage_info' => 'سيتم تحميل الصورة من الرابط الخارجي. تأكد من إمكانية الوصول للرابط.',
     'image_load_failed' => 'فشل تحميل الصورة. يرجى التحقق من الرابط.',
     'change_image_source' => 'تغيير مصدر الصورة',
@@ -1321,6 +1361,9 @@ return [
     'image_required_for_database_storage' => 'يرجى رفع صورة عند التغيير إلى التخزين في قاعدة البيانات.',
     'image_required_for_file_storage' => 'يرجى رفع صورة عند التغيير إلى التخزين في الملفات.',
     'unknown' => 'غير معروف',
+    'no_image' => 'لا توجد صورة',
+    'legacy_storage' => 'قديم (يحتاج تحديث)',
+    'legacy_file_warning' => 'هذا البانر يستخدم تخزين الملفات القديم. يرجى التعديل وإعادة الرفع باستخدام قاعدة البيانات أو رابط URL.',
 
     // Promotional Ads Management - إدارة الإعلانات الترويجية
     'promotional_ads_management' => 'إدارة الإعلانات الترويجية',
@@ -1406,6 +1449,22 @@ return [
     'stay_tuned' => 'تابعونا',
     'notify_me' => 'أعلمني',
 
+    // Promotional Offers Page
+    'total_offers' => 'إجمالي العروض',
+    'expired_offers' => 'العروض المنتهية',
+    'inactive_offers' => 'العروض غير النشطة',
+    'offers_list' => 'قائمة العروض',
+    'start_creating_offers' => 'ابدأ بإنشاء عروض ترويجية لجذب العملاء',
+    'duration' => 'المدة',
+    
+    // Reviews Page
+    'manage_product_reviews' => 'إدارة مراجعات وتقييمات العملاء',
+    'five_star_reviews' => 'تقييمات 5 نجوم',
+    'low_ratings' => 'تقييمات منخفضة',
+    'reviews_list' => 'قائمة المراجعات',
+    'no_reviews_found' => 'لا توجد مراجعات',
+    'no_reviews_description' => 'لم يتم تقديم أي مراجعات من العملاء حتى الآن',
+    
     // Tags Management
     'tags_management' => 'إدارة الوسوم',
     'manage_product_tags' => 'إدارة وسوم المنتجات لتصنيف أفضل',

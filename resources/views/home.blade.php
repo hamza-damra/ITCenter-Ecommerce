@@ -46,16 +46,15 @@
         width: 100%;
         height: 100%;
         opacity: 0;
-        transform: scale(1.1);
-        transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: opacity 0.8s ease-in-out;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+        z-index: 0;
     }
 
     .hero-slide.active {
         opacity: 1;
-        transform: scale(1);
         z-index: 1;
     }
 
@@ -3297,19 +3296,12 @@
                 @if($banner->subtitle)
                 <p>{{ $banner->subtitle }}</p>
                 @endif
-                @if($banner->button_text || $banner->link)
+                @if($banner->button_text && $banner->link)
                 <div class="hero-cta-buttons">
-                    @if($banner->link && $banner->button_text)
                     <a href="{{ $banner->link }}" class="hero-cta-btn primary">
                         <i class="fas fa-shopping-bag"></i>
                         {{ $banner->button_text }}
                     </a>
-                    @elseif($banner->link)
-                    <a href="{{ $banner->link }}" class="hero-cta-btn primary">
-                        <i class="fas fa-arrow-right"></i>
-                        {{ __t('messages.learn_more') ?? 'Learn More' }}
-                    </a>
-                    @endif
                 </div>
                 @endif
             </div>

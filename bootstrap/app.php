@@ -24,12 +24,18 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // SetDynamicAppUrl must run first to fix asset URLs for DDNS/external access
+        $middleware->web(prepend: [
+            \App\Http\Middleware\SetDynamicAppUrl::class,
+        ]);
+        
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
         ]);
 
         // Sanctum: treat API requests from same-origin as stateful so session cookies authenticate
         $middleware->api(prepend: [
+            \App\Http\Middleware\SetDynamicAppUrl::class,
             EnsureFrontendRequestsAreStateful::class,
         ]);
 

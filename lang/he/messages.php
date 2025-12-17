@@ -421,6 +421,24 @@ return [
     'cancel' => 'בטל',
     'required' => 'נדרש',
     
+    // New UI translations
+    'new_offer' => 'מבצע חדש',
+    'selected_product' => 'מוצר נבחר',
+    'current_price' => 'מחיר נוכחי',
+    'arabic' => 'ערבית',
+    'english' => 'אנגלית',
+    'hebrew' => 'עברית',
+    'title_hint_ar' => 'כתוב כותרת אטרקטיבית בערבית',
+    'title_hint_en' => 'כתוב כותרת אטרקטיבית באנגלית',
+    'optional' => 'אופציונלי',
+    'features_hint' => 'תכונה אחת בכל שורה',
+    'days' => 'ימים',
+    'hours' => 'שעות',
+    'and' => 'ו',
+    'offer_lasts' => 'משך המבצע',
+    'sale_price_must_be_less' => 'מחיר המבצע חייב להיות נמוך מהמחיר המקורי!',
+    'end_date_must_be_after_start' => 'תאריך הסיום חייב להיות אחרי תאריך ההתחלה!',
+    
     'edit_promotional_offer' => 'ערוך מבצע פרסומי',
     'update_promotional_subtitle' => 'עדכן את פרטי המבצע הפרסומי',
     'back' => 'חזרה',
@@ -698,6 +716,15 @@ return [
     'update_selected' => 'עדכן נבחרים',
     'no_orders_found' => 'לא נמצאו הזמנות',
     'no_orders_match_filters' => 'אין הזמנות התואמות את המסננים הנוכחיים.',
+    'filters' => 'מסננים',
+    'orders_list' => 'רשימת הזמנות',
+    'order' => 'הזמנה',
+    'change_status' => 'שנה סטטוס',
+    'apply' => 'החל',
+    'clear_filters' => 'נקה מסננים',
+    'select_date' => 'בחר תאריך',
+    'select_orders' => 'אנא בחר הזמנות קודם',
+    'revenue' => 'הכנסות',
     'pending_status' => 'ממתין',
     'processing_status' => 'בעיבוד',
     'shipped_status' => 'נשלח',
@@ -908,6 +935,18 @@ return [
     'users_with_wishlist' => 'משתמשים עם רשימת משאלות',
     'with_reviews' => 'עם ביקורות',
     'active_reviewers' => 'מבקרים פעילים',
+    
+    // Dashboard new keys
+    'store_overview' => 'סקירת החנות',
+    'online_now' => 'מחוברים כרגע',
+    'online' => 'מחובר',
+    'offline' => 'לא מחובר',
+    'analytics_overview' => 'סקירת אנליטיקס',
+    'view_orders' => 'צפה בהזמנות',
+    'good_morning' => 'בוקר טוב',
+    'good_afternoon' => 'צהריים טובים',
+    'good_evening' => 'ערב טוב',
+    'in_stock' => 'במלאי',
     
     // Database Backup Management
     'Database Backup Management' => 'ניהול גיבויי מסד נתונים',
@@ -1163,6 +1202,7 @@ return [
     'button_text_english' => 'טקסט כפתור (אנגלית)',
     'button_text_arabic' => 'טקסט כפתור (ערבית)',
     'button_text_hebrew' => 'טקסט כפתור (עברית)',
+    'link' => 'קישור',
     'banner_link_url' => 'כתובת URL של קישור',
     'banner_link_placeholder' => 'https://example.com/page',
     'banner_link_help' => 'כתובת URL אופציונלית לניווט בלחיצה על הבאנר',
@@ -1203,7 +1243,7 @@ return [
     'upload_image' => 'העלה תמונה',
     'image_url' => 'כתובת URL של תמונה',
     'enter_image_url' => 'https://example.com/image.jpg',
-    'database_storage_info' => 'התמונה תאוחסן ישירות בבסיס הנתונים. גודל מקסימלי: 10MB',
+    'database_storage_info' => 'התמונה תאוחסן ישירות בבסיס הנתונים. גודל מקסימלי: 2MB',
     'url_storage_info' => 'התמונה תיטען מכתובת URL חיצונית. ודא שהכתובת נגישה.',
     'image_load_failed' => 'טעינת התמונה נכשלה. בדוק את הכתובת.',
     'change_image_source' => 'שנה מקור תמונה',
@@ -1212,6 +1252,9 @@ return [
     'image_required_for_database_storage' => 'נא להעלות תמונה בעת שינוי לאחסון בבסיס נתונים.',
     'image_required_for_file_storage' => 'נא להעלות תמונה בעת שינוי לאחסון בקבצים.',
     'unknown' => 'לא ידוע',
+    'no_image' => 'אין תמונה',
+    'legacy_storage' => 'מורשת (דורש עדכון)',
+    'legacy_file_warning' => 'באנר זה משתמש באחסון קבצים מורשת. אנא ערוך והעלה מחדש באמצעות מסד נתונים או URL.',
 
     // Promotional Ads Management - ניהול פרסומות
     'promotional_ads_management' => 'ניהול פרסומות',
@@ -1285,6 +1328,22 @@ return [
     'choose_parent_category' => 'בחר קטגוריה ראשית',
     'nav_parent_select_help' => 'בחר את הקטגוריה הראשית שתחתיה יופיע פריט זה',
 
+    // Promotional Offers Page
+    'total_offers' => 'סה"כ מבצעים',
+    'expired_offers' => 'מבצעים שפגו',
+    'inactive_offers' => 'מבצעים לא פעילים',
+    'offers_list' => 'רשימת מבצעים',
+    'start_creating_offers' => 'התחל ליצור מבצעים למשיכת לקוחות',
+    'duration' => 'משך',
+    
+    // Reviews Page
+    'manage_product_reviews' => 'ניהול ביקורות ודירוגי לקוחות',
+    'five_star_reviews' => 'ביקורות 5 כוכבים',
+    'low_ratings' => 'דירוגים נמוכים',
+    'reviews_list' => 'רשימת ביקורות',
+    'no_reviews_found' => 'לא נמצאו ביקורות',
+    'no_reviews_description' => 'טרם נשלחו ביקורות מלקוחות',
+    
     // Empty States
     'no_data_title' => 'בקרוב',
     'no_data_subtitle' => 'אנחנו עובדים על להביא לכם מוצרים וקטגוריות מדהימים. בדקו שוב בקרוב!',

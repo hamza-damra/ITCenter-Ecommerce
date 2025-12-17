@@ -11,8 +11,9 @@ class Banner extends Model
 
     /**
      * Image source types
+     * Note: SOURCE_FILE is kept for legacy data compatibility but not used for new banners
      */
-    const SOURCE_FILE = 'file';
+    const SOURCE_FILE = 'file'; // Legacy - not used for new banners
     const SOURCE_DATABASE = 'database';
     const SOURCE_URL = 'url';
 
@@ -181,7 +182,7 @@ class Banner extends Model
         return match($this->image_source) {
             self::SOURCE_DATABASE => __('messages.stored_in_database'),
             self::SOURCE_URL => __('messages.external_url'),
-            self::SOURCE_FILE => __('messages.stored_in_files'),
+            self::SOURCE_FILE => __('messages.legacy_storage'),
             default => __('messages.unknown'),
         };
     }

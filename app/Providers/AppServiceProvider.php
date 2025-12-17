@@ -42,15 +42,28 @@ class AppServiceProvider extends ServiceProvider
 
         // Share nav categories with all views for navigation bar
         // Only categories with display_mode 'nav' appear in the navigation bar
+        // Exclude error views to prevent cascading database errors
         view()->composer('*', function ($view) {
-            $navigationCategories = \App\Models\Category::with(['children' => function ($query) {
-                $query->where('is_active', true)->orderBy('position');
-            }])
-            ->whereNull('parent_id')
-            ->where('is_active', true)
-            ->where('display_mode', 'nav')
-            ->orderBy('position')
-            ->get();
+            // Skip for error views to avoid cascading DB errors
+            $viewName = $view->getName();
+            if (str_starts_with($viewName, 'errors.') || str_starts_with($viewName, 'errors/')) {
+                $view->with('navigationCategories', collect([]));
+                return;
+            }
+            
+            try {
+                $navigationCategories = \App\Models\Category::with(['children' => function ($query) {
+                    $query->where('is_active', true)->orderBy('position');
+                }])
+                ->whereNull('parent_id')
+                ->where('is_active', true)
+                ->where('display_mode', 'nav')
+                ->orderBy('position')
+                ->get();
+            } catch (\Exception $e) {
+                // If database fails, provide empty collection to prevent view errors
+                $navigationCategories = collect([]);
+            }
             
             $view->with('navigationCategories', $navigationCategories);
         });

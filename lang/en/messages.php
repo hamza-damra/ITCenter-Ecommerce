@@ -443,6 +443,24 @@ return [
     'cancel' => 'Cancel',
     'required' => 'Required',
     
+    // New UI translations
+    'new_offer' => 'New Offer',
+    'selected_product' => 'Selected Product',
+    'current_price' => 'Current Price',
+    'arabic' => 'Arabic',
+    'english' => 'English',
+    'hebrew' => 'Hebrew',
+    'title_hint_ar' => 'Write an attractive title in Arabic',
+    'title_hint_en' => 'Write an attractive title in English',
+    'optional' => 'Optional',
+    'features_hint' => 'One feature per line',
+    'days' => 'days',
+    'hours' => 'hours',
+    'and' => 'and',
+    'offer_lasts' => 'Offer Duration',
+    'sale_price_must_be_less' => 'Sale price must be less than the original price!',
+    'end_date_must_be_after_start' => 'End date must be after the start date!',
+    
     'edit_promotional_offer' => 'Edit Promotional Offer',
     'update_promotional_subtitle' => 'Update the promotional offer information',
     'back' => 'Back',
@@ -739,6 +757,18 @@ return [
     'users_with_wishlist' => 'Users with wishlist',
     'with_reviews' => 'With Reviews',
     'active_reviewers' => 'Active reviewers',
+    
+    // Dashboard new keys
+    'store_overview' => 'Store Overview',
+    'online_now' => 'online now',
+    'online' => 'Online',
+    'offline' => 'Offline',
+    'analytics_overview' => 'Analytics Overview',
+    'view_orders' => 'View Orders',
+    'good_morning' => 'Good Morning',
+    'good_afternoon' => 'Good Afternoon',
+    'good_evening' => 'Good Evening',
+    'in_stock' => 'in stock',
 
     // Authentication
     'login' => 'Login',
@@ -815,6 +845,15 @@ return [
     'update_selected' => 'Update Selected',
     'no_orders_found' => 'No Orders Found',
     'no_orders_match_filters' => 'No orders match your current filters.',
+    'filters' => 'Filters',
+    'orders_list' => 'Orders List',
+    'order' => 'Order',
+    'change_status' => 'Change Status',
+    'apply' => 'Apply',
+    'clear_filters' => 'Clear Filters',
+    'select_date' => 'Select date',
+    'select_orders' => 'Please select orders first',
+    'revenue' => 'Revenue',
     'cancelled' => 'Cancelled',
     'pending_status' => 'Pending',
     'processing_status' => 'Processing',
@@ -1360,6 +1399,7 @@ return [
     'button_text_english' => 'Button Text (English)',
     'button_text_arabic' => 'Button Text (Arabic)',
     'button_text_hebrew' => 'Button Text (Hebrew)',
+    'link' => 'Link',
     'banner_link_url' => 'Link URL',
     'banner_link_placeholder' => 'https://example.com/page',
     'banner_link_help' => 'Optional URL to navigate when banner is clicked',
@@ -1400,7 +1440,7 @@ return [
     'upload_image' => 'Upload Image',
     'image_url' => 'Image URL',
     'enter_image_url' => 'https://example.com/image.jpg',
-    'database_storage_info' => 'Image will be stored directly in the database. Max size: 10MB',
+    'database_storage_info' => 'Image will be stored directly in the database. Max size: 2MB',
     'url_storage_info' => 'Image will be loaded from external URL. Make sure the URL is accessible.',
     'image_load_failed' => 'Failed to load image. Please check the URL.',
     'change_image_source' => 'Change Image Source',
@@ -1409,6 +1449,9 @@ return [
     'image_required_for_database_storage' => 'Please upload an image when changing to database storage.',
     'image_required_for_file_storage' => 'Please upload an image when changing to file storage.',
     'unknown' => 'Unknown',
+    'no_image' => 'No Image',
+    'legacy_storage' => 'Legacy (Needs Update)',
+    'legacy_file_warning' => 'This banner uses legacy file storage. Please edit and re-upload using Database or URL.',
 
     // Promotional Ads Management
     'promotional_ads_management' => 'Promotional Ads Management',
@@ -1494,6 +1537,22 @@ return [
     'stay_tuned' => 'Stay Tuned',
     'notify_me' => 'Notify Me',
 
+    // Promotional Offers Page
+    'total_offers' => 'Total Offers',
+    'expired_offers' => 'Expired Offers',
+    'inactive_offers' => 'Inactive Offers',
+    'offers_list' => 'Offers List',
+    'start_creating_offers' => 'Start creating promotional offers to attract customers',
+    'duration' => 'Duration',
+    
+    // Reviews Page
+    'manage_product_reviews' => 'Manage customer reviews and ratings',
+    'five_star_reviews' => '5-Star Reviews',
+    'low_ratings' => 'Low Ratings',
+    'reviews_list' => 'Reviews List',
+    'no_reviews_found' => 'No Reviews Found',
+    'no_reviews_description' => 'No customer reviews have been submitted yet',
+    
     // Tags Management
     'tags_management' => 'Tags Management',
     'manage_product_tags' => 'Manage product tags for better categorization',
