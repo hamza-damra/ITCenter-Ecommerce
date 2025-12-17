@@ -1388,6 +1388,27 @@ return [
     'banner_settings' => 'Banner Settings',
     'multilingual_content' => 'Multilingual Content',
     'at_least_one_title_required' => 'At least one title field is required',
+    
+    // Banner Image Source Options
+    'image_source' => 'Image Source',
+    'store_in_database' => 'Store in Database',
+    'store_in_database_desc' => 'Upload and store image directly in database',
+    'external_url' => 'External URL',
+    'external_url_desc' => 'Use image URL from the internet',
+    'stored_in_files' => 'Stored in Files',
+    'stored_in_database' => 'Database',
+    'upload_image' => 'Upload Image',
+    'image_url' => 'Image URL',
+    'enter_image_url' => 'https://example.com/image.jpg',
+    'database_storage_info' => 'Image will be stored directly in the database. Max size: 10MB',
+    'url_storage_info' => 'Image will be loaded from external URL. Make sure the URL is accessible.',
+    'image_load_failed' => 'Failed to load image. Please check the URL.',
+    'change_image_source' => 'Change Image Source',
+    'source_change_warning_title' => 'Image Source Change',
+    'source_change_warning_text' => 'You are changing the image source. Please provide a new image.',
+    'image_required_for_database_storage' => 'Please upload an image when changing to database storage.',
+    'image_required_for_file_storage' => 'Please upload an image when changing to file storage.',
+    'unknown' => 'Unknown',
 
     // Promotional Ads Management
     'promotional_ads_management' => 'Promotional Ads Management',

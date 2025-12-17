@@ -24,6 +24,9 @@ Route::get('/lang/{locale}', function ($locale) {
 
 // Public Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Banner Image Route (for serving database-stored images)
+Route::get('/banner-image/{banner}', [App\Http\Controllers\BannerImageController::class, 'show'])->name('banner.image');
 Route::get('/test-home', [HomeController::class, 'index'])->name('test.home');
 Route::get('/clear-cache', [HomeController::class, 'clearHomeCache'])->name('clear.cache');
 

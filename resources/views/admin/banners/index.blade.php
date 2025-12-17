@@ -68,6 +68,39 @@
         border: 1px solid var(--border);
     }
 
+    .source-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .source-badge.source-database {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .source-badge.source-url {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .source-badge.source-file {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .image-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        align-items: flex-start;
+    }
+
     .banner-title-cell {
         max-width: 200px;
     }
@@ -221,13 +254,31 @@
                     @foreach($banners as $banner)
                         <tr>
                             <td>
-                                @if($banner->image_path)
-                                    <img src="{{ $banner->image_url }}" alt="{{ $banner->title_en ?? 'Banner' }}" class="banner-thumbnail">
-                                @else
-                                    <div class="banner-thumbnail-placeholder">
-                                        <i class="fas fa-image"></i>
-                                    </div>
-                                @endif
+                                <div class="image-cell">
+                                    @if($banner->image_path || $banner->image_data)
+                                        <img src="{{ $banner->image_url }}" alt="{{ $banner->title_en ?? 'Banner' }}" class="banner-thumbnail">
+                                    @else
+                                        <div class="banner-thumbnail-placeholder">
+                                            <i class="fas fa-image"></i>
+                                        </div>
+                                    @endif
+                                    @php
+                                        $sourceClass = match($banner->image_source) {
+                                            'database' => 'source-database',
+                                            'url' => 'source-url',
+                                            default => 'source-file'
+                                        };
+                                        $sourceIcon = match($banner->image_source) {
+                                            'database' => 'fa-database',
+                                            'url' => 'fa-link',
+                                            default => 'fa-file-image'
+                                        };
+                                    @endphp
+                                    <span class="source-badge {{ $sourceClass }}">
+                                        <i class="fas {{ $sourceIcon }}"></i>
+                                        {{ $banner->image_source }}
+                                    </span>
+                                </div>
                             </td>
                             <td class="banner-title-cell">
                                 <span class="banner-title-text" title="{{ $banner->title_en ?? $banner->title_ar ?? $banner->title_he ?? __('messages.no_title') }}">

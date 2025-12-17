@@ -9,8 +9,19 @@ class Banner extends Model
 {
     use HasFactory;
 
+    /**
+     * Image source types
+     */
+    const SOURCE_FILE = 'file';
+    const SOURCE_DATABASE = 'database';
+    const SOURCE_URL = 'url';
+
     protected $fillable = [
         'image_path',
+        'image_source',
+        'image_data',
+        'image_filename',
+        'image_mime_type',
         'title_en',
         'title_ar',
         'title_he',
@@ -28,6 +39,14 @@ class Banner extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'display_order' => 'integer',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     * Hide the large image_data from JSON responses by default.
+     */
+    protected $hidden = [
+        'image_data',
     ];
 
     /**
@@ -79,21 +98,92 @@ class Banner extends Model
     }
 
     /**
-     * Get the full URL for the banner image.
+     * Get the full URL for the banner image based on image source type.
      */
     public function getImageUrlAttribute(): string
     {
-        if (empty($this->image_path)) {
-            return asset('images/assets/Banner.jpg');
+        // Handle based on image source type
+        switch ($this->image_source) {
+            case self::SOURCE_DATABASE:
+                // For database-stored images, return a route that serves the image
+                if (!empty($this->image_data)) {
+                    return route('banner.image', ['banner' => $this->id]);
+                }
+                break;
+
+            case self::SOURCE_URL:
+                // For external URLs, return the URL directly
+                if (!empty($this->image_path)) {
+                    return $this->image_path;
+                }
+                break;
+
+            case self::SOURCE_FILE:
+            default:
+                // For file storage, return the asset URL
+                if (!empty($this->image_path)) {
+                    // If it's already a full URL (legacy support), return as is
+                    if (str_starts_with($this->image_path, 'http')) {
+                        return $this->image_path;
+                    }
+                    return asset('storage/' . $this->image_path);
+                }
+                break;
         }
 
-        // If it's already a full URL, return as is
-        if (str_starts_with($this->image_path, 'http')) {
-            return $this->image_path;
-        }
+        // Default fallback image
+        return asset('images/assets/Banner.jpg');
+    }
 
-        // Return the asset URL for the stored path
-        return asset('storage/' . $this->image_path);
+    /**
+     * Get the image as a base64 data URI for inline embedding.
+     * Useful for displaying database-stored images directly in HTML.
+     */
+    public function getImageDataUriAttribute(): ?string
+    {
+        if ($this->image_source === self::SOURCE_DATABASE && !empty($this->image_data)) {
+            $mimeType = $this->image_mime_type ?? 'image/jpeg';
+            return "data:{$mimeType};base64,{$this->image_data}";
+        }
+        
+        return null;
+    }
+
+    /**
+     * Check if image is stored in database.
+     */
+    public function isImageInDatabase(): bool
+    {
+        return $this->image_source === self::SOURCE_DATABASE && !empty($this->image_data);
+    }
+
+    /**
+     * Check if image is from external URL.
+     */
+    public function isImageFromUrl(): bool
+    {
+        return $this->image_source === self::SOURCE_URL && !empty($this->image_path);
+    }
+
+    /**
+     * Check if image is stored as file.
+     */
+    public function isImageInFile(): bool
+    {
+        return $this->image_source === self::SOURCE_FILE && !empty($this->image_path);
+    }
+
+    /**
+     * Get human-readable image source label.
+     */
+    public function getImageSourceLabelAttribute(): string
+    {
+        return match($this->image_source) {
+            self::SOURCE_DATABASE => __('messages.stored_in_database'),
+            self::SOURCE_URL => __('messages.external_url'),
+            self::SOURCE_FILE => __('messages.stored_in_files'),
+            default => __('messages.unknown'),
+        };
     }
 
     /**

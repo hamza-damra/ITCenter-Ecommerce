@@ -1300,6 +1300,27 @@ return [
     'banner_settings' => 'إعدادات البانر',
     'multilingual_content' => 'المحتوى متعدد اللغات',
     'at_least_one_title_required' => 'مطلوب حقل عنوان واحد على الأقل',
+    
+    // Banner Image Source Options - خيارات مصدر صورة البانر
+    'image_source' => 'مصدر الصورة',
+    'store_in_database' => 'تخزين في قاعدة البيانات',
+    'store_in_database_desc' => 'رفع وتخزين الصورة مباشرة في قاعدة البيانات',
+    'external_url' => 'رابط خارجي',
+    'external_url_desc' => 'استخدام رابط صورة من الإنترنت',
+    'stored_in_files' => 'مخزنة في الملفات',
+    'stored_in_database' => 'قاعدة البيانات',
+    'upload_image' => 'رفع صورة',
+    'image_url' => 'رابط الصورة',
+    'enter_image_url' => 'https://example.com/image.jpg',
+    'database_storage_info' => 'سيتم تخزين الصورة مباشرة في قاعدة البيانات. الحد الأقصى: 10 ميجابايت',
+    'url_storage_info' => 'سيتم تحميل الصورة من الرابط الخارجي. تأكد من إمكانية الوصول للرابط.',
+    'image_load_failed' => 'فشل تحميل الصورة. يرجى التحقق من الرابط.',
+    'change_image_source' => 'تغيير مصدر الصورة',
+    'source_change_warning_title' => 'تغيير مصدر الصورة',
+    'source_change_warning_text' => 'أنت تقوم بتغيير مصدر الصورة. يرجى تقديم صورة جديدة.',
+    'image_required_for_database_storage' => 'يرجى رفع صورة عند التغيير إلى التخزين في قاعدة البيانات.',
+    'image_required_for_file_storage' => 'يرجى رفع صورة عند التغيير إلى التخزين في الملفات.',
+    'unknown' => 'غير معروف',
 
     // Promotional Ads Management - إدارة الإعلانات الترويجية
     'promotional_ads_management' => 'إدارة الإعلانات الترويجية',

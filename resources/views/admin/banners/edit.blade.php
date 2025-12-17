@@ -9,6 +9,96 @@
         margin: 0 auto;
     }
 
+    /* Image Source Selector Styles */
+    .image-source-selector {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .source-option {
+        flex: 1;
+        position: relative;
+    }
+
+    .source-option input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .source-option-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 16px;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .source-option-label i {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #64748b;
+        transition: all 0.3s ease;
+    }
+
+    .source-option-label .source-title {
+        font-weight: 600;
+        color: #334155;
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    .source-option-label .source-desc {
+        font-size: 11px;
+        color: #94a3b8;
+        line-height: 1.3;
+    }
+
+    .source-option input[type="radio"]:checked + .source-option-label {
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        border-color: var(--primary);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    }
+
+    .source-option input[type="radio"]:checked + .source-option-label i {
+        color: var(--primary);
+        transform: scale(1.1);
+    }
+
+    .source-option input[type="radio"]:checked + .source-option-label .source-title {
+        color: var(--primary);
+    }
+
+    .source-option:hover .source-option-label {
+        border-color: var(--primary);
+        transform: translateY(-2px);
+    }
+
+    /* Image Input Sections */
+    .image-input-section {
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .image-input-section.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
     .image-upload-box {
         background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
         border: 2px dashed var(--primary);
@@ -50,13 +140,41 @@
 
     .current-image-container {
         margin-bottom: 20px;
+        position: relative;
     }
 
     .current-image-label {
         font-weight: 600;
         color: var(--dark);
         margin-bottom: 12px;
-        display: block;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .current-source-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    .current-source-badge.badge-database {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .current-source-badge.badge-url {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .current-source-badge.badge-file {
+        background: #fef3c7;
+        color: #92400e;
     }
 
     .current-image {
@@ -90,6 +208,123 @@
         align-items: center;
         gap: 6px;
     }
+
+    /* URL Input Styles */
+    .url-input-wrapper {
+        position: relative;
+    }
+
+    .url-input-wrapper .form-control {
+        padding-left: 45px;
+    }
+
+    .url-input-wrapper .url-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 16px;
+    }
+
+    .url-preview-container {
+        margin-top: 16px;
+        padding: 16px;
+        background: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        display: none;
+    }
+
+    .url-preview-container.has-preview {
+        display: block;
+    }
+
+    .url-preview-image {
+        max-width: 100%;
+        max-height: 250px;
+        border-radius: 6px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .url-preview-error {
+        color: #ef4444;
+        text-align: center;
+        padding: 20px;
+        display: none;
+    }
+
+    .url-preview-error.show {
+        display: block;
+    }
+
+    .url-preview-error i {
+        font-size: 32px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    /* Storage Info Badge */
+    .storage-info {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        background: #fef3c7;
+        color: #92400e;
+        border-radius: 6px;
+        font-size: 12px;
+        margin-top: 12px;
+    }
+
+    .storage-info.info-database {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .storage-info.info-url {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    /* Source change warning */
+    .source-change-warning {
+        background: #fef3c7;
+        border: 1px solid #fcd34d;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-top: 16px;
+        display: none;
+    }
+
+    .source-change-warning.show {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .source-change-warning i {
+        color: #f59e0b;
+        font-size: 18px;
+        margin-top: 2px;
+    }
+
+    .source-change-warning-text {
+        flex: 1;
+    }
+
+    .source-change-warning-text strong {
+        color: #92400e;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .source-change-warning-text p {
+        color: #a16207;
+        font-size: 13px;
+        margin: 0;
+    }
 </style>
 
 <div class="page-header">
@@ -116,42 +351,159 @@
                 <h2><i class="fas fa-image"></i> {{ __('messages.banner_image') }}</h2>
             </div>
             <div class="card-body">
-                <!-- Current Image -->
-                @if($banner->image_path)
+                
+                <!-- Current Image Display -->
                 <div class="current-image-container">
-                    <span class="current-image-label">{{ __('messages.current_banner_image') }}</span>
+                    <span class="current-image-label">
+                        {{ __('messages.current_banner_image') }}
+                        @php
+                            $sourceClass = match($banner->image_source) {
+                                'database' => 'badge-database',
+                                'url' => 'badge-url',
+                                default => 'badge-file'
+                            };
+                            $sourceIcon = match($banner->image_source) {
+                                'database' => 'fa-database',
+                                'url' => 'fa-link',
+                                default => 'fa-file-image'
+                            };
+                        @endphp
+                        <span class="current-source-badge {{ $sourceClass }}">
+                            <i class="fas {{ $sourceIcon }}"></i>
+                            {{ $banner->image_source_label }}
+                        </span>
+                    </span>
                     <img src="{{ $banner->image_url }}" alt="{{ $banner->title_en ?? 'Banner' }}" class="current-image">
                 </div>
-                @endif
 
+                <!-- Image Source Selector -->
                 <div class="form-group">
-                    <label for="image" class="form-label">
-                        {{ __('messages.new_image') ?? 'New Image' }}
-                        <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_replace') ?? 'Optional - leave empty to keep current' }})</span>
+                    <label class="form-label">
+                        {{ __('messages.change_image_source') ?? 'Change Image Source' }}
                     </label>
-                    <div class="image-upload-box" onclick="document.getElementById('image').click()">
-                        <div class="upload-placeholder">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>{{ __('messages.click_to_upload_new') ?? 'Click to upload new image' }}</p>
-                            <p class="upload-hint">{{ __('messages.banner_image_help') }}</p>
+                    
+                    <div class="image-source-selector">
+                        <div class="source-option">
+                            <input type="radio" name="image_source" id="source_database" value="database" 
+                                   {{ old('image_source', $banner->image_source) === 'database' ? 'checked' : '' }}
+                                   onchange="toggleImageSource('database')"
+                                   data-original="{{ $banner->image_source }}">
+                            <label for="source_database" class="source-option-label">
+                                <i class="fas fa-database"></i>
+                                <span class="source-title">{{ __('messages.store_in_database') ?? 'Store in Database' }}</span>
+                                <span class="source-desc">{{ __('messages.store_in_database_desc') ?? 'Upload and store image directly in database' }}</span>
+                            </label>
                         </div>
-                        <img id="imagePreview" class="image-preview" alt="Preview">
+                        
+                        <div class="source-option">
+                            <input type="radio" name="image_source" id="source_url" value="url"
+                                   {{ old('image_source', $banner->image_source) === 'url' ? 'checked' : '' }}
+                                   onchange="toggleImageSource('url')"
+                                   data-original="{{ $banner->image_source }}">
+                            <label for="source_url" class="source-option-label">
+                                <i class="fas fa-link"></i>
+                                <span class="source-title">{{ __('messages.external_url') ?? 'External URL' }}</span>
+                                <span class="source-desc">{{ __('messages.external_url_desc') ?? 'Use image URL from the internet' }}</span>
+                            </label>
+                        </div>
                     </div>
-                    <input 
-                        type="file" 
-                        id="image" 
-                        name="image" 
-                        class="form-control @error('image') is-invalid @enderror" 
-                        accept="image/jpeg,image/png,image/gif,image/webp"
-                        style="display: none;"
-                        onchange="previewImage(this)">
-                    <p class="change-image-hint">
-                        <i class="fas fa-info-circle"></i> {{ __('messages.image_replace_hint') ?? 'Upload a new image to replace the current one' }}
-                    </p>
-                    @error('image')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
                 </div>
+
+                <!-- Source Change Warning -->
+                <div id="sourceChangeWarning" class="source-change-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div class="source-change-warning-text">
+                        <strong>{{ __('messages.source_change_warning_title') ?? 'Image Source Change' }}</strong>
+                        <p id="sourceChangeWarningText">{{ __('messages.source_change_warning_text') ?? 'You are changing the image source. Please provide a new image.' }}</p>
+                    </div>
+                </div>
+
+                <!-- Database/File Upload Section -->
+                <div id="upload-section" class="image-input-section {{ old('image_source', $banner->image_source) !== 'url' ? 'active' : '' }}">
+                    <div class="form-group">
+                        <label for="image" class="form-label">
+                            {{ __('messages.new_image') ?? 'New Image' }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_replace') ?? 'Optional - leave empty to keep current' }})</span>
+                        </label>
+                        <div class="image-upload-box" onclick="document.getElementById('image').click()">
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>{{ __('messages.click_to_upload_new') ?? 'Click to upload new image' }}</p>
+                                <p class="upload-hint">{{ __('messages.banner_image_help') }}</p>
+                            </div>
+                            <img id="imagePreview" class="image-preview" alt="Preview">
+                        </div>
+                        <input 
+                            type="file" 
+                            id="image" 
+                            name="image" 
+                            class="form-control @error('image') is-invalid @enderror" 
+                            accept="image/jpeg,image/png,image/gif,image/webp"
+                            style="display: none;"
+                            onchange="previewUploadedImage(this)">
+                        
+                        <div class="storage-info info-database">
+                            <i class="fas fa-info-circle"></i>
+                            {{ __('messages.database_storage_info') ?? 'Image will be stored directly in the database. Max size: 10MB' }}
+                        </div>
+                        
+                        <p class="change-image-hint">
+                            <i class="fas fa-info-circle"></i> {{ __('messages.image_replace_hint') ?? 'Upload a new image to replace the current one' }}
+                        </p>
+                        
+                        @error('image')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- External URL Section -->
+                <div id="url-section" class="image-input-section {{ old('image_source', $banner->image_source) === 'url' ? 'active' : '' }}">
+                    <div class="form-group">
+                        <label for="image_url" class="form-label">
+                            {{ __('messages.image_url') ?? 'Image URL' }}
+                            @if($banner->image_source !== 'url')
+                                <span class="required">*</span>
+                            @else
+                                <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_replace') ?? 'Optional - leave empty to keep current' }})</span>
+                            @endif
+                        </label>
+                        <div class="url-input-wrapper">
+                            <i class="fas fa-globe url-icon"></i>
+                            <input 
+                                type="url" 
+                                id="image_url" 
+                                name="image_url" 
+                                class="form-control @error('image_url') is-invalid @enderror" 
+                                value="{{ old('image_url', $banner->image_source === 'url' ? $banner->image_path : '') }}"
+                                placeholder="{{ __('messages.enter_image_url') ?? 'https://example.com/image.jpg' }}"
+                                oninput="previewUrlImage(this.value)">
+                        </div>
+                        
+                        <div class="storage-info info-url">
+                            <i class="fas fa-info-circle"></i>
+                            {{ __('messages.url_storage_info') ?? 'Image will be loaded from external URL. Make sure the URL is accessible.' }}
+                        </div>
+                        
+                        <!-- URL Preview -->
+                        <div id="urlPreviewContainer" class="url-preview-container {{ old('image_url', $banner->image_source === 'url' ? $banner->image_path : '') ? 'has-preview' : '' }}">
+                            <img id="urlPreviewImage" class="url-preview-image" 
+                                 src="{{ old('image_url', $banner->image_source === 'url' ? $banner->image_path : '') }}"
+                                 alt="URL Preview" 
+                                 onerror="showUrlError()" 
+                                 onload="hideUrlError()">
+                            <div id="urlPreviewError" class="url-preview-error">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>{{ __('messages.image_load_failed') ?? 'Failed to load image. Please check the URL.' }}</span>
+                            </div>
+                        </div>
+                        
+                        @error('image_url')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -414,9 +766,34 @@
 </form>
 
 <script>
-function previewImage(input) {
+const originalSource = '{{ $banner->image_source }}';
+
+// Toggle between image source sections
+function toggleImageSource(source) {
+    const uploadSection = document.getElementById('upload-section');
+    const urlSection = document.getElementById('url-section');
+    const warning = document.getElementById('sourceChangeWarning');
+    
+    if (source === 'url') {
+        uploadSection.classList.remove('active');
+        urlSection.classList.add('active');
+    } else {
+        urlSection.classList.remove('active');
+        uploadSection.classList.add('active');
+    }
+    
+    // Show warning if source changed
+    if (source !== originalSource) {
+        warning.classList.add('show');
+    } else {
+        warning.classList.remove('show');
+    }
+}
+
+// Preview uploaded image
+function previewUploadedImage(input) {
     const preview = document.getElementById('imagePreview');
-    const placeholder = document.querySelector('.upload-placeholder');
+    const placeholder = document.getElementById('uploadPlaceholder');
     
     if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -430,6 +807,54 @@ function previewImage(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+// Preview URL image with debounce
+let urlPreviewTimeout;
+function previewUrlImage(url) {
+    clearTimeout(urlPreviewTimeout);
+    
+    const container = document.getElementById('urlPreviewContainer');
+    const image = document.getElementById('urlPreviewImage');
+    const error = document.getElementById('urlPreviewError');
+    
+    if (!url || url.trim() === '') {
+        container.classList.remove('has-preview');
+        return;
+    }
+    
+    // Debounce to avoid too many requests
+    urlPreviewTimeout = setTimeout(() => {
+        container.classList.add('has-preview');
+        error.classList.remove('show');
+        image.style.display = 'block';
+        image.src = url;
+    }, 500);
+}
+
+function showUrlError() {
+    const image = document.getElementById('urlPreviewImage');
+    const error = document.getElementById('urlPreviewError');
+    image.style.display = 'none';
+    error.classList.add('show');
+}
+
+function hideUrlError() {
+    const error = document.getElementById('urlPreviewError');
+    error.classList.remove('show');
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Check which source is selected
+    const urlRadio = document.getElementById('source_url');
+    const dbRadio = document.getElementById('source_database');
+    
+    if (urlRadio && urlRadio.checked) {
+        toggleImageSource('url');
+    } else if (dbRadio && dbRadio.checked) {
+        toggleImageSource('database');
+    }
+});
 </script>
 
 @endsection

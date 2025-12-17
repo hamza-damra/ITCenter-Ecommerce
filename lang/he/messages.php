@@ -1191,6 +1191,27 @@ return [
     'banner_settings' => 'הגדרות באנר',
     'multilingual_content' => 'תוכן רב-לשוני',
     'at_least_one_title_required' => 'נדרש לפחות שדה כותרת אחד',
+    
+    // Banner Image Source Options - אפשרויות מקור תמונת באנר
+    'image_source' => 'מקור התמונה',
+    'store_in_database' => 'אחסון בבסיס נתונים',
+    'store_in_database_desc' => 'העלאה ואחסון התמונה ישירות בבסיס הנתונים',
+    'external_url' => 'כתובת URL חיצונית',
+    'external_url_desc' => 'שימוש בכתובת URL של תמונה מהאינטרנט',
+    'stored_in_files' => 'מאוחסן בקבצים',
+    'stored_in_database' => 'בסיס נתונים',
+    'upload_image' => 'העלה תמונה',
+    'image_url' => 'כתובת URL של תמונה',
+    'enter_image_url' => 'https://example.com/image.jpg',
+    'database_storage_info' => 'התמונה תאוחסן ישירות בבסיס הנתונים. גודל מקסימלי: 10MB',
+    'url_storage_info' => 'התמונה תיטען מכתובת URL חיצונית. ודא שהכתובת נגישה.',
+    'image_load_failed' => 'טעינת התמונה נכשלה. בדוק את הכתובת.',
+    'change_image_source' => 'שנה מקור תמונה',
+    'source_change_warning_title' => 'שינוי מקור תמונה',
+    'source_change_warning_text' => 'אתה משנה את מקור התמונה. נא לספק תמונה חדשה.',
+    'image_required_for_database_storage' => 'נא להעלות תמונה בעת שינוי לאחסון בבסיס נתונים.',
+    'image_required_for_file_storage' => 'נא להעלות תמונה בעת שינוי לאחסון בקבצים.',
+    'unknown' => 'לא ידוע',
 
     // Promotional Ads Management - ניהול פרסומות
     'promotional_ads_management' => 'ניהול פרסומות',

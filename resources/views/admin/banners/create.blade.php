@@ -9,6 +9,96 @@
         margin: 0 auto;
     }
 
+    /* Image Source Selector Styles */
+    .image-source-selector {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .source-option {
+        flex: 1;
+        position: relative;
+    }
+
+    .source-option input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .source-option-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 16px;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .source-option-label i {
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #64748b;
+        transition: all 0.3s ease;
+    }
+
+    .source-option-label .source-title {
+        font-weight: 600;
+        color: #334155;
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    .source-option-label .source-desc {
+        font-size: 11px;
+        color: #94a3b8;
+        line-height: 1.3;
+    }
+
+    .source-option input[type="radio"]:checked + .source-option-label {
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        border-color: var(--primary);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    }
+
+    .source-option input[type="radio"]:checked + .source-option-label i {
+        color: var(--primary);
+        transform: scale(1.1);
+    }
+
+    .source-option input[type="radio"]:checked + .source-option-label .source-title {
+        color: var(--primary);
+    }
+
+    .source-option:hover .source-option-label {
+        border-color: var(--primary);
+        transform: translateY(-2px);
+    }
+
+    /* Image Input Sections */
+    .image-input-section {
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .image-input-section.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
     .image-upload-box {
         background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
         border: 2px dashed var(--primary);
@@ -62,6 +152,85 @@
     .upload-placeholder.hidden {
         display: none;
     }
+
+    /* URL Input Styles */
+    .url-input-wrapper {
+        position: relative;
+    }
+
+    .url-input-wrapper .form-control {
+        padding-left: 45px;
+    }
+
+    .url-input-wrapper .url-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 16px;
+    }
+
+    .url-preview-container {
+        margin-top: 16px;
+        padding: 16px;
+        background: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        display: none;
+    }
+
+    .url-preview-container.has-preview {
+        display: block;
+    }
+
+    .url-preview-image {
+        max-width: 100%;
+        max-height: 250px;
+        border-radius: 6px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .url-preview-error {
+        color: #ef4444;
+        text-align: center;
+        padding: 20px;
+        display: none;
+    }
+
+    .url-preview-error.show {
+        display: block;
+    }
+
+    .url-preview-error i {
+        font-size: 32px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    /* Storage Info Badge */
+    .storage-info {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        background: #fef3c7;
+        color: #92400e;
+        border-radius: 6px;
+        font-size: 12px;
+        margin-top: 12px;
+    }
+
+    .storage-info.info-database {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .storage-info.info-url {
+        background: #d1fae5;
+        color: #065f46;
+    }
 </style>
 
 <div class="page-header">
@@ -87,32 +256,113 @@
                 <h2><i class="fas fa-image"></i> {{ __('messages.banner_image') }}</h2>
             </div>
             <div class="card-body">
+                
+                <!-- Image Source Selector -->
                 <div class="form-group">
-                    <label for="image" class="form-label">
-                        {{ __('messages.banner_image_upload') }}
+                    <label class="form-label">
+                        {{ __('messages.image_source') ?? 'Image Source' }}
                         <span class="required">*</span>
                     </label>
-                    <div class="image-upload-box" onclick="document.getElementById('image').click()">
-                        <div class="upload-placeholder">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>{{ __('messages.click_to_upload') ?? 'Click to upload image' }}</p>
-                            <p class="upload-hint">{{ __('messages.banner_image_help') }}</p>
+                    
+                    <div class="image-source-selector">
+                        <div class="source-option">
+                            <input type="radio" name="image_source" id="source_database" value="database" 
+                                   {{ old('image_source', 'database') === 'database' ? 'checked' : '' }}
+                                   onchange="toggleImageSource('database')">
+                            <label for="source_database" class="source-option-label">
+                                <i class="fas fa-database"></i>
+                                <span class="source-title">{{ __('messages.store_in_database') ?? 'Store in Database' }}</span>
+                                <span class="source-desc">{{ __('messages.store_in_database_desc') ?? 'Upload and store image directly in database' }}</span>
+                            </label>
                         </div>
-                        <img id="imagePreview" class="image-preview" alt="Preview">
+                        
+                        <div class="source-option">
+                            <input type="radio" name="image_source" id="source_url" value="url"
+                                   {{ old('image_source') === 'url' ? 'checked' : '' }}
+                                   onchange="toggleImageSource('url')">
+                            <label for="source_url" class="source-option-label">
+                                <i class="fas fa-link"></i>
+                                <span class="source-title">{{ __('messages.external_url') ?? 'External URL' }}</span>
+                                <span class="source-desc">{{ __('messages.external_url_desc') ?? 'Use image URL from the internet' }}</span>
+                            </label>
+                        </div>
                     </div>
-                    <input 
-                        type="file" 
-                        id="image" 
-                        name="image" 
-                        class="form-control @error('image') is-invalid @enderror" 
-                        accept="image/jpeg,image/png,image/gif,image/webp"
-                        style="display: none;"
-                        required
-                        onchange="previewImage(this)">
-                    @error('image')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
                 </div>
+
+                <!-- Database/File Upload Section -->
+                <div id="upload-section" class="image-input-section {{ old('image_source', 'database') !== 'url' ? 'active' : '' }}">
+                    <div class="form-group">
+                        <label for="image" class="form-label">
+                            {{ __('messages.upload_image') ?? 'Upload Image' }}
+                            <span class="required">*</span>
+                        </label>
+                        <div class="image-upload-box" onclick="document.getElementById('image').click()">
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>{{ __('messages.click_to_upload') ?? 'Click to upload image' }}</p>
+                                <p class="upload-hint">{{ __('messages.banner_image_help') }}</p>
+                            </div>
+                            <img id="imagePreview" class="image-preview" alt="Preview">
+                        </div>
+                        <input 
+                            type="file" 
+                            id="image" 
+                            name="image" 
+                            class="form-control @error('image') is-invalid @enderror" 
+                            accept="image/jpeg,image/png,image/gif,image/webp"
+                            style="display: none;"
+                            onchange="previewUploadedImage(this)">
+                        
+                        <div class="storage-info info-database">
+                            <i class="fas fa-info-circle"></i>
+                            {{ __('messages.database_storage_info') ?? 'Image will be stored directly in the database. Max size: 10MB' }}
+                        </div>
+                        
+                        @error('image')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- External URL Section -->
+                <div id="url-section" class="image-input-section {{ old('image_source') === 'url' ? 'active' : '' }}">
+                    <div class="form-group">
+                        <label for="image_url" class="form-label">
+                            {{ __('messages.image_url') ?? 'Image URL' }}
+                            <span class="required">*</span>
+                        </label>
+                        <div class="url-input-wrapper">
+                            <i class="fas fa-globe url-icon"></i>
+                            <input 
+                                type="url" 
+                                id="image_url" 
+                                name="image_url" 
+                                class="form-control @error('image_url') is-invalid @enderror" 
+                                value="{{ old('image_url') }}"
+                                placeholder="{{ __('messages.enter_image_url') ?? 'https://example.com/image.jpg' }}"
+                                oninput="previewUrlImage(this.value)">
+                        </div>
+                        
+                        <div class="storage-info info-url">
+                            <i class="fas fa-info-circle"></i>
+                            {{ __('messages.url_storage_info') ?? 'Image will be loaded from external URL. Make sure the URL is accessible.' }}
+                        </div>
+                        
+                        <!-- URL Preview -->
+                        <div id="urlPreviewContainer" class="url-preview-container">
+                            <img id="urlPreviewImage" class="url-preview-image" alt="URL Preview" onerror="showUrlError()" onload="hideUrlError()">
+                            <div id="urlPreviewError" class="url-preview-error">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>{{ __('messages.image_load_failed') ?? 'Failed to load image. Please check the URL.' }}</span>
+                            </div>
+                        </div>
+                        
+                        @error('image_url')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -375,9 +625,25 @@
 </form>
 
 <script>
-function previewImage(input) {
+// Toggle between image source sections
+function toggleImageSource(source) {
+    const uploadSection = document.getElementById('upload-section');
+    const urlSection = document.getElementById('url-section');
+    
+    if (source === 'url') {
+        uploadSection.classList.remove('active');
+        urlSection.classList.add('active');
+        document.getElementById('image').removeAttribute('required');
+    } else {
+        urlSection.classList.remove('active');
+        uploadSection.classList.add('active');
+    }
+}
+
+// Preview uploaded image
+function previewUploadedImage(input) {
     const preview = document.getElementById('imagePreview');
-    const placeholder = document.querySelector('.upload-placeholder');
+    const placeholder = document.getElementById('uploadPlaceholder');
     
     if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -391,6 +657,54 @@ function previewImage(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+// Preview URL image with debounce
+let urlPreviewTimeout;
+function previewUrlImage(url) {
+    clearTimeout(urlPreviewTimeout);
+    
+    const container = document.getElementById('urlPreviewContainer');
+    const image = document.getElementById('urlPreviewImage');
+    const error = document.getElementById('urlPreviewError');
+    
+    if (!url || url.trim() === '') {
+        container.classList.remove('has-preview');
+        return;
+    }
+    
+    // Debounce to avoid too many requests
+    urlPreviewTimeout = setTimeout(() => {
+        container.classList.add('has-preview');
+        error.classList.remove('show');
+        image.style.display = 'block';
+        image.src = url;
+    }, 500);
+}
+
+function showUrlError() {
+    const image = document.getElementById('urlPreviewImage');
+    const error = document.getElementById('urlPreviewError');
+    image.style.display = 'none';
+    error.classList.add('show');
+}
+
+function hideUrlError() {
+    const error = document.getElementById('urlPreviewError');
+    error.classList.remove('show');
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if URL was previously selected (for form validation errors)
+    const urlRadio = document.getElementById('source_url');
+    if (urlRadio && urlRadio.checked) {
+        toggleImageSource('url');
+        const urlInput = document.getElementById('image_url');
+        if (urlInput && urlInput.value) {
+            previewUrlImage(urlInput.value);
+        }
+    }
+});
 </script>
 
 @endsection
