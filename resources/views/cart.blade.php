@@ -466,7 +466,7 @@
                 @foreach($cartItems as $item)
                     @if($item->product)
                     <div class="cart-item" data-product-id="{{ $item->product_id }}">
-                        <div class="cart-item-image">
+                        <a href="{{ route('product.detail', $item->product->slug) }}" class="cart-item-image">
                             @if($item->product->images && $item->product->images->isNotEmpty())
                                 @php
                                     $imagePath = $item->product->images->first()->image_path;
@@ -483,7 +483,7 @@
                                     <i class="fas fa-image"></i>
                                 </div>
                             @endif
-                        </div>
+                        </a>
                         
                         <div class="cart-item-details">
                             <a href="{{ route('product.detail', $item->product->slug) }}" class="cart-item-title">

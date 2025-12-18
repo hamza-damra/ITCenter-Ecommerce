@@ -1,13 +1,11 @@
-@extends('layouts.app')
+<?php $__env->startSection('hideHeader', true); ?>
 
-@section('hideHeader', true)
+<?php $__env->startSection('title', __t('messages.register') . ' - IT Center'); ?>
 
-@section('title', __t('messages.register') . ' - IT Center')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- Import shared components CSS -->
-<link rel="stylesheet" href="{{ asset('css/components.css') }}">
-<link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+<link rel="stylesheet" href="<?php echo e(asset('css/components.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('css/auth.css')); ?>">
 
 <style>
     /* CSS Variables */
@@ -160,7 +158,8 @@
 
     .form-input-icon {
         position: absolute;
-        {{ is_rtl() ? 'right: 15px;' : 'left: 15px;' }}
+        <?php echo e(is_rtl() ? 'right: 15px;' : 'left: 15px;'); ?>
+
         top: 50%;
         transform: translateY(-50%);
         color: #999;
@@ -170,12 +169,13 @@
     .form-control {
         width: 100%;
         padding: 0.9rem 1rem;
-        {{ is_rtl() ? 'padding-right: 45px;' : 'padding-left: 45px;' }}
+        <?php echo e(is_rtl() ? 'padding-right: 45px;' : 'padding-left: 45px;'); ?>
+
         border: 2px solid #e0e0e0;
         border-radius: 10px;
         font-size: 0.95rem;
         transition: all 0.3s;
-        direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+        direction: <?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>;
     }
 
     .form-control:focus {
@@ -370,127 +370,168 @@
     }
 </style>
 
-<div class="auth-container" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
+<div class="auth-container" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>">
     <div class="auth-card">
         <div class="auth-right">
             <div class="auth-header">
-                <h3>{{ __t('messages.create_account') }}</h3>
-                <p>{{ __t('messages.fill_details') }}</p>
+                <h3><?php echo e(__t('messages.create_account')); ?></h3>
+                <p><?php echo e(__t('messages.fill_details')); ?></p>
             </div>
 
-            @if(session('error'))
+            <?php if(session('error')): ?>
             <div class="alert alert-error" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 1rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem; text-align: center; border: 1px solid rgba(239, 68, 68, 0.2); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                 <i class="fas fa-exclamation-triangle"></i>
-                {{ session('error') }}
-            </div>
-            @endif
+                <?php echo e(session('error')); ?>
 
-            @if(session('success'))
+            </div>
+            <?php endif; ?>
+
+            <?php if(session('success')): ?>
             <div class="alert alert-success" style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 1rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem; text-align: center; border: 1px solid rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                 <i class="fas fa-check-circle"></i>
-                {{ session('success') }}
-            </div>
-            @endif
+                <?php echo e(session('success')); ?>
 
-            <form action="{{ route('register.post') }}" method="POST" id="registerForm">
-                @csrf
+            </div>
+            <?php endif; ?>
+
+            <form action="<?php echo e(route('register.post')); ?>" method="POST" id="registerForm">
+                <?php echo csrf_field(); ?>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="first_name">{{ __t('messages.first_name') }}</label>
+                        <label for="first_name"><?php echo e(__t('messages.first_name')); ?></label>
                         <div class="form-input-wrapper">
                             <i class="fas fa-user form-input-icon"></i>
                             <input type="text" id="first_name" name="first_name" class="form-control"
-                                   placeholder="{{ __t('messages.first_name_placeholder') }}"
-                                   value="{{ old('first_name') }}" required>
+                                   placeholder="<?php echo e(__t('messages.first_name_placeholder')); ?>"
+                                   value="<?php echo e(old('first_name')); ?>" required>
                         </div>
-                        @error('first_name')
-                        <div class="error-message show">{{ $message }}</div>
-                        @enderror
+                        <?php $__errorArgs = ['first_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <div class="error-message show"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
-                        <label for="last_name">{{ __t('messages.last_name') }}</label>
+                        <label for="last_name"><?php echo e(__t('messages.last_name')); ?></label>
                         <div class="form-input-wrapper">
                             <i class="fas fa-user form-input-icon"></i>
                             <input type="text" id="last_name" name="last_name" class="form-control"
-                                   placeholder="{{ __t('messages.last_name_placeholder') }}"
-                                   value="{{ old('last_name') }}" required>
+                                   placeholder="<?php echo e(__t('messages.last_name_placeholder')); ?>"
+                                   value="<?php echo e(old('last_name')); ?>" required>
                         </div>
-                        @error('last_name')
-                        <div class="error-message show">{{ $message }}</div>
-                        @enderror
+                        <?php $__errorArgs = ['last_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <div class="error-message show"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">{{ __t('messages.email') }}</label>
+                    <label for="email"><?php echo e(__t('messages.email')); ?></label>
                     <div class="form-input-wrapper">
                         <i class="fas fa-envelope form-input-icon"></i>
                         <input type="email" id="email" name="email" class="form-control"
-                               placeholder="{{ __t('messages.email_placeholder') }}"
-                               value="{{ old('email') }}" required>
+                               placeholder="<?php echo e(__t('messages.email_placeholder')); ?>"
+                               value="<?php echo e(old('email')); ?>" required>
                     </div>
-                    @error('email')
-                    <div class="error-message show">{{ $message }}</div>
-                    @enderror
+                    <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="error-message show"><?php echo e($message); ?></div>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">{{ __t('messages.phone') }}</label>
+                    <label for="phone"><?php echo e(__t('messages.phone')); ?></label>
                     <div class="form-input-wrapper">
                         <i class="fas fa-phone form-input-icon"></i>
                         <input type="tel" id="phone" name="phone" class="form-control"
-                               placeholder="{{ __t('messages.phone_placeholder') }}"
-                               value="{{ old('phone') }}">
+                               placeholder="<?php echo e(__t('messages.phone_placeholder')); ?>"
+                               value="<?php echo e(old('phone')); ?>">
                     </div>
-                    @error('phone')
-                    <div class="error-message show">{{ $message }}</div>
-                    @enderror
+                    <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="error-message show"><?php echo e($message); ?></div>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">{{ __t('messages.password') }}</label>
+                    <label for="password"><?php echo e(__t('messages.password')); ?></label>
                     <div class="form-input-wrapper">
                         <i class="fas fa-lock form-input-icon"></i>
                         <input type="password" id="password" name="password" class="form-control"
-                               placeholder="{{ __t('messages.password_placeholder') }}" required>
+                               placeholder="<?php echo e(__t('messages.password_placeholder')); ?>" required>
                     </div>
                     <div class="password-strength">
                         <div class="password-strength-bar" id="passwordStrengthBar"></div>
                     </div>
-                    @error('password')
-                    <div class="error-message show">{{ $message }}</div>
-                    @enderror
+                    <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="error-message show"><?php echo e($message); ?></div>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="form-group">
-                    <label for="password_confirmation">{{ __t('messages.confirm_password') }}</label>
+                    <label for="password_confirmation"><?php echo e(__t('messages.confirm_password')); ?></label>
                     <div class="form-input-wrapper">
                         <i class="fas fa-lock form-input-icon"></i>
                         <input type="password" id="password_confirmation" name="password_confirmation" class="form-control"
-                               placeholder="{{ __t('messages.confirm_password_placeholder') }}" required>
+                               placeholder="<?php echo e(__t('messages.confirm_password_placeholder')); ?>" required>
                     </div>
                 </div>
 
                 <div class="terms-checkbox">
                     <input type="checkbox" id="terms" name="terms" required>
                     <label for="terms">
-                        {{ __t('messages.agree_to') }}
-                        <a href="#">{{ __t('messages.terms_conditions') }}</a>
-                        {{ __t('messages.and') }}
-                        <a href="#">{{ __t('messages.privacy_policy') }}</a>
+                        <?php echo e(__t('messages.agree_to')); ?>
+
+                        <a href="#"><?php echo e(__t('messages.terms_conditions')); ?></a>
+                        <?php echo e(__t('messages.and')); ?>
+
+                        <a href="#"><?php echo e(__t('messages.privacy_policy')); ?></a>
                     </label>
                 </div>
 
                 <button type="submit" class="btn-submit" id="submitBtn">
-                    <i class="fas fa-user-plus"></i> {{ __t('messages.create_account') }}
+                    <i class="fas fa-user-plus"></i> <?php echo e(__t('messages.create_account')); ?>
+
                 </button>
             </form>
 
             <div class="auth-footer">
-                {{ __t('messages.already_have_account') }}
-                <a href="{{ route('login') }}">{{ __t('messages.login_here') }}</a>
+                <?php echo e(__t('messages.already_have_account')); ?>
+
+                <a href="<?php echo e(route('login')); ?>"><?php echo e(__t('messages.login_here')); ?></a>
             </div>
         </div>
     </div>
@@ -614,4 +655,6 @@
     });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/auth/register.blade.php ENDPATH**/ ?>

@@ -104,6 +104,27 @@ class Category extends Model
     }
 
     /**
+     * Get the full URL path for this category based on its position in hierarchy.
+     * 
+     * @return string
+     */
+    public function getUrlAttribute(): string
+    {
+        $ancestors = $this->ancestors();
+        
+        if ($ancestors->isEmpty()) {
+            // This is a parent category
+            return route('category.show', $this->slug);
+        }
+        
+        // Build the slug path from ancestors
+        $slugs = $ancestors->pluck('slug')->toArray();
+        $slugs[] = $this->slug;
+        
+        return route('category.show', $slugs);
+    }
+
+    /**
      * Boot the model.
      */
     protected static function boot()
@@ -148,6 +169,42 @@ class Category extends Model
     {
         $categoryIds = $this->children()->pluck('id')->push($this->id);
         return Product::whereIn('category_id', $categoryIds);
+    }
+
+    /**
+     * Get all descendant categories (children and sub-children) recursively.
+     * 
+     * @return \Illuminate\Support\Collection<Category>
+     */
+    public function descendants(): \Illuminate\Support\Collection
+    {
+        $descendants = collect();
+        
+        foreach ($this->children as $child) {
+            $descendants->push($child);
+            $descendants = $descendants->merge($child->descendants());
+        }
+        
+        return $descendants;
+    }
+
+    /**
+     * Get all ancestor categories (parent chain) up to root.
+     * Returns collection ordered from root to immediate parent.
+     * 
+     * @return \Illuminate\Support\Collection<Category>
+     */
+    public function ancestors(): \Illuminate\Support\Collection
+    {
+        $ancestors = collect();
+        $current = $this->parent;
+        
+        while ($current !== null) {
+            $ancestors->prepend($current);
+            $current = $current->parent;
+        }
+        
+        return $ancestors;
     }
 
     /**

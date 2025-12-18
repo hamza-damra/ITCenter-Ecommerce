@@ -118,6 +118,7 @@ return [
     
     // Reviews
     'customer_reviews' => 'تقييمات العملاء',
+    'share_your_experience' => 'امتلكت هذا المنتج؟ شارك تجربتك مع باقي العملاء.',
     'write_review' => 'اكتب تقييم',
     'rating' => 'التقييم',
     'no_reviews' => 'لا توجد تقييمات بعد',
@@ -1503,4 +1504,5 @@ return [
     'add_new_tags' => 'إضافة وسوم جديدة',
     'new_tags_placeholder' => 'أدخل أسماء الوسوم مفصولة بفاصلة',
     'new_tags_help' => 'أدخل أسماء الوسوم الجديدة مفصولة بفاصلة (مثال: Gaming, Office)',
+    'write_your_review' => 'اكتب تقييمك',
 ];

@@ -118,6 +118,7 @@ return [
     
     // Reviews
     'customer_reviews' => 'Customer Reviews',
+    'share_your_experience' => 'Have this product? Share your experience with other customers.',
     'write_review' => 'Write a Review',
     'rating' => 'Rating',
     'no_reviews' => 'No reviews yet',
@@ -1591,5 +1592,6 @@ return [
     'add_new_tags' => 'Add New Tags',
     'new_tags_placeholder' => 'Enter tag names separated by comma',
     'new_tags_help' => 'Enter new tag names separated by comma (e.g., Gaming, Office)',
+    'write_your_review' => 'Write Your Review',
 ];
 

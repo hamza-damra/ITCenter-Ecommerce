@@ -118,6 +118,7 @@ return [
     
     // Reviews
     'customer_reviews' => 'ביקורות לקוחות',
+    'share_your_experience' => 'יש לך את המוצר הזה? שתף את החוויה שלך עם לקוחות אחרים.',
     'write_review' => 'כתוב ביקורת',
     'rating' => 'דירוג',
     'no_reviews' => 'אין ביקורות עדיין',
@@ -1355,4 +1356,5 @@ return [
     'contact_support' => 'צור קשר עם התמיכה',
     'stay_tuned' => 'הישארו מעודכנים',
     'notify_me' => 'הודע לי',
+    'write_your_review' => 'כתוב את הביקורת שלך',
 ];

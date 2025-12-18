@@ -31,25 +31,28 @@ class CategoryController extends Controller
 
     /**
      * Show category or sub-category products with filtering
-     * Handles both /category/{slug} and /category/{parent}/{child} routes
+     * Handles /category/{parentSlug}/{childSlug?}/{subChildSlug?} routes
      *
      * @param Request $request
      * @param string $parentSlug
      * @param string|null $childSlug
+     * @param string|null $subChildSlug
      * @return \Illuminate\View\View
      */
-    public function show(Request $request, string $parentSlug, ?string $childSlug = null)
+    public function show(Request $request, string $parentSlug, ?string $childSlug = null, ?string $subChildSlug = null)
     {
-        // Load category (parent or child)
-        $category = $this->loadCategory($parentSlug, $childSlug);
+        // Load category (parent, child, or sub-child)
+        $category = $this->loadCategory($parentSlug, $childSlug, $subChildSlug);
 
-        // Build product query
+        // Get category IDs including all descendants for product fetching
+        $categoryIds = $this->getCategoryWithDescendantIds($category);
+
+        // Build product query with category IDs already applied
         $query = Product::with(['category', 'brand', 'images'])
-            ->active()
-            ->where('category_id', $category->id);
+            ->active();
 
-        // Apply filters using ProductFilterService
-        $query = $this->filterService->applyFilters($query, $request, $category);
+        // Apply filters using ProductFilterService (pass category IDs array for multi-category filtering)
+        $query = $this->filterService->applyFilters($query, $request, $categoryIds);
 
         // Sorting
         $sortBy = $request->get('sort', 'created_at');
@@ -60,8 +63,8 @@ class CategoryController extends Controller
         $products = $query->paginate($request->get('per_page', 12));
         $products->appends($request->except('page'));
 
-        // Get available filters for this category
-        $availableFilters = $this->filterService->getAvailableFilters($category);
+        // Get available filters for this category (pass category IDs for accurate counts)
+        $availableFilters = $this->filterService->getAvailableFilters($categoryIds);
 
         // Build breadcrumb data
         $breadcrumbs = $this->buildBreadcrumbs($category);
@@ -75,39 +78,70 @@ class CategoryController extends Controller
     }
 
     /**
-     * Load category based on parent and child slugs
+     * Load category based on parent, child, and sub-child slugs
+     * Validates the complete hierarchy chain at each level
      *
      * @param string $parentSlug
      * @param string|null $childSlug
+     * @param string|null $subChildSlug
      * @return Category
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    protected function loadCategory(string $parentSlug, ?string $childSlug): Category
+    protected function loadCategory(string $parentSlug, ?string $childSlug, ?string $subChildSlug = null): Category
     {
-        if ($childSlug) {
-            // Load sub-category
-            $parent = Category::where('slug', $parentSlug)
-                ->active()
-                ->firstOrFail();
-            
-            return Category::where('slug', $childSlug)
-                ->where('parent_id', $parent->id)
-                ->active()
-                ->firstOrFail();
+        // Always load and validate the parent category first
+        $parent = Category::where('slug', $parentSlug)
+            ->whereNull('parent_id')
+            ->active()
+            ->firstOrFail();
+
+        // If no child slug, return the parent category
+        if (!$childSlug) {
+            return $parent;
         }
 
-        // Load parent category
-        return Category::where('slug', $parentSlug)
-            ->whereNull('parent_id')
+        // Load and validate the child category
+        $child = Category::where('slug', $childSlug)
+            ->where('parent_id', $parent->id)
+            ->active()
+            ->firstOrFail();
+
+        // If no sub-child slug, return the child category
+        if (!$subChildSlug) {
+            return $child;
+        }
+
+        // Load and validate the sub-child category
+        return Category::where('slug', $subChildSlug)
+            ->where('parent_id', $child->id)
             ->active()
             ->firstOrFail();
     }
 
     /**
-     * Build breadcrumb navigation array
+     * Get all descendant category IDs for product fetching
+     * Returns array of category IDs including the category itself and all descendants
      *
      * @param Category $category
-     * @return array
+     * @return array<int> Array of category IDs
+     */
+    protected function getCategoryWithDescendantIds(Category $category): array
+    {
+        $ids = [$category->id];
+        
+        foreach ($category->descendants() as $descendant) {
+            $ids[] = $descendant->id;
+        }
+        
+        return $ids;
+    }
+
+    /**
+     * Build breadcrumb navigation array for 3-level hierarchy
+     * Uses the category's ancestors() method to build the complete trail
+     *
+     * @param Category $category
+     * @return array<array{name: string, url: string|null}>
      */
     protected function buildBreadcrumbs(Category $category): array
     {
@@ -115,16 +149,23 @@ class CategoryController extends Controller
             ['name' => __('messages.home'), 'url' => route('home')],
         ];
 
-        if ($category->parent) {
+        // Get all ancestors (ordered from root to immediate parent)
+        $ancestors = $category->ancestors();
+        $slugPath = [];
+
+        // Add each ancestor to breadcrumbs with proper URL
+        foreach ($ancestors as $ancestor) {
+            $slugPath[] = $ancestor->slug;
             $breadcrumbs[] = [
-                'name' => $category->parent->name,
-                'url' => route('category.show', ['parentSlug' => $category->parent->slug]),
+                'name' => $ancestor->name,
+                'url' => route('category.show', $slugPath),
             ];
         }
 
+        // Add current category (no URL since it's the current page)
         $breadcrumbs[] = [
             'name' => $category->name,
-            'url' => null, // Current page
+            'url' => null,
         ];
 
         return $breadcrumbs;

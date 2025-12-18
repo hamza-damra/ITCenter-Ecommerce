@@ -234,7 +234,7 @@
 
         <div class="categories-grid">
             @forelse($categories as $category)
-            <div class="category-item" onclick="window.location.href='{{ route('products', ['category' => $category->slug]) }}'">
+            <div class="category-item" onclick="window.location.href='{{ route('category.show', $category->slug) }}'">
                 <div class="category-icon">
                     @if($category->image)
                         @if(str_starts_with($category->image, 'http'))

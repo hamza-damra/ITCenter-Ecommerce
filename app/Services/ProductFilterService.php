@@ -14,13 +14,13 @@ class ProductFilterService
      *
      * @param Builder $query
      * @param Request $request
-     * @param Category|null $category
+     * @param Category|array<int>|null $category Category object or array of category IDs
      * @return Builder
      */
-    public function applyFilters(Builder $query, Request $request, ?Category $category = null): Builder
+    public function applyFilters(Builder $query, Request $request, Category|array|null $category = null): Builder
     {
-        // Apply category filter
-        if ($category) {
+        // Apply category filter (supports both Category object and array of IDs)
+        if ($category !== null) {
             $query = $this->applyCategoryFilter($query, $category);
         }
 
@@ -44,9 +44,10 @@ class ProductFilterService
             $query = $this->applyStockFilter($query, $request->stock);
         }
 
-        // Apply brand filter
-        if ($request->has('brand')) {
-            $query = $this->applyBrandFilter($query, $request->brand);
+        // Apply brand filter (supports both 'brand' and 'brands' parameters)
+        if ($request->has('brands') || $request->has('brand')) {
+            $brands = $request->input('brands', $request->input('brand', []));
+            $query = $this->applyBrandFilter($query, $brands);
         }
 
         // Apply price range filter
@@ -99,14 +100,20 @@ class ProductFilterService
 
     /**
      * Apply category filter to query
+     * Supports both single Category object and array of category IDs for multi-category filtering
      *
      * @param Builder $query
-     * @param Category $category
+     * @param Category|array<int> $category Category object or array of category IDs
      * @return Builder
      */
-    protected function applyCategoryFilter(Builder $query, Category $category): Builder
+    protected function applyCategoryFilter(Builder $query, Category|array $category): Builder
     {
-        return $query->where('category_id', $category->id);
+        if ($category instanceof Category) {
+            return $query->where('category_id', $category->id);
+        }
+        
+        // Array of category IDs - use whereIn for multi-category filtering
+        return $query->whereIn('category_id', $category);
     }
 
     /**
@@ -210,10 +217,10 @@ class ProductFilterService
     /**
      * Get available filters for a category with counts
      *
-     * @param Category|null $category
+     * @param Category|array<int>|null $category Category object or array of category IDs
      * @return array
      */
-    public function getAvailableFilters(?Category $category = null): array
+    public function getAvailableFilters(Category|array|null $category = null): array
     {
         $filters = [];
 
@@ -230,7 +237,8 @@ class ProductFilterService
         $filters['stock'] = $this->getStockFilters($category);
 
         // Get attribute filters with counts (category-specific)
-        if ($category) {
+        // Only available when a single Category object is provided
+        if ($category instanceof Category) {
             $filters['attributes'] = $this->getAttributeFilters($category);
         }
 
@@ -246,10 +254,10 @@ class ProductFilterService
     /**
      * Get tag filters with product counts
      *
-     * @param Category|null $category
+     * @param Category|array<int>|null $category Category object or array of category IDs
      * @return array
      */
-    protected function getTagFilters(?Category $category = null): array
+    protected function getTagFilters(Category|array|null $category = null): array
     {
         $query = \App\Models\Tag::active()->ordered();
         
@@ -258,8 +266,13 @@ class ProductFilterService
                 $q->where('tags.id', $tag->id);
             });
             
-            if ($category) {
-                $productQuery->where('category_id', $category->id);
+            if ($category !== null) {
+                if ($category instanceof Category) {
+                    $productQuery->where('category_id', $category->id);
+                } else {
+                    // Array of category IDs
+                    $productQuery->whereIn('category_id', $category);
+                }
             }
             
             $count = $productQuery->count();
@@ -304,15 +317,20 @@ class ProductFilterService
     /**
      * Get brand filters with product counts
      *
-     * @param Category|null $category
+     * @param Category|array<int>|null $category Category object or array of category IDs
      * @return array
      */
-    protected function getBrandFilters(?Category $category = null): array
+    protected function getBrandFilters(Category|array|null $category = null): array
     {
         $query = Product::active()->with('brand');
 
-        if ($category) {
-            $query->where('category_id', $category->id);
+        if ($category !== null) {
+            if ($category instanceof Category) {
+                $query->where('category_id', $category->id);
+            } else {
+                // Array of category IDs
+                $query->whereIn('category_id', $category);
+            }
         }
 
         $brands = $query->get()
@@ -342,15 +360,20 @@ class ProductFilterService
     /**
      * Get stock filters with product counts
      *
-     * @param Category|null $category
+     * @param Category|array<int>|null $category Category object or array of category IDs
      * @return array
      */
-    protected function getStockFilters(?Category $category = null): array
+    protected function getStockFilters(Category|array|null $category = null): array
     {
         $query = Product::active();
 
-        if ($category) {
-            $query->where('category_id', $category->id);
+        if ($category !== null) {
+            if ($category instanceof Category) {
+                $query->where('category_id', $category->id);
+            } else {
+                // Array of category IDs
+                $query->whereIn('category_id', $category);
+            }
         }
 
         $inStockCount = (clone $query)->where('stock_status', 'in_stock')->count();
@@ -428,19 +451,31 @@ class ProductFilterService
     /**
      * Get price range for products
      *
-     * @param Category|null $category
+     * @param Category|array<int>|null $category Category object or array of category IDs
      * @return array
      */
-    protected function getPriceRange(?Category $category = null): array
+    protected function getPriceRange(Category|array|null $category = null): array
     {
         $query = Product::active();
 
-        if ($category) {
-            $query->where('category_id', $category->id);
+        if ($category !== null) {
+            if ($category instanceof Category) {
+                $query->where('category_id', $category->id);
+            } else {
+                // Array of category IDs
+                $query->whereIn('category_id', $category);
+            }
         }
 
         $minPrice = $query->min('price') ?? 0;
         $maxPrice = $query->max('price') ?? 0;
+
+        // Ensure there's always a valid range for the slider
+        // If min equals max, create a range around the value
+        if ($minPrice == $maxPrice) {
+            $minPrice = max(0, $minPrice - 1);
+            $maxPrice = $maxPrice + 1;
+        }
 
         return [
             'min' => (float) $minPrice,

@@ -31,7 +31,7 @@ Route::get('/test-home', [HomeController::class, 'index'])->name('test.home');
 Route::get('/clear-cache', [HomeController::class, 'clearHomeCache'])->name('clear.cache');
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
-Route::get('/category/{parentSlug}/{childSlug?}', [CategoryController::class, 'show'])->name('category.show');
+Route::get('/category/{parentSlug}/{childSlug?}/{subChildSlug?}', [CategoryController::class, 'show'])->name('category.show');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.detail');

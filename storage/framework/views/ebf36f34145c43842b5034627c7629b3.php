@@ -1,101 +1,134 @@
-{{-- Product Card Component --}}
-{{-- Usage: <x-product-card :product="$product" /> --}}
 
-@props(['product', 'showWishlist' => true])
 
-<a href="{{ route('product.detail', $product->slug) }}" class="product-card-link" data-product-id="{{ $product->id }}">
+
+<?php $attributes ??= new \Illuminate\View\ComponentAttributeBag;
+
+$__newAttributes = [];
+$__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames((['product', 'showWishlist' => true]));
+
+foreach ($attributes->all() as $__key => $__value) {
+    if (in_array($__key, $__propNames)) {
+        $$__key = $$__key ?? $__value;
+    } else {
+        $__newAttributes[$__key] = $__value;
+    }
+}
+
+$attributes = new \Illuminate\View\ComponentAttributeBag($__newAttributes);
+
+unset($__propNames);
+unset($__newAttributes);
+
+foreach (array_filter((['product', 'showWishlist' => true]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
+    $$__key = $$__key ?? $__value;
+}
+
+$__defined_vars = get_defined_vars();
+
+foreach ($attributes->all() as $__key => $__value) {
+    if (array_key_exists($__key, $__defined_vars)) unset($$__key);
+}
+
+unset($__defined_vars, $__key, $__value); ?>
+
+<a href="<?php echo e(route('product.detail', $product->slug)); ?>" class="product-card-link" data-product-id="<?php echo e($product->id); ?>">
     <div class="product-card">
-        {{-- Product Image --}}
+        
         <div class="product-card-image">
-            <img src="{{ $product->main_image }}" 
-                 alt="{{ $product->name }}" 
+            <img src="<?php echo e($product->main_image); ?>" 
+                 alt="<?php echo e($product->name); ?>" 
                  loading="lazy"
-                 onerror="this.src='{{ asset('images/products/default.png') }}'">
+                 onerror="this.src='<?php echo e(asset('images/products/default.png')); ?>'">
 
-            {{-- Product Badge --}}
-            @if($product->discount_percentage > 0)
+            
+            <?php if($product->discount_percentage > 0): ?>
                 <div class="product-badge discount-badge">
-                    -{{ $product->discount_percentage }}%
+                    -<?php echo e($product->discount_percentage); ?>%
                 </div>
-            @elseif($product->is_featured)
+            <?php elseif($product->is_featured): ?>
                 <div class="product-badge">
-                    {{ __('messages.featured') }}
-                </div>
-            @elseif($product->is_new)
-                <div class="product-badge">
-                    {{ __('messages.new') }}
-                </div>
-            @endif
+                    <?php echo e(__('messages.featured')); ?>
 
-            {{-- Wishlist Button --}}
-            @if($showWishlist)
-                <button class="wishlist-btn {{ in_array($product->id, session('wishlist', [])) ? 'active' : '' }}" 
-                        onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist({{ $product->id }})">
-                    <i class="{{ in_array($product->id, session('wishlist', [])) ? 'fas' : 'far' }} fa-heart"></i>
+                </div>
+            <?php elseif($product->is_new): ?>
+                <div class="product-badge">
+                    <?php echo e(__('messages.new')); ?>
+
+                </div>
+            <?php endif; ?>
+
+            
+            <?php if($showWishlist): ?>
+                <button class="wishlist-btn <?php echo e(in_array($product->id, session('wishlist', [])) ? 'active' : ''); ?>" 
+                        onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist(<?php echo e($product->id); ?>)">
+                    <i class="<?php echo e(in_array($product->id, session('wishlist', [])) ? 'fas' : 'far'); ?> fa-heart"></i>
                 </button>
-            @endif
+            <?php endif; ?>
         </div>
 
-        {{-- Product Content --}}
+        
         <div class="product-card-content">
-            {{-- Product Title --}}
-            <h3 class="product-card-title">{{ $product->name }}</h3>
+            
+            <h3 class="product-card-title"><?php echo e($product->name); ?></h3>
 
-            {{-- Product Description --}}
-            @if($product->short_description)
+            
+            <?php if($product->short_description): ?>
                 <p class="product-card-description">
-                    {{ Str::limit($product->short_description, 100) }}
-                </p>
-            @endif
+                    <?php echo e(Str::limit($product->short_description, 100)); ?>
 
-            {{-- Product Rating --}}
-            @if($product->reviews_count > 0)
+                </p>
+            <?php endif; ?>
+
+            
+            <?php if($product->reviews_count > 0): ?>
                 <div class="product-rating">
                     <div class="stars">
-                        @for($i = 1; $i <= 5; $i++)
-                            <i class="fas fa-star {{ $i <= $product->average_rating ? 'text-yellow-400' : 'text-gray-300' }}"></i>
-                        @endfor
+                        <?php for($i = 1; $i <= 5; $i++): ?>
+                            <i class="fas fa-star <?php echo e($i <= $product->average_rating ? 'text-yellow-400' : 'text-gray-300'); ?>"></i>
+                        <?php endfor; ?>
                     </div>
-                    <span class="rating-count">({{ $product->reviews_count }})</span>
+                    <span class="rating-count">(<?php echo e($product->reviews_count); ?>)</span>
                 </div>
-            @endif
+            <?php endif; ?>
 
-            {{-- Product Footer --}}
+            
             <div class="product-card-footer">
-                {{-- Price --}}
+                
                 <div class="product-price">
-                    @if($product->discount_price && $product->discount_price < $product->price)
-                        <span class="product-price-original">${{ number_format($product->price, 2) }}</span>
-                        <span class="current-price">${{ number_format($product->discount_price, 2) }}</span>
-                        @if($product->discount_percentage > 0)
-                            <span class="discount-percentage">{{ $product->discount_percentage }}% {{ __('messages.off') }}</span>
-                        @endif
-                    @else
-                        <span class="current-price">${{ number_format($product->price, 2) }}</span>
-                    @endif
+                    <?php if($product->discount_price && $product->discount_price < $product->price): ?>
+                        <span class="product-price-original">$<?php echo e(number_format($product->price, 2)); ?></span>
+                        <span class="current-price">$<?php echo e(number_format($product->discount_price, 2)); ?></span>
+                        <?php if($product->discount_percentage > 0): ?>
+                            <span class="discount-percentage"><?php echo e($product->discount_percentage); ?>% <?php echo e(__('messages.off')); ?></span>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <span class="current-price">$<?php echo e(number_format($product->price, 2)); ?></span>
+                    <?php endif; ?>
                 </div>
 
-                {{-- Add to Cart Button --}}
-                @if($product->stock_quantity > 0)
+                
+                <?php if($product->stock_quantity > 0): ?>
                     <button class="btn btn-primary btn-sm add-to-cart" 
-                            onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $product->id }})"
-                            data-product-id="{{ $product->id }}">
+                            onclick="event.preventDefault(); event.stopPropagation(); addToCart(<?php echo e($product->id); ?>)"
+                            data-product-id="<?php echo e($product->id); ?>">
                         <i class="fas fa-shopping-cart"></i>
-                        {{ __('messages.add_to_cart') }}
+                        <?php echo e(__('messages.add_to_cart')); ?>
+
                     </button>
-                @else
+                <?php else: ?>
                     <button class="btn btn-secondary btn-sm add-to-cart out-of-stock" disabled 
                             onclick="event.preventDefault(); event.stopPropagation();">
                         <i class="fas fa-bell"></i>
-                        {{ __('messages.notify_me') }}
+                        <?php echo e(__('messages.notify_me')); ?>
+
                     </button>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
     </div>
 </a>
 
-{{-- Styles specific to this component --}}
+
 <style>
     .product-card-link {
         display: block;
@@ -149,7 +182,7 @@
     .product-badge {
         position: absolute;
         top: var(--space-3);
-        {{ is_rtl() ? 'right' : 'left' }}: var(--space-3);
+        <?php echo e(is_rtl() ? 'right' : 'left'); ?>: var(--space-3);
         background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-gray) 100%);
         color: var(--text-white);
         padding: var(--space-1) var(--space-3);
@@ -168,7 +201,7 @@
     .wishlist-btn {
         position: absolute;
         top: var(--space-3);
-        {{ is_rtl() ? 'left' : 'right' }}: var(--space-3);
+        <?php echo e(is_rtl() ? 'left' : 'right'); ?>: var(--space-3);
         background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(10px);
         width: 32px;
@@ -315,3 +348,4 @@
         }
     }
 </style>
+<?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/components/product-card.blade.php ENDPATH**/ ?>

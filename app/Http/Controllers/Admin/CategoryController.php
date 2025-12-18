@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Rules\ValidCategoryParent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -50,9 +52,9 @@ class CategoryController extends Controller
             'name_en' => 'required|string|max:255',
             'name_ar' => 'required|string|max:255',
             'name_he' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:categories,id',
+            'parent_id' => ['nullable', 'exists:categories,id', new ValidCategoryParent()],
             'nav_type' => 'nullable|in:parent,child',
-            'nav_parent_id' => 'nullable|exists:categories,id',
+            'nav_parent_id' => ['nullable', 'exists:categories,id', new ValidCategoryParent()],
             'description_en' => 'nullable|string',
             'description_ar' => 'nullable|string',
             'description_he' => 'nullable|string',
@@ -121,9 +123,9 @@ class CategoryController extends Controller
             'name_en' => 'required|string|max:255',
             'name_ar' => 'required|string|max:255',
             'name_he' => 'nullable|string|max:255',
-            'parent_id' => 'nullable|exists:categories,id',
+            'parent_id' => ['nullable', 'exists:categories,id', new ValidCategoryParent($category->id)],
             'nav_type' => 'nullable|in:parent,child',
-            'nav_parent_id' => 'nullable|exists:categories,id',
+            'nav_parent_id' => ['nullable', 'exists:categories,id', new ValidCategoryParent($category->id)],
             'description_en' => 'nullable|string',
             'description_ar' => 'nullable|string',
             'description_he' => 'nullable|string',
