@@ -359,12 +359,12 @@ class ProductFilterService
         return [
             [
                 'value' => 'in',
-                'label' => 'In Stock',
+                'label' => __('messages.in_stock_filter'),
                 'count' => $inStockCount,
             ],
             [
                 'value' => 'out',
-                'label' => 'Out of Stock',
+                'label' => __('messages.out_of_stock_filter'),
                 'count' => $outOfStockCount,
             ],
         ];

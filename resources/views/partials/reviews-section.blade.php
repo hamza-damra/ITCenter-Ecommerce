@@ -15,6 +15,12 @@
         margin-bottom: 2rem;
         flex-wrap: wrap;
         gap: 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        padding: 1rem 0;
+        background: #fff;
+        border-bottom: 1px solid #f1f1f1;
     }
 
     .reviews-header h2 {
@@ -22,6 +28,12 @@
         font-weight: 700;
         color: #1a1a1a;
         margin: 0;
+    }
+
+    .reviews-header-subtitle {
+        font-size: 0.9rem;
+        color: #6b7280;
+        margin-top: 0.25rem;
     }
 
     .write-review-btn {
@@ -43,6 +55,44 @@
         background: #1e4fc7;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(39, 98, 243, 0.3);
+    }
+
+    /* Floating write review CTA */
+    .floating-review-cta {
+        position: fixed;
+        right: 2rem;
+        bottom: 2.5rem;
+        z-index: 40;
+        display: none;
+    }
+
+    .floating-review-cta button {
+        background: #2762f3;
+        color: #fff;
+        border-radius: 999px;
+        padding: 0.85rem 1.5rem;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        box-shadow: 0 10px 25px rgba(39, 98, 243, 0.25);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .floating-review-cta button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 35px rgba(39, 98, 243, 0.3);
+        background: #1e4fc7;
+    }
+
+    @media (max-width: 768px) {
+        .floating-review-cta {
+            right: 1.25rem;
+            bottom: 4.5rem;
+        }
     }
 
     /* Rating Summary */
@@ -139,18 +189,201 @@
         gap: 1rem;
     }
 
-    .sort-dropdown {
-        padding: 0.5rem 1rem;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        background: white;
-        font-size: 0.95rem;
-        cursor: pointer;
-        transition: all 0.3s;
+    .reviews-controls-label {
+        font-size: 0.9rem;
+        color: #6b7280;
     }
 
-    .sort-dropdown:hover {
-        border-color: #2762f3;
+    /* Custom Dropdown Styles */
+    .sort-dropdown-wrapper {
+        position: relative;
+        min-width: 200px;
+    }
+
+    .sort-dropdown-label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #6b7280;
+        margin-bottom: 0.35rem;
+        text-transform: uppercase;
+        letter-spacing: 0.025em;
+    }
+
+    /* Custom dropdown trigger button */
+    .custom-dropdown-trigger {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 12px;
+        background: linear-gradient(to bottom, #ffffff, #f9fafb);
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #1f2937;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .custom-dropdown-trigger:hover {
+        border-color: #2563eb;
+        background: #ffffff;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+    }
+
+    .custom-dropdown-trigger:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        background: #ffffff;
+    }
+
+    .custom-dropdown-trigger.active {
+        border-color: #2563eb;
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .custom-dropdown-trigger .dropdown-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        color: #9ca3af;
+        transition: transform 0.25s ease, color 0.2s ease;
+    }
+
+    .custom-dropdown-trigger.active .dropdown-icon {
+        transform: rotate(180deg);
+        color: #2563eb;
+    }
+
+    .custom-dropdown-trigger .selected-text {
+        flex: 1;
+        text-align: {{ is_rtl() ? 'right' : 'left' }};
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Dropdown menu */
+    .custom-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 6px);
+        {{ is_rtl() ? 'right' : 'left' }}: 0;
+        width: 100%;
+        min-width: 200px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
+        z-index: 100;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px) scale(0.98);
+        transform-origin: top center;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow: hidden;
+    }
+
+    .custom-dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+    }
+
+    .custom-dropdown-menu ul {
+        list-style: none;
+        margin: 0;
+        padding: 0.5rem;
+    }
+
+    .custom-dropdown-menu li {
+        margin: 0;
+    }
+
+    .custom-dropdown-option {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: none;
+        background: transparent;
+        font-size: 0.9rem;
+        color: #374151;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        border-radius: 8px;
+        text-align: {{ is_rtl() ? 'right' : 'left' }};
+        direction: {{ is_rtl() ? 'rtl' : 'ltr' }};
+    }
+
+    .custom-dropdown-option:hover {
+        background: #f3f4f6;
+        color: #1f2937;
+    }
+
+    .custom-dropdown-option:focus {
+        outline: none;
+        background: #eff6ff;
+        color: #2563eb;
+    }
+
+    .custom-dropdown-option.selected {
+        background: #eff6ff;
+        color: #2563eb;
+        font-weight: 600;
+    }
+
+    .custom-dropdown-option .option-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        opacity: 0;
+        color: #2563eb;
+        transition: opacity 0.15s ease;
+    }
+
+    .custom-dropdown-option.selected .option-icon {
+        opacity: 1;
+    }
+
+    .custom-dropdown-option .option-text {
+        flex: 1;
+    }
+
+    /* Hide native select but keep it for form submission */
+    .sort-dropdown {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    /* Backdrop for closing dropdown when clicking outside */
+    .dropdown-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 99;
+        display: none;
+    }
+
+    .dropdown-backdrop.show {
+        display: block;
     }
 
     /* Review Item */
@@ -688,25 +921,12 @@
 <div class="reviews-section" id="reviews-section">
     <!-- Reviews Header -->
     <div class="reviews-header">
-        <h2>{{ __('messages.customer_reviews') }}</h2>
-        @auth
-            @if(!$hasReviewed)
-                <button class="write-review-btn" onclick="toggleReviewForm()">
-                    <i class="fas fa-pen"></i>
-                    {{ __('messages.write_review') }}
-                </button>
-            @else
-                <button class="write-review-btn" style="background:#6c757d" onclick="startEditReviewById({{ $userReview->id }})">
-                    <i class="fas fa-edit"></i>
-                    {{ __('messages.edit') ?? 'Edit' }} {{ __('messages.review') ?? 'Review' }}
-                </button>
-            @endif
-        @else
-            <a href="{{ route('login') }}" class="write-review-btn">
-                <i class="fas fa-sign-in-alt"></i>
-                {{ __('messages.login_to_review') }}
-            </a>
-        @endauth
+        <div>
+            <h2>{{ __('messages.customer_reviews') }}</h2>
+            <p class="reviews-header-subtitle">
+                {{ __('messages.share_your_experience') ?? 'Have this product? Share your experience with other customers.' }}
+            </p>
+        </div>
     </div>
 
     <!-- Rating Summary -->
@@ -794,16 +1014,76 @@
             <span style="font-weight: 600; color: #1a1a1a;" id="reviews-count-display">
                 {{ $product->reviews_count ?? 0 }} {{ __('messages.reviews') }}
             </span>
+            <div class="reviews-controls-label">
+                {{ __('messages.sort_by') }}:
+                <span style="font-weight: 500;">{{ __('messages.most_recent') }}</span>
+            </div>
         </div>
-        <div>
+        <div class="sort-dropdown-wrapper">
+            <span class="sort-dropdown-label">{{ __('messages.sort_by') }}</span>
+            
+            <!-- Hidden native select for form submission -->
             <select class="sort-dropdown" id="sort-reviews" onchange="loadReviews()">
                 <option value="recent">{{ __('messages.most_recent') }}</option>
                 <option value="helpful">{{ __('messages.most_helpful') }}</option>
                 <option value="highest">{{ __('messages.highest_rating') }}</option>
                 <option value="lowest">{{ __('messages.lowest_rating') }}</option>
             </select>
+            
+            <!-- Custom dropdown trigger -->
+            <button type="button" class="custom-dropdown-trigger" id="sort-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="selected-text">{{ __('messages.most_recent') }}</span>
+                <span class="dropdown-icon">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
+            </button>
+            
+            <!-- Backdrop for closing -->
+            <div class="dropdown-backdrop" id="dropdown-backdrop"></div>
+            
+            <!-- Custom dropdown menu -->
+            <div class="custom-dropdown-menu" id="sort-dropdown-menu" role="listbox">
+                <ul>
+                    <li>
+                        <button type="button" class="custom-dropdown-option selected" data-value="recent" role="option" aria-selected="true">
+                            <span class="option-icon"><i class="fas fa-check"></i></span>
+                            <span class="option-text">{{ __('messages.most_recent') }}</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="custom-dropdown-option" data-value="helpful" role="option" aria-selected="false">
+                            <span class="option-icon"><i class="fas fa-check"></i></span>
+                            <span class="option-text">{{ __('messages.most_helpful') }}</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="custom-dropdown-option" data-value="highest" role="option" aria-selected="false">
+                            <span class="option-icon"><i class="fas fa-check"></i></span>
+                            <span class="option-text">{{ __('messages.highest_rating') }}</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="custom-dropdown-option" data-value="lowest" role="option" aria-selected="false">
+                            <span class="option-icon"><i class="fas fa-check"></i></span>
+                            <span class="option-text">{{ __('messages.lowest_rating') }}</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
+
+    {{-- Floating CTA for writing a review (visible while scrolling in reviews section) --}}
+    @auth
+        @if(!$hasReviewed)
+            <div class="floating-review-cta" id="floating-review-cta">
+                <button type="button" onclick="openReviewFormAndScroll()">
+                    <i class="fas fa-star"></i>
+                    {{ __('messages.write_your_review') ?? 'Write your review' }}
+                </button>
+            </div>
+        @endif
+    @endauth
 
     <!-- Reviews List -->
     <div id="reviews-list">
@@ -847,6 +1127,103 @@
                 targetEl.classList.remove('is-loading');
             }
         };
+
+        // Custom Dropdown functionality
+        window.initCustomDropdown = function() {
+            const trigger = document.getElementById('sort-dropdown-trigger');
+            const menu = document.getElementById('sort-dropdown-menu');
+            const backdrop = document.getElementById('dropdown-backdrop');
+            const nativeSelect = document.getElementById('sort-reviews');
+            const options = menu?.querySelectorAll('.custom-dropdown-option');
+
+            if (!trigger || !menu || !nativeSelect) return;
+
+            // Toggle dropdown
+            function toggleDropdown(show) {
+                const isOpen = show !== undefined ? show : !menu.classList.contains('show');
+                
+                if (isOpen) {
+                    menu.classList.add('show');
+                    backdrop?.classList.add('show');
+                    trigger.classList.add('active');
+                    trigger.setAttribute('aria-expanded', 'true');
+                } else {
+                    menu.classList.remove('show');
+                    backdrop?.classList.remove('show');
+                    trigger.classList.remove('active');
+                    trigger.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            // Select option
+            function selectOption(option) {
+                const value = option.dataset.value;
+                const text = option.querySelector('.option-text').textContent;
+
+                // Update native select
+                nativeSelect.value = value;
+
+                // Update trigger text
+                trigger.querySelector('.selected-text').textContent = text;
+
+                // Update selected state
+                options.forEach(opt => {
+                    opt.classList.remove('selected');
+                    opt.setAttribute('aria-selected', 'false');
+                });
+                option.classList.add('selected');
+                option.setAttribute('aria-selected', 'true');
+
+                // Close dropdown
+                toggleDropdown(false);
+
+                // Trigger change event on native select
+                nativeSelect.dispatchEvent(new Event('change'));
+            }
+
+            // Event listeners
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleDropdown();
+            });
+
+            backdrop?.addEventListener('click', () => toggleDropdown(false));
+
+            options?.forEach(option => {
+                option.addEventListener('click', () => selectOption(option));
+            });
+
+            // Keyboard navigation
+            trigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleDropdown();
+                } else if (e.key === 'Escape') {
+                    toggleDropdown(false);
+                }
+            });
+
+            menu.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    toggleDropdown(false);
+                    trigger.focus();
+                }
+            });
+
+            // Close on outside click
+            document.addEventListener('click', (e) => {
+                if (!trigger.contains(e.target) && !menu.contains(e.target)) {
+                    toggleDropdown(false);
+                }
+            });
+        };
+
+        // Initialize dropdown when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.initCustomDropdown);
+        } else {
+            window.initCustomDropdown();
+        }
 
         // Toggle review form - Define globally
         window.toggleReviewForm = function() {
@@ -1723,6 +2100,32 @@
         // Load reviews on page load
         document.addEventListener('DOMContentLoaded', function() {
             window.loadReviews();
+        });
+
+        // Floating CTA visibility + helper to open form & scroll
+        window.openReviewFormAndScroll = function() {
+            const formContainer = document.getElementById('review-form-container');
+            if (!formContainer) {
+                toggleReviewForm();
+                return;
+            }
+            if (!formContainer.classList.contains('active')) {
+                toggleReviewForm();
+            }
+            setTimeout(() => {
+                formContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 150);
+        };
+
+        document.addEventListener('scroll', function () {
+            const cta = document.getElementById('floating-review-cta');
+            const section = document.getElementById('reviews-section');
+            if (!cta || !section) return;
+
+            const rect = section.getBoundingClientRect();
+            const inView = rect.top < window.innerHeight && rect.bottom > 0;
+
+            cta.style.display = inView ? 'block' : 'none';
         });
 
     })(); // End of IIFE

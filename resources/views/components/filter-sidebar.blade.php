@@ -522,8 +522,23 @@
     .brand-checkbox input[type="checkbox"] {
         width: 18px;
         height: 18px;
+        min-width: 18px;
         cursor: pointer;
         accent-color: #2762f3;
+        flex-shrink: 0;
+    }
+
+    .category-checkbox label,
+    .brand-checkbox label {
+        flex: 1;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: #334155;
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .category-checkbox span,
@@ -538,6 +553,12 @@
         align-items: center;
     }
 
+    .category-checkbox input:checked + label,
+    .brand-checkbox input:checked + label {
+        color: #2762f3;
+        font-weight: 600;
+    }
+
     .category-checkbox input:checked + span,
     .brand-checkbox input:checked + span {
         color: #2762f3;
@@ -545,24 +566,26 @@
     }
 
     .item-count {
-        font-size: 0.75rem;
-        color: #94a3b8;
-        background: #f1f5f9;
-        padding: 0.2rem 0.5rem;
-        border-radius: 10px;
-        font-weight: 600;
-        min-width: 28px;
+        font-size: 0.8rem;
+        color: #64748b;
+        background: transparent;
+        padding: 0;
+        font-weight: 500;
+        min-width: auto;
         text-align: center;
+        flex-shrink: 0;
     }
 
     .item-count.count-zero {
-        color: #cbd5e1;
-        background: #f8fafc;
+        color: #94a3b8;
+        background: transparent;
     }
 
+    .category-checkbox input:checked + label .item-count,
+    .brand-checkbox input:checked + label .item-count,
     .category-checkbox input:checked + span .item-count,
     .brand-checkbox input:checked + span .item-count {
-        background: rgba(39, 98, 243, 0.15);
+        background: transparent;
         color: #2762f3;
     }
 
@@ -777,8 +800,19 @@
         text-align: right;
     }
 
-    [dir="rtl"] .filter-header,
-    [dir="rtl"] .filter-section-title,
+    [dir="rtl"] .filter-header {
+        flex-direction: row-reverse;
+    }
+
+    [dir="rtl"] .filter-header-actions {
+        flex-direction: row-reverse;
+    }
+
+    [dir="rtl"] .filter-section-title {
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+    }
+
     [dir="rtl"] .filter-accordion-header {
         flex-direction: row-reverse;
     }
@@ -788,8 +822,27 @@
         flex-direction: row-reverse;
     }
 
+    [dir="rtl"] .category-checkbox label,
+    [dir="rtl"] .brand-checkbox label {
+        flex-direction: row;
+        text-align: right;
+    }
+
     [dir="rtl"] .filter-accordion-button {
         flex-direction: row-reverse;
+    }
+
+    [dir="rtl"] .price-range-labels {
+        flex-direction: row-reverse;
+    }
+
+    [dir="rtl"] .tag-label-content {
+        flex-direction: row-reverse;
+    }
+
+    [dir="rtl"] .item-count {
+        margin-right: 0;
+        margin-left: auto;
     }
 
     /* Mobile Filter Overlay */
