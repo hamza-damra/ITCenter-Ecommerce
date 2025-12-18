@@ -1,104 +1,101 @@
 <?php $__env->startSection('title', __('messages.Database Backup Management')); ?>
 
 <?php $__env->startSection('content'); ?>
-<div class="page-header" dir="<?php echo e(app()->getLocale() === 'ar' || app()->getLocale() === 'he' ? 'rtl' : 'ltr'); ?>">
-    <div class="page-header-content">
-        <h1>
-            <?php if(app()->getLocale() === 'ar' || app()->getLocale() === 'he'): ?>
-                <?php echo e(__('messages.Database Backup Management')); ?> <i class="fas fa-database"></i>
-            <?php else: ?>
-                <i class="fas fa-database"></i> <?php echo e(__('messages.Database Backup Management')); ?>
+<!-- Admin Hero Header -->
+<div class="admin-hero" dir="<?php echo e(app()->getLocale() === 'ar' || app()->getLocale() === 'he' ? 'rtl' : 'ltr'); ?>">
+    <div class="admin-hero-content">
+        <div class="admin-hero-text">
+            <div class="admin-hero-icon">
+                <i class="fas fa-database"></i>
+            </div>
+            <div>
+                <h1><?php echo e(__('messages.Database Backup Management')); ?></h1>
+                <p><?php echo e(__('messages.Create, restore, and manage database backups')); ?></p>
+            </div>
+        </div>
+        <div class="page-actions">
+            <a href="<?php echo e(route('admin.backup.settings')); ?>" class="btn btn-secondary">
+                <i class="fas fa-cog"></i> <?php echo e(__('messages.Settings')); ?>
 
-            <?php endif; ?>
-        </h1>
-        <p><?php echo e(__('messages.Create, restore, and manage database backups')); ?></p>
-    </div>
-    <div class="page-header-actions">
-        <a href="<?php echo e(route('admin.backup.settings')); ?>" class="btn btn-secondary">
-            <i class="fas fa-cog"></i> <?php echo e(__('messages.Settings')); ?>
-
-        </a>
-        <button type="button" class="btn btn-success" onclick="showExportModal()">
-            <i class="fas fa-plus"></i> <?php echo e(__('messages.Create Backup Now')); ?>
-
-        </button>
-        <button type="button" class="btn btn-info" onclick="showImportModal()">
-            <i class="fas fa-upload"></i> <?php echo e(__('messages.Import Backup')); ?>
-
-        </button>
-        <form method="POST" action="<?php echo e(route('admin.backup.cleanup')); ?>" style="display: inline;" id="cleanupBackupForm">
-            <?php echo csrf_field(); ?>
-            <button type="button" class="btn btn-warning" onclick="handleCleanupBackups()">
-                <i class="fas fa-trash-alt"></i> <?php echo e(__('messages.Cleanup Old Backups')); ?>
+            </a>
+            <button type="button" class="btn btn-success" onclick="showExportModal()">
+                <i class="fas fa-plus"></i> <?php echo e(__('messages.Create Backup Now')); ?>
 
             </button>
-        </form>
+            <button type="button" class="btn btn-info" onclick="showImportModal()">
+                <i class="fas fa-upload"></i> <?php echo e(__('messages.Import Backup')); ?>
+
+            </button>
+            <form method="POST" action="<?php echo e(route('admin.backup.cleanup')); ?>" style="display: inline;" id="cleanupBackupForm">
+                <?php echo csrf_field(); ?>
+                <button type="button" class="btn btn-warning" onclick="handleCleanupBackups()">
+                    <i class="fas fa-trash-alt"></i> <?php echo e(__('messages.Cleanup Old Backups')); ?>
+
+                </button>
+            </form>
+            <button type="button" class="btn btn-critical" onclick="showPurgeModal()">
+                <i class="fas fa-skull-crossbones"></i> <?php echo e(__('messages.Delete All Data')); ?>
+
+            </button>
+        </div>
     </div>
 </div>
 
 <!-- Statistics Cards -->
-<div class="stats-grid" style="margin-bottom: 30px;">
-    <div class="stat-card">
-        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+<div class="admin-stats-grid" dir="<?php echo e(app()->getLocale() === 'ar' || app()->getLocale() === 'he' ? 'rtl' : 'ltr'); ?>">
+    <div class="admin-stat-card stat-violet">
+        <div class="stat-icon">
             <i class="fas fa-database"></i>
         </div>
-        <div class="stat-content">
-            <h3><?php echo e($statistics['total_backups']); ?></h3>
-            <p><?php echo e(__('messages.Total Backups')); ?></p>
-        </div>
+        <h4><?php echo e(__('messages.Total Backups')); ?></h4>
+        <div class="stat-value"><?php echo e($statistics['total_backups']); ?></div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+    <div class="admin-stat-card stat-danger">
+        <div class="stat-icon">
             <i class="fas fa-hdd"></i>
         </div>
-        <div class="stat-content">
-            <h3><?php echo e($statistics['total_size_formatted']); ?></h3>
-            <p><?php echo e(__('messages.Total Size')); ?></p>
-        </div>
+        <h4><?php echo e(__('messages.Total Size')); ?></h4>
+        <div class="stat-value"><?php echo e($statistics['total_size_formatted']); ?></div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+    <div class="admin-stat-card stat-info">
+        <div class="stat-icon">
             <i class="fas fa-calendar-alt"></i>
         </div>
-        <div class="stat-content">
-            <h3><?php echo e($statistics['retention_days']); ?> <?php echo e(__('messages.days')); ?></h3>
-            <p><?php echo e(__('messages.Retention Policy')); ?></p>
-        </div>
+        <h4><?php echo e(__('messages.Retention Policy')); ?></h4>
+        <div class="stat-value"><?php echo e($statistics['retention_days']); ?> <?php echo e(__('messages.days')); ?></div>
     </div>
 
-    <div class="stat-card">
-        <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+    <div class="admin-stat-card stat-success">
+        <div class="stat-icon">
             <i class="fas fa-clock"></i>
         </div>
-        <div class="stat-content">
-            <h3><?php echo e($statistics['backup_frequency_days']); ?> 
-                <?php if($statistics['backup_frequency_days'] == 1): ?>
-                    <?php echo e(__('messages.day')); ?>
+        <h4><?php echo e(__('messages.Backup every')); ?></h4>
+        <div class="stat-value"><?php echo e($statistics['backup_frequency_days']); ?> 
+            <?php if($statistics['backup_frequency_days'] == 1): ?>
+                <?php echo e(__('messages.day')); ?>
 
-                <?php elseif($statistics['backup_frequency_days'] == 2): ?>
-                    <?php echo e(__('messages.two days')); ?>
+            <?php elseif($statistics['backup_frequency_days'] == 2): ?>
+                <?php echo e(__('messages.two days')); ?>
 
-                <?php elseif($statistics['backup_frequency_days'] >= 3 && $statistics['backup_frequency_days'] <= 10): ?>
-                    <?php echo e(__('messages.days')); ?>
+            <?php elseif($statistics['backup_frequency_days'] >= 3 && $statistics['backup_frequency_days'] <= 10): ?>
+                <?php echo e(__('messages.days')); ?>
 
-                <?php else: ?>
-                    <?php echo e(__('messages.day')); ?>
+            <?php else: ?>
+                <?php echo e(__('messages.day')); ?>
 
-                <?php endif; ?>
-            </h3>
-            <p><?php echo e(__('messages.Backup every')); ?></p>
+            <?php endif; ?>
         </div>
     </div>
 </div>
 
 <!-- Configuration Info -->
-<div class="content-card" style="margin-bottom: 30px;">
-    <div class="card-header">
+<div class="admin-table-container" style="margin-bottom: 1.5rem;">
+    <div class="admin-table-header">
         <h3><i class="fas fa-cog"></i> <?php echo e(__('messages.Backup Configuration')); ?></h3>
     </div>
-    <div class="card-body">
+    <div class="admin-table-body">
         <div class="info-grid">
             <div class="info-item">
                 <strong><?php echo e(__('messages.Schedule:')); ?></strong>
@@ -121,86 +118,90 @@
 </div>
 
 <!-- Backups List -->
-<div class="content-card">
-    <div class="card-header">
+<div class="admin-table-container">
+    <div class="admin-table-header">
         <h3><i class="fas fa-list"></i> <?php echo e(__('messages.Available Backups')); ?> (<?php echo e(count($backups)); ?>)</h3>
     </div>
-    <div class="card-body">
-        <?php if(count($backups) > 0): ?>
-            <div class="table-responsive">
-                <table class="data-table">
-                    <thead>
+    <?php if(count($backups) > 0): ?>
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-file"></i> <?php echo e(__('messages.Filename')); ?></th>
+                        <th><i class="fas fa-hdd"></i> <?php echo e(__('messages.Size')); ?></th>
+                        <th><i class="fas fa-calendar"></i> <?php echo e(__('messages.Created At')); ?></th>
+                        <th><i class="fas fa-clock"></i> <?php echo e(__('messages.Age')); ?></th>
+                        <th><i class="fas fa-cogs"></i> <?php echo e(__('messages.Actions')); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $__currentLoopData = $backups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $backup): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <th><i class="fas fa-file"></i> <?php echo e(__('messages.Filename')); ?></th>
-                            <th><i class="fas fa-hdd"></i> <?php echo e(__('messages.Size')); ?></th>
-                            <th><i class="fas fa-calendar"></i> <?php echo e(__('messages.Created At')); ?></th>
-                            <th><i class="fas fa-clock"></i> <?php echo e(__('messages.Age')); ?></th>
-                            <th><i class="fas fa-cogs"></i> <?php echo e(__('messages.Actions')); ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $__currentLoopData = $backups; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $backup): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <tr>
-                                <td>
-                                    <code style="font-size: 0.85em;"><?php echo e($backup['filename']); ?></code>
-                                </td>
-                                <td><?php echo e($backup['size_formatted']); ?></td>
-                                <td><?php echo e($backup['created_at_formatted']); ?></td>
-                                <td>
-                                    <span class="badge badge-<?php echo e($backup['age_days'] > config('backup.retention_days') ? 'danger' : 'success'); ?>" 
-                                          title="<?php echo e($backup['age_days']); ?> <?php echo e(__('messages.days')); ?>">
-                                        <?php echo e($backup['age_human'] ?? ($backup['age_days'] . ' ' . __('messages.days ago'))); ?>
+                            <td>
+                                <code style="font-size: 0.85em;"><?php echo e($backup['filename']); ?></code>
+                            </td>
+                            <td><?php echo e($backup['size_formatted']); ?></td>
+                            <td><?php echo e($backup['created_at_formatted']); ?></td>
+                            <td>
+                                <span class="badge badge-<?php echo e($backup['age_days'] > config('backup.retention_days') ? 'danger' : 'success'); ?>" 
+                                      title="<?php echo e($backup['age_days']); ?> <?php echo e(__('messages.days')); ?>">
+                                    <?php echo e($backup['age_human'] ?? ($backup['age_days'] . ' ' . __('messages.days ago'))); ?>
 
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <!-- Download -->
-                                        <a href="<?php echo e(route('admin.backup.download', $backup['filename'])); ?>" 
-                                           class="btn btn-sm btn-info" 
-                                           title="<?php echo e(__('messages.Download')); ?>">
-                                            <i class="fas fa-download"></i>
-                                        </a>
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <!-- Download -->
+                                    <a href="<?php echo e(route('admin.backup.download', $backup['filename'])); ?>" 
+                                       class="btn btn-sm btn-info" 
+                                       title="<?php echo e(__('messages.Download')); ?>">
+                                        <i class="fas fa-download"></i>
+                                    </a>
 
-                                        <!-- Restore -->
+                                    <!-- Restore -->
+                                    <button type="button" 
+                                            class="btn btn-sm btn-warning" 
+                                            onclick="showRestoreModal('<?php echo e($backup['filename']); ?>')"
+                                            title="<?php echo e(__('messages.Restore')); ?>">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+
+                                    <!-- Delete -->
+                                    <form method="POST" 
+                                          action="<?php echo e(route('admin.backup.delete', $backup['filename'])); ?>" 
+                                          style="display: inline;"
+                                          class="delete-backup-form"
+                                          data-filename="<?php echo e($backup['filename']); ?>"
+                                          onsubmit="return false;">
+                                        <?php echo csrf_field(); ?>
+                                        <?php echo method_field('DELETE'); ?>
                                         <button type="button" 
-                                                class="btn btn-sm btn-warning" 
-                                                onclick="showRestoreModal('<?php echo e($backup['filename']); ?>')"
-                                                title="<?php echo e(__('messages.Restore')); ?>">
-                                            <i class="fas fa-undo"></i>
+                                                class="btn btn-sm btn-danger delete-backup-btn" 
+                                                data-filename="<?php echo e($backup['filename']); ?>"
+                                                title="<?php echo e(__('messages.Delete')); ?>">
+                                            <i class="fas fa-trash"></i>
                                         </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </tbody>
+            </table>
+        </div>
+    <?php else: ?>
+        <div class="admin-empty-state">
+            <div class="admin-empty-state-icon">
+                <i class="fas fa-database"></i>
+            </div>
+            <h3><?php echo e(__('messages.No backups available')); ?></h3>
+            <p><?php echo e(__('messages.Click "Create Backup" to create your first backup')); ?></p>
+            <button type="button" class="btn btn-success" onclick="showExportModal()">
+                <i class="fas fa-plus"></i> <?php echo e(__('messages.Create Backup Now')); ?>
 
-                                        <!-- Delete -->
-                                        <form method="POST" 
-                                              action="<?php echo e(route('admin.backup.delete', $backup['filename'])); ?>" 
-                                              style="display: inline;"
-                                              class="delete-backup-form"
-                                              data-filename="<?php echo e($backup['filename']); ?>"
-                                              onsubmit="return false;">
-                                            <?php echo csrf_field(); ?>
-                                            <?php echo method_field('DELETE'); ?>
-                                            <button type="button" 
-                                                    class="btn btn-sm btn-danger delete-backup-btn" 
-                                                    data-filename="<?php echo e($backup['filename']); ?>"
-                                                    title="<?php echo e(__('messages.Delete')); ?>">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    </tbody>
-                </table>
-            </div>
-        <?php else: ?>
-            <div class="empty-state">
-                <i class="fas fa-database" style="font-size: 48px; color: #cbd5e0; margin-bottom: 16px;"></i>
-                <p><?php echo e(__('messages.No backups available')); ?></p>
-                <p style="color: #64748b; font-size: 14px;"><?php echo e(__('messages.Click "Create Backup" to create your first backup')); ?></p>
-            </div>
-        <?php endif; ?>
-    </div>
+            </button>
+        </div>
+    <?php endif; ?>
 </div>
 
 <!-- Export/Create Backup Modal -->
@@ -384,131 +385,130 @@
     </div>
 </div>
 
+<!-- Purge All Data Modal -->
+<div id="purgeModal" class="modal">
+    <div class="modal-content purge-modal-content">
+        <div class="modal-header purge-modal-header">
+            <h3><i class="fas fa-skull-crossbones"></i> <?php echo e(__('messages.Delete All Data')); ?></h3>
+            <button type="button" class="close-modal" onclick="closePurgeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- Critical Warning Banner -->
+            <div class="purge-warning-banner">
+                <div class="purge-warning-icon">
+                    <i class="fas fa-radiation-alt"></i>
+                </div>
+                <div class="purge-warning-content">
+                    <h4><?php echo e(__('messages.CRITICAL DANGER ZONE')); ?></h4>
+                    <p><?php echo e(__('messages.This action will permanently delete ALL data from the database')); ?></p>
+                </div>
+            </div>
+
+            <!-- What will be deleted -->
+            <div class="purge-info-section">
+                <h5><i class="fas fa-trash-alt"></i> <?php echo e(__('messages.What will be deleted:')); ?></h5>
+                <ul class="purge-delete-list">
+                    <li><i class="fas fa-times-circle"></i> <?php echo e(__('messages.All products and their images')); ?></li>
+                    <li><i class="fas fa-times-circle"></i> <?php echo e(__('messages.All categories and brands')); ?></li>
+                    <li><i class="fas fa-times-circle"></i> <?php echo e(__('messages.All orders and order history')); ?></li>
+                    <li><i class="fas fa-times-circle"></i> <?php echo e(__('messages.All customer accounts')); ?></li>
+                    <li><i class="fas fa-times-circle"></i> <?php echo e(__('messages.All reviews and ratings')); ?></li>
+                    <li><i class="fas fa-times-circle"></i> <?php echo e(__('messages.All banners and promotional content')); ?></li>
+                    <li><i class="fas fa-times-circle"></i> <?php echo e(__('messages.All other data in the system')); ?></li>
+                </ul>
+            </div>
+
+            <!-- What will be preserved -->
+            <div class="purge-info-section purge-preserve-section">
+                <h5><i class="fas fa-shield-alt"></i> <?php echo e(__('messages.What will be preserved:')); ?></h5>
+                <ul class="purge-preserve-list">
+                    <li><i class="fas fa-check-circle"></i> <?php echo e(__('messages.Your admin account only')); ?></li>
+                </ul>
+            </div>
+
+            <!-- Confirmation Steps -->
+            <div class="purge-confirmation-steps">
+                <h5><i class="fas fa-lock"></i> <?php echo e(__('messages.Security Verification')); ?></h5>
+                
+                <!-- Step 1: Type confirmation text -->
+                <div class="purge-step">
+                    <label for="purgeConfirmText">
+                        <?php echo e(__('messages.Type')); ?> <code>DELETE ALL DATA</code> <?php echo e(__('messages.to confirm:')); ?>
+
+                    </label>
+                    <input type="text" 
+                           id="purgeConfirmText" 
+                           class="purge-input" 
+                           placeholder="<?php echo e(__('messages.Type DELETE ALL DATA')); ?>"
+                           autocomplete="off"
+                           oninput="validatePurgeForm()">
+                </div>
+
+                <!-- Step 2: Enter password -->
+                <div class="purge-step">
+                    <label for="purgePassword">
+                        <?php echo e(__('messages.Enter your admin password:')); ?>
+
+                    </label>
+                    <div class="password-input-wrapper">
+                        <input type="password" 
+                               id="purgePassword" 
+                               class="purge-input" 
+                               placeholder="<?php echo e(__('messages.Your password')); ?>"
+                               oninput="validatePurgeForm()">
+                        <button type="button" class="toggle-password-btn" onclick="togglePurgePassword()">
+                            <i class="fas fa-eye" id="purgePasswordIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Final Warning Checkbox -->
+                <div class="purge-step">
+                    <label class="purge-checkbox-label">
+                        <input type="checkbox" id="purgeUnderstand" onchange="validatePurgeForm()">
+                        <span><?php echo e(__('messages.I understand this action is IRREVERSIBLE and all data will be permanently lost')); ?></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer purge-modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closePurgeModal()">
+                <i class="fas fa-times"></i> <?php echo e(__('messages.Cancel')); ?>
+
+            </button>
+            <button type="button" 
+                    class="btn btn-critical" 
+                    id="purgeSubmitBtn" 
+                    disabled
+                    onclick="executePurge()">
+                <i class="fas fa-skull-crossbones"></i> <?php echo e(__('messages.DELETE ALL DATA')); ?>
+
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Purge Success/Error Alert Modal -->
+<div id="purgeAlertModal" class="modal">
+    <div class="modal-content purge-alert-content">
+        <div class="modal-body purge-alert-body">
+            <div id="purgeAlertIcon" class="purge-alert-icon"></div>
+            <h3 id="purgeAlertTitle"></h3>
+            <p id="purgeAlertMessage"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="closePurgeAlert()">
+                <?php echo e(__('messages.OK')); ?>
+
+            </button>
+        </div>
+    </div>
+</div>
+
 <style>
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-    gap: 20px;
-}
+/* Backup Page Specific Styles - Using unified admin components */
 
-.page-header-content {
-    flex: 1;
-}
-
-.page-header-content h1 {
-    font-size: 28px;
-    margin-bottom: 8px;
-    color: #1e293b;
-}
-
-.page-header-content p {
-    color: #64748b;
-    font-size: 14px;
-}
-
-.page-header-actions {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-/* RTL Layout: Title right, Buttons left */
-[dir="rtl"] .page-header {
-    direction: rtl;
-}
-
-[dir="rtl"] .page-header-content h1,
-[dir="rtl"] .page-header-content p {
-    text-align: right;
-}
-
-/* Responsive: Stack on mobile */
-@media (max-width: 768px) {
-    .page-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .page-header-actions {
-        justify-content: flex-start;
-    }
-    
-    [dir="rtl"] .page-header {
-        align-items: flex-end;
-    }
-    
-    [dir="rtl"] .page-header-actions {
-        justify-content: flex-end;
-    }
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-.stat-card {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.stat-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    color: white;
-}
-
-.stat-content h3 {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    color: #1e293b;
-}
-
-.stat-content p {
-    font-size: 14px;
-    color: #64748b;
-    margin: 0;
-}
-
-.content-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-}
-
-.card-header {
-    padding: 20px 24px;
-    border-bottom: 1px solid #e2e8f0;
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-}
-
-.card-header h3 {
-    font-size: 18px;
-    color: #1e293b;
-    margin: 0;
-}
-
-.card-body {
-    padding: 24px;
-}
-
+/* Info Grid for Configuration Section */
 .info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -531,107 +531,23 @@
     font-size: 15px;
 }
 
+/* Admin Table Body for Configuration Section */
+.admin-table-body {
+    padding: 1.5rem;
+}
+
+/* Table Responsive Wrapper */
 .table-responsive {
     overflow-x: auto;
 }
 
-.data-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.data-table thead {
-    background: #f8fafc;
-}
-
-.data-table th {
-    padding: 12px;
-    text-align: left;
-    font-weight: 600;
-    color: #475569;
-    font-size: 13px;
-    border-bottom: 2px solid #e2e8f0;
-}
-
-.data-table td {
-    padding: 12px;
-    border-bottom: 1px solid #e2e8f0;
-    color: #1e293b;
-}
-
-.data-table tbody tr:hover {
-    background: #f8fafc;
-}
-
+/* Action Buttons */
 .action-buttons {
     display: flex;
     gap: 8px;
 }
 
-.btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-}
-
-.btn-sm {
-    padding: 6px 12px;
-    font-size: 13px;
-}
-
-.btn-primary {
-    background: #2563eb;
-    color: white;
-}
-
-.btn-primary:hover {
-    background: #1d4ed8;
-}
-
-.btn-warning {
-    background: #f59e0b;
-    color: white;
-}
-
-.btn-warning:hover {
-    background: #d97706;
-}
-
-.btn-danger {
-    background: #ef4444;
-    color: white;
-}
-
-.btn-danger:hover {
-    background: #dc2626;
-}
-
-.btn-info {
-    background: #06b6d4;
-    color: white;
-}
-
-.btn-info:hover {
-    background: #0891b2;
-}
-
-.btn-secondary {
-    background: #64748b;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background: #475569;
-}
-
+/* Badge Styles */
 .badge {
     padding: 4px 12px;
     border-radius: 12px;
@@ -650,6 +566,7 @@
     color: #991b1b;
 }
 
+/* Alert Styles */
 .alert {
     padding: 16px 20px;
     border-radius: 8px;
@@ -669,12 +586,6 @@
     background: #fee2e2;
     border-left: 4px solid #ef4444;
     color: #991b1b;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: #64748b;
 }
 
 /* Modal Styles */
@@ -807,37 +718,12 @@
     cursor: pointer;
 }
 
-/* RTL Support for Arabic and Hebrew */
-[dir="rtl"] .data-table th,
-[dir="rtl"] .data-table td {
-    text-align: right;
-}
-
-[dir="rtl"] .stat-card {
-    flex-direction: row-reverse;
-}
-
-[dir="rtl"] .stat-content {
-    text-align: right;
-}
-
-[dir="rtl"] .stat-content h3 {
-    text-align: right;
-}
-
-[dir="rtl"] .stat-content p {
-    text-align: right;
-}
-
+/* RTL Support for Backup Page Specific Elements */
 [dir="rtl"] .info-grid {
     direction: rtl;
 }
 
 [dir="rtl"] .info-item {
-    text-align: right;
-}
-
-[dir="rtl"] .card-header h3 {
     text-align: right;
 }
 
@@ -1004,14 +890,341 @@
     flex-direction: row-reverse;
 }
 
-/* Button colors */
-.btn-success {
-    background: #10b981;
+/* Critical/Purge Button Styles */
+.btn-critical {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    color: white;
+    border: 2px solid #7f1d1d;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
+    animation: criticalPulse 2s infinite;
+}
+
+.btn-critical:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+}
+
+.btn-critical:disabled {
+    background: #9ca3af;
+    border-color: #6b7280;
+    cursor: not-allowed;
+    animation: none;
+    box-shadow: none;
+    transform: none;
+}
+
+@keyframes criticalPulse {
+    0%, 100% { box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4); }
+    50% { box-shadow: 0 4px 20px rgba(220, 38, 38, 0.6); }
+}
+
+/* Purge Modal Styles */
+.purge-modal-content {
+    max-width: 600px;
+    border: 3px solid #dc2626;
+}
+
+.purge-modal-header {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    color: white;
+    border-bottom: none;
+}
+
+.purge-modal-header h3 {
     color: white;
 }
 
-.btn-success:hover {
-    background: #059669;
+.purge-modal-header .close-modal {
+    color: white;
+}
+
+.purge-modal-header .close-modal:hover {
+    color: #fecaca;
+}
+
+.purge-warning-banner {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border: 2px solid #dc2626;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    animation: warningShake 0.5s ease-in-out;
+}
+
+@keyframes warningShake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+    20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+.purge-warning-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    animation: iconPulse 1.5s infinite;
+}
+
+@keyframes iconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.purge-warning-icon i {
+    font-size: 28px;
+    color: white;
+}
+
+.purge-warning-content h4 {
+    color: #991b1b;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 4px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.purge-warning-content p {
+    color: #b91c1c;
+    margin: 0;
+    font-size: 14px;
+}
+
+.purge-info-section {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.purge-info-section h5 {
+    color: #1e293b;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.purge-delete-list,
+.purge-preserve-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.purge-delete-list li,
+.purge-preserve-list li {
+    padding: 6px 0;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.purge-delete-list li i {
+    color: #dc2626;
+}
+
+.purge-preserve-section {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+}
+
+.purge-preserve-list li i {
+    color: #16a34a;
+}
+
+.purge-confirmation-steps {
+    background: #fffbeb;
+    border: 2px solid #fbbf24;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.purge-confirmation-steps h5 {
+    color: #92400e;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.purge-step {
+    margin-bottom: 16px;
+}
+
+.purge-step:last-child {
+    margin-bottom: 0;
+}
+
+.purge-step label {
+    display: block;
+    font-size: 13px;
+    color: #1e293b;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.purge-step label code {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.purge-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+    box-sizing: border-box;
+}
+
+.purge-input:focus {
+    outline: none;
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+}
+
+.password-input-wrapper {
+    position: relative;
+}
+
+.password-input-wrapper .purge-input {
+    padding-right: 48px;
+}
+
+.toggle-password-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.toggle-password-btn:hover {
+    color: #1e293b;
+}
+
+.purge-checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #1e293b;
+    line-height: 1.5;
+}
+
+.purge-checkbox-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.purge-modal-footer {
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Purge Alert Modal */
+.purge-alert-content {
+    max-width: 400px;
+    text-align: center;
+}
+
+.purge-alert-body {
+    padding: 40px 24px;
+}
+
+.purge-alert-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 40px;
+}
+
+.purge-alert-icon.success {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.purge-alert-icon.error {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.purge-alert-body h3 {
+    font-size: 20px;
+    color: #1e293b;
+    margin: 0 0 12px 0;
+}
+
+.purge-alert-body p {
+    color: #64748b;
+    margin: 0;
+    font-size: 14px;
+}
+
+/* RTL Support for Purge Modal */
+[dir="rtl"] .purge-warning-banner {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .purge-warning-content {
+    text-align: right;
+}
+
+[dir="rtl"] .purge-info-section h5 {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .purge-delete-list li,
+[dir="rtl"] .purge-preserve-list li {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .purge-checkbox-label {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .password-input-wrapper .purge-input {
+    padding-right: 16px;
+    padding-left: 48px;
+}
+
+[dir="rtl"] .toggle-password-btn {
+    right: auto;
+    left: 12px;
 }
 </style>
 
@@ -1683,6 +1896,222 @@ document.addEventListener('keydown', function(event) {
         closeExportModal();
         closeImportModal();
         closeRestoreModal();
+    }
+});
+
+// ============================================
+// PURGE ALL DATA SYSTEM
+// ============================================
+
+/**
+ * Show purge modal
+ */
+function showPurgeModal() {
+    document.getElementById('purgeModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    // Reset form
+    document.getElementById('purgeConfirmText').value = '';
+    document.getElementById('purgePassword').value = '';
+    document.getElementById('purgeUnderstand').checked = false;
+    document.getElementById('purgeSubmitBtn').disabled = true;
+}
+
+/**
+ * Close purge modal
+ */
+function closePurgeModal() {
+    document.getElementById('purgeModal').style.display = 'none';
+    document.body.style.overflow = '';
+    // Reset form
+    document.getElementById('purgeConfirmText').value = '';
+    document.getElementById('purgePassword').value = '';
+    document.getElementById('purgeUnderstand').checked = false;
+    document.getElementById('purgeSubmitBtn').disabled = true;
+}
+
+/**
+ * Toggle password visibility
+ */
+function togglePurgePassword() {
+    const passwordInput = document.getElementById('purgePassword');
+    const icon = document.getElementById('purgePasswordIcon');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+/**
+ * Validate purge form
+ */
+function validatePurgeForm() {
+    const confirmText = document.getElementById('purgeConfirmText').value;
+    const password = document.getElementById('purgePassword').value;
+    const understand = document.getElementById('purgeUnderstand').checked;
+    const submitBtn = document.getElementById('purgeSubmitBtn');
+    
+    const isValid = confirmText === 'DELETE ALL DATA' && password.length > 0 && understand;
+    submitBtn.disabled = !isValid;
+}
+
+/**
+ * Execute purge operation
+ */
+async function executePurge() {
+    const confirmText = document.getElementById('purgeConfirmText').value;
+    const password = document.getElementById('purgePassword').value;
+    const submitBtn = document.getElementById('purgeSubmitBtn');
+    
+    // Double-check validation
+    if (confirmText !== 'DELETE ALL DATA') {
+        showPurgeAlert('error', '<?php echo e(__('messages.Error')); ?>', '<?php echo e(__('messages.Please type DELETE ALL DATA to confirm')); ?>');
+        return;
+    }
+    
+    // Show loading state
+    const originalHtml = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <?php echo e(__('messages.Deleting...')); ?>';
+    
+    try {
+        const response = await fetch('<?php echo e(route('admin.backup.purge-all-data')); ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                password: password,
+                confirm_text: confirmText
+            })
+        });
+        
+        const data = await response.json();
+        
+        // Close purge modal
+        closePurgeModal();
+        
+        if (response.ok && data.success) {
+            showPurgeAlert('success', '<?php echo e(__('messages.Success')); ?>', data.message);
+        } else {
+            showPurgeAlert('error', '<?php echo e(__('messages.Error')); ?>', data.message || '<?php echo e(__('messages.Failed to delete data')); ?>');
+        }
+        
+    } catch (error) {
+        console.error('Purge error:', error);
+        closePurgeModal();
+        showPurgeAlert('error', '<?php echo e(__('messages.Error')); ?>', '<?php echo e(__('messages.An unexpected error occurred')); ?>');
+    }
+    
+    // Restore button state
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalHtml;
+}
+
+/**
+ * Show purge alert modal
+ */
+function showPurgeAlert(type, title, message) {
+    const alertModal = document.getElementById('purgeAlertModal');
+    const alertIcon = document.getElementById('purgeAlertIcon');
+    const alertTitle = document.getElementById('purgeAlertTitle');
+    const alertMessage = document.getElementById('purgeAlertMessage');
+    
+    // Set icon based on type
+    alertIcon.className = 'purge-alert-icon ' + type;
+    if (type === 'success') {
+        alertIcon.innerHTML = '<i class="fas fa-check"></i>';
+    } else {
+        alertIcon.innerHTML = '<i class="fas fa-times"></i>';
+    }
+    
+    alertTitle.textContent = title;
+    alertMessage.textContent = message;
+    
+    alertModal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Close purge alert modal
+ */
+function closePurgeAlert() {
+    document.getElementById('purgeAlertModal').style.display = 'none';
+    document.body.style.overflow = '';
+    
+    // Force hard reload after success to clear browser cache
+    const alertIcon = document.getElementById('purgeAlertIcon');
+    if (alertIcon.classList.contains('success')) {
+        // Clear browser caches
+        clearBrowserCaches();
+        // Force hard reload bypassing cache
+        window.location.href = window.location.href.split('?')[0] + '?purged=' + Date.now();
+    }
+}
+
+/**
+ * Clear browser caches (localStorage, sessionStorage, etc.)
+ */
+function clearBrowserCaches() {
+    try {
+        // Clear localStorage
+        localStorage.clear();
+        
+        // Clear sessionStorage
+        sessionStorage.clear();
+        
+        // Clear service worker caches if available
+        if ('caches' in window) {
+            caches.keys().then(function(names) {
+                for (let name of names) {
+                    caches.delete(name);
+                }
+            });
+        }
+        
+        // Unregister service workers
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+    } catch (e) {
+        console.warn('Could not clear browser caches:', e);
+    }
+}
+
+// Close purge modals on escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        if (document.getElementById('purgeModal').style.display === 'block') {
+            closePurgeModal();
+        }
+        if (document.getElementById('purgeAlertModal').style.display === 'block') {
+            closePurgeAlert();
+        }
+    }
+});
+
+// Close purge modals when clicking outside
+window.addEventListener('click', function(event) {
+    const purgeModal = document.getElementById('purgeModal');
+    const purgeAlertModal = document.getElementById('purgeAlertModal');
+    
+    if (event.target === purgeModal) {
+        closePurgeModal();
+    }
+    if (event.target === purgeAlertModal) {
+        closePurgeAlert();
     }
 });
 </script>

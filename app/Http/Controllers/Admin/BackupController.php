@@ -7,6 +7,11 @@ use App\Services\DatabaseBackupService;
 use App\Exceptions\BackupRestoreException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Artisan;
 use Exception;
 
 class BackupController extends Controller
@@ -499,5 +504,156 @@ class BackupController extends Controller
         ];
 
         return $labels[$type] ?? $type;
+    }
+
+    /**
+     * Purge all data from database except admin account
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function purgeAllData(Request $request)
+    {
+        // Ensure user is authenticated and is admin
+        if (!auth()->check() || !auth()->user()->isAdmin()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.Unauthorized access')
+            ], 403);
+        }
+
+        $request->validate([
+            'password' => 'required|string',
+            'confirm_text' => 'required|string|in:DELETE ALL DATA',
+        ]);
+
+        // Verify admin password
+        if (!Hash::check($request->password, auth()->user()->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.Invalid password')
+            ], 401);
+        }
+
+        try {
+            // Get current admin user data to preserve
+            $adminUser = auth()->user();
+            $adminId = $adminUser->id;
+
+            // Tables to preserve (system tables)
+            $preserveTables = [
+                'migrations',
+                'personal_access_tokens',
+                'password_reset_tokens',
+                'password_reset_codes',
+                'sessions',
+                'cache',
+                'cache_locks',
+                'jobs',
+                'job_batches',
+                'failed_jobs',
+                'backup_settings',
+            ];
+
+            // Get all tables
+            $tables = DB::select('SHOW TABLES');
+            $databaseName = DB::getDatabaseName();
+            $tableKey = "Tables_in_{$databaseName}";
+
+            $deletedTables = [];
+            $skippedTables = [];
+
+            // Disable foreign key checks (this doesn't require transaction)
+            DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+            foreach ($tables as $table) {
+                $tableName = $table->$tableKey;
+
+                // Skip preserved tables
+                if (in_array($tableName, $preserveTables)) {
+                    $skippedTables[] = $tableName;
+                    continue;
+                }
+
+                // Special handling for users table - keep only admin
+                if ($tableName === 'users') {
+                    DB::table('users')->where('id', '!=', $adminId)->delete();
+                    $deletedTables[] = $tableName . ' (kept admin only)';
+                    continue;
+                }
+
+                // Use DELETE instead of TRUNCATE to avoid transaction issues
+                // Then reset auto-increment
+                try {
+                    DB::table($tableName)->delete();
+                    DB::statement("ALTER TABLE `{$tableName}` AUTO_INCREMENT = 1");
+                    $deletedTables[] = $tableName;
+                } catch (Exception $tableError) {
+                    // If delete fails, try truncate as fallback
+                    try {
+                        DB::statement("TRUNCATE TABLE `{$tableName}`");
+                        $deletedTables[] = $tableName;
+                    } catch (Exception $truncateError) {
+                        Log::warning("Could not clear table {$tableName}", [
+                            'delete_error' => $tableError->getMessage(),
+                            'truncate_error' => $truncateError->getMessage()
+                        ]);
+                        $skippedTables[] = $tableName . ' (error)';
+                    }
+                }
+            }
+
+            // Re-enable foreign key checks
+            DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+            // Clear all Laravel caches to ensure fresh data is loaded
+            try {
+                Cache::flush();
+                Artisan::call('cache:clear');
+                Artisan::call('view:clear');
+                Artisan::call('route:clear');
+                Artisan::call('config:clear');
+            } catch (Exception $cacheError) {
+                Log::warning('Cache clear failed during purge', ['error' => $cacheError->getMessage()]);
+            }
+
+            Log::warning('DATABASE PURGE: All data deleted except admin account', [
+                'admin_id' => $adminUser->id,
+                'admin_email' => $adminUser->email,
+                'deleted_tables' => $deletedTables,
+                'skipped_tables' => $skippedTables,
+                'ip' => $request->ip(),
+                'timestamp' => now()->toIso8601String()
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => __('messages.All data has been deleted successfully'),
+                'data' => [
+                    'deleted_tables' => count($deletedTables),
+                    'skipped_tables' => count($skippedTables),
+                ],
+                'clear_browser_cache' => true
+            ]);
+
+        } catch (Exception $e) {
+            // Re-enable foreign key checks in case of error
+            try {
+                DB::statement('SET FOREIGN_KEY_CHECKS=1');
+            } catch (Exception $fkError) {
+                // Ignore
+            }
+            
+            Log::error('Database purge failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'admin' => auth()->user()->email ?? 'unknown'
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.Failed to purge data') . ': ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

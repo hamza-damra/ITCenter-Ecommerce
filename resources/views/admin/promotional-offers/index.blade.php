@@ -4,75 +4,12 @@
 
 @section('content')
 <style>
-    /* Promotional Offers Page Styles */
-    .promo-offers-header {
-        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-        color: white;
-        padding: 2.5rem;
-        border-radius: 18px;
-        margin-bottom: 2rem;
-        box-shadow: 0 8px 25px rgba(238, 90, 36, 0.25);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .promo-offers-header::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -20%;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-        border-radius: 50%;
-    }
-
-    .promo-offers-header::after {
-        content: '';
-        position: absolute;
-        bottom: -30%;
-        left: 10%;
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        border-radius: 50%;
-    }
-
-    .header-content {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 1.5rem;
-    }
-
-    .header-text h1 {
-        font-size: 1.8rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    .header-text h1 i {
-        font-size: 1.5rem;
-        background: rgba(255,255,255,0.2);
-        padding: 0.5rem;
-        border-radius: 10px;
-    }
-
-    .header-text p {
-        opacity: 0.95;
-        font-size: 1rem;
-        margin: 0;
-    }
-
-    .header-actions .btn-add {
+    /* Promotional Offers Page Styles - Using unified admin components */
+    
+    /* Hero Add Button */
+    .admin-hero .btn-add {
         background: white;
-        color: #ee5a24;
+        color: var(--accent-blue);
         padding: 0.85rem 1.75rem;
         border-radius: 12px;
         font-weight: 700;
@@ -85,127 +22,9 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
 
-    .header-actions .btn-add:hover {
+    .admin-hero .btn-add:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-    }
-
-    /* Stats Grid */
-    .promo-stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.25rem;
-        margin-bottom: 2rem;
-    }
-
-    .promo-stat-card {
-        background: white;
-        border-radius: 14px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-        transition: all 0.3s ease;
-        border-top: 4px solid;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .promo-stat-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    }
-
-    .promo-stat-card.total { border-top-color: #667eea; }
-    .promo-stat-card.active { border-top-color: #10b981; }
-    .promo-stat-card.expired { border-top-color: #f59e0b; }
-    .promo-stat-card.inactive { border-top-color: #ef4444; }
-
-    .promo-stat-card h4 {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        color: #64748b;
-        margin-bottom: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 700;
-    }
-
-    .promo-stat-card .stat-value {
-        font-size: 2rem;
-        font-weight: 800;
-        color: #1e293b;
-    }
-
-    .promo-stat-card.total .stat-value { color: #667eea; }
-    .promo-stat-card.active .stat-value { color: #10b981; }
-    .promo-stat-card.expired .stat-value { color: #f59e0b; }
-    .promo-stat-card.inactive .stat-value { color: #ef4444; }
-
-    /* Table Container */
-    .promo-table-container {
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-        overflow: hidden;
-    }
-
-    .table-header {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid #e2e8f0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .table-header h3 {
-        font-size: 1rem;
-        font-weight: 700;
-        color: #1e293b;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin: 0;
-    }
-
-    .promo-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .promo-table thead {
-        background: #f8fafc;
-    }
-
-    .promo-table th {
-        padding: 1rem 1.25rem;
-        text-align: left;
-        font-weight: 700;
-        color: #475569;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        border-bottom: 2px solid #e2e8f0;
-    }
-
-    .promo-table tbody tr {
-        border-bottom: 1px solid #f1f5f9;
-        transition: all 0.2s ease;
-    }
-
-    .promo-table tbody tr:hover {
-        background: linear-gradient(90deg, #fafafa 0%, #ffffff 100%);
-    }
-
-    .promo-table tbody tr:last-child {
-        border-bottom: none;
-    }
-
-    .promo-table td {
-        padding: 1.25rem;
-        color: #334155;
-        vertical-align: middle;
     }
 
     /* Product Cell */
@@ -354,58 +173,6 @@
         transform: translateY(-2px);
     }
 
-    /* Empty State */
-    .empty-state {
-        padding: 4rem 2rem;
-        text-align: center;
-    }
-
-    .empty-icon {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1.5rem;
-    }
-
-    .empty-icon i {
-        font-size: 2rem;
-        color: #94a3b8;
-    }
-
-    .empty-state h3 {
-        font-size: 1.25rem;
-        color: #334155;
-        margin-bottom: 0.5rem;
-        font-weight: 700;
-    }
-
-    .empty-state p {
-        color: #64748b;
-        margin-bottom: 1.5rem;
-    }
-
-    .empty-state .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 0.85rem 1.5rem;
-        border-radius: 10px;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        border: none;
-    }
-
-    .empty-state .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-    }
-
     /* Alert */
     .alert-success-custom {
         background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
@@ -429,21 +196,13 @@
     }
 
     /* RTL Support */
-    [dir="rtl"] .promo-table th,
-    [dir="rtl"] .promo-table td {
+    [dir="rtl"] .admin-table th,
+    [dir="rtl"] .admin-table td {
         text-align: right;
     }
 
     [dir="rtl"] .product-cell {
         flex-direction: row-reverse;
-    }
-
-    [dir="rtl"] .header-content {
-        flex-direction: row-reverse;
-    }
-
-    [dir="rtl"] .header-text {
-        text-align: right;
     }
 
     [dir="rtl"] .action-buttons {
@@ -452,29 +211,17 @@
 
     /* Responsive */
     @media (max-width: 1024px) {
-        .promo-table {
+        .admin-table {
             font-size: 0.9rem;
         }
         
-        .promo-table th,
-        .promo-table td {
+        .admin-table th,
+        .admin-table td {
             padding: 1rem;
         }
     }
 
     @media (max-width: 768px) {
-        .promo-offers-header {
-            padding: 1.5rem;
-        }
-
-        .header-text h1 {
-            font-size: 1.4rem;
-        }
-
-        .promo-stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
         .action-buttons {
             flex-direction: column;
         }
@@ -487,12 +234,17 @@
     }
 </style>
 
-<!-- Page Header -->
-<div class="promo-offers-header">
-    <div class="header-content">
-        <div class="header-text">
-            <h1><i class="fas fa-bullhorn"></i> {{ __('messages.promotional_offers_title') }}</h1>
-            <p>{{ __('messages.promotional_offers_subtitle') }}</p>
+<!-- Page Header - Using unified admin-hero component -->
+<div class="admin-hero">
+    <div class="admin-hero-content">
+        <div class="admin-hero-text">
+            <div class="admin-hero-icon">
+                <i class="fas fa-bullhorn"></i>
+            </div>
+            <div>
+                <h1>{{ __('messages.promotional_offers_title') }}</h1>
+                <p>{{ __('messages.promotional_offers_subtitle') }}</p>
+            </div>
         </div>
         <div class="header-actions">
             <a href="{{ route('admin.promotional-offers.create') }}" class="btn-add">
@@ -509,41 +261,41 @@
 </div>
 @endif
 
-<!-- Statistics -->
+<!-- Statistics - Using unified admin-stats-grid component -->
 @php
     $totalOffers = $offers->total() ?? count($offers);
     $activeOffers = \App\Models\PromotionalOffer::where('is_active', true)->where('end_date', '>=', now())->count();
     $expiredOffers = \App\Models\PromotionalOffer::where('end_date', '<', now())->count();
     $inactiveOffers = \App\Models\PromotionalOffer::where('is_active', false)->count();
 @endphp
-<div class="promo-stats-grid">
-    <div class="promo-stat-card total">
+<div class="admin-stats-grid">
+    <div class="admin-stat-card stat-indigo">
         <h4><i class="fas fa-tags"></i> {{ __('messages.total_offers') }}</h4>
         <div class="stat-value">{{ $totalOffers }}</div>
     </div>
-    <div class="promo-stat-card active">
+    <div class="admin-stat-card stat-success">
         <h4><i class="fas fa-check-circle"></i> {{ __('messages.active_offers') }}</h4>
         <div class="stat-value">{{ $activeOffers }}</div>
     </div>
-    <div class="promo-stat-card expired">
+    <div class="admin-stat-card stat-warning">
         <h4><i class="fas fa-clock"></i> {{ __('messages.expired_offers') }}</h4>
         <div class="stat-value">{{ $expiredOffers }}</div>
     </div>
-    <div class="promo-stat-card inactive">
+    <div class="admin-stat-card stat-danger">
         <h4><i class="fas fa-times-circle"></i> {{ __('messages.inactive_offers') }}</h4>
         <div class="stat-value">{{ $inactiveOffers }}</div>
     </div>
 </div>
 
-<!-- Offers Table -->
-<div class="promo-table-container">
-    <div class="table-header">
+<!-- Offers Table - Using unified admin-table-container component -->
+<div class="admin-table-container">
+    <div class="admin-table-header">
         <h3><i class="fas fa-list"></i> {{ __('messages.offers_list') }}</h3>
     </div>
     
     @if($offers->count() > 0)
     <div class="table-responsive">
-        <table class="promo-table">
+        <table class="admin-table">
             <thead>
                 <tr>
                     <th>{{ __('messages.product') }}</th>
@@ -627,13 +379,14 @@
     </div>
     @endif
     @else
-    <div class="empty-state">
-        <div class="empty-icon">
+    <!-- Empty State - Using unified admin-empty-state component -->
+    <div class="admin-empty-state">
+        <div class="admin-empty-state-icon">
             <i class="fas fa-tags"></i>
         </div>
         <h3>{{ __('messages.no_offers_currently') }}</h3>
         <p>{{ __('messages.start_creating_offers') }}</p>
-        <a href="{{ route('admin.promotional-offers.create') }}" class="btn-primary">
+        <a href="{{ route('admin.promotional-offers.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> {{ __('messages.add_new_offer') }}
         </a>
     </div>

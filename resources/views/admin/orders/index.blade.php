@@ -8,85 +8,63 @@
 
 <div class="orders-page">
     <!-- Page Header -->
-    <div class="orders-hero">
-        <div class="hero-content">
-            <div class="hero-icon">
-                <i class="fas fa-shopping-bag"></i>
+    <div class="admin-hero">
+        <div class="admin-hero-content">
+            <div class="admin-hero-text">
+                <div class="admin-hero-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div>
+                    <h1>{{ __('messages.orders_management') }}</h1>
+                    <p>{{ __('messages.manage_track_orders') }}</p>
+                </div>
             </div>
-            <div class="hero-text">
-                <h1>{{ __('messages.orders_management') }}</h1>
-                <p>{{ __('messages.manage_track_orders') }}</p>
-            </div>
-        </div>
-        <div class="hero-stats">
-            <div class="hero-stat">
-                <span class="hero-stat-value">{{ $stats['total_orders'] }}</span>
-                <span class="hero-stat-label">{{ __('messages.total') }}</span>
-            </div>
-            <div class="hero-stat-divider"></div>
-            <div class="hero-stat highlight">
-                <span class="hero-stat-value">₪{{ number_format($stats['total_revenue'], 0) }}</span>
-                <span class="hero-stat-label">{{ __('messages.revenue') }}</span>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-value">{{ $stats['total_orders'] }}</span>
+                    <span class="hero-stat-label">{{ __('messages.total') }}</span>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat highlight">
+                    <span class="hero-stat-value">₪{{ number_format($stats['total_revenue'], 0) }}</span>
+                    <span class="hero-stat-label">{{ __('messages.revenue') }}</span>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Status Pipeline -->
-    <div class="status-pipeline">
-        <div class="pipeline-card pending">
-            <div class="pipeline-icon">
+    <div class="admin-stats-grid orders-pipeline">
+        <div class="admin-stat-card stat-warning pipeline-card">
+            <div class="stat-icon">
                 <i class="fas fa-clock"></i>
             </div>
-            <div class="pipeline-info">
-                <span class="pipeline-value">{{ $stats['pending_orders'] }}</span>
-                <span class="pipeline-label">{{ __('messages.pending') }}</span>
+            <h4>{{ __('messages.pending') }}</h4>
+            <div class="stat-value">{{ $stats['pending_orders'] }}</div>
+        </div>
+
+        <div class="admin-stat-card stat-info pipeline-card">
+            <div class="stat-icon">
+                <i class="fas fa-cog"></i>
             </div>
-            <div class="pipeline-indicator"></div>
+            <h4>{{ __('messages.processing') }}</h4>
+            <div class="stat-value">{{ $stats['processing_orders'] }}</div>
         </div>
 
-        <div class="pipeline-connector">
-            <i class="fas fa-chevron-right"></i>
-        </div>
-
-        <div class="pipeline-card processing">
-            <div class="pipeline-icon">
-                <i class="fas fa-cog fa-spin"></i>
-            </div>
-            <div class="pipeline-info">
-                <span class="pipeline-value">{{ $stats['processing_orders'] }}</span>
-                <span class="pipeline-label">{{ __('messages.processing') }}</span>
-            </div>
-            <div class="pipeline-indicator"></div>
-        </div>
-
-        <div class="pipeline-connector">
-            <i class="fas fa-chevron-right"></i>
-        </div>
-
-        <div class="pipeline-card shipped">
-            <div class="pipeline-icon">
+        <div class="admin-stat-card stat-violet pipeline-card">
+            <div class="stat-icon">
                 <i class="fas fa-truck"></i>
             </div>
-            <div class="pipeline-info">
-                <span class="pipeline-value">{{ $stats['shipped_orders'] }}</span>
-                <span class="pipeline-label">{{ __('messages.shipped') }}</span>
-            </div>
-            <div class="pipeline-indicator"></div>
+            <h4>{{ __('messages.shipped') }}</h4>
+            <div class="stat-value">{{ $stats['shipped_orders'] }}</div>
         </div>
 
-        <div class="pipeline-connector">
-            <i class="fas fa-chevron-right"></i>
-        </div>
-
-        <div class="pipeline-card delivered">
-            <div class="pipeline-icon">
+        <div class="admin-stat-card stat-success pipeline-card">
+            <div class="stat-icon">
                 <i class="fas fa-check-circle"></i>
             </div>
-            <div class="pipeline-info">
-                <span class="pipeline-value">{{ $stats['delivered_orders'] }}</span>
-                <span class="pipeline-label">{{ __('messages.delivered') }}</span>
-            </div>
-            <div class="pipeline-indicator"></div>
+            <h4>{{ __('messages.delivered') }}</h4>
+            <div class="stat-value">{{ $stats['delivered_orders'] }}</div>
         </div>
     </div>
 
@@ -193,13 +171,13 @@
     </div>
 
     <!-- Orders Table -->
-    <div class="orders-card">
-        <div class="orders-card-header">
-            <div class="card-title">
+    <div class="admin-table-container">
+        <div class="admin-table-header">
+            <h3>
                 <i class="fas fa-list"></i>
-                <span>{{ __('messages.orders_list') }}</span>
+                {{ __('messages.orders_list') }}
                 <span class="orders-count">{{ $orders->total() }} {{ __('messages.orders') }}</span>
-            </div>
+            </h3>
             
             <div class="bulk-selector" id="bulkSelector" style="display: none;">
                 <span class="selected-count"><span id="selectedCount">0</span> {{ __('messages.selected') }}</span>
@@ -220,7 +198,7 @@
 
         @if($orders->count() > 0)
         <div class="table-container">
-            <table class="orders-table">
+            <table class="admin-table orders-table">
                 <thead>
                     <tr>
                         <th class="checkbox-col">
@@ -329,13 +307,13 @@
         @endif
 
         @else
-        <div class="empty-state">
-            <div class="empty-icon">
+        <div class="admin-empty-state">
+            <div class="admin-empty-state-icon">
                 <i class="fas fa-inbox"></i>
             </div>
             <h3>{{ __('messages.no_orders_found') }}</h3>
             <p>{{ __('messages.no_orders_match_filters') }}</p>
-            <a href="{{ route('admin.orders.index') }}" class="empty-action">
+            <a href="{{ route('admin.orders.index') }}" class="btn btn-primary">
                 <i class="fas fa-redo"></i>
                 {{ __('messages.clear_filters') }}
             </a>
@@ -353,90 +331,15 @@
 
 <style>
 /* ============================================
-   ORDERS MANAGEMENT - PROFESSIONAL UI
+   ORDERS MANAGEMENT - PAGE-SPECIFIC STYLES
+   Uses unified admin components from layout.blade.php
    ============================================ */
 
 .orders-page {
-    --accent-blue: #0ea5e9;
-    --accent-indigo: #6366f1;
-    --accent-emerald: #10b981;
-    --accent-amber: #f59e0b;
-    --accent-rose: #f43f5e;
-    --accent-violet: #8b5cf6;
     --accent-cyan: #06b6d4;
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-tertiary: #f1f5f9;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #94a3b8;
-    --border-color: #e2e8f0;
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 20px;
 }
 
-/* Orders Hero */
-.orders-hero {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-    border-radius: var(--radius-xl);
-    padding: 2rem 2.5rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.orders-hero::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, transparent 70%);
-    pointer-events: none;
-}
-
-.hero-content {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    position: relative;
-    z-index: 1;
-}
-
-.hero-icon {
-    width: 64px;
-    height: 64px;
-    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-indigo) 100%);
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.75rem;
-    color: white;
-}
-
-.hero-text h1 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: white;
-    margin: 0 0 0.25rem 0;
-}
-
-.hero-text p {
-    font-size: 0.9375rem;
-    color: #94a3b8;
-    margin: 0;
-}
-
+/* Hero Stats (inside admin-hero) */
 .hero-stats {
     display: flex;
     align-items: center;
@@ -463,10 +366,11 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-top: 0.25rem;
+    display: block;
 }
 
 .hero-stat.highlight .hero-stat-value {
-    color: var(--accent-emerald);
+    color: var(--accent-emerald, #10b981);
 }
 
 .hero-stat-divider {
@@ -475,132 +379,28 @@
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Status Pipeline */
-.status-pipeline {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    padding: 0 1rem;
-    flex-wrap: wrap;
-}
-
-.pipeline-card {
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 1rem 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.875rem;
-    position: relative;
-    flex: 1;
-    min-width: 140px;
-    max-width: 200px;
-    transition: all 0.3s ease;
-}
-
-.pipeline-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-.pipeline-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
-}
-
-.pipeline-card.pending::after { background: var(--accent-amber); }
-.pipeline-card.processing::after { background: var(--accent-blue); }
-.pipeline-card.shipped::after { background: var(--accent-violet); }
-.pipeline-card.delivered::after { background: var(--accent-emerald); }
-
-.pipeline-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-}
-
-.pipeline-card.pending .pipeline-icon {
-    background: rgba(245, 158, 11, 0.15);
-    color: var(--accent-amber);
-}
-
-.pipeline-card.processing .pipeline-icon {
-    background: rgba(14, 165, 233, 0.15);
-    color: var(--accent-blue);
-}
-
-.pipeline-card.shipped .pipeline-icon {
-    background: rgba(139, 92, 246, 0.15);
-    color: var(--accent-violet);
-}
-
-.pipeline-card.delivered .pipeline-icon {
-    background: rgba(16, 185, 129, 0.15);
-    color: var(--accent-emerald);
-}
-
-.pipeline-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.pipeline-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1;
-}
-
-.pipeline-label {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    margin-top: 0.125rem;
-}
-
-.pipeline-connector {
-    color: var(--border-color);
-    font-size: 0.75rem;
+/* Orders Pipeline - extends admin-stats-grid */
+.orders-pipeline {
+    grid-template-columns: repeat(4, 1fr);
 }
 
 @media (max-width: 1024px) {
-    .status-pipeline {
-        display: grid;
+    .orders-pipeline {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-    
-    .pipeline-connector {
-        display: none;
-    }
-    
-    .pipeline-card {
-        max-width: none;
     }
 }
 
 @media (max-width: 640px) {
-    .status-pipeline {
+    .orders-pipeline {
         grid-template-columns: 1fr;
     }
 }
 
 /* Filters Section */
 .filters-section {
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
+    background: var(--bg-primary, #ffffff);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: var(--radius-lg, 16px);
     margin-bottom: 1.5rem;
     overflow: hidden;
 }
@@ -610,8 +410,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-secondary, #f8fafc);
+    border-bottom: 1px solid var(--border, #e2e8f0);
 }
 
 .filters-title {
@@ -620,17 +420,17 @@
     gap: 0.5rem;
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--dark, #0f172a);
 }
 
 .filters-title i {
-    color: var(--accent-blue);
+    color: var(--accent-blue, #0ea5e9);
 }
 
 .filters-toggle {
     background: none;
     border: none;
-    color: var(--text-muted);
+    color: var(--secondary, #64748b);
     cursor: pointer;
     padding: 0.5rem;
     transition: transform 0.3s ease;
@@ -685,12 +485,12 @@
     gap: 0.5rem;
     font-size: 0.8125rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--dark, #0f172a);
 }
 
 .filter-field label i {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--secondary, #64748b);
 }
 
 .search-input-wrapper {
@@ -700,8 +500,8 @@
 .search-input-wrapper input {
     width: 100%;
     padding: 0.75rem 1rem 0.75rem 2.5rem;
-    border: 2px solid var(--border-color);
-    border-radius: var(--radius-sm);
+    border: 2px solid var(--border, #e2e8f0);
+    border-radius: var(--radius-sm, 8px);
     font-size: 0.875rem;
     transition: all 0.2s ease;
 }
@@ -715,7 +515,7 @@
     left: 0.875rem;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--text-muted);
+    color: var(--secondary, #64748b);
     font-size: 0.875rem;
 }
 
@@ -731,10 +531,10 @@
 .select-wrapper select {
     width: 100%;
     padding: 0.75rem 2.5rem 0.75rem 1rem;
-    border: 2px solid var(--border-color);
-    border-radius: var(--radius-sm);
+    border: 2px solid var(--border, #e2e8f0);
+    border-radius: var(--radius-sm, 8px);
     font-size: 0.875rem;
-    background: var(--bg-primary);
+    background: var(--bg-primary, #ffffff);
     cursor: pointer;
     appearance: none;
     transition: all 0.2s ease;
@@ -749,7 +549,7 @@
     right: 0.875rem;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--text-muted);
+    color: var(--secondary, #64748b);
     pointer-events: none;
     font-size: 0.75rem;
 }
@@ -767,18 +567,18 @@
 .filter-field input:focus,
 .filter-field select:focus {
     outline: none;
-    border-color: var(--accent-blue);
+    border-color: var(--accent-blue, #0ea5e9);
     box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
 }
 
 .date-input {
     width: 100%;
     padding: 0.75rem 1rem;
-    border: 2px solid var(--border-color);
-    border-radius: var(--radius-sm);
+    border: 2px solid var(--border, #e2e8f0);
+    border-radius: var(--radius-sm, 8px);
     font-size: 0.875rem;
     cursor: pointer;
-    background: var(--bg-primary);
+    background: var(--bg-primary, #ffffff);
 }
 
 .filters-actions {
@@ -792,7 +592,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.25rem;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm, 8px);
     font-size: 0.875rem;
     font-weight: 600;
     border: none;
@@ -802,7 +602,7 @@
 }
 
 .filter-btn.primary {
-    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-indigo) 100%);
+    background: linear-gradient(135deg, var(--accent-blue, #0ea5e9) 0%, var(--accent-indigo, #6366f1) 100%);
     color: white;
 }
 
@@ -812,17 +612,17 @@
 }
 
 .filter-btn.secondary {
-    background: var(--bg-secondary);
-    color: var(--text-secondary);
-    border: 2px solid var(--border-color);
+    background: var(--bg-secondary, #f8fafc);
+    color: var(--secondary, #64748b);
+    border: 2px solid var(--border, #e2e8f0);
 }
 
 .filter-btn.secondary:hover {
-    background: var(--bg-tertiary);
+    background: var(--bg-tertiary, #f1f5f9);
 }
 
 .filter-btn.export {
-    background: var(--accent-emerald);
+    background: var(--accent-emerald, #10b981);
     color: white;
 }
 
@@ -830,43 +630,26 @@
     background: #059669;
 }
 
-/* Orders Card */
-.orders-card {
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-}
-
-.orders-card-header {
+/* Orders Table Header Extensions */
+.admin-table-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.5rem;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
-}
-
-.card-title {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.card-title i {
-    color: var(--accent-blue);
 }
 
 .orders-count {
-    background: var(--bg-tertiary);
-    color: var(--text-muted);
+    background: var(--bg-tertiary, #f1f5f9);
+    color: var(--secondary, #64748b);
     padding: 0.25rem 0.75rem;
     border-radius: 100px;
     font-size: 0.75rem;
     font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+[dir="rtl"] .orders-count {
+    margin-left: 0;
+    margin-right: 0.5rem;
 }
 
 .bulk-selector {
@@ -883,16 +666,16 @@
 
 .selected-count {
     font-size: 0.8125rem;
-    color: var(--accent-blue);
+    color: var(--accent-blue, #0ea5e9);
     font-weight: 600;
 }
 
 .bulk-status-select {
     padding: 0.5rem 0.75rem;
-    border: 2px solid var(--border-color);
-    border-radius: var(--radius-sm);
+    border: 2px solid var(--border, #e2e8f0);
+    border-radius: var(--radius-sm, 8px);
     font-size: 0.8125rem;
-    background: var(--bg-primary);
+    background: var(--bg-primary, #ffffff);
 }
 
 .bulk-apply-btn {
@@ -900,10 +683,10 @@
     align-items: center;
     gap: 0.375rem;
     padding: 0.5rem 1rem;
-    background: var(--accent-blue);
+    background: var(--accent-blue, #0ea5e9);
     color: white;
     border: none;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm, 8px);
     font-size: 0.8125rem;
     font-weight: 600;
     cursor: pointer;
@@ -914,41 +697,15 @@
     background: #0284c7;
 }
 
-/* Table Styles */
+/* Table Styles - extends admin-table */
 .table-container {
     overflow-x: auto;
 }
 
-.orders-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
+/* Orders-specific table overrides */
 .orders-table th {
-    padding: 0.875rem 1rem;
-    text-align: left;
     font-size: 0.6875rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-muted);
-    background: var(--bg-tertiary);
-    border-bottom: 1px solid var(--border-color);
     white-space: nowrap;
-}
-
-.orders-table td {
-    padding: 1rem;
-    border-bottom: 1px solid var(--bg-tertiary);
-    vertical-align: middle;
-}
-
-.orders-table tbody tr {
-    transition: background 0.2s ease;
-}
-
-.orders-table tbody tr:hover {
-    background: var(--bg-secondary);
 }
 
 .checkbox-col {
@@ -976,7 +733,7 @@
 .custom-checkbox .checkmark {
     width: 18px;
     height: 18px;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--border, #e2e8f0);
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -985,8 +742,8 @@
 }
 
 .custom-checkbox input:checked + .checkmark {
-    background: var(--accent-blue);
-    border-color: var(--accent-blue);
+    background: var(--accent-blue, #0ea5e9);
+    border-color: var(--accent-blue, #0ea5e9);
 }
 
 .custom-checkbox input:checked + .checkmark::after {
@@ -1005,12 +762,12 @@
 .order-number {
     font-size: 0.9375rem;
     font-weight: 700;
-    color: var(--accent-blue);
+    color: var(--accent-blue, #0ea5e9);
     transition: color 0.2s ease;
 }
 
 .order-link:hover .order-number {
-    color: var(--accent-indigo);
+    color: var(--accent-indigo, #6366f1);
 }
 
 /* Customer Info */
@@ -1023,7 +780,7 @@
 .customer-avatar {
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, var(--accent-indigo) 0%, var(--accent-violet) 100%);
+    background: linear-gradient(135deg, var(--accent-indigo, #6366f1) 0%, var(--accent-violet, #8b5cf6) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1044,7 +801,7 @@
 .customer-name {
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--dark, #0f172a);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1052,7 +809,7 @@
 
 .customer-email {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--secondary, #64748b);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1068,12 +825,12 @@
 .date-main {
     font-size: 0.875rem;
     font-weight: 500;
-    color: var(--text-primary);
+    color: var(--dark, #0f172a);
 }
 
 .date-time {
     font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--secondary, #64748b);
 }
 
 /* Items Badge */
@@ -1083,8 +840,8 @@
     justify-content: center;
     min-width: 28px;
     height: 28px;
-    background: var(--bg-tertiary);
-    color: var(--text-secondary);
+    background: var(--bg-tertiary, #f1f5f9);
+    color: var(--secondary, #64748b);
     border-radius: 100px;
     font-size: 0.8125rem;
     font-weight: 600;
@@ -1094,7 +851,7 @@
 .order-total {
     font-size: 0.9375rem;
     font-weight: 700;
-    color: var(--accent-emerald);
+    color: var(--accent-emerald, #10b981);
 }
 
 /* Status Chips */
@@ -1148,7 +905,7 @@
     align-items: center;
     gap: 0.375rem;
     padding: 0.375rem 0.75rem;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm, 8px);
     font-size: 0.6875rem;
     font-weight: 600;
 }
@@ -1185,7 +942,7 @@
     width: 32px;
     height: 32px;
     border: none;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm, 8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1196,81 +953,28 @@
 
 .action-btn.view {
     background: rgba(14, 165, 233, 0.1);
-    color: var(--accent-blue);
+    color: var(--accent-blue, #0ea5e9);
 }
 
 .action-btn.view:hover {
-    background: var(--accent-blue);
+    background: var(--accent-blue, #0ea5e9);
     color: white;
 }
 
 .action-btn.delete {
     background: rgba(244, 63, 94, 0.1);
-    color: var(--accent-rose);
+    color: var(--accent-rose, #f43f5e);
 }
 
 .action-btn.delete:hover {
-    background: var(--accent-rose);
+    background: var(--accent-rose, #f43f5e);
     color: white;
-}
-
-/* Empty State */
-.empty-state {
-    padding: 4rem 2rem;
-    text-align: center;
-}
-
-.empty-icon {
-    width: 80px;
-    height: 80px;
-    background: var(--bg-tertiary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 1.5rem;
-}
-
-.empty-icon i {
-    font-size: 2rem;
-    color: var(--text-muted);
-}
-
-.empty-state h3 {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin: 0 0 0.5rem 0;
-}
-
-.empty-state p {
-    font-size: 0.9375rem;
-    color: var(--text-muted);
-    margin: 0 0 1.5rem 0;
-}
-
-.empty-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: var(--accent-blue);
-    color: white;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.empty-action:hover {
-    background: #0284c7;
 }
 
 /* Pagination */
 .pagination-wrapper {
     padding: 1.25rem 1.5rem;
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--border, #e2e8f0);
     display: flex;
     justify-content: center;
 }
@@ -1278,14 +982,6 @@
 /* RTL Adjustments */
 [dir="rtl"] .orders-table th,
 [dir="rtl"] .orders-table td {
-    text-align: right;
-}
-
-[dir="rtl"] .hero-content {
-    flex-direction: row-reverse;
-}
-
-[dir="rtl"] .hero-text {
     text-align: right;
 }
 
@@ -1297,29 +993,20 @@
     text-align: right;
 }
 
-[dir="rtl"] .pipeline-connector {
-    transform: rotate(180deg);
-}
-
 [dir="rtl"] .action-buttons {
     flex-direction: row-reverse;
 }
 
-/* Responsive Hero */
+/* Responsive Hero Stats */
 @media (max-width: 768px) {
-    .orders-hero {
+    .hero-stats {
         flex-direction: column;
-        gap: 1.5rem;
-        text-align: center;
-        padding: 1.5rem;
+        gap: 1rem;
     }
     
-    .hero-content {
-        flex-direction: column;
-    }
-    
-    .hero-text h1 {
-        font-size: 1.5rem;
+    .hero-stat-divider {
+        width: 40px;
+        height: 1px;
     }
 }
 </style>

@@ -1,7 +1,7 @@
 <?php $__env->startSection('title', 'Dashboard'); ?>
 
 <?php $__env->startSection('content'); ?>
-<div class="dashboard-pro">
+<div class="dashboard-pro" dir="<?php echo e(app()->getLocale() === 'ar' || app()->getLocale() === 'he' ? 'rtl' : 'ltr'); ?>">
     <!-- Welcome Hero -->
     <div class="welcome-hero">
         <div class="hero-content">
@@ -1911,6 +1911,167 @@
 
 [dir="rtl"] .alert-item.critical {
     border-right-color: var(--accent-rose);
+}
+
+/* RTL for Primary Stats Cards */
+[dir="rtl"] .primary-stats {
+    direction: rtl;
+}
+
+[dir="rtl"] .stat-card {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .stat-info {
+    text-align: right;
+    align-items: flex-end;
+}
+
+[dir="rtl"] .stat-trend {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* RTL for Secondary Stats (Mini Stats) */
+[dir="rtl"] .secondary-stats {
+    direction: rtl;
+}
+
+[dir="rtl"] .mini-stat {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .mini-stat-content {
+    text-align: right;
+    align-items: flex-end;
+}
+
+[dir="rtl"] .mini-stat-badge {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* RTL for User Stats */
+[dir="rtl"] .user-stats-grid {
+    direction: rtl;
+}
+
+[dir="rtl"] .user-main-card {
+    text-align: right;
+}
+
+[dir="rtl"] .user-main-info {
+    text-align: right;
+}
+
+[dir="rtl"] .user-stat-card {
+    text-align: right;
+}
+
+[dir="rtl"] .user-stat-header {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .breakdown-item {
+    flex-direction: row-reverse;
+}
+
+/* RTL for Analytics Cards */
+[dir="rtl"] .analytics-grid {
+    direction: rtl;
+}
+
+[dir="rtl"] .analytics-card {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .analytics-content {
+    text-align: right;
+    align-items: flex-end;
+}
+
+/* RTL for Metric Cards */
+[dir="rtl"] .user-metrics {
+    direction: rtl;
+}
+
+[dir="rtl"] .metric-card {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .metric-info {
+    text-align: right;
+}
+
+/* RTL for Section Labels */
+[dir="rtl"] .section-label {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .section-header-pro {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .online-indicator {
+    flex-direction: row-reverse;
+}
+
+/* RTL for Card Headers */
+[dir="rtl"] .card-header-pro {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .header-title {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .view-all-btn {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .view-all-btn i {
+    transform: rotate(180deg);
+}
+
+/* RTL for Content Grid */
+[dir="rtl"] .content-grid {
+    direction: rtl;
+}
+
+/* RTL for Quick Actions */
+[dir="rtl"] .quick-actions-grid {
+    direction: rtl;
+}
+
+[dir="rtl"] .quick-links {
+    direction: rtl;
+}
+
+/* RTL for Rated Products */
+[dir="rtl"] .rated-product-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+[dir="rtl"] .rated-product-info {
+    text-align: right;
+}
+
+[dir="rtl"] .rating-display {
+    flex-direction: row-reverse;
+}
+
+/* RTL for Alert Items */
+[dir="rtl"] .alert-info {
+    text-align: right;
+}
+
+[dir="rtl"] .alert-stock {
+    text-align: right;
 }
 </style>
 

@@ -52,12 +52,12 @@
 <aside class="filter-sidebar" id="filterSidebar" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
     {{-- Filter Header --}}
     <div class="filter-header">
-        <h3>{{ $isRtl ? 'تصفية' : 'Filters' }}</h3>
+        <h3>{{ $locale === 'ar' ? 'تصفية' : ($locale === 'he' ? 'סינון' : 'Filters') }}</h3>
         <div class="filter-header-actions">
             <button type="button" class="clear-filters-btn" id="clearFiltersBtn" onclick="clearAllFilters()">
-                {{ $isRtl ? 'مسح الكل' : 'Clear All' }}
+                {{ $locale === 'ar' ? 'مسح الكل' : ($locale === 'he' ? 'נקה הכל' : 'Clear All') }}
             </button>
-            <button type="button" class="mobile-close-btn" id="mobileCloseBtn" onclick="closeMobileFilters()" aria-label="{{ $isRtl ? 'إغلاق' : 'Close' }}">
+            <button type="button" class="mobile-close-btn" id="mobileCloseBtn" onclick="closeMobileFilters()" aria-label="{{ $locale === 'ar' ? 'إغلاق' : ($locale === 'he' ? 'סגור' : 'Close') }}">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -73,7 +73,7 @@
         <div class="filter-section">
             <div class="filter-section-title">
                 <i class="fas fa-fire"></i>
-                {{ $isRtl ? 'العروض القوية' : 'Strong Offers' }}
+                {{ $locale === 'ar' ? 'العروض القوية' : ($locale === 'he' ? 'מבצעים חזקים' : 'Strong Offers') }}
             </div>
             <div class="category-list">
                 <div class="category-checkbox">
@@ -85,7 +85,7 @@
                         {{ $currentStrongOffers ? 'checked' : '' }}
                     >
                     <label for="strong-offers-checkbox">
-                        {{ $isRtl ? 'عروض قوية فقط' : 'Strong Offers Only' }}
+                        {{ $locale === 'ar' ? 'عروض قوية فقط' : ($locale === 'he' ? 'מבצעים חזקים בלבד' : 'Strong Offers Only') }}
                     </label>
                 </div>
             </div>
@@ -97,7 +97,7 @@
         <div class="filter-section">
             <div class="filter-section-title">
                 <i class="fas fa-box"></i>
-                {{ $isRtl ? 'حالة المخزون' : 'Stock Status' }}
+                {{ $locale === 'ar' ? 'حالة المخزون' : ($locale === 'he' ? 'מצב מלאי' : 'Stock Status') }}
             </div>
             <div class="category-list">
                 @foreach($stockOptions as $stock)
@@ -123,7 +123,7 @@
                             value=""
                             id="stock-all"
                         >
-                        <label for="stock-all">{{ $isRtl ? 'الكل' : 'All' }}</label>
+                        <label for="stock-all">{{ $locale === 'ar' ? 'الكل' : ($locale === 'he' ? 'הכל' : 'All') }}</label>
                     </div>
                 @endif
             </div>
@@ -140,7 +140,7 @@
                     aria-controls="tagAccordionContent">
                 <span class="filter-accordion-header">
                     <i class="fas fa-tags"></i>
-                    <span class="filter-accordion-title">{{ $isRtl ? 'الوسوم' : 'Tags' }}</span>
+                    <span class="filter-accordion-title">{{ $locale === 'ar' ? 'الوسوم' : ($locale === 'he' ? 'תגיות' : 'Tags') }}</span>
                 </span>
                 <span class="filter-accordion-icon">
                     <i class="fas fa-plus"></i>
@@ -151,7 +151,7 @@
                       id="tagAccordionContent"
                       aria-labelledby="tagAccordionToggle"
                       hidden>
-                <legend class="sr-only">{{ $isRtl ? 'تصفية حسب الوسم' : 'Filter by tag' }}</legend>
+                <legend class="sr-only">{{ $locale === 'ar' ? 'تصفية حسب الوسم' : ($locale === 'he' ? 'סנן לפי תגית' : 'Filter by tag') }}</legend>
 
                 <div class="category-list tag-filter-list">
                     @foreach($filters['tags'] as $tag)
@@ -181,7 +181,7 @@
                     @if(request('tag'))
                         <div class="category-checkbox">
                             <input type="radio" name="tag" value="" id="tag-all">
-                            <label for="tag-all">{{ $isRtl ? 'الكل' : 'All' }}</label>
+                            <label for="tag-all">{{ $locale === 'ar' ? 'الكل' : ($locale === 'he' ? 'הכל' : 'All') }}</label>
                         </div>
                     @endif
                 </div>
@@ -199,7 +199,7 @@
                     aria-controls="categoryAccordionContent">
                 <span class="filter-accordion-header">
                     <i class="fas fa-th-large"></i>
-                    <span class="filter-accordion-title">{{ $isRtl ? 'الفئات' : 'Categories' }}</span>
+                    <span class="filter-accordion-title">{{ $locale === 'ar' ? 'الفئات' : ($locale === 'he' ? 'קטגוריות' : 'Categories') }}</span>
                 </span>
                 <span class="filter-accordion-icon">
                     <i class="fas fa-plus"></i>
@@ -210,29 +210,47 @@
                       id="categoryAccordionContent"
                       aria-labelledby="categoryAccordionToggle"
                       hidden>
-                <legend class="sr-only">{{ $isRtl ? 'تصفية حسب الفئة' : 'Filter by category' }}</legend>
+                <legend class="sr-only">{{ $locale === 'ar' ? 'تصفية حسب الفئة' : ($locale === 'he' ? 'סנן לפי קטגוריה' : 'Filter by category') }}</legend>
 
-                <div class="category-list">
-                    @foreach($filters['categories'] as $cat)
+                <div class="category-list" id="categoryList">
+                    @foreach($filters['categories'] as $index => $cat)
                     @php
                         $selectedCategories = (array)request('categories', []);
                         if (request('category') && !in_array(request('category'), $selectedCategories)) {
                             $selectedCategories[] = request('category');
                         }
                         $isChecked = in_array($cat['slug'], $selectedCategories);
+                        $isInitiallyVisible = $index < 10; // Show first 10
+                        $hasProducts = ($cat['count'] ?? 0) > 0;
                     @endphp
-                    <div class="category-checkbox">
+                    <div class="category-checkbox category-filter-item {{ !$hasProducts ? 'category-disabled' : '' }}" 
+                         data-category-index="{{ $index }}"
+                         style="{{ !$isInitiallyVisible ? 'display: none;' : '' }}">
                         <input type="checkbox"
                                name="categories[]"
                                value="{{ $cat['slug'] }}"
                                id="category-{{ $cat['slug'] }}"
+                               {{ !$hasProducts ? 'disabled' : '' }}
                                {{ $isChecked ? 'checked' : '' }}>
                         <label for="category-{{ $cat['slug'] }}">
                             {{ $cat['name'] }}
+                            <span class="item-count {{ !$hasProducts ? 'count-zero' : '' }}">{{ $cat['count'] ?? 0 }}</span>
                         </label>
                     </div>
                     @endforeach
                 </div>
+
+                @if(count($filters['categories']) > 10)
+                <button type="button"
+                        class="view-more-btn"
+                        id="categoryViewMoreBtn"
+                        data-visible-count="10"
+                        data-total-count="{{ count($filters['categories']) }}"
+                        aria-label="{{ $locale === 'ar' ? 'عرض المزيد من الفئات' : ($locale === 'he' ? 'הצג עוד קטגוריות' : 'View more categories') }}">
+                    <span id="categoryViewMoreText">{{ $locale === 'ar' ? 'عرض المزيد' : ($locale === 'he' ? 'הצג עוד' : 'View more') }} ({{ count($filters['categories']) - 10 }})</span>
+                    <i class="fas fa-chevron-down" id="categoryViewMoreIcon" aria-hidden="true"></i>
+                </button>
+                @endif
             </fieldset>
         </div>
         @endif
@@ -247,7 +265,7 @@
                     aria-controls="brandAccordionContent">
                 <span class="filter-accordion-header">
                     <i class="fas fa-tags"></i>
-                    <span class="filter-accordion-title">{{ $isRtl ? 'العلامات التجارية' : 'Brands' }}</span>
+                    <span class="filter-accordion-title">{{ $locale === 'ar' ? 'العلامات التجارية' : ($locale === 'he' ? 'מותגים' : 'Brands') }}</span>
                 </span>
                 <span class="filter-accordion-icon">
                     <i class="fas fa-plus"></i>
@@ -258,7 +276,7 @@
                       id="brandAccordionContent"
                       aria-labelledby="brandAccordionToggle"
                       hidden>
-                <legend class="sr-only">{{ $isRtl ? 'تصفية حسب العلامة التجارية' : 'Filter by brand' }}</legend>
+                <legend class="sr-only">{{ $locale === 'ar' ? 'تصفية حسب العلامة التجارية' : ($locale === 'he' ? 'סנן לפי מותג' : 'Filter by brand') }}</legend>
 
                 <div class="brand-list" id="brandList">
                     @foreach($brands as $index => $brand)
@@ -267,7 +285,7 @@
                         $isInitiallyVisible = $index < 10; // Show first 10
                         $hasProducts = $brand['count'] > 0;
                     @endphp
-                    <div class="brand-checkbox {{ !$hasProducts ? 'brand-disabled' : '' }}" 
+                    <div class="brand-checkbox brand-filter-item {{ !$hasProducts ? 'brand-disabled' : '' }}" 
                          data-brand-index="{{ $index }}" 
                          style="{{ !$isInitiallyVisible ? 'display: none;' : '' }}">
                         <input type="checkbox"
@@ -288,9 +306,10 @@
                 <button type="button"
                         class="view-more-btn"
                         id="brandViewMoreBtn"
-                        onclick="toggleBrandPagination()"
-                        aria-label="{{ $isRtl ? 'عرض المزيد من العلامات التجارية' : 'View more brands' }}">
-                    <span id="brandViewMoreText">{{ $isRtl ? 'عرض المزيد' : 'View more' }}</span>
+                        data-visible-count="10"
+                        data-total-count="{{ count($brands) }}"
+                        aria-label="{{ $locale === 'ar' ? 'عرض المزيد من العلامات التجارية' : ($locale === 'he' ? 'הצג עוד מותגים' : 'View more brands') }}">
+                    <span id="brandViewMoreText">{{ $locale === 'ar' ? 'عرض المزيد' : ($locale === 'he' ? 'הצג עוד' : 'View more') }} ({{ count($brands) - 10 }})</span>
                     <i class="fas fa-chevron-down" id="brandViewMoreIcon" aria-hidden="true"></i>
                 </button>
                 @endif
@@ -302,13 +321,13 @@
         <div class="filter-section">
             <div class="filter-section-title" id="priceRangeLabel">
                 <i class="fas fa-dollar-sign"></i>
-                {{ $isRtl ? 'نطاق السعر' : 'Price Range' }}
+                {{ $locale === 'ar' ? 'نطاق السعر' : ($locale === 'he' ? 'טווח מחירים' : 'Price Range') }}
             </div>
 
             <!-- Live Price Labels Above Slider -->
             <div class="price-range-labels" aria-live="polite" aria-atomic="true">
-                <span class="price-label-min" id="minPriceLabel" aria-label="{{ $isRtl ? 'السعر الأدنى' : 'Minimum price' }}">₪ {{ number_format($currentMinPrice ?: $priceRange['min'], 0) }}</span>
-                <span class="price-label-max" id="maxPriceLabel" aria-label="{{ $isRtl ? 'السعر الأقصى' : 'Maximum price' }}">₪ {{ number_format($currentMaxPrice ?: $priceRange['max'], 0) }}</span>
+                <span class="price-label-min" id="minPriceLabel" aria-label="{{ $locale === 'ar' ? 'السعر الأدنى' : ($locale === 'he' ? 'מחיר מינימום' : 'Minimum price') }}">₪ {{ number_format($currentMinPrice ?: $priceRange['min'], 0) }}</span>
+                <span class="price-label-max" id="maxPriceLabel" aria-label="{{ $locale === 'ar' ? 'السعر الأقصى' : ($locale === 'he' ? 'מחיר מקסימום' : 'Maximum price') }}">₪ {{ number_format($currentMaxPrice ?: $priceRange['max'], 0) }}</span>
             </div>
 
             <!-- Dual-Handle Range Slider -->
@@ -323,7 +342,7 @@
                      data-current-max="{{ $currentMaxPrice ?: $priceRange['max'] }}"></div>
             </div>
             <span id="priceRangeDescription" class="sr-only">
-                {{ $isRtl ? 'استخدم مفاتيح الأسهم لتعديل نطاق السعر. اضغط Shift مع السهم للتحرك بشكل أسرع.' : 'Use arrow keys to adjust price range. Hold Shift with arrow keys for faster movement.' }}
+                {{ $locale === 'ar' ? 'استخدم مفاتيح الأسهم لتعديل نطاق السعر. اضغط Shift مع السهم للتحرك بشكل أسرع.' : ($locale === 'he' ? 'השתמש במקשי החצים כדי להתאים את טווח המחירים. החזק Shift עם החצים לתנועה מהירה יותר.' : 'Use arrow keys to adjust price range. Hold Shift with arrow keys for faster movement.') }}
             </span>
 
             <!-- Hidden Input Fields for Form Submission -->
@@ -642,6 +661,26 @@
         opacity: 0.5;
     }
 
+    /* Category Disabled State */
+    .category-checkbox.category-disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .category-checkbox.category-disabled:hover {
+        background: transparent;
+    }
+
+    .category-checkbox.category-disabled label {
+        cursor: not-allowed;
+        color: #94a3b8;
+    }
+
+    .category-checkbox input:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
     /* Accordion Styles */
     .filter-accordion {
         margin-bottom: 0;
@@ -859,7 +898,7 @@
     }
 
     [dir="rtl"] .filter-accordion-header {
-        flex-direction: row-reverse;
+        flex-direction: row;
     }
 
     [dir="rtl"] .category-checkbox,
@@ -874,7 +913,8 @@
     }
 
     [dir="rtl"] .filter-accordion-button {
-        flex-direction: row-reverse;
+        flex-direction: row;
+        text-align: right;
     }
 
     [dir="rtl"] .price-range-labels {
@@ -998,13 +1038,33 @@
 </style>
 
 <script>
-    // Helper function for attribute accordion toggle
+    // Helper function for accordion toggle
     function toggleAttributeAccordion(button) {
-        const content = button.nextElementSibling;
+        if (!button) return;
+        
+        // Find the content element - it's the next sibling with class 'filter-accordion-content'
+        let content = button.nextElementSibling;
+        
+        // If not found directly, try to find it within the parent
+        if (!content || !content.classList.contains('filter-accordion-content')) {
+            const parent = button.closest('.filter-accordion');
+            if (parent) {
+                content = parent.querySelector('.filter-accordion-content');
+            }
+        }
+        
+        if (!content) {
+            console.error('Accordion content not found for button:', button);
+            return;
+        }
+        
         const isExpanded = button.getAttribute('aria-expanded') === 'true';
         
+        // Toggle the accordion
         button.setAttribute('aria-expanded', !isExpanded);
         content.hidden = isExpanded;
+        
+        console.log('Accordion toggled:', button.id || 'unknown', 'expanded:', !isExpanded);
     }
 
     // Debounced filter application
@@ -1038,10 +1098,20 @@
     
     // Initialize all accordion buttons
     document.addEventListener('DOMContentLoaded', function() {
+        console.log('Filter sidebar initializing...');
+        
         // Setup accordion toggles for tags, categories, brands, and attributes
         const accordionButtons = document.querySelectorAll('.filter-accordion-button');
+        console.log('Found accordion buttons:', accordionButtons.length);
+        
         accordionButtons.forEach(button => {
-            button.addEventListener('click', function() {
+            // Remove any existing listeners by cloning
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            newButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 toggleAttributeAccordion(this);
             });
         });
@@ -1091,6 +1161,24 @@
         attrCheckboxes.forEach(function(checkbox) {
             checkbox.addEventListener('change', function(e) {
                 console.log('⚙️ Attribute filter changed:', e.target.name, e.target.value);
+                debouncedFilterApply(300);
+            });
+        });
+
+        // Setup category checkboxes
+        const categoryCheckboxes = document.querySelectorAll('input[name="categories[]"]');
+        categoryCheckboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function(e) {
+                console.log('📂 Category filter changed:', e.target.value, e.target.checked);
+                debouncedFilterApply(300);
+            });
+        });
+
+        // Setup brand checkboxes
+        const brandCheckboxes = document.querySelectorAll('input[name="brands[]"]');
+        brandCheckboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function(e) {
+                console.log('🏷️ Brand filter changed:', e.target.value, e.target.checked);
                 debouncedFilterApply(300);
             });
         });
@@ -1156,4 +1244,127 @@
             });
         }
     }
+
+    // Category pagination - show 20 more items per click
+    document.addEventListener('DOMContentLoaded', function() {
+        const categoryViewMoreBtn = document.getElementById('categoryViewMoreBtn');
+        if (categoryViewMoreBtn) {
+            categoryViewMoreBtn.addEventListener('click', function() {
+                const isRtl = document.dir === 'rtl' || document.documentElement.dir === 'rtl';
+                let visibleCount = parseInt(this.dataset.visibleCount) || 10;
+                const totalCount = parseInt(this.dataset.totalCount) || 0;
+                const items = document.querySelectorAll('.category-filter-item');
+                
+                // Show next 20 items
+                const newVisibleCount = Math.min(visibleCount + 20, totalCount);
+                
+                items.forEach((item, index) => {
+                    if (index < newVisibleCount) {
+                        item.style.display = 'flex';
+                    }
+                });
+                
+                this.dataset.visibleCount = newVisibleCount;
+                
+                // Update button text or hide if all shown
+                const remaining = totalCount - newVisibleCount;
+                const viewMoreText = document.getElementById('categoryViewMoreText');
+                const viewMoreIcon = document.getElementById('categoryViewMoreIcon');
+                
+                if (remaining <= 0) {
+                    // All items shown - change to "Show less"
+                    viewMoreText.textContent = isRtl ? 'عرض أقل' : 'View less';
+                    viewMoreIcon.style.transform = 'rotate(180deg)';
+                    this.dataset.expanded = 'true';
+                } else {
+                    viewMoreText.textContent = (isRtl ? 'عرض المزيد' : 'View more') + ' (' + remaining + ')';
+                }
+                
+                // If already expanded, collapse back to 10
+                if (this.dataset.expanded === 'true' && remaining <= 0) {
+                    this.addEventListener('click', function collapseHandler() {
+                        items.forEach((item, index) => {
+                            item.style.display = index < 10 ? 'flex' : 'none';
+                        });
+                        this.dataset.visibleCount = '10';
+                        this.dataset.expanded = 'false';
+                        viewMoreText.textContent = (isRtl ? 'عرض المزيد' : 'View more') + ' (' + (totalCount - 10) + ')';
+                        viewMoreIcon.style.transform = 'rotate(0deg)';
+                        this.removeEventListener('click', collapseHandler);
+                    }, { once: true });
+                }
+                
+                console.log('📂 Category pagination: showing ' + newVisibleCount + ' of ' + totalCount);
+            });
+        }
+        
+        // Brand pagination - show 20 more items per click
+        const brandViewMoreBtn = document.getElementById('brandViewMoreBtn');
+        if (brandViewMoreBtn) {
+            brandViewMoreBtn.addEventListener('click', function() {
+                const isRtl = document.dir === 'rtl' || document.documentElement.dir === 'rtl';
+                let visibleCount = parseInt(this.dataset.visibleCount) || 10;
+                const totalCount = parseInt(this.dataset.totalCount) || 0;
+                const items = document.querySelectorAll('.brand-filter-item');
+                
+                // Show next 20 items
+                const newVisibleCount = Math.min(visibleCount + 20, totalCount);
+                
+                items.forEach((item, index) => {
+                    if (index < newVisibleCount) {
+                        item.style.display = 'flex';
+                    }
+                });
+                
+                this.dataset.visibleCount = newVisibleCount;
+                
+                // Update button text or hide if all shown
+                const remaining = totalCount - newVisibleCount;
+                const viewMoreText = document.getElementById('brandViewMoreText');
+                const viewMoreIcon = document.getElementById('brandViewMoreIcon');
+                
+                if (remaining <= 0) {
+                    // All items shown - change to "Show less"
+                    viewMoreText.textContent = isRtl ? 'عرض أقل' : 'View less';
+                    viewMoreIcon.style.transform = 'rotate(180deg)';
+                    this.dataset.expanded = 'true';
+                } else {
+                    viewMoreText.textContent = (isRtl ? 'عرض المزيد' : 'View more') + ' (' + remaining + ')';
+                }
+                
+                // If already expanded, collapse back to 10
+                if (this.dataset.expanded === 'true' && remaining <= 0) {
+                    this.addEventListener('click', function collapseHandler() {
+                        items.forEach((item, index) => {
+                            item.style.display = index < 10 ? 'flex' : 'none';
+                        });
+                        this.dataset.visibleCount = '10';
+                        this.dataset.expanded = 'false';
+                        viewMoreText.textContent = (isRtl ? 'عرض المزيد' : 'View more') + ' (' + (totalCount - 10) + ')';
+                        viewMoreIcon.style.transform = 'rotate(0deg)';
+                        this.removeEventListener('click', collapseHandler);
+                    }, { once: true });
+                }
+                
+                console.log('🏷️ Brand pagination: showing ' + newVisibleCount + ' of ' + totalCount);
+            });
+        }
+        
+        // Auto-show selected items that might be hidden
+        const selectedCategories = document.querySelectorAll('input[name="categories[]"]:checked');
+        selectedCategories.forEach(function(checkbox) {
+            const item = checkbox.closest('.category-filter-item');
+            if (item) {
+                item.style.display = 'flex';
+            }
+        });
+        
+        const selectedBrands = document.querySelectorAll('input[name="brands[]"]:checked');
+        selectedBrands.forEach(function(checkbox) {
+            const item = checkbox.closest('.brand-filter-item');
+            if (item) {
+                item.style.display = 'flex';
+            }
+        });
+    });
 </script>

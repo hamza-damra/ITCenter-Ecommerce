@@ -10,6 +10,9 @@
     {{-- Horizontal Scroller CSS --}}
     <link rel="stylesheet" href="{{ asset('css/horizontal-scroller.css') }}">
     
+    {{-- Search Autocomplete CSS --}}
+    <link rel="stylesheet" href="{{ asset('css/search-autocomplete.css') }}">
+    
     @if(is_rtl())
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -223,8 +226,12 @@
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
             border-radius: 50px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
+            overflow: visible;
             background: #ffffff;
+        }
+        
+        .search-bar input {
+            border-radius: 50px;
         }
 
         .search-bar:focus-within {
@@ -1302,8 +1309,15 @@
                 <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">{{ __t('messages.contact') }}</a></li>
             </ul>
 
-            <form action="{{ route('products') }}" method="GET" class="search-bar" role="search">
-                <input type="search" name="search" placeholder="{{ __t('messages.search') }}">
+            <form action="{{ route('products') }}" method="GET" class="search-bar" role="search" autocomplete="off">
+                <input type="search" 
+                       name="search" 
+                       placeholder="{{ __t('messages.search') }}"
+                       autocomplete="off"
+                       aria-autocomplete="list"
+                       aria-expanded="false"
+                       aria-haspopup="listbox"
+                       value="{{ request('search') }}">
                 <!--<button class="search-btn" type="submit" aria-label="{{ __t('messages.search') }}">
                     <i class="fas fa-search"></i>
                 </button>-->
@@ -1409,8 +1423,8 @@
         </div>
     </header>
 
-    {{-- Category Navigation --}}
-    @if(isset($navigationCategories) && $navigationCategories->count() > 0)
+    {{-- Category Navigation - Only show on home page --}}
+    @if(isset($navigationCategories) && $navigationCategories->count() > 0 && request()->routeIs('home'))
         <x-category-nav :categories="$navigationCategories" />
     @endif
 
@@ -2287,6 +2301,9 @@
     
     {{-- Horizontal Scroller JavaScript --}}
     <script src="{{ asset('js/horizontal-scroller.js') }}"></script>
+    
+    {{-- Search Autocomplete JavaScript --}}
+    <script src="{{ asset('js/search-autocomplete.js') }}"></script>
     
     @stack('scripts')
 </body>

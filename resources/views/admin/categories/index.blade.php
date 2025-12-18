@@ -4,105 +4,70 @@
 
 @section('content')
 <style>
-    /* Categories Page Specific Styles */
-    .categories-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 24px;
-    }
-
+    /* Categories Page Specific Styles - Extending unified components */
+    
+    /* Search & Filter Box */
     .search-filter-box {
         display: flex;
-        gap: 12px;
-        margin-bottom: 24px;
+        gap: 16px;
+        margin-bottom: 28px;
         background: white;
-        padding: 16px;
-        border-radius: 12px;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
+        padding: 24px;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        border: none;
         flex-wrap: wrap;
+        align-items: center;
     }
 
     .search-filter-box input,
     .search-filter-box select {
-        padding: 10px 14px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
         font-size: 14px;
         min-width: 200px;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #f8fafc;
     }
 
     .search-filter-box input:focus,
     .search-filter-box select:focus {
         outline: none;
         border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .search-filter-box input::placeholder {
+        color: #94a3b8;
     }
 
     .filter-reset-btn {
-        padding: 10px 16px;
-        background: #f8fafc;
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        border: 2px solid #cbd5e1;
+        border-radius: 10px;
         cursor: pointer;
         font-size: 14px;
-        font-weight: 600;
-        color: var(--secondary);
-        transition: all 0.3s ease;
+        font-weight: 700;
+        color: var(--dark);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .filter-reset-btn:hover {
-        background: var(--light);
-        border-color: var(--secondary);
+        background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+        border-color: #64748b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    .categories-table-wrapper {
-        background: white;
-        border-radius: 12px;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
-        overflow: hidden;
-    }
-
-    .categories-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .categories-table thead {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        border-bottom: 2px solid var(--border);
-    }
-
-    .categories-table th {
-        padding: 16px;
-        text-align: left;
-        font-weight: 700;
-        color: var(--dark);
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .categories-table tbody tr {
-        border-bottom: 1px solid var(--border);
-        transition: all 0.3s ease;
-    }
-
-    .categories-table tbody tr:hover {
-        background: #f8fafc;
-    }
-
-    .categories-table tbody tr:last-child {
-        border-bottom: none;
-    }
-
-    .categories-table td {
-        padding: 16px;
-        color: var(--dark);
-    }
-
+    /* Category Image Styles */
     .category-image-cell {
         display: flex;
         align-items: center;
@@ -112,8 +77,15 @@
         width: 60px;
         height: 60px;
         object-fit: cover;
-        border-radius: 8px;
-        border: 1px solid var(--border);
+        border-radius: 12px;
+        border: 2px solid #e2e8f0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .category-image:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     }
 
     .category-image-placeholder {
@@ -122,20 +94,21 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f0f4f8;
+        background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
         color: #94a3b8;
-        border-radius: 8px;
+        border-radius: 12px;
         font-size: 24px;
     }
 
+    /* Category Name Cell */
     .category-name-cell {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 6px;
     }
 
     .category-name {
-        font-weight: 600;
+        font-weight: 700;
         color: var(--dark);
         font-size: 15px;
     }
@@ -144,140 +117,109 @@
         font-size: 13px;
         color: var(--secondary);
         font-family: 'Courier New', monospace;
+        font-weight: 600;
+        background: #f1f5f9;
+        padding: 3px 8px;
+        border-radius: 4px;
+        display: inline-block;
+        width: fit-content;
     }
 
-    .category-parent {
-        font-size: 13px;
-        color: var(--secondary);
-    }
-
+    /* Parent Category Badges */
     .category-parent-badge {
-        display: inline-block;
-        background: #e0e7ff;
-        color: #3730a3;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-weight: 600;
-    }
-
-    .category-parent-root {
-        display: inline-block;
-        background: #f3f4f6;
-        color: #6b7280;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-weight: 600;
-    }
-
-    .status-badge {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 6px 12px;
-        border-radius: 6px;
+        background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+        color: #3730a3;
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 13px;
+    }
+
+    .category-parent-root {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        color: #6b7280;
+        padding: 7px 14px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 13px;
+    }
+
+    /* Status Badge */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 14px;
+        border-radius: 8px;
         font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.6px;
+    }
+
+    [dir="rtl"] .status-badge {
+        text-transform: none;
+        letter-spacing: normal;
     }
 
     .status-active {
-        background: #d1fae5;
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
         color: #065f46;
     }
 
     .status-inactive {
-        background: #fee2e2;
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
         color: #7f1d1d;
     }
 
+    /* Action Cell */
     .action-cell {
         display: flex;
-        gap: 8px;
+        gap: 10px;
     }
 
     .action-cell .btn {
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 8px 16px;
+        font-size: 13px;
         flex-shrink: 0;
     }
 
-    .empty-state {
+    /* Hero Add Button */
+    .admin-hero .btn-add {
         background: white;
+        color: var(--accent-blue);
+        padding: 0.85rem 1.75rem;
         border-radius: 12px;
-        padding: 60px 20px;
-        text-align: center;
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow);
-    }
-
-    .empty-state i {
-        font-size: 48px;
-        color: #cbd5e1;
-        margin-bottom: 16px;
-        display: block;
-    }
-
-    .empty-state h3 {
-        font-size: 20px;
-        color: var(--dark);
-        margin-bottom: 8px;
-    }
-
-    .empty-state p {
-        color: var(--secondary);
-        margin-bottom: 24px;
-    }
-
-    .stats-overview {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 16px;
-        margin-bottom: 24px;
-    }
-
-    .stat-mini-card {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
-        border-left: 4px solid var(--primary);
-    }
-
-    .stat-mini-card h4 {
-        font-size: 13px;
-        color: var(--secondary);
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .stat-mini-card .number {
-        font-size: 32px;
         font-weight: 700;
-        color: var(--primary);
-    }
-
-    .breadcrumb-hierarchy {
-        display: flex;
-        gap: 8px;
-        font-size: 13px;
-        color: var(--secondary);
+        font-size: 0.95rem;
+        text-decoration: none;
+        display: inline-flex;
         align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
 
-    .breadcrumb-hierarchy .icon {
-        color: #cbd5e1;
+    .admin-hero .btn-add:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     }
 
+    /* Pagination */
     .pagination-wrapper {
-        margin-top: 24px;
+        margin-top: 28px;
         display: flex;
         justify-content: center;
     }
 
-    @media (max-width: 768px) {
+    /* Responsive Styles */
+    @media (max-width: 1024px) {
         .search-filter-box {
             flex-direction: column;
         }
@@ -287,14 +229,16 @@
             min-width: unset;
             width: 100%;
         }
+    }
 
-        .categories-table {
+    @media (max-width: 768px) {
+        .admin-table {
             font-size: 13px;
         }
 
-        .categories-table td,
-        .categories-table th {
-            padding: 12px;
+        .admin-table td,
+        .admin-table th {
+            padding: 14px;
         }
 
         .category-image {
@@ -314,48 +258,74 @@
         .action-cell .btn {
             width: 100%;
         }
+
+        .admin-stat-card .stat-value {
+            font-size: 1.75rem;
+        }
+    }
+
+    /* RTL Support */
+    [dir="rtl"] .admin-table th,
+    [dir="rtl"] .admin-table td {
+        text-align: right;
+    }
+
+    [dir="rtl"] .admin-table th:last-child,
+    [dir="rtl"] .admin-table td:last-child {
+        text-align: left;
+    }
+
+    [dir="rtl"] .action-cell {
+        justify-content: flex-start;
     }
 </style>
 
-<!-- Page Header -->
-<div class="page-header">
-    <div class="page-header-content">
-        <h1>{{ __('messages.categories_management_title') }}</h1>
-        <p>{{ __('messages.organize_categories_subtitle') }}</p>
-    </div>
-    <div class="page-actions">
-        @if($categories->count() > 0)
-            <button id="bulkDeleteBtn" onclick="showBulkDeleteModal()" class="btn btn-danger" style="margin-right: 10px; display: none;">
-                <i class="fas fa-trash-alt"></i> <span id="bulkDeleteText">{{ __('messages.delete_selected') }}</span>
-            </button>
-            <button onclick="showDeleteAllModal()" class="btn btn-danger" style="margin-right: 10px;">
-                <i class="fas fa-trash-alt"></i> {{ __('messages.delete_all') }}
-            </button>
-        @endif
-        <a href="{{ route('admin.categories.create') }}" class="btn btn-success">
-            <i class="fas fa-plus-circle"></i> {{ __('messages.add_new_category') }}
-        </a>
+<!-- Page Header - Using unified admin-hero component -->
+<div class="admin-hero">
+    <div class="admin-hero-content">
+        <div class="admin-hero-text">
+            <div class="admin-hero-icon">
+                <i class="fas fa-folder-tree"></i>
+            </div>
+            <div>
+                <h1>{{ __('messages.categories_management_title') }}</h1>
+                <p>{{ __('messages.organize_categories_subtitle') }}</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            @if($categories->count() > 0)
+                <button id="bulkDeleteBtn" onclick="showBulkDeleteModal()" class="btn btn-danger" style="display: none;">
+                    <i class="fas fa-trash-alt"></i> <span id="bulkDeleteText">{{ __('messages.delete_selected') }}</span>
+                </button>
+                <button onclick="showDeleteAllModal()" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i> {{ __('messages.delete_all') }}
+                </button>
+            @endif
+            <a href="{{ route('admin.categories.create') }}" class="btn-add">
+                <i class="fas fa-plus-circle"></i> {{ __('messages.add_new_category') }}
+            </a>
+        </div>
     </div>
 </div>
 
-<!-- Stats Overview -->
+<!-- Stats Overview - Using unified admin-stats-grid component -->
 @php
     $totalCategories = $categories->total() ?? count($categories);
     $activeCategories = $categories->where('is_active', true)->count() ?? 0;
     $rootCategories = $categories->where('parent_id', null)->count() ?? 0;
 @endphp
-<div class="stats-overview">
-    <div class="stat-mini-card">
+<div class="admin-stats-grid">
+    <div class="admin-stat-card stat-info">
         <h4><i class="fas fa-folder"></i> {{ __('messages.total_categories_stat') }}</h4>
-        <div class="number">{{ $totalCategories }}</div>
+        <div class="stat-value">{{ $totalCategories }}</div>
     </div>
-    <div class="stat-mini-card" style="border-left-color: var(--success);">
+    <div class="admin-stat-card stat-success">
         <h4><i class="fas fa-check-circle"></i> {{ __('messages.active_categories') }}</h4>
-        <div class="number" style="color: var(--success);">{{ $activeCategories }}</div>
+        <div class="stat-value">{{ $activeCategories }}</div>
     </div>
-    <div class="stat-mini-card" style="border-left-color: var(--primary-light);">
+    <div class="admin-stat-card stat-indigo">
         <h4><i class="fas fa-sitemap"></i> {{ __('messages.root_categories') }}</h4>
-        <div class="number" style="color: var(--primary-light);">{{ $rootCategories }}</div>
+        <div class="stat-value">{{ $rootCategories }}</div>
     </div>
 </div>
 
@@ -382,10 +352,15 @@
     </button>
 </div>
 
-<!-- Categories Table -->
-@if($categories->count() > 0)
-    <div class="categories-table-wrapper">
-        <table class="categories-table">
+<!-- Categories Table - Using unified admin-table-container component -->
+<div class="admin-table-container">
+    <div class="admin-table-header">
+        <h3><i class="fas fa-list"></i> {{ __('messages.category_list') }}</h3>
+    </div>
+    
+    @if($categories->count() > 0)
+    <div class="table-responsive">
+        <table class="admin-table">
             <thead>
                 <tr>
                     <th style="width: 40px;">
@@ -503,16 +478,20 @@
             {{ $categories->links() }}
         </div>
     @endif
-@else
-    <div class="empty-state">
-        <i class="fas fa-folder-open"></i>
+    @else
+    <!-- Empty State - Using unified admin-empty-state component -->
+    <div class="admin-empty-state">
+        <div class="admin-empty-state-icon">
+            <i class="fas fa-folder-tree"></i>
+        </div>
         <h3>{{ __('messages.no_categories_found') }}</h3>
         <p>{{ __('messages.no_categories_description') }}</p>
         <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
             <i class="fas fa-plus-circle"></i> {{ __('messages.create_first_category') }}
         </a>
     </div>
-@endif
+    @endif
+</div>
 
 <!-- Delete All Confirmation Modal -->
 <div id="deleteAllModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
@@ -577,7 +556,7 @@
         const statusFilter = document.getElementById('statusFilter').value;
         const parentFilter = document.getElementById('parentFilter').value;
         const displayModeFilter = document.getElementById('displayModeFilter').value;
-        const rows = document.querySelectorAll('.categories-table tbody tr');
+        const rows = document.querySelectorAll('.admin-table tbody tr');
 
         rows.forEach(row => {
             let matches = true;

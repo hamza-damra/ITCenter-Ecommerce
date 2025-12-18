@@ -10,6 +10,9 @@
     
     <link rel="stylesheet" href="<?php echo e(asset('css/horizontal-scroller.css')); ?>">
     
+    
+    <link rel="stylesheet" href="<?php echo e(asset('css/search-autocomplete.css')); ?>">
+    
     <?php if(is_rtl()): ?>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -223,8 +226,12 @@
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
             border-radius: 50px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
+            overflow: visible;
             background: #ffffff;
+        }
+        
+        .search-bar input {
+            border-radius: 50px;
         }
 
         .search-bar:focus-within {
@@ -1305,8 +1312,15 @@
                 <li><a href="<?php echo e(route('contact')); ?>" class="<?php echo e(request()->routeIs('contact') ? 'active' : ''); ?>"><?php echo e(__t('messages.contact')); ?></a></li>
             </ul>
 
-            <form action="<?php echo e(route('products')); ?>" method="GET" class="search-bar" role="search">
-                <input type="search" name="search" placeholder="<?php echo e(__t('messages.search')); ?>">
+            <form action="<?php echo e(route('products')); ?>" method="GET" class="search-bar" role="search" autocomplete="off">
+                <input type="search" 
+                       name="search" 
+                       placeholder="<?php echo e(__t('messages.search')); ?>"
+                       autocomplete="off"
+                       aria-autocomplete="list"
+                       aria-expanded="false"
+                       aria-haspopup="listbox"
+                       value="<?php echo e(request('search')); ?>">
                 <!--<button class="search-btn" type="submit" aria-label="<?php echo e(__t('messages.search')); ?>">
                     <i class="fas fa-search"></i>
                 </button>-->
@@ -1413,7 +1427,7 @@
     </header>
 
     
-    <?php if(isset($navigationCategories) && $navigationCategories->count() > 0): ?>
+    <?php if(isset($navigationCategories) && $navigationCategories->count() > 0 && request()->routeIs('home')): ?>
         <?php if (isset($component)) { $__componentOriginal3abf49ce9a3dee012fc0cb151cc636d5 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal3abf49ce9a3dee012fc0cb151cc636d5 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.category-nav','data' => ['categories' => $navigationCategories]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -2309,6 +2323,9 @@
     
     
     <script src="<?php echo e(asset('js/horizontal-scroller.js')); ?>"></script>
+    
+    
+    <script src="<?php echo e(asset('js/search-autocomplete.js')); ?>"></script>
     
     <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>

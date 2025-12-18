@@ -2301,51 +2301,9 @@
     });
 
     // ============================================
-    // Accordion Functions (Categories & Brands)
+    // Brand Pagination (View More/Less)
     // ============================================
-
-    /**
-     * Toggle category accordion (expand/collapse)
-     */
-    window.toggleCategoryAccordion = function() {
-        const button = document.getElementById('categoryAccordionToggle');
-        const content = document.getElementById('categoryAccordionContent');
-
-        if (!button || !content) {
-            console.error('Category accordion elements not found');
-            return;
-        }
-
-        const isExpanded = button.getAttribute('aria-expanded') === 'true';
-
-        // Toggle expanded state
-        button.setAttribute('aria-expanded', !isExpanded);
-        content.hidden = isExpanded;
-
-        console.log('📂 Category accordion ' + (!isExpanded ? 'expanded' : 'collapsed'));
-    };
-
-    /**
-     * Toggle brand accordion (expand/collapse)
-     * Implements ARIA accordion pattern with keyboard support
-     */
-    window.toggleBrandAccordion = function() {
-        const button = document.getElementById('brandAccordionToggle');
-        const content = document.getElementById('brandAccordionContent');
-
-        if (!button || !content) {
-            console.error('Brand accordion elements not found');
-            return;
-        }
-
-        const isExpanded = button.getAttribute('aria-expanded') === 'true';
-
-        // Toggle expanded state
-        button.setAttribute('aria-expanded', !isExpanded);
-        content.hidden = isExpanded;
-
-        console.log('🏷️ Brand accordion ' + (!isExpanded ? 'expanded' : 'collapsed'));
-    };
+    // Note: Accordion toggle is handled by filter-sidebar.blade.php
 
     /**
      * Toggle brand pagination (show more/less brands)
@@ -2394,37 +2352,10 @@
     };
 
     /**
-     * Setup accordion and checkbox event listeners
+     * Setup brand checkbox event listeners
+     * Note: Accordion toggle is handled by filter-sidebar.blade.php
      */
     document.addEventListener('DOMContentLoaded', function() {
-        // Setup category accordion toggle
-        const categoryAccordionBtn = document.getElementById('categoryAccordionToggle');
-        if (categoryAccordionBtn) {
-            categoryAccordionBtn.addEventListener('click', toggleCategoryAccordion);
-            
-            // Keyboard support
-            categoryAccordionBtn.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    toggleCategoryAccordion();
-                }
-            });
-        }
-
-        // Setup brand accordion toggle
-        const brandAccordionBtn = document.getElementById('brandAccordionToggle');
-        if (brandAccordionBtn) {
-            brandAccordionBtn.addEventListener('click', toggleBrandAccordion);
-            
-            // Keyboard support
-            brandAccordionBtn.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    toggleBrandAccordion();
-                }
-            });
-        }
-
         // Setup brand checkboxes
         const brandCheckboxes = document.querySelectorAll('input[name="brands[]"]');
         console.log('🏷️ Found ' + brandCheckboxes.length + ' brand checkboxes');

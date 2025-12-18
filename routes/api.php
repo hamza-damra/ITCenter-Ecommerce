@@ -66,6 +66,9 @@ Route::prefix('v1')->group(function () {
     Route::get('/products/featured', [ProductController::class, 'featured']);
     Route::get('/products/{slug}', [ProductController::class, 'show']);
     
+    // Search Suggestions (Autocomplete)
+    Route::get('/search/suggestions', [App\Http\Controllers\Api\SearchSuggestionController::class, 'suggestions']);
+    
     // Offers
     Route::get('/offers', [OfferController::class, 'index']);
     Route::get('/offers/{slug}', [OfferController::class, 'show']);

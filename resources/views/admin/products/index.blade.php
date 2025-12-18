@@ -4,15 +4,17 @@
 
 @section('content')
 <style>
-    /* Products Page Specific Styles */
+    /* Products Page Specific Styles - Extending unified components */
+    
+    /* Search & Filter Box */
     .search-filter-box {
         display: flex;
         gap: 16px;
         margin-bottom: 28px;
         background: white;
         padding: 24px;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
         border: none;
         flex-wrap: wrap;
         align-items: center;
@@ -65,60 +67,7 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    .products-table-wrapper {
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border: none;
-        overflow: hidden;
-    }
-
-    .products-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .products-table thead {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        border-bottom: 2px solid #e2e8f0;
-    }
-
-    .products-table th {
-        padding: 18px 20px;
-        text-align: left;
-        font-weight: 700;
-        color: var(--dark);
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-    }
-
-    [dir="rtl"] .products-table th {
-        text-transform: none;
-        letter-spacing: normal;
-    }
-
-    .products-table tbody tr {
-        border-bottom: 1px solid #f1f5f9;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .products-table tbody tr:hover {
-        background: linear-gradient(90deg, #f8fafc 0%, #ffffff 100%);
-        transform: scale(1.005);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }
-
-    .products-table tbody tr:last-child {
-        border-bottom: none;
-    }
-
-    .products-table td {
-        padding: 18px 20px;
-        color: var(--dark);
-        vertical-align: middle;
-    }
-
+    /* Product Image Styles */
     .product-image-cell {
         display: flex;
         align-items: center;
@@ -151,6 +100,7 @@
         font-size: 28px;
     }
 
+    /* Product Name Cell */
     .product-name-cell {
         display: flex;
         flex-direction: column;
@@ -179,11 +129,7 @@
         width: fit-content;
     }
 
-    .product-category {
-        font-size: 13px;
-        color: var(--secondary);
-    }
-
+    /* Category & Brand Badges */
     .product-category-badge {
         display: inline-block;
         background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
@@ -192,11 +138,6 @@
         border-radius: 8px;
         font-weight: 700;
         font-size: 13px;
-    }
-
-    .product-brand-cell {
-        font-size: 13px;
-        color: var(--secondary);
     }
 
     .product-brand-badge {
@@ -209,6 +150,7 @@
         font-size: 13px;
     }
 
+    /* Price Cell */
     .product-price-cell {
         font-weight: 700;
         color: var(--success);
@@ -223,6 +165,7 @@
         margin-top: 2px;
     }
 
+    /* Stock Badge */
     .stock-badge {
         display: inline-flex;
         align-items: center;
@@ -255,6 +198,7 @@
         color: #7f1d1d;
     }
 
+    /* Images Badge */
     .images-badge {
         display: inline-flex;
         align-items: center;
@@ -267,6 +211,7 @@
         font-weight: 700;
     }
 
+    /* Status Badge */
     .status-badge {
         display: inline-flex;
         align-items: center;
@@ -294,6 +239,7 @@
         color: #7f1d1d;
     }
 
+    /* Action Cell */
     .action-cell {
         display: flex;
         gap: 10px;
@@ -305,156 +251,35 @@
         flex-shrink: 0;
     }
 
-    .empty-state {
+    /* Hero Add Button */
+    .admin-hero .btn-add {
         background: white;
-        border-radius: 20px;
-        padding: 60px 32px;
-        text-align: center;
-        border: none;
-        box-shadow: 0 8px 30px rgba(2, 6, 23, 0.08);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .empty-state::after {
-        content: "";
-        position: absolute;
-        inset: 0; 
-        background: radial-gradient(1200px 300px at 50% -200px, rgba(59,130,246,.10), transparent 60%),
-                    radial-gradient(600px 200px at 80% 120%, rgba(99,102,241,.10), transparent 60%);
-        pointer-events: none;
-    }
-
-    .empty-illustration {
-        width: 88px;
-        height: 88px;
-        margin: 0 auto 18px;
-        border-radius: 22px;
-        display: grid;
-        place-items: center;
-        background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-        color: #3730a3;
-        box-shadow: 0 8px 20px rgba(55,48,163,.18);
-    }
-
-    .empty-illustration i { font-size: 40px; }
-
-    .empty-state h3 {
-        font-size: 26px;
-        color: #0f172a;
-        margin-bottom: 10px;
-        font-weight: 800;
-    }
-
-    .empty-state p {
-        color: #475569;
-        margin-bottom: 28px;
-        font-size: 15px;
-    }
-
-    .empty-actions {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 14px;
-        max-width: 680px;
-        margin: 0 auto 22px;
-    }
-
-    .empty-actions .btn-primary {
-        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-        border: none;
-        font-weight: 700;
-        padding: 14px 18px;
-    }
-
-    .empty-actions .btn-secondary {
-        background: #eef2ff; 
-        color: #3730a3;
-        border: 1px solid #e0e7ff;
-        font-weight: 700;
-        padding: 14px 18px;
-    }
-
-    .empty-tips {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 12px;
-        margin-top: 8px;
-    }
-
-    .empty-tip {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
+        color: var(--accent-blue);
+        padding: 0.85rem 1.75rem;
         border-radius: 12px;
-        padding: 12px 14px;
-        font-size: 13px;
-        color: #475569;
-        display: flex; align-items: center; gap: 8px;
-    }
-
-    .empty-tip i { color: #64748b; }
-
-    .stats-overview {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 20px;
-        margin-bottom: 28px;
-    }
-
-    .stat-mini-card {
-        padding: 28px 24px;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-        border: none;
-    }
-
-    .stat-mini-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 5px;
-        height: 100%;
-        background: var(--primary);
-    }
-
-    .stat-mini-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-    }
-
-    .stat-mini-card h4 {
-        font-size: 13px;
-        color: var(--secondary);
-        margin-bottom: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
         font-weight: 700;
-        display: flex;
+        font-size: 0.95rem;
+        text-decoration: none;
+        display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     }
 
-    [dir="rtl"] .stat-mini-card h4 {
-        text-transform: none;
-        letter-spacing: normal;
+    .admin-hero .btn-add:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     }
 
-    .stat-mini-card .number {
-        font-size: 38px;
-        font-weight: 700;
-        color: var(--primary);
-    }
-
+    /* Pagination */
     .pagination-wrapper {
         margin-top: 28px;
         display: flex;
         justify-content: center;
     }
 
+    /* Responsive Styles */
     @media (max-width: 1024px) {
         .search-filter-box {
             flex-direction: column;
@@ -468,12 +293,12 @@
     }
 
     @media (max-width: 768px) {
-        .products-table {
+        .admin-table {
             font-size: 13px;
         }
 
-        .products-table td,
-        .products-table th {
+        .admin-table td,
+        .admin-table th {
             padding: 14px;
         }
 
@@ -499,19 +324,19 @@
             width: 100%;
         }
 
-        .stat-mini-card .number {
-            font-size: 32px;
+        .admin-stat-card .stat-value {
+            font-size: 1.75rem;
         }
     }
 
-    /* RTL Support for Products Table */
-    [dir="rtl"] .products-table th,
-    [dir="rtl"] .products-table td {
+    /* RTL Support */
+    [dir="rtl"] .admin-table th,
+    [dir="rtl"] .admin-table td {
         text-align: right;
     }
 
-    [dir="rtl"] .products-table th:last-child,
-    [dir="rtl"] .products-table td:last-child {
+    [dir="rtl"] .admin-table th:last-child,
+    [dir="rtl"] .admin-table td:last-child {
         text-align: left;
     }
 
@@ -520,63 +345,70 @@
     }
 </style>
 
-<!-- Page Header -->
-<div class="page-header">
-    <div class="page-header-content">
-        <h1>
-            <i class="fas fa-box-open"></i> {{ __('messages.products_management') }}
-            @if(request('filter'))
-                @if(request('filter') == 'recent')
-                    <span style="font-size: 0.6em; color: #3b82f6; font-weight: 600; margin-{{ is_rtl() ? 'right' : 'left' }}: 12px;">
-                        ({{ __('messages.recent_products') }})
-                    </span>
-                @elseif(request('filter') == 'top_rated')
-                    <span style="font-size: 0.6em; color: #f59e0b; font-weight: 600; margin-{{ is_rtl() ? 'right' : 'left' }}: 12px;">
-                        ({{ __('messages.top_rated_products') }})
-                    </span>
-                @endif
+<!-- Page Header - Using unified admin-hero component -->
+<div class="admin-hero">
+    <div class="admin-hero-content">
+        <div class="admin-hero-text">
+            <div class="admin-hero-icon">
+                <i class="fas fa-box-open"></i>
+            </div>
+            <div>
+                <h1>
+                    {{ __('messages.products_management') }}
+                    @if(request('filter'))
+                        @if(request('filter') == 'recent')
+                            <span style="font-size: 0.6em; color: var(--accent-blue); font-weight: 600; margin-{{ is_rtl() ? 'right' : 'left' }}: 12px;">
+                                ({{ __('messages.recent_products') }})
+                            </span>
+                        @elseif(request('filter') == 'top_rated')
+                            <span style="font-size: 0.6em; color: var(--accent-amber); font-weight: 600; margin-{{ is_rtl() ? 'right' : 'left' }}: 12px;">
+                                ({{ __('messages.top_rated_products') }})
+                            </span>
+                        @endif
+                    @endif
+                </h1>
+                <p>{{ __('messages.manage_product_catalog') }}</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            @if($products->count() > 0)
+                <button id="bulkDeleteBtn" onclick="showBulkDeleteModal()" class="btn btn-danger" style="display: none;">
+                    <i class="fas fa-trash-alt"></i> <span id="bulkDeleteText">{{ __('messages.delete_selected') }}</span>
+                </button>
+                <button onclick="showDeleteAllModal()" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i> {{ __('messages.delete_all') }}
+                </button>
             @endif
-        </h1>
-        <p>{{ __('messages.manage_product_catalog') }}</p>
-    </div>
-    <div class="page-actions">
-        @if($products->count() > 0)
-            <button id="bulkDeleteBtn" onclick="showBulkDeleteModal()" class="btn btn-danger" style="margin-right: 10px; display: none;">
-                <i class="fas fa-trash-alt"></i> <span id="bulkDeleteText">{{ __('messages.delete_selected') }}</span>
-            </button>
-            <button onclick="showDeleteAllModal()" class="btn btn-danger" style="margin-right: 10px;">
-                <i class="fas fa-trash-alt"></i> {{ __('messages.delete_all') }}
-            </button>
-        @endif
-        <a href="{{ route('admin.products.create') }}" class="btn btn-success">
-            <i class="fas fa-plus-circle"></i> {{ __('messages.add_new_product') }}
-        </a>
+            <a href="{{ route('admin.products.create') }}" class="btn-add">
+                <i class="fas fa-plus-circle"></i> {{ __('messages.add_new_product') }}
+            </a>
+        </div>
     </div>
 </div>
 
-<!-- Stats Overview -->
+<!-- Stats Overview - Using unified admin-stats-grid component -->
 @php
     $totalProducts = $products->total() ?? count($products);
     $activeProducts = $products->where('is_active', true)->count() ?? 0;
     $featuredProducts = $products->where('is_featured', true)->count() ?? 0;
     $lowStockProducts = $products->where('stock_quantity', '<', 5)->count() ?? 0;
 @endphp
-<div class="stats-overview">
-    <div class="stat-mini-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-        <h4 style="color: rgba(255,255,255,0.9);"><i class="fas fa-boxes"></i> {{ __('messages.total_products') }}</h4>
-        <div class="number" style="color: white;">{{ $totalProducts }}</div>
+<div class="admin-stats-grid">
+    <div class="admin-stat-card stat-info">
+        <h4><i class="fas fa-boxes"></i> {{ __('messages.total_products') }}</h4>
+        <div class="stat-value">{{ $totalProducts }}</div>
     </div>
-    <div class="stat-mini-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;">
-        <h4 style="color: rgba(255,255,255,0.9);"><i class="fas fa-check-circle"></i> {{ __('messages.active') }}</h4>
-        <div class="number" style="color: white;">{{ $activeProducts }}</div>
+    <div class="admin-stat-card stat-success">
+        <h4><i class="fas fa-check-circle"></i> {{ __('messages.active') }}</h4>
+        <div class="stat-value">{{ $activeProducts }}</div>
     </div>
-    <div class="stat-mini-card" style="background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%); color: white;">
-        <h4 style="color: rgba(255,255,255,0.9);"><i class="fas fa-star"></i> {{ __('messages.featured_products_count') }}</h4>
-        <div class="number" style="color: white;">{{ $featuredProducts }}</div>
+    <div class="admin-stat-card stat-warning">
+        <h4><i class="fas fa-star"></i> {{ __('messages.featured_products_count') }}</h4>
+        <div class="stat-value">{{ $featuredProducts }}</div>
     </div>
-    <div class="stat-mini-card" style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); color: white;">
-        <h4 style="color: rgba(255,255,255,0.9);"><i class="fas fa-exclamation-triangle"></i> {{ __('messages.low_stock') }}</h4>
-        <div class="number" style="color: white;">{{ $lowStockProducts }}</div>
+    <div class="admin-stat-card stat-danger">
+        <h4><i class="fas fa-exclamation-triangle"></i> {{ __('messages.low_stock') }}</h4>
+        <div class="stat-value">{{ $lowStockProducts }}</div>
     </div>
 </div>
 
@@ -621,10 +453,15 @@
     </div>
 </form>
 
-<!-- Products Table -->
-@if($products->count() > 0)
-    <div class="products-table-wrapper">
-        <table class="products-table">
+<!-- Products Table - Using unified admin-table-container component -->
+<div class="admin-table-container">
+    <div class="admin-table-header">
+        <h3><i class="fas fa-list"></i> {{ __('messages.product_list') }}</h3>
+    </div>
+    
+    @if($products->count() > 0)
+    <div class="table-responsive">
+        <table class="admin-table">
             <thead>
                 <tr>
                     <th style="width: 40px;">
@@ -760,9 +597,10 @@
             {{ $products->links() }}
         </div>
     @endif
-@else
-    <div class="empty-state">
-        <div class="empty-illustration">
+    @else
+    <!-- Empty State - Using unified admin-empty-state component -->
+    <div class="admin-empty-state">
+        <div class="admin-empty-state-icon">
             <i class="fas fa-box-open"></i>
         </div>
         <h3>{{ __('messages.no_products_available') }}</h3>
@@ -771,7 +609,8 @@
             <i class="fas fa-plus-circle"></i> {{ __('messages.create_product') }} (N)
         </a>
     </div>
-@endif
+    @endif
+</div>
 
 <!-- Delete All Confirmation Modal -->
 <div id="deleteAllModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; justify-content: center; align-items: center;">
@@ -842,93 +681,35 @@
     function deleteAllRecords() {
         // Disable the delete button to prevent multiple clicks
         event.target.disabled = true;
-        event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("messages.deleting_all_records") }}';
-
+        event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("messages.deleting") }}...';
+        
         fetch('{{ route("admin.products.delete-all") }}', {
             method: 'DELETE',
             headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'Accept': 'application/json'
             }
         })
         .then(response => response.json())
         .then(data => {
             hideDeleteAllModal();
             if (data.success) {
-                document.getElementById('successMessage').textContent = data.message;
+                document.getElementById('successMessage').textContent = data.message || '{{ __("messages.all_records_deleted_successfully") }}';
                 document.getElementById('successModal').style.display = 'flex';
             } else {
-                alert('Error: ' + data.message);
+                alert(data.message || '{{ __("messages.error_occurred") }}');
                 window.location.reload();
             }
         })
         .catch(error => {
-            hideDeleteAllModal();
-            alert('Error: ' + error.message);
+            console.error('Error:', error);
+            alert('{{ __("messages.error_occurred") }}');
             window.location.reload();
         });
     }
 
-    // Debounce timer for search
-    let searchTimeout;
-
-    function debounceSearch() {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(function() {
-            filterProducts();
-        }, 500); // Wait 500ms after user stops typing
-    }
-
-    function filterProducts() {
-        // Submit the form to apply server-side filtering
-        document.getElementById('searchFilterForm').submit();
-    }
-
-    function resetFilters() {
-        // Redirect to the index page without any parameters
-        window.location.href = '{{ route('admin.products.index') }}';
-    }
-
-    // Bulk selection functions
-    function toggleSelectAll() {
-        const selectAllCheckbox = document.getElementById('selectAll');
-        const checkboxes = document.querySelectorAll('.product-checkbox');
-
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = selectAllCheckbox.checked;
-        });
-
-        updateBulkDeleteButton();
-    }
-
-    function updateBulkDeleteButton() {
-        const checkboxes = document.querySelectorAll('.product-checkbox:checked');
-        const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
-        const bulkDeleteText = document.getElementById('bulkDeleteText');
-        const selectAllCheckbox = document.getElementById('selectAll');
-
-        if (checkboxes.length > 0) {
-            bulkDeleteBtn.style.display = 'inline-block';
-            bulkDeleteText.textContent = '{{ __("messages.delete_selected") }} (' + checkboxes.length + ')';
-        } else {
-            bulkDeleteBtn.style.display = 'none';
-        }
-
-        // Update "Select All" checkbox state
-        const allCheckboxes = document.querySelectorAll('.product-checkbox');
-        const allChecked = allCheckboxes.length > 0 && checkboxes.length === allCheckboxes.length;
-        const someChecked = checkboxes.length > 0 && checkboxes.length < allCheckboxes.length;
-
-        selectAllCheckbox.checked = allChecked;
-        selectAllCheckbox.indeterminate = someChecked;
-    }
-
     function showBulkDeleteModal() {
-        const checkboxes = document.querySelectorAll('.product-checkbox:checked');
-        if (checkboxes.length === 0) {
-            alert('{{ __("messages.please_select_items") }}');
-            return;
-        }
         document.getElementById('bulkDeleteModal').style.display = 'flex';
     }
 
@@ -936,23 +717,47 @@
         document.getElementById('bulkDeleteModal').style.display = 'none';
     }
 
+    function toggleSelectAll() {
+        const selectAll = document.getElementById('selectAll');
+        const checkboxes = document.querySelectorAll('.product-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAll.checked;
+        });
+        updateBulkDeleteButton();
+    }
+
+    function updateBulkDeleteButton() {
+        const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+        const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
+        const bulkDeleteText = document.getElementById('bulkDeleteText');
+        
+        if (checkboxes.length > 0) {
+            bulkDeleteBtn.style.display = 'inline-flex';
+            bulkDeleteText.textContent = '{{ __("messages.delete_selected") }} (' + checkboxes.length + ')';
+        } else {
+            bulkDeleteBtn.style.display = 'none';
+        }
+    }
+
     function bulkDeleteRecords() {
         const checkboxes = document.querySelectorAll('.product-checkbox:checked');
         const ids = Array.from(checkboxes).map(cb => cb.value);
-
+        
         if (ids.length === 0) {
-            alert('{{ __("messages.please_select_items") }}');
+            alert('{{ __("messages.no_products_selected") }}');
             return;
         }
 
+        // Disable the delete button to prevent multiple clicks
         event.target.disabled = true;
         event.target.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("messages.deleting") }}...';
-
+        
         fetch('{{ route("admin.products.bulk-delete") }}', {
             method: 'DELETE',
             headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'Accept': 'application/json'
             },
             body: JSON.stringify({ ids: ids })
         })
@@ -960,29 +765,58 @@
         .then(data => {
             hideBulkDeleteModal();
             if (data.success) {
-                document.getElementById('successMessage').textContent = data.message;
+                document.getElementById('successMessage').textContent = data.message || '{{ __("messages.selected_records_deleted_successfully") }}';
                 document.getElementById('successModal').style.display = 'flex';
             } else {
-                alert('Error: ' + data.message);
+                alert(data.message || '{{ __("messages.error_occurred") }}');
                 window.location.reload();
             }
         })
         .catch(error => {
-            hideBulkDeleteModal();
-            alert('Error: ' + error.message);
+            console.error('Error:', error);
+            alert('{{ __("messages.error_occurred") }}');
             window.location.reload();
         });
     }
 
-    // Quick create shortcut: press 'N' to open Create Product when empty state is visible
+    let searchTimeout;
+    
+    function debounceSearch() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            filterProducts();
+        }, 500);
+    }
+
+    function filterProducts() {
+        document.getElementById('searchFilterForm').submit();
+    }
+
+    function resetFilters() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('statusFilter').value = '';
+        document.getElementById('stockFilter').value = '';
+        document.getElementById('featuredFilter').value = '';
+        document.getElementById('newFilter').value = '';
+        document.getElementById('bestsellerFilter').value = '';
+        document.getElementById('specialOfferFilter').value = '';
+        window.location.href = '{{ route("admin.products.index") }}';
+    }
+
+    // Keyboard shortcut for creating new product
     document.addEventListener('keydown', function(e) {
-        const activeTag = document.activeElement?.tagName?.toLowerCase();
-        const typing = ['input','textarea','select'].includes(activeTag);
-        const emptyStateVisible = document.querySelector('.empty-state');
-        if (!typing && emptyStateVisible && (e.key === 'n' || e.key === 'N')) {
-            window.location.href = '{{ route('admin.products.create') }}';
+        // Check if 'N' is pressed and no input/textarea is focused
+        if (e.key === 'n' || e.key === 'N') {
+            const activeElement = document.activeElement;
+            const isInputFocused = activeElement.tagName === 'INPUT' || 
+                                   activeElement.tagName === 'TEXTAREA' || 
+                                   activeElement.isContentEditable;
+            
+            if (!isInputFocused) {
+                e.preventDefault();
+                window.location.href = '{{ route("admin.products.create") }}';
+            }
         }
     });
 </script>
-
 @endsection

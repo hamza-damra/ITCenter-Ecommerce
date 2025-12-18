@@ -4,7 +4,8 @@
     $isRtl = is_rtl();
     $locale = app()->getLocale();
     $currentUrl = url()->current();
-    $currentParams = request()->except(['tag', 'page']);
+    // Remove tag, page, AND search when clicking tags - tags should show all products with that tag
+    $currentParams = request()->except(['tag', 'page', 'search']);
 @endphp
 
 @if(count($tags) > 0)

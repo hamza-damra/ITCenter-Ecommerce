@@ -29,39 +29,8 @@ class ProductController extends Controller
         $query = Product::with(['category', 'brand', 'images'])
             ->active();
 
-        // Apply filters via ProductFilterService
+        // Apply all filters via ProductFilterService (categories, brands, tags, price, etc.)
         $query = $this->filterService->applyFilters($query, $request);
-
-        // Legacy filters for backward compatibility
-        // Filter by categories (support both single 'category' and multiple 'categories[]')
-        $categoryFilters = [];
-        
-        // Check for categories[] array parameter
-        if ($request->has('categories') && !empty($request->categories)) {
-            $categoryFilters = is_array($request->categories) ? $request->categories : [$request->categories];
-        }
-        
-        // Check for single category parameter (backward compatibility)
-        if ($request->has('category') && !empty($request->category)) {
-            // If categories[] is not set, use single category
-            if (empty($categoryFilters)) {
-                $categoryFilters = [$request->category];
-            }
-        }
-        
-        // Apply category filter if we have any categories
-        if (!empty($categoryFilters)) {
-            // Remove empty values
-            $categoryFilters = array_filter($categoryFilters, function($value) {
-                return !empty($value);
-            });
-            
-            if (!empty($categoryFilters)) {
-                $query->whereHas('category', function ($q) use ($categoryFilters) {
-                    $q->whereIn('slug', $categoryFilters);
-                });
-            }
-        }
 
         // Filter by features
         if ($request->has('featured') && $request->featured) {
@@ -134,8 +103,25 @@ class ProductController extends Controller
         // Get cart product IDs for current user/session
         $cartProductIds = $this->getCartProductIds();
 
-        // Get available filters with counts from service
-        $availableFilters = $this->filterService->getAvailableFilters();
+        // Determine current category context for filter counts
+        $filterCategory = null;
+        $categoryFilters = [];
+        if ($request->has('categories') && !empty($request->categories)) {
+            $categoryFilters = is_array($request->categories) ? $request->categories : [$request->categories];
+        }
+        if ($request->has('category') && !empty($request->category) && empty($categoryFilters)) {
+            $categoryFilters = [$request->category];
+        }
+        if (!empty($categoryFilters)) {
+            // Get category IDs from slugs for filter counting
+            $filterCategoryIds = Category::whereIn('slug', $categoryFilters)->pluck('id')->toArray();
+            if (!empty($filterCategoryIds)) {
+                $filterCategory = $filterCategoryIds;
+            }
+        }
+
+        // Get available filters with counts from service (pass category context for accurate counts)
+        $availableFilters = $this->filterService->getAvailableFilters($filterCategory);
 
         // Get all active categories for filter sidebar (legacy)
         $locale = app()->getLocale();

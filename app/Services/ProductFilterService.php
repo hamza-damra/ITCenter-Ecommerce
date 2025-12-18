@@ -23,6 +23,23 @@ class ProductFilterService
         if ($category !== null) {
             $query = $this->applyCategoryFilter($query, $category);
         }
+        
+        // Apply categories filter from request (supports both 'category' and 'categories[]' parameters)
+        $categoryFilters = [];
+        if ($request->has('categories') && !empty($request->categories)) {
+            $categoryFilters = is_array($request->categories) ? $request->categories : [$request->categories];
+        }
+        if ($request->has('category') && !empty($request->category) && empty($categoryFilters)) {
+            $categoryFilters = [$request->category];
+        }
+        if (!empty($categoryFilters)) {
+            $categoryFilters = array_filter($categoryFilters);
+            if (!empty($categoryFilters)) {
+                $query->whereHas('category', function ($q) use ($categoryFilters) {
+                    $q->whereIn('slug', $categoryFilters);
+                });
+            }
+        }
 
         // Apply tag filter (single or multiple)
         if ($request->has('tag') && !empty($request->tag)) {
@@ -40,14 +57,16 @@ class ProductFilterService
         }
 
         // Apply stock filter
-        if ($request->has('stock')) {
+        if ($request->has('stock') && !empty($request->stock)) {
             $query = $this->applyStockFilter($query, $request->stock);
         }
 
         // Apply brand filter (supports both 'brand' and 'brands' parameters)
         if ($request->has('brands') || $request->has('brand')) {
             $brands = $request->input('brands', $request->input('brand', []));
-            $query = $this->applyBrandFilter($query, $brands);
+            if (!empty($brands)) {
+                $query = $this->applyBrandFilter($query, $brands);
+            }
         }
 
         // Apply price range filter
@@ -294,67 +313,83 @@ class ProductFilterService
 
     /**
      * Get category filters with product counts
+     * Sorted by: categories with products first (by count desc), then categories without products (alphabetically)
      *
      * @return array
      */
     protected function getCategoryFilters(): array
     {
         $locale = app()->getLocale();
+        
+        // Get ALL active categories (both parent and child) with product counts
         $categories = Category::active()
-            ->whereNull('parent_id') // Only parent categories
-            ->orderBy('order')
+            ->withCount(['products' => function ($query) {
+                $query->active();
+            }])
             ->get();
 
-        return $categories->map(function ($category) {
+        $categoriesWithCounts = $categories->map(function ($category) {
             return [
                 'id' => $category->id,
                 'slug' => $category->slug,
                 'name' => $category->name,
+                'parent_id' => $category->parent_id,
+                'count' => $category->products_count,
             ];
-        })->all();
+        });
+        
+        // Sort: categories with products first (by count desc), then categories without products (alphabetically)
+        return $categoriesWithCounts->sortBy([
+            ['count', 'desc'],  // First by count descending (categories with products first)
+            ['name', 'asc'],    // Then alphabetically
+        ])->values()->all();
     }
 
     /**
      * Get brand filters with product counts
+     * Returns ALL active brands with their product counts
+     * Sorted by: brands with products first (by count desc), then brands without products (alphabetically)
      *
      * @param Category|array<int>|null $category Category object or array of category IDs
      * @return array
      */
     protected function getBrandFilters(Category|array|null $category = null): array
     {
-        $query = Product::active()->with('brand');
-
-        if ($category !== null) {
-            if ($category instanceof Category) {
-                $query->where('category_id', $category->id);
-            } else {
-                // Array of category IDs
-                $query->whereIn('category_id', $category);
-            }
-        }
-
-        $brands = $query->get()
-            ->groupBy('brand_id')
-            ->map(function ($products, $brandId) {
-                $brand = $products->first()->brand;
-                if (!$brand) {
-                    return null;
+        $locale = app()->getLocale();
+        
+        // Get ALL active brands
+        $brands = \App\Models\Brand::active()
+            ->orderBy('name_' . $locale)
+            ->get();
+        
+        $brandsWithCounts = $brands->map(function ($brand) use ($category) {
+            // Count products for this brand
+            $productQuery = Product::active()->where('brand_id', $brand->id);
+            
+            if ($category !== null) {
+                if ($category instanceof Category) {
+                    $productQuery->where('category_id', $category->id);
+                } else {
+                    // Array of category IDs
+                    $productQuery->whereIn('category_id', $category);
                 }
-
-                return [
-                    'id' => $brand->id,
-                    'slug' => $brand->slug,
-                    'name' => $brand->name,
-                    'count' => $products->count(),
-                ];
-            })
-            ->filter()
-            ->values()
-            ->sortBy('name')
-            ->values()
-            ->all();
-
-        return $brands;
+            }
+            
+            $count = $productQuery->count();
+            
+            return [
+                'id' => $brand->id,
+                'slug' => $brand->slug,
+                'name' => $brand->name,
+                'count' => $count,
+            ];
+        });
+        
+        // Sort: brands with products first (by count desc), then brands without products (alphabetically)
+        return $brandsWithCounts->sortBy([
+            ['count', 'desc'],  // First by count descending (brands with products first)
+            ['name', 'asc'],    // Then alphabetically
+        ])->values()->all();
     }
 
     /**

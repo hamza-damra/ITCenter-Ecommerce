@@ -4,58 +4,70 @@
 
 @section('content')
 <style>
-    /* Brands Page Specific Styles */
-    .brands-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 24px;
-    }
-
+    /* Brands Page Specific Styles - Extending unified components */
+    
+    /* Search & Filter Box */
     .search-filter-box {
         display: flex;
-        gap: 12px;
-        margin-bottom: 24px;
+        gap: 16px;
+        margin-bottom: 28px;
         background: white;
-        padding: 16px;
-        border-radius: 12px;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
+        padding: 24px;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        border: none;
+        flex-wrap: wrap;
+        align-items: center;
     }
 
     .search-filter-box input,
     .search-filter-box select {
-        padding: 10px 14px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
         font-size: 14px;
         min-width: 200px;
+        font-weight: 500;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #f8fafc;
     }
 
     .search-filter-box input:focus,
     .search-filter-box select:focus {
         outline: none;
         border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        transform: translateY(-1px);
+    }
+
+    .search-filter-box input::placeholder {
+        color: #94a3b8;
     }
 
     .filter-reset-btn {
-        padding: 10px 16px;
-        background: #f8fafc;
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        border: 2px solid #cbd5e1;
+        border-radius: 10px;
         cursor: pointer;
         font-size: 14px;
-        font-weight: 600;
-        color: var(--secondary);
-        transition: all 0.3s ease;
+        font-weight: 700;
+        color: var(--dark);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
     }
 
     .filter-reset-btn:hover {
-        background: var(--light);
-        border-color: var(--secondary);
+        background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+        border-color: #64748b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
+    /* Brands Grid */
     .brands-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -63,20 +75,21 @@
         margin-bottom: 24px;
     }
 
+    /* Brand Card Styles */
     .brand-card {
         background: white;
-        border-radius: 12px;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        border: none;
         overflow: hidden;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         flex-direction: column;
     }
 
     .brand-card:hover {
         transform: translateY(-4px);
-        box-shadow: var(--shadow-lg);
+        box-shadow: var(--shadow-card-hover);
     }
 
     .brand-card-header {
@@ -102,7 +115,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f0f4f8;
+        background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
         color: #94a3b8;
         font-size: 12px;
         border-radius: 8px;
@@ -194,86 +207,32 @@
         font-size: 13px;
     }
 
-    .empty-state {
-        background: white;
-        border-radius: 12px;
-        padding: 60px 20px;
-        text-align: center;
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow);
-    }
-
-    .empty-state i {
-        font-size: 48px;
-        color: #cbd5e1;
-        margin-bottom: 16px;
-        display: block;
-    }
-
-    .empty-state h3 {
-        font-size: 20px;
-        color: var(--dark);
-        margin-bottom: 8px;
-    }
-
-    .empty-state p {
-        color: var(--secondary);
-        margin-bottom: 24px;
-    }
-
-    .stats-overview {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 16px;
-        margin-bottom: 24px;
-    }
-
-    .stat-mini-card {
-        background: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: var(--shadow);
-        border: 1px solid var(--border);
-        border-left: 4px solid var(--primary);
-    }
-
-    .stat-mini-card h4 {
-        font-size: 13px;
-        color: var(--secondary);
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .stat-mini-card .number {
-        font-size: 32px;
-        font-weight: 700;
-        color: var(--primary);
-    }
-
-    .view-toggle {
+    /* Header Actions */
+    .header-actions {
         display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .btn-add {
+        display: inline-flex;
+        align-items: center;
         gap: 8px;
-        background: white;
-        padding: 8px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-    }
-
-    .view-toggle button {
-        padding: 8px 12px;
-        border: none;
-        background: transparent;
-        cursor: pointer;
-        border-radius: 6px;
-        color: var(--secondary);
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .view-toggle button.active {
-        background: var(--primary);
+        padding: 12px 24px;
+        background: linear-gradient(135deg, var(--accent-emerald) 0%, #059669 100%);
         color: white;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 14px;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    }
+
+    .btn-add:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.45);
+        background: linear-gradient(135deg, #059669 0%, var(--accent-emerald) 100%);
     }
 
     @media (max-width: 768px) {
@@ -290,50 +249,62 @@
             min-width: unset;
         }
 
-        .brands-header {
+        .header-actions {
             flex-direction: column;
-            align-items: flex-start;
-            gap: 16px;
+            width: 100%;
+        }
+
+        .header-actions .btn,
+        .header-actions .btn-add {
+            width: 100%;
+            justify-content: center;
         }
     }
 </style>
 
-<!-- Page Header -->
-<div class="page-header">
-    <div class="page-header-content">
-        <h1>{{ __('messages.brands_management_title') }}</h1>
-        <p>{{ __('messages.manage_brands_subtitle') }}</p>
-    </div>
-    <div class="page-actions">
-        @if($brands->count() > 0)
-            <button onclick="showDeleteAllModal()" class="btn btn-danger" style="margin-right: 10px;">
-                <i class="fas fa-trash-alt"></i> {{ __('messages.delete_all') }}
-            </button>
-        @endif
-        <a href="{{ route('admin.brands.create') }}" class="btn btn-success">
-            <i class="fas fa-plus-circle"></i> {{ __('messages.add_new_brand') }}
-        </a>
+<!-- Page Header - Using unified admin-hero component -->
+<div class="admin-hero">
+    <div class="admin-hero-content">
+        <div class="admin-hero-text">
+            <div class="admin-hero-icon">
+                <i class="fas fa-award"></i>
+            </div>
+            <div>
+                <h1>{{ __('messages.brands_management_title') }}</h1>
+                <p>{{ __('messages.manage_brands_subtitle') }}</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            @if($brands->count() > 0)
+                <button onclick="showDeleteAllModal()" class="btn btn-danger">
+                    <i class="fas fa-trash-alt"></i> {{ __('messages.delete_all') }}
+                </button>
+            @endif
+            <a href="{{ route('admin.brands.create') }}" class="btn-add">
+                <i class="fas fa-plus-circle"></i> {{ __('messages.add_new_brand') }}
+            </a>
+        </div>
     </div>
 </div>
 
-<!-- Stats Overview -->
+<!-- Stats Overview - Using unified admin-stats-grid component -->
 @php
     $totalBrands = $brands->total() ?? count($brands);
     $activeBrands = $brands->where('is_active', true)->count() ?? 0;
     $featuredBrands = $brands->where('is_featured', true)->count() ?? 0;
 @endphp
-<div class="stats-overview">
-    <div class="stat-mini-card">
+<div class="admin-stats-grid">
+    <div class="admin-stat-card stat-info">
         <h4><i class="fas fa-tags"></i> {{ __('messages.total_brands_stat') }}</h4>
-        <div class="number">{{ $totalBrands }}</div>
+        <div class="stat-value">{{ $totalBrands }}</div>
     </div>
-    <div class="stat-mini-card" style="border-left-color: var(--success);">
+    <div class="admin-stat-card stat-success">
         <h4><i class="fas fa-check-circle"></i> {{ __('messages.active_brands') }}</h4>
-        <div class="number" style="color: var(--success);">{{ $activeBrands }}</div>
+        <div class="stat-value">{{ $activeBrands }}</div>
     </div>
-    <div class="stat-mini-card" style="border-left-color: var(--warning);">
+    <div class="admin-stat-card stat-warning">
         <h4><i class="fas fa-star"></i> {{ __('messages.featured_brands') }}</h4>
-        <div class="number" style="color: var(--warning);">{{ $featuredBrands }}</div>
+        <div class="stat-value">{{ $featuredBrands }}</div>
     </div>
 </div>
 
@@ -416,8 +387,11 @@
             </div>
         </div>
     @empty
-        <div class="empty-state" style="grid-column: 1 / -1;">
-            <i class="fas fa-box-open"></i>
+        <!-- Empty State - Using unified admin-empty-state component -->
+        <div class="admin-empty-state" style="grid-column: 1 / -1;">
+            <div class="admin-empty-state-icon">
+                <i class="fas fa-award"></i>
+            </div>
             <h3>{{ __('messages.no_brands_found') }}</h3>
             <p>{{ __('messages.no_brands_description') }}</p>
             <a href="{{ route('admin.brands.create') }}" class="btn btn-primary">
