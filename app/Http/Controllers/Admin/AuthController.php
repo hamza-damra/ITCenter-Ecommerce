@@ -14,8 +14,26 @@ class AuthController extends Controller
      */
     public function showLogin()
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
+        // Check if we're in bootstrap mode (database missing)
+        try {
+            if (\App\Services\DatabaseStateService::shouldEnableBootstrapMode()) {
+                return redirect()->route('admin.bootstrap.login')
+                    ->with('info', 'Database is missing. Please use Bootstrap Mode to restore it.');
+            }
+        } catch (\Exception $e) {
+            // If state detection fails, continue with normal login
+        }
+
+        try {
+            if (Auth::check() && Auth::user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+        } catch (\Exception $e) {
+            // If auth check fails (database issue), redirect to bootstrap
+            if (\App\Services\DatabaseStateService::shouldEnableBootstrapMode()) {
+                return redirect()->route('admin.bootstrap.login')
+                    ->with('info', 'Database is missing. Please use Bootstrap Mode to restore it.');
+            }
         }
         
         return view('admin.auth.login');

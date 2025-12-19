@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\Models\BackupSetting;
 use App\Models\Backup;
 use App\Exceptions\BackupRestoreException;
+use App\Services\DatabaseStateService;
 
 class DatabaseBackupService
 {
@@ -37,6 +38,20 @@ class DatabaseBackupService
         // Ensure backup directory exists
         if (!file_exists($this->backupPath)) {
             mkdir($this->backupPath, 0755, true);
+        }
+    }
+
+    /**
+     * Check if database is available (for bootstrap mode compatibility)
+     *
+     * @return bool
+     */
+    protected function isDatabaseAvailable(): bool
+    {
+        try {
+            return DatabaseStateService::isDatabaseAvailable();
+        } catch (Exception $e) {
+            return false;
         }
     }
 
@@ -100,25 +115,41 @@ class DatabaseBackupService
 
             $filesize = filesize($filepath);
 
-            // Create database record for backup
-            $backup = Backup::create([
-                'filename' => $filename,
-                'type' => 'database',
-                'size' => $filesize,
-                'expires_at' => now()->addDays(BackupSetting::get('default_retention_days', 30)),
-                'created_by' => auth()->check() ? auth()->user()->email : 'system',
-                'metadata' => [
-                    'tables' => count($tables),
-                    'compressed' => config('backup.compress'),
-                ],
-            ]);
+            // Create database record for backup (only if DB is available)
+            if ($this->isDatabaseAvailable()) {
+                try {
+                    $backup = Backup::create([
+                        'filename' => $filename,
+                        'type' => 'database',
+                        'size' => $filesize,
+                        'expires_at' => now()->addDays(BackupSetting::get('default_retention_days', 30)),
+                        'created_by' => auth()->check() ? auth()->user()->email : 'system',
+                        'metadata' => [
+                            'tables' => count($tables),
+                            'compressed' => config('backup.compress'),
+                        ],
+                    ]);
 
-            Log::info('Database backup created successfully', [
-                'filename' => $filename,
-                'size' => $filesize,
-                'tables' => count($tables),
-                'backup_id' => $backup->id,
-            ]);
+                    Log::info('Database backup created successfully', [
+                        'filename' => $filename,
+                        'size' => $filesize,
+                        'tables' => count($tables),
+                        'backup_id' => $backup->id,
+                    ]);
+                } catch (Exception $e) {
+                    // If DB record creation fails, log but don't fail the backup
+                    Log::warning('Could not create backup database record', [
+                        'error' => $e->getMessage(),
+                        'filename' => $filename
+                    ]);
+                }
+            } else {
+                Log::info('Database backup created (bootstrap mode - no DB record)', [
+                    'filename' => $filename,
+                    'size' => $filesize,
+                    'tables' => count($tables),
+                ]);
+            }
 
             return [
                 'success' => true,
@@ -288,8 +319,9 @@ class DatabaseBackupService
             }
 
             // Create automatic safety backup before restore (configurable)
+            // Skip in bootstrap mode since database doesn't exist yet
             $safetyBackup = null;
-            if (config('backup.safety_backup_on_restore', true)) {
+            if (config('backup.safety_backup_on_restore', true) && $this->isDatabaseAvailable()) {
                 Log::info('Creating safety backup before restore', ['target_backup' => $filename]);
                 try {
                     $safetyResult = $this->createBackup(true); // Pass true to skip backup limit check
@@ -298,6 +330,8 @@ class DatabaseBackupService
                 } catch (Exception $e) {
                     Log::warning('Could not create safety backup, proceeding anyway', ['error' => $e->getMessage()]);
                 }
+            } else {
+                Log::info('Skipping safety backup (bootstrap mode or disabled)', ['target_backup' => $filename]);
             }
 
             // Ensure any previous transactions are resolved before starting restore
@@ -307,6 +341,14 @@ class DatabaseBackupService
             // MySQL DDL (CREATE/ALTER) performs implicit commits, which would
             // end the transaction and cause "There is no active transaction"
             // when we try to commit. We rely on the dump's own safety.
+            
+            // Ensure database exists (for bootstrap mode)
+            $databaseName = $this->dbConfig['database'] ?? null;
+            if ($databaseName && !$this->isDatabaseAvailable()) {
+                // In bootstrap mode, ensure database exists before restore
+                $bootstrapDbService = app(\App\Services\BootstrapDatabaseService::class);
+                $bootstrapDbService->ensureDatabaseExists($databaseName);
+            }
             
             try {
                 // Disable foreign key checks first
@@ -398,8 +440,8 @@ class DatabaseBackupService
         $safetyBackup = null;
         
         try {
-            // Create safety backup if enabled
-            if (config('backup.safety_backup_on_restore', true)) {
+            // Create safety backup if enabled (skip in bootstrap mode)
+            if (config('backup.safety_backup_on_restore', true) && $this->isDatabaseAvailable()) {
                 try {
                     $safetyResult = $this->createBackup(true); // Pass true to skip backup limit check
                     $safetyBackup = $safetyResult['filename'];
@@ -407,6 +449,8 @@ class DatabaseBackupService
                 } catch (Exception $e) {
                     Log::warning('Could not create safety backup', ['error' => $e->getMessage()]);
                 }
+            } else {
+                Log::info('Skipping safety backup for streaming restore (bootstrap mode or disabled)');
             }
 
             // Ensure any previous transactions are resolved before starting restore
@@ -421,6 +465,14 @@ class DatabaseBackupService
 
             if (!$handle) {
                 throw new Exception("Could not open backup file for reading");
+            }
+
+            // Ensure database exists (for bootstrap mode)
+            $databaseName = $this->dbConfig['database'] ?? null;
+            if ($databaseName && !$this->isDatabaseAvailable()) {
+                // In bootstrap mode, ensure database exists before restore
+                $bootstrapDbService = app(\App\Services\BootstrapDatabaseService::class);
+                $bootstrapDbService->ensureDatabaseExists($databaseName);
             }
 
             try {
@@ -670,8 +722,17 @@ class DatabaseBackupService
                 unlink($filepath);
             }
             
-            // Delete database record
-            Backup::where('filename', $filename)->delete();
+            // Delete database record (only if DB is available)
+            if ($this->isDatabaseAvailable()) {
+                try {
+                    Backup::where('filename', $filename)->delete();
+                } catch (Exception $e) {
+                    Log::warning('Could not delete backup database record', [
+                        'error' => $e->getMessage(),
+                        'filename' => $filename
+                    ]);
+                }
+            }
             
             Log::info('Backup deleted', [
                 'filename' => $filename,
@@ -699,6 +760,18 @@ class DatabaseBackupService
      */
     public function cleanupOldBackups(bool $force = false): array
     {
+        // In bootstrap mode, cleanup is not available (no DB access)
+        if (!$this->isDatabaseAvailable()) {
+            Log::info('Cleanup skipped - database not available (bootstrap mode)');
+            return [
+                'deleted' => [],
+                'kept' => [],
+                'deleted_count' => 0,
+                'kept_count' => 0,
+                'mode' => 'skipped_bootstrap'
+            ];
+        }
+
         $retentionDays = config('backup.retention_days');
         $maxBackups = BackupSetting::get('max_backups', null);
         
@@ -709,8 +782,19 @@ class DatabaseBackupService
         if ($force) {
             Log::info('Force cleanup initiated - will keep only most recent backup');
             
-            // Get all backups except the newest one
-            $allBackups = Backup::orderBy('created_at', 'desc')->get();
+            try {
+                // Get all backups except the newest one
+                $allBackups = Backup::orderBy('created_at', 'desc')->get();
+            } catch (Exception $e) {
+                Log::warning('Could not access backup records for cleanup', ['error' => $e->getMessage()]);
+                return [
+                    'deleted' => [],
+                    'kept' => [],
+                    'deleted_count' => 0,
+                    'kept_count' => 0,
+                    'mode' => 'error'
+                ];
+            }
             
             if ($allBackups->count() > 1) {
                 // Keep the first (newest) one, delete all others
@@ -759,7 +843,12 @@ class DatabaseBackupService
         // Normal cleanup mode (not forced)
         
         // Method 1: Delete expired backups (based on expires_at)
-        $expiredBackups = Backup::expired()->get();
+        try {
+            $expiredBackups = Backup::expired()->get();
+        } catch (Exception $e) {
+            Log::warning('Could not access expired backups', ['error' => $e->getMessage()]);
+            $expiredBackups = collect([]);
+        }
         
         foreach ($expiredBackups as $backup) {
             try {
@@ -785,7 +874,12 @@ class DatabaseBackupService
         if ($retentionDays && $retentionDays > 0) {
             $cutoffDate = Carbon::now()->subDays($retentionDays);
             
-            $oldBackups = Backup::where('created_at', '<', $cutoffDate)->get();
+            try {
+                $oldBackups = Backup::where('created_at', '<', $cutoffDate)->get();
+            } catch (Exception $e) {
+                Log::warning('Could not access old backups', ['error' => $e->getMessage()]);
+                $oldBackups = collect([]);
+            }
             
             foreach ($oldBackups as $backup) {
                 // Skip if already deleted
@@ -885,8 +979,19 @@ class DatabaseBackupService
         
         $totalSize = array_sum(array_column($backups, 'size'));
         
-        // Get backup frequency in days based on schedule
-        $schedule = BackupSetting::get('schedule', config('backup.schedule'));
+        // Get backup frequency in days based on schedule (use config if DB not available)
+        try {
+            $schedule = $this->isDatabaseAvailable() 
+                ? BackupSetting::get('schedule', config('backup.schedule'))
+                : config('backup.schedule', 'daily');
+            $retentionDays = $this->isDatabaseAvailable()
+                ? BackupSetting::get('default_retention_days', config('backup.retention_days'))
+                : config('backup.retention_days', 30);
+        } catch (Exception $e) {
+            $schedule = config('backup.schedule', 'daily');
+            $retentionDays = config('backup.retention_days', 30);
+        }
+
         $backupFrequencyDays = match($schedule) {
             'daily' => 1,
             'weekly' => 7,
@@ -900,7 +1005,7 @@ class DatabaseBackupService
             'total_size_formatted' => $this->formatBytes($totalSize),
             'oldest_backup' => !empty($backups) ? end($backups)['created_at_formatted'] : null,
             'newest_backup' => !empty($backups) ? $backups[0]['created_at_formatted'] : null,
-            'retention_days' => BackupSetting::get('default_retention_days', config('backup.retention_days')),
+            'retention_days' => $retentionDays,
             'schedule' => $schedule,
             'backup_frequency_days' => $backupFrequencyDays
         ];
@@ -1287,18 +1392,28 @@ class DatabaseBackupService
             // Restore from saved file
             $result = $this->restoreBackup($filename);
             
-            // Create database record for imported backup
-            Backup::create([
-                'filename' => $filename,
-                'type' => $validation['metadata']['type'] ?? 'unknown',
-                'size' => $validation['size'],
-                'expires_at' => now()->addDays(BackupSetting::get('default_retention_days', 30)),
-                'created_by' => auth()->check() ? auth()->user()->email : 'import',
-                'metadata' => array_merge($validation['metadata'], [
-                    'imported' => true,
-                    'original_filename' => $file->getClientOriginalName(),
-                ]),
-            ]);
+            // Create database record for imported backup (only if DB is available)
+            if ($this->isDatabaseAvailable()) {
+                try {
+                    Backup::create([
+                        'filename' => $filename,
+                        'type' => $validation['metadata']['type'] ?? 'unknown',
+                        'size' => $validation['size'],
+                        'expires_at' => now()->addDays(BackupSetting::get('default_retention_days', 30)),
+                        'created_by' => auth()->check() ? auth()->user()->email : 'import',
+                        'metadata' => array_merge($validation['metadata'], [
+                            'imported' => true,
+                            'original_filename' => $file->getClientOriginalName(),
+                        ]),
+                    ]);
+                } catch (Exception $e) {
+                    // If DB record creation fails, log but don't fail the import
+                    Log::warning('Could not create import database record', [
+                        'error' => $e->getMessage(),
+                        'filename' => $filename
+                    ]);
+                }
+            }
             
             Log::info('Backup imported and restored successfully', [
                 'original_filename' => $file->getClientOriginalName(),
@@ -1366,7 +1481,17 @@ class DatabaseBackupService
      */
     protected function checkMaxBackupLimit(): void
     {
-        $maxBackups = BackupSetting::get('max_backups', null);
+        // Skip limit check in bootstrap mode
+        if (!$this->isDatabaseAvailable()) {
+            return;
+        }
+
+        try {
+            $maxBackups = BackupSetting::get('max_backups', null);
+        } catch (Exception $e) {
+            // If can't access settings, skip limit check
+            return;
+        }
         
         // If no limit is set, allow creation
         if ($maxBackups === null || $maxBackups <= 0) {

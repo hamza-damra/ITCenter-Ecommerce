@@ -1,10 +1,8 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Our Products - IT Center'); ?>
 
-@section('title', 'Our Products - IT Center')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <!-- Import shared components CSS -->
-<link rel="stylesheet" href="{{ asset('css/components.css') }}">
+<link rel="stylesheet" href="<?php echo e(asset('css/components.css')); ?>">
 <!-- noUiSlider CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -15,11 +13,11 @@
     /* Override font - exclude Font Awesome icons */
     body,
     body *:not(.fa):not(.fas):not(.far):not(.fab):not(.fal):not(.fad):not([class*="fa-"]) {
-        @if(is_rtl())
+        <?php if(is_rtl()): ?>
         font-family: 'Cairo', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-        @else
+        <?php else: ?>
         font-family: 'Poppins', 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-        @endif
+        <?php endif; ?>
     }
 
     /* Ensure Font Awesome icons keep their font */
@@ -282,7 +280,7 @@
     }
 
     /* RTL Support for Price Input */
-    @if(is_rtl())
+    <?php if(is_rtl()): ?>
     .price-input-container {
         flex-direction: row-reverse;
     }
@@ -291,7 +289,7 @@
         margin-right: 0;
         margin-left: 0.5rem;
     }
-    @endif
+    <?php endif; ?>
         background-color: #1a4dbf !important;
     }
 
@@ -953,13 +951,13 @@
         position: absolute !important;
         top: 14px !important;
         bottom: auto !important;
-        @if(is_rtl())
+        <?php if(is_rtl()): ?>
         left: 14px !important;
         right: auto !important;
-        @else
+        <?php else: ?>
         right: 14px !important;
         left: auto !important;
-        @endif
+        <?php endif; ?>
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
@@ -1010,13 +1008,13 @@
         position: absolute !important;
         top: 14px !important;
         bottom: auto !important;
-        @if(is_rtl())
+        <?php if(is_rtl()): ?>
         right: 14px !important;
         left: auto !important;
-        @else
+        <?php else: ?>
         left: 14px !important;
         right: auto !important;
-        @endif
+        <?php endif; ?>
         background: linear-gradient(135deg, #2762f3 0%, #1a4dbf 100%);
         color: #fff;
         padding: 0.35rem 0.75rem;
@@ -1517,12 +1515,12 @@
     }
 
     /* RTL Support for Search Results */
-    @if(is_rtl())
+    <?php if(is_rtl()): ?>
     .search-results-info h3,
     .search-results-info p {
         direction: rtl;
     }
-    @endif
+    <?php endif; ?>
 
     .no-results {
         text-align: center;
@@ -1611,9 +1609,9 @@
         margin-bottom: 1.25rem;
         font-weight: 700;
         line-height: 1.3;
-        @if(is_rtl())
+        <?php if(is_rtl()): ?>
         direction: rtl;
-        @endif
+        <?php endif; ?>
     }
 
     .no-results p {
@@ -1624,10 +1622,10 @@
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
-        @if(is_rtl())
+        <?php if(is_rtl()): ?>
         direction: rtl;
         text-align: center;
-        @endif
+        <?php endif; ?>
     }
 
     .no-results-actions {
@@ -1635,9 +1633,9 @@
         gap: 1rem;
         justify-content: center;
         flex-wrap: wrap;
-        @if(is_rtl())
+        <?php if(is_rtl()): ?>
         flex-direction: row-reverse;
-        @endif
+        <?php endif; ?>
     }
 
     .btn-primary-action {
@@ -1654,9 +1652,9 @@
         box-shadow: 0 8px 25px rgba(59, 130, 246, 0.35);
         font-size: 1.05rem;
         border: none;
-        @if(is_rtl())
+        <?php if(is_rtl()): ?>
         flex-direction: row-reverse;
-        @endif
+        <?php endif; ?>
     }
 
     .btn-primary-action:hover {
@@ -1682,9 +1680,9 @@
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         border: 2px solid #3B82F6;
         font-size: 1.05rem;
-        @if(is_rtl())
+        <?php if(is_rtl()): ?>
         flex-direction: row-reverse;
-        @endif
+        <?php endif; ?>
     }
 
     .btn-secondary-action:hover {
@@ -1699,13 +1697,13 @@
     }
 
     /* RTL Support for No Results */
-    @if(is_rtl())
+    <?php if(is_rtl()): ?>
     .no-results h3,
     .no-results p {
         direction: rtl;
         text-align: center;
     }
-    @endif
+    <?php endif; ?>
 
     /* Product Grid Fade In Animation */
     .product-card {
@@ -1856,10 +1854,26 @@
     <div class="container">
         <div class="products-container">
             <!-- Filter Sidebar Component (includes mobile toggle button) -->
-            <x-filter-sidebar 
-                :filters="$availableFilters" 
-                :current="request()->all()"
-            />
+            <?php if (isset($component)) { $__componentOriginalbe8e3a5154d26c68e645d9e6759b4422 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalbe8e3a5154d26c68e645d9e6759b4422 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.filter-sidebar','data' => ['filters' => $availableFilters,'current' => request()->all()]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('filter-sidebar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['filters' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($availableFilters),'current' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(request()->all())]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalbe8e3a5154d26c68e645d9e6759b4422)): ?>
+<?php $attributes = $__attributesOriginalbe8e3a5154d26c68e645d9e6759b4422; ?>
+<?php unset($__attributesOriginalbe8e3a5154d26c68e645d9e6759b4422); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalbe8e3a5154d26c68e645d9e6759b4422)): ?>
+<?php $component = $__componentOriginalbe8e3a5154d26c68e645d9e6759b4422; ?>
+<?php unset($__componentOriginalbe8e3a5154d26c68e645d9e6759b4422); ?>
+<?php endif; ?>
 
             <!-- Products Content -->
             <div class="products-content" id="productsContent">
@@ -1867,173 +1881,193 @@
                 <div class="products-loading-container" id="productsLoading">
                     <div class="products-loading-content">
                         <div class="products-loading-spinner"></div>
-                        <div class="products-loading-text">{{ is_rtl() ? 'جاري التحميل...' : 'Loading...' }}</div>
-                        <div class="products-loading-subtext">{{ is_rtl() ? 'يرجى الانتظار' : 'Please wait' }}</div>
+                        <div class="products-loading-text"><?php echo e(is_rtl() ? 'جاري التحميل...' : 'Loading...'); ?></div>
+                        <div class="products-loading-subtext"><?php echo e(is_rtl() ? 'يرجى الانتظار' : 'Please wait'); ?></div>
                     </div>
                 </div>
                 
                 <!-- Tags Carousel Filter -->
-                @if(isset($tags) && count($tags) > 0)
-                    <x-tags-carousel :tags="$tags" :activeTag="$activeTag ?? null" />
-                @endif
+                <?php if(isset($tags) && count($tags) > 0): ?>
+                    <?php if (isset($component)) { $__componentOriginalc88253f69ef46e675397f605cbbb0835 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalc88253f69ef46e675397f605cbbb0835 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.tags-carousel','data' => ['tags' => $tags,'activeTag' => $activeTag ?? null]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('tags-carousel'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['tags' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($tags),'activeTag' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($activeTag ?? null)]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalc88253f69ef46e675397f605cbbb0835)): ?>
+<?php $attributes = $__attributesOriginalc88253f69ef46e675397f605cbbb0835; ?>
+<?php unset($__attributesOriginalc88253f69ef46e675397f605cbbb0835); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc88253f69ef46e675397f605cbbb0835)): ?>
+<?php $component = $__componentOriginalc88253f69ef46e675397f605cbbb0835; ?>
+<?php unset($__componentOriginalc88253f69ef46e675397f605cbbb0835); ?>
+<?php endif; ?>
+                <?php endif; ?>
                 
                 <!-- Active Tag Info -->
-                @if(isset($activeTag) && $activeTag)
+                <?php if(isset($activeTag) && $activeTag): ?>
                 <div class="active-tag-info">
-                    <div class="active-tag-badge" style="--tag-color: {{ $activeTag->color }};">
-                        @if($activeTag->icon)
-                            <i class="{{ $activeTag->icon }}"></i>
-                        @else
-                            <span class="tag-dot" style="background: {{ $activeTag->color }};"></span>
-                        @endif
-                        <span>{{ $activeTag->name }}</span>
+                    <div class="active-tag-badge" style="--tag-color: <?php echo e($activeTag->color); ?>;">
+                        <?php if($activeTag->icon): ?>
+                            <i class="<?php echo e($activeTag->icon); ?>"></i>
+                        <?php else: ?>
+                            <span class="tag-dot" style="background: <?php echo e($activeTag->color); ?>;"></span>
+                        <?php endif; ?>
+                        <span><?php echo e($activeTag->name); ?></span>
                     </div>
-                    <span class="active-tag-count">{{ $products->total() }} {{ __('messages.products_found') ?? 'products found' }}</span>
+                    <span class="active-tag-count"><?php echo e($products->total()); ?> <?php echo e(__('messages.products_found') ?? 'products found'); ?></span>
                 </div>
-                @endif
+                <?php endif; ?>
                 
-        @if(request('search'))
+        <?php if(request('search')): ?>
         <!-- Search Results Info Box -->
         <div class="search-results-info-box">
             <div class="search-query-display">
                 <div class="search-label">
-                    @if(is_rtl())
-                    <span>{{ 'نتائج البحث عن' }}</span>
+                    <?php if(is_rtl()): ?>
+                    <span><?php echo e('نتائج البحث عن'); ?></span>
                     <i class="fas fa-search"></i>
-                    @else
+                    <?php else: ?>
                     <i class="fas fa-search"></i>
-                    <span>{{ 'Search results for' }}</span>
-                    @endif
+                    <span><?php echo e('Search results for'); ?></span>
+                    <?php endif; ?>
                 </div>
-                <div class="search-query">"{{ request('search') }}"</div>
+                <div class="search-query">"<?php echo e(request('search')); ?>"</div>
             </div>
             <div class="search-results-count">
-                <span class="count-number">{{ $products->total() }}</span>
-                <span class="count-label">{{ is_rtl() ? 'منتج' : 'products' }}</span>
+                <span class="count-number"><?php echo e($products->total()); ?></span>
+                <span class="count-label"><?php echo e(is_rtl() ? 'منتج' : 'products'); ?></span>
             </div>
         </div>
-        @else
+        <?php else: ?>
         <div class="section-header">
-            <h2>{{ __t('messages.all_products') }}</h2>
+            <h2><?php echo e(__t('messages.all_products')); ?></h2>
         </div>
-        @endif
+        <?php endif; ?>
 
-        @if($products->count() > 0)
+        <?php if($products->count() > 0): ?>
         <div class="product-grid">
-            @forelse($products as $product)
-            <a href="{{ route('product.detail', $product->slug) }}" class="product-card-link">
+            <?php $__empty_1 = true; $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <a href="<?php echo e(route('product.detail', $product->slug)); ?>" class="product-card-link">
                 <div class="product-card">
                     <div class="product-image">
-                        @if($product->is_new)
-                        <div class="product-badge">{{ __t('messages.new') }}</div>
-                        @elseif($product->sale_price && $product->sale_price < $product->price)
-                        <div class="product-badge">{{ __t('messages.sale') }}</div>
-                        @elseif($product->is_featured)
-                        <div class="product-badge">{{ __t('messages.hot') }}</div>
-                        @endif
-                        <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.preventDefault(); event.stopPropagation();">
+                        <?php if($product->is_new): ?>
+                        <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
+                        <?php elseif($product->sale_price && $product->sale_price < $product->price): ?>
+                        <div class="product-badge"><?php echo e(__t('messages.sale')); ?></div>
+                        <?php elseif($product->is_featured): ?>
+                        <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
+                        <?php endif; ?>
+                        <div class="wishlist-btn" data-product-id="<?php echo e($product->id); ?>" onclick="event.preventDefault(); event.stopPropagation();">
                             <i class="far fa-heart"></i>
                         </div>
-                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}" loading="lazy" decoding="async">
+                        <img src="<?php echo e($product->main_image); ?>" alt="<?php echo e($product->name); ?>" loading="lazy" decoding="async">
                     </div>
                     <div class="product-info">
-                        <div class="product-title">{{ $product->name }}</div>
-                        <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
+                        <div class="product-title"><?php echo e($product->name); ?></div>
+                        <div class="product-description"><?php echo e(Str::limit($product->short_description, 60)); ?></div>
                         <div class="product-footer">
                             <div class="product-price">
-                                @if($product->sale_price && $product->sale_price < $product->price)
-                                    <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
-                                    <span class="current-price">₪ {{ number_format($product->sale_price, 0) }}</span>
-                                @else
-                                    <span class="current-price">₪ {{ number_format($product->price, 0) }}</span>
-                                @endif
+                                <?php if($product->sale_price && $product->sale_price < $product->price): ?>
+                                    <span class="original-price">₪ <?php echo e(number_format($product->price, 0)); ?></span>
+                                    <span class="current-price">₪ <?php echo e(number_format($product->sale_price, 0)); ?></span>
+                                <?php else: ?>
+                                    <span class="current-price">₪ <?php echo e(number_format($product->price, 0)); ?></span>
+                                <?php endif; ?>
                             </div>
-                            @if($product->stock_status === 'out_of_stock')
+                            <?php if($product->stock_status === 'out_of_stock'): ?>
                             <button class="add-to-cart-icon out-of-stock"
-                                    data-product-id="{{ $product->id }}"
-                                    data-product-name="{{ $product->name }}"
-                                    title="{{ __t('messages.request_product') }}"
-                                    aria-label="{{ __t('messages.request_product') }}"
-                                    onclick="event.preventDefault(); event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
+                                    data-product-id="<?php echo e($product->id); ?>"
+                                    data-product-name="<?php echo e($product->name); ?>"
+                                    title="<?php echo e(__t('messages.request_product')); ?>"
+                                    aria-label="<?php echo e(__t('messages.request_product')); ?>"
+                                    onclick="event.preventDefault(); event.stopPropagation(); requestProduct(<?php echo e($product->id); ?>, '<?php echo e($product->name); ?>');">
                                 <i class="fas fa-bell"></i>
                             </button>
-                            @else
-                            <button class="add-to-cart-icon {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
-                                    data-product-id="{{ $product->id }}"
-                                    title="{{ in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                    aria-label="{{ in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                    onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $product->id }}, this);">
-                                <i class="fas {{ in_array($product->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
+                            <?php else: ?>
+                            <button class="add-to-cart-icon <?php echo e(in_array($product->id, $cartProductIds) ? 'in-cart' : ''); ?>"
+                                    data-product-id="<?php echo e($product->id); ?>"
+                                    title="<?php echo e(in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    aria-label="<?php echo e(in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                    onclick="event.preventDefault(); event.stopPropagation(); addToCart(<?php echo e($product->id); ?>, this);">
+                                <i class="fas <?php echo e(in_array($product->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
                             </button>
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </a>
-            @empty
-            @endforelse
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+            <?php endif; ?>
         </div>
-        @else
+        <?php else: ?>
         <div class="no-results">
             <div class="no-results-content">
                 <div class="no-results-icon">
                     <i class="fas fa-search"></i>
                 </div>
                 <h3>
-                    @if(is_rtl())
+                    <?php if(is_rtl()): ?>
                         لم يتم العثور على نتائج
-                    @else
+                    <?php else: ?>
                         No Results Found
-                    @endif
+                    <?php endif; ?>
                 </h3>
                 <p>
-                    @if(request('search'))
-                        @if(is_rtl())
-                            لم يتم العثور على نتائج مطابقة لبحثك عن <strong>"{{ request('search') }}"</strong><br>
+                    <?php if(request('search')): ?>
+                        <?php if(is_rtl()): ?>
+                            لم يتم العثور على نتائج مطابقة لبحثك عن <strong>"<?php echo e(request('search')); ?>"</strong><br>
                             جرب استخدام كلمات مفتاحية مختلفة أو تصفح جميع المنتجات.
-                        @else
-                            No results found matching your search for <strong>"{{ request('search') }}"</strong><br>
+                        <?php else: ?>
+                            No results found matching your search for <strong>"<?php echo e(request('search')); ?>"</strong><br>
                             Try using different keywords or browse all products.
-                        @endif
-                    @else
-                        @if(is_rtl())
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <?php if(is_rtl()): ?>
                             لا توجد منتجات متاحة في الوقت الحالي.
-                        @else
+                        <?php else: ?>
                             No products are currently available.
-                        @endif
-                    @endif
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </p>
                 <div class="no-results-actions">
-                    <a href="{{ route('products') }}" class="btn-primary-action">
-                        @if(is_rtl())
+                    <a href="<?php echo e(route('products')); ?>" class="btn-primary-action">
+                        <?php if(is_rtl()): ?>
                             <span>عرض جميع المنتجات</span>
                             <i class="fas fa-th-large"></i>
-                        @else
+                        <?php else: ?>
                             <i class="fas fa-th-large"></i>
                             <span>View All Products</span>
-                        @endif
+                        <?php endif; ?>
                     </a>
-                    @if(request('search'))
-                    <a href="{{ route('home') }}" class="btn-secondary-action">
-                        @if(is_rtl())
+                    <?php if(request('search')): ?>
+                    <a href="<?php echo e(route('home')); ?>" class="btn-secondary-action">
+                        <?php if(is_rtl()): ?>
                             <span>العودة للرئيسية</span>
                             <i class="fas fa-home"></i>
-                        @else
+                        <?php else: ?>
                             <i class="fas fa-home"></i>
                             <span>Back to Home</span>
-                        @endif
+                        <?php endif; ?>
                     </a>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
-        @endif
+        <?php endif; ?>
 
-        @if(isset($products) && method_exists($products, 'hasPages') && $products->hasPages())
+        <?php if(isset($products) && method_exists($products, 'hasPages') && $products->hasPages()): ?>
         <div class="pagination-wrapper" style="display: flex; justify-content: center; margin: 3rem 0 2rem 0; padding: 0 1rem; width: 100%;">
-            {{ $products->links() }}
+            <?php echo e($products->links()); ?>
+
         </div>
-        @endif
+        <?php endif; ?>
             </div><!-- End products-content -->
         </div><!-- End products-container -->
     </div><!-- End container -->
@@ -2053,10 +2087,10 @@
     let isFiltering = false;
     
     const FILTER_CONFIG = {
-        minPrice: {{ $priceRange['min'] }},
-        maxPrice: {{ $priceRange['max'] }},
-        isRTL: {{ is_rtl() ? 'true' : 'false' }},
-        productsRoute: '{{ route("products") }}'
+        minPrice: <?php echo e($priceRange['min']); ?>,
+        maxPrice: <?php echo e($priceRange['max']); ?>,
+        isRTL: <?php echo e(is_rtl() ? 'true' : 'false'); ?>,
+        productsRoute: '<?php echo e(route("products")); ?>'
     };
 
     // Loading indicator functions
@@ -2111,13 +2145,7 @@
         if (minPriceInput) minPriceInput.value = FILTER_CONFIG.minPrice;
         if (maxPriceInput) maxPriceInput.value = FILTER_CONFIG.maxPrice;
 
-        // Update hidden inputs
-        const minPriceHidden = document.getElementById('minPrice');
-        const maxPriceHidden = document.getElementById('maxPrice');
-        if (minPriceHidden) minPriceHidden.value = FILTER_CONFIG.minPrice;
-        if (maxPriceHidden) maxPriceHidden.value = FILTER_CONFIG.maxPrice;
-
-        // Redirect to products page using AJAX (preserving search if exists)
+        // Redirect to products page (preserving search if exists)
         const form = document.getElementById('filterForm');
         const searchInput = form ? form.querySelector('input[name="search"]') : null;
         const searchValue = searchInput ? searchInput.value : '';
@@ -2126,39 +2154,7 @@
             ? FILTER_CONFIG.productsRoute + '?search=' + encodeURIComponent(searchValue)
             : FILTER_CONFIG.productsRoute;
         
-        // Update URL without reload
-        window.history.pushState({ path: url }, '', url);
-        
-        // Apply filters using AJAX
-        if (typeof window.applyFilters === 'function') {
-            window.applyFilters();
-        } else {
-            // Fallback: try to fetch directly without reload
-            console.warn('⚠️ applyFilters function not found, trying direct fetch');
-            fetch(url, {
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' }
-            })
-            .then(response => response.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const newGrid = doc.querySelector('.product-grid');
-                const newPagination = doc.querySelector('.pagination-wrapper');
-                const currentGrid = document.querySelector('.product-grid');
-                const currentPagination = document.querySelector('.pagination-wrapper');
-                
-                if (newGrid && currentGrid) {
-                    currentGrid.innerHTML = newGrid.innerHTML;
-                }
-                if (newPagination && currentPagination) {
-                    currentPagination.innerHTML = newPagination.innerHTML;
-                }
-            })
-            .catch(err => {
-                console.error('Fallback fetch failed:', err);
-                alert('Error loading products. Please refresh the page.');
-            });
-        }
+        window.location.href = url;
     }
 
     // Apply filters function (exposed globally for filter-sidebar component)
@@ -2182,166 +2178,56 @@
         const formData = new FormData(form);
         const params = new URLSearchParams();
 
-        // Add all form fields
         for (const [key, value] of formData.entries()) {
             if (value && String(value).trim() !== '') {
-                // Handle array values (like categories[], brands[])
-                if (key.endsWith('[]')) {
-                    params.append(key, value);
-                } else {
-                    params.append(key, value);
-                }
+                params.append(key, value);
             }
         }
 
-        // Preserve search query if exists
-        const searchParam = new URLSearchParams(window.location.search).get('search');
-        if (searchParam) {
-            params.set('search', searchParam);
-        }
-
-        const url = FILTER_CONFIG.productsRoute + (params.toString() ? '?' + params.toString() : '');
+        const url = FILTER_CONFIG.productsRoute + '?' + params.toString();
         console.log('📍 Filter URL:', url);
 
-        // Update browser URL without reload
-        window.history.pushState({ path: url, filters: params.toString() }, '', url);
+        // Update browser URL
+        history.pushState({}, '', url);
 
-        // Fetch filtered products using AJAX
+        // Fetch filtered products
         fetch(url, {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'text/html',
-                'Cache-Control': 'no-cache'
-            }
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('HTTP ' + response.status);
-            }
+            if (!response.ok) throw new Error('HTTP ' + response.status);
             return response.text();
         })
         .then(html => {
-            try {
-                console.log('📦 Received HTML response, length:', html.length);
-                
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                
-                // Check for errors in parsing
-                const parserErrors = doc.querySelectorAll('parsererror');
-                if (parserErrors.length > 0) {
-                    console.error('❌ HTML parsing errors:', parserErrors);
-                }
-                
-                // Get only the product grid and pagination from new content
-                const newProductGrid = doc.querySelector('.product-grid');
-                const newNoResults = doc.querySelector('.no-results');
-                const newPagination = doc.querySelector('.pagination-wrapper');
-                
-                // Get current elements
-                const currentProductGrid = document.querySelector('.product-grid');
-                const currentNoResults = document.querySelector('.no-results');
-                const currentPagination = document.querySelector('.pagination-wrapper');
-                
-                console.log('🔍 Content check:', {
-                    newProductGridFound: !!newProductGrid,
-                    newNoResultsFound: !!newNoResults,
-                    newPaginationFound: !!newPagination,
-                    currentProductGridFound: !!currentProductGrid,
-                    currentNoResultsFound: !!currentNoResults,
-                    currentPaginationFound: !!currentPagination
-                });
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const newContent = doc.getElementById('productsContent');
+            const currentContent = document.getElementById('productsContent');
 
-                // Update product grid or no-results message
-                if (newProductGrid && currentProductGrid) {
-                    // Hide current grid with fade
-                    currentProductGrid.style.opacity = '0';
-                    currentProductGrid.style.transition = 'opacity 0.2s ease';
-                    
-                    setTimeout(() => {
-                        // Replace product grid content
-                        currentProductGrid.innerHTML = newProductGrid.innerHTML;
-                        currentProductGrid.style.opacity = '1';
-                        
-                        // Re-initialize wishlist and cart buttons
-                        if (typeof initializeWishlistButtons === 'function') {
-                            initializeWishlistButtons();
-                        }
-                        if (typeof initializeCartButtons === 'function') {
-                            initializeCartButtons();
-                        }
-                        
-                        console.log('✅ Product grid updated');
-                    }, 200);
-                } else if (newNoResults) {
-                    // Handle no results case
-                    if (currentProductGrid) {
-                        currentProductGrid.style.opacity = '0';
-                        setTimeout(() => {
-                            currentProductGrid.style.display = 'none';
-                        }, 200);
-                    }
-                    
-                    if (currentNoResults) {
-                        currentNoResults.style.opacity = '0';
-                        setTimeout(() => {
-                            currentNoResults.innerHTML = newNoResults.innerHTML;
-                            currentNoResults.style.opacity = '1';
-                        }, 200);
-                    } else {
-                        // Insert no-results if it doesn't exist
-                        const productsContent = document.getElementById('productsContent');
-                        if (productsContent) {
-                            const noResultsHTML = newNoResults.outerHTML;
-                            if (currentProductGrid) {
-                                currentProductGrid.insertAdjacentHTML('afterend', noResultsHTML);
-                            } else {
-                                productsContent.insertAdjacentHTML('beforeend', noResultsHTML);
-                            }
-                        }
-                    }
+            if (newContent && currentContent) {
+                // Get the loading indicator before replacing content
+                const loadingIndicator = document.getElementById('productsLoading');
+                
+                // Update content
+                currentContent.innerHTML = newContent.innerHTML;
+                
+                // Re-add the loading indicator at the beginning
+                if (loadingIndicator) {
+                    currentContent.insertBefore(loadingIndicator, currentContent.firstChild);
                 }
                 
-                // Update pagination
-                if (newPagination && currentPagination) {
-                    currentPagination.innerHTML = newPagination.innerHTML;
-                    handlePaginationLinks();
-                    console.log('✅ Pagination updated');
-                } else if (newPagination && !currentPagination) {
-                    // Add pagination if it doesn't exist
-                    const productsContent = document.getElementById('productsContent');
-                    if (productsContent) {
-                        productsContent.insertAdjacentHTML('beforeend', newPagination.outerHTML);
-                        handlePaginationLinks();
-                    }
-                } else if (!newPagination && currentPagination) {
-                    // Remove pagination if no longer needed
-                    currentPagination.remove();
-                }
-                
-                // Smooth scroll to products section and hide loading
-                setTimeout(() => {
-                    const productsSection = document.querySelector('.products-section');
-                    if (productsSection) {
-                        productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                    hideLoading();
-                    console.log('✅ Products updated successfully');
-                }, 300);
-            } catch (parseError) {
-                console.error('❌ Error parsing response:', parseError);
-                console.error('Response HTML:', html.substring(0, 500));
-                hideLoading();
-                alert('Error parsing response. Please try again.');
+                currentContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                console.log('✅ Products updated');
+            } else {
+                console.error('❌ Content elements not found');
             }
+
+            hideLoading();
         })
         .catch(error => {
             console.error('❌ Filter error:', error);
             hideLoading();
-            // Don't reload - show error message instead
-            alert('Error loading products. Please check your connection and try again.');
-            console.error('Full error:', error);
+            window.location.href = url;
         });
     }
 
@@ -2351,94 +2237,9 @@
         debounceTimer = setTimeout(window.applyFilters, delay || 300);
     }
 
-    // Handle pagination links with AJAX
-    function handlePaginationLinks() {
-        const paginationLinks = document.querySelectorAll('.pagination a, .pagination-wrapper a');
-        paginationLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const href = this.getAttribute('href');
-                if (!href || href === '#' || href === 'javascript:void(0)') {
-                    return;
-                }
-                
-                console.log('📄 Pagination link clicked:', href);
-                
-                // Update URL
-                window.history.pushState({ path: href }, '', href);
-                
-                // Fetch new page
-                fetch(href, {
-                    method: 'GET',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'text/html',
-                        'Cache-Control': 'no-cache'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('HTTP ' + response.status);
-                    return response.text();
-                })
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const newContent = doc.getElementById('productsContent');
-                    const currentContent = document.getElementById('productsContent');
-
-                    if (newContent && currentContent) {
-                        showLoading();
-                        currentContent.style.opacity = '0.5';
-                        
-                        setTimeout(() => {
-                            currentContent.innerHTML = newContent.innerHTML;
-                            currentContent.style.opacity = '1';
-                            
-                            // Re-initialize pagination links
-                            handlePaginationLinks();
-                            
-                            // Scroll to top
-                            const productsSection = document.querySelector('.products-section');
-                            if (productsSection) {
-                                productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            }
-                            
-                            hideLoading();
-                            console.log('✅ Pagination updated');
-                        }, 200);
-                    } else {
-                        console.error('❌ Pagination content not found');
-                        hideLoading();
-                        alert('Error loading page. Please try again.');
-                    }
-                })
-                .catch(error => {
-                    console.error('❌ Pagination error:', error);
-                    hideLoading();
-                    // Don't reload - show error instead
-                    console.warn('⚠️ Pagination error, showing alert instead of reloading');
-                    alert('Error loading page. Please try again.');
-                });
-                
-                return false;
-            });
-        });
-    }
-
     // Initialize everything
     document.addEventListener('DOMContentLoaded', function() {
         console.log('✅ Initializing filter system...');
-        
-        // Initialize pagination links
-        handlePaginationLinks();
-        
-        // Handle browser back/forward buttons
-        window.addEventListener('popstate', function(event) {
-            console.log('🔙 Browser navigation detected');
-            applyFilters();
-        });
 
         const form = document.getElementById('filterForm');
         const minPriceInput = document.getElementById('minPriceInput');
@@ -2449,52 +2250,20 @@
 
         // Prevent form submission (we handle it with AJAX)
         if (form) {
-            // Remove any existing submit handlers
-            form.onsubmit = null;
-            
-            // Add multiple layers of protection
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                e.stopImmediatePropagation();
                 console.log('⛔ Form submission prevented - using AJAX instead');
                 applyFilters();
                 return false;
-            }, true); // Use capture phase
+            });
             
             // Also prevent on form reset
             form.addEventListener('reset', function(e) {
                 e.preventDefault();
-                e.stopPropagation();
                 console.log('⛔ Form reset prevented');
                 return false;
-            }, true);
-            
-            // Prevent any button clicks that might submit
-            form.addEventListener('click', function(e) {
-                const target = e.target;
-                if (target.tagName === 'BUTTON' && (target.type === 'submit' || !target.type)) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    e.stopImmediatePropagation();
-                    console.log('⛔ Button click prevented in form');
-                }
-            }, true);
-            
-            // Prevent form action navigation - multiple ways
-            form.setAttribute('onsubmit', 'return false;');
-            form.setAttribute('data-ajax', 'true');
-            form.action = 'javascript:void(0);';
-            
-            // Override form submit method
-            const originalSubmit = form.submit;
-            form.submit = function() {
-                console.log('⛔ Form.submit() called - preventing');
-                if (typeof window.applyFilters === 'function') {
-                    window.applyFilters();
-                }
-                return false;
-            };
+            });
         } else {
             console.error('❌ Filter form not found!');
         }
@@ -2684,7 +2453,7 @@
         const viewMoreBtn = document.getElementById('brandViewMoreBtn');
         const viewMoreText = document.getElementById('brandViewMoreText');
         const viewMoreIcon = document.getElementById('brandViewMoreIcon');
-        const isRTL = {{ is_rtl() ? 'true' : 'false' }};
+        const isRTL = <?php echo e(is_rtl() ? 'true' : 'false'); ?>;
 
         if (!viewMoreBtn) {
             console.error('View more button not found');
@@ -2791,4 +2560,6 @@
 })();
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/products.blade.php ENDPATH**/ ?>

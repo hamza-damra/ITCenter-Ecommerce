@@ -1,13 +1,45 @@
-{{-- Filter Sidebar Component --}}
-{{-- Usage: <x-filter-sidebar :filters="$availableFilters" :current="$currentFilters" /> --}}
 
-@props([
+
+
+<?php $attributes ??= new \Illuminate\View\ComponentAttributeBag;
+
+$__newAttributes = [];
+$__propNames = \Illuminate\View\ComponentAttributeBag::extractPropNames(([
     'filters' => [],
     'current' => [],
     'category' => null,
-])
+]));
 
-@php
+foreach ($attributes->all() as $__key => $__value) {
+    if (in_array($__key, $__propNames)) {
+        $$__key = $$__key ?? $__value;
+    } else {
+        $__newAttributes[$__key] = $__value;
+    }
+}
+
+$attributes = new \Illuminate\View\ComponentAttributeBag($__newAttributes);
+
+unset($__propNames);
+unset($__newAttributes);
+
+foreach (array_filter(([
+    'filters' => [],
+    'current' => [],
+    'category' => null,
+]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
+    $$__key = $$__key ?? $__value;
+}
+
+$__defined_vars = get_defined_vars();
+
+foreach ($attributes->all() as $__key => $__value) {
+    if (array_key_exists($__key, $__defined_vars)) unset($$__key);
+}
+
+unset($__defined_vars, $__key, $__value); ?>
+
+<?php
     $isRtl = is_rtl();
     $locale = app()->getLocale();
     
@@ -41,39 +73,60 @@
     foreach ((array)$currentAttributes as $attrValues) {
         $activeFilterCount += count((array)$attrValues);
     }
-@endphp
+?>
 
-{{-- Mobile Filter Toggle Button --}}
-<x-mobile-filter-toggle :count="$activeFilterCount" />
 
-{{-- Mobile Filter Overlay --}}
+<?php if (isset($component)) { $__componentOriginald6ef9e8a134c0e9365bc8c39cc85b3cd = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginald6ef9e8a134c0e9365bc8c39cc85b3cd = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.mobile-filter-toggle','data' => ['count' => $activeFilterCount]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('mobile-filter-toggle'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['count' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($activeFilterCount)]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginald6ef9e8a134c0e9365bc8c39cc85b3cd)): ?>
+<?php $attributes = $__attributesOriginald6ef9e8a134c0e9365bc8c39cc85b3cd; ?>
+<?php unset($__attributesOriginald6ef9e8a134c0e9365bc8c39cc85b3cd); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginald6ef9e8a134c0e9365bc8c39cc85b3cd)): ?>
+<?php $component = $__componentOriginald6ef9e8a134c0e9365bc8c39cc85b3cd; ?>
+<?php unset($__componentOriginald6ef9e8a134c0e9365bc8c39cc85b3cd); ?>
+<?php endif; ?>
+
+
 <div class="mobile-filter-overlay" id="mobileFilterOverlay" onclick="closeMobileFilters()"></div>
 
-<aside class="filter-sidebar" id="filterSidebar" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
-    {{-- Filter Header --}}
+<aside class="filter-sidebar" id="filterSidebar" dir="<?php echo e($isRtl ? 'rtl' : 'ltr'); ?>">
+    
     <div class="filter-header">
-        <h3>{{ $locale === 'ar' ? 'تصفية' : ($locale === 'he' ? 'סינון' : 'Filters') }}</h3>
+        <h3><?php echo e($locale === 'ar' ? 'تصفية' : ($locale === 'he' ? 'סינון' : 'Filters')); ?></h3>
         <div class="filter-header-actions">
             <button type="button" class="clear-filters-btn" id="clearFiltersBtn" onclick="clearAllFilters()">
-                {{ $locale === 'ar' ? 'مسح الكل' : ($locale === 'he' ? 'נקה הכל' : 'Clear All') }}
+                <?php echo e($locale === 'ar' ? 'مسح الكل' : ($locale === 'he' ? 'נקה הכל' : 'Clear All')); ?>
+
             </button>
-            <button type="button" class="mobile-close-btn" id="mobileCloseBtn" onclick="closeMobileFilters()" aria-label="{{ $locale === 'ar' ? 'إغلاق' : ($locale === 'he' ? 'סגור' : 'Close') }}">
+            <button type="button" class="mobile-close-btn" id="mobileCloseBtn" onclick="closeMobileFilters()" aria-label="<?php echo e($locale === 'ar' ? 'إغلاق' : ($locale === 'he' ? 'סגור' : 'Close')); ?>">
                 <i class="fas fa-times"></i>
             </button>
         </div>
     </div>
 
-    <form id="filterForm" method="GET" action="{{ url()->current() }}">
+    <form id="filterForm" method="GET" action="<?php echo e(url()->current()); ?>">
         <!-- Preserve search query if exists -->
-        @if(request('search'))
-            <input type="hidden" name="search" value="{{ request('search') }}">
-        @endif
-        {{-- Strong Offers Filter --}}
-        @if(isset($filters['strong_offers']))
+        <?php if(request('search')): ?>
+            <input type="hidden" name="search" value="<?php echo e(request('search')); ?>">
+        <?php endif; ?>
+        
+        <?php if(isset($filters['strong_offers'])): ?>
         <div class="filter-section">
             <div class="filter-section-title">
                 <i class="fas fa-fire"></i>
-                {{ $locale === 'ar' ? 'العروض القوية' : ($locale === 'he' ? 'מבצעים חזקים' : 'Strong Offers') }}
+                <?php echo e($locale === 'ar' ? 'العروض القوية' : ($locale === 'he' ? 'מבצעים חזקים' : 'Strong Offers')); ?>
+
             </div>
             <div class="category-list">
                 <div class="category-checkbox">
@@ -82,40 +135,45 @@
                         name="strong_offers" 
                         value="1"
                         id="strong-offers-checkbox"
-                        {{ $currentStrongOffers ? 'checked' : '' }}
+                        <?php echo e($currentStrongOffers ? 'checked' : ''); ?>
+
                     >
                     <label for="strong-offers-checkbox">
-                        {{ $locale === 'ar' ? 'عروض قوية فقط' : ($locale === 'he' ? 'מבצעים חזקים בלבד' : 'Strong Offers Only') }}
+                        <?php echo e($locale === 'ar' ? 'عروض قوية فقط' : ($locale === 'he' ? 'מבצעים חזקים בלבד' : 'Strong Offers Only')); ?>
+
                     </label>
                 </div>
             </div>
         </div>
-        @endif
+        <?php endif; ?>
 
-        {{-- Stock Filter --}}
-        @if(!empty($stockOptions))
+        
+        <?php if(!empty($stockOptions)): ?>
         <div class="filter-section">
             <div class="filter-section-title">
                 <i class="fas fa-box"></i>
-                {{ $locale === 'ar' ? 'حالة المخزون' : ($locale === 'he' ? 'מצב מלאי' : 'Stock Status') }}
+                <?php echo e($locale === 'ar' ? 'حالة المخزون' : ($locale === 'he' ? 'מצב מלאי' : 'Stock Status')); ?>
+
             </div>
             <div class="category-list">
-                @foreach($stockOptions as $stock)
+                <?php $__currentLoopData = $stockOptions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $stock): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="category-checkbox">
                         <input 
                             type="radio" 
                             name="stock" 
-                            value="{{ $stock['value'] }}"
-                            id="stock-{{ $stock['value'] }}"
-                            {{ $currentStock === $stock['value'] ? 'checked' : '' }}
+                            value="<?php echo e($stock['value']); ?>"
+                            id="stock-<?php echo e($stock['value']); ?>"
+                            <?php echo e($currentStock === $stock['value'] ? 'checked' : ''); ?>
+
                         >
-                        <label for="stock-{{ $stock['value'] }}">
-                            {{ $stock['label'] }}
-                            <span class="item-count">{{ $stock['count'] }}</span>
+                        <label for="stock-<?php echo e($stock['value']); ?>">
+                            <?php echo e($stock['label']); ?>
+
+                            <span class="item-count"><?php echo e($stock['count']); ?></span>
                         </label>
                     </div>
-                @endforeach
-                @if($currentStock)
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php if($currentStock): ?>
                     <div class="category-checkbox">
                         <input 
                             type="radio" 
@@ -123,15 +181,15 @@
                             value=""
                             id="stock-all"
                         >
-                        <label for="stock-all">{{ $locale === 'ar' ? 'الكل' : ($locale === 'he' ? 'הכל' : 'All') }}</label>
+                        <label for="stock-all"><?php echo e($locale === 'ar' ? 'الكل' : ($locale === 'he' ? 'הכל' : 'All')); ?></label>
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
-        @endif
+        <?php endif; ?>
 
-        {{-- Tags Filter --}}
-        @if(!empty($filters['tags']))
+        
+        <?php if(!empty($filters['tags'])): ?>
         <div class="filter-accordion">
             <button type="button"
                     class="filter-accordion-button"
@@ -140,7 +198,7 @@
                     aria-controls="tagAccordionContent">
                 <span class="filter-accordion-header">
                     <i class="fas fa-tags"></i>
-                    <span class="filter-accordion-title">{{ $locale === 'ar' ? 'الوسوم' : ($locale === 'he' ? 'תגיות' : 'Tags') }}</span>
+                    <span class="filter-accordion-title"><?php echo e($locale === 'ar' ? 'الوسوم' : ($locale === 'he' ? 'תגיות' : 'Tags')); ?></span>
                 </span>
                 <span class="filter-accordion-icon">
                     <i class="fas fa-plus"></i>
@@ -151,46 +209,47 @@
                       id="tagAccordionContent"
                       aria-labelledby="tagAccordionToggle"
                       hidden>
-                <legend class="sr-only">{{ $locale === 'ar' ? 'تصفية حسب الوسم' : ($locale === 'he' ? 'סנן לפי תגית' : 'Filter by tag') }}</legend>
+                <legend class="sr-only"><?php echo e($locale === 'ar' ? 'تصفية حسب الوسم' : ($locale === 'he' ? 'סנן לפי תגית' : 'Filter by tag')); ?></legend>
 
                 <div class="category-list tag-filter-list">
-                    @foreach($filters['tags'] as $tag)
-                    @php
+                    <?php $__currentLoopData = $filters['tags']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tag): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
                         $currentTag = request('tag', '');
                         $isChecked = $currentTag === $tag['slug'];
-                    @endphp
+                    ?>
                     <div class="category-checkbox tag-checkbox-item">
                         <input type="radio"
                                name="tag"
-                               value="{{ $tag['slug'] }}"
-                               id="tag-{{ $tag['slug'] }}"
-                               {{ $isChecked ? 'checked' : '' }}>
-                        <label for="tag-{{ $tag['slug'] }}">
+                               value="<?php echo e($tag['slug']); ?>"
+                               id="tag-<?php echo e($tag['slug']); ?>"
+                               <?php echo e($isChecked ? 'checked' : ''); ?>>
+                        <label for="tag-<?php echo e($tag['slug']); ?>">
                             <span class="tag-label-content">
-                                @if($tag['icon'])
-                                    <i class="{{ $tag['icon'] }}" style="color: {{ $tag['color'] }};"></i>
-                                @else
-                                    <span class="tag-color-dot" style="background: {{ $tag['color'] }};"></span>
-                                @endif
-                                {{ $tag['name'] }}
+                                <?php if($tag['icon']): ?>
+                                    <i class="<?php echo e($tag['icon']); ?>" style="color: <?php echo e($tag['color']); ?>;"></i>
+                                <?php else: ?>
+                                    <span class="tag-color-dot" style="background: <?php echo e($tag['color']); ?>;"></span>
+                                <?php endif; ?>
+                                <?php echo e($tag['name']); ?>
+
                             </span>
-                            <span class="item-count">{{ $tag['count'] }}</span>
+                            <span class="item-count"><?php echo e($tag['count']); ?></span>
                         </label>
                     </div>
-                    @endforeach
-                    @if(request('tag'))
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(request('tag')): ?>
                         <div class="category-checkbox">
                             <input type="radio" name="tag" value="" id="tag-all">
-                            <label for="tag-all">{{ $locale === 'ar' ? 'الكل' : ($locale === 'he' ? 'הכל' : 'All') }}</label>
+                            <label for="tag-all"><?php echo e($locale === 'ar' ? 'الكل' : ($locale === 'he' ? 'הכל' : 'All')); ?></label>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </fieldset>
         </div>
-        @endif
+        <?php endif; ?>
 
-        {{-- Categories Filter --}}
-        @if(!empty($filters['categories']))
+        
+        <?php if(!empty($filters['categories'])): ?>
         <div class="filter-accordion">
             <button type="button"
                     class="filter-accordion-button"
@@ -199,7 +258,7 @@
                     aria-controls="categoryAccordionContent">
                 <span class="filter-accordion-header">
                     <i class="fas fa-th-large"></i>
-                    <span class="filter-accordion-title">{{ $locale === 'ar' ? 'الفئات' : ($locale === 'he' ? 'קטגוריות' : 'Categories') }}</span>
+                    <span class="filter-accordion-title"><?php echo e($locale === 'ar' ? 'الفئات' : ($locale === 'he' ? 'קטגוריות' : 'Categories')); ?></span>
                 </span>
                 <span class="filter-accordion-icon">
                     <i class="fas fa-plus"></i>
@@ -210,11 +269,11 @@
                       id="categoryAccordionContent"
                       aria-labelledby="categoryAccordionToggle"
                       hidden>
-                <legend class="sr-only">{{ $locale === 'ar' ? 'تصفية حسب الفئة' : ($locale === 'he' ? 'סנן לפי קטגוריה' : 'Filter by category') }}</legend>
+                <legend class="sr-only"><?php echo e($locale === 'ar' ? 'تصفية حسب الفئة' : ($locale === 'he' ? 'סנן לפי קטגוריה' : 'Filter by category')); ?></legend>
 
                 <div class="category-list" id="categoryList">
-                    @foreach($filters['categories'] as $index => $cat)
-                    @php
+                    <?php $__currentLoopData = $filters['categories']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $cat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
                         $selectedCategories = (array)request('categories', []);
                         if (request('category') && !in_array(request('category'), $selectedCategories)) {
                             $selectedCategories[] = request('category');
@@ -222,41 +281,43 @@
                         $isChecked = in_array($cat['slug'], $selectedCategories);
                         $isInitiallyVisible = $index < 10; // Show first 10
                         $hasProducts = ($cat['count'] ?? 0) > 0;
-                    @endphp
-                    <div class="category-checkbox category-filter-item {{ !$hasProducts ? 'category-disabled' : '' }}" 
-                         data-category-index="{{ $index }}"
-                         style="{{ !$isInitiallyVisible ? 'display: none;' : '' }}">
+                    ?>
+                    <div class="category-checkbox category-filter-item <?php echo e(!$hasProducts ? 'category-disabled' : ''); ?>" 
+                         data-category-index="<?php echo e($index); ?>"
+                         style="<?php echo e(!$isInitiallyVisible ? 'display: none;' : ''); ?>">
                         <input type="checkbox"
                                name="categories[]"
-                               value="{{ $cat['slug'] }}"
-                               id="category-{{ $cat['slug'] }}"
-                               {{ !$hasProducts ? 'disabled' : '' }}
-                               {{ $isChecked ? 'checked' : '' }}>
-                        <label for="category-{{ $cat['slug'] }}">
-                            {{ $cat['name'] }}
-                            <span class="item-count {{ !$hasProducts ? 'count-zero' : '' }}">{{ $cat['count'] ?? 0 }}</span>
+                               value="<?php echo e($cat['slug']); ?>"
+                               id="category-<?php echo e($cat['slug']); ?>"
+                               <?php echo e(!$hasProducts ? 'disabled' : ''); ?>
+
+                               <?php echo e($isChecked ? 'checked' : ''); ?>>
+                        <label for="category-<?php echo e($cat['slug']); ?>">
+                            <?php echo e($cat['name']); ?>
+
+                            <span class="item-count <?php echo e(!$hasProducts ? 'count-zero' : ''); ?>"><?php echo e($cat['count'] ?? 0); ?></span>
                         </label>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
-                @if(count($filters['categories']) > 10)
+                <?php if(count($filters['categories']) > 10): ?>
                 <button type="button"
                         class="view-more-btn"
                         id="categoryViewMoreBtn"
                         data-visible-count="10"
-                        data-total-count="{{ count($filters['categories']) }}"
-                        aria-label="{{ $locale === 'ar' ? 'عرض المزيد من الفئات' : ($locale === 'he' ? 'הצג עוד קטגוריות' : 'View more categories') }}">
-                    <span id="categoryViewMoreText">{{ $locale === 'ar' ? 'عرض المزيد' : ($locale === 'he' ? 'הצג עוד' : 'View more') }} ({{ count($filters['categories']) - 10 }})</span>
+                        data-total-count="<?php echo e(count($filters['categories'])); ?>"
+                        aria-label="<?php echo e($locale === 'ar' ? 'عرض المزيد من الفئات' : ($locale === 'he' ? 'הצג עוד קטגוריות' : 'View more categories')); ?>">
+                    <span id="categoryViewMoreText"><?php echo e($locale === 'ar' ? 'عرض المزيد' : ($locale === 'he' ? 'הצג עוד' : 'View more')); ?> (<?php echo e(count($filters['categories']) - 10); ?>)</span>
                     <i class="fas fa-chevron-down" id="categoryViewMoreIcon" aria-hidden="true"></i>
                 </button>
-                @endif
+                <?php endif; ?>
             </fieldset>
         </div>
-        @endif
+        <?php endif; ?>
 
-        {{-- Brand Filter --}}
-        @if(!empty($brands))
+        
+        <?php if(!empty($brands)): ?>
         <div class="filter-accordion">
             <button type="button"
                     class="filter-accordion-button"
@@ -265,7 +326,7 @@
                     aria-controls="brandAccordionContent">
                 <span class="filter-accordion-header">
                     <i class="fas fa-tags"></i>
-                    <span class="filter-accordion-title">{{ $locale === 'ar' ? 'العلامات التجارية' : ($locale === 'he' ? 'מותגים' : 'Brands') }}</span>
+                    <span class="filter-accordion-title"><?php echo e($locale === 'ar' ? 'العلامات التجارية' : ($locale === 'he' ? 'מותגים' : 'Brands')); ?></span>
                 </span>
                 <span class="filter-accordion-icon">
                     <i class="fas fa-plus"></i>
@@ -276,81 +337,84 @@
                       id="brandAccordionContent"
                       aria-labelledby="brandAccordionToggle"
                       hidden>
-                <legend class="sr-only">{{ $locale === 'ar' ? 'تصفية حسب العلامة التجارية' : ($locale === 'he' ? 'סנן לפי מותג' : 'Filter by brand') }}</legend>
+                <legend class="sr-only"><?php echo e($locale === 'ar' ? 'تصفية حسب العلامة التجارية' : ($locale === 'he' ? 'סנן לפי מותג' : 'Filter by brand')); ?></legend>
 
                 <div class="brand-list" id="brandList">
-                    @foreach($brands as $index => $brand)
-                    @php
+                    <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
                         $isChecked = in_array($brand['slug'], (array)$currentBrands);
                         $isInitiallyVisible = $index < 10; // Show first 10
                         $hasProducts = $brand['count'] > 0;
-                    @endphp
-                    <div class="brand-checkbox brand-filter-item {{ !$hasProducts ? 'brand-disabled' : '' }}" 
-                         data-brand-index="{{ $index }}" 
-                         style="{{ !$isInitiallyVisible ? 'display: none;' : '' }}">
+                    ?>
+                    <div class="brand-checkbox brand-filter-item <?php echo e(!$hasProducts ? 'brand-disabled' : ''); ?>" 
+                         data-brand-index="<?php echo e($index); ?>" 
+                         style="<?php echo e(!$isInitiallyVisible ? 'display: none;' : ''); ?>">
                         <input type="checkbox"
                                name="brands[]"
-                               value="{{ $brand['slug'] }}"
-                               id="brand-{{ $brand['slug'] }}"
-                               {{ !$hasProducts ? 'disabled' : '' }}
-                               {{ $isChecked ? 'checked' : '' }}>
-                        <label for="brand-{{ $brand['slug'] }}">
-                            {{ $brand['name'] }}
-                            <span class="item-count {{ !$hasProducts ? 'count-zero' : '' }}">{{ $brand['count'] }}</span>
+                               value="<?php echo e($brand['slug']); ?>"
+                               id="brand-<?php echo e($brand['slug']); ?>"
+                               <?php echo e(!$hasProducts ? 'disabled' : ''); ?>
+
+                               <?php echo e($isChecked ? 'checked' : ''); ?>>
+                        <label for="brand-<?php echo e($brand['slug']); ?>">
+                            <?php echo e($brand['name']); ?>
+
+                            <span class="item-count <?php echo e(!$hasProducts ? 'count-zero' : ''); ?>"><?php echo e($brand['count']); ?></span>
                         </label>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
 
-                @if(count($brands) > 10)
+                <?php if(count($brands) > 10): ?>
                 <button type="button"
                         class="view-more-btn"
                         id="brandViewMoreBtn"
                         data-visible-count="10"
-                        data-total-count="{{ count($brands) }}"
-                        aria-label="{{ $locale === 'ar' ? 'عرض المزيد من العلامات التجارية' : ($locale === 'he' ? 'הצג עוד מותגים' : 'View more brands') }}">
-                    <span id="brandViewMoreText">{{ $locale === 'ar' ? 'عرض المزيد' : ($locale === 'he' ? 'הצג עוד' : 'View more') }} ({{ count($brands) - 10 }})</span>
+                        data-total-count="<?php echo e(count($brands)); ?>"
+                        aria-label="<?php echo e($locale === 'ar' ? 'عرض المزيد من العلامات التجارية' : ($locale === 'he' ? 'הצג עוד מותגים' : 'View more brands')); ?>">
+                    <span id="brandViewMoreText"><?php echo e($locale === 'ar' ? 'عرض المزيد' : ($locale === 'he' ? 'הצג עוד' : 'View more')); ?> (<?php echo e(count($brands) - 10); ?>)</span>
                     <i class="fas fa-chevron-down" id="brandViewMoreIcon" aria-hidden="true"></i>
                 </button>
-                @endif
+                <?php endif; ?>
             </fieldset>
         </div>
-        @endif
+        <?php endif; ?>
 
-        {{-- Price Range Filter --}}
+        
         <div class="filter-section">
             <div class="filter-section-title" id="priceRangeLabel">
                 <i class="fas fa-dollar-sign"></i>
-                {{ $locale === 'ar' ? 'نطاق السعر' : ($locale === 'he' ? 'טווח מחירים' : 'Price Range') }}
+                <?php echo e($locale === 'ar' ? 'نطاق السعر' : ($locale === 'he' ? 'טווח מחירים' : 'Price Range')); ?>
+
             </div>
 
             <!-- Price Input Fields -->
             <div class="price-input-container">
                 <div class="price-input-wrapper">
-                    <label for="minPriceInput" class="price-input-label">{{ $locale === 'ar' ? 'من' : ($locale === 'he' ? 'מ' : 'Min') }}</label>
+                    <label for="minPriceInput" class="price-input-label"><?php echo e($locale === 'ar' ? 'من' : ($locale === 'he' ? 'מ' : 'Min')); ?></label>
                     <div class="price-input-group">
                         <span class="price-currency">₪</span>
                         <input type="number"
                                id="minPriceInput"
                                class="price-input"
-                               min="{{ $priceRange['min'] }}"
-                               max="{{ $priceRange['max'] }}"
-                               value="{{ $currentMinPrice ?: $priceRange['min'] }}"
-                               aria-label="{{ $locale === 'ar' ? 'السعر الأدنى' : ($locale === 'he' ? 'מחיר מינימום' : 'Minimum price') }}">
+                               min="<?php echo e($priceRange['min']); ?>"
+                               max="<?php echo e($priceRange['max']); ?>"
+                               value="<?php echo e($currentMinPrice ?: $priceRange['min']); ?>"
+                               aria-label="<?php echo e($locale === 'ar' ? 'السعر الأدنى' : ($locale === 'he' ? 'מחיר מינימום' : 'Minimum price')); ?>">
                     </div>
                 </div>
                 <div class="price-input-separator">-</div>
                 <div class="price-input-wrapper">
-                    <label for="maxPriceInput" class="price-input-label">{{ $locale === 'ar' ? 'إلى' : ($locale === 'he' ? 'עד' : 'Max') }}</label>
+                    <label for="maxPriceInput" class="price-input-label"><?php echo e($locale === 'ar' ? 'إلى' : ($locale === 'he' ? 'עד' : 'Max')); ?></label>
                     <div class="price-input-group">
                         <span class="price-currency">₪</span>
                         <input type="number"
                                id="maxPriceInput"
                                class="price-input"
-                               min="{{ $priceRange['min'] }}"
-                               max="{{ $priceRange['max'] }}"
-                               value="{{ $currentMaxPrice ?: $priceRange['max'] }}"
-                               aria-label="{{ $locale === 'ar' ? 'السعر الأقصى' : ($locale === 'he' ? 'מחיר מקסימום' : 'Maximum price') }}">
+                               min="<?php echo e($priceRange['min']); ?>"
+                               max="<?php echo e($priceRange['max']); ?>"
+                               value="<?php echo e($currentMaxPrice ?: $priceRange['max']); ?>"
+                               aria-label="<?php echo e($locale === 'ar' ? 'السعر الأقصى' : ($locale === 'he' ? 'מחיר מקסימום' : 'Maximum price')); ?>">
                     </div>
                 </div>
             </div>
@@ -361,29 +425,30 @@
                  aria-labelledby="priceRangeLabel"
                  aria-describedby="priceRangeDescription">
                 <div id="priceSlider"
-                     data-min="{{ $priceRange['min'] }}"
-                     data-max="{{ $priceRange['max'] }}"
-                     data-current-min="{{ $currentMinPrice ?: $priceRange['min'] }}"
-                     data-current-max="{{ $currentMaxPrice ?: $priceRange['max'] }}"></div>
+                     data-min="<?php echo e($priceRange['min']); ?>"
+                     data-max="<?php echo e($priceRange['max']); ?>"
+                     data-current-min="<?php echo e($currentMinPrice ?: $priceRange['min']); ?>"
+                     data-current-max="<?php echo e($currentMaxPrice ?: $priceRange['max']); ?>"></div>
             </div>
             <span id="priceRangeDescription" class="sr-only">
-                {{ $locale === 'ar' ? 'استخدم مفاتيح الأسهم لتعديل نطاق السعر. اضغط Shift مع السهم للتحرك بشكل أسرع.' : ($locale === 'he' ? 'השתמש במקשי החצים כדי להתאים את טווח המחירים. החזק Shift עם החצים לתנועה מהירה יותר.' : 'Use arrow keys to adjust price range. Hold Shift with arrow keys for faster movement.') }}
+                <?php echo e($locale === 'ar' ? 'استخدم مفاتيح الأسهم لتعديل نطاق السعر. اضغط Shift مع السهم للتحرك بشكل أسرع.' : ($locale === 'he' ? 'השתמש במקשי החצים כדי להתאים את טווח המחירים. החזק Shift עם החצים לתנועה מהירה יותר.' : 'Use arrow keys to adjust price range. Hold Shift with arrow keys for faster movement.')); ?>
+
             </span>
 
             <!-- Hidden Input Fields for Form Submission -->
             <input type="hidden"
                    name="min_price"
                    id="minPrice"
-                   value="{{ $currentMinPrice ?: $priceRange['min'] }}">
+                   value="<?php echo e($currentMinPrice ?: $priceRange['min']); ?>">
             <input type="hidden"
                    name="max_price"
                    id="maxPrice"
-                   value="{{ $currentMaxPrice ?: $priceRange['max'] }}">
+                   value="<?php echo e($currentMaxPrice ?: $priceRange['max']); ?>">
         </div>
 
-        {{-- Attribute Filters --}}
-        @if(!empty($attributes))
-            @foreach($attributes as $attribute)
+        
+        <?php if(!empty($attributes)): ?>
+            <?php $__currentLoopData = $attributes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attribute): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="filter-accordion">
                     <button 
                         type="button"
@@ -394,10 +459,11 @@
                         <span class="filter-accordion-header">
                             <i class="fas fa-sliders-h"></i>
                             <span class="filter-accordion-title">
-                                {{ $attribute['name'] }}
-                                @if($attribute['unit'])
-                                    <small>({{ $attribute['unit'] }})</small>
-                                @endif
+                                <?php echo e($attribute['name']); ?>
+
+                                <?php if($attribute['unit']): ?>
+                                    <small>(<?php echo e($attribute['unit']); ?>)</small>
+                                <?php endif; ?>
                             </span>
                         </span>
                         <span class="filter-accordion-icon">
@@ -407,31 +473,33 @@
                     
                     <div class="filter-accordion-content" hidden>
                         <div class="category-list">
-                            @foreach($attribute['values'] as $value)
-                                @php
+                            <?php $__currentLoopData = $attribute['values']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php
                                     $attrSlug = $attribute['slug'];
                                     $currentAttrValues = $currentAttributes[$attrSlug] ?? [];
                                     $isChecked = in_array($value['slug'], (array)$currentAttrValues);
-                                @endphp
+                                ?>
                                 <div class="category-checkbox">
                                     <input 
                                         type="checkbox" 
-                                        name="attr[{{ $attrSlug }}][]" 
-                                        value="{{ $value['slug'] }}"
-                                        id="attr-{{ $attrSlug }}-{{ $value['slug'] }}"
-                                        {{ $isChecked ? 'checked' : '' }}
+                                        name="attr[<?php echo e($attrSlug); ?>][]" 
+                                        value="<?php echo e($value['slug']); ?>"
+                                        id="attr-<?php echo e($attrSlug); ?>-<?php echo e($value['slug']); ?>"
+                                        <?php echo e($isChecked ? 'checked' : ''); ?>
+
                                     >
-                                    <label for="attr-{{ $attrSlug }}-{{ $value['slug'] }}">
-                                        {{ $value['value'] }}
-                                        <span class="item-count">{{ $value['count'] }}</span>
+                                    <label for="attr-<?php echo e($attrSlug); ?>-<?php echo e($value['slug']); ?>">
+                                        <?php echo e($value['value']); ?>
+
+                                        <span class="item-count"><?php echo e($value['count']); ?></span>
                                     </label>
                                 </div>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     </div>
                 </div>
-            @endforeach
-        @endif
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endif; ?>
     </form>
 </aside>
 
@@ -1092,13 +1160,13 @@
         .filter-sidebar {
             position: fixed;
             top: 0;
-            @if($isRtl)
+            <?php if($isRtl): ?>
             right: -100%;
             left: auto;
-            @else
+            <?php else: ?>
             left: -100%;
             right: auto;
-            @endif
+            <?php endif; ?>
             bottom: 0;
             width: 85%;
             max-width: 380px;
@@ -1112,11 +1180,11 @@
         }
 
         .filter-sidebar.active {
-            @if($isRtl)
+            <?php if($isRtl): ?>
             transform: translateX(-100%);
-            @else
+            <?php else: ?>
             transform: translateX(100%);
-            @endif
+            <?php endif; ?>
         }
 
         .mobile-close-btn {
@@ -1186,8 +1254,7 @@
             } else if (typeof window.applyFilters === 'function') {
                 window.applyFilters();
             } else {
-                // Fallback: try to use AJAX directly
-                console.warn('⚠️ AJAX functions not found, trying direct fetch...');
+                // Fallback: submit the form directly
                 const form = document.getElementById('filterForm');
                 if (form) {
                     const formData = new FormData(form);
@@ -1199,30 +1266,7 @@
                         }
                     }
                     
-                    const url = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-                    window.history.pushState({ path: url }, '', url);
-                    
-                    // Try to fetch and update product grid directly
-                    fetch(url, {
-                        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' }
-                    })
-                    .then(response => response.text())
-                    .then(html => {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const newGrid = doc.querySelector('.product-grid');
-                        const newPagination = doc.querySelector('.pagination-wrapper');
-                        const currentGrid = document.querySelector('.product-grid');
-                        const currentPagination = document.querySelector('.pagination-wrapper');
-                        
-                        if (newGrid && currentGrid) {
-                            currentGrid.innerHTML = newGrid.innerHTML;
-                        }
-                        if (newPagination && currentPagination) {
-                            currentPagination.innerHTML = newPagination.innerHTML;
-                        }
-                    })
-                    .catch(err => console.error('Fallback fetch failed:', err));
+                    window.location.href = window.location.pathname + '?' + params.toString();
                 }
             }
         }, delay);
@@ -1647,3 +1691,4 @@
         });
     });
 </script>
+<?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/components/filter-sidebar.blade.php ENDPATH**/ ?>

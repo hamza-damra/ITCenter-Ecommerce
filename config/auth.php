@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'bootstrap' => [
+            'driver' => 'session',
+            'provider' => 'bootstrap',
+        ],
     ],
 
     /*
@@ -63,6 +67,9 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+        'bootstrap' => [
+            'driver' => 'bootstrap',
         ],
 
         // 'users' => [

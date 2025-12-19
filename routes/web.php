@@ -92,8 +92,34 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Bootstrap Mode Routes (DB-less admin access when database is missing)
+// These routes should work even when database is missing, so minimal middleware
+Route::prefix('admin/bootstrap')->name('admin.bootstrap.')->group(function () {
+    Route::get('/login', [App\Http\Controllers\Admin\BootstrapController::class, 'showLogin'])->name('login');
+    Route::post('/login', [App\Http\Controllers\Admin\BootstrapController::class, 'login'])->name('login.post');
+    Route::get('/logout', [App\Http\Controllers\Admin\BootstrapController::class, 'logout'])->name('logout');
+    Route::post('/logout', [App\Http\Controllers\Admin\BootstrapController::class, 'logout'])->name('logout.post');
+    Route::get('/setup', [App\Http\Controllers\Admin\BootstrapController::class, 'setup'])->name('setup');
+    Route::get('/status', [App\Http\Controllers\Admin\BootstrapController::class, 'status'])->name('status');
+    Route::post('/create-database', [App\Http\Controllers\Admin\BootstrapController::class, 'createDatabase'])->name('create-database');
+    Route::post('/import-sql', [App\Http\Controllers\Admin\BootstrapController::class, 'importSql'])->name('import-sql');
+    Route::post('/restore-backup', [App\Http\Controllers\Admin\BootstrapController::class, 'restoreBackup'])->name('restore-backup');
+    Route::post('/validate-database', [App\Http\Controllers\Admin\BootstrapController::class, 'validateDatabase'])->name('validate-database');
+    Route::get('/debug', function() {
+        $state = \App\Services\DatabaseStateService::detectState();
+        $stateInfo = \App\Services\DatabaseStateService::getStateInfo();
+        return response()->json([
+            'state' => $state,
+            'state_info' => $stateInfo,
+            'bootstrap_enabled' => config('bootstrap.enabled', true),
+            'session_driver' => config('session.driver'),
+            'cache_driver' => config('cache.default'),
+        ]);
+    })->name('debug');
+});
+
 // Admin Authentication Routes
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('bootstrap.mode')->group(function () {
     Route::get('/login', [App\Http\Controllers\Admin\AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [App\Http\Controllers\Admin\AuthController::class, 'login'])->name('login.post');
     Route::post('/logout', [App\Http\Controllers\Admin\AuthController::class, 'logout'])->name('logout');

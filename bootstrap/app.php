@@ -24,8 +24,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // SetDynamicAppUrl must run first to fix asset URLs for DDNS/external access
+        // Bootstrap mode middleware must run early to detect DB state and force non-DB drivers
         $middleware->web(prepend: [
+            \App\Http\Middleware\BootstrapModeMiddleware::class,
             \App\Http\Middleware\SetDynamicAppUrl::class,
         ]);
         
@@ -45,39 +46,92 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin' => \App\Http\Middleware\IsAdmin::class,
+            'bootstrap.mode' => \App\Http\Middleware\BootstrapModeMiddleware::class,
+            'bootstrap.ip' => \App\Http\Middleware\BootstrapIpAllowlist::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Global handler: if database is unreachable, show a friendly 503 page (web) or JSON (API)
         $exceptions->render(function (\Throwable $e, Request $request) {
             $isDbDown = false;
+            $isDbMissing = false;
 
             // Detect PDO/Query exceptions that indicate DB connectivity issues
             if ($e instanceof \PDOException) {
-                $isDbDown = true;
+                $message = $e->getMessage();
+                // Check for "Unknown database" (1049) - this is STATE_B, enable bootstrap mode
+                if (str_contains($message, '1049') || str_contains($message, 'Unknown database')) {
+                    $isDbMissing = true;
+                } else {
+                    $isDbDown = true;
+                }
             }
 
-            if (!$isDbDown && $e instanceof QueryException) {
+            if (!$isDbDown && !$isDbMissing && $e instanceof QueryException) {
                 $message = $e->getMessage();
-                $patterns = [
-                    'SQLSTATE[HY000] [2002]', // Connection refused / host unreachable
-                    'SQLSTATE[HY000] [1045]', // Access denied
-                    'SQLSTATE[08006]',        // Connection failure
-                    'No connection could be made',
-                    'Connection refused',
-                    'Can\'t connect to',
-                    'Access denied for user',
-                    'server has gone away',
-                ];
-                foreach ($patterns as $p) {
-                    if (str_contains($message, $p)) {
-                        $isDbDown = true;
-                        break;
+                // Check for "Unknown database" (1049) - this is STATE_B
+                if (str_contains($message, '1049') || str_contains($message, 'Unknown database')) {
+                    $isDbMissing = true;
+                } else {
+                    $patterns = [
+                        'SQLSTATE[HY000] [2002]', // Connection refused / host unreachable
+                        'SQLSTATE[HY000] [1045]', // Access denied
+                        'SQLSTATE[08006]',        // Connection failure
+                        'No connection could be made',
+                        'Connection refused',
+                        'Can\'t connect to',
+                        'Access denied for user',
+                        'server has gone away',
+                    ];
+                    foreach ($patterns as $p) {
+                        if (str_contains($message, $p)) {
+                            $isDbDown = true;
+                            break;
+                        }
                     }
                 }
             }
 
-            if ($isDbDown) {
+            // If database is missing (STATE_B), redirect ALL routes to bootstrap login
+            if ($isDbMissing) {
+                // Ensure session is not using database
+                config(['session.driver' => 'file']);
+                config(['cache.default' => 'file']);
+                config(['queue.default' => 'sync']);
+                
+                // Skip redirect for bootstrap routes and API routes
+                // Bootstrap routes should handle their own errors gracefully
+                if ($request->is('admin/bootstrap/*')) {
+                    // For bootstrap routes, show a friendly error page instead of redirecting
+                    return response()->view('errors.db-missing', [
+                        'exception' => $e,
+                        'is_bootstrap_route' => true,
+                    ], 503);
+                }
+                
+                // Skip API routes - return JSON error
+                if ($request->is('api/*') || $request->expectsJson()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Database schema is missing. Please restore it using Bootstrap Mode.',
+                        'error' => config('app.debug') ? $e->getMessage() : 'Database connection failed',
+                        'bootstrap_url' => route('admin.bootstrap.login'),
+                    ], 503);
+                }
+                
+                // Redirect ALL other routes (including home page) to bootstrap login
+                try {
+                    return redirect()->route('admin.bootstrap.login')
+                        ->with('info', 'Database is missing. Please restore it using Bootstrap Mode.');
+                } catch (\Exception $redirectError) {
+                    // If route doesn't exist yet, show bootstrap-friendly error
+                    return response()->view('errors.db-missing', [
+                        'exception' => $e,
+                    ], 503);
+                }
+            }
+
+            if ($isDbDown || $isDbMissing) {
                 // Ensure session is not using database to avoid cascading failures during render
                 config(['session.driver' => 'array']);
 
@@ -91,8 +145,17 @@ return Application::configure(basePath: dirname(__DIR__))
                 if ($request->expectsJson() || $request->is('api/*')) {
                     return response()->json([
                         'success' => false,
-                        'message' => trans('errors.db_connection_failed'),
+                        'message' => $isDbMissing 
+                            ? 'Database schema is missing. Please restore it.' 
+                            : trans('errors.db_connection_failed'),
                         'error' => config('app.debug') ? $e->getMessage() : 'Database connection failed'
+                    ], 503);
+                }
+
+                // For admin routes with missing DB, show bootstrap-friendly error
+                if ($isDbMissing && $request->is('admin/*')) {
+                    return response()->view('errors.db-missing', [
+                        'exception' => $e,
                     ], 503);
                 }
 

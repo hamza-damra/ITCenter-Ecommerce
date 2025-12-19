@@ -1390,11 +1390,20 @@
                         <i class="fas fa-heart"></i>
                         <?php
                             // Get initial favorites count from server to prevent flash
-                            if (Auth::check()) {
-                                $initialFavCount = \App\Models\Favorite::where('user_id', Auth::id())->count();
-                            } else {
-                                $sessionId = Session::getId();
-                                $initialFavCount = \App\Models\Favorite::where('session_id', $sessionId)->count();
+                            $initialFavCount = 0;
+                            try {
+                                // Check if database is available before querying
+                                if (\App\Services\DatabaseStateService::isDatabaseAvailable()) {
+                                    if (Auth::check()) {
+                                        $initialFavCount = \App\Models\Favorite::where('user_id', Auth::id())->count();
+                                    } else {
+                                        $sessionId = Session::getId();
+                                        $initialFavCount = \App\Models\Favorite::where('session_id', $sessionId)->count();
+                                    }
+                                }
+                            } catch (\Exception $e) {
+                                // Database not available or query failed - use 0 as default
+                                $initialFavCount = 0;
                             }
                         ?>
                         <span class="badge <?php echo e($initialFavCount > 0 ? '' : 'hidden'); ?>" id="favorites-count"><?php echo e($initialFavCount); ?></span>

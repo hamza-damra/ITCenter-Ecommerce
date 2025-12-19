@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
+<html lang="<?php echo e(app()->getLocale()); ?>" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ __('Admin Login') }} - IT Center</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo e(__('Admin Login')); ?> - IT Center</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -160,7 +160,7 @@
 
         .input-wrapper i {
             position: absolute;
-            {{ is_rtl() ? 'right' : 'left' }}: 16px;
+            <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 16px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--secondary);
@@ -213,7 +213,7 @@
 
         .password-toggle {
             position: absolute;
-            {{ is_rtl() ? 'left' : 'right' }}: 16px;
+            <?php echo e(is_rtl() ? 'left' : 'right'); ?>: 16px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
@@ -396,45 +396,46 @@
         <div class="login-card">
             <div class="login-header">
                 <div class="logo">
-                    <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
+                    <img src="<?php echo e(asset('images/assets/logo.png')); ?>" alt="IT Center Logo">
                 </div>
                 <div class="company-name">IT Center</div>
-                <h1>{{ __('Admin Panel') }}</h1>
-                <p>{{ __('Sign in to manage your store') }}</p>
+                <h1><?php echo e(__('Admin Panel')); ?></h1>
+                <p><?php echo e(__('Sign in to manage your store')); ?></p>
             </div>
 
             <div class="login-body">
-                @if(session('success'))
+                <?php if(session('success')): ?>
                     <div class="alert alert-success">
                         <i class="fas fa-check-circle"></i>
-                        <span>{{ session('success') }}</span>
+                        <span><?php echo e(session('success')); ?></span>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                @if(session('error'))
+                <?php if(session('error')): ?>
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-circle"></i>
-                        <span>{{ session('error') }}</span>
+                        <span><?php echo e(session('error')); ?></span>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                @if($errors->any())
+                <?php if($errors->any()): ?>
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-circle"></i>
                         <div>
-                            @foreach($errors->all() as $error)
-                                <div>{{ $error }}</div>
-                            @endforeach
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <div><?php echo e($error); ?></div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                <form method="POST" action="{{ route('admin.login.post') }}" id="loginForm">
-                    @csrf
+                <form method="POST" action="<?php echo e(route('admin.login.post')); ?>" id="loginForm">
+                    <?php echo csrf_field(); ?>
 
                     <div class="form-group">
                         <label for="email">
-                            {{ __('Email Address') }}
+                            <?php echo e(__('Email Address')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <div class="input-wrapper">
@@ -443,21 +444,36 @@
                                 type="email" 
                                 id="email" 
                                 name="email" 
-                                class="form-control @error('email') is-invalid @enderror" 
-                                value="{{ old('email') }}" 
-                                placeholder="{{ __('Enter your email') }}"
+                                class="form-control <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                                value="<?php echo e(old('email')); ?>" 
+                                placeholder="<?php echo e(__('Enter your email')); ?>"
                                 required 
                                 autofocus
                             >
                         </div>
-                        @error('email')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="invalid-feedback"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="password">
-                            {{ __('Password') }}
+                            <?php echo e(__('Password')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <div class="input-wrapper">
@@ -466,36 +482,52 @@
                                 type="password" 
                                 id="password" 
                                 name="password" 
-                                class="form-control password-input @error('password') is-invalid @enderror" 
-                                placeholder="{{ __('Enter your password') }}"
+                                class="form-control password-input <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                                placeholder="<?php echo e(__('Enter your password')); ?>"
                                 required
                             >
                             <button type="button" class="password-toggle" onclick="togglePassword()">
                                 <i class="fas fa-eye" id="toggleIcon"></i>
                             </button>
                         </div>
-                        @error('password')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="invalid-feedback"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="remember-forgot">
                         <div class="checkbox-wrapper">
                             <input type="checkbox" id="remember" name="remember">
-                            <label for="remember">{{ __('Remember me') }}</label>
+                            <label for="remember"><?php echo e(__('Remember me')); ?></label>
                         </div>
                     </div>
 
                     <button type="submit" class="btn-primary" id="submitBtn">
-                        {{ __('Sign In') }}
-                        <i class="fas fa-arrow-{{ is_rtl() ? 'left' : 'right' }}"></i>
+                        <?php echo e(__('Sign In')); ?>
+
+                        <i class="fas fa-arrow-<?php echo e(is_rtl() ? 'left' : 'right'); ?>"></i>
                     </button>
                 </form>
 
                 <div class="back-to-site">
-                    <a href="{{ route('home') }}">
-                        <i class="fas fa-arrow-{{ is_rtl() ? 'right' : 'left' }}"></i>
-                        {{ __('Back to Website') }}
+                    <a href="<?php echo e(route('home')); ?>">
+                        <i class="fas fa-arrow-<?php echo e(is_rtl() ? 'right' : 'left'); ?>"></i>
+                        <?php echo e(__('Back to Website')); ?>
+
                     </a>
                 </div>
             </div>
@@ -537,3 +569,4 @@
     </script>
 </body>
 </html>
+<?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/admin/auth/login.blade.php ENDPATH**/ ?>
