@@ -500,7 +500,7 @@
             @if($offer->products->count() > 0)
             <div class="product-grid">
                 @foreach($offer->products as $product)
-                <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
+                <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product) }}'">
                     <div class="product-image">
                         @if($offer->discount_type === 'percentage')
                         <div class="discount-badge">-{{ $offer->discount_value }}%</div>
@@ -543,7 +543,7 @@
                         </div>
 
                         <div class="product-actions">
-                            <button class="btn-view" onclick="event.stopPropagation(); window.location.href='{{ route('product.detail', $product->slug) }}'">
+                            <button class="btn-view" onclick="event.stopPropagation(); window.location.href='{{ route('product.detail', $product) }}'">
                                 <i class="fas fa-eye"></i> View
                             </button>
                             <button class="btn-cart" onclick="event.stopPropagation();">

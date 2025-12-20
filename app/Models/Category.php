@@ -55,7 +55,7 @@ class Category extends Model
     public function getImageAttribute($value)
     {
         if (empty($value)) {
-            return asset('images/products/default.png');
+            return \App\Helpers\ImageHelper::assetUrl('images/products/default.png');
         }
         
         // If it's already a full URL, return it as is
@@ -91,7 +91,7 @@ class Category extends Model
         }
         
         // Fallback to default image
-        return asset('images/products/default.png');
+        return \App\Helpers\ImageHelper::assetUrl('images/products/default.png');
     }
 
     /**
@@ -218,6 +218,37 @@ class Category extends Model
     }
 
     /**
+     * Get the specification template for this category.
+     */
+    public function specTemplate()
+    {
+        // Check if table exists before trying to query
+        if (!\Illuminate\Support\Facades\Schema::hasTable('spec_templates')) {
+            return $this->hasOne(SpecTemplate::class)->whereRaw('1 = 0'); // Return empty relation
+        }
+        return $this->hasOne(SpecTemplate::class);
+    }
+
+    /**
+     * Check if this category has a specification template.
+     */
+    public function hasSpecTemplate(): bool
+    {
+        return $this->specTemplate()->exists();
+    }
+
+    /**
+     * Get specification fields for this category (through template).
+     */
+    public function getSpecFieldsAttribute()
+    {
+        if (!$this->specTemplate) {
+            return collect();
+        }
+        return $this->specTemplate->activeFields;
+    }
+
+    /**
      * Scope a query to only include active categories.
      */
     public function scopeActive($query)
@@ -265,6 +296,11 @@ class Category extends Model
      */
     public function getRouteKeyName()
     {
+        // Check if current route is an admin route
+        $route = request()->route();
+        if ($route && str_contains($route->getName() ?? '', 'admin.')) {
+            return 'id';
+        }
         return 'slug';
     }
 }

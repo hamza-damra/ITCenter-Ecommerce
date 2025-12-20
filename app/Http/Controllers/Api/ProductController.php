@@ -94,11 +94,9 @@ class ProductController extends Controller
     /**
      * Get a specific product
      */
-    public function show($slug)
+    public function show(Product $product)
     {
-        $product = Product::with(['category', 'brand', 'images', 'reviews.user', 'attributes'])
-            ->where('slug', $slug)
-            ->firstOrFail();
+        $product->load(['category', 'brand', 'images', 'reviews.user', 'attributes']);
 
         // Increment views
         $product->incrementViews();

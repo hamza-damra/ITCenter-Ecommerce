@@ -677,13 +677,13 @@
             <div class="summary-items">
                 @foreach($cartItems as $item)
                     @if($item->product)
-                        <a href="{{ route('product.detail', $item->product->slug) }}" class="summary-item-link">
+                        <a href="{{ route('product.detail', $item->product) }}" class="summary-item-link">
                             <div class="summary-item">
                                 <div class="summary-item-image">
                                     @php
                                         // Get raw main_image value from database
                                         $mainImage = $item->product->getAttributes()['main_image'] ?? null;
-                                        $imageSrc = asset('images/products/default.png'); // default
+                                        $imageSrc = \App\Helpers\ImageHelper::assetUrl('images/products/default.png'); // default
                                         
                                         if ($mainImage) {
                                             if (str_starts_with($mainImage, 'http')) {
@@ -697,7 +697,7 @@
                                     @endphp
                                     <img src="{{ $imageSrc }}" 
                                          alt="{{ $item->product->name }}"
-                                         onerror="this.src='{{ asset('images/products/default.png') }}'">
+                                         onerror="this.src='{{ \App\Helpers\ImageHelper::assetUrl('images/products/default.png') }}'">
                                 </div>
                                 <div class="summary-item-details">
                                     <div class="summary-item-name">

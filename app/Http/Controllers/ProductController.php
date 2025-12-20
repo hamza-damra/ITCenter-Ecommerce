@@ -156,11 +156,20 @@ class ProductController extends Controller
         return view('products', compact('products', 'cartProductIds', 'categories', 'priceRange', 'brands', 'availableFilters', 'tags', 'activeTag'));
     }
 
-    public function show($slug)
+    public function show(Product $product)
     {
-        $product = Product::with(['category', 'brand', 'images', 'reviews.user', 'attributes'])
-            ->where('slug', $slug)
-            ->firstOrFail();
+        $product->load([
+            'category' => function($query) {
+                $query->with(['specTemplate' => function($q) {
+                    $q->with('activeFields');
+                }]);
+            },
+            'brand',
+            'images',
+            'reviews.user',
+            'attributes',
+            'specValues.field'
+        ]);
 
         // Get related products (same category, different product)
         $relatedProducts = Product::with(['category', 'brand', 'images'])
@@ -172,7 +181,7 @@ class ProductController extends Controller
             ->get();
 
 
-        return view('product-detail', compact('slug', 'product', 'relatedProducts'));
+        return view('product-detail', compact('product', 'relatedProducts'));
     }
 
     /**

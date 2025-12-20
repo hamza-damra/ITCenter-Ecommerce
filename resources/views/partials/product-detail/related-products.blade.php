@@ -4,7 +4,7 @@
         <h2 class="related-title">{{ __('Related Products') }}</h2>
         <div class="products-grid">
             @foreach($relatedProducts as $relatedProduct)
-                <a href="{{ route('product.detail', $relatedProduct->slug) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ route('product.detail', $relatedProduct) }}" style="text-decoration: none; color: inherit;">
                     <div class="product-card">
                         <div class="product-card-image">
                             @php

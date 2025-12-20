@@ -1106,7 +1106,7 @@
         // Global variables
         window.reviewsCurrentPage = 1;
         window.reviewsCurrentRating = 0;
-        window.reviewsProductSlug = '{{ $product->slug }}';
+        window.reviewsProductId = {{ $product->id }};
         window.authUserId = @json(auth()->id());
         window.userReviewId = @json(optional($userReview)->id);
         window.hasUserReviewed = @json($hasReviewed);
@@ -1324,7 +1324,7 @@
                 }
 
                 const isEdit = !!window.editingReviewId;
-                let url = isEdit ? `/api/v1/reviews/${window.editingReviewId}` : `/api/v1/products/${window.reviewsProductSlug}/reviews`;
+                let url = isEdit ? `/api/v1/reviews/${window.editingReviewId}` : `/api/v1/products/${window.reviewsProductId}/reviews`;
                 let method = 'POST';
                 if (isEdit) {
                     formData.append('_method', 'PUT');
@@ -1455,7 +1455,7 @@
             reviewsList.innerHTML = '<div style="text-align: center; padding: 2rem;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #2762f3;"></i></div>';
 
             try {
-                const response = await fetch(`/api/v1/products/${window.reviewsProductSlug}/reviews?page=${page}&sort_by=${sortBy}&per_page=10`);
+                const response = await fetch(`/api/v1/products/${window.reviewsProductId}/reviews?page=${page}&sort_by=${sortBy}&per_page=10`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);

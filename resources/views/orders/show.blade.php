@@ -540,7 +540,7 @@
                              onerror="this.src='{{ asset('images/placeholder.png') }}'">
                         
                         <div class="item-content">
-                            <a href="{{ $item->product_slug ? route('product.detail', $item->product_slug) : '#' }}" 
+                            <a href="{{ $item->product_id ? route('product.detail', $item->product_id) : '#' }}" 
                                class="item-name">
                                 {{ $item->product_name }}
                             </a>

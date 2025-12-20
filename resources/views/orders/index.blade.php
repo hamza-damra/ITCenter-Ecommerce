@@ -593,7 +593,7 @@
                                      alt="{{ $item->product_name }}" 
                                      class="item-image">
                                 <div class="item-details">
-                                    <a href="{{ $item->product_slug ? route('product.detail', $item->product_slug) : '#' }}" 
+                                    <a href="{{ $item->product_id ? route('product.detail', $item->product_id) : '#' }}" 
                                        class="item-name">
                                         {{ $item->product_name }}
                                     </a>

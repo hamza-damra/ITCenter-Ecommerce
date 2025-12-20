@@ -55,7 +55,7 @@ export class ProductGrid {
     getProductTemplate(product) {
         return `
             <article class="product-card" data-product-id="${product.id}">
-                <a href="/product/${product.slug}" class="product-link">
+                <a href="/product/${product.id}" class="product-link">
                     <div class="product-image-wrapper">
                         ${product.main_image ? `
                             <img src="${product.main_image}" 

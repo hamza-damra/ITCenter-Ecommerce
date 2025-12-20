@@ -55,7 +55,7 @@
             <div class="scroller-track">
                 @foreach($products as $product)
                 <div class="scroller-card-wrapper">
-                    <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product->slug) }}'">
+                    <div class="product-card" onclick="window.location.href='{{ route('product.detail', $product) }}'">
                         <div class="product-image">
                             @if($showDiscountPercentage && $product->sale_price && $product->sale_price < $product->price)
                             @php

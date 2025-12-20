@@ -155,6 +155,11 @@ class Offer extends Model
      */
     public function getRouteKeyName()
     {
+        // Check if current route is an admin route
+        $route = request()->route();
+        if ($route && str_contains($route->getName() ?? '', 'admin.')) {
+            return 'id';
+        }
         return 'slug';
     }
 }

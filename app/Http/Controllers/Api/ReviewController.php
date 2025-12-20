@@ -21,9 +21,8 @@ class ReviewController extends Controller
     /**
      * Get reviews for a product
      */
-    public function index(Request $request, $productSlug)
+    public function index(Request $request, Product $product)
     {
-        $product = Product::where('slug', $productSlug)->firstOrFail();
 
         $query = Review::with(['user'])
             ->where('product_id', $product->id);
@@ -81,9 +80,8 @@ class ReviewController extends Controller
     /**
      * Store a new review
      */
-    public function store(StoreReviewRequest $request, $productSlug)
+    public function store(StoreReviewRequest $request, Product $product)
     {
-        $product = Product::where('slug', $productSlug)->firstOrFail();
 
         // Check if user is authenticated
         if (!Auth::check()) {

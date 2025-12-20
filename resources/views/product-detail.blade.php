@@ -685,45 +685,151 @@
         font-size: 0.95rem;
     }
 
-    /* Specifications Section */
+    /* Specifications Section - Enhanced */
     .specifications-section {
         margin-top: 3rem;
-        background: #fff;
-        border-radius: 12px;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 16px;
         padding: 2rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        border: 1px solid rgba(0,0,0,0.05);
     }
 
     .section-title {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 700;
-        color: #333;
+        color: #1f2937;
         margin-bottom: 1.5rem;
         padding-bottom: 1rem;
-        border-bottom: 3px solid #4169E1;
+        border-bottom: 3px solid #2762f3;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-title i {
+        color: #2762f3;
+        font-size: 1.4rem;
     }
 
     .specs-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        gap: 0;
     }
 
     .spec-item {
         display: flex;
-        padding: 1rem;
-        background: #f8f9fa;
-        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        background: transparent;
+        border-bottom: 1px solid #e5e7eb;
+        transition: background 0.2s ease;
+    }
+
+    .spec-item:hover {
+        background: rgba(39, 98, 243, 0.04);
+    }
+
+    .spec-item:nth-child(odd) {
+        border-right: 1px solid #e5e7eb;
+    }
+
+    .specs-grid .spec-item:nth-last-child(1),
+    .specs-grid .spec-item:nth-last-child(2) {
+        border-bottom: none;
     }
 
     .spec-label {
         font-weight: 600;
-        color: #333;
-        min-width: 150px;
+        color: #374151;
+        min-width: 140px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .spec-label i {
+        color: #2762f3;
+        font-size: 0.85rem;
+        width: 16px;
+        text-align: center;
     }
 
     .spec-value {
-        color: #666;
+        color: #1f2937;
+        font-weight: 500;
+    }
+
+    .spec-unit {
+        color: #6b7280;
+        font-size: 0.9rem;
+        margin-left: 0.25rem;
+    }
+
+    .specs-empty {
+        text-align: center;
+        padding: 2rem;
+        color: #6b7280;
+    }
+
+    .specs-empty i {
+        font-size: 2rem;
+        color: #d1d5db;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    /* Description Section - Enhanced */
+    .description-section {
+        margin-top: 2rem;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .description-content {
+        color: #374151;
+        line-height: 1.9;
+        font-size: 1rem;
+    }
+
+    .description-content p {
+        margin-bottom: 1rem;
+    }
+
+    .description-content ul,
+    .description-content ol {
+        margin: 1rem 0;
+        padding-left: 1.5rem;
+    }
+
+    .description-content li {
+        margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .specs-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .spec-item:nth-child(odd) {
+            border-right: none;
+        }
+        
+        .spec-item {
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .specs-grid .spec-item:last-child {
+            border-bottom: none;
+        }
+        
+        .specs-grid .spec-item:nth-last-child(2) {
+            border-bottom: 1px solid #e5e7eb;
+        }
     }
 
     /* Related Products */
@@ -1046,50 +1152,112 @@
             </div>
         </div>
 
-        <!-- Specifications -->
+        <!-- Specifications Section - Enhanced -->
+        @php
+            $formattedSpecs = $product->formattedSpecifications ?? [];
+            $hasLegacySpecs = $product->specifications && is_array($product->specifications) && count($product->specifications) > 0;
+            $hasNewSpecs = count($formattedSpecs) > 0;
+        @endphp
+        
         <div class="specifications-section">
-            <h2 class="section-title">{{ __('messages.technical_specifications') }}</h2>
+            <h2 class="section-title">
+                <i class="fas fa-microchip"></i>
+                {{ __('messages.technical_specifications') }}
+            </h2>
             <div class="specs-grid">
-                @if($product->specifications && is_array($product->specifications))
-                    @foreach($product->specifications as $key => $value)
-                        <div class="spec-item">
-                            <span class="spec-label">{{ ucfirst(str_replace('_', ' ', $key)) }}:</span>
-                            <span class="spec-value">{{ $value }}</span>
-                        </div>
+                {{-- New spec template values --}}
+                @if($hasNewSpecs)
+                    @foreach($formattedSpecs as $spec)
+                        @if(!empty($spec['value']))
+                            <div class="spec-item">
+                                <span class="spec-label">
+                                    <i class="fas fa-check-circle"></i>
+                                    {{ $spec['label'] }}:
+                                </span>
+                                <span class="spec-value">{{ $spec['value'] }}</span>
+                            </div>
+                        @endif
                     @endforeach
-                @else
+                {{-- Legacy JSON specifications fallback --}}
+                @elseif($hasLegacySpecs)
+                    @foreach($product->specifications as $key => $value)
+                        @if(!empty($value))
+                            <div class="spec-item">
+                                <span class="spec-label">
+                                    <i class="fas fa-check-circle"></i>
+                                    {{ ucfirst(str_replace('_', ' ', $key)) }}:
+                                </span>
+                                <span class="spec-value">{{ $value }}</span>
+                            </div>
+                        @endif
+                    @endforeach
+                @endif
+                
+                {{-- Always show SKU --}}
+                <div class="spec-item">
+                    <span class="spec-label">
+                        <i class="fas fa-barcode"></i>
+                        {{ __('messages.sku') ?? 'SKU' }}:
+                    </span>
+                    <span class="spec-value">{{ $product->sku }}</span>
+                </div>
+                
+                {{-- Show weight if available --}}
+                @if($product->weight)
                     <div class="spec-item">
-                        <span class="spec-label">SKU:</span>
-                        <span class="spec-value">{{ $product->sku }}</span>
+                        <span class="spec-label">
+                            <i class="fas fa-weight-hanging"></i>
+                            {{ __('messages.weight') ?? 'Weight' }}:
+                        </span>
+                        <span class="spec-value">{{ $product->weight }} <span class="spec-unit">kg</span></span>
                     </div>
-                    @if($product->weight)
-                        <div class="spec-item">
-                            <span class="spec-label">Weight:</span>
-                            <span class="spec-value">{{ $product->weight }} kg</span>
-                        </div>
-                    @endif
-                    @if($product->warranty)
-                        <div class="spec-item">
-                            <span class="spec-label">Warranty:</span>
-                            <span class="spec-value">{{ $product->warranty }}</span>
-                        </div>
-                    @endif
-                    @if($product->length && $product->width && $product->height)
-                        <div class="spec-item">
-                            <span class="spec-label">Dimensions:</span>
-                            <span class="spec-value">{{ $product->length }} x {{ $product->width }} x {{ $product->height }} cm</span>
-                        </div>
-                    @endif
+                @endif
+                
+                {{-- Show warranty if available --}}
+                @if($product->warranty)
+                    <div class="spec-item">
+                        <span class="spec-label">
+                            <i class="fas fa-shield-alt"></i>
+                            {{ __('messages.warranty') }}:
+                        </span>
+                        <span class="spec-value">{{ $product->warranty }}</span>
+                    </div>
+                @endif
+                
+                {{-- Show dimensions if available --}}
+                @if($product->length && $product->width && $product->height)
+                    <div class="spec-item">
+                        <span class="spec-label">
+                            <i class="fas fa-cube"></i>
+                            {{ __('messages.dimensions') ?? 'Dimensions' }}:
+                        </span>
+                        <span class="spec-value">{{ $product->length }} × {{ $product->width }} × {{ $product->height }} <span class="spec-unit">cm</span></span>
+                    </div>
+                @endif
+                
+                {{-- Empty state if no specs at all --}}
+                @if(!$hasNewSpecs && !$hasLegacySpecs && !$product->weight && !$product->warranty)
+                    <div class="specs-empty" style="grid-column: 1 / -1;">
+                        <i class="fas fa-info-circle"></i>
+                        <p>{{ __('messages.no_specifications_available') ?? 'No specifications available for this product.' }}</p>
+                    </div>
                 @endif
             </div>
         </div>
 
-        <!-- Full Description -->
-        @if($product->{'description_' . current_locale()} ?? $product->description && ($product->{'description_' . current_locale()} ?? $product->description) != ($product->{'short_description_' . current_locale()} ?? $product->short_description))
-        <div class="specifications-section" style="margin-top: 2rem;">
-            <h2 class="section-title">{{ __('messages.product_description') }}</h2>
-            <div style="color: #555; line-height: 1.8; font-size: 1rem;">
-                {!! nl2br(e($product->{'description_' . current_locale()} ?? $product->description)) !!}
+        <!-- Full Description Section - Enhanced -->
+        @php
+            $description = $product->{'description_' . current_locale()} ?? $product->description;
+            $shortDesc = $product->{'short_description_' . current_locale()} ?? $product->short_description;
+        @endphp
+        @if($description && $description !== $shortDesc)
+        <div class="description-section">
+            <h2 class="section-title">
+                <i class="fas fa-align-left"></i>
+                {{ __('messages.product_description') }}
+            </h2>
+            <div class="description-content">
+                {!! nl2br(e($description)) !!}
             </div>
         </div>
         @endif
@@ -1105,7 +1273,7 @@
         <h2 class="related-title">{{ __('messages.related_products') }}</h2>
         <div class="products-grid">
             @foreach($relatedProducts as $relatedProduct)
-                <a href="{{ route('product.detail', $relatedProduct->slug) }}" style="text-decoration: none; color: inherit;">
+                <a href="{{ route('product.detail', $relatedProduct) }}" style="text-decoration: none; color: inherit;">
                     <div class="product-card">
                         <div class="product-card-image">
                             @php

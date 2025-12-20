@@ -95,7 +95,7 @@ class Product extends Model
     public function getMainImageAttribute($value)
     {
         if (empty($value)) {
-            return asset('images/products/default.png');
+            return \App\Helpers\ImageHelper::assetUrl('images/products/default.png');
         }
         
         // If it's already a full URL, return it as is
@@ -137,7 +137,7 @@ class Product extends Model
         }
         
         // Fallback to default image
-        return asset('images/products/default.png');
+        return \App\Helpers\ImageHelper::assetUrl('images/products/default.png');
     }
 
     /**
@@ -350,7 +350,8 @@ class Product extends Model
      */
     public function getRouteKeyName()
     {
-        return 'slug';
+        // Always use ID for routes (both admin and public)
+        return 'id';
     }
 
     /**
@@ -470,6 +471,122 @@ class Product extends Model
     {
         return $this->belongsToMany(Tag::class, 'product_tag')
             ->withTimestamps();
+    }
+
+    /**
+     * Get all specification values for this product.
+     */
+    public function specValues()
+    {
+        return $this->hasMany(ProductSpecValue::class);
+    }
+
+    /**
+     * Get specification values with their fields, ordered.
+     */
+    public function getOrderedSpecValuesAttribute()
+    {
+        return $this->specValues()
+            ->with(['field' => function ($query) {
+                $query->where('is_active', true)->orderBy('sort_order');
+            }])
+            ->get()
+            ->filter(fn ($v) => $v->field !== null)
+            ->sortBy('field.sort_order');
+    }
+
+    /**
+     * Get the spec template for this product's category.
+     */
+    public function getSpecTemplateAttribute()
+    {
+        return $this->category?->specTemplate;
+    }
+
+    /**
+     * Sync specification values for this product.
+     * 
+     * @param array $values Array of [spec_field_id => value]
+     * @return void
+     */
+    public function syncSpecValues(array $values): void
+    {
+        // Get valid field IDs for this product's category
+        $validFieldIds = $this->category?->specTemplate?->activeFields?->pluck('id')->toArray() ?? [];
+
+        // Delete values that are no longer valid (field removed or category changed)
+        $this->specValues()
+            ->whereNotIn('spec_field_id', $validFieldIds)
+            ->delete();
+
+        // Upsert new values
+        foreach ($values as $fieldId => $value) {
+            if (!in_array($fieldId, $validFieldIds)) {
+                continue; // Skip invalid fields
+            }
+
+            // Skip empty values for optional fields
+            if ($value === null || $value === '') {
+                $this->specValues()->where('spec_field_id', $fieldId)->delete();
+                continue;
+            }
+
+            $this->specValues()->updateOrCreate(
+                ['spec_field_id' => $fieldId],
+                ['value' => (string) $value]
+            );
+        }
+    }
+
+    /**
+     * Get a specific spec value by field key.
+     */
+    public function getSpecValue(string $key): ?string
+    {
+        $field = $this->category?->specTemplate?->fields()
+            ->where('key', $key)
+            ->first();
+
+        if (!$field) {
+            return null;
+        }
+
+        $value = $this->specValues()->where('spec_field_id', $field->id)->first();
+        return $value?->value;
+    }
+
+    /**
+     * Get formatted specifications for display.
+     */
+    public function getFormattedSpecificationsAttribute(): array
+    {
+        // Safety check: if tables don't exist, return empty array
+        if (!\Illuminate\Support\Facades\Schema::hasTable('product_spec_values') || 
+            !\Illuminate\Support\Facades\Schema::hasTable('spec_fields')) {
+            return [];
+        }
+
+        try {
+            $specs = [];
+
+            foreach ($this->orderedSpecValues as $specValue) {
+                if (!$specValue->field || empty($specValue->value)) {
+                    continue;
+                }
+
+                $specs[] = [
+                    'label' => $specValue->field->label,
+                    'value' => $specValue->formattedValue,
+                    'key' => $specValue->field->key,
+                    'type' => $specValue->field->type,
+                ];
+            }
+
+            return $specs;
+        } catch (\Exception $e) {
+            // If there's any error (e.g., table doesn't exist), return empty array
+            return [];
+        }
     }
 
     /**

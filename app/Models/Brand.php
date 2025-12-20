@@ -52,7 +52,7 @@ class Brand extends Model
     public function getLogoAttribute($value)
     {
         if (empty($value)) {
-            return asset('images/products/default.png');
+            return \App\Helpers\ImageHelper::assetUrl('images/products/default.png');
         }
         
         // If it's already a full URL, return it as is
@@ -88,7 +88,7 @@ class Brand extends Model
         }
         
         // Fallback to default image
-        return asset('images/products/default.png');
+        return \App\Helpers\ImageHelper::assetUrl('images/products/default.png');
     }
 
     /**
@@ -143,6 +143,11 @@ class Brand extends Model
      */
     public function getRouteKeyName()
     {
+        // Check if current route is an admin route
+        $route = request()->route();
+        if ($route && str_contains($route->getName() ?? '', 'admin.')) {
+            return 'id';
+        }
         return 'slug';
     }
 }

@@ -3,14 +3,14 @@
 
 @props(['product', 'showWishlist' => true])
 
-<a href="{{ route('product.detail', $product->slug) }}" class="product-card-link" data-product-id="{{ $product->id }}">
+<a href="{{ route('product.detail', $product) }}" class="product-card-link" data-product-id="{{ $product->id }}">
     <div class="product-card">
         {{-- Product Image --}}
         <div class="product-card-image">
             <img src="{{ $product->main_image }}" 
                  alt="{{ $product->name }}" 
                  loading="lazy"
-                 onerror="this.src='{{ asset('images/products/default.png') }}'">
+                 onerror="this.src='{{ \App\Helpers\ImageHelper::assetUrl('images/products/default.png') }}'">
 
             {{-- Product Badge --}}
             @if($product->discount_percentage > 0)

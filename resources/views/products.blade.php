@@ -853,6 +853,38 @@
         padding: 0.5rem;
     }
 
+    /* Product Card Loading Animation - Lightweight & Smooth */
+    .product-grid.loading .product-card {
+        opacity: 0 !important;
+        transform: translateY(15px) !important;
+        animation: cardSlideIn 0.4s ease-out forwards !important;
+        will-change: opacity, transform;
+    }
+
+    .product-grid.loading .product-card:nth-child(1) { animation-delay: 0.05s !important; }
+    .product-grid.loading .product-card:nth-child(2) { animation-delay: 0.1s !important; }
+    .product-grid.loading .product-card:nth-child(3) { animation-delay: 0.15s !important; }
+    .product-grid.loading .product-card:nth-child(4) { animation-delay: 0.2s !important; }
+    .product-grid.loading .product-card:nth-child(5) { animation-delay: 0.25s !important; }
+    .product-grid.loading .product-card:nth-child(6) { animation-delay: 0.3s !important; }
+    .product-grid.loading .product-card:nth-child(7) { animation-delay: 0.35s !important; }
+    .product-grid.loading .product-card:nth-child(8) { animation-delay: 0.4s !important; }
+    .product-grid.loading .product-card:nth-child(9) { animation-delay: 0.45s !important; }
+    .product-grid.loading .product-card:nth-child(10) { animation-delay: 0.5s !important; }
+    .product-grid.loading .product-card:nth-child(11) { animation-delay: 0.55s !important; }
+    .product-grid.loading .product-card:nth-child(12) { animation-delay: 0.6s !important; }
+
+    @keyframes cardSlideIn {
+        0% {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .product-card-link {
         display: block;
         text-decoration: none;
@@ -1707,18 +1739,36 @@
     }
     @endif
 
-    /* Product Grid Fade In Animation */
-    .product-card {
-        animation: fadeInUp 0.6s ease-out;
-        animation-fill-mode: both;
+    /* Product Grid Loading Animation - Lightweight & Simple */
+    .product-grid.loading .product-card {
+        opacity: 0;
+        transform: translateY(15px);
+        animation: cardFadeIn 0.4s ease-out forwards;
     }
 
-    .product-card:nth-child(1) { animation-delay: 0.1s; }
-    .product-card:nth-child(2) { animation-delay: 0.15s; }
-    .product-card:nth-child(3) { animation-delay: 0.2s; }
-    .product-card:nth-child(4) { animation-delay: 0.25s; }
-    .product-card:nth-child(5) { animation-delay: 0.3s; }
-    .product-card:nth-child(6) { animation-delay: 0.35s; }
+    .product-grid.loading .product-card:nth-child(1) { animation-delay: 0.05s; }
+    .product-grid.loading .product-card:nth-child(2) { animation-delay: 0.1s; }
+    .product-grid.loading .product-card:nth-child(3) { animation-delay: 0.15s; }
+    .product-grid.loading .product-card:nth-child(4) { animation-delay: 0.2s; }
+    .product-grid.loading .product-card:nth-child(5) { animation-delay: 0.25s; }
+    .product-grid.loading .product-card:nth-child(6) { animation-delay: 0.3s; }
+    .product-grid.loading .product-card:nth-child(7) { animation-delay: 0.35s; }
+    .product-grid.loading .product-card:nth-child(8) { animation-delay: 0.4s; }
+    .product-grid.loading .product-card:nth-child(9) { animation-delay: 0.45s; }
+    .product-grid.loading .product-card:nth-child(10) { animation-delay: 0.5s; }
+    .product-grid.loading .product-card:nth-child(11) { animation-delay: 0.55s; }
+    .product-grid.loading .product-card:nth-child(12) { animation-delay: 0.6s; }
+
+    @keyframes cardFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
     /* Responsive Design */
     @media (max-width: 1024px) {
@@ -1921,7 +1971,7 @@
         @if($products->count() > 0)
         <div class="product-grid">
             @forelse($products as $product)
-            <a href="{{ route('product.detail', $product->slug) }}" class="product-card-link">
+            <a href="{{ route('product.detail', $product) }}" class="product-card-link">
                 <div class="product-card">
                     <div class="product-image">
                         @if($product->is_new)
@@ -2257,12 +2307,21 @@
                 if (newProductGrid && currentProductGrid) {
                     // Hide current grid with fade
                     currentProductGrid.style.opacity = '0';
-                    currentProductGrid.style.transition = 'opacity 0.2s ease';
+                    currentProductGrid.style.transition = 'opacity 0.15s ease';
                     
                     setTimeout(() => {
                         // Replace product grid content
                         currentProductGrid.innerHTML = newProductGrid.innerHTML;
-                        currentProductGrid.style.opacity = '1';
+                        
+                        // Reset opacity and remove transition for animation
+                        currentProductGrid.style.opacity = '';
+                        currentProductGrid.style.transition = '';
+                        
+                        // Add loading class for animation
+                        currentProductGrid.classList.add('loading');
+                        
+                        // Force reflow to trigger animation
+                        void currentProductGrid.offsetHeight;
                         
                         // Re-initialize wishlist and cart buttons
                         if (typeof initializeWishlistButtons === 'function') {
@@ -2272,8 +2331,14 @@
                             initializeCartButtons();
                         }
                         
-                        console.log('✅ Product grid updated');
-                    }, 200);
+                        // Remove loading class after animation completes (350ms + max delay 360ms = ~700ms)
+                        setTimeout(() => {
+                            currentProductGrid.classList.remove('loading');
+                            console.log('✅ Animation completed');
+                        }, 750);
+                        
+                        console.log('✅ Product grid updated with animation');
+                    }, 150);
                 } else if (newNoResults) {
                     // Handle no results case
                     if (currentProductGrid) {

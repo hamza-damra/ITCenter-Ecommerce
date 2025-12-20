@@ -43,7 +43,7 @@
             <div class="products-grid" data-component="products-grid">
                 @forelse($products as $product)
                     <article class="product-card" data-product-id="{{ $product->id }}">
-                        <a href="{{ route('product.detail', $product->slug) }}" class="product-link">
+                        <a href="{{ route('product.detail', $product) }}" class="product-link">
                             {{-- Product Image --}}
                             <div class="product-image-wrapper">
                                 @if($product->main_image)

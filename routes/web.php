@@ -38,7 +38,7 @@ Route::get('/categories', [CategoryController::class, 'index'])->name('categorie
 Route::get('/category/{parentSlug}/{childSlug?}/{subChildSlug?}', [CategoryController::class, 'show'])->name('category.show');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products');
-Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.detail');
+Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.detail');
 
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
@@ -158,6 +158,14 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
     // Tags
     Route::resource('tags', App\Http\Controllers\Admin\TagController::class);
+
+    // Specification Templates
+    Route::get('/spec-templates/category-fields/{categoryId}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'getCategorySpecFields'])->name('spec-templates.category-fields');
+    Route::resource('spec-templates', App\Http\Controllers\Admin\SpecTemplateController::class);
+    Route::post('/spec-templates/{template}/fields', [App\Http\Controllers\Admin\SpecTemplateController::class, 'storeField'])->name('spec-templates.fields.store');
+    Route::put('/spec-templates/{template}/fields/{field}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'updateField'])->name('spec-templates.fields.update');
+    Route::delete('/spec-templates/{template}/fields/{field}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'destroyField'])->name('spec-templates.fields.destroy');
+    Route::post('/spec-templates/{template}/reorder-fields', [App\Http\Controllers\Admin\SpecTemplateController::class, 'reorderFields'])->name('spec-templates.reorder-fields');
 
     // Attribute Values
     Route::resource('attributes.attribute-values', App\Http\Controllers\Admin\AttributeValueController::class)

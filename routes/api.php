@@ -64,7 +64,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/search', [ProductController::class, 'search']);
     Route::get('/products/featured', [ProductController::class, 'featured']);
-    Route::get('/products/{slug}', [ProductController::class, 'show']);
+    Route::get('/products/{product}', [ProductController::class, 'show']);
     
     // Search Suggestions (Autocomplete)
     Route::get('/search/suggestions', [App\Http\Controllers\Api\SearchSuggestionController::class, 'suggestions']);
@@ -74,7 +74,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/offers/{slug}', [OfferController::class, 'show']);
     
     // Reviews
-    Route::get('/products/{slug}/reviews', [ReviewController::class, 'index']);
+    Route::get('/products/{product}/reviews', [ReviewController::class, 'index']);
     Route::post('/reviews/{review}/helpful', [ReviewController::class, 'markHelpful']);
     Route::post('/reviews/{review}/unhelpful', [ReviewController::class, 'markUnhelpful']);
     
@@ -102,7 +102,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/user/stats', [UserController::class, 'stats']);
         
         // Reviews (Authenticated)
-        Route::post('/products/{slug}/reviews', [ReviewController::class, 'store']);
+        Route::post('/products/{product}/reviews', [ReviewController::class, 'store']);
         Route::put('/reviews/{review}', [ReviewController::class, 'update']);
         Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
         

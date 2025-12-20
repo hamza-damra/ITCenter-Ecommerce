@@ -445,7 +445,7 @@
 
             <div class="product-grid">
                 @foreach($favorites as $product)
-                <a href="{{ route('product.detail', $product->slug) }}" class="product-card-link">
+                <a href="{{ route('product.detail', $product) }}" class="product-card-link">
                     <div class="product-card">
                         <div class="product-image">
                             <button class="wishlist-btn active" 
