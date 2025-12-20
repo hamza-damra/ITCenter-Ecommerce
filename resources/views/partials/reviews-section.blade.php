@@ -1348,6 +1348,25 @@
                     return;
                 }
 
+                // Handle 401 Unauthorized - user not authenticated
+                if (response.status === 401) {
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMessage = errorData.message || '{{ __("messages.please_login") ?? "Please login to submit a review" }}';
+                    showToast(errorMessage, 'error');
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                    return;
+                }
+
+                // Handle 403 Forbidden - user hasn't purchased and shipped the product
+                if (response.status === 403) {
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMessage = errorData.message || '{{ __("messages.review_requires_purchase_shipped") ?? "You must purchase and receive this product before you can review it" }}';
+                    showToast(errorMessage, 'error');
+                    return;
+                }
+
                 const data = await response.json();
 
                 if (response.ok && data.success) {

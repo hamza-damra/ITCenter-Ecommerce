@@ -85,6 +85,22 @@ class ReviewController extends Controller
     {
         $product = Product::where('slug', $productSlug)->firstOrFail();
 
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.please_login'),
+            ], 401);
+        }
+
+        // Check if user has purchased and shipped this product
+        if (!$this->hasPurchasedAndShipped($product->id, Auth::id())) {
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.review_requires_purchase_shipped'),
+            ], 403);
+        }
+
         // Check if user already reviewed this product
         $existingReview = Review::where('product_id', $product->id)
             ->where('user_id', Auth::id())
@@ -324,13 +340,27 @@ class ReviewController extends Controller
     }
 
     /**
-     * Check if purchase is verified
+     * Check if purchase is verified (user has purchased and shipped the product)
      */
     private function isVerifiedPurchase($productId, $userId)
     {
-        // Check if user has completed order with this product
+        // Check if user has shipped or delivered order with this product
         return Order::where('user_id', $userId)
-            ->where('status', 'completed')
+            ->whereIn('status', ['shipped', 'delivered'])
+            ->whereHas('items', function ($query) use ($productId) {
+                $query->where('product_id', $productId);
+            })
+            ->exists();
+    }
+
+    /**
+     * Check if user has purchased and shipped the product (required for review)
+     */
+    private function hasPurchasedAndShipped($productId, $userId)
+    {
+        // Check if user has shipped or delivered order with this product
+        return Order::where('user_id', $userId)
+            ->whereIn('status', ['shipped', 'delivered'])
             ->whereHas('items', function ($query) use ($productId) {
                 $query->where('product_id', $productId);
             })

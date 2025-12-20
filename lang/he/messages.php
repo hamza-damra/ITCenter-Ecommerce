@@ -155,6 +155,7 @@ return [
     'review_update_failed' => 'עדכון הביקורת נכשל. אנא נסה שוב.',
     'review_delete_failed' => 'מחיקת הביקורת נכשלה. אנא נסה שוב.',
     'review_already_exists' => 'כבר ביקרת מוצר זה.',
+    'review_requires_purchase_shipped' => 'עליך לרכוש ולקבל את המוצר הזה לפני שתוכל לכתוב עליו ביקורת.',
     'review_rating_required' => 'דירוג נדרש.',
     'review_rating_invalid' => 'הדירוג חייב להיות מספר.',
     'review_rating_min' => 'הדירוג חייב להיות לפחות 1.',
