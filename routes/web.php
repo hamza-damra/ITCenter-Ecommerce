@@ -27,6 +27,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Banner Image Route (for serving database-stored images)
 Route::get('/banner-image/{banner}', [App\Http\Controllers\BannerImageController::class, 'show'])->name('banner.image');
+
+// Promotional Ad Image Route (for serving database-stored images)
+Route::get('/promotional-ad-image/{promotionalAd}', [App\Http\Controllers\PromotionalAdImageController::class, 'show'])->name('promotional-ad.image');
+
 Route::get('/test-home', [HomeController::class, 'index'])->name('test.home');
 Route::get('/clear-cache', [HomeController::class, 'clearHomeCache'])->name('clear.cache');
 
@@ -206,6 +210,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::post('/backup/import-and-restore', [App\Http\Controllers\Admin\BackupController::class, 'importAndRestore'])->name('backup.import-and-restore');
     Route::get('/backup/modules', [App\Http\Controllers\Admin\BackupController::class, 'getModules'])->name('backup.modules');
     Route::post('/backup/purge-all-data', [App\Http\Controllers\Admin\BackupController::class, 'purgeAllData'])->name('backup.purge-all-data');
+    Route::post('/backup/clear-frontend-cache', [App\Http\Controllers\Admin\BackupController::class, 'clearFrontendCache'])->name('backup.clear-frontend-cache');
 
     // Backup Settings
     Route::get('/backup/settings', [App\Http\Controllers\Admin\BackupSettingController::class, 'index'])->name('backup.settings');

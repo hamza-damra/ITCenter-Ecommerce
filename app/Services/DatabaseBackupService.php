@@ -6,6 +6,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Artisan;
 use Carbon\Carbon;
 use App\Models\BackupSetting;
 use App\Models\Backup;
@@ -365,6 +367,9 @@ class DatabaseBackupService
                     'safety_backup' => $safetyBackup,
                 ]);
 
+                // CRITICAL FIX: Clear all caches after restore to ensure fresh data
+                $this->clearAllCachesAfterRestore();
+
                 // Optionally delete the safety backup after success
                 if ($safetyBackup && !config('backup.keep_safety_backup_on_success', true)) {
                     try {
@@ -544,6 +549,9 @@ class DatabaseBackupService
                     'statements' => $statementCount,
                     'safety_backup' => $safetyBackup,
                 ]);
+
+                // CRITICAL FIX: Clear all caches after restore to ensure fresh data
+                $this->clearAllCachesAfterRestore();
 
                 // Optionally delete the safety backup after success
                 if ($safetyBackup && !config('backup.keep_safety_backup_on_success', true)) {
@@ -1392,6 +1400,10 @@ class DatabaseBackupService
             // Restore from saved file
             $result = $this->restoreBackup($filename);
             
+            // CRITICAL: Clear all caches AFTER restore is complete
+            // This ensures fresh data is loaded on next page view
+            $this->clearAllCachesAfterRestore();
+            
             // Create database record for imported backup (only if DB is available)
             if ($this->isDatabaseAvailable()) {
                 try {
@@ -1582,5 +1594,39 @@ class DatabaseBackupService
         $statement = $this->sanitizeSqlForTransaction($statement);
         // After sanitization, return empty string if only whitespace remains
         return trim($statement) === '' ? '' : $statement;
+    }
+
+    /**
+     * Clear all caches after restore operation
+     * This ensures frontend pages show fresh data after backup restore
+     *
+     * @return void
+     */
+    protected function clearAllCachesAfterRestore(): void
+    {
+        try {
+            // Clear Laravel application caches
+            Cache::flush();
+            Artisan::call('cache:clear');
+            Artisan::call('view:clear');
+            Artisan::call('route:clear');
+            Artisan::call('config:clear');
+            
+            // CRITICAL: Clear home page cache for all locales
+            $locales = ['ar', 'en', 'he'];
+            foreach ($locales as $locale) {
+                Cache::forget("home_page_data_{$locale}");
+            }
+            
+            Log::info('All caches cleared after restore', [
+                'caches' => array_merge(
+                    ['application', 'view', 'route', 'config'],
+                    array_map(fn($l) => "home_page_data_{$l}", $locales)
+                )
+            ]);
+        } catch (Exception $e) {
+            Log::warning('Failed to clear caches after restore', ['error' => $e->getMessage()]);
+            // Don't throw - cache clearing failure shouldn't break restore
+        }
     }
 }

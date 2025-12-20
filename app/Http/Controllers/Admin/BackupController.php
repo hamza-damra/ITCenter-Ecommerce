@@ -99,13 +99,26 @@ class BackupController extends Controller
         try {
             $result = $this->backupService->restoreBackup($request->filename);
 
+            // CRITICAL FIX: Clear frontend caches after restore
+            $this->clearFrontendCaches();
+
+            // Validate that restored data is visible on frontend
+            $validation = $this->validateFrontendDataVisibility();
+            $warningMessage = '';
+            if (!$validation['visible']) {
+                $warningMessage = " Warning: {$validation['message']}";
+                Log::warning('Frontend data visibility issue after restore', $validation);
+            }
+
             Log::warning('Database restored from backup', [
                 'filename' => $request->filename,
-                'admin' => auth()->user()->email ?? 'unknown'
+                'admin' => auth()->user()->email ?? 'unknown',
+                'frontend_validation' => $validation
             ]);
 
             return redirect()->route('admin.backup.index')
-                ->with('success', "Database restored successfully from {$result['filename']}! {$result['statements']} statements executed.");
+                ->with('success', "Database restored successfully from {$result['filename']}! {$result['statements']} statements executed.{$warningMessage}")
+                ->with('warning', $validation['visible'] ? null : $validation['message']);
 
         } catch (BackupRestoreException $e) {
             Log::error('Backup restoration failed', [
@@ -440,14 +453,27 @@ class BackupController extends Controller
             $file = $request->file('backup_file');
             $result = $this->backupService->importAndRestore($file);
 
+            // CRITICAL FIX: Clear frontend caches after import
+            $this->clearFrontendCaches();
+
+            // Validate that imported data is visible on frontend
+            $validation = $this->validateFrontendDataVisibility();
+            $warningMessage = '';
+            if (!$validation['visible']) {
+                $warningMessage = " Warning: {$validation['message']}";
+                Log::warning('Frontend data visibility issue after import', $validation);
+            }
+
             Log::warning('Database imported and restored from upload', [
                 'filename' => $result['filename'],
                 'original' => $result['original_filename'],
-                'admin' => auth()->user()->email ?? 'unknown'
+                'admin' => auth()->user()->email ?? 'unknown',
+                'frontend_validation' => $validation
             ]);
 
             return redirect()->route('admin.backup.index')
-                ->with('success', "Backup imported and restored successfully! Original file: {$result['original_filename']}");
+                ->with('success', "Backup imported and restored successfully! Original file: {$result['original_filename']}{$warningMessage}")
+                ->with('warning', $validation['visible'] ? null : $validation['message']);
 
         } catch (BackupRestoreException $e) {
             Log::error('Backup import/restore failed', [
@@ -486,6 +512,45 @@ class BackupController extends Controller
             return response()->json([
                 'success' => false,
                 'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Clear frontend cache manually
+     * Useful after import/restore if data doesn't appear
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function clearFrontendCache()
+    {
+        try {
+            $this->clearFrontendCaches();
+            
+            // Also clear Laravel caches
+            Cache::flush();
+            Artisan::call('cache:clear');
+            Artisan::call('view:clear');
+            
+            // Validate data visibility
+            $validation = $this->validateFrontendDataVisibility();
+            
+            Log::info('Frontend cache cleared manually', [
+                'admin' => auth()->user()->email ?? 'unknown',
+                'validation' => $validation
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Frontend cache cleared successfully. ' . $validation['message'],
+                'validation' => $validation
+            ]);
+        } catch (Exception $e) {
+            Log::error('Failed to clear frontend cache', ['error' => $e->getMessage()]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to clear cache: ' . $e->getMessage()
             ], 500);
         }
     }
@@ -613,6 +678,9 @@ class BackupController extends Controller
                 Artisan::call('view:clear');
                 Artisan::call('route:clear');
                 Artisan::call('config:clear');
+                
+                // CRITICAL FIX: Clear home page cache to prevent stale empty data
+                $this->clearFrontendCaches();
             } catch (Exception $cacheError) {
                 Log::warning('Cache clear failed during purge', ['error' => $cacheError->getMessage()]);
             }
@@ -654,6 +722,93 @@ class BackupController extends Controller
                 'success' => false,
                 'message' => __('messages.Failed to purge data') . ': ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    /**
+     * Clear all frontend-related caches
+     * This ensures frontend pages show fresh data after data operations
+     *
+     * @return void
+     */
+    protected function clearFrontendCaches(): void
+    {
+        try {
+            // Clear home page cache for all locales
+            $locales = ['ar', 'en', 'he'];
+            foreach ($locales as $locale) {
+                Cache::forget("home_page_data_{$locale}");
+            }
+            
+            Log::info('Frontend caches cleared', ['caches' => array_map(fn($l) => "home_page_data_{$l}", $locales)]);
+        } catch (Exception $e) {
+            Log::warning('Failed to clear frontend caches', ['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Validate that imported/restored data is visible on frontend
+     * Checks for active products and categories that should appear on home page
+     *
+     * @return array
+     */
+    protected function validateFrontendDataVisibility(): array
+    {
+        try {
+            $issues = [];
+            
+            // Check for active products
+            $activeProductsCount = \App\Models\Product::where('is_active', true)->count();
+            if ($activeProductsCount === 0) {
+                $issues[] = 'No active products found. Products need is_active=1 to appear on frontend.';
+            }
+            
+            // Check for featured products (required for home page)
+            $featuredProductsCount = \App\Models\Product::where('is_active', true)
+                ->where('is_featured', true)
+                ->count();
+            if ($featuredProductsCount === 0) {
+                $issues[] = 'No featured products found. At least some products should have is_featured=1.';
+            }
+            
+            // Check for active categories
+            $activeCategoriesCount = \App\Models\Category::where('is_active', true)->count();
+            if ($activeCategoriesCount === 0) {
+                $issues[] = 'No active categories found. Categories need is_active=1 to appear on frontend.';
+            }
+            
+            // Check for carousel categories (required for home page)
+            $carouselCategoriesCount = \App\Models\Category::where('is_active', true)
+                ->whereNull('parent_id')
+                ->where('display_mode', 'carousel')
+                ->count();
+            if ($carouselCategoriesCount === 0) {
+                $issues[] = 'No carousel categories found. At least one parent category should have display_mode="carousel".';
+            }
+            
+            $isVisible = empty($issues);
+            $message = $isVisible 
+                ? 'Frontend data is visible and ready.'
+                : implode(' ', $issues);
+            
+            return [
+                'visible' => $isVisible,
+                'message' => $message,
+                'details' => [
+                    'active_products' => $activeProductsCount,
+                    'featured_products' => $featuredProductsCount,
+                    'active_categories' => $activeCategoriesCount,
+                    'carousel_categories' => $carouselCategoriesCount,
+                ],
+                'issues' => $issues
+            ];
+        } catch (Exception $e) {
+            Log::warning('Failed to validate frontend data visibility', ['error' => $e->getMessage()]);
+            return [
+                'visible' => true, // Assume visible if validation fails
+                'message' => 'Could not validate frontend data visibility.',
+                'error' => $e->getMessage()
+            ];
         }
     }
 }

@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -24,10 +25,26 @@ class HomeController extends Controller
     {
         $this->cartCache = $cartCache;
     }
-    public function index()
+    public function index(Request $request)
     {
+        // Allow bypassing cache with ?nocache=1 parameter (for debugging/force refresh)
+        $forceRefresh = $request->has('nocache') && $request->get('nocache') == '1';
+        
         // Cache key for home page data
         $cacheKey = 'home_page_data_' . app()->getLocale();
+        
+        // Clear cache if force refresh is requested
+        if ($forceRefresh) {
+            Cache::forget($cacheKey);
+            // Also clear for all locales to be thorough
+            foreach (['ar', 'en', 'he'] as $locale) {
+                Cache::forget("home_page_data_{$locale}");
+            }
+            Log::info('Home page cache cleared via nocache parameter', [
+                'locale' => app()->getLocale(),
+                'ip' => $request->ip()
+            ]);
+        }
 
         // Try to get data from cache first (cache for 30 minutes)
         $data = Cache::remember($cacheKey, 1800, function () {
@@ -236,14 +253,33 @@ class HomeController extends Controller
     }
 
     /**
-     * Clear home page cache
+     * Clear home page cache - Enhanced version
+     * Clears all caches and forces fresh data load
      */
     public function clearHomeCache()
     {
-        Cache::forget('home_page_data_ar');
-        Cache::forget('home_page_data_en');
-        Cache::forget('home_page_data_he');
-
-        return response()->json(['success' => true, 'message' => 'Cache cleared successfully']);
+        try {
+            // Clear home page cache for all locales
+            $locales = ['ar', 'en', 'he'];
+            foreach ($locales as $locale) {
+                Cache::forget("home_page_data_{$locale}");
+            }
+            
+            // Also clear Laravel application cache to be thorough
+            Cache::flush();
+            
+            // Clear compiled views
+            \Artisan::call('view:clear');
+            
+            return response()->json([
+                'success' => true, 
+                'message' => 'Home page cache cleared successfully. Please refresh the page.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Failed to clear cache: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

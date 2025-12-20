@@ -34,6 +34,9 @@
             <button type="button" class="btn btn-critical" onclick="showPurgeModal()">
                 <i class="fas fa-skull-crossbones"></i> {{ __('messages.Delete All Data') }}
             </button>
+            <button type="button" class="btn btn-primary" onclick="clearFrontendCache()" title="Clear frontend cache to refresh home page data">
+                <i class="fas fa-sync-alt"></i> Clear Frontend Cache
+            </button>
         </div>
     </div>
 </div>
@@ -2041,11 +2044,25 @@ function closePurgeAlert() {
 function clearBrowserCaches() {
     try {
         // Clear localStorage
-        localStorage.clear();
-        
+        if (typeof Storage !== 'undefined' && localStorage) {
+            localStorage.clear();
+        }
+    } catch (e) {
+        // Tracking Prevention or storage blocked
+        console.warn('localStorage access blocked:', e.message);
+    }
+    
+    try {
         // Clear sessionStorage
-        sessionStorage.clear();
-        
+        if (typeof Storage !== 'undefined' && sessionStorage) {
+            sessionStorage.clear();
+        }
+    } catch (e) {
+        // Tracking Prevention or storage blocked
+        console.warn('sessionStorage access blocked:', e.message);
+    }
+    
+    try {
         // Clear service worker caches if available
         if ('caches' in window) {
             caches.keys().then(function(names) {
@@ -2092,5 +2109,51 @@ window.addEventListener('click', function(event) {
         closePurgeAlert();
     }
 });
+
+/**
+ * Clear frontend cache manually
+ * Useful after import/restore if data doesn't appear on home page
+ */
+async function clearFrontendCache() {
+    const btn = event.target.closest('button');
+    const originalHtml = btn.innerHTML;
+    
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Clearing...';
+    
+    try {
+        const response = await fetch('{{ route('admin.backup.clear-frontend-cache') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        const data = await response.json();
+        
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        
+        if (response.ok && data.success) {
+            alert('✅ ' + data.message + '\n\n' + 
+                  'Data Status:\n' +
+                  '- Active Products: ' + (data.validation?.details?.active_products || 0) + '\n' +
+                  '- Featured Products: ' + (data.validation?.details?.featured_products || 0) + '\n' +
+                  '- Active Categories: ' + (data.validation?.details?.active_categories || 0) + '\n' +
+                  '- Carousel Categories: ' + (data.validation?.details?.carousel_categories || 0) + '\n\n' +
+                  'Please refresh the home page to see the changes.');
+        } else {
+            alert('❌ Error: ' + (data.message || 'Failed to clear cache'));
+        }
+    } catch (error) {
+        console.error('Clear cache error:', error);
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        alert('❌ Error: Failed to clear cache. Please try again.');
+    }
+}
 </script>
 @endsection
