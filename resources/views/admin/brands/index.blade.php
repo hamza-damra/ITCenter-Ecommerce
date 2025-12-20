@@ -235,18 +235,45 @@
         background: linear-gradient(135deg, #059669 0%, var(--accent-emerald) 100%);
     }
 
+    @media (max-width: 1024px) {
+        .brands-grid {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+    }
+
     @media (max-width: 768px) {
         .brands-grid {
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.875rem;
+        }
+
+        .brand-card {
+            padding: 1rem;
+        }
+
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+        }
+
+        .brand-name {
+            font-size: 0.9rem;
+        }
+
+        .brand-count {
+            font-size: 0.8rem;
         }
 
         .search-filter-box {
             flex-direction: column;
+            padding: 16px;
         }
 
         .search-filter-box input,
         .search-filter-box select {
             min-width: unset;
+            width: 100%;
         }
 
         .header-actions {
@@ -258,6 +285,35 @@
         .header-actions .btn-add {
             width: 100%;
             justify-content: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .brands-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 0.625rem;
+        }
+
+        .brand-card {
+            padding: 0.875rem;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+        }
+
+        .brand-name {
+            font-size: 0.8rem;
+        }
+
+        .brand-actions .btn {
+            padding: 6px 8px;
+            font-size: 10px;
+        }
+
+        .search-filter-box {
+            padding: 12px;
         }
     }
 </style>

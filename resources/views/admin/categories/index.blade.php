@@ -222,6 +222,7 @@
     @media (max-width: 1024px) {
         .search-filter-box {
             flex-direction: column;
+            padding: 20px;
         }
 
         .search-filter-box input,
@@ -232,35 +233,91 @@
     }
 
     @media (max-width: 768px) {
+        .search-filter-box {
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -16px;
+            padding: 0 16px;
+        }
+
         .admin-table {
-            font-size: 13px;
+            font-size: 12px;
+            min-width: 600px;
         }
 
         .admin-table td,
         .admin-table th {
-            padding: 14px;
+            padding: 10px 8px;
+            white-space: nowrap;
         }
 
         .category-image {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
         }
 
         .category-image-placeholder {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
+            font-size: 18px;
+        }
+
+        .category-name {
+            font-size: 13px;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .action-cell {
-            flex-direction: column;
+            flex-direction: row;
+            gap: 4px;
         }
 
         .action-cell .btn {
-            width: 100%;
+            padding: 6px 8px;
+            font-size: 11px;
         }
 
         .admin-stat-card .stat-value {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .search-filter-box {
+            padding: 12px;
+        }
+
+        .admin-table {
+            font-size: 11px;
+        }
+
+        .admin-table td,
+        .admin-table th {
+            padding: 8px 6px;
+        }
+
+        .category-image {
+            width: 36px;
+            height: 36px;
+        }
+
+        .category-image-placeholder {
+            width: 36px;
+            height: 36px;
+            font-size: 14px;
+        }
+
+        .action-cell .btn {
+            padding: 5px 6px;
+            font-size: 10px;
         }
     }
 

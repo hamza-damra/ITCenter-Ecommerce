@@ -283,6 +283,8 @@
     @media (max-width: 1024px) {
         .search-filter-box {
             flex-direction: column;
+            padding: 20px;
+            gap: 12px;
         }
 
         .search-filter-box input,
@@ -290,42 +292,136 @@
             min-width: unset;
             width: 100%;
         }
+
+        .admin-stat-card .stat-value {
+            font-size: 1.75rem;
+        }
     }
 
     @media (max-width: 768px) {
-        .admin-table {
+        .search-filter-box {
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .search-filter-box input,
+        .search-filter-box select {
+            padding: 10px 14px;
             font-size: 13px;
+        }
+
+        .filter-reset-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -16px;
+            padding: 0 16px;
+        }
+
+        .admin-table {
+            font-size: 12px;
+            min-width: 800px;
         }
 
         .admin-table td,
         .admin-table th {
-            padding: 14px;
+            padding: 10px 8px;
+            white-space: nowrap;
         }
 
         .product-image {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
         }
 
         .product-image-placeholder {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
         }
 
         .product-name {
-            max-width: 180px;
+            max-width: 150px;
+            font-size: 13px;
+        }
+
+        .product-sku {
+            font-size: 11px;
+        }
+
+        .product-category-badge,
+        .product-brand-badge {
+            font-size: 11px;
+            padding: 4px 8px;
         }
 
         .action-cell {
-            flex-direction: column;
+            flex-direction: row;
+            gap: 4px;
         }
 
         .action-cell .btn {
-            width: 100%;
+            padding: 6px 8px;
+            font-size: 11px;
         }
 
         .admin-stat-card .stat-value {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
+        }
+
+        .admin-stat-card .stat-label {
+            font-size: 0.75rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .search-filter-box {
+            padding: 12px;
+        }
+
+        .search-filter-box input,
+        .search-filter-box select {
+            padding: 10px 12px;
+            font-size: 12px;
+        }
+
+        .admin-table {
+            font-size: 11px;
+        }
+
+        .admin-table td,
+        .admin-table th {
+            padding: 8px 6px;
+        }
+
+        .product-image {
+            width: 40px;
+            height: 40px;
+        }
+
+        .product-image-placeholder {
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+        }
+
+        .product-name {
+            max-width: 120px;
+            font-size: 12px;
+        }
+
+        .action-cell .btn {
+            padding: 5px 6px;
+            font-size: 10px;
+        }
+
+        .action-cell .btn i {
+            font-size: 10px;
         }
     }
 
