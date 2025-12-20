@@ -126,6 +126,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
         .sidebar-header img {
@@ -863,11 +864,12 @@
             opacity: 1;
         }
 
-        /* Mobile Sidebar Close Button */
+        /* Mobile Sidebar Close Button - Integrated in Header */
         .sidebar-close-btn {
             display: none;
             position: absolute;
-            top: 16px;
+            top: 50%;
+            transform: translateY(-50%);
             right: 16px;
             background: rgba(255, 255, 255, 0.1);
             border: none;
@@ -2031,12 +2033,12 @@
 
     <div class="admin-container">
         <aside class="sidebar" id="adminSidebar">
-            <!-- Mobile Close Button -->
-            <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="{{ __('messages.close_menu') ?? 'Close Menu' }}">
-                <i class="fas fa-times"></i>
-            </button>
             <div class="sidebar-header">
                 <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
+                <!-- Mobile Close Button - Integrated in Header -->
+                <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="{{ __('messages.close_menu') ?? 'Close Menu' }}">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
             <ul class="sidebar-menu">
                 <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> {{ __('messages.dashboard') }}</a></li>
