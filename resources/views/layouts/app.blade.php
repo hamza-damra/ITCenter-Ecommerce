@@ -1041,7 +1041,7 @@
                 gap: 1rem;
             }
             
-            .nav-menu a {
+            .nav-menu-list a {
                 font-size: 0.9rem;
                 padding: 0.6rem 1rem;
             }
@@ -1174,7 +1174,7 @@
                 padding: 0 !important;
                 gap: 0 !important;
                 overflow-y: auto !important;
-                z-index: 1050 !important;
+                z-index: 1060 !important;
                 box-shadow: 4px 0 25px rgba(0, 0, 0, 0.2) !important;
                 visibility: hidden !important;
                 transform: {{ is_rtl() ? 'translateX(100%)' : 'translateX(-100%)' }} !important;
@@ -1184,6 +1184,7 @@
             .nav-menu.active {
                 visibility: visible !important;
                 transform: translateX(0) !important;
+                z-index: 1060 !important;
             }
 
             /* Sidebar Header */
@@ -1192,7 +1193,6 @@
                 padding: 20px 24px !important;
                 border-bottom: 1px solid #e2e8f0 !important;
                 background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
-                margin-bottom: 0 !important;
                 align-items: center !important;
                 justify-content: center !important;
             }
@@ -1204,13 +1204,20 @@
                 object-fit: contain !important;
             }
             
-            .nav-menu li {
+            /* Navigation Menu List */
+            .nav-menu-list {
+                list-style: none !important;
+                margin: 0 !important;
+                padding: 8px 0 !important;
+            }
+            
+            .nav-menu-list li {
                 width: 100% !important;
                 margin: 0 !important;
                 list-style: none !important;
             }
             
-            .nav-menu a {
+            .nav-menu-list a {
                 display: flex !important;
                 align-items: center !important;
                 gap: 14px !important;
@@ -1228,17 +1235,14 @@
                 background: transparent !important;
                 pointer-events: auto !important;
                 cursor: pointer !important;
+                z-index: 10 !important;
             }
 
-            .nav-menu a::after {
+            .nav-menu-list a::after {
                 display: none !important;
             }
-            
-            .nav-menu li {
-                pointer-events: auto !important;
-            }
 
-            .nav-menu a i {
+            .nav-menu-list a i {
                 width: 22px !important;
                 font-size: 18px !important;
                 flex-shrink: 0 !important;
@@ -1246,7 +1250,7 @@
                 transition: color 0.2s ease !important;
             }
 
-            .nav-menu a::before {
+            .nav-menu-list a::before {
                 content: '' !important;
                 position: absolute !important;
                 {{ is_rtl() ? 'right' : 'left' }}: 0 !important;
@@ -1258,33 +1262,34 @@
                 border-radius: 0 !important;
                 transform: scaleY(0) !important;
                 transition: transform 0.2s ease !important;
+                pointer-events: none !important;
             }
             
-            .nav-menu a:hover {
+            .nav-menu-list a:hover {
                 background: #f1f5f9 !important;
                 color: #2563eb !important;
                 padding-{{ is_rtl() ? 'right' : 'left' }}: 28px !important;
             }
 
-            .nav-menu a:hover i {
+            .nav-menu-list a:hover i {
                 color: #2563eb !important;
             }
 
-            .nav-menu a:hover::before {
+            .nav-menu-list a:hover::before {
                 transform: scaleY(1) !important;
             }
             
-            .nav-menu a.active {
+            .nav-menu-list a.active {
                 background: linear-gradient({{ is_rtl() ? '270deg' : '90deg' }}, rgba(37, 99, 235, 0.1) 0%, transparent 100%) !important;
                 color: #2563eb !important;
                 font-weight: 600 !important;
             }
 
-            .nav-menu a.active i {
+            .nav-menu-list a.active i {
                 color: #2563eb !important;
             }
 
-            .nav-menu a.active::before {
+            .nav-menu-list a.active::before {
                 transform: scaleY(1) !important;
             }
 
@@ -1363,7 +1368,7 @@
                 width: 260px !important;
             }
             
-            .nav-menu a {
+            .nav-menu-list a {
                 font-size: 14px !important;
                 padding: 14px 20px !important;
             }
@@ -1430,7 +1435,7 @@
                 width: 240px !important;
             }
             
-            .nav-menu a {
+            .nav-menu-list a {
                 font-size: 13px !important;
                 padding: 12px 18px !important;
             }
@@ -1447,36 +1452,78 @@
 </head>
 <body>
     @sectionMissing('hideHeader')
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <!-- Mobile Menu Toggle - Outside header for proper fixed positioning -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu" type="button" style="display: none; position: fixed; top: 12px; {{ is_rtl() ? 'right' : 'left' }}: 12px; z-index: 1100; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; width: 44px; height: 44px; cursor: pointer; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+        <div class="hamburger-icon" style="display: flex; flex-direction: column; gap: 5px; width: 20px;">
+            <span style="display: block; width: 100%; height: 2px; background: #334155; border-radius: 2px; transition: all 0.3s ease;"></span>
+            <span style="display: block; width: 100%; height: 2px; background: #334155; border-radius: 2px; transition: all 0.3s ease;"></span>
+            <span style="display: block; width: 100%; height: 2px; background: #334155; border-radius: 2px; transition: all 0.3s ease;"></span>
+        </div>
+    </button>
+
+    <!-- Mobile Menu Overlay - positioned to NOT cover the nav-menu -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1040; opacity: 0; visibility: hidden; pointer-events: none;"></div>
+    
+    <!-- Mobile Navigation Menu - OUTSIDE header for proper z-index -->
+    <nav class="nav-menu" id="navMenu" style="display: none;">
+        <div class="nav-menu-header">
+            <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
+        </div>
+        <ul class="nav-menu-list">
+            <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}"><i class="fas fa-home"></i> {{ __t('messages.home') }}</a></li>
+            <li><a href="{{ route('categories') }}" class="{{ request()->routeIs('categories') ? 'active' : '' }}"><i class="fas fa-th-large"></i> {{ __t('messages.categories') }}</a></li>
+            <li><a href="{{ route('products') }}" class="{{ request()->routeIs('products') ? 'active' : '' }}"><i class="fas fa-box"></i> {{ __t('messages.products') }}</a></li>
+            <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}"><i class="fas fa-info-circle"></i> {{ __t('messages.about') }}</a></li>
+            <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}"><i class="fas fa-envelope"></i> {{ __t('messages.contact') }}</a></li>
+        </ul>
+    </nav>
+    
+    <style>
+        /* Force mobile menu toggle to show on mobile */
+        @media (max-width: 768px) {
+            #mobileMenuToggle {
+                display: flex !important;
+            }
+            #mobileMenuOverlay {
+                display: block !important;
+            }
+            #mobileMenuOverlay.active {
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+            }
+            /* Mobile nav menu styles */
+            #navMenu {
+                display: flex !important;
+                position: fixed !important;
+                top: 0 !important;
+                {{ is_rtl() ? 'right' : 'left' }}: 0 !important;
+                width: 280px !important;
+                max-width: 85vw !important;
+                height: 100vh !important;
+                background: #ffffff !important;
+                flex-direction: column !important;
+                z-index: 1060 !important;
+                box-shadow: 4px 0 25px rgba(0, 0, 0, 0.2) !important;
+                visibility: hidden !important;
+                transform: {{ is_rtl() ? 'translateX(100%)' : 'translateX(-100%)' }} !important;
+                transition: transform 0.3s ease, visibility 0.3s ease !important;
+                overflow-y: auto !important;
+            }
+            #navMenu.active {
+                visibility: visible !important;
+                transform: translateX(0) !important;
+            }
+        }
+    </style>
     
     <header>
         <div class="header-container">
-            <!-- Mobile Menu Toggle -->
-            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
-                <div class="hamburger-icon">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </button>
-            
             <div class="logo">
                 <a href="{{ route('home') }}">
                     <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
                 </a>
             </div>
-
-            <ul class="nav-menu" id="navMenu">
-                <div class="nav-menu-header">
-                    <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
-                </div>
-                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}"><i class="fas fa-home"></i> {{ __t('messages.home') }}</a></li>
-                <li><a href="{{ route('categories') }}" class="{{ request()->routeIs('categories') ? 'active' : '' }}"><i class="fas fa-th-large"></i> {{ __t('messages.categories') }}</a></li>
-                <li><a href="{{ route('products') }}" class="{{ request()->routeIs('products') ? 'active' : '' }}"><i class="fas fa-box"></i> {{ __t('messages.products') }}</a></li>
-                <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}"><i class="fas fa-info-circle"></i> {{ __t('messages.about') }}</a></li>
-                <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}"><i class="fas fa-envelope"></i> {{ __t('messages.contact') }}</a></li>
-            </ul>
 
             <form action="{{ route('products') }}" method="GET" class="search-bar" role="search" autocomplete="off">
                 <input type="search" 
@@ -2376,101 +2423,93 @@
             }
         });
         
-        // Mobile Sidebar Toggle - Professional Design
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            const navMenu = document.getElementById('navMenu');
-            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        // Mobile Sidebar Toggle - Simple and robust implementation
+        (function() {
+            'use strict';
             
-            // Debug: Check if elements exist
-            if (!mobileMenuToggle) {
-                console.error('❌ mobileMenuToggle not found');
-                return;
-            }
-            if (!navMenu) {
-                console.error('❌ navMenu not found');
-                return;
-            }
-            if (!mobileMenuOverlay) {
-                console.error('❌ mobileMenuOverlay not found');
-                return;
-            }
-            
-            function openSidebar() {
-                console.log('📂 Opening sidebar...');
-                navMenu.classList.add('active');
-                mobileMenuOverlay.classList.add('active');
-                mobileMenuToggle.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-            
-            function closeSidebar() {
-                console.log('📕 Closing sidebar...');
-                navMenu.classList.remove('active');
-                mobileMenuOverlay.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            function toggleSidebar(e) {
-                if (e) {
+            function initMobileSidebar() {
+                var mobileMenuToggle = document.getElementById('mobileMenuToggle');
+                var navMenu = document.getElementById('navMenu');
+                var mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+
+                if (!mobileMenuToggle || !navMenu || !mobileMenuOverlay) {
+                    return;
+                }
+
+                function openSidebar() {
+                    navMenu.classList.add('active');
+                    mobileMenuOverlay.classList.add('active');
+                    mobileMenuToggle.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+
+                function closeSidebar() {
+                    navMenu.classList.remove('active');
+                    mobileMenuOverlay.classList.remove('active');
+                    mobileMenuToggle.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+
+                // Toggle button click
+                mobileMenuToggle.onclick = function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                }
-                console.log('🔄 Toggling sidebar...');
-                if (navMenu.classList.contains('active')) {
+                    if (navMenu.classList.contains('active')) {
+                        closeSidebar();
+                    } else {
+                        openSidebar();
+                    }
+                };
+
+                // Overlay click to close
+                mobileMenuOverlay.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     closeSidebar();
-                } else {
-                    openSidebar();
-                }
+                };
+
+                // Stop propagation on nav-menu for non-link clicks
+                navMenu.onclick = function(e) {
+                    if (e.target.tagName === 'A' || e.target.closest('a')) {
+                        return true;
+                    }
+                    e.stopPropagation();
+                };
+
+                // Menu links - close sidebar and navigate
+                var menuLinks = navMenu.querySelectorAll('.nav-menu-list a');
+                menuLinks.forEach(function(link) {
+                    link.onclick = function() {
+                        navMenu.classList.remove('active');
+                        mobileMenuOverlay.classList.remove('active');
+                        mobileMenuToggle.classList.remove('active');
+                        document.body.style.overflow = '';
+                        return true;
+                    };
+                });
+
+                // Close on Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                        closeSidebar();
+                    }
+                });
+
+                // Close on window resize to desktop
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+                        closeSidebar();
+                    }
+                });
             }
-            
-            // Toggle sidebar - only on the toggle button
-            mobileMenuToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleSidebar();
-            });
-            console.log('✅ Mobile menu toggle event listener added');
-            
-            // Close on overlay click only
-            mobileMenuOverlay.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                closeSidebar();
-            });
-            
-            // Menu links - close sidebar when clicked (mobile only)
-            // IMPORTANT: Don't prevent default - let navigation happen naturally
-            const menuLinks = navMenu.querySelectorAll('a');
-            menuLinks.forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    // CRITICAL: Don't call e.preventDefault() or e.stopPropagation()
-                    // Just close the sidebar - navigation will happen naturally
-                    if (window.innerWidth <= 768 && navMenu.classList.contains('active')) {
-                        closeSidebar();
-                    }
-                }, { passive: true }); // Mark as passive to ensure no interference
-            });
-            
-            // Close on Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-                    closeSidebar();
-                }
-            });
-            
-            // Close on window resize (if desktop)
-            let resizeTimer;
-            window.addEventListener('resize', function() {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(function() {
-                    if (window.innerWidth > 768) {
-                        closeSidebar();
-                    }
-                }, 250);
-            });
-        });
+
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMobileSidebar);
+            } else {
+                initMobileSidebar();
+            }
+        })();
 
         // Global image error handler for broken external URLs
         // Use event delegation to handle dynamically loaded images
