@@ -1069,11 +1069,12 @@
         cursor: pointer;
         padding: 0.5rem;
         transition: all 0.3s ease;
-        width: 36px;
-        height: 36px;
+        width: 40px;
+        height: 40px;
         align-items: center;
         justify-content: center;
         border-radius: 8px;
+        flex-shrink: 0;
     }
 
     .mobile-close-btn:hover {
@@ -1087,36 +1088,50 @@
         gap: 0.5rem;
     }
 
-    /* Mobile Responsive */
+    /* Mobile Responsive - Tablet */
     @media (max-width: 1024px) {
         .filter-sidebar {
             position: fixed;
             top: 0;
-            @if($isRtl)
-            right: -100%;
-            left: auto;
-            @else
-            left: -100%;
-            right: auto;
-            @endif
             bottom: 0;
-            width: 85%;
-            max-width: 380px;
+            width: 320px;
+            max-width: 85vw;
             z-index: 1000;
             max-height: 100vh;
             border-radius: 0;
             padding: 1.5rem;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* LTR positioning */
+        html:not([dir="rtl"]) .filter-sidebar,
+        body:not([dir="rtl"]) .filter-sidebar {
+            left: 0;
+            right: auto;
+            transform: translateX(-100%);
+        }
+
+        html:not([dir="rtl"]) .filter-sidebar.active,
+        body:not([dir="rtl"]) .filter-sidebar.active {
             transform: translateX(0);
         }
 
-        .filter-sidebar.active {
-            @if($isRtl)
-            transform: translateX(-100%);
-            @else
+        /* RTL positioning */
+        html[dir="rtl"] .filter-sidebar,
+        body[dir="rtl"] .filter-sidebar,
+        .filter-sidebar[dir="rtl"] {
+            right: 0;
+            left: auto;
             transform: translateX(100%);
-            @endif
+        }
+
+        html[dir="rtl"] .filter-sidebar.active,
+        body[dir="rtl"] .filter-sidebar.active,
+        .filter-sidebar[dir="rtl"].active {
+            transform: translateX(0);
         }
 
         .mobile-close-btn {
@@ -1125,22 +1140,178 @@
 
         .filter-header {
             margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            position: sticky;
+            top: -1.5rem;
+            background: #fff;
+            z-index: 10;
+            margin-top: -1.5rem;
+            padding-top: 1.5rem;
         }
 
         .filter-header h3 {
-            font-size: 1.5rem;
+            font-size: 1.35rem;
+        }
+
+        .filter-section {
+            margin-bottom: 1.25rem;
+        }
+
+        .filter-accordion-button {
+            padding: 0.875rem 1rem;
+        }
+
+        .filter-accordion-title {
+            font-size: 0.95rem;
+        }
+
+        .category-checkbox,
+        .brand-checkbox {
+            padding: 0.5rem;
+        }
+
+        .category-checkbox label,
+        .brand-checkbox label {
+            font-size: 0.875rem;
+        }
+
+        .price-input-container {
+            gap: 0.5rem;
+        }
+
+        .price-input-group {
+            padding: 0.4rem 0.6rem;
+        }
+
+        .price-input {
+            font-size: 0.9rem;
         }
     }
 
+    /* Mobile Responsive - Phone */
     @media (max-width: 640px) {
         .filter-sidebar {
-            width: 90%;
+            width: 100%;
             max-width: 100%;
-            padding: 1.25rem;
+            padding: 1rem;
+        }
+
+        .filter-header {
+            margin-top: -1rem;
+            padding-top: 1rem;
+            top: -1rem;
         }
 
         .filter-header h3 {
             font-size: 1.25rem;
+        }
+
+        .clear-filters-btn {
+            font-size: 0.7rem;
+            padding: 0.4rem 0.6rem;
+        }
+
+        .filter-section-title {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .filter-accordion-button {
+            padding: 0.75rem 0.875rem;
+            border-radius: 10px;
+        }
+
+        .filter-accordion-title {
+            font-size: 0.9rem;
+        }
+
+        .filter-accordion-icon {
+            width: 22px;
+            height: 22px;
+            font-size: 0.7rem;
+        }
+
+        .category-checkbox,
+        .brand-checkbox {
+            padding: 0.4rem;
+            border-radius: 6px;
+        }
+
+        .category-checkbox label,
+        .brand-checkbox label {
+            font-size: 0.85rem;
+        }
+
+        .category-checkbox input[type="checkbox"],
+        .category-checkbox input[type="radio"],
+        .brand-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            min-width: 16px;
+        }
+
+        .item-count {
+            font-size: 0.75rem;
+        }
+
+        .price-input-container {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .price-input-wrapper {
+            width: 100%;
+        }
+
+        .price-input-separator {
+            display: none;
+        }
+
+        .price-input-group {
+            padding: 0.5rem 0.75rem;
+        }
+
+        .price-input {
+            font-size: 0.95rem;
+        }
+
+        .price-range-slider {
+            margin: 1rem 0;
+            padding: 0.5rem;
+        }
+
+        .view-more-btn {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        /* RTL adjustments for mobile */
+        [dir="rtl"] .price-input-container {
+            flex-direction: column;
+        }
+    }
+
+    /* Small phone adjustments */
+    @media (max-width: 380px) {
+        .filter-sidebar {
+            padding: 0.875rem;
+        }
+
+        .filter-header h3 {
+            font-size: 1.1rem;
+        }
+
+        .filter-accordion-button {
+            padding: 0.65rem 0.75rem;
+        }
+
+        .filter-accordion-title {
+            font-size: 0.85rem;
+        }
+
+        .category-checkbox label,
+        .brand-checkbox label {
+            font-size: 0.8rem;
         }
     }
 </style>

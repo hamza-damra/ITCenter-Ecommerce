@@ -1782,22 +1782,8 @@
             width: 100%;
         }
 
+        /* Filter sidebar is handled by filter-sidebar component */
         .filter-sidebar {
-            display: none;
-            width: 100%;
-            max-width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 1000;
-            max-height: 100vh;
-            border-radius: 0;
-            padding: 2rem;
-        }
-
-        .filter-sidebar.active {
             display: block;
         }
 
