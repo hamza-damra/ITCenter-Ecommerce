@@ -28,23 +28,42 @@ class AdminAPIClient {
      * Get authentication token from localStorage
      */
     getAuthToken() {
-        return localStorage.getItem('admin_api_token');
+        try {
+            return localStorage.getItem('admin_api_token');
+        } catch (e) {
+            // Tracking Prevention or storage blocked
+            console.warn('localStorage access blocked:', e.message);
+            return null;
+        }
     }
 
     /**
      * Set authentication token
      */
     setAuthToken(token) {
-        localStorage.setItem('admin_api_token', token);
-        this.token = token;
-        this.headers['Authorization'] = `Bearer ${token}`;
+        try {
+            localStorage.setItem('admin_api_token', token);
+            this.token = token;
+            this.headers['Authorization'] = `Bearer ${token}`;
+        } catch (e) {
+            // Tracking Prevention or storage blocked
+            console.warn('localStorage access blocked:', e.message);
+            // Still set token in memory for current session
+            this.token = token;
+            this.headers['Authorization'] = `Bearer ${token}`;
+        }
     }
 
     /**
      * Remove authentication token
      */
     removeAuthToken() {
-        localStorage.removeItem('admin_api_token');
+        try {
+            localStorage.removeItem('admin_api_token');
+        } catch (e) {
+            // Tracking Prevention or storage blocked
+            console.warn('localStorage access blocked:', e.message);
+        }
         this.token = null;
         delete this.headers['Authorization'];
     }

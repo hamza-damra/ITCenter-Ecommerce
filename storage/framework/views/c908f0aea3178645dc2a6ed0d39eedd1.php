@@ -85,7 +85,7 @@ unset($__defined_vars, $__key, $__value); ?>
             <div class="scroller-track">
                 <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="scroller-card-wrapper">
-                    <div class="product-card" onclick="window.location.href='<?php echo e(route('product.detail', $product->slug)); ?>'">
+                    <div class="product-card" onclick="window.location.href='<?php echo e(route('product.detail', $product)); ?>'">
                         <div class="product-image">
                             <?php if($showDiscountPercentage && $product->sale_price && $product->sale_price < $product->price): ?>
                             <?php

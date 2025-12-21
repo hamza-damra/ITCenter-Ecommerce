@@ -103,12 +103,27 @@ class Banner extends Model
      */
     public function getImageUrlAttribute(): string
     {
+        // Default to database storage if image_source is null (for existing records)
+        $imageSource = $this->image_source ?? self::SOURCE_DATABASE;
+        
         // Handle based on image source type
-        switch ($this->image_source) {
+        switch ($imageSource) {
             case self::SOURCE_DATABASE:
                 // For database-stored images, return a route that serves the image
                 if (!empty($this->image_data)) {
                     return route('banner.image', ['banner' => $this->id]);
+                }
+                // If no database data but has image_path, try to use it as fallback
+                if (!empty($this->image_path)) {
+                    // If it's already a full URL, return as is
+                    if (str_starts_with($this->image_path, 'http')) {
+                        return $this->image_path;
+                    }
+                    // Check if file exists before trying to use it
+                    $filePath = public_path('storage/' . $this->image_path);
+                    if (file_exists($filePath)) {
+                        return asset('storage/' . $this->image_path);
+                    }
                 }
                 break;
 
@@ -120,14 +135,17 @@ class Banner extends Model
                 break;
 
             case self::SOURCE_FILE:
-            default:
-                // For file storage, return the asset URL
+                // For file storage, return the asset URL only if file exists
                 if (!empty($this->image_path)) {
                     // If it's already a full URL (legacy support), return as is
                     if (str_starts_with($this->image_path, 'http')) {
                         return $this->image_path;
                     }
-                    return asset('storage/' . $this->image_path);
+                    // Check if file exists before trying to use it
+                    $filePath = public_path('storage/' . $this->image_path);
+                    if (file_exists($filePath)) {
+                        return asset('storage/' . $this->image_path);
+                    }
                 }
                 break;
         }

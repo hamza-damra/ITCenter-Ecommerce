@@ -851,6 +851,38 @@
         padding: 0.5rem;
     }
 
+    /* Product Card Loading Animation - Lightweight & Smooth */
+    .product-grid.loading .product-card {
+        opacity: 0 !important;
+        transform: translateY(15px) !important;
+        animation: cardSlideIn 0.4s ease-out forwards !important;
+        will-change: opacity, transform;
+    }
+
+    .product-grid.loading .product-card:nth-child(1) { animation-delay: 0.05s !important; }
+    .product-grid.loading .product-card:nth-child(2) { animation-delay: 0.1s !important; }
+    .product-grid.loading .product-card:nth-child(3) { animation-delay: 0.15s !important; }
+    .product-grid.loading .product-card:nth-child(4) { animation-delay: 0.2s !important; }
+    .product-grid.loading .product-card:nth-child(5) { animation-delay: 0.25s !important; }
+    .product-grid.loading .product-card:nth-child(6) { animation-delay: 0.3s !important; }
+    .product-grid.loading .product-card:nth-child(7) { animation-delay: 0.35s !important; }
+    .product-grid.loading .product-card:nth-child(8) { animation-delay: 0.4s !important; }
+    .product-grid.loading .product-card:nth-child(9) { animation-delay: 0.45s !important; }
+    .product-grid.loading .product-card:nth-child(10) { animation-delay: 0.5s !important; }
+    .product-grid.loading .product-card:nth-child(11) { animation-delay: 0.55s !important; }
+    .product-grid.loading .product-card:nth-child(12) { animation-delay: 0.6s !important; }
+
+    @keyframes cardSlideIn {
+        0% {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .product-card-link {
         display: block;
         text-decoration: none;
@@ -1705,18 +1737,36 @@
     }
     <?php endif; ?>
 
-    /* Product Grid Fade In Animation */
-    .product-card {
-        animation: fadeInUp 0.6s ease-out;
-        animation-fill-mode: both;
+    /* Product Grid Loading Animation - Lightweight & Simple */
+    .product-grid.loading .product-card {
+        opacity: 0;
+        transform: translateY(15px);
+        animation: cardFadeIn 0.4s ease-out forwards;
     }
 
-    .product-card:nth-child(1) { animation-delay: 0.1s; }
-    .product-card:nth-child(2) { animation-delay: 0.15s; }
-    .product-card:nth-child(3) { animation-delay: 0.2s; }
-    .product-card:nth-child(4) { animation-delay: 0.25s; }
-    .product-card:nth-child(5) { animation-delay: 0.3s; }
-    .product-card:nth-child(6) { animation-delay: 0.35s; }
+    .product-grid.loading .product-card:nth-child(1) { animation-delay: 0.05s; }
+    .product-grid.loading .product-card:nth-child(2) { animation-delay: 0.1s; }
+    .product-grid.loading .product-card:nth-child(3) { animation-delay: 0.15s; }
+    .product-grid.loading .product-card:nth-child(4) { animation-delay: 0.2s; }
+    .product-grid.loading .product-card:nth-child(5) { animation-delay: 0.25s; }
+    .product-grid.loading .product-card:nth-child(6) { animation-delay: 0.3s; }
+    .product-grid.loading .product-card:nth-child(7) { animation-delay: 0.35s; }
+    .product-grid.loading .product-card:nth-child(8) { animation-delay: 0.4s; }
+    .product-grid.loading .product-card:nth-child(9) { animation-delay: 0.45s; }
+    .product-grid.loading .product-card:nth-child(10) { animation-delay: 0.5s; }
+    .product-grid.loading .product-card:nth-child(11) { animation-delay: 0.55s; }
+    .product-grid.loading .product-card:nth-child(12) { animation-delay: 0.6s; }
+
+    @keyframes cardFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
     /* Responsive Design */
     @media (max-width: 1024px) {
@@ -1954,7 +2004,7 @@
         <?php if($products->count() > 0): ?>
         <div class="product-grid">
             <?php $__empty_1 = true; $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-            <a href="<?php echo e(route('product.detail', $product->slug)); ?>" class="product-card-link">
+            <a href="<?php echo e(route('product.detail', $product)); ?>" class="product-card-link">
                 <div class="product-card">
                     <div class="product-image">
                         <?php if($product->is_new): ?>
@@ -2145,7 +2195,13 @@
         if (minPriceInput) minPriceInput.value = FILTER_CONFIG.minPrice;
         if (maxPriceInput) maxPriceInput.value = FILTER_CONFIG.maxPrice;
 
-        // Redirect to products page (preserving search if exists)
+        // Update hidden inputs
+        const minPriceHidden = document.getElementById('minPrice');
+        const maxPriceHidden = document.getElementById('maxPrice');
+        if (minPriceHidden) minPriceHidden.value = FILTER_CONFIG.minPrice;
+        if (maxPriceHidden) maxPriceHidden.value = FILTER_CONFIG.maxPrice;
+
+        // Redirect to products page using AJAX (preserving search if exists)
         const form = document.getElementById('filterForm');
         const searchInput = form ? form.querySelector('input[name="search"]') : null;
         const searchValue = searchInput ? searchInput.value : '';
@@ -2154,7 +2210,39 @@
             ? FILTER_CONFIG.productsRoute + '?search=' + encodeURIComponent(searchValue)
             : FILTER_CONFIG.productsRoute;
         
-        window.location.href = url;
+        // Update URL without reload
+        window.history.pushState({ path: url }, '', url);
+        
+        // Apply filters using AJAX
+        if (typeof window.applyFilters === 'function') {
+            window.applyFilters();
+        } else {
+            // Fallback: try to fetch directly without reload
+            console.warn('⚠️ applyFilters function not found, trying direct fetch');
+            fetch(url, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' }
+            })
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newGrid = doc.querySelector('.product-grid');
+                const newPagination = doc.querySelector('.pagination-wrapper');
+                const currentGrid = document.querySelector('.product-grid');
+                const currentPagination = document.querySelector('.pagination-wrapper');
+                
+                if (newGrid && currentGrid) {
+                    currentGrid.innerHTML = newGrid.innerHTML;
+                }
+                if (newPagination && currentPagination) {
+                    currentPagination.innerHTML = newPagination.innerHTML;
+                }
+            })
+            .catch(err => {
+                console.error('Fallback fetch failed:', err);
+                alert('Error loading products. Please refresh the page.');
+            });
+        }
     }
 
     // Apply filters function (exposed globally for filter-sidebar component)
@@ -2178,56 +2266,181 @@
         const formData = new FormData(form);
         const params = new URLSearchParams();
 
+        // Add all form fields
         for (const [key, value] of formData.entries()) {
             if (value && String(value).trim() !== '') {
-                params.append(key, value);
+                // Handle array values (like categories[], brands[])
+                if (key.endsWith('[]')) {
+                    params.append(key, value);
+                } else {
+                    params.append(key, value);
+                }
             }
         }
 
-        const url = FILTER_CONFIG.productsRoute + '?' + params.toString();
+        // Preserve search query if exists
+        const searchParam = new URLSearchParams(window.location.search).get('search');
+        if (searchParam) {
+            params.set('search', searchParam);
+        }
+
+        const url = FILTER_CONFIG.productsRoute + (params.toString() ? '?' + params.toString() : '');
         console.log('📍 Filter URL:', url);
 
-        // Update browser URL
-        history.pushState({}, '', url);
+        // Update browser URL without reload
+        window.history.pushState({ path: url, filters: params.toString() }, '', url);
 
-        // Fetch filtered products
+        // Fetch filtered products using AJAX
         fetch(url, {
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'text/html',
+                'Cache-Control': 'no-cache'
+            }
         })
         .then(response => {
-            if (!response.ok) throw new Error('HTTP ' + response.status);
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status);
+            }
             return response.text();
         })
         .then(html => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const newContent = doc.getElementById('productsContent');
-            const currentContent = document.getElementById('productsContent');
-
-            if (newContent && currentContent) {
-                // Get the loading indicator before replacing content
-                const loadingIndicator = document.getElementById('productsLoading');
+            try {
+                console.log('📦 Received HTML response, length:', html.length);
                 
-                // Update content
-                currentContent.innerHTML = newContent.innerHTML;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
                 
-                // Re-add the loading indicator at the beginning
-                if (loadingIndicator) {
-                    currentContent.insertBefore(loadingIndicator, currentContent.firstChild);
+                // Check for errors in parsing
+                const parserErrors = doc.querySelectorAll('parsererror');
+                if (parserErrors.length > 0) {
+                    console.error('❌ HTML parsing errors:', parserErrors);
                 }
                 
-                currentContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                console.log('✅ Products updated');
-            } else {
-                console.error('❌ Content elements not found');
-            }
+                // Get only the product grid and pagination from new content
+                const newProductGrid = doc.querySelector('.product-grid');
+                const newNoResults = doc.querySelector('.no-results');
+                const newPagination = doc.querySelector('.pagination-wrapper');
+                
+                // Get current elements
+                const currentProductGrid = document.querySelector('.product-grid');
+                const currentNoResults = document.querySelector('.no-results');
+                const currentPagination = document.querySelector('.pagination-wrapper');
+                
+                console.log('🔍 Content check:', {
+                    newProductGridFound: !!newProductGrid,
+                    newNoResultsFound: !!newNoResults,
+                    newPaginationFound: !!newPagination,
+                    currentProductGridFound: !!currentProductGrid,
+                    currentNoResultsFound: !!currentNoResults,
+                    currentPaginationFound: !!currentPagination
+                });
 
-            hideLoading();
+                // Update product grid or no-results message
+                if (newProductGrid && currentProductGrid) {
+                    // Hide current grid with fade
+                    currentProductGrid.style.opacity = '0';
+                    currentProductGrid.style.transition = 'opacity 0.15s ease';
+                    
+                    setTimeout(() => {
+                        // Replace product grid content
+                        currentProductGrid.innerHTML = newProductGrid.innerHTML;
+                        
+                        // Reset opacity and remove transition for animation
+                        currentProductGrid.style.opacity = '';
+                        currentProductGrid.style.transition = '';
+                        
+                        // Add loading class for animation
+                        currentProductGrid.classList.add('loading');
+                        
+                        // Force reflow to trigger animation
+                        void currentProductGrid.offsetHeight;
+                        
+                        // Re-initialize wishlist and cart buttons
+                        if (typeof initializeWishlistButtons === 'function') {
+                            initializeWishlistButtons();
+                        }
+                        if (typeof initializeCartButtons === 'function') {
+                            initializeCartButtons();
+                        }
+                        
+                        // Remove loading class after animation completes (350ms + max delay 360ms = ~700ms)
+                        setTimeout(() => {
+                            currentProductGrid.classList.remove('loading');
+                            console.log('✅ Animation completed');
+                        }, 750);
+                        
+                        console.log('✅ Product grid updated with animation');
+                    }, 150);
+                } else if (newNoResults) {
+                    // Handle no results case
+                    if (currentProductGrid) {
+                        currentProductGrid.style.opacity = '0';
+                        setTimeout(() => {
+                            currentProductGrid.style.display = 'none';
+                        }, 200);
+                    }
+                    
+                    if (currentNoResults) {
+                        currentNoResults.style.opacity = '0';
+                        setTimeout(() => {
+                            currentNoResults.innerHTML = newNoResults.innerHTML;
+                            currentNoResults.style.opacity = '1';
+                        }, 200);
+                    } else {
+                        // Insert no-results if it doesn't exist
+                        const productsContent = document.getElementById('productsContent');
+                        if (productsContent) {
+                            const noResultsHTML = newNoResults.outerHTML;
+                            if (currentProductGrid) {
+                                currentProductGrid.insertAdjacentHTML('afterend', noResultsHTML);
+                            } else {
+                                productsContent.insertAdjacentHTML('beforeend', noResultsHTML);
+                            }
+                        }
+                    }
+                }
+                
+                // Update pagination
+                if (newPagination && currentPagination) {
+                    currentPagination.innerHTML = newPagination.innerHTML;
+                    handlePaginationLinks();
+                    console.log('✅ Pagination updated');
+                } else if (newPagination && !currentPagination) {
+                    // Add pagination if it doesn't exist
+                    const productsContent = document.getElementById('productsContent');
+                    if (productsContent) {
+                        productsContent.insertAdjacentHTML('beforeend', newPagination.outerHTML);
+                        handlePaginationLinks();
+                    }
+                } else if (!newPagination && currentPagination) {
+                    // Remove pagination if no longer needed
+                    currentPagination.remove();
+                }
+                
+                // Smooth scroll to products section and hide loading
+                setTimeout(() => {
+                    const productsSection = document.querySelector('.products-section');
+                    if (productsSection) {
+                        productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    hideLoading();
+                    console.log('✅ Products updated successfully');
+                }, 300);
+            } catch (parseError) {
+                console.error('❌ Error parsing response:', parseError);
+                console.error('Response HTML:', html.substring(0, 500));
+                hideLoading();
+                alert('Error parsing response. Please try again.');
+            }
         })
         .catch(error => {
             console.error('❌ Filter error:', error);
             hideLoading();
-            window.location.href = url;
+            // Don't reload - show error message instead
+            alert('Error loading products. Please check your connection and try again.');
+            console.error('Full error:', error);
         });
     }
 
@@ -2237,9 +2450,94 @@
         debounceTimer = setTimeout(window.applyFilters, delay || 300);
     }
 
+    // Handle pagination links with AJAX
+    function handlePaginationLinks() {
+        const paginationLinks = document.querySelectorAll('.pagination a, .pagination-wrapper a');
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const href = this.getAttribute('href');
+                if (!href || href === '#' || href === 'javascript:void(0)') {
+                    return;
+                }
+                
+                console.log('📄 Pagination link clicked:', href);
+                
+                // Update URL
+                window.history.pushState({ path: href }, '', href);
+                
+                // Fetch new page
+                fetch(href, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'text/html',
+                        'Cache-Control': 'no-cache'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
+                    return response.text();
+                })
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newContent = doc.getElementById('productsContent');
+                    const currentContent = document.getElementById('productsContent');
+
+                    if (newContent && currentContent) {
+                        showLoading();
+                        currentContent.style.opacity = '0.5';
+                        
+                        setTimeout(() => {
+                            currentContent.innerHTML = newContent.innerHTML;
+                            currentContent.style.opacity = '1';
+                            
+                            // Re-initialize pagination links
+                            handlePaginationLinks();
+                            
+                            // Scroll to top
+                            const productsSection = document.querySelector('.products-section');
+                            if (productsSection) {
+                                productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                            
+                            hideLoading();
+                            console.log('✅ Pagination updated');
+                        }, 200);
+                    } else {
+                        console.error('❌ Pagination content not found');
+                        hideLoading();
+                        alert('Error loading page. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Pagination error:', error);
+                    hideLoading();
+                    // Don't reload - show error instead
+                    console.warn('⚠️ Pagination error, showing alert instead of reloading');
+                    alert('Error loading page. Please try again.');
+                });
+                
+                return false;
+            });
+        });
+    }
+
     // Initialize everything
     document.addEventListener('DOMContentLoaded', function() {
         console.log('✅ Initializing filter system...');
+        
+        // Initialize pagination links
+        handlePaginationLinks();
+        
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', function(event) {
+            console.log('🔙 Browser navigation detected');
+            applyFilters();
+        });
 
         const form = document.getElementById('filterForm');
         const minPriceInput = document.getElementById('minPriceInput');
@@ -2250,20 +2548,52 @@
 
         // Prevent form submission (we handle it with AJAX)
         if (form) {
+            // Remove any existing submit handlers
+            form.onsubmit = null;
+            
+            // Add multiple layers of protection
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
+                e.stopImmediatePropagation();
                 console.log('⛔ Form submission prevented - using AJAX instead');
                 applyFilters();
                 return false;
-            });
+            }, true); // Use capture phase
             
             // Also prevent on form reset
             form.addEventListener('reset', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 console.log('⛔ Form reset prevented');
                 return false;
-            });
+            }, true);
+            
+            // Prevent any button clicks that might submit
+            form.addEventListener('click', function(e) {
+                const target = e.target;
+                if (target.tagName === 'BUTTON' && (target.type === 'submit' || !target.type)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    console.log('⛔ Button click prevented in form');
+                }
+            }, true);
+            
+            // Prevent form action navigation - multiple ways
+            form.setAttribute('onsubmit', 'return false;');
+            form.setAttribute('data-ajax', 'true');
+            form.action = 'javascript:void(0);';
+            
+            // Override form submit method
+            const originalSubmit = form.submit;
+            form.submit = function() {
+                console.log('⛔ Form.submit() called - preventing');
+                if (typeof window.applyFilters === 'function') {
+                    window.applyFilters();
+                }
+                return false;
+            };
         } else {
             console.error('❌ Filter form not found!');
         }

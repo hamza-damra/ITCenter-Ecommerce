@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 use App\Auth\BootstrapUserProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -86,6 +87,11 @@ class AppServiceProvider extends ServiceProvider
             }
             
             $view->with('navigationCategories', $navigationCategories);
+        });
+
+        // Register Blade helper for dynamic asset URLs
+        Blade::directive('assetUrl', function ($expression) {
+            return "<?php echo \App\Helpers\ImageHelper::assetUrl($expression); ?>";
         });
     }
 }

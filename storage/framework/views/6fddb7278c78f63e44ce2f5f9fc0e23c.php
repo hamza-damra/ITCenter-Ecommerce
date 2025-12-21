@@ -1254,7 +1254,8 @@ unset($__defined_vars, $__key, $__value); ?>
             } else if (typeof window.applyFilters === 'function') {
                 window.applyFilters();
             } else {
-                // Fallback: submit the form directly
+                // Fallback: try to use AJAX directly
+                console.warn('⚠️ AJAX functions not found, trying direct fetch...');
                 const form = document.getElementById('filterForm');
                 if (form) {
                     const formData = new FormData(form);
@@ -1266,7 +1267,30 @@ unset($__defined_vars, $__key, $__value); ?>
                         }
                     }
                     
-                    window.location.href = window.location.pathname + '?' + params.toString();
+                    const url = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+                    window.history.pushState({ path: url }, '', url);
+                    
+                    // Try to fetch and update product grid directly
+                    fetch(url, {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' }
+                    })
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newGrid = doc.querySelector('.product-grid');
+                        const newPagination = doc.querySelector('.pagination-wrapper');
+                        const currentGrid = document.querySelector('.product-grid');
+                        const currentPagination = document.querySelector('.pagination-wrapper');
+                        
+                        if (newGrid && currentGrid) {
+                            currentGrid.innerHTML = newGrid.innerHTML;
+                        }
+                        if (newPagination && currentPagination) {
+                            currentPagination.innerHTML = newPagination.innerHTML;
+                        }
+                    })
+                    .catch(err => console.error('Fallback fetch failed:', err));
                 }
             }
         }, delay);

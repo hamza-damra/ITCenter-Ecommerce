@@ -1,8 +1,6 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Edit Product'); ?>
 
-@section('title', 'Edit Product')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     /* Product Edit Page Specific Styles */
     .product-form-grid {
@@ -129,18 +127,18 @@
 <div class="page-header">
     <div class="page-header-content">
         <h1><i class="fas fa-edit"></i> Edit Product</h1>
-        <p>Update product information: <strong>{{ $product->name }}</strong></p>
+        <p>Update product information: <strong><?php echo e($product->name); ?></strong></p>
     </div>
     <div class="page-actions">
-        <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
+        <a href="<?php echo e(route('admin.products.index')); ?>" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Back to Products
         </a>
     </div>
 </div>
 
-<form action="{{ route('admin.products.update', $product) }}" method="POST" class="product-form-grid">
-    @csrf
-    @method('PUT')
+<form action="<?php echo e(route('admin.products.update', $product)); ?>" method="POST" class="product-form-grid">
+    <?php echo csrf_field(); ?>
+    <?php echo method_field('PUT'); ?>
 
     <!-- Main Form Content -->
     <div style="display: flex; flex-direction: column; gap: 24px;">
@@ -161,18 +159,32 @@
                             type="text" 
                             id="name_en" 
                             name="name_en" 
-                            class="form-control char-counter-input @error('name_en') is-invalid @enderror" 
-                            value="{{ old('name_en', $product->name_en) }}" 
+                            class="form-control char-counter-input <?php $__errorArgs = ['name_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                            value="<?php echo e(old('name_en', $product->name_en)); ?>" 
                             placeholder="Enter product name in English"
-                            maxlength="{{ $inputLimits['name'] ?? 120 }}"
-                            data-max-length="{{ $inputLimits['name'] ?? 120 }}"
+                            maxlength="<?php echo e($inputLimits['name'] ?? 120); ?>"
+                            data-max-length="<?php echo e($inputLimits['name'] ?? 120); ?>"
                             required>
                         <div class="char-counter">
-                            <span class="char-count">0</span> / <span class="char-max">{{ $inputLimits['name'] ?? 120 }}</span>
+                            <span class="char-count">0</span> / <span class="char-max"><?php echo e($inputLimits['name'] ?? 120); ?></span>
                         </div>
-                        @error('name_en')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['name_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
@@ -184,42 +196,71 @@
                             type="text" 
                             id="name_ar" 
                             name="name_ar" 
-                            class="form-control char-counter-input @error('name_ar') is-invalid @enderror" 
-                            value="{{ old('name_ar', $product->name_ar) }}" 
+                            class="form-control char-counter-input <?php $__errorArgs = ['name_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                            value="<?php echo e(old('name_ar', $product->name_ar)); ?>" 
                             placeholder="أدخل اسم المنتج بالعربية"
-                            maxlength="{{ $inputLimits['name'] ?? 120 }}"
-                            data-max-length="{{ $inputLimits['name'] ?? 120 }}"
+                            maxlength="<?php echo e($inputLimits['name'] ?? 120); ?>"
+                            data-max-length="<?php echo e($inputLimits['name'] ?? 120); ?>"
                             required 
                             dir="rtl">
                         <div class="char-counter">
-                            <span class="char-count">0</span> / <span class="char-max">{{ $inputLimits['name'] ?? 120 }}</span>
+                            <span class="char-count">0</span> / <span class="char-max"><?php echo e($inputLimits['name'] ?? 120); ?></span>
                         </div>
-                        @error('name_ar')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['name_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="name_he" class="form-label">
-                            {{ __('messages.product_name_hebrew') }}
-                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                            <?php echo e(__('messages.product_name_hebrew')); ?>
+
+                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                         </label>
                         <input
                             type="text"
                             id="name_he"
                             name="name_he"
-                            class="form-control char-counter-input @error('name_he') is-invalid @enderror"
-                            value="{{ old('name_he', $product->name_he) }}"
-                            placeholder="{{ __('messages.enter_product_name_hebrew') }}"
-                            maxlength="{{ $inputLimits['name'] ?? 120 }}"
-                            data-max-length="{{ $inputLimits['name'] ?? 120 }}"
+                            class="form-control char-counter-input <?php $__errorArgs = ['name_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            value="<?php echo e(old('name_he', $product->name_he)); ?>"
+                            placeholder="<?php echo e(__('messages.enter_product_name_hebrew')); ?>"
+                            maxlength="<?php echo e($inputLimits['name'] ?? 120); ?>"
+                            data-max-length="<?php echo e($inputLimits['name'] ?? 120); ?>"
                             dir="rtl">
                         <div class="char-counter">
-                            <span class="char-count">0</span> / <span class="char-max">{{ $inputLimits['name'] ?? 120 }}</span>
+                            <span class="char-count">0</span> / <span class="char-max"><?php echo e($inputLimits['name'] ?? 120); ?></span>
                         </div>
-                        @error('name_he')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['name_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -229,17 +270,32 @@
                             Category
                             <span class="required">*</span>
                         </label>
-                        <select id="category_id" name="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
+                        <select id="category_id" name="category_id" class="form-control <?php $__errorArgs = ['category_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" required>
                             <option value="">Select a Category</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
+                            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($category->id); ?>" <?php echo e(old('category_id', $product->category_id) == $category->id ? 'selected' : ''); ?>>
+                                    <?php echo e($category->name); ?>
+
                                 </option>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
-                        @error('category_id')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['category_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
@@ -247,17 +303,32 @@
                             Brand
                             <span style="color: #64748b; font-size: 12px;">(Optional)</span>
                         </label>
-                        <select id="brand_id" name="brand_id" class="form-control @error('brand_id') is-invalid @enderror">
+                        <select id="brand_id" name="brand_id" class="form-control <?php $__errorArgs = ['brand_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
                             <option value="">Select a Brand</option>
-                            @foreach($brands as $brand)
-                                <option value="{{ $brand->id }}" {{ old('brand_id', $product->brand_id) == $brand->id ? 'selected' : '' }}>
-                                    {{ $brand->name }}
+                            <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($brand->id); ?>" <?php echo e(old('brand_id', $product->brand_id) == $brand->id ? 'selected' : ''); ?>>
+                                    <?php echo e($brand->name); ?>
+
                                 </option>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
-                        @error('brand_id')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['brand_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
@@ -281,16 +352,30 @@
                                 type="number" 
                                 id="price" 
                                 name="price" 
-                                class="form-control @error('price') is-invalid @enderror" 
+                                class="form-control <?php $__errorArgs = ['price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                 step="0.01" 
-                                value="{{ old('price', $product->price) }}" 
+                                value="<?php echo e(old('price', $product->price)); ?>" 
                                 placeholder="0.00"
                                 style="padding-left: 28px;"
                                 required>
                         </div>
-                        @error('price')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
@@ -304,15 +389,29 @@
                                 type="number" 
                                 id="sale_price" 
                                 name="sale_price" 
-                                class="form-control @error('sale_price') is-invalid @enderror" 
+                                class="form-control <?php $__errorArgs = ['sale_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                 step="0.01" 
-                                value="{{ old('sale_price', $product->sale_price) }}"
+                                value="<?php echo e(old('sale_price', $product->sale_price)); ?>"
                                 placeholder="0.00"
                                 style="padding-left: 28px;">
                         </div>
-                        @error('sale_price')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['sale_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
@@ -324,13 +423,27 @@
                             type="number" 
                             id="stock_quantity" 
                             name="stock_quantity" 
-                            class="form-control @error('stock_quantity') is-invalid @enderror" 
-                            value="{{ old('stock_quantity', $product->stock_quantity) }}" 
+                            class="form-control <?php $__errorArgs = ['stock_quantity'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                            value="<?php echo e(old('stock_quantity', $product->stock_quantity)); ?>" 
                             placeholder="0"
                             required>
-                        @error('stock_quantity')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['stock_quantity'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
@@ -351,26 +464,40 @@
                         type="url" 
                         id="main_image" 
                         name="main_image" 
-                        class="form-control @error('main_image') is-invalid @enderror" 
-                        value="{{ old('main_image', $product->main_image) }}" 
+                        class="form-control <?php $__errorArgs = ['main_image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                        value="<?php echo e(old('main_image', $product->main_image)); ?>" 
                         placeholder="https://picsum.photos/800/800"
                         required>
                     <p class="form-text">
                         <i class="fas fa-lightbulb"></i> Recommended: Use services like <strong>picsum.photos</strong> or <strong>placehold.co</strong>
                     </p>
-                    @error('main_image')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                    <?php $__errorArgs = ['main_image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     
-                    @if($product->main_image)
+                    <?php if($product->main_image): ?>
                         <div class="current-image-container">
                             <div class="current-image-label">
                                 <i class="fas fa-image"></i>
                                 Current Main Image
                             </div>
-                            <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                            <img src="<?php echo e($product->main_image); ?>" alt="<?php echo e($product->name); ?>">
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
 
                 <div class="form-group">
@@ -381,29 +508,43 @@
                     <textarea 
                         id="additional_images" 
                         name="additional_images" 
-                        class="form-control @error('additional_images') is-invalid @enderror" 
+                        class="form-control <?php $__errorArgs = ['additional_images'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                         rows="5" 
-                        placeholder="https://picsum.photos/800/801&#10;https://picsum.photos/800/802&#10;https://picsum.photos/800/803">{{ old('additional_images', $product->images->where('is_primary', false)->pluck('image_path')->implode("\n")) }}</textarea>
+                        placeholder="https://picsum.photos/800/801&#10;https://picsum.photos/800/802&#10;https://picsum.photos/800/803"><?php echo e(old('additional_images', $product->images->where('is_primary', false)->pluck('image_path')->implode("\n"))); ?></textarea>
                     <p class="form-text">
                         <i class="fas fa-info-circle"></i> Enter each image URL on a new line for the product gallery
                     </p>
-                    @error('additional_images')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                    <?php $__errorArgs = ['additional_images'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     
-                    @if($product->images->where('is_primary', false)->count() > 0)
+                    <?php if($product->images->where('is_primary', false)->count() > 0): ?>
                         <div class="additional-images-preview">
                             <strong>
                                 <i class="fas fa-images"></i>
-                                Current Additional Images ({{ $product->images->where('is_primary', false)->count() }})
+                                Current Additional Images (<?php echo e($product->images->where('is_primary', false)->count()); ?>)
                             </strong>
                             <div class="images-grid">
-                                @foreach($product->images->where('is_primary', false) as $image)
-                                    <img src="{{ $image->image_path }}" alt="Product Image">
-                                @endforeach
+                                <?php $__currentLoopData = $product->images->where('is_primary', false); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <img src="<?php echo e($image->image_path); ?>" alt="Product Image">
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -411,26 +552,42 @@
         <!-- Search Keywords Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-search"></i> {{ __('messages.search_optimization') }}</h2>
+                <h2><i class="fas fa-search"></i> <?php echo e(__('messages.search_optimization')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <label for="search_keywords" class="form-label">
-                        {{ __('messages.search_keywords') }}
-                        <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        <?php echo e(__('messages.search_keywords')); ?>
+
+                        <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                     </label>
                     <textarea
                         id="search_keywords"
                         name="search_keywords"
-                        class="form-control @error('search_keywords') is-invalid @enderror"
-                        placeholder="{{ __('messages.search_keywords_placeholder') }}"
-                        style="min-height: 100px;">{{ old('search_keywords', $product->search_keywords) }}</textarea>
+                        class="form-control <?php $__errorArgs = ['search_keywords'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                        placeholder="<?php echo e(__('messages.search_keywords_placeholder')); ?>"
+                        style="min-height: 100px;"><?php echo e(old('search_keywords', $product->search_keywords)); ?></textarea>
                     <p class="form-text">
-                        <i class="fas fa-info-circle"></i> {{ __('messages.search_keywords_help') }}
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.search_keywords_help')); ?>
+
                     </p>
-                    @error('search_keywords')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                    <?php $__errorArgs = ['search_keywords'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
         </div>
@@ -450,12 +607,26 @@
                         <textarea 
                             id="short_description_en" 
                             name="short_description_en" 
-                            class="form-control @error('short_description_en') is-invalid @enderror"
+                            class="form-control <?php $__errorArgs = ['short_description_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             placeholder="Brief description for product listings"
-                            style="min-height: 80px;">{{ old('short_description_en', $product->short_description_en) }}</textarea>
-                        @error('short_description_en')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                            style="min-height: 80px;"><?php echo e(old('short_description_en', $product->short_description_en)); ?></textarea>
+                        <?php $__errorArgs = ['short_description_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
@@ -466,30 +637,59 @@
                         <textarea 
                             id="short_description_ar" 
                             name="short_description_ar" 
-                            class="form-control @error('short_description_ar') is-invalid @enderror"
+                            class="form-control <?php $__errorArgs = ['short_description_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
                             placeholder="وصف قصير للمنتج"
-                            style="min-height: 80px;">{{ old('short_description_ar', $product->short_description_ar) }}</textarea>
-                        @error('short_description_ar')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                            style="min-height: 80px;"><?php echo e(old('short_description_ar', $product->short_description_ar)); ?></textarea>
+                        <?php $__errorArgs = ['short_description_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="short_description_he" class="form-label">
-                            {{ __('messages.short_description_hebrew') }}
-                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                            <?php echo e(__('messages.short_description_hebrew')); ?>
+
+                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                         </label>
                         <textarea
                             id="short_description_he"
                             name="short_description_he"
-                            class="form-control @error('short_description_he') is-invalid @enderror"
+                            class="form-control <?php $__errorArgs = ['short_description_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
-                            placeholder="{{ __('messages.brief_description_hebrew') }}"
-                            style="min-height: 80px;">{{ old('short_description_he', $product->short_description_he) }}</textarea>
-                        @error('short_description_he')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                            placeholder="<?php echo e(__('messages.brief_description_hebrew')); ?>"
+                            style="min-height: 80px;"><?php echo e(old('short_description_he', $product->short_description_he)); ?></textarea>
+                        <?php $__errorArgs = ['short_description_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
@@ -497,66 +697,109 @@
                     <div class="form-group">
                         <label for="description_en" class="form-label">
                             Full Description (English)
-                            <span style="color: #64748b; font-size: 12px;">(Optional - max {{ $inputLimits['description'] ?? 3000 }} chars)</span>
+                            <span style="color: #64748b; font-size: 12px;">(Optional - max <?php echo e($inputLimits['description'] ?? 3000); ?> chars)</span>
                         </label>
                         <textarea 
                             id="description_en" 
                             name="description_en" 
-                            class="form-control char-counter-input @error('description_en') is-invalid @enderror"
+                            class="form-control char-counter-input <?php $__errorArgs = ['description_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             placeholder="Complete product description with details"
-                            maxlength="{{ $inputLimits['description'] ?? 3000 }}"
-                            data-max-length="{{ $inputLimits['description'] ?? 3000 }}"
-                            style="min-height: 150px;">{{ old('description_en', $product->description_en) }}</textarea>
+                            maxlength="<?php echo e($inputLimits['description'] ?? 3000); ?>"
+                            data-max-length="<?php echo e($inputLimits['description'] ?? 3000); ?>"
+                            style="min-height: 150px;"><?php echo e(old('description_en', $product->description_en)); ?></textarea>
                         <div class="char-counter">
-                            <span class="char-count">0</span> / <span class="char-max">{{ $inputLimits['description'] ?? 3000 }}</span>
+                            <span class="char-count">0</span> / <span class="char-max"><?php echo e($inputLimits['description'] ?? 3000); ?></span>
                         </div>
-                        @error('description_en')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['description_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="description_ar" class="form-label">
                             وصف كامل (عربي)
-                            <span style="color: #64748b; font-size: 12px;">(اختياري - {{ $inputLimits['description'] ?? 3000 }} حرف)</span>
+                            <span style="color: #64748b; font-size: 12px;">(اختياري - <?php echo e($inputLimits['description'] ?? 3000); ?> حرف)</span>
                         </label>
                         <textarea 
                             id="description_ar" 
                             name="description_ar" 
-                            class="form-control char-counter-input @error('description_ar') is-invalid @enderror"
+                            class="form-control char-counter-input <?php $__errorArgs = ['description_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
                             placeholder="وصف المنتج الكامل بالتفاصيل"
-                            maxlength="{{ $inputLimits['description'] ?? 3000 }}"
-                            data-max-length="{{ $inputLimits['description'] ?? 3000 }}"
-                            style="min-height: 150px;">{{ old('description_ar', $product->description_ar) }}</textarea>
+                            maxlength="<?php echo e($inputLimits['description'] ?? 3000); ?>"
+                            data-max-length="<?php echo e($inputLimits['description'] ?? 3000); ?>"
+                            style="min-height: 150px;"><?php echo e(old('description_ar', $product->description_ar)); ?></textarea>
                         <div class="char-counter">
-                            <span class="char-count">0</span> / <span class="char-max">{{ $inputLimits['description'] ?? 3000 }}</span>
+                            <span class="char-count">0</span> / <span class="char-max"><?php echo e($inputLimits['description'] ?? 3000); ?></span>
                         </div>
-                        @error('description_ar')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['description_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="description_he" class="form-label">
-                            {{ __('messages.full_description_hebrew') }}
-                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }} - {{ $inputLimits['description'] ?? 3000 }})</span>
+                            <?php echo e(__('messages.full_description_hebrew')); ?>
+
+                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?> - <?php echo e($inputLimits['description'] ?? 3000); ?>)</span>
                         </label>
                         <textarea
                             id="description_he"
                             name="description_he"
-                            class="form-control char-counter-input @error('description_he') is-invalid @enderror"
+                            class="form-control char-counter-input <?php $__errorArgs = ['description_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
-                            placeholder="{{ __('messages.complete_description_hebrew') }}"
-                            maxlength="{{ $inputLimits['description'] ?? 3000 }}"
-                            data-max-length="{{ $inputLimits['description'] ?? 3000 }}"
-                            style="min-height: 150px;">{{ old('description_he', $product->description_he) }}</textarea>
+                            placeholder="<?php echo e(__('messages.complete_description_hebrew')); ?>"
+                            maxlength="<?php echo e($inputLimits['description'] ?? 3000); ?>"
+                            data-max-length="<?php echo e($inputLimits['description'] ?? 3000); ?>"
+                            style="min-height: 150px;"><?php echo e(old('description_he', $product->description_he)); ?></textarea>
                         <div class="char-counter">
-                            <span class="char-count">0</span> / <span class="char-max">{{ $inputLimits['description'] ?? 3000 }}</span>
+                            <span class="char-count">0</span> / <span class="char-max"><?php echo e($inputLimits['description'] ?? 3000); ?></span>
                         </div>
-                        @error('description_he')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['description_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
@@ -565,11 +808,11 @@
         <!-- Product Tags Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-tags"></i> {{ __('messages.product_tags') }}</h2>
+                <h2><i class="fas fa-tags"></i> <?php echo e(__('messages.product_tags')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-group">
-                    <label class="form-label">{{ __('messages.select_tags') }}</label>
+                    <label class="form-label"><?php echo e(__('messages.select_tags')); ?></label>
                     
                     <!-- Tag Input with Autocomplete -->
                     <div class="tag-input-wrapper">
@@ -580,7 +823,7 @@
                             <input type="text" 
                                    id="tagSearchInput" 
                                    class="tag-search-input" 
-                                   placeholder="{{ __('messages.type_to_search_or_add_tag') }}"
+                                   placeholder="<?php echo e(__('messages.type_to_search_or_add_tag')); ?>"
                                    autocomplete="off">
                             <div class="tag-suggestions" id="tagSuggestions"></div>
                         </div>
@@ -590,7 +833,8 @@
                     <div id="tagHiddenInputs"></div>
                     
                     <p class="form-text">
-                        <i class="fas fa-info-circle"></i> {{ __('messages.tag_input_help') }}
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.tag_input_help')); ?>
+
                     </p>
                 </div>
             </div>
@@ -644,7 +888,7 @@
             border-color: #3b82f6;
         }
         .selected-tag.new-tag::after {
-            content: '{{ __("messages.new") }}';
+            content: '<?php echo e(__("messages.new")); ?>';
             font-size: 10px;
             background: #3b82f6;
             color: white;
@@ -709,7 +953,7 @@
         }
         </style>
         
-        @php
+        <?php
             $existingTags = $product->tags->map(function($tag) {
                 return [
                     'id' => $tag->id,
@@ -719,12 +963,12 @@
                     'isNew' => false
                 ];
             })->values();
-        @endphp
+        ?>
         <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const availableTags = @json($tags ?? []);
+            const availableTags = <?php echo json_encode($tags ?? [], 15, 512) ?>;
             // Pre-populate with existing product tags
-            let selectedTags = @json($existingTags);
+            let selectedTags = <?php echo json_encode($existingTags, 15, 512) ?>;
             
             const searchInput = document.getElementById('tagSearchInput');
             const suggestionsDiv = document.getElementById('tagSuggestions');
@@ -772,7 +1016,7 @@
                 if (!exactMatch && query.length >= 2) {
                     html += `<div class="tag-suggestion create-new" data-new="true" data-name="${this.value.trim()}">
                         <i class="fas fa-plus"></i>
-                        <span>{{ __('messages.create_tag') }}: "${this.value.trim()}"</span>
+                        <span><?php echo e(__('messages.create_tag')); ?>: "${this.value.trim()}"</span>
                     </div>`;
                 }
                 
@@ -905,7 +1149,7 @@
                             id="is_active" 
                             name="is_active" 
                             value="1" 
-                            {{ old('is_active', $product->is_active) ? 'checked' : '' }}>
+                            <?php echo e(old('is_active', $product->is_active) ? 'checked' : ''); ?>>
                         <span>
                             <strong><i class="fas fa-eye"></i> Active</strong>
                             <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Display this product in the store</p>
@@ -918,7 +1162,7 @@
                             id="is_featured" 
                             name="is_featured" 
                             value="1" 
-                            {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
+                            <?php echo e(old('is_featured', $product->is_featured) ? 'checked' : ''); ?>>
                         <span>
                             <strong><i class="fas fa-star"></i> Featured</strong>
                             <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Show on homepage featured section</p>
@@ -931,7 +1175,7 @@
                             id="is_new" 
                             name="is_new" 
                             value="1" 
-                            {{ old('is_new', $product->is_new) ? 'checked' : '' }}>
+                            <?php echo e(old('is_new', $product->is_new) ? 'checked' : ''); ?>>
                         <span>
                             <strong><i class="fas fa-badge"></i> New Product</strong>
                             <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Mark as new to highlight in store</p>
@@ -944,7 +1188,7 @@
                             id="is_bestseller" 
                             name="is_bestseller" 
                             value="1" 
-                            {{ old('is_bestseller', $product->is_bestseller) ? 'checked' : '' }}>
+                            <?php echo e(old('is_bestseller', $product->is_bestseller) ? 'checked' : ''); ?>>
                         <span>
                             <strong><i class="fas fa-fire"></i> Bestseller</strong>
                             <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Mark as popular/bestselling product</p>
@@ -957,7 +1201,7 @@
                             id="is_special_offer" 
                             name="is_special_offer" 
                             value="1" 
-                            {{ old('is_special_offer', $product->is_special_offer ?? false) ? 'checked' : '' }}>
+                            <?php echo e(old('is_special_offer', $product->is_special_offer ?? false) ? 'checked' : ''); ?>>
                         <span>
                             <strong><i class="fas fa-gift"></i> Special Offer</strong>
                             <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Show as special offer card on homepage</p>
@@ -970,169 +1214,224 @@
                             id="is_strong_offer" 
                             name="is_strong_offer" 
                             value="1" 
-                            {{ old('is_strong_offer', $product->is_strong_offer ?? false) ? 'checked' : '' }}>
+                            <?php echo e(old('is_strong_offer', $product->is_strong_offer ?? false) ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-bolt"></i> {{ __('messages.strong_offer') ?? 'Strong Offer' }}</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.mark_as_strong_promotional_offer') ?? 'Mark as strong promotional offer for filtering' }}</p>
+                            <strong><i class="fas fa-bolt"></i> <?php echo e(__('messages.strong_offer') ?? 'Strong Offer'); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.mark_as_strong_promotional_offer') ?? 'Mark as strong promotional offer for filtering'); ?></p>
                         </span>
                     </label>
                 </div>
 
                 <!-- Strong Offer Discount Percentage -->
-                <div class="form-group" id="discount-percentage-group" style="margin-top: 16px; {{ old('is_strong_offer', $product->is_strong_offer ?? false) ? '' : 'display: none;' }}">
+                <div class="form-group" id="discount-percentage-group" style="margin-top: 16px; <?php echo e(old('is_strong_offer', $product->is_strong_offer ?? false) ? '' : 'display: none;'); ?>">
                     <label for="discount_percentage" class="form-label">
-                        {{ __('messages.discount_percentage') ?? 'Discount Percentage' }}
-                        <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        <?php echo e(__('messages.discount_percentage') ?? 'Discount Percentage'); ?>
+
+                        <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                     </label>
                     <div style="position: relative;">
                         <input 
                             type="number" 
                             id="discount_percentage" 
                             name="discount_percentage" 
-                            class="form-control @error('discount_percentage') is-invalid @enderror" 
+                            class="form-control <?php $__errorArgs = ['discount_percentage'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                             step="0.01" 
                             min="0"
                             max="100"
-                            value="{{ old('discount_percentage', $product->discount_percentage) }}" 
+                            value="<?php echo e(old('discount_percentage', $product->discount_percentage)); ?>" 
                             placeholder="0.00"
                             style="padding-right: 32px;">
                         <span style="position: absolute; right: 12px; top: 12px; color: var(--secondary); font-weight: 600;">%</span>
                     </div>
                     <p class="form-text">
-                        <i class="fas fa-info-circle"></i> {{ __('messages.discount_percentage_help') ?? 'Enter discount percentage between 0 and 100' }}
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.discount_percentage_help') ?? 'Enter discount percentage between 0 and 100'); ?>
+
                     </p>
-                    @error('discount_percentage')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                    <?php $__errorArgs = ['discount_percentage'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
         </div>
 
         <!-- Product Attributes Card -->
-        <div class="card" id="attributes-card" style="{{ !empty($categoryAttributes) && $categoryAttributes->count() > 0 ? '' : 'display: none;' }}">
+        <div class="card" id="attributes-card" style="<?php echo e(!empty($categoryAttributes) && $categoryAttributes->count() > 0 ? '' : 'display: none;'); ?>">
             <div class="card-header">
                 <h2><i class="fas fa-tags"></i> Product Attributes</h2>
                 <p style="color: #64748b; font-size: 13px; margin-top: 4px;">Select attributes specific to this product's category</p>
             </div>
             <div class="card-body">
                 <div id="attributes-container">
-                    @if(!empty($categoryAttributes) && $categoryAttributes->count() > 0)
+                    <?php if(!empty($categoryAttributes) && $categoryAttributes->count() > 0): ?>
                         <div style="display: flex; flex-direction: column; gap: 24px;">
-                            @foreach($categoryAttributes as $attribute)
+                            <?php $__currentLoopData = $categoryAttributes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attribute): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <div class="form-group">
                                     <label class="form-label">
-                                        <strong>{{ $attribute->name }}</strong>
-                                        @if($attribute->unit)
-                                            <span style="color: #64748b; font-size: 12px;">({{ $attribute->unit }})</span>
-                                        @endif
+                                        <strong><?php echo e($attribute->name); ?></strong>
+                                        <?php if($attribute->unit): ?>
+                                            <span style="color: #64748b; font-size: 12px;">(<?php echo e($attribute->unit); ?>)</span>
+                                        <?php endif; ?>
                                     </label>
                                     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 8px;">
-                                        @foreach($attribute->values as $value)
+                                        <?php $__currentLoopData = $attribute->values; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <label class="checkbox-group" style="margin: 0;">
                                                 <input 
                                                     type="checkbox" 
-                                                    id="attr_{{ $attribute->id }}_{{ $value->id }}" 
+                                                    id="attr_<?php echo e($attribute->id); ?>_<?php echo e($value->id); ?>" 
                                                     name="attribute_values[]" 
-                                                    value="{{ $value->id }}"
-                                                    {{ in_array($value->id, old('attribute_values', $selectedAttributeValues)) ? 'checked' : '' }}>
+                                                    value="<?php echo e($value->id); ?>"
+                                                    <?php echo e(in_array($value->id, old('attribute_values', $selectedAttributeValues)) ? 'checked' : ''); ?>>
                                                 <span>
-                                                    @if($value->color_code)
-                                                        <span style="display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: {{ $value->color_code }}; border: 1px solid #ddd; margin-right: 6px; vertical-align: middle;"></span>
-                                                    @endif
-                                                    {{ $value->value }}
+                                                    <?php if($value->color_code): ?>
+                                                        <span style="display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: <?php echo e($value->color_code); ?>; border: 1px solid #ddd; margin-right: 6px; vertical-align: middle;"></span>
+                                                    <?php endif; ?>
+                                                    <?php echo e($value->value); ?>
+
                                                 </span>
                                             </label>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </div>
                                 </div>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
-                    @else
+                    <?php else: ?>
                         <p style="color: #64748b; text-align: center; padding: 20px;">
                             <i class="fas fa-info-circle"></i> No attributes configured for this category
                         </p>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
 
         <!-- Product Specifications Card -->
-        <div class="card" id="specifications-card" style="{{ isset($specFields) && $specFields->count() > 0 ? '' : 'display: none;' }}">
+        <div class="card" id="specifications-card" style="<?php echo e(isset($specFields) && $specFields->count() > 0 ? '' : 'display: none;'); ?>">
             <div class="card-header">
-                <h2><i class="fas fa-clipboard-list"></i> {{ __('messages.product_specifications') }}</h2>
-                <p style="color: #64748b; font-size: 13px; margin-top: 4px;">{{ __('messages.fill_specs_for_category') ?? 'Fill in the specifications for this product category' }}</p>
+                <h2><i class="fas fa-clipboard-list"></i> <?php echo e(__('messages.product_specifications')); ?></h2>
+                <p style="color: #64748b; font-size: 13px; margin-top: 4px;"><?php echo e(__('messages.fill_specs_for_category') ?? 'Fill in the specifications for this product category'); ?></p>
             </div>
             <div class="card-body">
                 <div id="specifications-container">
-                    @if(isset($specFields) && $specFields->count() > 0)
+                    <?php if(isset($specFields) && $specFields->count() > 0): ?>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                            @foreach($specFields as $field)
+                            <?php $__currentLoopData = $specFields; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $field): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <div class="form-group">
-                                    <label for="spec_{{ $field->id }}" class="form-label">
-                                        {{ $field->label }}
-                                        @if($field->is_required)
+                                    <label for="spec_<?php echo e($field->id); ?>" class="form-label">
+                                        <?php echo e($field->label); ?>
+
+                                        <?php if($field->is_required): ?>
                                             <span class="required">*</span>
-                                        @endif
-                                        @if($field->unit)
-                                            <span style="color: #64748b; font-size: 12px;">({{ $field->unit }})</span>
-                                        @endif
+                                        <?php endif; ?>
+                                        <?php if($field->unit): ?>
+                                            <span style="color: #64748b; font-size: 12px;">(<?php echo e($field->unit); ?>)</span>
+                                        <?php endif; ?>
                                     </label>
                                     
-                                    @if($field->type === 'text')
+                                    <?php if($field->type === 'text'): ?>
                                         <input 
                                             type="text" 
-                                            id="spec_{{ $field->id }}" 
-                                            name="spec_values[{{ $field->id }}]" 
-                                            class="form-control @error('spec_values.'.$field->id) is-invalid @enderror"
-                                            value="{{ old('spec_values.'.$field->id, $specValues[$field->id] ?? '') }}"
-                                            placeholder="{{ $field->label }}"
-                                            {{ $field->is_required ? 'required' : '' }}>
-                                    @elseif($field->type === 'number')
+                                            id="spec_<?php echo e($field->id); ?>" 
+                                            name="spec_values[<?php echo e($field->id); ?>]" 
+                                            class="form-control <?php $__errorArgs = ['spec_values.'.$field->id];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                            value="<?php echo e(old('spec_values.'.$field->id, $specValues[$field->id] ?? '')); ?>"
+                                            placeholder="<?php echo e($field->label); ?>"
+                                            <?php echo e($field->is_required ? 'required' : ''); ?>>
+                                    <?php elseif($field->type === 'number'): ?>
                                         <input 
                                             type="number" 
-                                            id="spec_{{ $field->id }}" 
-                                            name="spec_values[{{ $field->id }}]" 
-                                            class="form-control @error('spec_values.'.$field->id) is-invalid @enderror"
-                                            value="{{ old('spec_values.'.$field->id, $specValues[$field->id] ?? '') }}"
-                                            placeholder="{{ $field->label }}"
+                                            id="spec_<?php echo e($field->id); ?>" 
+                                            name="spec_values[<?php echo e($field->id); ?>]" 
+                                            class="form-control <?php $__errorArgs = ['spec_values.'.$field->id];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                            value="<?php echo e(old('spec_values.'.$field->id, $specValues[$field->id] ?? '')); ?>"
+                                            placeholder="<?php echo e($field->label); ?>"
                                             step="any"
-                                            {{ $field->is_required ? 'required' : '' }}>
-                                    @elseif($field->type === 'boolean')
+                                            <?php echo e($field->is_required ? 'required' : ''); ?>>
+                                    <?php elseif($field->type === 'boolean'): ?>
                                         <select 
-                                            id="spec_{{ $field->id }}" 
-                                            name="spec_values[{{ $field->id }}]" 
-                                            class="form-control @error('spec_values.'.$field->id) is-invalid @enderror"
-                                            {{ $field->is_required ? 'required' : '' }}>
-                                            <option value="">-- {{ __('messages.select') ?? 'Select' }} --</option>
-                                            <option value="1" {{ old('spec_values.'.$field->id, $specValues[$field->id] ?? '') === '1' ? 'selected' : '' }}>{{ __('messages.yes') }}</option>
-                                            <option value="0" {{ old('spec_values.'.$field->id, $specValues[$field->id] ?? '') === '0' ? 'selected' : '' }}>{{ __('messages.no') }}</option>
+                                            id="spec_<?php echo e($field->id); ?>" 
+                                            name="spec_values[<?php echo e($field->id); ?>]" 
+                                            class="form-control <?php $__errorArgs = ['spec_values.'.$field->id];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                            <?php echo e($field->is_required ? 'required' : ''); ?>>
+                                            <option value="">-- <?php echo e(__('messages.select') ?? 'Select'); ?> --</option>
+                                            <option value="1" <?php echo e(old('spec_values.'.$field->id, $specValues[$field->id] ?? '') === '1' ? 'selected' : ''); ?>><?php echo e(__('messages.yes')); ?></option>
+                                            <option value="0" <?php echo e(old('spec_values.'.$field->id, $specValues[$field->id] ?? '') === '0' ? 'selected' : ''); ?>><?php echo e(__('messages.no')); ?></option>
                                         </select>
-                                    @elseif($field->type === 'select')
+                                    <?php elseif($field->type === 'select'): ?>
                                         <select 
-                                            id="spec_{{ $field->id }}" 
-                                            name="spec_values[{{ $field->id }}]" 
-                                            class="form-control @error('spec_values.'.$field->id) is-invalid @enderror"
-                                            {{ $field->is_required ? 'required' : '' }}>
-                                            <option value="">-- {{ __('messages.select') ?? 'Select' }} --</option>
-                                            @foreach($field->options ?? [] as $option)
-                                                <option value="{{ $option }}" {{ old('spec_values.'.$field->id, $specValues[$field->id] ?? '') === $option ? 'selected' : '' }}>
-                                                    {{ $option }}
+                                            id="spec_<?php echo e($field->id); ?>" 
+                                            name="spec_values[<?php echo e($field->id); ?>]" 
+                                            class="form-control <?php $__errorArgs = ['spec_values.'.$field->id];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                            <?php echo e($field->is_required ? 'required' : ''); ?>>
+                                            <option value="">-- <?php echo e(__('messages.select') ?? 'Select'); ?> --</option>
+                                            <?php $__currentLoopData = $field->options ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $option): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <option value="<?php echo e($option); ?>" <?php echo e(old('spec_values.'.$field->id, $specValues[$field->id] ?? '') === $option ? 'selected' : ''); ?>>
+                                                    <?php echo e($option); ?>
+
                                                 </option>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </select>
-                                    @endif
+                                    <?php endif; ?>
                                     
-                                    @error('spec_values.'.$field->id)
-                                        <span class="error-message">{{ $message }}</span>
-                                    @enderror
+                                    <?php $__errorArgs = ['spec_values.'.$field->id];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                        <span class="error-message"><?php echo e($message); ?></span>
+                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 </div>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
-                    @else
+                    <?php else: ?>
                         <p style="color: #64748b; text-align: center; padding: 20px;">
-                            <i class="fas fa-info-circle"></i> {{ __('messages.no_specs_for_category') }}
+                            <i class="fas fa-info-circle"></i> <?php echo e(__('messages.no_specs_for_category')); ?>
+
                         </p>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -1142,7 +1441,7 @@
             <button type="submit" class="btn btn-success">
                 <i class="fas fa-save"></i> Update Product
             </button>
-            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
+            <a href="<?php echo e(route('admin.products.index')); ?>" class="btn btn-secondary">
                 <i class="fas fa-times"></i> Cancel
             </a>
         </div>
@@ -1164,14 +1463,14 @@
 </form>
 
 <!-- Delete Form (Hidden) -->
-<form id="deleteForm" action="{{ route('admin.products.destroy', $product) }}" method="POST" style="display: none;">
-    @csrf
-    @method('DELETE')
+<form id="deleteForm" action="<?php echo e(route('admin.products.destroy', $product)); ?>" method="POST" style="display: none;">
+    <?php echo csrf_field(); ?>
+    <?php echo method_field('DELETE'); ?>
 </form>
 
 <script>
     function confirmDelete() {
-        if (confirm('Are you sure you want to delete "{{ $product->name }}"?\n\nThis action cannot be undone and will permanently remove this product from your store.')) {
+        if (confirm('Are you sure you want to delete "<?php echo e($product->name); ?>"?\n\nThis action cannot be undone and will permanently remove this product from your store.')) {
             document.getElementById('deleteForm').submit();
         }
     }
@@ -1222,7 +1521,7 @@
         const attributesContainer = document.getElementById('attributes-container');
         const specificationsCard = document.getElementById('specifications-card');
         const specificationsContainer = document.getElementById('specifications-container');
-        const currentCategoryId = '{{ $product->category_id }}';
+        const currentCategoryId = '<?php echo e($product->category_id); ?>';
         
         // Strong Offer checkbox toggle for discount percentage field
         const strongOfferCheckbox = document.getElementById('is_strong_offer');
@@ -1298,7 +1597,7 @@
                         renderSpecifications(data.fields);
                         specificationsCard.style.display = 'block';
                     } else {
-                        specificationsContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> {{ __("messages.no_specs_for_category") }}</p>';
+                        specificationsContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> <?php echo e(__("messages.no_specs_for_category")); ?></p>';
                         specificationsCard.style.display = 'none';
                     }
                 })
@@ -1330,8 +1629,8 @@
                 } else if (field.type === 'boolean') {
                     html += `<select id="spec_${field.id}" name="spec_values[${field.id}]" class="form-control" ${required}>
                              <option value="">-- Select --</option>
-                             <option value="1">{{ __("messages.yes") }}</option>
-                             <option value="0">{{ __("messages.no") }}</option>
+                             <option value="1"><?php echo e(__("messages.yes")); ?></option>
+                             <option value="0"><?php echo e(__("messages.no")); ?></option>
                              </select>`;
                 } else if (field.type === 'select' && field.options) {
                     html += `<select id="spec_${field.id}" name="spec_values[${field.id}]" class="form-control" ${required}>
@@ -1399,4 +1698,6 @@
     });
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/admin/products/edit.blade.php ENDPATH**/ ?>

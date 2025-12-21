@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             BrandSeeder::class,
             AttributeSeeder::class,
+            SpecTemplateSeeder::class, // Seed spec templates after categories
             ProductSeeder::class,
             OfferSeeder::class,
         ]);

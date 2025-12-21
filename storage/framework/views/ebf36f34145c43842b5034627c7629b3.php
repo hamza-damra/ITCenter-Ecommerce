@@ -31,14 +31,14 @@ foreach ($attributes->all() as $__key => $__value) {
 
 unset($__defined_vars, $__key, $__value); ?>
 
-<a href="<?php echo e(route('product.detail', $product->slug)); ?>" class="product-card-link" data-product-id="<?php echo e($product->id); ?>">
+<a href="<?php echo e(route('product.detail', $product)); ?>" class="product-card-link" data-product-id="<?php echo e($product->id); ?>">
     <div class="product-card">
         
         <div class="product-card-image">
             <img src="<?php echo e($product->main_image); ?>" 
                  alt="<?php echo e($product->name); ?>" 
                  loading="lazy"
-                 onerror="this.src='<?php echo e(asset('images/products/default.png')); ?>'">
+                 onerror="this.src='<?php echo e(\App\Helpers\ImageHelper::assetUrl('images/products/default.png')); ?>'">
 
             
             <?php if($product->discount_percentage > 0): ?>

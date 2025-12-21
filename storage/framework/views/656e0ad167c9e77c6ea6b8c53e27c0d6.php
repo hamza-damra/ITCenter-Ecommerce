@@ -3650,8 +3650,7 @@
 
         <!-- Category Carousel JavaScript -->
         <script>
-                                          (f        unction         
-                                () {
+            (function() {
                                 let currentPosition = 0;
                                 const track = document.getElementById('categoryCarouselTrack');
                                 const dotsContainer = document.getElementById('categoryCarouselDots');
@@ -4089,7 +4088,7 @@
                                                                 <img src="<?php echo e($offerProduct->main_image); ?>" 
                                                                      alt="<?php echo e($offerProduct->name); ?>"
                                                                      loading="lazy"
-                                                                     onerror="this.onerror=null; this.src='<?php echo e(asset('images/products/default.png')); ?>';">
+                                                                     onerror="this.onerror=null; this.src='<?php echo e(\App\Helpers\ImageHelper::assetUrl('images/products/default.png')); ?>';">
                                                             </div>
                                                             <div class="promo-body">
                                                                 <div class="promo-product-name"><?php echo e($offerProduct->name); ?></div>
@@ -4103,7 +4102,7 @@
                                                                 </div>
                                                                 <div class="promo-cta">
                                                                     <a
-                                                                        href="<?php echo e(route('product.detail', $offerProduct->slug)); ?>"><?php echo e(is_rtl() ? 'تسوق الآن' : 'Shop Now'); ?></a>
+                                                                        href="<?php echo e(route('product.detail', $offerProduct)); ?>"><?php echo e(is_rtl() ? 'تسوق الآن' : 'Shop Now'); ?></a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -4169,7 +4168,7 @@
                                                     <?php endif; ?>
                                                     <?php if($promo->product): ?>
                                                         <div class="promo-cta">
-                                                            <a href="<?php echo e(route('product.detail', $promo->product->slug)); ?>">
+                                                            <a href="<?php echo e(route('product.detail', $promo->product)); ?>">
                                                                 <?php if(is_rtl()): ?>
                                                                     <?php echo e('اطلب الآن'); ?> <i class="fas fa-shopping-cart"></i>
                                                                 <?php else: ?>
@@ -4184,7 +4183,7 @@
                                         <?php endif; ?>
 
                                         <?php $__currentLoopData = $featuredProducts->take(8); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <a href="<?php echo e(route('product.detail', $product->slug)); ?>" class="product-card-link">
+                                            <a href="<?php echo e(route('product.detail', $product)); ?>" class="product-card-link">
                                                 <div class="product-card">
                                                     <div class="product-image">
                                                         <?php if($product->is_new): ?>
@@ -4301,7 +4300,7 @@
                                         
                                         <?php if(isset($featuredProducts[6])): ?>
                                             <div class="gift-ideas-item gift-product-item strong-offers-product">
-                                                <a href="<?php echo e(route('product.detail', $featuredProducts[6]->slug)); ?>" class="product-card-link">
+                                                <a href="<?php echo e(route('product.detail', $featuredProducts[6])); ?>" class="product-card-link">
                                                     <div class="product-card h-100">
                                                         <div class="product-image">
                                                             <?php if($featuredProducts[6]->is_new): ?>
@@ -4362,7 +4361,7 @@
                                         
                                         <?php if(isset($featuredProducts[7])): ?>
                                             <div class="gift-ideas-item gift-product-item strong-offers-product">
-                                                <a href="<?php echo e(route('product.detail', $featuredProducts[7]->slug)); ?>" class="product-card-link">
+                                                <a href="<?php echo e(route('product.detail', $featuredProducts[7])); ?>" class="product-card-link">
                                                     <div class="product-card h-100">
                                                         <div class="product-image">
                                                             <?php if($featuredProducts[7]->is_new): ?>
@@ -4525,7 +4524,7 @@
                                         
                                         <?php if(isset($giftIdeas[0])): ?>
                                             <div class="gift-ideas-item gift-product-item">
-                                                <a href="<?php echo e(route('product.detail', $giftIdeas[0]->slug)); ?>" class="product-card-link">
+                                                <a href="<?php echo e(route('product.detail', $giftIdeas[0])); ?>" class="product-card-link">
                                                     <div class="product-card h-100">
                                                         <div class="product-image">
                                                             <?php if($giftIdeas[0]->is_new): ?>
@@ -4580,7 +4579,7 @@
                                         
                                         <?php if(isset($giftIdeas[1])): ?>
                                             <div class="gift-ideas-item gift-product-item">
-                                                <a href="<?php echo e(route('product.detail', $giftIdeas[1]->slug)); ?>" class="product-card-link">
+                                                <a href="<?php echo e(route('product.detail', $giftIdeas[1])); ?>" class="product-card-link">
                                                     <div class="product-card h-100">
                                                         <div class="product-image">
                                                             <?php if($giftIdeas[1]->is_new): ?>

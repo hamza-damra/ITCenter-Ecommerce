@@ -2,43 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Banner;
+use App\Models\PromotionalAd;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
-class BannerImageController extends Controller
+class PromotionalAdImageController extends Controller
 {
     /**
-     * Serve banner image stored in database.
+     * Serve promotional ad image stored in database.
      * Uses caching for better performance.
      */
-    public function show(Banner $banner)
+    public function show(PromotionalAd $promotionalAd)
     {
-        // Check if the banner has database-stored image
-        if (!$banner->isImageInDatabase()) {
+        // Check if the promotional ad has database-stored image
+        if (!$promotionalAd->isImageInDatabase()) {
             abort(404, 'Image not found');
         }
 
         // Cache the image response for 1 hour to reduce database load
-        $cacheKey = "banner_image_{$banner->id}_{$banner->updated_at->timestamp}";
+        $cacheKey = "promotional_ad_image_{$promotionalAd->id}_{$promotionalAd->updated_at->timestamp}";
         
-        return Cache::remember($cacheKey, 3600, function () use ($banner) {
+        return Cache::remember($cacheKey, 3600, function () use ($promotionalAd) {
             // Decode the base64 image data
-            $imageData = base64_decode($banner->image_data);
+            $imageData = base64_decode($promotionalAd->image_data);
             
             if ($imageData === false) {
                 abort(500, 'Invalid image data');
             }
 
             // Determine MIME type
-            $mimeType = $banner->image_mime_type ?? 'image/jpeg';
+            $mimeType = $promotionalAd->image_mime_type ?? 'image/jpeg';
             
             // Create response with proper headers including CORS
             return response($imageData, 200, [
                 'Content-Type' => $mimeType,
                 'Content-Length' => strlen($imageData),
                 'Cache-Control' => 'public, max-age=31536000', // Cache for 1 year
-                'ETag' => md5($banner->id . $banner->updated_at),
+                'ETag' => md5($promotionalAd->id . $promotionalAd->updated_at),
                 'Access-Control-Allow-Origin' => '*', // Allow cross-origin requests
                 'Access-Control-Allow-Methods' => 'GET',
             ]);

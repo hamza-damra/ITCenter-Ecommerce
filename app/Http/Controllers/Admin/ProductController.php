@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Category;
@@ -110,11 +111,19 @@ class ProductController extends Controller
             $nameColumn = 'name_en';
         }
         
-        $categories = Category::active()->orderBy($nameColumn)->get();
+        $categories = Category::active()->with('specTemplate.activeFields')->orderBy($nameColumn)->get();
         $brands = Brand::active()->orderBy($nameColumn)->get();
         $tags = \App\Models\Tag::active()->ordered()->get();
+        
+        // Input limits for frontend validation
+        $inputLimits = [
+            'name' => ProductRequest::NAME_MAX_LENGTH,
+            'short_description' => ProductRequest::SHORT_DESCRIPTION_MAX_LENGTH,
+            'description' => ProductRequest::DESCRIPTION_MAX_LENGTH,
+            'search_keywords' => ProductRequest::SEARCH_KEYWORDS_MAX_LENGTH,
+        ];
 
-        return view('admin.products.create', compact('categories', 'brands', 'tags'));
+        return view('admin.products.create', compact('categories', 'brands', 'tags', 'inputLimits'));
     }
 
     /**
@@ -154,30 +163,9 @@ class ProductController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $validated = $request->validate([
-            'name_en' => 'required|string|max:255',
-            'name_ar' => 'required|string|max:255',
-            'name_he' => 'nullable|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'nullable|exists:brands,id',
-            'price' => 'required|numeric|min:0',
-            'sale_price' => 'nullable|numeric|min:0|lt:price',
-            'stock_quantity' => 'required|integer|min:0',
-            'main_image' => 'required|url',
-            'additional_images' => 'nullable|string',
-            'short_description_en' => 'nullable|string',
-            'short_description_ar' => 'nullable|string',
-            'short_description_he' => 'nullable|string',
-            'description_en' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'description_he' => 'nullable|string',
-            'search_keywords' => 'nullable|string',
-            'discount_percentage' => 'nullable|numeric|min:0|max:100',
-            'attribute_values' => 'nullable|array',
-            'attribute_values.*' => 'exists:attribute_values,id',
-        ]);
+        $validated = $request->validated();
 
         // Validate that selected attribute values belong to category attributes
         if (!empty($validated['attribute_values'])) {
@@ -198,16 +186,22 @@ class ProductController extends Controller
             $validated['sku'] = 'SKU-' . strtoupper(Str::random(10));
             $validated['stock_status'] = $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock';
 
-            // Remove additional_images and attribute_values from validated data before creating product
+            // Remove additional_images, attribute_values, and spec_values from validated data before creating product
             $additionalImages = $validated['additional_images'] ?? null;
             $attributeValues = $validated['attribute_values'] ?? [];
-            unset($validated['additional_images'], $validated['attribute_values']);
+            $specValues = $validated['spec_values'] ?? [];
+            unset($validated['additional_images'], $validated['attribute_values'], $validated['spec_values']);
 
             $product = Product::create($validated);
 
             // Sync attribute values
             if (!empty($attributeValues)) {
                 $product->attributeValues()->sync($attributeValues);
+            }
+
+            // Sync specification values
+            if (!empty($specValues)) {
+                $product->syncSpecValues($specValues);
             }
 
             // Handle tags - both existing and new
@@ -269,7 +263,7 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $product->load(['images', 'attributeValues.attribute', 'category.attributes.values', 'tags']);
+        $product->load(['images', 'attributeValues.attribute', 'category.attributes.values', 'category.specTemplate.activeFields', 'tags', 'specValues.field']);
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
         
@@ -279,7 +273,7 @@ class ProductController extends Controller
             $nameColumn = 'name_en';
         }
         
-        $categories = Category::active()->orderBy($nameColumn)->get();
+        $categories = Category::active()->with('specTemplate.activeFields')->orderBy($nameColumn)->get();
         $brands = Brand::active()->orderBy($nameColumn)->get();
         $tags = \App\Models\Tag::active()->ordered()->get();
 
@@ -299,33 +293,26 @@ class ProductController extends Controller
         // Get selected attribute value IDs
         $selectedAttributeValues = $product->attributeValues->pluck('id')->toArray();
 
-        return view('admin.products.edit', compact('product', 'categories', 'brands', 'tags', 'categoryAttributes', 'selectedAttributeValues'));
+        // Get spec values as [field_id => value]
+        $specValues = $product->specValues->pluck('value', 'spec_field_id')->toArray();
+
+        // Get spec fields for current category
+        $specFields = $product->category?->specTemplate?->activeFields ?? collect();
+        
+        // Input limits for frontend validation
+        $inputLimits = [
+            'name' => ProductRequest::NAME_MAX_LENGTH,
+            'short_description' => ProductRequest::SHORT_DESCRIPTION_MAX_LENGTH,
+            'description' => ProductRequest::DESCRIPTION_MAX_LENGTH,
+            'search_keywords' => ProductRequest::SEARCH_KEYWORDS_MAX_LENGTH,
+        ];
+
+        return view('admin.products.edit', compact('product', 'categories', 'brands', 'tags', 'categoryAttributes', 'selectedAttributeValues', 'specValues', 'specFields', 'inputLimits'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        $validated = $request->validate([
-            'name_en' => 'required|string|max:255',
-            'name_ar' => 'required|string|max:255',
-            'name_he' => 'nullable|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'nullable|exists:brands,id',
-            'price' => 'required|numeric|min:0',
-            'sale_price' => 'nullable|numeric|min:0|lt:price',
-            'stock_quantity' => 'required|integer|min:0',
-            'main_image' => 'required|url',
-            'additional_images' => 'nullable|string',
-            'short_description_en' => 'nullable|string',
-            'short_description_ar' => 'nullable|string',
-            'short_description_he' => 'nullable|string',
-            'description_en' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'description_he' => 'nullable|string',
-            'search_keywords' => 'nullable|string',
-            'discount_percentage' => 'nullable|numeric|min:0|max:100',
-            'attribute_values' => 'nullable|array',
-            'attribute_values.*' => 'exists:attribute_values,id',
-        ]);
+        $validated = $request->validated();
 
         // Validate that selected attribute values belong to category attributes
         if (!empty($validated['attribute_values'])) {
@@ -348,15 +335,19 @@ class ProductController extends Controller
             }
             $validated['stock_status'] = $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock';
 
-            // Remove additional_images and attribute_values from validated data before updating product
+            // Remove additional_images, attribute_values, and spec_values from validated data before updating product
             $additionalImages = $validated['additional_images'] ?? null;
             $attributeValues = $validated['attribute_values'] ?? [];
-            unset($validated['additional_images'], $validated['attribute_values']);
+            $specValues = $validated['spec_values'] ?? [];
+            unset($validated['additional_images'], $validated['attribute_values'], $validated['spec_values']);
 
             $product->update($validated);
 
             // Sync attribute values
             $product->attributeValues()->sync($attributeValues);
+
+            // Sync specification values
+            $product->syncSpecValues($specValues);
 
             // Handle tags - both existing and new
             $tagIds = $request->input('tags', []);

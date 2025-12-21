@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PromotionalAd;
+use App\Helpers\ImageHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
@@ -37,20 +38,23 @@ class PromotionalAdController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:5120',
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'position' => 'required|in:left,right',
             'link' => 'nullable|string|max:255',
             'is_active' => 'boolean',
         ]);
 
-        // Handle file upload with unique filename
+        // Store image directly in database as compressed base64
         $image = $request->file('image');
-        $filename = $this->generateUniqueFilename($image);
-        $path = $image->storeAs('promotional-ads', $filename, 'public');
+        $compressed = ImageHelper::compressForDatabase($image);
 
         // Create promotional ad record
         PromotionalAd::create([
-            'image_path' => $path,
+            'image_source' => PromotionalAd::SOURCE_DATABASE,
+            'image_path' => null,
+            'image_data' => $compressed['data'],
+            'image_filename' => $compressed['original_name'],
+            'image_mime_type' => $compressed['mime_type'],
             'position' => $validated['position'],
             'link' => $validated['link'] ?? null,
             'is_active' => $request->boolean('is_active', true),
@@ -76,33 +80,37 @@ class PromotionalAdController extends Controller
     public function update(Request $request, PromotionalAd $promotionalAd)
     {
         $validated = $request->validate([
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:5120',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
             'position' => 'required|in:left,right',
             'link' => 'nullable|string|max:255',
             'is_active' => 'boolean',
         ]);
 
-        // Handle image update if new file provided
-        $imagePath = $promotionalAd->image_path;
-        if ($request->hasFile('image')) {
-            // Delete old image
-            if ($promotionalAd->image_path && Storage::disk('public')->exists($promotionalAd->image_path)) {
-                Storage::disk('public')->delete($promotionalAd->image_path);
-            }
-            
-            // Store new image
-            $image = $request->file('image');
-            $filename = $this->generateUniqueFilename($image);
-            $imagePath = $image->storeAs('promotional-ads', $filename, 'public');
-        }
-
-        // Update promotional ad record
-        $promotionalAd->update([
-            'image_path' => $imagePath,
+        // Prepare update data
+        $updateData = [
             'position' => $validated['position'],
             'link' => $validated['link'] ?? null,
             'is_active' => $request->boolean('is_active', true),
-        ]);
+        ];
+
+        // Handle image update if new file provided
+        if ($request->hasFile('image')) {
+            // Store new image in database
+            $image = $request->file('image');
+            $compressed = ImageHelper::compressForDatabase($image);
+            
+            $updateData['image_source'] = PromotionalAd::SOURCE_DATABASE;
+            $updateData['image_path'] = null;
+            $updateData['image_data'] = $compressed['data'];
+            $updateData['image_filename'] = $compressed['original_name'];
+            $updateData['image_mime_type'] = $compressed['mime_type'];
+            
+            // Clear image cache
+            Cache::forget("promotional_ad_image_{$promotionalAd->id}_{$promotionalAd->updated_at->timestamp}");
+        }
+
+        // Update promotional ad record
+        $promotionalAd->update($updateData);
 
         $this->clearHomeCache();
 
@@ -115,9 +123,9 @@ class PromotionalAdController extends Controller
      */
     public function destroy(PromotionalAd $promotionalAd)
     {
-        // Delete associated image file
-        if ($promotionalAd->image_path && Storage::disk('public')->exists($promotionalAd->image_path)) {
-            Storage::disk('public')->delete($promotionalAd->image_path);
+        // Clear image cache if stored in database
+        if ($promotionalAd->isImageInDatabase()) {
+            Cache::forget("promotional_ad_image_{$promotionalAd->id}_{$promotionalAd->updated_at->timestamp}");
         }
 
         $promotionalAd->delete();
@@ -126,18 +134,6 @@ class PromotionalAdController extends Controller
 
         return redirect()->route('admin.promotional-ads.index')
             ->with('success', __('messages.promotional_ad_deleted_successfully'));
-    }
-
-    /**
-     * Generate a unique filename for uploaded images.
-     */
-    private function generateUniqueFilename($file): string
-    {
-        $extension = $file->getClientOriginalExtension();
-        $timestamp = now()->format('Y-m-d_H-i-s');
-        $random = Str::random(8);
-        
-        return "promotional_ad_{$timestamp}_{$random}.{$extension}";
     }
 
     /**

@@ -1,8 +1,6 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Create Product'); ?>
 
-@section('title', 'Create Product')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     /* Product Create Page Specific Styles */
     .product-form-grid {
@@ -40,18 +38,19 @@
 
 <div class="page-header">
     <div class="page-header-content">
-        <h1>{{ __('messages.add_new_product') }}</h1>
-        <p>{{ __('messages.create_configure_product') }}</p>
+        <h1><?php echo e(__('messages.add_new_product')); ?></h1>
+        <p><?php echo e(__('messages.create_configure_product')); ?></p>
     </div>
     <div class="page-actions">
-        <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> {{ __('messages.back_to_products') }}
+        <a href="<?php echo e(route('admin.products.index')); ?>" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> <?php echo e(__('messages.back_to_products')); ?>
+
         </a>
     </div>
 </div>
 
-<form action="{{ route('admin.products.store') }}" method="POST" class="product-form-grid">
-    @csrf
+<form action="<?php echo e(route('admin.products.store')); ?>" method="POST" class="product-form-grid">
+    <?php echo csrf_field(); ?>
 
     <!-- Main Form Content -->
     <div style="display: flex; flex-direction: column; gap: 24px;">
@@ -59,100 +58,177 @@
         <!-- Basic Information Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-info-circle"></i> {{ __('messages.basic_information') }}</h2>
+                <h2><i class="fas fa-info-circle"></i> <?php echo e(__('messages.basic_information')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name_en" class="form-label">
-                            {{ __('messages.product_name_english') }}
+                            <?php echo e(__('messages.product_name_english')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input 
                             type="text" 
                             id="name_en" 
                             name="name_en" 
-                            class="form-control @error('name_en') is-invalid @enderror" 
-                            value="{{ old('name_en') }}" 
-                            placeholder="{{ __('messages.enter_product_name_english') }}"
+                            class="form-control <?php $__errorArgs = ['name_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                            value="<?php echo e(old('name_en')); ?>" 
+                            placeholder="<?php echo e(__('messages.enter_product_name_english')); ?>"
                             required>
-                        @error('name_en')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['name_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="name_ar" class="form-label">
-                            {{ __('messages.product_name_arabic') }}
+                            <?php echo e(__('messages.product_name_arabic')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input 
                             type="text" 
                             id="name_ar" 
                             name="name_ar" 
-                            class="form-control @error('name_ar') is-invalid @enderror" 
-                            value="{{ old('name_ar') }}" 
-                            placeholder="{{ __('messages.enter_product_name_arabic') }}"
+                            class="form-control <?php $__errorArgs = ['name_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                            value="<?php echo e(old('name_ar')); ?>" 
+                            placeholder="<?php echo e(__('messages.enter_product_name_arabic')); ?>"
                             required 
                             dir="rtl">
-                        @error('name_ar')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['name_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="name_he" class="form-label">
-                            {{ __('messages.product_name_hebrew') }}
-                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                            <?php echo e(__('messages.product_name_hebrew')); ?>
+
+                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                         </label>
                         <input
                             type="text"
                             id="name_he"
                             name="name_he"
-                            class="form-control @error('name_he') is-invalid @enderror"
-                            value="{{ old('name_he') }}"
-                            placeholder="{{ __('messages.enter_product_name_hebrew') }}"
+                            class="form-control <?php $__errorArgs = ['name_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            value="<?php echo e(old('name_he')); ?>"
+                            placeholder="<?php echo e(__('messages.enter_product_name_hebrew')); ?>"
                             dir="rtl">
-                        @error('name_he')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['name_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="category_id" class="form-label">
-                            {{ __('messages.category') }}
+                            <?php echo e(__('messages.category')); ?>
+
                             <span class="required">*</span>
                         </label>
-                        <select id="category_id" name="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
-                            <option value="">{{ __('messages.select_category') }}</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
+                        <select id="category_id" name="category_id" class="form-control <?php $__errorArgs = ['category_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" required>
+                            <option value=""><?php echo e(__('messages.select_category')); ?></option>
+                            <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($category->id); ?>" <?php echo e(old('category_id') == $category->id ? 'selected' : ''); ?>>
+                                    <?php echo e($category->name); ?>
+
                                 </option>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
-                        @error('category_id')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['category_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="brand_id" class="form-label">
-                            {{ __('messages.brand') }}
+                            <?php echo e(__('messages.brand')); ?>
+
                         </label>
-                        <select id="brand_id" name="brand_id" class="form-control @error('brand_id') is-invalid @enderror">
-                            <option value="">{{ __('messages.select_brand') }}</option>
-                            @foreach($brands as $brand)
-                                <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
-                                    {{ $brand->name }}
+                        <select id="brand_id" name="brand_id" class="form-control <?php $__errorArgs = ['brand_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+                            <option value=""><?php echo e(__('messages.select_brand')); ?></option>
+                            <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($brand->id); ?>" <?php echo e(old('brand_id') == $brand->id ? 'selected' : ''); ?>>
+                                    <?php echo e($brand->name); ?>
+
                                 </option>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
-                        @error('brand_id')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['brand_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
@@ -161,13 +237,14 @@
         <!-- Pricing & Inventory Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-dollar-sign"></i> {{ __('messages.pricing_inventory') }}</h2>
+                <h2><i class="fas fa-dollar-sign"></i> <?php echo e(__('messages.pricing_inventory')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="price" class="form-label">
-                            {{ __('messages.regular_price') }}
+                            <?php echo e(__('messages.regular_price')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <div style="position: relative;">
@@ -176,22 +253,37 @@
                                 type="number" 
                                 id="price" 
                                 name="price" 
-                                class="form-control @error('price') is-invalid @enderror" 
+                                class="form-control <?php $__errorArgs = ['price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                 step="0.01" 
-                                value="{{ old('price') }}" 
+                                value="<?php echo e(old('price')); ?>" 
                                 placeholder="0.00"
                                 style="padding-left: 28px;"
                                 required>
                         </div>
-                        @error('price')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="sale_price" class="form-label">
-                            {{ __('messages.sale_price') }}
-                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                            <?php echo e(__('messages.sale_price')); ?>
+
+                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                         </label>
                         <div style="position: relative;">
                             <span style="position: absolute; left: 12px; top: 12px; color: var(--secondary); font-weight: 600;">$</span>
@@ -199,33 +291,62 @@
                                 type="number" 
                                 id="sale_price" 
                                 name="sale_price" 
-                                class="form-control @error('sale_price') is-invalid @enderror" 
+                                class="form-control <?php $__errorArgs = ['sale_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                                 step="0.01" 
-                                value="{{ old('sale_price') }}"
+                                value="<?php echo e(old('sale_price')); ?>"
                                 placeholder="0.00"
                                 style="padding-left: 28px;">
                         </div>
-                        @error('sale_price')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['sale_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="stock_quantity" class="form-label">
-                            {{ __('messages.stock_quantity') }}
+                            <?php echo e(__('messages.stock_quantity')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input 
                             type="number" 
                             id="stock_quantity" 
                             name="stock_quantity" 
-                            class="form-control @error('stock_quantity') is-invalid @enderror" 
-                            value="{{ old('stock_quantity', 0) }}" 
+                            class="form-control <?php $__errorArgs = ['stock_quantity'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                            value="<?php echo e(old('stock_quantity', 0)); ?>" 
                             placeholder="0"
                             required>
-                        @error('stock_quantity')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                        <?php $__errorArgs = ['stock_quantity'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
@@ -234,47 +355,79 @@
         <!-- Images Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-images"></i> {{ __('messages.product_images') }}</h2>
+                <h2><i class="fas fa-images"></i> <?php echo e(__('messages.product_images')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <label for="main_image" class="form-label">
-                        {{ __('messages.main_product_image') }}
+                        <?php echo e(__('messages.main_product_image')); ?>
+
                         <span class="required">*</span>
                     </label>
                     <input 
                         type="url" 
                         id="main_image" 
                         name="main_image" 
-                        class="form-control @error('main_image') is-invalid @enderror" 
-                        value="{{ old('main_image') }}" 
+                        class="form-control <?php $__errorArgs = ['main_image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
+                        value="<?php echo e(old('main_image')); ?>" 
                         placeholder="https://picsum.photos/800/800"
                         required>
                     <p class="form-text">
-                        <i class="fas fa-lightbulb"></i> {{ __('messages.image_services_recommendation') }}
+                        <i class="fas fa-lightbulb"></i> <?php echo e(__('messages.image_services_recommendation')); ?>
+
                     </p>
-                    @error('main_image')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                    <?php $__errorArgs = ['main_image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
 
                 <div class="form-group">
                     <label for="additional_images" class="form-label">
-                        {{ __('messages.additional_images') }}
-                        <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_one_url_per_line') }})</span>
+                        <?php echo e(__('messages.additional_images')); ?>
+
+                        <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional_one_url_per_line')); ?>)</span>
                     </label>
                     <textarea 
                         id="additional_images" 
                         name="additional_images" 
-                        class="form-control @error('additional_images') is-invalid @enderror" 
+                        class="form-control <?php $__errorArgs = ['additional_images'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                         rows="5" 
-                        placeholder="https://picsum.photos/800/801&#10;https://picsum.photos/800/802&#10;https://picsum.photos/800/803">{{ old('additional_images') }}</textarea>
+                        placeholder="https://picsum.photos/800/801&#10;https://picsum.photos/800/802&#10;https://picsum.photos/800/803"><?php echo e(old('additional_images')); ?></textarea>
                     <p class="form-text">
-                        <i class="fas fa-info-circle"></i> {{ __('messages.enter_each_image_url') }}
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.enter_each_image_url')); ?>
+
                     </p>
-                    @error('additional_images')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                    <?php $__errorArgs = ['additional_images'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
         </div>
@@ -282,26 +435,42 @@
         <!-- Search Keywords Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-search"></i> {{ __('messages.search_optimization') }}</h2>
+                <h2><i class="fas fa-search"></i> <?php echo e(__('messages.search_optimization')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <label for="search_keywords" class="form-label">
-                        {{ __('messages.search_keywords') }}
-                        <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        <?php echo e(__('messages.search_keywords')); ?>
+
+                        <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                     </label>
                     <textarea
                         id="search_keywords"
                         name="search_keywords"
-                        class="form-control @error('search_keywords') is-invalid @enderror"
-                        placeholder="{{ __('messages.search_keywords_placeholder') }}"
-                        style="min-height: 100px;">{{ old('search_keywords') }}</textarea>
+                        class="form-control <?php $__errorArgs = ['search_keywords'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                        placeholder="<?php echo e(__('messages.search_keywords_placeholder')); ?>"
+                        style="min-height: 100px;"><?php echo e(old('search_keywords')); ?></textarea>
                     <p class="form-text">
-                        <i class="fas fa-info-circle"></i> {{ __('messages.search_keywords_help') }}
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.search_keywords_help')); ?>
+
                     </p>
-                    @error('search_keywords')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                    <?php $__errorArgs = ['search_keywords'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
         </div>
@@ -309,104 +478,194 @@
         <!-- Descriptions Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-align-left"></i> {{ __('messages.descriptions') }}</h2>
+                <h2><i class="fas fa-align-left"></i> <?php echo e(__('messages.descriptions')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="short_description_en" class="form-label">
-                            {{ __('messages.short_description_english') }}
+                            <?php echo e(__('messages.short_description_english')); ?>
+
                         </label>
                         <textarea 
                             id="short_description_en" 
                             name="short_description_en" 
-                            class="form-control @error('short_description_en') is-invalid @enderror"
-                            placeholder="{{ __('messages.brief_description_listings') }}"
-                            style="min-height: 80px;">{{ old('short_description_en') }}</textarea>
-                        @error('short_description_en')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                            class="form-control <?php $__errorArgs = ['short_description_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            placeholder="<?php echo e(__('messages.brief_description_listings')); ?>"
+                            style="min-height: 80px;"><?php echo e(old('short_description_en')); ?></textarea>
+                        <?php $__errorArgs = ['short_description_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="short_description_ar" class="form-label">
-                            {{ __('messages.short_description_arabic') }}
+                            <?php echo e(__('messages.short_description_arabic')); ?>
+
                         </label>
                         <textarea 
                             id="short_description_ar" 
                             name="short_description_ar" 
-                            class="form-control @error('short_description_ar') is-invalid @enderror"
+                            class="form-control <?php $__errorArgs = ['short_description_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
-                            placeholder="{{ __('messages.brief_description_arabic') }}"
-                            style="min-height: 80px;">{{ old('short_description_ar') }}</textarea>
-                        @error('short_description_ar')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                            placeholder="<?php echo e(__('messages.brief_description_arabic')); ?>"
+                            style="min-height: 80px;"><?php echo e(old('short_description_ar')); ?></textarea>
+                        <?php $__errorArgs = ['short_description_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="short_description_he" class="form-label">
-                            {{ __('messages.short_description_hebrew') }}
+                            <?php echo e(__('messages.short_description_hebrew')); ?>
+
                         </label>
                         <textarea
                             id="short_description_he"
                             name="short_description_he"
-                            class="form-control @error('short_description_he') is-invalid @enderror"
+                            class="form-control <?php $__errorArgs = ['short_description_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
-                            placeholder="{{ __('messages.brief_description_hebrew') }}"
-                            style="min-height: 80px;">{{ old('short_description_he') }}</textarea>
-                        @error('short_description_he')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                            placeholder="<?php echo e(__('messages.brief_description_hebrew')); ?>"
+                            style="min-height: 80px;"><?php echo e(old('short_description_he')); ?></textarea>
+                        <?php $__errorArgs = ['short_description_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="description_en" class="form-label">
-                            {{ __('messages.full_description_english') }}
+                            <?php echo e(__('messages.full_description_english')); ?>
+
                         </label>
                         <textarea 
                             id="description_en" 
                             name="description_en" 
-                            class="form-control @error('description_en') is-invalid @enderror"
-                            placeholder="{{ __('messages.complete_product_description') }}"
-                            style="min-height: 150px;">{{ old('description_en') }}</textarea>
-                        @error('description_en')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                            class="form-control <?php $__errorArgs = ['description_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                            placeholder="<?php echo e(__('messages.complete_product_description')); ?>"
+                            style="min-height: 150px;"><?php echo e(old('description_en')); ?></textarea>
+                        <?php $__errorArgs = ['description_en'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="description_ar" class="form-label">
-                            {{ __('messages.full_description_arabic') }}
+                            <?php echo e(__('messages.full_description_arabic')); ?>
+
                         </label>
                         <textarea 
                             id="description_ar" 
                             name="description_ar" 
-                            class="form-control @error('description_ar') is-invalid @enderror"
+                            class="form-control <?php $__errorArgs = ['description_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
-                            placeholder="{{ __('messages.complete_description_arabic') }}"
-                            style="min-height: 150px;">{{ old('description_ar') }}</textarea>
-                        @error('description_ar')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                            placeholder="<?php echo e(__('messages.complete_description_arabic')); ?>"
+                            style="min-height: 150px;"><?php echo e(old('description_ar')); ?></textarea>
+                        <?php $__errorArgs = ['description_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
 
                     <div class="form-group">
                         <label for="description_he" class="form-label">
-                            {{ __('messages.full_description_hebrew') }}
+                            <?php echo e(__('messages.full_description_hebrew')); ?>
+
                         </label>
                         <textarea
                             id="description_he"
                             name="description_he"
-                            class="form-control @error('description_he') is-invalid @enderror"
+                            class="form-control <?php $__errorArgs = ['description_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                             dir="rtl"
-                            placeholder="{{ __('messages.complete_description_hebrew') }}"
-                            style="min-height: 150px;">{{ old('description_he') }}</textarea>
-                        @error('description_he')
-                            <span class="error-message">{{ $message }}</span>
-                        @enderror
+                            placeholder="<?php echo e(__('messages.complete_description_hebrew')); ?>"
+                            style="min-height: 150px;"><?php echo e(old('description_he')); ?></textarea>
+                        <?php $__errorArgs = ['description_he'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <span class="error-message"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
             </div>
@@ -415,11 +674,11 @@
         <!-- Product Tags Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-tags"></i> {{ __('messages.product_tags') }}</h2>
+                <h2><i class="fas fa-tags"></i> <?php echo e(__('messages.product_tags')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-group">
-                    <label class="form-label">{{ __('messages.select_tags') }}</label>
+                    <label class="form-label"><?php echo e(__('messages.select_tags')); ?></label>
                     
                     <!-- Tag Input with Autocomplete -->
                     <div class="tag-input-wrapper">
@@ -430,7 +689,7 @@
                             <input type="text" 
                                    id="tagSearchInput" 
                                    class="tag-search-input" 
-                                   placeholder="{{ __('messages.type_to_search_or_add_tag') }}"
+                                   placeholder="<?php echo e(__('messages.type_to_search_or_add_tag')); ?>"
                                    autocomplete="off">
                             <div class="tag-suggestions" id="tagSuggestions"></div>
                         </div>
@@ -440,7 +699,8 @@
                     <div id="tagHiddenInputs"></div>
                     
                     <p class="form-text">
-                        <i class="fas fa-info-circle"></i> {{ __('messages.tag_input_help') }}
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.tag_input_help')); ?>
+
                     </p>
                 </div>
             </div>
@@ -494,7 +754,7 @@
             border-color: #3b82f6;
         }
         .selected-tag.new-tag::after {
-            content: '{{ __("messages.new") }}';
+            content: '<?php echo e(__("messages.new")); ?>';
             font-size: 10px;
             background: #3b82f6;
             color: white;
@@ -561,7 +821,7 @@
         
         <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const availableTags = @json($tags ?? []);
+            const availableTags = <?php echo json_encode($tags ?? [], 15, 512) ?>;
             let selectedTags = [];
             
             const searchInput = document.getElementById('tagSearchInput');
@@ -607,7 +867,7 @@
                 if (!exactMatch && query.length >= 2) {
                     html += `<div class="tag-suggestion create-new" data-new="true" data-name="${this.value.trim()}">
                         <i class="fas fa-plus"></i>
-                        <span>{{ __('messages.create_tag') }}: "${this.value.trim()}"</span>
+                        <span><?php echo e(__('messages.create_tag')); ?>: "${this.value.trim()}"</span>
                     </div>`;
                 }
                 
@@ -722,7 +982,7 @@
         <!-- Product Settings Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-cog"></i> {{ __('messages.product_settings') }}</h2>
+                <h2><i class="fas fa-cog"></i> <?php echo e(__('messages.product_settings')); ?></h2>
             </div>
             <div class="card-body">
                 <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -740,10 +1000,10 @@
                             id="is_active" 
                             name="is_active" 
                             value="1" 
-                            {{ old('is_active', true) ? 'checked' : '' }}>
+                            <?php echo e(old('is_active', true) ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-eye"></i> {{ __('messages.active') }}</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.display_product_in_store') }}</p>
+                            <strong><i class="fas fa-eye"></i> <?php echo e(__('messages.active')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.display_product_in_store')); ?></p>
                         </span>
                     </label>
 
@@ -753,10 +1013,10 @@
                             id="is_featured" 
                             name="is_featured" 
                             value="1" 
-                            {{ old('is_featured') ? 'checked' : '' }}>
+                            <?php echo e(old('is_featured') ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-star"></i> {{ __('messages.featured') }}</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.show_homepage_featured') }}</p>
+                            <strong><i class="fas fa-star"></i> <?php echo e(__('messages.featured')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.show_homepage_featured')); ?></p>
                         </span>
                     </label>
 
@@ -766,10 +1026,10 @@
                             id="is_new" 
                             name="is_new" 
                             value="1" 
-                            {{ old('is_new') ? 'checked' : '' }}>
+                            <?php echo e(old('is_new') ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-badge"></i> {{ __('messages.new_product') }}</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.mark_new_highlight') }}</p>
+                            <strong><i class="fas fa-badge"></i> <?php echo e(__('messages.new_product')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.mark_new_highlight')); ?></p>
                         </span>
                     </label>
 
@@ -779,10 +1039,10 @@
                             id="is_bestseller" 
                             name="is_bestseller" 
                             value="1" 
-                            {{ old('is_bestseller') ? 'checked' : '' }}>
+                            <?php echo e(old('is_bestseller') ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-fire"></i> {{ __('messages.bestseller') }}</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.mark_bestselling_product') }}</p>
+                            <strong><i class="fas fa-fire"></i> <?php echo e(__('messages.bestseller')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.mark_bestselling_product')); ?></p>
                         </span>
                     </label>
 
@@ -792,10 +1052,10 @@
                             id="is_special_offer" 
                             name="is_special_offer" 
                             value="1" 
-                            {{ old('is_special_offer') ? 'checked' : '' }}>
+                            <?php echo e(old('is_special_offer') ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-gift"></i> {{ __('messages.special_offer') ?? 'Special Offer' }}</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.show_as_special_offer_card') ?? 'عرض كبطاقة عرض خاص في الصفحة الرئيسية' }}</p>
+                            <strong><i class="fas fa-gift"></i> <?php echo e(__('messages.special_offer') ?? 'Special Offer'); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.show_as_special_offer_card') ?? 'عرض كبطاقة عرض خاص في الصفحة الرئيسية'); ?></p>
                         </span>
                     </label>
 
@@ -805,10 +1065,10 @@
                             id="is_strong_offer" 
                             name="is_strong_offer" 
                             value="1" 
-                            {{ old('is_strong_offer') ? 'checked' : '' }}>
+                            <?php echo e(old('is_strong_offer') ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-bolt"></i> {{ __('messages.strong_offer') ?? 'Strong Offer' }}</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.mark_as_strong_promotional_offer') ?? 'Mark as strong promotional offer for filtering' }}</p>
+                            <strong><i class="fas fa-bolt"></i> <?php echo e(__('messages.strong_offer') ?? 'Strong Offer'); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.mark_as_strong_promotional_offer') ?? 'Mark as strong promotional offer for filtering'); ?></p>
                         </span>
                     </label>
                 </div>
@@ -816,29 +1076,45 @@
                 <!-- Strong Offer Discount Percentage -->
                 <div class="form-group" id="discount-percentage-group" style="margin-top: 16px; display: none;">
                     <label for="discount_percentage" class="form-label">
-                        {{ __('messages.discount_percentage') ?? 'Discount Percentage' }}
-                        <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        <?php echo e(__('messages.discount_percentage') ?? 'Discount Percentage'); ?>
+
+                        <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                     </label>
                     <div style="position: relative;">
                         <input 
                             type="number" 
                             id="discount_percentage" 
                             name="discount_percentage" 
-                            class="form-control @error('discount_percentage') is-invalid @enderror" 
+                            class="form-control <?php $__errorArgs = ['discount_percentage'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" 
                             step="0.01" 
                             min="0"
                             max="100"
-                            value="{{ old('discount_percentage') }}" 
+                            value="<?php echo e(old('discount_percentage')); ?>" 
                             placeholder="0.00"
                             style="padding-right: 32px;">
                         <span style="position: absolute; right: 12px; top: 12px; color: var(--secondary); font-weight: 600;">%</span>
                     </div>
                     <p class="form-text">
-                        <i class="fas fa-info-circle"></i> {{ __('messages.discount_percentage_help') ?? 'Enter discount percentage between 0 and 100' }}
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.discount_percentage_help') ?? 'Enter discount percentage between 0 and 100'); ?>
+
                     </p>
-                    @error('discount_percentage')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                    <?php $__errorArgs = ['discount_percentage'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="error-message"><?php echo e($message); ?></span>
+                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
             </div>
         </div>
@@ -861,13 +1137,14 @@
         <!-- Product Specifications Card -->
         <div class="card" id="specifications-card" style="display: none;">
             <div class="card-header">
-                <h2><i class="fas fa-clipboard-list"></i> {{ __('messages.product_specifications') }}</h2>
-                <p style="color: #64748b; font-size: 13px; margin-top: 4px;">{{ __('messages.fill_specs_for_category') ?? 'Fill in the specifications for this product category' }}</p>
+                <h2><i class="fas fa-clipboard-list"></i> <?php echo e(__('messages.product_specifications')); ?></h2>
+                <p style="color: #64748b; font-size: 13px; margin-top: 4px;"><?php echo e(__('messages.fill_specs_for_category') ?? 'Fill in the specifications for this product category'); ?></p>
             </div>
             <div class="card-body">
                 <div id="specifications-container">
                     <p style="color: #64748b; text-align: center; padding: 20px;">
-                        <i class="fas fa-info-circle"></i> {{ __('messages.select_category_to_see_specs') ?? 'Select a category to see available specifications' }}
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.select_category_to_see_specs') ?? 'Select a category to see available specifications'); ?>
+
                     </p>
                 </div>
             </div>
@@ -876,18 +1153,20 @@
         <!-- Form Actions -->
         <div style="display: flex; gap: 12px; padding-top: 24px;">
             <button type="submit" class="btn btn-success">
-                <i class="fas fa-save"></i> {{ __('messages.create_product') }}
+                <i class="fas fa-save"></i> <?php echo e(__('messages.create_product')); ?>
+
             </button>
-            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
-                <i class="fas fa-times"></i> {{ __('messages.cancel') }}
+            <a href="<?php echo e(route('admin.products.index')); ?>" class="btn btn-secondary">
+                <i class="fas fa-times"></i> <?php echo e(__('messages.cancel')); ?>
+
             </a>
         </div>
     </div>
 </form>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const categorySelect = document.getElementById('category_id');
@@ -959,7 +1238,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     renderSpecifications(data.fields);
                     specificationsCard.style.display = 'block';
                 } else {
-                    specificationsContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> {{ __("messages.no_specs_for_category") }}</p>';
+                    specificationsContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> <?php echo e(__("messages.no_specs_for_category")); ?></p>';
                     specificationsCard.style.display = 'none';
                 }
             })
@@ -991,8 +1270,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (field.type === 'boolean') {
                 html += `<select id="spec_${field.id}" name="spec_values[${field.id}]" class="form-control" ${required}>
                          <option value="">-- Select --</option>
-                         <option value="1">{{ __("messages.yes") }}</option>
-                         <option value="0">{{ __("messages.no") }}</option>
+                         <option value="1"><?php echo e(__("messages.yes")); ?></option>
+                         <option value="0"><?php echo e(__("messages.no")); ?></option>
                          </select>`;
             } else if (field.type === 'select' && field.options) {
                 html += `<select id="spec_${field.id}" name="spec_values[${field.id}]" class="form-control" ${required}>
@@ -1062,4 +1341,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/admin/products/create.blade.php ENDPATH**/ ?>

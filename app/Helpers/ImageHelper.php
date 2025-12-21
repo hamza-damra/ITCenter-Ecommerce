@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Request;
 
 class ImageHelper
 {
@@ -254,6 +255,37 @@ class ImageHelper
     public static function getBase64Size(string $base64Data): int
     {
         return (int) (strlen($base64Data) * 0.75);
+    }
+
+    /**
+     * Get asset URL using current request host instead of configured APP_URL.
+     * This fixes CORS issues when accessing via different domains/IPs.
+     *
+     * @param string $path
+     * @return string
+     */
+    public static function assetUrl(string $path): string
+    {
+        // Remove leading slash if present
+        $path = ltrim($path, '/');
+        
+        // Use current request to build URL dynamically
+        $request = request();
+        if ($request) {
+            $scheme = $request->getScheme();
+            $host = $request->getHost();
+            $port = $request->getPort();
+            
+            $baseUrl = $scheme . '://' . $host;
+            if (($scheme === 'http' && $port !== 80) || ($scheme === 'https' && $port !== 443)) {
+                $baseUrl .= ':' . $port;
+            }
+            
+            return $baseUrl . '/' . $path;
+        }
+        
+        // Fallback to regular asset() if no request
+        return asset($path);
     }
 }
 
