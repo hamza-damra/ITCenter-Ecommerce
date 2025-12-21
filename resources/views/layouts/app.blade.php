@@ -2440,10 +2440,17 @@
                 closeSidebar();
             });
             
-            // Prevent sidebar clicks from closing (except links)
-            navMenu.addEventListener('click', function(e) {
-                // Only stop propagation, don't prevent default (allows links to work)
-                e.stopPropagation();
+            // Menu links - close sidebar when clicked (mobile only)
+            // IMPORTANT: Don't prevent default - let navigation happen naturally
+            const menuLinks = navMenu.querySelectorAll('a');
+            menuLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    // CRITICAL: Don't call e.preventDefault() or e.stopPropagation()
+                    // Just close the sidebar - navigation will happen naturally
+                    if (window.innerWidth <= 768 && navMenu.classList.contains('active')) {
+                        closeSidebar();
+                    }
+                }, { passive: true }); // Mark as passive to ensure no interference
             });
             
             // Close on Escape key
