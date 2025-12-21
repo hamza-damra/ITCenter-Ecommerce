@@ -2413,8 +2413,10 @@
             }
             
             function toggleSidebar(e) {
-                e.preventDefault();
-                e.stopPropagation();
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
                 console.log('🔄 Toggling sidebar...');
                 if (navMenu.classList.contains('active')) {
                     closeSidebar();
@@ -2423,26 +2425,25 @@
                 }
             }
             
-            // Toggle sidebar
-            mobileMenuToggle.addEventListener('click', toggleSidebar);
+            // Toggle sidebar - only on the toggle button
+            mobileMenuToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleSidebar();
+            });
             console.log('✅ Mobile menu toggle event listener added');
             
-            // Close on overlay click
+            // Close on overlay click only
             mobileMenuOverlay.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 closeSidebar();
             });
             
-            // Close on menu link click (mobile only) - allow navigation
-            const menuLinks = navMenu.querySelectorAll('a');
-            menuLinks.forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    // Don't prevent default - let the link navigate
-                    if (window.innerWidth <= 768) {
-                        closeSidebar();
-                    }
-                });
+            // Prevent sidebar clicks from closing (except links)
+            navMenu.addEventListener('click', function(e) {
+                // Only stop propagation, don't prevent default (allows links to work)
+                e.stopPropagation();
             });
             
             // Close on Escape key
