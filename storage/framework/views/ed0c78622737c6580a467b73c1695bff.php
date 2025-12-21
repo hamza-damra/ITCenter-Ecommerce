@@ -242,7 +242,6 @@
         
         /* Mobile Menu Overlay */
         .mobile-menu-overlay {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -251,13 +250,14 @@
             background: rgba(0, 0, 0, 0.5);
             z-index: 1040;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
             pointer-events: none;
         }
         
         .mobile-menu-overlay.active {
-            display: block;
             opacity: 1;
+            visibility: visible;
             pointer-events: auto;
         }
 
@@ -1163,19 +1163,22 @@
                 width: 280px !important;
                 max-width: 85vw !important;
                 height: 100vh !important;
-                background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+                height: 100dvh !important;
+                background: #ffffff !important;
                 flex-direction: column !important;
                 align-items: stretch !important;
                 padding: 0 !important;
                 gap: 0 !important;
                 overflow-y: auto !important;
                 z-index: 1050 !important;
-                box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15) !important;
+                box-shadow: 4px 0 25px rgba(0, 0, 0, 0.2) !important;
+                visibility: hidden !important;
                 transform: <?php echo e(is_rtl() ? 'translateX(100%)' : 'translateX(-100%)'); ?> !important;
-                transition: transform 0.3s ease !important;
+                transition: transform 0.3s ease, visibility 0.3s ease !important;
             }
             
             .nav-menu.active {
+                visibility: visible !important;
                 transform: translateX(0) !important;
             }
 

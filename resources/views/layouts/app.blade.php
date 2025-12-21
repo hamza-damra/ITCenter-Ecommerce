@@ -240,25 +240,32 @@
             width: 100%;
         }
         
-        /* Mobile Menu Overlay */
+        /* Mobile Menu Overlay - Only visible on mobile when menu is open */
         .mobile-menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1040;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            pointer-events: none;
+            display: none;
         }
         
-        .mobile-menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
+        @media (max-width: 768px) {
+            .mobile-menu-overlay {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.35);
+                z-index: 1040;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+                pointer-events: none;
+            }
+            
+            .mobile-menu-overlay.active {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+            }
         }
 
         /* Search Bar Styles - Modern & Professional Design */
@@ -1219,10 +1226,16 @@
                 border-radius: 0 !important;
                 border-bottom: 1px solid #f1f5f9 !important;
                 background: transparent !important;
+                pointer-events: auto !important;
+                cursor: pointer !important;
             }
 
             .nav-menu a::after {
                 display: none !important;
+            }
+            
+            .nav-menu li {
+                pointer-events: auto !important;
             }
 
             .nav-menu a i {
@@ -2421,12 +2434,13 @@
                 closeSidebar();
             });
             
-            // Close on menu link click (mobile only)
+            // Close on menu link click (mobile only) - allow navigation
             const menuLinks = navMenu.querySelectorAll('a');
             menuLinks.forEach(function(link) {
-                link.addEventListener('click', function() {
+                link.addEventListener('click', function(e) {
+                    // Don't prevent default - let the link navigate
                     if (window.innerWidth <= 768) {
-                        setTimeout(closeSidebar, 100);
+                        closeSidebar();
                     }
                 });
             });
