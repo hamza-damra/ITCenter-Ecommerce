@@ -88,29 +88,65 @@
             box-sizing: border-box;
         }
         
-        /* Mobile Menu Toggle */
+        /* Mobile Menu Toggle - Professional Hamburger */
         .mobile-menu-toggle {
             display: none;
-            background: none;
+            position: fixed;
+            top: 16px;
+            {{ is_rtl() ? 'right' : 'left' }}: 16px;
+            z-index: 1100;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
             border: none;
-            color: #333333;
-            font-size: 1.5rem;
+            border-radius: 12px;
+            width: 48px;
+            height: 48px;
             cursor: pointer;
-            padding: 0.5rem;
-            z-index: 1001;
-            transition: color 0.3s ease;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        header.scrolled .mobile-menu-toggle {
-            color: #ffffff;
-        }
-        
+
         .mobile-menu-toggle:hover {
-            color: #e69270ff;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
         }
-        
-        header.scrolled .mobile-menu-toggle:hover {
-            color: #3b82f6;
+
+        .mobile-menu-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .mobile-menu-toggle .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 22px;
+        }
+
+        .mobile-menu-toggle .hamburger-icon span {
+            display: block;
+            width: 100%;
+            height: 2.5px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle.active .hamburger-icon span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu-toggle.active .hamburger-icon span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+
+        .mobile-menu-toggle.active .hamburger-icon span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        .mobile-menu-toggle i {
+            display: none;
         }
 
         .logo {
@@ -199,9 +235,11 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             z-index: 999;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -1030,7 +1068,7 @@
             
             /* Show mobile menu toggle */
             .mobile-menu-toggle {
-                display: block;
+                display: flex;
                 order: 1;
             }
             
@@ -1099,45 +1137,120 @@
                 {{ is_rtl() ? 'left' : 'right' }}: 1.5rem;
             }
             
-            /* Mobile Sidebar Menu */
+            /* Mobile Sidebar Menu - Professional Design */
             .nav-menu {
                 position: fixed;
                 top: 0;
                 {{ is_rtl() ? 'right' : 'left' }}: -100%;
                 width: 280px;
+                max-width: 85vw;
                 height: 100vh;
-                background: #1a1a1a;
+                background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
                 flex-direction: column;
-                align-items: flex-start;
-                padding: 5rem 0 2rem 0;
+                align-items: stretch;
+                padding: 0;
                 gap: 0;
                 overflow-y: auto;
-                transition: {{ is_rtl() ? 'right' : 'left' }} 0.3s ease;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 1000;
-                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+                box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+                transform: translateX(0);
+            }
+
+            [dir="rtl"] .nav-menu {
+                transform: translateX(0);
             }
             
             .nav-menu.active {
-                {{ is_rtl() ? 'right' : 'left' }}: 0;
+                transform: {{ is_rtl() ? 'translateX(-100%)' : 'translateX(100%)' }};
+            }
+
+            /* Sidebar Header */
+            .nav-menu-header {
+                display: block;
+                padding: 20px 24px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(0, 0, 0, 0.3) 100%);
+                margin-bottom: 16px;
+                text-align: center;
+            }
+
+            .nav-menu-header img {
+                max-width: 85%;
+                height: auto;
+                max-height: 45px;
+                object-fit: contain;
             }
             
             .nav-menu li {
                 width: 100%;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
+                margin: 0;
             }
             
             .nav-menu a {
-                font-size: 1rem;
-                padding: 1rem 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                font-size: 15px;
+                font-weight: 500;
+                padding: 14px 24px;
                 width: 100%;
-                display: block;
-                transition: all 0.3s;
+                color: #cbd5e1;
+                text-decoration: none;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+                margin: 4px 12px;
+                border-radius: 10px;
+            }
+
+            .nav-menu a i {
+                width: 20px;
+                font-size: 16px;
+                flex-shrink: 0;
+            }
+
+            .nav-menu a::before {
+                content: '';
+                position: absolute;
+                {{ is_rtl() ? 'right' : 'left' }}: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 4px;
+                height: 0;
+                background: #3b82f6;
+                border-radius: 2px;
+                transition: height 0.3s ease;
             }
             
-            .nav-menu a:hover,
+            .nav-menu a:hover {
+                background: rgba(37, 99, 235, 0.15);
+                color: #fff;
+                padding-{{ is_rtl() ? 'right' : 'left' }}: 28px;
+            }
+
+            .nav-menu a:hover::before {
+                height: 60%;
+            }
+            
             .nav-menu a.active {
-                background: rgba(230, 146, 112, 0.1);
-                padding-{{ is_rtl() ? 'right' : 'left' }}: 2rem;
+                background: linear-gradient(135deg, rgba(37, 99, 235, 0.25) 0%, rgba(37, 99, 235, 0.15) 100%);
+                color: white;
+                border-{{ is_rtl() ? 'right' : 'left' }}: 4px solid #3b82f6;
+                padding-{{ is_rtl() ? 'right' : 'left' }}: 24px;
+                font-weight: 700;
+            }
+
+            .nav-menu::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .nav-menu::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .nav-menu::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 3px;
             }
             
             .header-icon {
@@ -1193,6 +1306,7 @@
             }
             
             .mobile-menu-toggle {
+                display: flex;
                 font-size: 1.3rem;
                 padding: 0.4rem;
             }
@@ -1292,7 +1406,11 @@
         <div class="header-container">
             <!-- Mobile Menu Toggle -->
             <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
-                <i class="fas fa-bars"></i>
+                <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </button>
             
             <div class="logo">
@@ -1302,11 +1420,14 @@
             </div>
 
             <ul class="nav-menu" id="navMenu">
-                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">{{ __t('messages.home') }}</a></li>
-                <li><a href="{{ route('categories') }}" class="{{ request()->routeIs('categories') ? 'active' : '' }}">{{ __t('messages.categories') }}</a></li>
-                <li><a href="{{ route('products') }}" class="{{ request()->routeIs('products') ? 'active' : '' }}">{{ __t('messages.products') }}</a></li>
-                <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">{{ __t('messages.about') }}</a></li>
-                <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">{{ __t('messages.contact') }}</a></li>
+                <div class="nav-menu-header">
+                    <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
+                </div>
+                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}"><i class="fas fa-home"></i> {{ __t('messages.home') }}</a></li>
+                <li><a href="{{ route('categories') }}" class="{{ request()->routeIs('categories') ? 'active' : '' }}"><i class="fas fa-th-large"></i> {{ __t('messages.categories') }}</a></li>
+                <li><a href="{{ route('products') }}" class="{{ request()->routeIs('products') ? 'active' : '' }}"><i class="fas fa-box"></i> {{ __t('messages.products') }}</a></li>
+                <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}"><i class="fas fa-info-circle"></i> {{ __t('messages.about') }}</a></li>
+                <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}"><i class="fas fa-envelope"></i> {{ __t('messages.contact') }}</a></li>
             </ul>
 
             <form action="{{ route('products') }}" method="GET" class="search-bar" role="search" autocomplete="off">
@@ -2207,71 +2328,70 @@
             }
         });
         
-        // Mobile Menu Toggle
-        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-        const navMenu = document.getElementById('navMenu');
-        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-        
-        if (mobileMenuToggle && navMenu && mobileMenuOverlay) {
-            // Toggle menu
-            mobileMenuToggle.addEventListener('click', function() {
-                const isActive = navMenu.classList.contains('active');
-                
-                if (isActive) {
-                    closeMenu();
-                } else {
-                    openMenu();
-                }
-            });
+        // Mobile Sidebar Toggle - Professional Design
+        (function() {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const navMenu = document.getElementById('navMenu');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
             
-            // Close menu when clicking overlay
-            mobileMenuOverlay.addEventListener('click', function() {
-                closeMenu();
-            });
-            
-            // Close menu when clicking a link
-            const menuLinks = navMenu.querySelectorAll('a');
-            menuLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        setTimeout(closeMenu, 300);
-                    }
-                });
-            });
-            
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 768) {
-                    closeMenu();
-                }
-            });
-            
-            function openMenu() {
+            function openSidebar() {
                 navMenu.classList.add('active');
                 mobileMenuOverlay.classList.add('active');
+                mobileMenuToggle.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                
-                // Change icon to X
-                const icon = mobileMenuToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
+            }
+            
+            function closeSidebar() {
+                navMenu.classList.remove('active');
+                mobileMenuOverlay.classList.remove('active');
+                mobileMenuToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            function toggleSidebar() {
+                if (navMenu.classList.contains('active')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
                 }
             }
             
-            function closeMenu() {
-                navMenu.classList.remove('active');
-                mobileMenuOverlay.classList.remove('active');
-                document.body.style.overflow = '';
+            if (mobileMenuToggle && navMenu && mobileMenuOverlay) {
+                // Toggle sidebar
+                mobileMenuToggle.addEventListener('click', toggleSidebar);
                 
-                // Change icon back to bars
-                const icon = mobileMenuToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
+                // Close on overlay click
+                mobileMenuOverlay.addEventListener('click', closeSidebar);
+                
+                // Close on menu link click (mobile only)
+                const menuLinks = navMenu.querySelectorAll('a');
+                menuLinks.forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth <= 768) {
+                            closeSidebar();
+                        }
+                    });
+                });
+                
+                // Close on Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                        closeSidebar();
+                    }
+                });
+                
+                // Close on window resize (if desktop)
+                let resizeTimer;
+                window.addEventListener('resize', function() {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(function() {
+                        if (window.innerWidth > 768) {
+                            closeSidebar();
+                        }
+                    }, 250);
+                });
             }
-        }
+        })();
 
         // Global image error handler for broken external URLs
         // Use event delegation to handle dynamically loaded images
