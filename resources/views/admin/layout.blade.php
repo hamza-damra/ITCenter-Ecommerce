@@ -864,36 +864,6 @@
             opacity: 1;
         }
 
-        /* Mobile Sidebar Close Button - Integrated in Header */
-        .sidebar-close-btn {
-            display: none;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            right: 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 8px;
-            width: 36px;
-            height: 36px;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.25rem;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .sidebar-close-btn:hover {
-            background: rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
-        }
-
-        [dir="rtl"] .sidebar-close-btn {
-            right: auto;
-            left: 16px;
-        }
 
         /* Responsive - Tablet */
         @media (max-width: 1024px) {
@@ -918,10 +888,6 @@
         /* Responsive - Mobile */
         @media (max-width: 768px) {
             .mobile-menu-toggle {
-                display: flex;
-            }
-
-            .sidebar-close-btn {
                 display: flex;
             }
 
@@ -2035,10 +2001,6 @@
         <aside class="sidebar" id="adminSidebar">
             <div class="sidebar-header">
                 <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
-                <!-- Mobile Close Button - Integrated in Header -->
-                <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="{{ __('messages.close_menu') ?? 'Close Menu' }}">
-                    <i class="fas fa-times"></i>
-                </button>
             </div>
             <ul class="sidebar-menu">
                 <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> {{ __('messages.dashboard') }}</a></li>
@@ -2128,7 +2090,6 @@
             const mobileMenuToggle = document.getElementById('mobileMenuToggle');
             const sidebarOverlay = document.getElementById('sidebarOverlay');
             const adminSidebar = document.getElementById('adminSidebar');
-            const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
 
             function openSidebar() {
                 adminSidebar.classList.add('active');
@@ -2159,10 +2120,6 @@
 
             if (sidebarOverlay) {
                 sidebarOverlay.addEventListener('click', closeSidebar);
-            }
-
-            if (sidebarCloseBtn) {
-                sidebarCloseBtn.addEventListener('click', closeSidebar);
             }
 
             // Close on Escape key
