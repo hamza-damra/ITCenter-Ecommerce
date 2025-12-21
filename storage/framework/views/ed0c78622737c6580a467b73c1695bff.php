@@ -248,9 +248,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1040;
             opacity: 0;
             transition: opacity 0.3s ease;
