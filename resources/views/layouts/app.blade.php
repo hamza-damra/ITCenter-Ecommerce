@@ -105,6 +105,8 @@
             justify-content: center;
             box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: auto;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .mobile-menu-toggle:hover {
@@ -1068,8 +1070,12 @@
             
             /* Show mobile menu toggle */
             .mobile-menu-toggle {
-                display: flex;
+                display: flex !important;
                 order: 1;
+                position: fixed !important;
+                top: 16px !important;
+                {{ is_rtl() ? 'right' : 'left' }}: 16px !important;
+                z-index: 1100 !important;
             }
             
             .logo {
@@ -2329,12 +2335,27 @@
         });
         
         // Mobile Sidebar Toggle - Professional Design
-        (function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuToggle = document.getElementById('mobileMenuToggle');
             const navMenu = document.getElementById('navMenu');
             const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
             
+            // Debug: Check if elements exist
+            if (!mobileMenuToggle) {
+                console.error('❌ mobileMenuToggle not found');
+                return;
+            }
+            if (!navMenu) {
+                console.error('❌ navMenu not found');
+                return;
+            }
+            if (!mobileMenuOverlay) {
+                console.error('❌ mobileMenuOverlay not found');
+                return;
+            }
+            
             function openSidebar() {
+                console.log('📂 Opening sidebar...');
                 navMenu.classList.add('active');
                 mobileMenuOverlay.classList.add('active');
                 mobileMenuToggle.classList.add('active');
@@ -2342,13 +2363,17 @@
             }
             
             function closeSidebar() {
+                console.log('📕 Closing sidebar...');
                 navMenu.classList.remove('active');
                 mobileMenuOverlay.classList.remove('active');
                 mobileMenuToggle.classList.remove('active');
                 document.body.style.overflow = '';
             }
             
-            function toggleSidebar() {
+            function toggleSidebar(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🔄 Toggling sidebar...');
                 if (navMenu.classList.contains('active')) {
                     closeSidebar();
                 } else {
@@ -2356,42 +2381,45 @@
                 }
             }
             
-            if (mobileMenuToggle && navMenu && mobileMenuOverlay) {
-                // Toggle sidebar
-                mobileMenuToggle.addEventListener('click', toggleSidebar);
-                
-                // Close on overlay click
-                mobileMenuOverlay.addEventListener('click', closeSidebar);
-                
-                // Close on menu link click (mobile only)
-                const menuLinks = navMenu.querySelectorAll('a');
-                menuLinks.forEach(function(link) {
-                    link.addEventListener('click', function() {
-                        if (window.innerWidth <= 768) {
-                            closeSidebar();
-                        }
-                    });
-                });
-                
-                // Close on Escape key
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-                        closeSidebar();
+            // Toggle sidebar
+            mobileMenuToggle.addEventListener('click', toggleSidebar);
+            console.log('✅ Mobile menu toggle event listener added');
+            
+            // Close on overlay click
+            mobileMenuOverlay.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeSidebar();
+            });
+            
+            // Close on menu link click (mobile only)
+            const menuLinks = navMenu.querySelectorAll('a');
+            menuLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        setTimeout(closeSidebar, 100);
                     }
                 });
-                
-                // Close on window resize (if desktop)
-                let resizeTimer;
-                window.addEventListener('resize', function() {
-                    clearTimeout(resizeTimer);
-                    resizeTimer = setTimeout(function() {
-                        if (window.innerWidth > 768) {
-                            closeSidebar();
-                        }
-                    }, 250);
-                });
-            }
-        })();
+            });
+            
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                    closeSidebar();
+                }
+            });
+            
+            // Close on window resize (if desktop)
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    if (window.innerWidth > 768) {
+                        closeSidebar();
+                    }
+                }, 250);
+            });
+        });
 
         // Global image error handler for broken external URLs
         // Use event delegation to handle dynamically loaded images
