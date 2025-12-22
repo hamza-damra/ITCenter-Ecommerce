@@ -795,11 +795,127 @@
             transition: all 0.3s;
             color: #ffffffff;
             font-size: 1.2rem;
+            text-decoration: none;
         }
 
         .social-icon:hover {
             transform: scale(1.1);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Social icon brand colors */
+        .social-icon .fa-facebook-f { color: #fff; }
+        .social-icon .fa-instagram { color: #fff; }
+        .social-icon .fa-whatsapp { color: #fff; }
+
+        /* Mobile Social Icons Toggle */
+        .social-icons-toggle {
+            display: none;
+            position: fixed;
+            <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 20px;
+            bottom: 25px;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #1877f2 0%, #0d65d9 100%);
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(24, 119, 242, 0.4);
+            cursor: pointer;
+            z-index: 1000;
+            color: #fff;
+            font-size: 1.4rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .social-icons-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(24, 119, 242, 0.5);
+        }
+
+        .social-icons-toggle.active {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+            transform: rotate(45deg);
+        }
+
+        .social-icons-toggle.active i {
+            transform: rotate(-45deg);
+        }
+
+        /* Mobile Social Icons Popup */
+        .social-icons-mobile {
+            display: none;
+            position: fixed;
+            <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 20px;
+            bottom: 95px;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .social-icons-mobile.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .social-icons-mobile .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            opacity: 0;
+            transform: scale(0) translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-icons-mobile .social-icon:nth-child(1) {
+            background: linear-gradient(135deg, #1877f2 0%, #0d65d9 100%);
+            box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4);
+        }
+
+        .social-icons-mobile .social-icon:nth-child(2) {
+            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4);
+        }
+
+        .social-icons-mobile .social-icon:nth-child(3) {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        .social-icons-mobile.active .social-icon {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .social-icons-mobile.active .social-icon:nth-child(1) { transition-delay: 0.1s; }
+        .social-icons-mobile.active .social-icon:nth-child(2) { transition-delay: 0.15s; }
+        .social-icons-mobile.active .social-icon:nth-child(3) { transition-delay: 0.2s; }
+
+        .social-icons-mobile .social-icon:hover {
+            transform: scale(1.15);
+        }
+
+        @media (max-width: 768px) {
+            .social-icons {
+                display: none !important;
+            }
+            
+            .social-icons-toggle {
+                display: flex;
+            }
+            
+            .social-icons-mobile {
+                display: flex;
+            }
         }
 
         /* Language Dropdown Styles */
@@ -1317,7 +1433,7 @@
                 font-size: 1.2rem;
             }
             
-            /* Hide header icons on mobile - they will be in the nav menu */
+            /* Hide header icons on small mobile screens */
             .header-icons {
                 display: none !important;
             }
@@ -1901,16 +2017,35 @@
 <?php endif; ?>
     <?php endif; ?>
 
+    <!-- Desktop Social Icons -->
     <div class="social-icons">
-        <div class="social-icon">
+        <a href="https://facebook.com" target="_blank" class="social-icon">
             <i class="fab fa-facebook-f"></i>
-        </div>
-        <div class="social-icon">
+        </a>
+        <a href="https://instagram.com" target="_blank" class="social-icon">
             <i class="fab fa-instagram"></i>
-        </div>
-        <div class="social-icon">
+        </a>
+        <a href="https://wa.me/" target="_blank" class="social-icon">
             <i class="fab fa-whatsapp"></i>
-        </div>
+        </a>
+    </div>
+
+    <!-- Mobile Social Icons Toggle -->
+    <div class="social-icons-toggle" onclick="toggleMobileSocial()">
+        <i class="fas fa-share-alt"></i>
+    </div>
+
+    <!-- Mobile Social Icons Popup -->
+    <div class="social-icons-mobile">
+        <a href="https://facebook.com" target="_blank" class="social-icon">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" class="social-icon">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://wa.me/" target="_blank" class="social-icon">
+            <i class="fab fa-whatsapp"></i>
+        </a>
     </div>
     <?php endif; ?>
 
@@ -1979,6 +2114,28 @@
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Social Icons Toggle Function
+        function toggleMobileSocial() {
+            const toggle = document.querySelector('.social-icons-toggle');
+            const popup = document.querySelector('.social-icons-mobile');
+            
+            if (toggle && popup) {
+                toggle.classList.toggle('active');
+                popup.classList.toggle('active');
+            }
+        }
+
+        // Close mobile social icons when clicking outside
+        document.addEventListener('click', function(e) {
+            const toggle = document.querySelector('.social-icons-toggle');
+            const popup = document.querySelector('.social-icons-mobile');
+            
+            if (toggle && popup && !toggle.contains(e.target) && !popup.contains(e.target)) {
+                toggle.classList.remove('active');
+                popup.classList.remove('active');
             }
         });
 
