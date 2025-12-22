@@ -1314,6 +1314,11 @@
                 font-size: 1.2rem;
             }
             
+            /* Hide header icons on mobile - they will be in the nav menu */
+            .header-icons {
+                display: none !important;
+            }
+            
             .cart-count {
                 width: 18px;
                 height: 18px;
@@ -1332,6 +1337,122 @@
             .user-dropdown-menu a {
                 padding: 0.9rem 1.2rem;
                 font-size: 0.95rem;
+            }
+            
+            /* Mobile Nav Menu Icons Section */
+            .nav-menu-icons-section {
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 8px 0 !important;
+                border-top: 1px solid #e2e8f0 !important;
+                margin-top: 8px !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                gap: 14px !important;
+                font-size: 15px !important;
+                font-weight: 500 !important;
+                padding: 16px 24px !important;
+                width: 100% !important;
+                color: #334155 !important;
+                text-decoration: none !important;
+                transition: all 0.2s ease !important;
+                position: relative !important;
+                border-bottom: 1px solid #f1f5f9 !important;
+                background: transparent !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item:hover {
+                background: #f1f5f9 !important;
+                color: #2563eb !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item i {
+                width: 22px !important;
+                font-size: 18px !important;
+                flex-shrink: 0 !important;
+                color: #64748b !important;
+                transition: color 0.2s ease !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item:hover i {
+                color: #2563eb !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item .nav-icon-content {
+                display: flex !important;
+                align-items: center !important;
+                gap: 14px !important;
+                flex: 1 !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item .nav-badge {
+                background: #e11e1e !important;
+                color: #fff !important;
+                font-size: 0.7rem !important;
+                padding: 2px 8px !important;
+                border-radius: 10px !important;
+                min-width: 20px !important;
+                text-align: center !important;
+                font-weight: 600 !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item .nav-badge.hidden {
+                display: none !important;
+            }
+            
+            /* Language selector in mobile nav */
+            .nav-menu-language-section {
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 8px 0 !important;
+                border-top: 1px solid #e2e8f0 !important;
+            }
+            
+            .nav-menu-language-section .language-title {
+                padding: 12px 24px 8px !important;
+                font-size: 12px !important;
+                font-weight: 600 !important;
+                color: #94a3b8 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.5px !important;
+            }
+            
+            .nav-menu-language-section .nav-lang-item {
+                display: flex !important;
+                align-items: center !important;
+                gap: 12px !important;
+                font-size: 15px !important;
+                font-weight: 500 !important;
+                padding: 14px 24px !important;
+                width: 100% !important;
+                color: #334155 !important;
+                text-decoration: none !important;
+                transition: all 0.2s ease !important;
+                background: transparent !important;
+            }
+            
+            .nav-menu-language-section .nav-lang-item:hover {
+                background: #f1f5f9 !important;
+                color: #2563eb !important;
+            }
+            
+            .nav-menu-language-section .nav-lang-item.active {
+                background: rgba(37, 99, 235, 0.1) !important;
+                color: #2563eb !important;
+                font-weight: 600 !important;
+            }
+            
+            .nav-menu-language-section .nav-lang-item .lang-flag {
+                font-size: 1.2rem !important;
+            }
+            
+            .nav-menu-language-section .nav-lang-item .fa-check {
+                margin-{{ is_rtl() ? 'right' : 'left' }}: auto !important;
+                color: #2563eb !important;
             }
         }
         
@@ -1476,6 +1597,111 @@
             <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}"><i class="fas fa-info-circle"></i> {{ __t('messages.about') }}</a></li>
             <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}"><i class="fas fa-envelope"></i> {{ __t('messages.contact') }}</a></li>
         </ul>
+        
+        {{-- Mobile Nav Icons Section (Cart, Wishlist, Account) --}}
+        <div class="nav-menu-icons-section">
+            @php
+                // Get cart count for mobile nav
+                if (Auth::check()) {
+                    $mobileCartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity');
+                } else {
+                    $sessionId = Session::getId();
+                    $mobileCartCount = \App\Models\CartItem::where('session_id', $sessionId)->sum('quantity');
+                }
+                
+                // Get favorites count for mobile nav
+                $mobileFavCount = 0;
+                try {
+                    if (\App\Services\DatabaseStateService::isDatabaseAvailable()) {
+                        if (Auth::check()) {
+                            $mobileFavCount = \App\Models\Favorite::where('user_id', Auth::id())->count();
+                        } else {
+                            $sessionId = Session::getId();
+                            $mobileFavCount = \App\Models\Favorite::where('session_id', $sessionId)->count();
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $mobileFavCount = 0;
+                }
+            @endphp
+            
+            <a href="{{ route('cart.index') }}" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>{{ __t('messages.cart') }}</span>
+                </span>
+                <span class="nav-badge {{ $mobileCartCount > 0 ? '' : 'hidden' }}" id="mobile-cart-count">{{ $mobileCartCount }}</span>
+            </a>
+            
+            <a href="{{ route('favorites') }}" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-heart"></i>
+                    <span>{{ __t('messages.favorites') }}</span>
+                </span>
+                <span class="nav-badge {{ $mobileFavCount > 0 ? '' : 'hidden' }}" id="mobile-favorites-count">{{ $mobileFavCount }}</span>
+            </a>
+            
+            @guest
+            <a href="{{ route('login') }}" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-user"></i>
+                    <span>{{ __t('messages.login') }}</span>
+                </span>
+            </a>
+            <a href="{{ route('register') }}" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-user-plus"></i>
+                    <span>{{ __t('messages.register') }}</span>
+                </span>
+            </a>
+            @else
+            <a href="{{ route('profile.index') }}" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-user-circle"></i>
+                    <span>{{ __t('messages.my_profile') }}</span>
+                </span>
+            </a>
+            <a href="{{ route('orders.index') }}" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-box"></i>
+                    <span>{{ __t('messages.my_orders') }}</span>
+                </span>
+            </a>
+            <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
+                @csrf
+                <button type="submit" class="nav-icon-item" style="width: 100%; border: none; cursor: pointer; font-family: inherit;">
+                    <span class="nav-icon-content">
+                        <i class="fas fa-sign-out-alt" style="color: #dc3545 !important;"></i>
+                        <span style="color: #dc3545;">{{ __t('messages.logout') }}</span>
+                    </span>
+                </button>
+            </form>
+            @endguest
+        </div>
+        
+        {{-- Language Selector in Mobile Nav --}}
+        <div class="nav-menu-language-section">
+            <div class="language-title">{{ __t('messages.language') }}</div>
+            @foreach(available_locales() as $locale)
+                <a href="{{ switch_locale_url($locale) }}" class="nav-lang-item {{ $locale === current_locale() ? 'active' : '' }}">
+                    <span class="lang-flag">
+                        @if($locale === 'en')
+                            🇬🇧
+                        @elseif($locale === 'ar')
+                            🇵🇸
+                        @elseif($locale === 'he')
+                            🇮🇱
+                        @else
+                            🌐
+                        @endif
+                    </span>
+                    <span>{{ locale_name($locale) }}</span>
+                    @if($locale === current_locale())
+                        <i class="fas fa-check"></i>
+                    @endif
+                </a>
+            @endforeach
+        </div>
     </nav>
     
     <style>

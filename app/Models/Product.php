@@ -482,6 +482,66 @@ class Product extends Model
     }
 
     /**
+     * Get all custom specifications for this product.
+     * Ordered by sort_order for proper display sequence.
+     */
+    public function customSpecs()
+    {
+        return $this->hasMany(CustomProductSpec::class)->orderBy('sort_order');
+    }
+
+    /**
+     * Sync custom specifications for this product.
+     * Handles create, update, and delete operations.
+     * Filters out empty specifications and preserves sort order.
+     * 
+     * @param array $specs Array of specification data from form submission
+     * @return void
+     */
+    public function syncCustomSpecs(array $specs): void
+    {
+        // Filter out empty specifications (where both label_en and value are empty/whitespace)
+        $validSpecs = array_filter($specs, function ($spec) {
+            $labelEn = trim($spec['label_en'] ?? '');
+            $value = trim($spec['value'] ?? '');
+            return !empty($labelEn) && !empty($value);
+        });
+
+        // Get existing spec IDs for this product
+        $existingIds = $this->customSpecs()->pluck('id')->toArray();
+        $processedIds = [];
+
+        // Process each valid specification
+        foreach (array_values($validSpecs) as $index => $specData) {
+            $specId = $specData['id'] ?? null;
+            
+            $data = [
+                'label_en' => trim($specData['label_en'] ?? ''),
+                'label_ar' => trim($specData['label_ar'] ?? '') ?: null,
+                'label_he' => trim($specData['label_he'] ?? '') ?: null,
+                'value' => trim($specData['value'] ?? ''),
+                'sort_order' => $index,
+            ];
+
+            if ($specId && in_array($specId, $existingIds)) {
+                // Update existing specification
+                $this->customSpecs()->where('id', $specId)->update($data);
+                $processedIds[] = $specId;
+            } else {
+                // Create new specification
+                $newSpec = $this->customSpecs()->create($data);
+                $processedIds[] = $newSpec->id;
+            }
+        }
+
+        // Delete specifications that were removed from the form
+        $idsToDelete = array_diff($existingIds, $processedIds);
+        if (!empty($idsToDelete)) {
+            $this->customSpecs()->whereIn('id', $idsToDelete)->delete();
+        }
+    }
+
+    /**
      * Get specification values with their fields, ordered.
      */
     public function getOrderedSpecValuesAttribute()
@@ -511,6 +571,9 @@ class Product extends Model
      */
     public function syncSpecValues(array $values): void
     {
+        // Refresh the category relationship to ensure we have the current category
+        $this->load('category.specTemplate.activeFields');
+        
         // Get valid field IDs for this product's category
         $validFieldIds = $this->category?->specTemplate?->activeFields?->pluck('id')->toArray() ?? [];
 
@@ -557,36 +620,58 @@ class Product extends Model
 
     /**
      * Get formatted specifications for display.
+     * Combines template-based specs with custom specs, maintaining proper ordering.
      */
     public function getFormattedSpecificationsAttribute(): array
     {
-        // Safety check: if tables don't exist, return empty array
-        if (!\Illuminate\Support\Facades\Schema::hasTable('product_spec_values') || 
-            !\Illuminate\Support\Facades\Schema::hasTable('spec_fields')) {
-            return [];
-        }
+        $specs = [];
 
-        try {
-            $specs = [];
+        // First, add template-based specifications
+        // Safety check: if tables don't exist, skip template specs
+        if (\Illuminate\Support\Facades\Schema::hasTable('product_spec_values') && 
+            \Illuminate\Support\Facades\Schema::hasTable('spec_fields')) {
+            try {
+                foreach ($this->orderedSpecValues as $specValue) {
+                    if (!$specValue->field || empty($specValue->value)) {
+                        continue;
+                    }
 
-            foreach ($this->orderedSpecValues as $specValue) {
-                if (!$specValue->field || empty($specValue->value)) {
-                    continue;
+                    $specs[] = [
+                        'label' => $specValue->field->label,
+                        'value' => $specValue->formattedValue,
+                        'key' => $specValue->field->key,
+                        'type' => $specValue->field->type,
+                        'source' => 'template',
+                    ];
                 }
-
-                $specs[] = [
-                    'label' => $specValue->field->label,
-                    'value' => $specValue->formattedValue,
-                    'key' => $specValue->field->key,
-                    'type' => $specValue->field->type,
-                ];
+            } catch (\Exception $e) {
+                // If there's any error with template specs, continue with custom specs
             }
-
-            return $specs;
-        } catch (\Exception $e) {
-            // If there's any error (e.g., table doesn't exist), return empty array
-            return [];
         }
+
+        // Then, add custom specifications (ordered by sort_order)
+        // Safety check: if table doesn't exist, skip custom specs
+        if (\Illuminate\Support\Facades\Schema::hasTable('custom_product_specs')) {
+            try {
+                foreach ($this->customSpecs as $customSpec) {
+                    if (empty($customSpec->value)) {
+                        continue;
+                    }
+
+                    $specs[] = [
+                        'label' => $customSpec->label, // Uses locale-aware accessor
+                        'value' => $customSpec->value,
+                        'key' => 'custom_' . $customSpec->id,
+                        'type' => 'text',
+                        'source' => 'custom',
+                    ];
+                }
+            } catch (\Exception $e) {
+                // If there's any error with custom specs, return what we have
+            }
+        }
+
+        return $specs;
     }
 
     /**

@@ -904,6 +904,321 @@
         }
     }
 
+    /* ==================== COMPREHENSIVE MOBILE RESPONSIVE STYLES ==================== */
+    
+    /* Tablet Breakpoint (968px) */
+    @media (max-width: 968px) {
+        .reviews-section {
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .reviews-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .avg-rating-number {
+            font-size: 3rem;
+        }
+        
+        .rating-stars-large {
+            font-size: 1.25rem;
+        }
+    }
+    
+    /* Phone Breakpoint (768px) */
+    @media (max-width: 768px) {
+        .reviews-section {
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+            border-radius: 12px;
+        }
+        
+        .reviews-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+        }
+        
+        .reviews-header h2 {
+            font-size: 1.3rem;
+        }
+        
+        .reviews-header-subtitle {
+            font-size: 0.85rem;
+        }
+        
+        .write-review-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 0.7rem 1.25rem;
+        }
+        
+        .rating-summary {
+            padding: 1.25rem;
+            gap: 1.5rem;
+        }
+        
+        .avg-rating-number {
+            font-size: 2.5rem;
+        }
+        
+        .rating-stars-large {
+            font-size: 1.1rem;
+        }
+        
+        .total-reviews-text {
+            font-size: 0.85rem;
+        }
+        
+        .rating-bar-row {
+            gap: 0.5rem;
+        }
+        
+        .rating-label {
+            min-width: 50px;
+            font-size: 0.8rem;
+        }
+        
+        .rating-count {
+            min-width: 30px;
+            font-size: 0.8rem;
+        }
+        
+        .reviews-controls {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .sort-dropdown-wrapper {
+            width: 100%;
+        }
+        
+        .custom-dropdown-trigger {
+            padding: 0.65rem 0.9rem;
+        }
+        
+        .review-form-container {
+            padding: 1.25rem;
+            border-radius: 10px;
+        }
+        
+        .review-form-container h3 {
+            font-size: 1.1rem;
+        }
+        
+        .star-rating-input {
+            font-size: 1.75rem;
+        }
+        
+        .form-group label {
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            padding: 0.65rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+        
+        .btn-submit,
+        .btn-cancel {
+            width: 100%;
+            padding: 0.7rem 1.5rem;
+        }
+        
+        .review-item {
+            padding: 1.25rem 0;
+        }
+        
+        .review-header {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .reviewer-info {
+            gap: 0.75rem;
+        }
+        
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+        
+        .reviewer-details h4 {
+            font-size: 0.95rem;
+        }
+        
+        .review-meta {
+            font-size: 0.8rem;
+            gap: 0.5rem;
+        }
+        
+        .review-rating {
+            font-size: 0.85rem;
+        }
+        
+        .verified-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.4rem;
+        }
+        
+        .review-title {
+            font-size: 1rem;
+        }
+        
+        .review-comment {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .review-images {
+            gap: 0.4rem;
+        }
+        
+        .review-image {
+            width: 65px;
+            height: 65px;
+        }
+        
+        .review-actions {
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .helpful-btn {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.85rem;
+        }
+        
+        .pagination {
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        
+        .pagination button {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.9rem;
+        }
+        
+        .my-review {
+            padding-left: 0.75rem;
+        }
+        
+        .your-review-badge {
+            font-size: 0.7rem;
+        }
+    }
+    
+    /* Small Phone Breakpoint (480px) */
+    @media (max-width: 480px) {
+        .reviews-section {
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .reviews-header h2 {
+            font-size: 1.15rem;
+        }
+        
+        .rating-summary {
+            padding: 1rem;
+            gap: 1rem;
+        }
+        
+        .avg-rating-number {
+            font-size: 2rem;
+        }
+        
+        .rating-stars-large {
+            font-size: 1rem;
+        }
+        
+        .rating-bar-row {
+            gap: 0.4rem;
+        }
+        
+        .rating-label {
+            min-width: 40px;
+            font-size: 0.75rem;
+        }
+        
+        .rating-bar-container {
+            height: 6px;
+        }
+        
+        .rating-count {
+            min-width: 25px;
+            font-size: 0.75rem;
+        }
+        
+        .review-form-container {
+            padding: 1rem;
+        }
+        
+        .star-rating-input {
+            font-size: 1.5rem;
+            gap: 0.4rem;
+        }
+        
+        .reviewer-avatar {
+            width: 36px;
+            height: 36px;
+            font-size: 0.9rem;
+        }
+        
+        .review-image {
+            width: 55px;
+            height: 55px;
+        }
+        
+        .helpful-btn {
+            padding: 0.35rem 0.6rem;
+            font-size: 0.8rem;
+        }
+        
+        .no-reviews-message {
+            padding: 2rem 1rem;
+        }
+        
+        .no-reviews-message i {
+            font-size: 2.5rem;
+        }
+    }
+    
+    /* RTL Mobile Adjustments */
+    @media (max-width: 768px) {
+        [dir="rtl"] .reviews-header,
+        html[dir="rtl"] .reviews-header {
+            align-items: flex-end;
+        }
+        
+        [dir="rtl"] .reviews-controls,
+        html[dir="rtl"] .reviews-controls {
+            align-items: flex-end;
+        }
+        
+        [dir="rtl"] .review-header,
+        html[dir="rtl"] .review-header {
+            align-items: flex-end;
+        }
+        
+        [dir="rtl"] .my-review,
+        html[dir="rtl"] .my-review {
+            padding-left: 0;
+            padding-right: 0.75rem;
+            border-left: none;
+            border-right: 4px solid #f59e0b;
+        }
+    }
+
 
 </style>
 

@@ -1711,5 +1711,11 @@ return [
     'sale_price_must_be_less_than_price' => 'Sale price must be less than regular price.',
     'characters_remaining' => ':count characters remaining',
     'character_limit_warning' => 'Approaching character limit',
+    
+    // Custom Specification Validation
+    'spec_label_required_with_value' => 'Specification label is required when a value is provided.',
+    'spec_label_too_long' => 'Specification label cannot exceed :max characters.',
+    'spec_value_required_with_label' => 'Specification value is required when a label is provided.',
+    'spec_value_too_long' => 'Specification value cannot exceed :max characters.',
 ];
 

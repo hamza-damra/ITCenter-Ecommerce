@@ -628,10 +628,30 @@ class DatabaseBackupService
         if (empty(trim($sqlContent))) {
             throw new Exception("Backup file is empty: {$filename}");
         }
+        
+        // Log content preview for debugging
+        $contentPreview = substr($sqlContent, 0, 500);
+        Log::debug('Validating backup file content', [
+            'filename' => $filename,
+            'content_length' => strlen($sqlContent),
+            'content_preview' => $contentPreview
+        ]);
 
         // Check for SQL keywords - must have CREATE TABLE statements
-        if (!str_contains($sqlContent, 'CREATE TABLE')) {
-            throw new Exception("Invalid backup: No CREATE TABLE statements found in {$filename}");
+        // Use case-insensitive search to handle different SQL formats
+        if (!preg_match('/CREATE\s+TABLE/i', $sqlContent)) {
+            // Provide more helpful error message
+            $hasInsert = preg_match('/INSERT\s+INTO/i', $sqlContent);
+            $hasDrop = preg_match('/DROP\s+TABLE/i', $sqlContent);
+            
+            $hint = '';
+            if ($hasInsert && !$hasDrop) {
+                $hint = ' The file contains INSERT statements but no CREATE TABLE. This might be a data-only export.';
+            } elseif (preg_match('/^[\x00-\x08\x0B\x0C\x0E-\x1F]/', $sqlContent)) {
+                $hint = ' The file appears to contain binary data. It may be corrupted or not properly decompressed.';
+            }
+            
+            throw new Exception("Invalid backup: No CREATE TABLE statements found in {$filename}.{$hint}");
         }
 
         // Check file is not truncated - should end with semicolon or SQL comment
@@ -661,17 +681,84 @@ class DatabaseBackupService
      *
      * @param string $filepath
      * @return string
+     * @throws Exception
      */
     protected function decompressBackup(string $filepath): string
     {
+        // Verify file exists and is readable
+        if (!file_exists($filepath)) {
+            throw new Exception("Backup file not found: {$filepath}");
+        }
+        
+        if (!is_readable($filepath)) {
+            throw new Exception("Backup file is not readable: {$filepath}");
+        }
+        
+        // Check if file is actually gzip compressed
+        $handle = fopen($filepath, 'rb');
+        if (!$handle) {
+            throw new Exception("Could not open backup file: {$filepath}");
+        }
+        
+        // Read first 2 bytes to check gzip magic number (0x1f 0x8b)
+        $magicBytes = fread($handle, 2);
+        fclose($handle);
+        
+        if ($magicBytes === false || strlen($magicBytes) < 2) {
+            throw new Exception("Could not read backup file header: {$filepath}");
+        }
+        
+        $isGzip = (ord($magicBytes[0]) === 0x1f && ord($magicBytes[1]) === 0x8b);
+        
+        if (!$isGzip) {
+            // File has .gz extension but is not actually gzip compressed
+            // This can happen if the file was renamed or corrupted
+            Log::warning('File has .gz extension but is not gzip compressed, reading as plain text', [
+                'filepath' => $filepath,
+                'magic_bytes' => bin2hex($magicBytes)
+            ]);
+            
+            $content = file_get_contents($filepath);
+            if ($content === false) {
+                throw new Exception("Could not read backup file: {$filepath}");
+            }
+            return $content;
+        }
+        
+        // Open gzip file
         $gz = gzopen($filepath, 'rb');
+        if ($gz === false) {
+            throw new Exception("Could not open gzip backup file: {$filepath}");
+        }
+        
         $content = '';
+        $readError = false;
         
         while (!gzeof($gz)) {
-            $content .= gzread($gz, 1024 * 512);
+            $chunk = gzread($gz, 1024 * 512);
+            if ($chunk === false) {
+                $readError = true;
+                break;
+            }
+            $content .= $chunk;
         }
         
         gzclose($gz);
+        
+        if ($readError) {
+            throw new Exception("Error reading gzip backup file: {$filepath}");
+        }
+        
+        // Check if we got any content
+        if (empty($content)) {
+            throw new Exception("Decompressed backup file is empty: {$filepath}");
+        }
+        
+        Log::info('Backup file decompressed successfully', [
+            'filepath' => $filepath,
+            'compressed_size' => filesize($filepath),
+            'decompressed_size' => strlen($content)
+        ]);
         
         return $content;
     }

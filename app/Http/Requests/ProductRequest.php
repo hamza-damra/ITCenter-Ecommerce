@@ -14,6 +14,8 @@ class ProductRequest extends FormRequest
     public const SHORT_DESCRIPTION_MAX_LENGTH = 500;
     public const DESCRIPTION_MAX_LENGTH = 3000;
     public const SEARCH_KEYWORDS_MAX_LENGTH = 500;
+    public const CUSTOM_SPEC_LABEL_MAX_LENGTH = 100;
+    public const CUSTOM_SPEC_VALUE_MAX_LENGTH = 500;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -64,6 +66,13 @@ class ProductRequest extends FormRequest
             // Specification values (dynamic, validated separately)
             'spec_values' => 'nullable|array',
             'spec_values.*' => 'nullable|string|max:500',
+            
+            // Custom product specifications (ad-hoc key-value pairs)
+            'custom_specs' => 'nullable|array',
+            'custom_specs.*.label_en' => 'required_with:custom_specs.*.value|nullable|string|max:' . self::CUSTOM_SPEC_LABEL_MAX_LENGTH,
+            'custom_specs.*.label_ar' => 'nullable|string|max:' . self::CUSTOM_SPEC_LABEL_MAX_LENGTH,
+            'custom_specs.*.label_he' => 'nullable|string|max:' . self::CUSTOM_SPEC_LABEL_MAX_LENGTH,
+            'custom_specs.*.value' => 'required_with:custom_specs.*.label_en|nullable|string|max:' . self::CUSTOM_SPEC_VALUE_MAX_LENGTH,
         ];
 
         return $rules;
@@ -80,6 +89,12 @@ class ProductRequest extends FormRequest
             'description_en.max' => __('messages.description_too_long', ['max' => self::DESCRIPTION_MAX_LENGTH]),
             'description_ar.max' => __('messages.description_too_long', ['max' => self::DESCRIPTION_MAX_LENGTH]),
             'sale_price.lt' => __('messages.sale_price_must_be_less_than_price'),
+            'custom_specs.*.label_en.required_with' => __('messages.spec_label_required_with_value'),
+            'custom_specs.*.label_en.max' => __('messages.spec_label_too_long', ['max' => self::CUSTOM_SPEC_LABEL_MAX_LENGTH]),
+            'custom_specs.*.label_ar.max' => __('messages.spec_label_too_long', ['max' => self::CUSTOM_SPEC_LABEL_MAX_LENGTH]),
+            'custom_specs.*.label_he.max' => __('messages.spec_label_too_long', ['max' => self::CUSTOM_SPEC_LABEL_MAX_LENGTH]),
+            'custom_specs.*.value.required_with' => __('messages.spec_value_required_with_label'),
+            'custom_specs.*.value.max' => __('messages.spec_value_too_long', ['max' => self::CUSTOM_SPEC_VALUE_MAX_LENGTH]),
         ];
     }
 

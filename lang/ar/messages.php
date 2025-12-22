@@ -1623,4 +1623,10 @@ return [
     'sale_price_must_be_less_than_price' => 'يجب أن يكون سعر التخفيض أقل من السعر العادي.',
     'characters_remaining' => 'الأحرف المتبقية: :count',
     'character_limit_warning' => 'اقتربت من الحد الأقصى للأحرف',
+    
+    // Custom Specification Validation
+    'spec_label_required_with_value' => 'تسمية المواصفة مطلوبة عند تقديم قيمة.',
+    'spec_label_too_long' => 'لا يمكن أن تتجاوز تسمية المواصفة :max حرفاً.',
+    'spec_value_required_with_label' => 'قيمة المواصفة مطلوبة عند تقديم تسمية.',
+    'spec_value_too_long' => 'لا يمكن أن تتجاوز قيمة المواصفة :max حرفاً.',
 ];

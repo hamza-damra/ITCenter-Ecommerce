@@ -78,23 +78,45 @@
     }
 
     .cart-item {
-        display: grid;
-        grid-template-columns: 120px 1fr auto;
-        gap: var(--space-6);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
         padding: var(--space-6);
         border: 1px solid #e2e8f0;
         border-radius: var(--radius-lg);
         margin-bottom: var(--space-4);
         transition: all var(--transition-bounce);
-        align-items: center;
         box-shadow: var(--shadow-sm);
         background: var(--bg-card);
+    }
+
+    @media (min-width: 769px) {
+        .cart-item {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cart-item-top {
+            flex: 1;
+        }
+
+        .cart-item-actions {
+            flex-direction: column;
+            align-items: flex-end;
+        }
     }
 
     .cart-item:hover {
         box-shadow: var(--shadow-md);
         transform: translateY(-2px);
         border-color: var(--primary-blue);
+    }
+
+    .cart-item-top {
+        display: flex;
+        gap: var(--space-6);
+        align-items: flex-start;
     }
 
     .cart-item-image {
@@ -408,37 +430,310 @@
         direction: rtl;
     }
 
-    /* Mobile Responsive */
+    /* Mobile Responsive - Tablet */
+    @media (max-width: 968px) {
+        .cart-content {
+            grid-template-columns: 1fr;
+            gap: var(--space-6);
+        }
+        
+        .cart-summary {
+            position: static;
+            order: -1;
+        }
+    }
+
+    /* Mobile Responsive - Phone */
     @media (max-width: 768px) {
         .cart-container {
-            padding: 2rem 1rem;
+            padding: 1.5rem 1rem;
+        }
+
+        .cart-header {
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
         }
 
         .cart-header h1 {
-            font-size: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .cart-header i {
+            font-size: 1.5rem;
+        }
+
+        .cart-items-section {
+            padding: 1rem;
+            border-radius: 12px;
         }
 
         .cart-item {
-            grid-template-columns: 80px 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+        }
+
+        .cart-item-top {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
         }
 
         .cart-item-image {
             width: 80px;
             height: 80px;
+            min-width: 80px;
+            border-radius: 10px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cart-item-title {
+            font-size: 0.9rem;
+            line-height: 1.3;
+            margin-bottom: 0.35rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .cart-item-price {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .quantity-controls {
+            gap: 0.5rem;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            font-size: 0.9rem;
+        }
+
+        .quantity-display {
+            min-width: 30px;
+            font-size: 1rem;
         }
 
         .cart-item-actions {
-            grid-column: 1 / -1;
             flex-direction: row;
             justify-content: space-between;
+            align-items: center;
             width: 100%;
             padding-top: 1rem;
             border-top: 1px solid #f0f0f0;
+            min-width: auto;
         }
 
+        .cart-item-total {
+            font-size: 1.2rem;
+            min-width: auto;
+            text-align: {{ is_rtl() ? 'right' : 'left' }};
+        }
+
+        .remove-btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            min-width: auto;
+        }
+
+        /* Cart Summary Mobile */
         .cart-summary {
+            padding: 1.25rem;
+            border-radius: 12px;
             position: static;
+        }
+
+        .summary-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .summary-row {
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .summary-row.total {
+            font-size: 1.25rem;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .checkout-btn {
+            padding: 0.875rem;
+            font-size: 0.95rem;
+            margin-top: 1.25rem;
+        }
+
+        .continue-shopping-link {
+            font-size: 0.9rem;
+            margin-top: 0.875rem;
+        }
+
+        /* Empty Cart Mobile */
+        .empty-cart {
+            padding: 2.5rem 1rem;
+        }
+
+        .empty-cart i {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-cart h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .empty-cart p {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .continue-shopping-btn {
+            padding: 0.875rem 2rem;
+            font-size: 0.95rem;
+        }
+    }
+
+    /* Mobile Responsive - Small Phone */
+    @media (max-width: 480px) {
+        .cart-container {
+            padding: 1rem 0.75rem;
+        }
+
+        .cart-header {
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cart-header h1 {
+            font-size: 1.25rem;
+        }
+
+        .cart-header i {
+            font-size: 1.25rem;
+        }
+
+        .cart-items-section {
+            padding: 0.75rem;
+        }
+
+        .cart-item {
+            padding: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .cart-item-image {
+            width: 70px;
+            height: 70px;
+            min-width: 70px;
+        }
+
+        .cart-item-title {
+            font-size: 0.85rem;
+        }
+
+        .cart-item-price {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            font-size: 0.8rem;
+        }
+
+        .quantity-display {
+            min-width: 25px;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-actions {
+            padding-top: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .cart-item-total {
+            font-size: 1.1rem;
+        }
+
+        .remove-btn {
+            padding: 0.45rem 0.875rem;
+            font-size: 0.8rem;
+            gap: 0.35rem;
+        }
+
+        .remove-btn i {
+            font-size: 0.75rem;
+        }
+
+        /* Cart Summary Small Phone */
+        .cart-summary {
+            padding: 1rem;
+        }
+
+        .summary-title {
+            font-size: 1.1rem;
+        }
+
+        .summary-row {
+            font-size: 0.9rem;
+        }
+
+        .summary-row.total {
+            font-size: 1.1rem;
+        }
+
+        .checkout-btn {
+            padding: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        /* Empty Cart Small Phone */
+        .empty-cart {
+            padding: 2rem 0.75rem;
+        }
+
+        .empty-cart i {
+            font-size: 3rem;
+        }
+
+        .empty-cart h2 {
+            font-size: 1.1rem;
+        }
+
+        .empty-cart p {
+            font-size: 0.85rem;
+        }
+
+        .continue-shopping-btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    /* RTL Mobile Adjustments */
+    @media (max-width: 768px) {
+        [dir="rtl"] .cart-item-actions {
+            flex-direction: row-reverse;
+        }
+
+        [dir="rtl"] .quantity-controls {
+            flex-direction: row-reverse;
         }
     }
 </style>
@@ -466,39 +761,41 @@
                 @foreach($cartItems as $item)
                     @if($item->product)
                     <div class="cart-item" data-product-id="{{ $item->product_id }}">
-                        <a href="{{ route('product.detail', $item->product) }}" class="cart-item-image">
-                            @if($item->product->images && $item->product->images->isNotEmpty())
-                                @php
-                                    $imagePath = $item->product->images->first()->image_path;
-                                    $imageUrl = (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://'))
-                                        ? $imagePath
-                                        : asset('storage/' . $imagePath);
-                                @endphp
-                                <img src="{{ $imageUrl }}" 
-                                     alt="{{ $item->product->name }}" 
-                                     loading="lazy"
-                                     onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-image\'></i></div>';">
-                            @else
-                                <div class="no-image">
-                                    <i class="fas fa-image"></i>
-                                </div>
-                            @endif
-                        </a>
-                        
-                        <div class="cart-item-details">
-                            <a href="{{ route('product.detail', $item->product) }}" class="cart-item-title">
-                                {{ $item->product->name }}
+                        <div class="cart-item-top">
+                            <a href="{{ route('product.detail', $item->product) }}" class="cart-item-image">
+                                @if($item->product->images && $item->product->images->isNotEmpty())
+                                    @php
+                                        $imagePath = $item->product->images->first()->image_path;
+                                        $imageUrl = (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://'))
+                                            ? $imagePath
+                                            : asset('storage/' . $imagePath);
+                                    @endphp
+                                    <img src="{{ $imageUrl }}" 
+                                         alt="{{ $item->product->name }}" 
+                                         loading="lazy"
+                                         onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-image\'></i></div>';">
+                                @else
+                                    <div class="no-image">
+                                        <i class="fas fa-image"></i>
+                                    </div>
+                                @endif
                             </a>
-                            <div class="cart-item-price">${{ number_format($item->price, 2) }}</div>
                             
-                            <div class="quantity-controls">
-                                <button class="quantity-btn decrease-qty" data-product-id="{{ $item->product_id }}">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <span class="quantity-display">{{ $item->quantity }}</span>
-                                <button class="quantity-btn increase-qty" data-product-id="{{ $item->product_id }}">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                            <div class="cart-item-details">
+                                <a href="{{ route('product.detail', $item->product) }}" class="cart-item-title">
+                                    {{ $item->product->name }}
+                                </a>
+                                <div class="cart-item-price">${{ number_format($item->price, 2) }}</div>
+                                
+                                <div class="quantity-controls">
+                                    <button class="quantity-btn decrease-qty" data-product-id="{{ $item->product_id }}">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <span class="quantity-display">{{ $item->quantity }}</span>
+                                    <button class="quantity-btn increase-qty" data-product-id="{{ $item->product_id }}">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         

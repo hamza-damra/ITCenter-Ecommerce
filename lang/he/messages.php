@@ -1455,4 +1455,17 @@ return [
     'tag_created_successfully' => 'התגית נוצרה בהצלחה!',
     'tag_updated_successfully' => 'התגית עודכנה בהצלחה!',
     'tag_deleted_successfully' => 'התגית נמחקה בהצלחה!',
+    
+    // Input Limits
+    'product_name_too_long' => 'שם המוצר לא יכול לעלות על :max תווים.',
+    'description_too_long' => 'התיאור לא יכול לעלות על :max תווים.',
+    'sale_price_must_be_less_than_price' => 'מחיר המבצע חייב להיות נמוך מהמחיר הרגיל.',
+    'characters_remaining' => ':count תווים נותרו',
+    'character_limit_warning' => 'מתקרב למגבלת התווים',
+    
+    // Custom Specification Validation
+    'spec_label_required_with_value' => 'תווית המפרט נדרשת כאשר מסופק ערך.',
+    'spec_label_too_long' => 'תווית המפרט לא יכולה לעלות על :max תווים.',
+    'spec_value_required_with_label' => 'ערך המפרט נדרש כאשר מסופקת תווית.',
+    'spec_value_too_long' => 'ערך המפרט לא יכול לעלות על :max תווים.',
 ];

@@ -1044,7 +1044,7 @@
                 gap: 1rem;
             }
             
-            .nav-menu a {
+            .nav-menu-list a {
                 font-size: 0.9rem;
                 padding: 0.6rem 1rem;
             }
@@ -1177,7 +1177,7 @@
                 padding: 0 !important;
                 gap: 0 !important;
                 overflow-y: auto !important;
-                z-index: 1050 !important;
+                z-index: 1060 !important;
                 box-shadow: 4px 0 25px rgba(0, 0, 0, 0.2) !important;
                 visibility: hidden !important;
                 transform: <?php echo e(is_rtl() ? 'translateX(100%)' : 'translateX(-100%)'); ?> !important;
@@ -1187,6 +1187,7 @@
             .nav-menu.active {
                 visibility: visible !important;
                 transform: translateX(0) !important;
+                z-index: 1060 !important;
             }
 
             /* Sidebar Header */
@@ -1195,7 +1196,6 @@
                 padding: 20px 24px !important;
                 border-bottom: 1px solid #e2e8f0 !important;
                 background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
-                margin-bottom: 0 !important;
                 align-items: center !important;
                 justify-content: center !important;
             }
@@ -1207,13 +1207,20 @@
                 object-fit: contain !important;
             }
             
-            .nav-menu li {
+            /* Navigation Menu List */
+            .nav-menu-list {
+                list-style: none !important;
+                margin: 0 !important;
+                padding: 8px 0 !important;
+            }
+            
+            .nav-menu-list li {
                 width: 100% !important;
                 margin: 0 !important;
                 list-style: none !important;
             }
             
-            .nav-menu a {
+            .nav-menu-list a {
                 display: flex !important;
                 align-items: center !important;
                 gap: 14px !important;
@@ -1231,17 +1238,14 @@
                 background: transparent !important;
                 pointer-events: auto !important;
                 cursor: pointer !important;
+                z-index: 10 !important;
             }
 
-            .nav-menu a::after {
+            .nav-menu-list a::after {
                 display: none !important;
             }
-            
-            .nav-menu li {
-                pointer-events: auto !important;
-            }
 
-            .nav-menu a i {
+            .nav-menu-list a i {
                 width: 22px !important;
                 font-size: 18px !important;
                 flex-shrink: 0 !important;
@@ -1249,7 +1253,7 @@
                 transition: color 0.2s ease !important;
             }
 
-            .nav-menu a::before {
+            .nav-menu-list a::before {
                 content: '' !important;
                 position: absolute !important;
                 <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 0 !important;
@@ -1261,33 +1265,34 @@
                 border-radius: 0 !important;
                 transform: scaleY(0) !important;
                 transition: transform 0.2s ease !important;
+                pointer-events: none !important;
             }
             
-            .nav-menu a:hover {
+            .nav-menu-list a:hover {
                 background: #f1f5f9 !important;
                 color: #2563eb !important;
                 padding-<?php echo e(is_rtl() ? 'right' : 'left'); ?>: 28px !important;
             }
 
-            .nav-menu a:hover i {
+            .nav-menu-list a:hover i {
                 color: #2563eb !important;
             }
 
-            .nav-menu a:hover::before {
+            .nav-menu-list a:hover::before {
                 transform: scaleY(1) !important;
             }
             
-            .nav-menu a.active {
+            .nav-menu-list a.active {
                 background: linear-gradient(<?php echo e(is_rtl() ? '270deg' : '90deg'); ?>, rgba(37, 99, 235, 0.1) 0%, transparent 100%) !important;
                 color: #2563eb !important;
                 font-weight: 600 !important;
             }
 
-            .nav-menu a.active i {
+            .nav-menu-list a.active i {
                 color: #2563eb !important;
             }
 
-            .nav-menu a.active::before {
+            .nav-menu-list a.active::before {
                 transform: scaleY(1) !important;
             }
 
@@ -1312,6 +1317,11 @@
                 font-size: 1.2rem;
             }
             
+            /* Hide header icons on mobile - they will be in the nav menu */
+            .header-icons {
+                display: none !important;
+            }
+            
             .cart-count {
                 width: 18px;
                 height: 18px;
@@ -1330,6 +1340,122 @@
             .user-dropdown-menu a {
                 padding: 0.9rem 1.2rem;
                 font-size: 0.95rem;
+            }
+            
+            /* Mobile Nav Menu Icons Section */
+            .nav-menu-icons-section {
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 8px 0 !important;
+                border-top: 1px solid #e2e8f0 !important;
+                margin-top: 8px !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                gap: 14px !important;
+                font-size: 15px !important;
+                font-weight: 500 !important;
+                padding: 16px 24px !important;
+                width: 100% !important;
+                color: #334155 !important;
+                text-decoration: none !important;
+                transition: all 0.2s ease !important;
+                position: relative !important;
+                border-bottom: 1px solid #f1f5f9 !important;
+                background: transparent !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item:hover {
+                background: #f1f5f9 !important;
+                color: #2563eb !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item i {
+                width: 22px !important;
+                font-size: 18px !important;
+                flex-shrink: 0 !important;
+                color: #64748b !important;
+                transition: color 0.2s ease !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item:hover i {
+                color: #2563eb !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item .nav-icon-content {
+                display: flex !important;
+                align-items: center !important;
+                gap: 14px !important;
+                flex: 1 !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item .nav-badge {
+                background: #e11e1e !important;
+                color: #fff !important;
+                font-size: 0.7rem !important;
+                padding: 2px 8px !important;
+                border-radius: 10px !important;
+                min-width: 20px !important;
+                text-align: center !important;
+                font-weight: 600 !important;
+            }
+            
+            .nav-menu-icons-section .nav-icon-item .nav-badge.hidden {
+                display: none !important;
+            }
+            
+            /* Language selector in mobile nav */
+            .nav-menu-language-section {
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 8px 0 !important;
+                border-top: 1px solid #e2e8f0 !important;
+            }
+            
+            .nav-menu-language-section .language-title {
+                padding: 12px 24px 8px !important;
+                font-size: 12px !important;
+                font-weight: 600 !important;
+                color: #94a3b8 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.5px !important;
+            }
+            
+            .nav-menu-language-section .nav-lang-item {
+                display: flex !important;
+                align-items: center !important;
+                gap: 12px !important;
+                font-size: 15px !important;
+                font-weight: 500 !important;
+                padding: 14px 24px !important;
+                width: 100% !important;
+                color: #334155 !important;
+                text-decoration: none !important;
+                transition: all 0.2s ease !important;
+                background: transparent !important;
+            }
+            
+            .nav-menu-language-section .nav-lang-item:hover {
+                background: #f1f5f9 !important;
+                color: #2563eb !important;
+            }
+            
+            .nav-menu-language-section .nav-lang-item.active {
+                background: rgba(37, 99, 235, 0.1) !important;
+                color: #2563eb !important;
+                font-weight: 600 !important;
+            }
+            
+            .nav-menu-language-section .nav-lang-item .lang-flag {
+                font-size: 1.2rem !important;
+            }
+            
+            .nav-menu-language-section .nav-lang-item .fa-check {
+                margin-<?php echo e(is_rtl() ? 'right' : 'left'); ?>: auto !important;
+                color: #2563eb !important;
             }
         }
         
@@ -1366,7 +1492,7 @@
                 width: 260px !important;
             }
             
-            .nav-menu a {
+            .nav-menu-list a {
                 font-size: 14px !important;
                 padding: 14px 20px !important;
             }
@@ -1433,7 +1559,7 @@
                 width: 240px !important;
             }
             
-            .nav-menu a {
+            .nav-menu-list a {
                 font-size: 13px !important;
                 padding: 12px 18px !important;
             }
@@ -1450,36 +1576,183 @@
 </head>
 <body>
     <?php if (empty(trim($__env->yieldContent('hideHeader')))): ?>
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <!-- Mobile Menu Toggle - Outside header for proper fixed positioning -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu" type="button" style="display: none; position: fixed; top: 12px; <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 12px; z-index: 1100; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; width: 44px; height: 44px; cursor: pointer; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+        <div class="hamburger-icon" style="display: flex; flex-direction: column; gap: 5px; width: 20px;">
+            <span style="display: block; width: 100%; height: 2px; background: #334155; border-radius: 2px; transition: all 0.3s ease;"></span>
+            <span style="display: block; width: 100%; height: 2px; background: #334155; border-radius: 2px; transition: all 0.3s ease;"></span>
+            <span style="display: block; width: 100%; height: 2px; background: #334155; border-radius: 2px; transition: all 0.3s ease;"></span>
+        </div>
+    </button>
+
+    <!-- Mobile Menu Overlay - positioned to NOT cover the nav-menu -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1040; opacity: 0; visibility: hidden; pointer-events: none;"></div>
+    
+    <!-- Mobile Navigation Menu - OUTSIDE header for proper z-index -->
+    <nav class="nav-menu" id="navMenu" style="display: none;">
+        <div class="nav-menu-header">
+            <img src="<?php echo e(asset('images/assets/logo.png')); ?>" alt="IT Center Logo">
+        </div>
+        <ul class="nav-menu-list">
+            <li><a href="<?php echo e(route('home')); ?>" class="<?php echo e(request()->routeIs('home') ? 'active' : ''); ?>"><i class="fas fa-home"></i> <?php echo e(__t('messages.home')); ?></a></li>
+            <li><a href="<?php echo e(route('categories')); ?>" class="<?php echo e(request()->routeIs('categories') ? 'active' : ''); ?>"><i class="fas fa-th-large"></i> <?php echo e(__t('messages.categories')); ?></a></li>
+            <li><a href="<?php echo e(route('products')); ?>" class="<?php echo e(request()->routeIs('products') ? 'active' : ''); ?>"><i class="fas fa-box"></i> <?php echo e(__t('messages.products')); ?></a></li>
+            <li><a href="<?php echo e(route('about')); ?>" class="<?php echo e(request()->routeIs('about') ? 'active' : ''); ?>"><i class="fas fa-info-circle"></i> <?php echo e(__t('messages.about')); ?></a></li>
+            <li><a href="<?php echo e(route('contact')); ?>" class="<?php echo e(request()->routeIs('contact') ? 'active' : ''); ?>"><i class="fas fa-envelope"></i> <?php echo e(__t('messages.contact')); ?></a></li>
+        </ul>
+        
+        
+        <div class="nav-menu-icons-section">
+            <?php
+                // Get cart count for mobile nav
+                if (Auth::check()) {
+                    $mobileCartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity');
+                } else {
+                    $sessionId = Session::getId();
+                    $mobileCartCount = \App\Models\CartItem::where('session_id', $sessionId)->sum('quantity');
+                }
+                
+                // Get favorites count for mobile nav
+                $mobileFavCount = 0;
+                try {
+                    if (\App\Services\DatabaseStateService::isDatabaseAvailable()) {
+                        if (Auth::check()) {
+                            $mobileFavCount = \App\Models\Favorite::where('user_id', Auth::id())->count();
+                        } else {
+                            $sessionId = Session::getId();
+                            $mobileFavCount = \App\Models\Favorite::where('session_id', $sessionId)->count();
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $mobileFavCount = 0;
+                }
+            ?>
+            
+            <a href="<?php echo e(route('cart.index')); ?>" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span><?php echo e(__t('messages.cart')); ?></span>
+                </span>
+                <span class="nav-badge <?php echo e($mobileCartCount > 0 ? '' : 'hidden'); ?>" id="mobile-cart-count"><?php echo e($mobileCartCount); ?></span>
+            </a>
+            
+            <a href="<?php echo e(route('favorites')); ?>" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-heart"></i>
+                    <span><?php echo e(__t('messages.favorites')); ?></span>
+                </span>
+                <span class="nav-badge <?php echo e($mobileFavCount > 0 ? '' : 'hidden'); ?>" id="mobile-favorites-count"><?php echo e($mobileFavCount); ?></span>
+            </a>
+            
+            <?php if(auth()->guard()->guest()): ?>
+            <a href="<?php echo e(route('login')); ?>" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-user"></i>
+                    <span><?php echo e(__t('messages.login')); ?></span>
+                </span>
+            </a>
+            <a href="<?php echo e(route('register')); ?>" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-user-plus"></i>
+                    <span><?php echo e(__t('messages.register')); ?></span>
+                </span>
+            </a>
+            <?php else: ?>
+            <a href="<?php echo e(route('profile.index')); ?>" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-user-circle"></i>
+                    <span><?php echo e(__t('messages.my_profile')); ?></span>
+                </span>
+            </a>
+            <a href="<?php echo e(route('orders.index')); ?>" class="nav-icon-item">
+                <span class="nav-icon-content">
+                    <i class="fas fa-box"></i>
+                    <span><?php echo e(__t('messages.my_orders')); ?></span>
+                </span>
+            </a>
+            <form action="<?php echo e(route('logout')); ?>" method="POST" style="margin: 0;">
+                <?php echo csrf_field(); ?>
+                <button type="submit" class="nav-icon-item" style="width: 100%; border: none; cursor: pointer; font-family: inherit;">
+                    <span class="nav-icon-content">
+                        <i class="fas fa-sign-out-alt" style="color: #dc3545 !important;"></i>
+                        <span style="color: #dc3545;"><?php echo e(__t('messages.logout')); ?></span>
+                    </span>
+                </button>
+            </form>
+            <?php endif; ?>
+        </div>
+        
+        
+        <div class="nav-menu-language-section">
+            <div class="language-title"><?php echo e(__t('messages.language')); ?></div>
+            <?php $__currentLoopData = available_locales(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $locale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <a href="<?php echo e(switch_locale_url($locale)); ?>" class="nav-lang-item <?php echo e($locale === current_locale() ? 'active' : ''); ?>">
+                    <span class="lang-flag">
+                        <?php if($locale === 'en'): ?>
+                            🇬🇧
+                        <?php elseif($locale === 'ar'): ?>
+                            🇵🇸
+                        <?php elseif($locale === 'he'): ?>
+                            🇮🇱
+                        <?php else: ?>
+                            🌐
+                        <?php endif; ?>
+                    </span>
+                    <span><?php echo e(locale_name($locale)); ?></span>
+                    <?php if($locale === current_locale()): ?>
+                        <i class="fas fa-check"></i>
+                    <?php endif; ?>
+                </a>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </div>
+    </nav>
+    
+    <style>
+        /* Force mobile menu toggle to show on mobile */
+        @media (max-width: 768px) {
+            #mobileMenuToggle {
+                display: flex !important;
+            }
+            #mobileMenuOverlay {
+                display: block !important;
+            }
+            #mobileMenuOverlay.active {
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+            }
+            /* Mobile nav menu styles */
+            #navMenu {
+                display: flex !important;
+                position: fixed !important;
+                top: 0 !important;
+                <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 0 !important;
+                width: 280px !important;
+                max-width: 85vw !important;
+                height: 100vh !important;
+                background: #ffffff !important;
+                flex-direction: column !important;
+                z-index: 1060 !important;
+                box-shadow: 4px 0 25px rgba(0, 0, 0, 0.2) !important;
+                visibility: hidden !important;
+                transform: <?php echo e(is_rtl() ? 'translateX(100%)' : 'translateX(-100%)'); ?> !important;
+                transition: transform 0.3s ease, visibility 0.3s ease !important;
+                overflow-y: auto !important;
+            }
+            #navMenu.active {
+                visibility: visible !important;
+                transform: translateX(0) !important;
+            }
+        }
+    </style>
     
     <header>
         <div class="header-container">
-            <!-- Mobile Menu Toggle -->
-            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">
-                <div class="hamburger-icon">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </button>
-            
             <div class="logo">
                 <a href="<?php echo e(route('home')); ?>">
                     <img src="<?php echo e(asset('images/assets/logo.png')); ?>" alt="IT Center Logo">
                 </a>
             </div>
-
-            <ul class="nav-menu" id="navMenu">
-                <div class="nav-menu-header">
-                    <img src="<?php echo e(asset('images/assets/logo.png')); ?>" alt="IT Center Logo">
-                </div>
-                <li><a href="<?php echo e(route('home')); ?>" class="<?php echo e(request()->routeIs('home') ? 'active' : ''); ?>"><i class="fas fa-home"></i> <?php echo e(__t('messages.home')); ?></a></li>
-                <li><a href="<?php echo e(route('categories')); ?>" class="<?php echo e(request()->routeIs('categories') ? 'active' : ''); ?>"><i class="fas fa-th-large"></i> <?php echo e(__t('messages.categories')); ?></a></li>
-                <li><a href="<?php echo e(route('products')); ?>" class="<?php echo e(request()->routeIs('products') ? 'active' : ''); ?>"><i class="fas fa-box"></i> <?php echo e(__t('messages.products')); ?></a></li>
-                <li><a href="<?php echo e(route('about')); ?>" class="<?php echo e(request()->routeIs('about') ? 'active' : ''); ?>"><i class="fas fa-info-circle"></i> <?php echo e(__t('messages.about')); ?></a></li>
-                <li><a href="<?php echo e(route('contact')); ?>" class="<?php echo e(request()->routeIs('contact') ? 'active' : ''); ?>"><i class="fas fa-envelope"></i> <?php echo e(__t('messages.contact')); ?></a></li>
-            </ul>
 
             <form action="<?php echo e(route('products')); ?>" method="GET" class="search-bar" role="search" autocomplete="off">
                 <input type="search" 
@@ -2398,94 +2671,93 @@
             }
         });
         
-        // Mobile Sidebar Toggle - Professional Design
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            const navMenu = document.getElementById('navMenu');
-            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        // Mobile Sidebar Toggle - Simple and robust implementation
+        (function() {
+            'use strict';
             
-            // Debug: Check if elements exist
-            if (!mobileMenuToggle) {
-                console.error('❌ mobileMenuToggle not found');
-                return;
-            }
-            if (!navMenu) {
-                console.error('❌ navMenu not found');
-                return;
-            }
-            if (!mobileMenuOverlay) {
-                console.error('❌ mobileMenuOverlay not found');
-                return;
-            }
-            
-            function openSidebar() {
-                console.log('📂 Opening sidebar...');
-                navMenu.classList.add('active');
-                mobileMenuOverlay.classList.add('active');
-                mobileMenuToggle.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-            
-            function closeSidebar() {
-                console.log('📕 Closing sidebar...');
-                navMenu.classList.remove('active');
-                mobileMenuOverlay.classList.remove('active');
-                mobileMenuToggle.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            function toggleSidebar(e) {
-                if (e) {
+            function initMobileSidebar() {
+                var mobileMenuToggle = document.getElementById('mobileMenuToggle');
+                var navMenu = document.getElementById('navMenu');
+                var mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+
+                if (!mobileMenuToggle || !navMenu || !mobileMenuOverlay) {
+                    return;
+                }
+
+                function openSidebar() {
+                    navMenu.classList.add('active');
+                    mobileMenuOverlay.classList.add('active');
+                    mobileMenuToggle.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+
+                function closeSidebar() {
+                    navMenu.classList.remove('active');
+                    mobileMenuOverlay.classList.remove('active');
+                    mobileMenuToggle.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+
+                // Toggle button click
+                mobileMenuToggle.onclick = function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                }
-                console.log('🔄 Toggling sidebar...');
-                if (navMenu.classList.contains('active')) {
+                    if (navMenu.classList.contains('active')) {
+                        closeSidebar();
+                    } else {
+                        openSidebar();
+                    }
+                };
+
+                // Overlay click to close
+                mobileMenuOverlay.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     closeSidebar();
-                } else {
-                    openSidebar();
-                }
-            }
-            
-            // Toggle sidebar - only on the toggle button
-            mobileMenuToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleSidebar();
-            });
-            console.log('✅ Mobile menu toggle event listener added');
-            
-            // Close on overlay click only
-            mobileMenuOverlay.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                closeSidebar();
-            });
-            
-            // Prevent sidebar clicks from closing (except links)
-            navMenu.addEventListener('click', function(e) {
-                // Only stop propagation, don't prevent default (allows links to work)
-                e.stopPropagation();
-            });
-            
-            // Close on Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-                    closeSidebar();
-                }
-            });
-            
-            // Close on window resize (if desktop)
-            let resizeTimer;
-            window.addEventListener('resize', function() {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(function() {
-                    if (window.innerWidth > 768) {
+                };
+
+                // Stop propagation on nav-menu for non-link clicks
+                navMenu.onclick = function(e) {
+                    if (e.target.tagName === 'A' || e.target.closest('a')) {
+                        return true;
+                    }
+                    e.stopPropagation();
+                };
+
+                // Menu links - close sidebar and navigate
+                var menuLinks = navMenu.querySelectorAll('.nav-menu-list a');
+                menuLinks.forEach(function(link) {
+                    link.onclick = function() {
+                        navMenu.classList.remove('active');
+                        mobileMenuOverlay.classList.remove('active');
+                        mobileMenuToggle.classList.remove('active');
+                        document.body.style.overflow = '';
+                        return true;
+                    };
+                });
+
+                // Close on Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
                         closeSidebar();
                     }
-                }, 250);
-            });
-        });
+                });
+
+                // Close on window resize to desktop
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+                        closeSidebar();
+                    }
+                });
+            }
+
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMobileSidebar);
+            } else {
+                initMobileSidebar();
+            }
+        })();
 
         // Global image error handler for broken external URLs
         // Use event delegation to handle dynamically loaded images

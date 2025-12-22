@@ -392,45 +392,396 @@
         justify-content: center;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
+    /* Responsive - Tablet */
+    @media (max-width: 968px) {
         .orders-page {
-            padding: 1rem;
+            padding: 1.5rem 1rem;
         }
 
         .page-header {
             padding: 2rem 1.5rem;
+            border-radius: 15px;
         }
 
         .page-title {
-            font-size: 1.75rem;
+            font-size: 2rem;
         }
 
-        .order-header-top,
-        .order-footer {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .order-item {
-            flex-direction: column;
-        }
-
-        .item-price {
-            align-items: flex-start;
+        .page-subtitle {
+            font-size: 1rem;
         }
 
         .status-tabs {
             padding: 1rem;
+            border-radius: 12px;
+        }
+
+        .status-tab {
+            padding: 0.6rem 1.25rem;
+            font-size: 0.9rem;
+        }
+
+        .order-card {
+            border-radius: 12px;
+        }
+
+        .order-header {
+            padding: 1.25rem;
+        }
+
+        .order-items {
+            padding: 1.25rem;
+        }
+
+        .order-footer {
+            padding: 1.25rem;
+        }
+    }
+
+    /* Responsive - Phone */
+    @media (max-width: 768px) {
+        .orders-page {
+            padding: 1rem 0.75rem;
+        }
+
+        .page-header {
+            padding: 1.5rem 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-header::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            gap: 0.75rem;
+        }
+
+        .page-title i {
+            font-size: 1.3rem;
+        }
+
+        .page-subtitle {
+            font-size: 0.9rem;
+        }
+
+        /* Status Tabs Mobile */
+        .status-tabs {
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .status-tabs-list {
+            gap: 0.5rem;
+            padding-bottom: 0.25rem;
+        }
+
+        .status-tab {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            border-radius: 25px;
+        }
+
+        .status-tab i {
+            font-size: 0.85rem;
+        }
+
+        .status-count {
+            padding: 0.15rem 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        /* Order Card Mobile */
+        .orders-container {
+            gap: 1rem;
+        }
+
+        .order-card {
+            border-radius: 10px;
+        }
+
+        .order-header {
+            padding: 1rem;
+        }
+
+        .order-header-top {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .order-number {
+            font-size: 1.1rem;
+        }
+
+        .order-status-badge {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .order-header-bottom {
+            gap: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .order-info-item {
+            gap: 0.35rem;
+        }
+
+        .order-info-item i {
+            font-size: 0.85rem;
+        }
+
+        /* Order Items Mobile */
+        .order-items {
+            padding: 1rem;
+        }
+
+        .order-item {
+            flex-direction: row;
+            gap: 0.75rem;
+            padding: 0.75rem;
+        }
+
+        .item-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+        }
+
+        .item-details {
+            gap: 0.35rem;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .item-info {
+            font-size: 0.8rem;
+            gap: 0.5rem;
+        }
+
+        .item-price {
+            align-items: flex-end;
+            flex-shrink: 0;
+        }
+
+        .current-price {
+            font-size: 0.95rem;
+        }
+
+        .original-price {
+            font-size: 0.8rem;
+        }
+
+        /* Order Footer Mobile */
+        .order-footer {
+            padding: 1rem;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1rem;
+        }
+
+        .order-total {
+            text-align: center;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .order-total-label {
+            font-size: 0.85rem;
+        }
+
+        .order-total-amount {
+            font-size: 1.5rem;
         }
 
         .order-actions {
             width: 100%;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .btn {
-            flex: 1;
+            width: 100%;
             justify-content: center;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Empty State Mobile */
+        .empty-state {
+            padding: 2.5rem 1.5rem;
+            border-radius: 12px;
+        }
+
+        .empty-state-icon {
+            font-size: 3.5rem;
+        }
+
+        .empty-state-title {
+            font-size: 1.35rem;
+        }
+
+        .empty-state-text {
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+    }
+
+    /* Responsive - Small Phone */
+    @media (max-width: 480px) {
+        .orders-page {
+            padding: 0.75rem 0.5rem;
+        }
+
+        .page-header {
+            padding: 1.25rem 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-title {
+            font-size: 1.25rem;
+            gap: 0.5rem;
+        }
+
+        .page-title i {
+            font-size: 1.1rem;
+        }
+
+        .page-subtitle {
+            font-size: 0.8rem;
+        }
+
+        /* Status Tabs Small Phone */
+        .status-tabs {
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-tab {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.75rem;
+            gap: 0.35rem;
+        }
+
+        .status-tab i {
+            font-size: 0.75rem;
+        }
+
+        .status-count {
+            padding: 0.1rem 0.4rem;
+            font-size: 0.7rem;
+        }
+
+        /* Order Card Small Phone */
+        .order-header {
+            padding: 0.875rem;
+        }
+
+        .order-number {
+            font-size: 1rem;
+        }
+
+        .order-status-badge {
+            padding: 0.35rem 0.6rem;
+            font-size: 0.75rem;
+        }
+
+        .order-header-bottom {
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            flex-direction: column;
+        }
+
+        .order-items {
+            padding: 0.875rem;
+        }
+
+        .order-item {
+            padding: 0.5rem;
+            gap: 0.5rem;
+        }
+
+        .item-image {
+            width: 50px;
+            height: 50px;
+        }
+
+        .item-name {
+            font-size: 0.85rem;
+        }
+
+        .item-info {
+            font-size: 0.75rem;
+        }
+
+        .current-price {
+            font-size: 0.9rem;
+        }
+
+        .original-price {
+            font-size: 0.75rem;
+        }
+
+        .order-footer {
+            padding: 0.875rem;
+        }
+
+        .order-total-amount {
+            font-size: 1.35rem;
+        }
+
+        .btn {
+            padding: 0.65rem 0.875rem;
+            font-size: 0.85rem;
+        }
+
+        /* Empty State Small Phone */
+        .empty-state {
+            padding: 2rem 1rem;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+        }
+
+        .empty-state-title {
+            font-size: 1.2rem;
+        }
+
+        .empty-state-text {
+            font-size: 0.9rem;
+        }
+    }
+
+    /* RTL Mobile Adjustments */
+    @media (max-width: 768px) {
+        [dir="rtl"] .order-header-top {
+            align-items: flex-end;
+        }
+
+        [dir="rtl"] .order-header-bottom {
+            justify-content: flex-end;
+        }
+
+        [dir="rtl"] .item-price {
+            align-items: flex-start;
+        }
+
+        [dir="rtl"] .order-total {
+            text-align: center;
         }
     }
 </style>
@@ -589,9 +940,24 @@
                     <div class="order-items">
                         @foreach($order->items->take(3) as $item)
                             <div class="order-item">
-                                <img src="{{ $item->product_image ? asset('storage/' . $item->product_image) : asset('images/placeholder.png') }}" 
+                                @php
+                                    $productImage = $item->product_image;
+                                    $imageSrc = asset('images/placeholder.png'); // default
+                                    
+                                    if ($productImage) {
+                                        if (str_starts_with($productImage, 'http')) {
+                                            $imageSrc = $productImage;
+                                        } elseif (str_starts_with($productImage, 'images/')) {
+                                            $imageSrc = asset($productImage);
+                                        } else {
+                                            $imageSrc = asset('storage/' . $productImage);
+                                        }
+                                    }
+                                @endphp
+                                <img src="{{ $imageSrc }}" 
                                      alt="{{ $item->product_name }}" 
-                                     class="item-image">
+                                     class="item-image"
+                                     onerror="this.src='{{ asset('images/placeholder.png') }}'">
                                 <div class="item-details">
                                     <a href="{{ $item->product_id ? route('product.detail', $item->product_id) : '#' }}" 
                                        class="item-name">

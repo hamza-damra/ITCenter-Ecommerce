@@ -428,7 +428,7 @@
         margin-left: 0;
     }
 
-    /* Mobile Responsive */
+    /* Mobile Responsive - Tablet */
     @media (max-width: 968px) {
         .checkout-container {
             padding: 2rem 1rem;
@@ -436,6 +436,7 @@
 
         .checkout-content {
             grid-template-columns: 1fr;
+            gap: 2rem;
         }
 
         .checkout-progress {
@@ -463,11 +464,349 @@
 
         .checkout-form-section {
             padding: 1.5rem;
+            border-radius: 12px;
         }
 
         .order-summary-sidebar {
             position: static;
-            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            order: -1;
+        }
+
+        .summary-header {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+        }
+    }
+
+    /* Mobile Responsive - Phone */
+    @media (max-width: 768px) {
+        .checkout-container {
+            padding: 1.5rem 0.75rem;
+        }
+
+        /* Progress Steps Mobile */
+        .checkout-progress {
+            margin-bottom: 1.5rem;
+            max-width: 100%;
+            padding: 0 0.5rem;
+        }
+
+        .checkout-progress::before {
+            top: 18px;
+            height: 2px;
+        }
+
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            font-size: 0.85rem;
+            border-width: 2px;
+        }
+
+        .step-label {
+            font-size: 0.7rem;
+            margin-top: 0.25rem;
+        }
+
+        .progress-step.active .step-circle {
+            box-shadow: 0 2px 10px rgba(31, 41, 55, 0.3);
+        }
+
+        /* Form Section Mobile */
+        .checkout-form-section {
+            padding: 1.25rem;
+            border-radius: 10px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            font-size: 1.1rem;
+        }
+
+        .form-grid {
+            gap: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            border-radius: 8px;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+        }
+
+        /* Payment Methods Mobile */
+        .payment-methods {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+        }
+
+        .payment-option {
+            padding: 1rem;
+            border-radius: 10px;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .payment-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .payment-icon {
+            font-size: 1.5rem;
+        }
+
+        .payment-info h4 {
+            font-size: 0.95rem;
+        }
+
+        .payment-info p {
+            font-size: 0.8rem;
+        }
+
+        /* Order Summary Mobile */
+        .order-summary-sidebar {
+            padding: 1.25rem;
+            border-radius: 10px;
+        }
+
+        .summary-header {
+            font-size: 1.2rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .summary-item {
+            padding: 0.75rem;
+            border-radius: 10px;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .summary-item-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+        }
+
+        .summary-item-name {
+            font-size: 0.85rem;
+        }
+
+        .summary-item-qty {
+            font-size: 0.75rem;
+        }
+
+        .summary-item-price {
+            font-size: 0.95rem;
+        }
+
+        .summary-totals {
+            padding: 1rem 0;
+            margin-bottom: 1.25rem;
+        }
+
+        .summary-row {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .summary-row.total {
+            font-size: 1.15rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+        }
+
+        .place-order-btn {
+            padding: 1rem;
+            font-size: 1rem;
+            border-radius: 10px;
+            gap: 0.5rem;
+        }
+
+        .place-order-btn i {
+            font-size: 0.9rem;
+        }
+
+        .secure-badge {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            gap: 0.35rem;
+        }
+
+        .secure-badge i {
+            font-size: 1rem;
+        }
+    }
+
+    /* Mobile Responsive - Small Phone */
+    @media (max-width: 480px) {
+        .checkout-container {
+            padding: 1rem 0.5rem;
+        }
+
+        /* Progress Steps Small Phone */
+        .checkout-progress {
+            margin-bottom: 1.25rem;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            font-size: 0.75rem;
+        }
+
+        .step-label {
+            font-size: 0.65rem;
+        }
+
+        .checkout-progress::before {
+            top: 16px;
+        }
+
+        /* Form Section Small Phone */
+        .checkout-form-section {
+            padding: 1rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            margin-bottom: 0.875rem;
+        }
+
+        .section-title i {
+            font-size: 1rem;
+        }
+
+        .form-grid {
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.65rem 0.875rem;
+            font-size: 0.9rem;
+        }
+
+        /* Payment Methods Small Phone */
+        .payment-option {
+            padding: 0.875rem;
+            flex-wrap: wrap;
+        }
+
+        .payment-option-label {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .payment-icon {
+            font-size: 1.3rem;
+        }
+
+        .payment-info h4 {
+            font-size: 0.9rem;
+        }
+
+        .payment-info p {
+            font-size: 0.75rem;
+            line-height: 1.3;
+        }
+
+        /* Order Summary Small Phone */
+        .order-summary-sidebar {
+            padding: 1rem;
+        }
+
+        .summary-header {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .summary-item {
+            padding: 0.625rem;
+            gap: 0.625rem;
+        }
+
+        .summary-item-image {
+            width: 45px;
+            height: 45px;
+        }
+
+        .summary-item-name {
+            font-size: 0.8rem;
+            -webkit-line-clamp: 1;
+        }
+
+        .summary-item-qty {
+            font-size: 0.7rem;
+        }
+
+        .summary-item-price {
+            font-size: 0.9rem;
+        }
+
+        .summary-row {
+            font-size: 0.85rem;
+        }
+
+        .summary-row.total {
+            font-size: 1.05rem;
+        }
+
+        .place-order-btn {
+            padding: 0.875rem;
+            font-size: 0.95rem;
+        }
+
+        .secure-badge {
+            font-size: 0.75rem;
+        }
+    }
+
+    /* RTL Mobile Adjustments */
+    @media (max-width: 768px) {
+        [dir="rtl"] .payment-option-label {
+            flex-direction: row-reverse;
+        }
+
+        [dir="rtl"] .payment-info {
+            text-align: right;
+        }
+
+        [dir="rtl"] .summary-item {
+            flex-direction: row-reverse;
+        }
+
+        [dir="rtl"] .summary-item-details {
+            text-align: right;
         }
     }
 </style>
