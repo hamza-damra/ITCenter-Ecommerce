@@ -1433,11 +1433,6 @@
                 font-size: 1.2rem;
             }
             
-            /* Hide header icons on small mobile screens */
-            .header-icons {
-                display: none !important;
-            }
-            
             .cart-count {
                 width: 18px;
                 height: 18px;
