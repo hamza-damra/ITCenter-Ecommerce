@@ -1,5 +1,9 @@
 [phases.setup]
-nixPkgs = ["nodejs-18_x", "php82", "php82Packages.composer"]
+nixPkgs = [
+    "nodejs-18_x",
+    "php82",
+    "php82Packages.composer"
+]
 
 [phases.install]
 cmds = [
@@ -20,4 +24,5 @@ cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
 
 [providers]
 php = "nixpacks"
+node = "nixpacks"
 

@@ -27,6 +27,7 @@ Thumbs.db
 README.md
 ARCHITECTURE.md
 *.md
+!DOCKER_HUB_DEPLOY.md
 tests
 .phpunit.cache
 
