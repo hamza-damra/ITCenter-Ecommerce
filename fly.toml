@@ -5,7 +5,7 @@ app = "itcenter-ecommerce"
 primary_region = "iad"
 
 [build]
-  builder = "nixpacks"
+  builder = "dockerfile"
 
 [env]
   PORT = "8080"
