@@ -1611,10 +1611,55 @@
             }
 
             .hero-section {
-                height: 300px;
+                height: 280px;
                 margin: 0.5rem;
-                border-radius: 15px;
+                border-radius: 16px;
                 width: calc(100% - 1rem);
+            }
+
+            .hero-slide {
+                background-size: cover;
+                background-position: center;
+            }
+
+            .hero-slide-content {
+                left: 4% !important;
+                right: 4% !important;
+                max-width: 92%;
+                padding: 1.25rem;
+                text-align: center;
+                transform: translateY(-50%);
+            }
+
+            .hero-slide-content h1 {
+                font-size: 1.5rem;
+                margin-bottom: 0.75rem;
+                line-height: 1.2;
+            }
+
+            .hero-slide-content p {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+                line-height: 1.4;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .hero-cta-buttons {
+                justify-content: center;
+                gap: 0.75rem;
+            }
+
+            .hero-cta-btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.85rem;
+                border-radius: 30px;
+            }
+
+            .hero-cta-btn i {
+                font-size: 0.85rem;
             }
 
             .hero-content h1 {
@@ -1631,26 +1676,32 @@
             }
 
             .slider-arrow {
-                width: 40px;
-                height: 40px;
+                width: 36px;
+                height: 36px;
+                display: none;
             }
 
             .slider-arrow.prev {
-                left: 15px;
+                left: 10px;
             }
 
             .slider-arrow.next {
-                right: 15px;
+                right: 10px;
             }
 
             .slider-dots {
-                bottom: 15px;
+                bottom: 12px;
                 gap: 8px;
+                padding: 8px 14px;
             }
 
             .slider-dot {
-                width: 10px;
-                height: 10px;
+                width: 8px;
+                height: 8px;
+            }
+
+            .slider-dot.active {
+                width: 24px;
             }
 
             .categories-section {
@@ -1845,10 +1896,54 @@
             }
 
             .hero-section {
-                height: 250px;
-                margin: 0.5rem;
+                height: 220px;
+                margin: 0.4rem;
                 border-radius: 12px;
-                width: calc(100% - 1rem);
+                width: calc(100% - 0.8rem);
+            }
+
+            .hero-slide::before {
+                background: linear-gradient(135deg,
+                    rgba(15, 23, 42, 0.75) 0%,
+                    rgba(30, 41, 59, 0.5) 50%,
+                    rgba(51, 65, 85, 0.3) 100%);
+            }
+
+            .hero-slide-content {
+                left: 3% !important;
+                right: 3% !important;
+                max-width: 94%;
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .hero-slide-content h1 {
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+                line-height: 1.2;
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            }
+
+            .hero-slide-content p {
+                font-size: 0.8rem;
+                margin-bottom: 0.75rem;
+                line-height: 1.3;
+                -webkit-line-clamp: 2;
+            }
+
+            .hero-cta-buttons {
+                gap: 0.5rem;
+            }
+
+            .hero-cta-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.75rem;
+                border-radius: 25px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .hero-cta-btn i {
+                font-size: 0.75rem;
             }
 
             .hero-content h1 {
@@ -1861,34 +1956,28 @@
             }
 
             .slider-arrow {
-                width: 35px;
-                height: 35px;
-            }
-
-            .slider-arrow i {
-                font-size: 16px;
-            }
-
-            .slider-arrow.prev {
-                left: 10px;
-            }
-
-            .slider-arrow.next {
-                right: 10px;
+                display: none;
             }
 
             .slider-dots {
-                bottom: 10px;
-                gap: 6px;
+                bottom: 8px;
+                gap: 5px;
+                padding: 6px 10px;
+                border-radius: 20px;
             }
 
             .slider-dot {
-                width: 8px;
-                height: 8px;
+                width: 6px;
+                height: 6px;
             }
 
             .slider-dot.active {
-                width: 20px;
+                width: 18px;
+                border-radius: 6px;
+            }
+
+            .slider-progress {
+                height: 3px;
             }
 
             .section-header h2 {
