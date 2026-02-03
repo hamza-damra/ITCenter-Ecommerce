@@ -1623,8 +1623,8 @@
             }
 
             .hero-slide-content {
-                left: 4% !important;
-                right: auto !important;
+                {{ is_rtl() ? 'right' : 'left' }}: 4% !important;
+                {{ is_rtl() ? 'left' : 'right' }}: auto !important;
                 max-width: 70%;
                 padding: 1.25rem;
                 text-align: start;
@@ -1910,8 +1910,8 @@
             }
 
             .hero-slide-content {
-                left: 3% !important;
-                right: auto !important;
+                {{ is_rtl() ? 'right' : 'left' }}: 3% !important;
+                {{ is_rtl() ? 'left' : 'right' }}: auto !important;
                 max-width: 75%;
                 padding: 1rem;
                 text-align: start;
