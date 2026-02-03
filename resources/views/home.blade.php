@@ -1624,10 +1624,10 @@
 
             .hero-slide-content {
                 left: 4% !important;
-                right: 4% !important;
-                max-width: 92%;
+                right: auto !important;
+                max-width: 70%;
                 padding: 1.25rem;
-                text-align: center;
+                text-align: start;
                 transform: translateY(-50%);
             }
 
@@ -1648,7 +1648,7 @@
             }
 
             .hero-cta-buttons {
-                justify-content: center;
+                justify-content: flex-start;
                 gap: 0.75rem;
             }
 
@@ -1911,10 +1911,10 @@
 
             .hero-slide-content {
                 left: 3% !important;
-                right: 3% !important;
-                max-width: 94%;
+                right: auto !important;
+                max-width: 75%;
                 padding: 1rem;
-                text-align: center;
+                text-align: start;
             }
 
             .hero-slide-content h1 {
@@ -1932,6 +1932,7 @@
             }
 
             .hero-cta-buttons {
+                justify-content: flex-start;
                 gap: 0.5rem;
             }
 
