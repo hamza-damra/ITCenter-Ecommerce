@@ -1636,4 +1636,19 @@ return [
     'spec_label_too_long' => 'لا يمكن أن تتجاوز تسمية المواصفة :max حرفاً.',
     'spec_value_required_with_label' => 'قيمة المواصفة مطلوبة عند تقديم تسمية.',
     'spec_value_too_long' => 'لا يمكن أن تتجاوز قيمة المواصفة :max حرفاً.',
+    
+    // Banner Form
+    'click_to_upload' => 'انقر للرفع',
+    'at_least_one_required' => '(واحد على الأقل مطلوب)',
+    'enter_title_english' => 'أدخل عنوان البانر بالإنجليزية',
+    'enter_title_arabic' => 'أدخل عنوان البانر بالعربية',
+    'enter_title_hebrew' => 'أدخل عنوان البانر بالعبرية',
+    'enter_subtitle_english' => 'أدخل العنوان الفرعي بالإنجليزية',
+    'enter_subtitle_arabic' => 'أدخل العنوان الفرعي بالعربية',
+    'enter_subtitle_hebrew' => 'أدخل العنوان الفرعي بالعبرية',
+    'enter_button_text' => 'أدخل نص الزر',
+    'enter_button_text_arabic' => 'أدخل نص الزر بالعربية',
+    'enter_button_text_hebrew' => 'أدخل نص الزر بالعبرية',
+    'add_new_banner_to_slider' => 'إضافة بانر جديد للشريط',
+    'upload_too_large' => 'الملف المرفوع كبير جداً. الحد الأقصى المسموح به هو :size.',
 ];

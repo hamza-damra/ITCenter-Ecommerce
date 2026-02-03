@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Exceptions\PostTooLargeException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -194,6 +195,24 @@ return Application::configure(basePath: dirname(__DIR__))
                     'errors' => $e->errors(),
                 ], 422);
             }
+        });
+
+        // Handle PostTooLargeException (file upload too large)
+        $exceptions->render(function (PostTooLargeException $e, Request $request) {
+            $maxSize = ini_get('post_max_size');
+            
+            if ($request->is('api/*') || $request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => trans('messages.upload_too_large', ['size' => $maxSize]),
+                    'error' => 'Post Too Large',
+                ], 413);
+            }
+            
+            // For web requests, redirect back with error
+            return redirect()->back()
+                ->withInput($request->except(['image', 'images', 'file', 'files']))
+                ->with('error', trans('messages.upload_too_large', ['size' => $maxSize]));
         });
 
         $exceptions->render(function (AuthenticationException $e, Request $request) {

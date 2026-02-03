@@ -1724,5 +1724,19 @@ return [
     'spec_label_too_long' => 'Specification label cannot exceed :max characters.',
     'spec_value_required_with_label' => 'Specification value is required when a label is provided.',
     'spec_value_too_long' => 'Specification value cannot exceed :max characters.',
+    
+    // Banner Form
+    'click_to_upload' => 'Click to upload',
+    'at_least_one_required' => '(at least one required)',
+    'enter_title_english' => 'Enter banner title in English',
+    'enter_title_arabic' => 'Enter banner title in Arabic',
+    'enter_title_hebrew' => 'Enter banner title in Hebrew',
+    'enter_subtitle_english' => 'Enter banner subtitle in English',
+    'enter_subtitle_arabic' => 'Enter banner subtitle in Arabic',
+    'enter_subtitle_hebrew' => 'Enter banner subtitle in Hebrew',
+    'enter_button_text' => 'Enter button text',
+    'enter_button_text_arabic' => 'Enter button text in Arabic',
+    'enter_button_text_hebrew' => 'Enter button text in Hebrew',
+    'add_new_banner_to_slider' => 'Add New Banner to Slider',
+    'upload_too_large' => 'The uploaded file is too large. Maximum allowed size is :size.',
 ];
-

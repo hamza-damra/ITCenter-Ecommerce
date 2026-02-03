@@ -1468,4 +1468,19 @@ return [
     'spec_label_too_long' => 'תווית המפרט לא יכולה לעלות על :max תווים.',
     'spec_value_required_with_label' => 'ערך המפרט נדרש כאשר מסופקת תווית.',
     'spec_value_too_long' => 'ערך המפרט לא יכול לעלות על :max תווים.',
+    
+    // Banner Form
+    'click_to_upload' => 'לחץ להעלאה',
+    'at_least_one_required' => '(נדרש לפחות אחד)',
+    'enter_title_english' => 'הזן כותרת באנר באנגלית',
+    'enter_title_arabic' => 'הזן כותרת באנר בערבית',
+    'enter_title_hebrew' => 'הזן כותרת באנר בעברית',
+    'enter_subtitle_english' => 'הזן כותרת משנה באנגלית',
+    'enter_subtitle_arabic' => 'הזן כותרת משנה בערבית',
+    'enter_subtitle_hebrew' => 'הזן כותרת משנה בעברית',
+    'enter_button_text' => 'הזן טקסט כפתור',
+    'enter_button_text_arabic' => 'הזן טקסט כפתור בערבית',
+    'enter_button_text_hebrew' => 'הזן טקסט כפתור בעברית',
+    'add_new_banner_to_slider' => 'הוסף באנר חדש לסליידר',
+    'upload_too_large' => 'הקובץ שהועלה גדול מדי. הגודל המרבי המותר הוא :size.',
 ];

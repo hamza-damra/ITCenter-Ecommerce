@@ -1,0 +1,3 @@
+@echo off
+echo Starting Laravel server with 30MB upload limit...
+php -d upload_max_filesize=30M -d post_max_size=32M -d max_execution_time=0 -d memory_limit=256M artisan serve --host=0.0.0.0

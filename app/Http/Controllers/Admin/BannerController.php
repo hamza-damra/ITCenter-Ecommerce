@@ -59,8 +59,8 @@ class BannerController extends Controller
             $rules['image_url'] = 'required|url|max:2048';
         } else {
             // Database storage requires file upload
-            // Max 2MB to prevent MySQL packet errors (without GD compression)
-            $rules['image'] = 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048';
+            // Max 30MB - images are compressed before storage
+            $rules['image'] = 'required|image|mimes:jpg,jpeg,png,gif,webp|max:30720';
         }
 
         $validated = $request->validate($rules);
@@ -159,8 +159,8 @@ class BannerController extends Controller
             }
         } else {
             // Database storage - image optional for updates unless source changed
-            // Max 2MB to prevent MySQL packet errors (without GD compression)
-            $rules['image'] = 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048';
+            // Max 30MB - images are compressed before storage
+            $rules['image'] = 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:30720';
         }
 
         $validated = $request->validate($rules);

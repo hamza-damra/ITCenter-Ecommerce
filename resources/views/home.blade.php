@@ -3446,12 +3446,20 @@
                                 @if($banner->subtitle)
                                     <p>{{ $banner->subtitle }}</p>
                                 @endif
-                                @if($banner->button_text && $banner->link)
+                                @if($banner->button_text)
                                     <div class="hero-cta-buttons">
-                                        <a href="{{ $banner->link }}" class="hero-cta-btn primary">
-                                            <i class="fas fa-shopping-bag"></i>
-                                            {{ $banner->button_text }}
-                                        </a>
+                                        @if($banner->link)
+                                            {{-- Use span when slide is already wrapped in <a> to avoid nested links --}}
+                                            <span class="hero-cta-btn primary">
+                                                <i class="fas fa-shopping-bag"></i>
+                                                {{ $banner->button_text }}
+                                            </span>
+                                        @else
+                                            <span class="hero-cta-btn primary" style="cursor: default;">
+                                                <i class="fas fa-shopping-bag"></i>
+                                                {{ $banner->button_text }}
+                                            </span>
+                                        @endif
                                     </div>
                                 @endif
                             </div>
