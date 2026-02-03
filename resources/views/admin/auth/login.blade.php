@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ __('Admin Login') }} - IT Center</title>
+    <title>{{ __('messages.admin_panel') }} - IT Center</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -220,9 +220,14 @@
             border: none;
             color: var(--secondary);
             cursor: pointer;
-            padding: 8px;
+            padding: 0;
             font-size: 18px;
             transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
         }
 
         .password-toggle:hover {
@@ -399,8 +404,8 @@
                     <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
                 </div>
                 <div class="company-name">IT Center</div>
-                <h1>{{ __('Admin Panel') }}</h1>
-                <p>{{ __('Sign in to manage your store') }}</p>
+                <h1>{{ __('messages.admin_panel') }}</h1>
+                <p>{{ __('messages.login_description') }}</p>
             </div>
 
             <div class="login-body">
@@ -434,7 +439,7 @@
 
                     <div class="form-group">
                         <label for="email">
-                            {{ __('Email Address') }}
+                            {{ __('messages.email_address') }}
                             <span class="required">*</span>
                         </label>
                         <div class="input-wrapper">
@@ -445,7 +450,7 @@
                                 name="email" 
                                 class="form-control @error('email') is-invalid @enderror" 
                                 value="{{ old('email') }}" 
-                                placeholder="{{ __('Enter your email') }}"
+                                placeholder="{{ __('messages.email_placeholder') }}"
                                 required 
                                 autofocus
                             >
@@ -457,7 +462,7 @@
 
                     <div class="form-group">
                         <label for="password">
-                            {{ __('Password') }}
+                            {{ __('messages.password') }}
                             <span class="required">*</span>
                         </label>
                         <div class="input-wrapper">
@@ -467,7 +472,7 @@
                                 id="password" 
                                 name="password" 
                                 class="form-control password-input @error('password') is-invalid @enderror" 
-                                placeholder="{{ __('Enter your password') }}"
+                                placeholder="{{ __('messages.password_placeholder') }}"
                                 required
                             >
                             <button type="button" class="password-toggle" onclick="togglePassword()">
@@ -482,12 +487,12 @@
                     <div class="remember-forgot">
                         <div class="checkbox-wrapper">
                             <input type="checkbox" id="remember" name="remember">
-                            <label for="remember">{{ __('Remember me') }}</label>
+                            <label for="remember">{{ __('messages.remember_me') }}</label>
                         </div>
                     </div>
 
                     <button type="submit" class="btn-primary" id="submitBtn">
-                        {{ __('Sign In') }}
+                        {{ __('messages.login') }}
                         <i class="fas fa-arrow-{{ is_rtl() ? 'left' : 'right' }}"></i>
                     </button>
                 </form>
@@ -495,7 +500,7 @@
                 <div class="back-to-site">
                     <a href="{{ route('home') }}">
                         <i class="fas fa-arrow-{{ is_rtl() ? 'right' : 'left' }}"></i>
-                        {{ __('Back to Website') }}
+                        {{ __('messages.back_to_site') }}
                     </a>
                 </div>
             </div>

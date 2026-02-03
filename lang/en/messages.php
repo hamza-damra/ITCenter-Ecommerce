@@ -390,6 +390,12 @@ return [
     
     // Admin Panel
     'admin_panel' => 'Admin Panel',
+    'admin_login_required' => 'Please login to access the admin panel.',
+    'admin_permission_denied' => 'You do not have permission to access the admin panel.',
+    'invalid_credentials' => 'These credentials do not match our records.',
+    'invalid_admin_credentials' => 'These credentials do not match an admin account.',
+    'welcome_back_name' => 'Welcome back, :name!',
+    'database_missing_bootstrap' => 'Database is missing. Please use Bootstrap Mode to restore it.',
     'dashboard' => 'Dashboard',
     'products_management' => 'Products Management',
     'categories_management' => 'Categories Management',
@@ -775,6 +781,7 @@ return [
 
     // Authentication
     'login' => 'Login',
+    'back_to_site' => 'Back to Website',
     'register' => 'Register',
     'logout' => 'Logout',
     'my_orders' => 'My Orders',

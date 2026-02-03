@@ -112,7 +112,6 @@
                 <span class="mini-stat-value">{{ $stats['out_of_stock'] }}</span>
                 <span class="mini-stat-label">{{ __('messages.out_of_stock_count') }}</span>
             </div>
-            <span class="mini-stat-badge alert">{{ __('messages.need_attention') }}</span>
         </div>
 
         <div class="mini-stat reviews">
@@ -123,7 +122,6 @@
                 <span class="mini-stat-value">{{ $stats['total_reviews'] }}</span>
                 <span class="mini-stat-label">{{ __('messages.total_reviews') }}</span>
             </div>
-            <span class="mini-stat-badge">{{ __('messages.customer_feedback') }}</span>
         </div>
 
         <div class="mini-stat offers">
@@ -134,7 +132,6 @@
                 <span class="mini-stat-value">{{ $stats['active_offers'] }}</span>
                 <span class="mini-stat-label">{{ __('messages.active_offers') }}</span>
             </div>
-            <span class="mini-stat-badge">{{ __('messages.running_campaigns') }}</span>
         </div>
     </div>
 
@@ -267,6 +264,18 @@
     <div class="content-grid">
         <!-- Recent Products -->
         <div class="content-card products-table-card">
+            @if(app()->getLocale() === 'ar' || app()->getLocale() === 'he')
+            <div class="card-header-pro">
+                <a href="{{ route('admin.products.index', ['filter' => 'recent']) }}" class="view-all-btn">
+                    <i class="fas fa-arrow-right" style="transform: rotate(180deg);"></i>
+                    {{ __('messages.view_all') }}
+                </a>
+                <div class="header-title">
+                    <h2>{{ __('messages.recent_products') }}</h2>
+                    <i class="fas fa-clock"></i>
+                </div>
+            </div>
+            @else
             <div class="card-header-pro">
                 <div class="header-title">
                     <i class="fas fa-clock"></i>
@@ -277,6 +286,7 @@
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
+            @endif
             <div class="card-body-pro">
                 @if($recent_products->count() > 0)
                 <div class="table-wrapper">
@@ -342,7 +352,7 @@
             <div class="card-header-pro accent">
                 <div class="header-title">
                     <i class="fas fa-bolt"></i>
-                    <h2>{{ __('messages.quick_actions') }}</h2>
+                    <h2 style="color: white !important;">{{ __('messages.quick_actions') }}</h2>
                 </div>
             </div>
             <div class="card-body-pro no-padding">
@@ -375,22 +385,22 @@
                 <div class="quick-links">
                     <a href="{{ route('admin.products.index') }}" class="quick-link">
                         <i class="fas fa-list"></i>
-                        {{ __('messages.manage_products') }}
+                        <span>{{ __('messages.manage_products') }}</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                     <a href="{{ route('admin.categories.index') }}" class="quick-link">
                         <i class="fas fa-folder"></i>
-                        {{ __('messages.manage_categories') }}
+                        <span>{{ __('messages.manage_categories') }}</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                     <a href="{{ route('admin.brands.index') }}" class="quick-link">
                         <i class="fas fa-tags"></i>
-                        {{ __('messages.manage_brands') }}
+                        <span>{{ __('messages.manage_brands') }}</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                     <a href="{{ route('admin.orders.index') }}" class="quick-link">
                         <i class="fas fa-shopping-bag"></i>
-                        {{ __('messages.view_orders') }}
+                        <span>{{ __('messages.view_orders') }}</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>
@@ -400,28 +410,29 @@
 
     <!-- Analytics Section -->
     <div class="analytics-section">
-        <div class="section-label">
+        <div class="section-label" @if(app()->getLocale() === 'ar' || app()->getLocale() === 'he') style="flex-direction: row-reverse; justify-content: flex-end;" @endif>
             <i class="fas fa-chart-bar"></i>
             <span>{{ __('messages.analytics_overview') }}</span>
         </div>
         
+        @php $isRtl = app()->getLocale() === 'ar' || app()->getLocale() === 'he'; @endphp
         <div class="analytics-grid">
-            <div class="analytics-card cart">
+            <div class="analytics-card cart" @if($isRtl) style="flex-direction: row-reverse !important;" @endif>
                 <div class="analytics-icon">
                     <i class="fas fa-shopping-cart"></i>
                 </div>
-                <div class="analytics-content">
+                <div class="analytics-content" @if($isRtl) style="text-align: right !important; align-items: flex-start !important;" @endif>
                     <span class="analytics-value">₪{{ number_format($stats['cart_value'] ?? 0, 2) }}</span>
                     <span class="analytics-label">{{ __('messages.total_cart_value') }}</span>
                     <span class="analytics-sub">{{ $stats['active_carts'] ?? 0 }} {{ __('messages.active_carts') }}</span>
                 </div>
             </div>
 
-            <div class="analytics-card rating">
+            <div class="analytics-card rating" @if($isRtl) style="flex-direction: row-reverse !important;" @endif>
                 <div class="analytics-icon">
                     <i class="fas fa-star"></i>
                 </div>
-                <div class="analytics-content">
+                <div class="analytics-content" @if($isRtl) style="text-align: right !important; align-items: flex-start !important;" @endif>
                     <span class="analytics-value">
                         {{ number_format($stats['average_rating'] ?? 0, 1) }}
                         <span class="rating-star"><i class="fas fa-star"></i></span>
@@ -431,22 +442,22 @@
                 </div>
             </div>
 
-            <div class="analytics-card stock">
+            <div class="analytics-card stock" @if($isRtl) style="flex-direction: row-reverse !important;" @endif>
                 <div class="analytics-icon">
                     <i class="fas fa-warehouse"></i>
                 </div>
-                <div class="analytics-content">
+                <div class="analytics-content" @if($isRtl) style="text-align: right !important; align-items: flex-start !important;" @endif>
                     <span class="analytics-value">₪{{ number_format($stats['total_stock_value'] ?? 0, 0) }}</span>
                     <span class="analytics-label">{{ __('messages.total_stock_value') }}</span>
                     <span class="analytics-sub">{{ __('messages.inventory_value') }}</span>
                 </div>
             </div>
 
-            <div class="analytics-card favorites">
+            <div class="analytics-card favorites" @if($isRtl) style="flex-direction: row-reverse !important;" @endif>
                 <div class="analytics-icon">
                     <i class="fas fa-heart"></i>
                 </div>
-                <div class="analytics-content">
+                <div class="analytics-content" @if($isRtl) style="text-align: right !important; align-items: flex-start !important;" @endif>
                     <span class="analytics-value">{{ $stats['total_favorites'] ?? 0 }}</span>
                     <span class="analytics-label">{{ __('messages.total_favorites') }}</span>
                     <span class="analytics-sub">{{ __('messages.customer_wishlists') }}</span>
@@ -459,6 +470,18 @@
     <div class="content-grid bottom-grid">
         <!-- Top Rated Products -->
         <div class="content-card">
+            @if(app()->getLocale() === 'ar' || app()->getLocale() === 'he')
+            <div class="card-header-pro">
+                <a href="{{ route('admin.products.index', ['filter' => 'top_rated']) }}" class="view-all-btn">
+                    <i class="fas fa-arrow-right" style="transform: rotate(180deg);"></i>
+                    {{ __('messages.view_all') }}
+                </a>
+                <div class="header-title">
+                    <h2>{{ __('messages.top_rated_products') }}</h2>
+                    <i class="fas fa-trophy"></i>
+                </div>
+            </div>
+            @else
             <div class="card-header-pro">
                 <div class="header-title">
                     <i class="fas fa-trophy"></i>
@@ -469,6 +492,7 @@
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
+            @endif
             <div class="card-body-pro">
                 @if(isset($top_rated_products) && $top_rated_products->count() > 0)
                 <div class="rated-products-list">
@@ -503,6 +527,17 @@
 
         <!-- Low Stock Alerts -->
         <div class="content-card alerts-card">
+            @if(app()->getLocale() === 'ar' || app()->getLocale() === 'he')
+            <div class="card-header-pro warning" style="justify-content: flex-start;">
+                <div class="header-title" style="margin-left: auto;">
+                    <h2>{{ __('messages.low_stock_alerts') }}</h2>
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                @if(isset($low_stock_products) && $low_stock_products->count() > 0)
+                <span class="alert-count" style="margin-left: 1rem;">{{ $low_stock_products->count() }}</span>
+                @endif
+            </div>
+            @else
             <div class="card-header-pro warning">
                 <div class="header-title">
                     <i class="fas fa-exclamation-triangle"></i>
@@ -512,6 +547,7 @@
                 <span class="alert-count">{{ $low_stock_products->count() }}</span>
                 @endif
             </div>
+            @endif
             <div class="card-body-pro">
                 @if(isset($low_stock_products) && $low_stock_products->count() > 0)
                 <div class="alerts-list">
@@ -1238,6 +1274,16 @@
     border-bottom: 1px solid var(--border-color);
 }
 
+.dashboard-pro[dir="rtl"] .card-header-pro,
+[dir="rtl"] .card-header-pro {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .header-title,
+[dir="rtl"] .header-title {
+    flex-direction: row-reverse !important;
+}
+
 .card-header-pro.accent {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     border-bottom: none;
@@ -1540,7 +1586,7 @@
     padding-left: 1.5rem;
 }
 
-[dir="rtl"] .quick-link:hover {
+.dashboard-pro[dir="rtl"] .quick-link:hover {
     padding-left: 1.25rem;
     padding-right: 1.5rem;
 }
@@ -1557,11 +1603,6 @@
     color: var(--text-muted);
 }
 
-[dir="rtl"] .quick-link i:last-child {
-    margin-left: 0;
-    margin-right: auto;
-    transform: rotate(180deg);
-}
 
 /* Analytics Section */
 .analytics-section {
@@ -1876,193 +1917,243 @@
     opacity: 0.6;
 }
 
-/* RTL Adjustments */
-[dir="rtl"] .welcome-text {
+/* ============================================
+   RTL (Arabic/Hebrew) Adjustments
+   Using .dashboard-pro[dir="rtl"] for proper specificity
+   ============================================ */
+
+/* Hero Section RTL */
+.dashboard-pro[dir="rtl"] .welcome-text {
     text-align: right;
 }
 
-[dir="rtl"] .hero-decoration {
+.dashboard-pro[dir="rtl"] .hero-content {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .hero-decoration {
     right: auto;
     left: 0;
 }
 
-[dir="rtl"] .pro-table th,
-[dir="rtl"] .pro-table td {
+.dashboard-pro[dir="rtl"] .date-display {
+    flex-direction: row-reverse !important;
+}
+
+/* Section Labels RTL - Icon and text on the right */
+.dashboard-pro[dir="rtl"] .section-label {
+    flex-direction: row-reverse !important;
+    justify-content: flex-end !important;
+}
+
+.dashboard-pro[dir="rtl"] .section-header-pro {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .online-indicator {
+    flex-direction: row-reverse !important;
+}
+
+/* Primary Stats Cards RTL */
+.dashboard-pro[dir="rtl"] .stat-card {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .stat-info {
+    text-align: right;
+    align-items: flex-start;
+}
+
+/* Secondary Stats (Mini Stats) RTL */
+.dashboard-pro[dir="rtl"] .mini-stat {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .mini-stat-content {
+    text-align: right;
+    align-items: flex-start;
+}
+
+.dashboard-pro[dir="rtl"] .mini-stat-badge {
+    right: auto;
+    left: 0.75rem;
+}
+
+/* User Statistics RTL */
+.dashboard-pro[dir="rtl"] .user-main-card {
+    text-align: right;
+    align-items: flex-start;
+}
+
+.dashboard-pro[dir="rtl"] .user-main-info {
+    align-items: flex-start;
+}
+
+.dashboard-pro[dir="rtl"] .user-breakdown {
+    flex-direction: row-reverse !important;
+    justify-content: flex-start;
+}
+
+.dashboard-pro[dir="rtl"] .breakdown-item {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .user-stat-card {
+    text-align: right;
+    align-items: flex-start;
+}
+
+.dashboard-pro[dir="rtl"] .user-stat-header {
+    flex-direction: row-reverse !important;
+    justify-content: flex-start;
+}
+
+/* User Metrics RTL */
+.dashboard-pro[dir="rtl"] .metric-card {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .metric-info {
+    text-align: right;
+    align-items: flex-start;
+}
+
+/* Card Headers RTL */
+.dashboard-pro[dir="rtl"] .card-header-pro {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .header-title {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .view-all-btn {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .view-all-btn i {
+    transform: rotate(180deg);
+}
+
+/* Tables RTL */
+.dashboard-pro[dir="rtl"] .pro-table th,
+.dashboard-pro[dir="rtl"] .pro-table td {
     text-align: right;
 }
 
-[dir="rtl"] .alert-item {
+.dashboard-pro[dir="rtl"] .product-cell-pro {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .product-details {
+    text-align: right;
+    align-items: flex-start;
+}
+
+/* Quick Actions RTL */
+.dashboard-pro[dir="rtl"] .quick-action {
+    text-align: center;
+}
+
+.dashboard-pro[dir="rtl"] .action-label {
+    text-align: center;
+}
+
+/* Quick Links RTL - text should be on the right */
+.dashboard-pro[dir="rtl"] .quick-link {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .quick-link span {
+    flex: 1;
+    text-align: right;
+}
+
+.dashboard-pro[dir="rtl"] .quick-link i:last-child {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    transform: rotate(180deg);
+}
+
+.dashboard-pro[dir="rtl"] .quick-link i:first-child {
+    margin-left: 0;
+}
+
+/* Analytics Cards RTL */
+.dashboard-pro[dir="rtl"] .analytics-card {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .analytics-content {
+    text-align: right;
+    align-items: flex-start;
+}
+
+.dashboard-pro[dir="rtl"] .analytics-value {
+    flex-direction: row-reverse !important;
+    justify-content: flex-start;
+}
+
+/* Rated Products RTL */
+.dashboard-pro[dir="rtl"] .rated-product-item {
+    flex-direction: row-reverse !important;
+}
+
+.dashboard-pro[dir="rtl"] .rated-product-info {
+    text-align: right;
+}
+
+.dashboard-pro[dir="rtl"] .rating-display {
+    flex-direction: row-reverse !important;
+    justify-content: flex-start;
+}
+
+/* Alert Items RTL */
+.dashboard-pro[dir="rtl"] .alert-item {
+    flex-direction: row-reverse !important;
     border-left: none;
     border-right: 4px solid;
 }
 
-[dir="rtl"] .alert-item.warning {
+.dashboard-pro[dir="rtl"] .alert-item.warning {
     border-right-color: var(--accent-amber);
 }
 
-[dir="rtl"] .alert-item.critical {
+.dashboard-pro[dir="rtl"] .alert-item.critical {
     border-right-color: var(--accent-rose);
 }
 
-/* RTL for Primary Stats Cards */
-[dir="rtl"] .primary-stats {
-    direction: rtl;
-}
-
-[dir="rtl"] .stat-card {
-    flex-direction: row-reverse;
+.dashboard-pro[dir="rtl"] .alert-info {
     text-align: right;
 }
 
-[dir="rtl"] .stat-info {
-    text-align: right;
-    align-items: flex-end;
+.dashboard-pro[dir="rtl"] .alert-stock {
+    text-align: center;
 }
 
-[dir="rtl"] .stat-trend {
-    margin-left: 0;
-    margin-right: auto;
+/* RTL Text Transform Fixes - Arabic doesn't use uppercase */
+.dashboard-pro[dir="rtl"] .status-badge,
+.dashboard-pro[dir="rtl"] .stock-label,
+.dashboard-pro[dir="rtl"] .mini-stat-badge,
+.dashboard-pro[dir="rtl"] .pro-table th {
+    text-transform: none;
+    letter-spacing: normal;
 }
 
-/* RTL for Secondary Stats (Mini Stats) */
-[dir="rtl"] .secondary-stats {
-    direction: rtl;
+/* Fix stat card border in RTL */
+.dashboard-pro[dir="rtl"] .stat-card::before {
+    left: auto;
+    right: 0;
 }
 
-[dir="rtl"] .mini-stat {
-    flex-direction: row-reverse;
-    text-align: right;
+/* Fix greeting badge alignment */
+.dashboard-pro[dir="rtl"] .welcome-text .greeting-time {
+    display: inline-block;
 }
 
-[dir="rtl"] .mini-stat-content {
-    text-align: right;
-    align-items: flex-end;
-}
-
-[dir="rtl"] .mini-stat-badge {
-    margin-left: 0;
-    margin-right: auto;
-}
-
-/* RTL for User Stats */
-[dir="rtl"] .user-stats-grid {
-    direction: rtl;
-}
-
-[dir="rtl"] .user-main-card {
-    text-align: right;
-}
-
-[dir="rtl"] .user-main-info {
-    text-align: right;
-}
-
-[dir="rtl"] .user-stat-card {
-    text-align: right;
-}
-
-[dir="rtl"] .user-stat-header {
-    flex-direction: row-reverse;
-}
-
-[dir="rtl"] .breakdown-item {
-    flex-direction: row-reverse;
-}
-
-/* RTL for Analytics Cards */
-[dir="rtl"] .analytics-grid {
-    direction: rtl;
-}
-
-[dir="rtl"] .analytics-card {
-    flex-direction: row-reverse;
-    text-align: right;
-}
-
-[dir="rtl"] .analytics-content {
-    text-align: right;
-    align-items: flex-end;
-}
-
-/* RTL for Metric Cards */
-[dir="rtl"] .user-metrics {
-    direction: rtl;
-}
-
-[dir="rtl"] .metric-card {
-    flex-direction: row-reverse;
-    text-align: right;
-}
-
-[dir="rtl"] .metric-info {
-    text-align: right;
-}
-
-/* RTL for Section Labels */
-[dir="rtl"] .section-label {
-    flex-direction: row-reverse;
-}
-
-[dir="rtl"] .section-header-pro {
-    flex-direction: row-reverse;
-}
-
-[dir="rtl"] .online-indicator {
-    flex-direction: row-reverse;
-}
-
-/* RTL for Card Headers */
-[dir="rtl"] .card-header-pro {
-    flex-direction: row-reverse;
-}
-
-[dir="rtl"] .header-title {
-    flex-direction: row-reverse;
-}
-
-[dir="rtl"] .view-all-btn {
-    flex-direction: row-reverse;
-}
-
-[dir="rtl"] .view-all-btn i {
-    transform: rotate(180deg);
-}
-
-/* RTL for Content Grid */
-[dir="rtl"] .content-grid {
-    direction: rtl;
-}
-
-/* RTL for Quick Actions */
-[dir="rtl"] .quick-actions-grid {
-    direction: rtl;
-}
-
-[dir="rtl"] .quick-links {
-    direction: rtl;
-}
-
-/* RTL for Rated Products */
-[dir="rtl"] .rated-product-item {
-    flex-direction: row-reverse;
-    text-align: right;
-}
-
-[dir="rtl"] .rated-product-info {
-    text-align: right;
-}
-
-[dir="rtl"] .rating-display {
-    flex-direction: row-reverse;
-}
-
-/* RTL for Alert Items */
-[dir="rtl"] .alert-info {
-    text-align: right;
-}
-
-[dir="rtl"] .alert-stock {
-    text-align: right;
+/* Status badge icon alignment */
+.dashboard-pro[dir="rtl"] .status-badge {
+    flex-direction: row-reverse !important;
 }
 </style>
 
@@ -2096,6 +2187,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         }
     });
+
+    // RTL Fixes - dynamically apply flex-direction for RTL
+    const dashboardPro = document.querySelector('.dashboard-pro');
+    if (dashboardPro && dashboardPro.getAttribute('dir') === 'rtl') {
+        // Fix card headers
+        document.querySelectorAll('.card-header-pro').forEach(el => {
+            el.style.flexDirection = 'row-reverse';
+        });
+        // Fix header titles
+        document.querySelectorAll('.header-title').forEach(el => {
+            el.style.flexDirection = 'row-reverse';
+        });
+        // Fix section labels
+        document.querySelectorAll('.section-label').forEach(el => {
+            el.style.flexDirection = 'row-reverse';
+            el.style.justifyContent = 'flex-end';
+        });
+        // Fix analytics cards
+        document.querySelectorAll('.analytics-card').forEach(el => {
+            el.style.flexDirection = 'row-reverse';
+        });
+        // Fix quick links
+        document.querySelectorAll('.quick-link').forEach(el => {
+            el.style.flexDirection = 'row-reverse';
+        });
+    }
 });
 </script>
 @endsection

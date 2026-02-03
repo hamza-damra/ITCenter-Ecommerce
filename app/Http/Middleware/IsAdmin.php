@@ -18,13 +18,13 @@ class IsAdmin
     {
         if (!Auth::check()) {
             return redirect()->route('admin.login')
-                ->with('error', __('Please login to access the admin panel.'));
+                ->with('error', __('messages.admin_login_required'));
         }
 
         if (Auth::user()->role !== 'admin') {
             Auth::logout();
             return redirect()->route('admin.login')
-                ->with('error', __('You do not have permission to access the admin panel.'));
+                ->with('error', __('messages.admin_permission_denied'));
         }
 
         return $next($request);

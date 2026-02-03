@@ -354,6 +354,12 @@ return [
     
     // Admin Panel
     'admin_panel' => 'لوحة الإدارة',
+    'admin_login_required' => 'يرجى تسجيل الدخول للوصول إلى لوحة الإدارة.',
+    'admin_permission_denied' => 'ليس لديك صلاحية للوصول إلى لوحة الإدارة.',
+    'invalid_credentials' => 'البيانات المدخلة غير صحيحة.',
+    'invalid_admin_credentials' => 'هذه البيانات لا تتطابق مع حساب المدير.',
+    'welcome_back_name' => 'مرحباً بعودتك، :name!',
+    'database_missing_bootstrap' => 'قاعدة البيانات مفقودة. يرجى استخدام وضع Bootstrap لاستعادتها.',
     'dashboard' => 'لوحة التحكم',
     'products_management' => 'إدارة المنتجات',
     'categories_management' => 'إدارة الفئات',
@@ -853,6 +859,7 @@ return [
     'payment' => 'الدفع',
     'name' => 'الاسم',
     'login' => 'تسجيل الدخول',
+    'back_to_site' => 'العودة إلى الموقع',
     
     // Contact Page
     'get_in_touch' => 'تواصل مع فريقنا',

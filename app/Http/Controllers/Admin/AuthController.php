@@ -18,7 +18,7 @@ class AuthController extends Controller
         try {
             if (\App\Services\DatabaseStateService::shouldEnableBootstrapMode()) {
                 return redirect()->route('admin.bootstrap.login')
-                    ->with('info', 'Database is missing. Please use Bootstrap Mode to restore it.');
+                    ->with('info', __('messages.database_missing_bootstrap'));
             }
         } catch (\Exception $e) {
             // If state detection fails, continue with normal login
@@ -32,7 +32,7 @@ class AuthController extends Controller
             // If auth check fails (database issue), redirect to bootstrap
             if (\App\Services\DatabaseStateService::shouldEnableBootstrapMode()) {
                 return redirect()->route('admin.bootstrap.login')
-                    ->with('info', 'Database is missing. Please use Bootstrap Mode to restore it.');
+                    ->with('info', __('messages.database_missing_bootstrap'));
             }
         }
         
@@ -65,18 +65,18 @@ class AuthController extends Controller
             if ($user->role !== 'admin') {
                 Auth::logout();
                 return redirect()->back()
-                    ->withErrors(['email' => __('These credentials do not match an admin account.')])
+                    ->withErrors(['email' => __('messages.invalid_admin_credentials')])
                     ->withInput($request->only('email'));
             }
 
             $request->session()->regenerate();
             
             return redirect()->intended(route('admin.dashboard'))
-                ->with('success', __('Welcome back, :name!', ['name' => $user->name]));
+                ->with('success', __('messages.welcome_back_name', ['name' => $user->name]));
         }
 
         return redirect()->back()
-            ->withErrors(['email' => __('These credentials do not match our records.')])
+            ->withErrors(['email' => __('messages.invalid_credentials')])
             ->withInput($request->only('email'));
     }
 
@@ -91,6 +91,6 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
         
         return redirect()->route('admin.login')
-            ->with('success', __('You have been logged out successfully.'));
+            ->with('success', __('messages.logout_success'));
     }
 }
