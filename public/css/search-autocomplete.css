@@ -19,7 +19,7 @@
     opacity: 0;
     visibility: hidden;
     transform: translateY(-8px);
-    transition: all 0.2s ease;
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
     border: 1px solid #e5e7eb;
 }
 
@@ -244,6 +244,12 @@
     color: #6b7280;
 }
 
+/* Results Wrapper */
+.autocomplete-results-wrapper {
+    position: relative;
+}
+
+
 /* Loading State */
 .autocomplete-loading {
     display: flex;
@@ -267,6 +273,7 @@
 @keyframes autocomplete-spin {
     to { transform: rotate(360deg); }
 }
+
 
 /* RTL Support */
 [dir="rtl"] .autocomplete-item {
@@ -311,16 +318,3 @@
     }
 }
 
-/* Animation for items */
-.autocomplete-item {
-    animation: fadeIn 0.15s ease;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}

@@ -21,6 +21,7 @@
 
         let debounceTimer = null;
         let abortController = null;
+        let currentRequestId = 0;
         const config = {
             minChars: 2,
             debounceMs: 300,
@@ -49,21 +50,37 @@
         }
 
         function openDropdown() {
+            if (!dropdown.classList.contains('open')) {
+                console.log('[Search] Opening dropdown');
+            }
             dropdown.classList.add('open');
         }
 
         function closeDropdown() {
+            if (dropdown.classList.contains('open')) {
+                console.log('[Search] Closing dropdown');
+            }
             dropdown.classList.remove('open');
         }
 
         function showLoading() {
-            dropdown.innerHTML = `
-                <div class="autocomplete-loading">
-                    <div class="autocomplete-spinner"></div>
-                    <span>${getTranslation('searching')}</span>
-                </div>
-            `;
+            // Only show loading spinner if no results exist yet
+            if (!dropdown.querySelector('.autocomplete-results-wrapper')) {
+                dropdown.innerHTML = `
+                    <div class="autocomplete-results-wrapper">
+                        <div class="autocomplete-loading">
+                            <div class="autocomplete-spinner"></div>
+                            <span>${getTranslation('searching')}</span>
+                        </div>
+                    </div>
+                `;
+            }
+            // Otherwise, just keep showing old results - no loading indicator
             openDropdown();
+        }
+
+        function hideLoading() {
+            // No-op since we don't show loading indicator anymore
         }
 
         function renderResults(data, query) {
@@ -71,8 +88,10 @@
             const isRtl = document.dir === 'rtl';
             const arrow = isRtl ? 'left' : 'right';
 
+            hideLoading();
+
             if (total === 0) {
-                dropdown.innerHTML = `
+                updateDropdownContent(`
                     <div class="autocomplete-no-results">
                         <i class="fas fa-search"></i>
                         <p>${getTranslation('noResults')} "${query}"</p>
@@ -82,7 +101,7 @@
                         <span>${getTranslation('viewAll')} "${query}"</span>
                         <i class="fas fa-arrow-${arrow}"></i>
                     </a>
-                `;
+                `);
                 openDropdown();
                 return;
             }
@@ -123,17 +142,35 @@
                 <i class="fas fa-arrow-${arrow}"></i>
             </a>`;
 
-            dropdown.innerHTML = html;
+            updateDropdownContent(html);
             openDropdown();
         }
 
+        function updateDropdownContent(html) {
+            hideLoading();
+            
+            let resultsWrapper = dropdown.querySelector('.autocomplete-results-wrapper');
+            
+            if (!resultsWrapper) {
+                dropdown.innerHTML = `<div class="autocomplete-results-wrapper"></div>`;
+                resultsWrapper = dropdown.querySelector('.autocomplete-results-wrapper');
+            }
+            
+            // Instant update - no animations
+            resultsWrapper.innerHTML = html;
+        }
+
         async function fetchSuggestions(query) {
+            // Cancel previous request
             if (abortController) abortController.abort();
             abortController = new AbortController();
+            
+            // Track this request
+            const requestId = ++currentRequestId;
+
+            showLoading();
 
             try {
-                showLoading();
-                
                 const response = await fetch(
                     `${config.apiEndpoint}?q=${encodeURIComponent(query)}&limit=${config.maxResults}`,
                     {
@@ -146,15 +183,22 @@
 
                 const data = await response.json();
                 
+                // Only update if this is still the current request
+                if (requestId !== currentRequestId) return;
+                
                 if (data.success && data.data) {
                     renderResults(data.data, query);
                 } else {
+                    hideLoading();
                     closeDropdown();
                 }
             } catch (error) {
-                if (error.name !== 'AbortError') {
+                // Only handle if this is still the current request
+                if (error.name === 'AbortError') return;
+                
+                if (requestId === currentRequestId) {
+                    hideLoading();
                     console.error('[SearchAutocomplete] Error:', error);
-                    closeDropdown();
                 }
             }
         }
@@ -167,6 +211,11 @@
             if (query.length < config.minChars) {
                 closeDropdown();
                 return;
+            }
+
+            // Keep dropdown open immediately - don't wait for debounce
+            if (dropdown.querySelector('.autocomplete-results-wrapper')) {
+                openDropdown();
             }
 
             debounceTimer = setTimeout(() => fetchSuggestions(query), config.debounceMs);

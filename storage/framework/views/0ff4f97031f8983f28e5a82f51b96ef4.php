@@ -726,6 +726,27 @@
     'use strict';
     console.log('🚀 Category Products Filter System Initialized');
     
+    let isFiltering = false;
+    let debounceTimer = null;
+    
+    // Show loading indicator
+    function showLoading() {
+        const loadingContainer = document.getElementById('productsLoading');
+        if (loadingContainer) {
+            loadingContainer.classList.add('active');
+        }
+        isFiltering = true;
+    }
+    
+    // Hide loading indicator
+    function hideLoading() {
+        const loadingContainer = document.getElementById('productsLoading');
+        if (loadingContainer) {
+            loadingContainer.classList.remove('active');
+        }
+        isFiltering = false;
+    }
+    
     // Mobile filter toggle
     window.toggleMobileFilters = function() {
         const sidebar = document.getElementById('filterSidebar');
@@ -733,6 +754,244 @@
             sidebar.classList.toggle('active');
         }
     };
+    
+    // Apply filters function (exposed globally for filter-sidebar component)
+    window.applyFilters = function() {
+        if (isFiltering) {
+            console.log('⏳ Already filtering, skipping...');
+            return;
+        }
+
+        console.log('🔍 Applying filters...');
+        showLoading();
+
+        const form = document.getElementById('filterForm');
+        if (!form) {
+            console.error('❌ Filter form not found');
+            hideLoading();
+            return;
+        }
+
+        // Build URL parameters
+        const formData = new FormData(form);
+        const params = new URLSearchParams();
+
+        // Add all form fields
+        for (const [key, value] of formData.entries()) {
+            if (value && String(value).trim() !== '') {
+                params.append(key, value);
+            }
+        }
+
+        // Preserve search query if exists
+        const searchParam = new URLSearchParams(window.location.search).get('search');
+        if (searchParam) {
+            params.set('search', searchParam);
+        }
+
+        const url = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+        console.log('📍 Filter URL:', url);
+
+        // Update browser URL without reload
+        window.history.pushState({ path: url, filters: params.toString() }, '', url);
+
+        // Fetch filtered products using AJAX
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'text/html',
+                'Cache-Control': 'no-cache'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('HTTP ' + response.status);
+            }
+            return response.text();
+        })
+        .then(html => {
+            try {
+                console.log('📦 Received HTML response, length:', html.length);
+                
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Get only the product grid and pagination from new content
+                const newProductGrid = doc.querySelector('.product-grid');
+                const newNoResults = doc.querySelector('.no-results');
+                const newPagination = doc.querySelector('.pagination-wrapper');
+                
+                // Get current elements
+                const currentProductGrid = document.querySelector('.product-grid');
+                const currentNoResults = document.querySelector('.no-results');
+                const currentPagination = document.querySelector('.pagination-wrapper');
+                
+                console.log('🔍 Content check:', {
+                    newProductGridFound: !!newProductGrid,
+                    newNoResultsFound: !!newNoResults,
+                    currentProductGridFound: !!currentProductGrid
+                });
+
+                // Update product grid or no-results message
+                if (newProductGrid) {
+                    if (currentNoResults) {
+                        currentNoResults.remove();
+                    }
+                    if (currentProductGrid) {
+                        currentProductGrid.style.opacity = '0';
+                        currentProductGrid.style.transition = 'opacity 0.15s ease';
+                        
+                        setTimeout(() => {
+                            currentProductGrid.innerHTML = newProductGrid.innerHTML;
+                            currentProductGrid.style.opacity = '';
+                            currentProductGrid.style.transition = '';
+                            currentProductGrid.style.display = '';
+                            
+                            // Re-initialize wishlist and cart buttons
+                            if (typeof initializeWishlistButtons === 'function') {
+                                initializeWishlistButtons();
+                            }
+                            if (typeof initializeCartButtons === 'function') {
+                                initializeCartButtons();
+                            }
+                            
+                            console.log('✅ Product grid updated');
+                        }, 150);
+                    } else {
+                        // Insert product grid if it doesn't exist
+                        const productsContent = document.getElementById('productsContent');
+                        if (productsContent) {
+                            const loadingDiv = document.getElementById('productsLoading');
+                            if (loadingDiv) {
+                                loadingDiv.insertAdjacentHTML('afterend', newProductGrid.outerHTML);
+                            }
+                        }
+                    }
+                } else if (newNoResults) {
+                    // Handle no results case
+                    if (currentProductGrid) {
+                        currentProductGrid.style.display = 'none';
+                    }
+                    
+                    if (currentNoResults) {
+                        currentNoResults.innerHTML = newNoResults.innerHTML;
+                        currentNoResults.style.display = '';
+                    } else {
+                        // Insert no-results if it doesn't exist
+                        const productsContent = document.getElementById('productsContent');
+                        if (productsContent) {
+                            const loadingDiv = document.getElementById('productsLoading');
+                            if (loadingDiv) {
+                                loadingDiv.insertAdjacentHTML('afterend', newNoResults.outerHTML);
+                            }
+                        }
+                    }
+                }
+                
+                // Update pagination
+                if (newPagination && currentPagination) {
+                    currentPagination.innerHTML = newPagination.innerHTML;
+                    handlePaginationLinks();
+                } else if (newPagination && !currentPagination) {
+                    const productsContent = document.getElementById('productsContent');
+                    if (productsContent) {
+                        productsContent.insertAdjacentHTML('beforeend', newPagination.outerHTML);
+                        handlePaginationLinks();
+                    }
+                } else if (!newPagination && currentPagination) {
+                    currentPagination.remove();
+                }
+                
+                // Scroll to top and hide loading
+                setTimeout(() => {
+                    const categorySection = document.querySelector('.category-section');
+                    if (categorySection) {
+                        categorySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                    hideLoading();
+                    console.log('✅ Filters applied successfully');
+                }, 200);
+            } catch (parseError) {
+                console.error('❌ Error parsing response:', parseError);
+                hideLoading();
+                // Fallback to page reload
+                window.location.href = url;
+            }
+        })
+        .catch(error => {
+            console.error('❌ Filter error:', error);
+            hideLoading();
+            // Fallback to page reload on error
+            window.location.href = url;
+        });
+    };
+
+    // Debounced filter (exposed globally for filter-sidebar component)
+    window.debouncedApplyFilters = function(delay) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(window.applyFilters, delay || 300);
+    };
+
+    // Handle pagination links with AJAX
+    function handlePaginationLinks() {
+        const paginationLinks = document.querySelectorAll('.pagination a, .pagination-wrapper a');
+        paginationLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const href = this.getAttribute('href');
+                if (!href || href === '#') return;
+                
+                showLoading();
+                window.history.pushState({ path: href }, '', href);
+                
+                fetch(href, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'text/html'
+                    }
+                })
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    const newGrid = doc.querySelector('.product-grid');
+                    const newPagination = doc.querySelector('.pagination-wrapper');
+                    const currentGrid = document.querySelector('.product-grid');
+                    const currentPagination = document.querySelector('.pagination-wrapper');
+                    
+                    if (newGrid && currentGrid) {
+                        currentGrid.innerHTML = newGrid.innerHTML;
+                    }
+                    if (newPagination && currentPagination) {
+                        currentPagination.innerHTML = newPagination.innerHTML;
+                        handlePaginationLinks();
+                    }
+                    
+                    document.querySelector('.category-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    hideLoading();
+                })
+                .catch(() => {
+                    window.location.href = href;
+                });
+            });
+        });
+    }
+
+    // Handle browser back/forward
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.path) {
+            window.location.href = e.state.path;
+        }
+    });
+
+    // Initialize pagination links on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        handlePaginationLinks();
+    });
 })();
 </script>
 
