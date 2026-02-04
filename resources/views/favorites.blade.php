@@ -20,34 +20,31 @@
 
     /* Favorites Section */
     .favorites-container {
-        background: #f5f5f5;
-        padding: 3rem 0;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: var(--space-12, 3rem) var(--space-8, 2rem);
         min-height: calc(100vh - 200px);
     }
 
     .favorites-header {
-        max-width: 1400px;
-        margin: 0 auto 2rem;
-        padding: 0 2rem 1.5rem;
-        border-bottom: 2px solid #e2e8f0;
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        gap: var(--space-4, 1rem);
+        margin-bottom: var(--space-8, 2rem);
+        padding-bottom: var(--space-6, 1.5rem);
+        border-bottom: 2px solid #e2e8f0;
     }
 
     .favorites-header h1 {
-        font-size: 2.5rem;
-        color: #1f2937;
+        font-size: var(--text-4xl, 2.25rem);
+        color: var(--text-primary, #1f2937);
         font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
         margin: 0;
     }
 
-    .favorites-header h1 i {
-        color: #1f2937;
-        font-size: 2rem;
+    .favorites-header i {
+        font-size: var(--text-3xl, 1.875rem);
+        color: var(--primary-blue, #4169E1);
     }
 
     .favorites-count {
@@ -60,36 +57,44 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
-    /* Empty State */
+    /* Favorites Items Section - matches cart-items-section */
+    .favorites-items-section {
+        background: var(--bg-card, #fff);
+        border-radius: var(--radius-xl, 16px);
+        padding: var(--space-8, 2rem);
+        box-shadow: var(--shadow-md, 0 2px 10px rgba(0,0,0,0.05));
+        transition: all var(--transition-bounce, 0.3s);
+    }
+
+    .favorites-items-section:hover {
+        box-shadow: var(--shadow-lg, 0 4px 20px rgba(0,0,0,0.1));
+    }
+
+    /* Empty State - matches cart's empty-cart */
     .empty-favorites {
         text-align: center;
         padding: 4rem 2rem;
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        max-width: 600px;
-        margin: 0 auto;
     }
 
     .empty-favorites i {
         font-size: 5rem;
-        color: #d1d5db;
+        color: #e0e0e0;
         margin-bottom: 1.5rem;
     }
 
     .empty-favorites h2 {
         font-size: 1.5rem;
-        color: #1f2937;
+        color: #666;
         margin-bottom: 1rem;
-        font-weight: 600;
     }
 
     .empty-favorites p {
-        color: #6b7280;
+        color: #999;
         margin-bottom: 2rem;
+        font-size: 1rem;
     }
 
-    .empty-favorites .btn-primary {
+    .continue-shopping-btn {
         background: #4169E1;
         color: #fff;
         padding: 1rem 2.5rem;
@@ -97,14 +102,14 @@
         text-decoration: none;
         font-weight: 600;
         display: inline-block;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(31, 41, 55, 0.3);
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(65, 105, 225, 0.3);
     }
 
-    .empty-favorites .btn-primary:hover {
+    .continue-shopping-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(65, 105, 225, 0.4);
         background: #1E90FF;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(31, 41, 55, 0.4);
     }
 
     /* Product Grid */
@@ -431,19 +436,13 @@
 </style>
 
 <div class="favorites-container">
-    <div class="container">
-        @if($favorites->count() > 0)
-            <div class="favorites-header">
-                <h1>
-                    <i class="fas fa-heart"></i>
-                    {{ __t('messages.my_favorites') }}
-                </h1>
-                <div class="favorites-count">
-                    {{ $favorites->count() }} {{ $favorites->count() == 1 ? __t('messages.item') : __t('messages.items') }}
-                </div>
-            </div>
+    <div class="favorites-header">
+        <i class="fas fa-heart"></i>
+        <h1>{{ __t('messages.my_favorites') }}</h1>
+    </div>
 
-            <div class="product-grid">
+    @if($favorites->count() > 0)
+        <div class="product-grid">
                 @foreach($favorites as $product)
                 <a href="{{ route('product.detail', $product) }}" class="product-card-link">
                     <div class="product-card">
@@ -498,15 +497,18 @@
                 </a>
                 @endforeach
             </div>
-        @else
+    @else
+        <div class="favorites-items-section">
             <div class="empty-favorites">
                 <i class="far fa-heart"></i>
                 <h2>{{ __t('messages.no_favorites') }}</h2>
                 <p>{{ __t('messages.no_favorites_description') }}</p>
-                <a href="{{ route('products') }}" class="btn-primary">{{ __t('messages.start_shopping') }}</a>
+                <a href="{{ route('products') }}" class="continue-shopping-btn">
+                    {{ __t('messages.start_shopping') }}
+                </a>
             </div>
-        @endif
-    </div>
+        </div>
+    @endif
 </div>
 
 <script>
