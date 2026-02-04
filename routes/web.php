@@ -73,6 +73,7 @@ Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name
 Route::get('/cart/check/{product}', [CartController::class, 'check'])->name('cart.check');
 Route::get('/cart/count', [CartController::class, 'getCount'])->name('cart.count');
 Route::get('/cart/products', [CartController::class, 'getProductIds'])->name('cart.products');
+Route::get('/cart/items', [CartController::class, 'getItems'])->name('cart.items');
 
 // Checkout Routes (Protected - Must be authenticated)
 Route::middleware('auth')->group(function () {

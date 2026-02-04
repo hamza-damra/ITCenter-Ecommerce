@@ -314,5 +314,31 @@ class CartController extends Controller
             'productIds' => array_map('intval', $productIds),
         ]);
     }
+
+    /**
+     * Get cart items with quantities for button state sync
+     */
+    public function getItems()
+    {
+        $identifier = $this->getCartIdentifier();
+
+        $items = CartItem::where(function($query) use ($identifier) {
+            if (isset($identifier['user_id'])) {
+                $query->where('user_id', $identifier['user_id']);
+            } else {
+                $query->where('session_id', $identifier['session_id']);
+            }
+        })->select('product_id', 'quantity')->get();
+
+        return response()->json([
+            'success' => true,
+            'items' => $items->map(function($item) {
+                return [
+                    'product_id' => (int) $item->product_id,
+                    'quantity' => (int) $item->quantity,
+                ];
+            }),
+        ]);
+    }
 }
 

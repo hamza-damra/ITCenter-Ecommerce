@@ -25,6 +25,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Exclude logout routes from CSRF verification to prevent 419 errors
+        // when session expires or token becomes stale
+        $middleware->validateCsrfTokens(except: [
+            'logout',
+            'admin/logout',
+            'admin/bootstrap/logout',
+        ]);
+        
         // Bootstrap mode middleware must run early to detect DB state and force non-DB drivers
         $middleware->web(prepend: [
             \App\Http\Middleware\BootstrapModeMiddleware::class,

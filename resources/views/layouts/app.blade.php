@@ -2259,15 +2259,26 @@
                 const fav = await favRes.json();
 
                 const cartEl = document.getElementById('cart-count');
+                const mobileCartEl = document.getElementById('mobile-cart-count');
                 const favEl = document.getElementById('favorites-count');
 
-                // Update cart counter
+                // Update cart counter (desktop)
                 if (cartEl && typeof cart.count !== 'undefined') {
                     cartEl.textContent = cart.count;
                     if (cart.count > 0) {
                         cartEl.classList.remove('hidden');
                     } else {
                         cartEl.classList.add('hidden');
+                    }
+                }
+                
+                // Update cart counter (mobile)
+                if (mobileCartEl && typeof cart.count !== 'undefined') {
+                    mobileCartEl.textContent = cart.count;
+                    if (cart.count > 0) {
+                        mobileCartEl.classList.remove('hidden');
+                    } else {
+                        mobileCartEl.classList.add('hidden');
                     }
                 }
 
