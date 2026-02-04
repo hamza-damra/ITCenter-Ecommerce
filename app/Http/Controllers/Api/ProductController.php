@@ -56,18 +56,34 @@ class ProductController extends Controller
             $query->bestseller();
         }
 
-        // Search
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('name_en', 'like', "%{$search}%")
-                    ->orWhere('name_ar', 'like', "%{$search}%")
-                    ->orWhere('description_en', 'like', "%{$search}%")
-                    ->orWhere('description_ar', 'like', "%{$search}%")
-                    ->orWhere('short_description_en', 'like', "%{$search}%")
-                    ->orWhere('short_description_ar', 'like', "%{$search}%")
-                    ->orWhere('sku', 'like', "%{$search}%");
-            });
+        // Search - word-based matching for better results with multi-word queries
+        if ($request->has('search') && !empty($request->search)) {
+            $search = trim($request->search);
+            $words = array_filter(
+                preg_split('/\s+/', $search),
+                fn($word) => mb_strlen($word) >= 2
+            );
+            
+            if (!empty($words)) {
+                $query->where(function ($q) use ($words) {
+                    foreach ($words as $word) {
+                        $searchTerm = "%{$word}%";
+                        $q->orWhere(function ($subQ) use ($searchTerm) {
+                            $subQ->where('name_en', 'like', $searchTerm)
+                                ->orWhere('name_ar', 'like', $searchTerm)
+                                ->orWhere('name_he', 'like', $searchTerm)
+                                ->orWhere('description_en', 'like', $searchTerm)
+                                ->orWhere('description_ar', 'like', $searchTerm)
+                                ->orWhere('description_he', 'like', $searchTerm)
+                                ->orWhere('short_description_en', 'like', $searchTerm)
+                                ->orWhere('short_description_ar', 'like', $searchTerm)
+                                ->orWhere('short_description_he', 'like', $searchTerm)
+                                ->orWhere('search_keywords', 'like', $searchTerm)
+                                ->orWhere('sku', 'like', $searchTerm);
+                        });
+                    }
+                });
+            }
         }
 
         // Sort

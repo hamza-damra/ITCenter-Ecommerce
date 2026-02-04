@@ -48,6 +48,10 @@ class BannerController extends Controller
             'button_text_en' => 'nullable|string|max:100',
             'button_text_ar' => 'nullable|string|max:100',
             'button_text_he' => 'nullable|string|max:100',
+            'title_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'subtitle_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'button_bg_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'button_text_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
             'display_order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ];
@@ -85,6 +89,10 @@ class BannerController extends Controller
             'button_text_en' => $validated['button_text_en'] ?? null,
             'button_text_ar' => $validated['button_text_ar'] ?? null,
             'button_text_he' => $validated['button_text_he'] ?? null,
+            'title_color' => $validated['title_color'] ?? null,
+            'subtitle_color' => $validated['subtitle_color'] ?? null,
+            'button_bg_color' => $validated['button_bg_color'] ?? null,
+            'button_text_color' => $validated['button_text_color'] ?? null,
             'display_order' => $validated['display_order'] ?? 0,
             'is_active' => $request->boolean('is_active', true),
         ];
@@ -142,6 +150,10 @@ class BannerController extends Controller
             'button_text_en' => 'nullable|string|max:100',
             'button_text_ar' => 'nullable|string|max:100',
             'button_text_he' => 'nullable|string|max:100',
+            'title_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'subtitle_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'button_bg_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'button_text_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
             'display_order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
         ];
@@ -185,6 +197,10 @@ class BannerController extends Controller
             'button_text_en' => $validated['button_text_en'] ?? null,
             'button_text_ar' => $validated['button_text_ar'] ?? null,
             'button_text_he' => $validated['button_text_he'] ?? null,
+            'title_color' => $validated['title_color'] ?? null,
+            'subtitle_color' => $validated['subtitle_color'] ?? null,
+            'button_bg_color' => $validated['button_bg_color'] ?? null,
+            'button_text_color' => $validated['button_text_color'] ?? null,
             'display_order' => $validated['display_order'] ?? 0,
             'is_active' => $request->boolean('is_active', true),
         ];

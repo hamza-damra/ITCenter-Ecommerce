@@ -1213,8 +1213,9 @@
             }
             
             .logo {
-                order: 2;
-                flex: 0 0 auto;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
             }
             
             .logo img {
@@ -1223,11 +1224,7 @@
             }
             
             .header-icons {
-                order: 3;
-                gap: 0.5rem;
-                margin-<?php echo e(is_rtl() ? 'right' : 'left'); ?>: auto;
-                display: flex;
-                flex-direction: row;
+                display: none !important;
             }
             
             .search-bar {
@@ -1582,15 +1579,7 @@
             }
             
             .header-icons {
-                gap: 0.3rem;
-            }
-            
-            .header-icon {
-                padding: 0.4rem;
-            }
-            
-            .header-icon i {
-                font-size: 1.1rem;
+                display: none !important;
             }
             
             .mobile-menu-toggle {

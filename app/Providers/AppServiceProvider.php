@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use App\Auth\BootstrapUserProvider;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Brand;
+use App\Models\Banner;
+use App\Observers\HomeCacheObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +28,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register cache observers to auto-clear home page cache on data changes
+        Product::observe(HomeCacheObserver::class);
+        Category::observe(HomeCacheObserver::class);
+        Brand::observe(HomeCacheObserver::class);
+        Banner::observe(HomeCacheObserver::class);
+
         // Register bootstrap user provider
         Auth::provider('bootstrap', function ($app, array $config) {
             return new BootstrapUserProvider();

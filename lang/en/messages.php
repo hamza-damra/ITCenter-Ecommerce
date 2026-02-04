@@ -1439,6 +1439,14 @@ return [
     'multilingual_content' => 'Multilingual Content',
     'at_least_one_title_required' => 'At least one title field is required',
     
+    // Banner Color Customization
+    'color_customization' => 'Color Customization',
+    'color_customization_help' => 'Customize the colors of the banner text and button. Leave empty to use default colors.',
+    'title_color' => 'Title Color',
+    'subtitle_color' => 'Subtitle Color',
+    'button_bg_color' => 'Button Background Color',
+    'button_text_color' => 'Button Text Color',
+    
     // Banner Image Source Options
     'image_source' => 'Image Source',
     'store_in_database' => 'Store in Database',

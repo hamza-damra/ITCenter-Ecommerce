@@ -1235,6 +1235,14 @@ return [
     'multilingual_content' => 'תוכן רב-לשוני',
     'at_least_one_title_required' => 'נדרש לפחות שדה כותרת אחד',
     
+    // Banner Color Customization - התאמה אישית של צבעי באנר
+    'color_customization' => 'התאמה אישית של צבעים',
+    'color_customization_help' => 'התאם אישית את צבעי הטקסט והכפתור של הבאנר. השאר ריק כדי להשתמש בצבעי ברירת המחדל.',
+    'title_color' => 'צבע כותרת',
+    'subtitle_color' => 'צבע כותרת משנה',
+    'button_bg_color' => 'צבע רקע הכפתור',
+    'button_text_color' => 'צבע טקסט הכפתור',
+    
     // Banner Image Source Options - אפשרויות מקור תמונת באנר
     'image_source' => 'מקור התמונה',
     'store_in_database' => 'אחסון בבסיס נתונים',

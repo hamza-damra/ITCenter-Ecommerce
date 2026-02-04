@@ -1351,6 +1351,14 @@ return [
     'multilingual_content' => 'المحتوى متعدد اللغات',
     'at_least_one_title_required' => 'مطلوب حقل عنوان واحد على الأقل',
     
+    // Banner Color Customization - تخصيص ألوان البانر
+    'color_customization' => 'تخصيص الألوان',
+    'color_customization_help' => 'خصص ألوان نص البانر والزر. اتركه فارغاً لاستخدام الألوان الافتراضية.',
+    'title_color' => 'لون العنوان',
+    'subtitle_color' => 'لون العنوان الفرعي',
+    'button_bg_color' => 'لون خلفية الزر',
+    'button_text_color' => 'لون نص الزر',
+    
     // Banner Image Source Options - خيارات مصدر صورة البانر
     'image_source' => 'مصدر الصورة',
     'store_in_database' => 'تخزين في قاعدة البيانات',

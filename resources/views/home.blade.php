@@ -3531,21 +3531,30 @@
                         @endif
                             <div class="hero-slide-content">
                                 @if($banner->title)
-                                    <h1>{{ $banner->title }}</h1>
+                                    <h1 @if($banner->title_color) style="background: none; -webkit-background-clip: unset; background-clip: unset; -webkit-text-fill-color: {{ $banner->title_color }}; color: {{ $banner->title_color }};" @endif>{{ $banner->title }}</h1>
                                 @endif
                                 @if($banner->subtitle)
-                                    <p>{{ $banner->subtitle }}</p>
+                                    <p @if($banner->subtitle_color) style="color: {{ $banner->subtitle_color }};" @endif>{{ $banner->subtitle }}</p>
                                 @endif
                                 @if($banner->button_text)
                                     <div class="hero-cta-buttons">
+                                        @php
+                                            $buttonStyle = '';
+                                            if($banner->button_bg_color) {
+                                                $buttonStyle .= "background: {$banner->button_bg_color}; ";
+                                            }
+                                            if($banner->button_text_color) {
+                                                $buttonStyle .= "color: {$banner->button_text_color}; ";
+                                            }
+                                        @endphp
                                         @if($banner->link)
                                             {{-- Use span when slide is already wrapped in <a> to avoid nested links --}}
-                                            <span class="hero-cta-btn primary">
+                                            <span class="hero-cta-btn primary" @if($buttonStyle) style="{{ $buttonStyle }}" @endif>
                                                 <i class="fas fa-shopping-bag"></i>
                                                 {{ $banner->button_text }}
                                             </span>
                                         @else
-                                            <span class="hero-cta-btn primary" style="cursor: default;">
+                                            <span class="hero-cta-btn primary" style="cursor: default; {{ $buttonStyle }}">
                                                 <i class="fas fa-shopping-bag"></i>
                                                 {{ $banner->button_text }}
                                             </span>

@@ -1610,10 +1610,55 @@
             }
 
             .hero-section {
-                height: 300px;
+                height: 280px;
                 margin: 0.5rem;
-                border-radius: 15px;
+                border-radius: 16px;
                 width: calc(100% - 1rem);
+            }
+
+            .hero-slide {
+                background-size: cover;
+                background-position: center;
+            }
+
+            .hero-slide-content {
+                <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 4% !important;
+                <?php echo e(is_rtl() ? 'left' : 'right'); ?>: auto !important;
+                max-width: 70%;
+                padding: 1.25rem;
+                text-align: start;
+                transform: translateY(-50%);
+            }
+
+            .hero-slide-content h1 {
+                font-size: 1.5rem;
+                margin-bottom: 0.75rem;
+                line-height: 1.2;
+            }
+
+            .hero-slide-content p {
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+                line-height: 1.4;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .hero-cta-buttons {
+                justify-content: flex-start;
+                gap: 0.75rem;
+            }
+
+            .hero-cta-btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.85rem;
+                border-radius: 30px;
+            }
+
+            .hero-cta-btn i {
+                font-size: 0.85rem;
             }
 
             .hero-content h1 {
@@ -1630,26 +1675,32 @@
             }
 
             .slider-arrow {
-                width: 40px;
-                height: 40px;
+                width: 36px;
+                height: 36px;
+                display: none;
             }
 
             .slider-arrow.prev {
-                left: 15px;
+                left: 10px;
             }
 
             .slider-arrow.next {
-                right: 15px;
+                right: 10px;
             }
 
             .slider-dots {
-                bottom: 15px;
+                bottom: 12px;
                 gap: 8px;
+                padding: 8px 14px;
             }
 
             .slider-dot {
-                width: 10px;
-                height: 10px;
+                width: 8px;
+                height: 8px;
+            }
+
+            .slider-dot.active {
+                width: 24px;
             }
 
             .categories-section {
@@ -1844,10 +1895,55 @@
             }
 
             .hero-section {
-                height: 250px;
-                margin: 0.5rem;
+                height: 220px;
+                margin: 0.4rem;
                 border-radius: 12px;
-                width: calc(100% - 1rem);
+                width: calc(100% - 0.8rem);
+            }
+
+            .hero-slide::before {
+                background: linear-gradient(135deg,
+                    rgba(15, 23, 42, 0.75) 0%,
+                    rgba(30, 41, 59, 0.5) 50%,
+                    rgba(51, 65, 85, 0.3) 100%);
+            }
+
+            .hero-slide-content {
+                <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 3% !important;
+                <?php echo e(is_rtl() ? 'left' : 'right'); ?>: auto !important;
+                max-width: 75%;
+                padding: 1rem;
+                text-align: start;
+            }
+
+            .hero-slide-content h1 {
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+                line-height: 1.2;
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            }
+
+            .hero-slide-content p {
+                font-size: 0.8rem;
+                margin-bottom: 0.75rem;
+                line-height: 1.3;
+                -webkit-line-clamp: 2;
+            }
+
+            .hero-cta-buttons {
+                justify-content: flex-start;
+                gap: 0.5rem;
+            }
+
+            .hero-cta-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.75rem;
+                border-radius: 25px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .hero-cta-btn i {
+                font-size: 0.75rem;
             }
 
             .hero-content h1 {
@@ -1860,34 +1956,28 @@
             }
 
             .slider-arrow {
-                width: 35px;
-                height: 35px;
-            }
-
-            .slider-arrow i {
-                font-size: 16px;
-            }
-
-            .slider-arrow.prev {
-                left: 10px;
-            }
-
-            .slider-arrow.next {
-                right: 10px;
+                display: none;
             }
 
             .slider-dots {
-                bottom: 10px;
-                gap: 6px;
+                bottom: 8px;
+                gap: 5px;
+                padding: 6px 10px;
+                border-radius: 20px;
             }
 
             .slider-dot {
-                width: 8px;
-                height: 8px;
+                width: 6px;
+                height: 6px;
             }
 
             .slider-dot.active {
-                width: 20px;
+                width: 18px;
+                border-radius: 6px;
+            }
+
+            .slider-progress {
+                height: 3px;
             }
 
             .section-header h2 {
@@ -3447,18 +3537,36 @@
                         <?php endif; ?>
                             <div class="hero-slide-content">
                                 <?php if($banner->title): ?>
-                                    <h1><?php echo e($banner->title); ?></h1>
+                                    <h1 <?php if($banner->title_color): ?> style="background: none; -webkit-background-clip: unset; background-clip: unset; -webkit-text-fill-color: <?php echo e($banner->title_color); ?>; color: <?php echo e($banner->title_color); ?>;" <?php endif; ?>><?php echo e($banner->title); ?></h1>
                                 <?php endif; ?>
                                 <?php if($banner->subtitle): ?>
-                                    <p><?php echo e($banner->subtitle); ?></p>
+                                    <p <?php if($banner->subtitle_color): ?> style="color: <?php echo e($banner->subtitle_color); ?>;" <?php endif; ?>><?php echo e($banner->subtitle); ?></p>
                                 <?php endif; ?>
-                                <?php if($banner->button_text && $banner->link): ?>
+                                <?php if($banner->button_text): ?>
                                     <div class="hero-cta-buttons">
-                                        <a href="<?php echo e($banner->link); ?>" class="hero-cta-btn primary">
-                                            <i class="fas fa-shopping-bag"></i>
-                                            <?php echo e($banner->button_text); ?>
+                                        <?php
+                                            $buttonStyle = '';
+                                            if($banner->button_bg_color) {
+                                                $buttonStyle .= "background: {$banner->button_bg_color}; ";
+                                            }
+                                            if($banner->button_text_color) {
+                                                $buttonStyle .= "color: {$banner->button_text_color}; ";
+                                            }
+                                        ?>
+                                        <?php if($banner->link): ?>
+                                            
+                                            <span class="hero-cta-btn primary" <?php if($buttonStyle): ?> style="<?php echo e($buttonStyle); ?>" <?php endif; ?>>
+                                                <i class="fas fa-shopping-bag"></i>
+                                                <?php echo e($banner->button_text); ?>
 
-                                        </a>
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="hero-cta-btn primary" style="cursor: default; <?php echo e($buttonStyle); ?>">
+                                                <i class="fas fa-shopping-bag"></i>
+                                                <?php echo e($banner->button_text); ?>
+
+                                            </span>
+                                        <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
                             </div>

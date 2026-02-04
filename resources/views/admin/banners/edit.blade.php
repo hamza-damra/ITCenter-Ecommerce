@@ -687,6 +687,145 @@
             </div>
         </div>
 
+        <!-- Color Customization Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-palette"></i> {{ __('messages.color_customization') ?? 'Color Customization' }}</h2>
+            </div>
+            <div class="card-body">
+                <p class="form-text" style="margin-bottom: 16px;">
+                    <i class="fas fa-info-circle"></i> {{ __('messages.color_customization_help') ?? 'Customize the colors of the banner text and button. Leave empty to use default colors.' }}
+                </p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title_color" class="form-label">
+                            {{ __('messages.title_color') ?? 'Title Color' }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        </label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input 
+                                type="color" 
+                                id="title_color_picker" 
+                                value="{{ old('title_color', $banner->title_color ?? '#ffffff') }}"
+                                style="width: 50px; height: 40px; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; padding: 2px;"
+                                onchange="document.getElementById('title_color').value = this.value">
+                            <input 
+                                type="text" 
+                                id="title_color" 
+                                name="title_color" 
+                                class="form-control @error('title_color') is-invalid @enderror" 
+                                value="{{ old('title_color', $banner->title_color) }}" 
+                                placeholder="#ffffff"
+                                pattern="^#[0-9A-Fa-f]{6}$"
+                                style="flex: 1;"
+                                oninput="if(this.value.match(/^#[0-9A-Fa-f]{6}$/)) document.getElementById('title_color_picker').value = this.value">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('title_color').value = ''; document.getElementById('title_color_picker').value = '#ffffff';" title="{{ __('messages.clear') ?? 'Clear' }}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        @error('title_color')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subtitle_color" class="form-label">
+                            {{ __('messages.subtitle_color') ?? 'Subtitle Color' }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        </label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input 
+                                type="color" 
+                                id="subtitle_color_picker" 
+                                value="{{ old('subtitle_color', $banner->subtitle_color ?? '#e2e8f0') }}"
+                                style="width: 50px; height: 40px; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; padding: 2px;"
+                                onchange="document.getElementById('subtitle_color').value = this.value">
+                            <input 
+                                type="text" 
+                                id="subtitle_color" 
+                                name="subtitle_color" 
+                                class="form-control @error('subtitle_color') is-invalid @enderror" 
+                                value="{{ old('subtitle_color', $banner->subtitle_color) }}" 
+                                placeholder="#e2e8f0"
+                                pattern="^#[0-9A-Fa-f]{6}$"
+                                style="flex: 1;"
+                                oninput="if(this.value.match(/^#[0-9A-Fa-f]{6}$/)) document.getElementById('subtitle_color_picker').value = this.value">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('subtitle_color').value = ''; document.getElementById('subtitle_color_picker').value = '#e2e8f0';" title="{{ __('messages.clear') ?? 'Clear' }}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        @error('subtitle_color')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-row" style="margin-top: 16px;">
+                    <div class="form-group">
+                        <label for="button_bg_color" class="form-label">
+                            {{ __('messages.button_bg_color') ?? 'Button Background Color' }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        </label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input 
+                                type="color" 
+                                id="button_bg_color_picker" 
+                                value="{{ old('button_bg_color', $banner->button_bg_color ?? '#3b82f6') }}"
+                                style="width: 50px; height: 40px; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; padding: 2px;"
+                                onchange="document.getElementById('button_bg_color').value = this.value">
+                            <input 
+                                type="text" 
+                                id="button_bg_color" 
+                                name="button_bg_color" 
+                                class="form-control @error('button_bg_color') is-invalid @enderror" 
+                                value="{{ old('button_bg_color', $banner->button_bg_color) }}" 
+                                placeholder="#3b82f6"
+                                pattern="^#[0-9A-Fa-f]{6}$"
+                                style="flex: 1;"
+                                oninput="if(this.value.match(/^#[0-9A-Fa-f]{6}$/)) document.getElementById('button_bg_color_picker').value = this.value">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('button_bg_color').value = ''; document.getElementById('button_bg_color_picker').value = '#3b82f6';" title="{{ __('messages.clear') ?? 'Clear' }}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        @error('button_bg_color')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="button_text_color" class="form-label">
+                            {{ __('messages.button_text_color') ?? 'Button Text Color' }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        </label>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <input 
+                                type="color" 
+                                id="button_text_color_picker" 
+                                value="{{ old('button_text_color', $banner->button_text_color ?? '#ffffff') }}"
+                                style="width: 50px; height: 40px; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; padding: 2px;"
+                                onchange="document.getElementById('button_text_color').value = this.value">
+                            <input 
+                                type="text" 
+                                id="button_text_color" 
+                                name="button_text_color" 
+                                class="form-control @error('button_text_color') is-invalid @enderror" 
+                                value="{{ old('button_text_color', $banner->button_text_color) }}" 
+                                placeholder="#ffffff"
+                                pattern="^#[0-9A-Fa-f]{6}$"
+                                style="flex: 1;"
+                                oninput="if(this.value.match(/^#[0-9A-Fa-f]{6}$/)) document.getElementById('button_text_color_picker').value = this.value">
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('button_text_color').value = ''; document.getElementById('button_text_color_picker').value = '#ffffff';" title="{{ __('messages.clear') ?? 'Clear' }}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        @error('button_text_color')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Link & Settings Card -->
         <div class="card">
             <div class="card-header">

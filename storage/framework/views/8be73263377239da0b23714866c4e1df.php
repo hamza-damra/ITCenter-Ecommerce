@@ -1,21 +1,19 @@
-@extends('admin.layout')
+<?php $__env->startSection('title', 'Dashboard'); ?>
 
-@section('title', 'Dashboard')
-
-@section('content')
-<div class="dashboard-pro" dir="{{ app()->getLocale() === 'ar' || app()->getLocale() === 'he' ? 'rtl' : 'ltr' }}">
+<?php $__env->startSection('content'); ?>
+<div class="dashboard-pro" dir="<?php echo e(app()->getLocale() === 'ar' || app()->getLocale() === 'he' ? 'rtl' : 'ltr'); ?>">
     <!-- Welcome Hero -->
     <div class="welcome-hero">
         <div class="hero-content">
             <div class="welcome-text">
-                <span class="greeting-time" id="greetingTime">{{ __('messages.welcome_back') }}</span>
-                <h1>{{ __('messages.dashboard') }}</h1>
-                <p>{{ __('messages.catalog_overview') }}</p>
+                <span class="greeting-time" id="greetingTime"><?php echo e(__('messages.welcome_back')); ?></span>
+                <h1><?php echo e(__('messages.dashboard')); ?></h1>
+                <p><?php echo e(__('messages.catalog_overview')); ?></p>
             </div>
             <div class="hero-date">
                 <div class="date-display">
                     <i class="fas fa-calendar-alt"></i>
-                    <span>{{ now()->format('l, F j, Y') }}</span>
+                    <span><?php echo e(now()->format('l, F j, Y')); ?></span>
                 </div>
             </div>
         </div>
@@ -30,7 +28,7 @@
     <div class="stats-section">
         <div class="section-label">
             <i class="fas fa-chart-pie"></i>
-            <span>{{ __('messages.store_overview') }}</span>
+            <span><?php echo e(__('messages.store_overview')); ?></span>
         </div>
         <div class="primary-stats">
             <div class="stat-card stat-products">
@@ -38,9 +36,9 @@
                     <i class="fas fa-cube"></i>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-value">{{ $stats['total_products'] }}</span>
-                    <span class="stat-label">{{ __('messages.total_products') }}</span>
-                    <span class="stat-sub">{{ __('messages.complete_inventory') }}</span>
+                    <span class="stat-value"><?php echo e($stats['total_products']); ?></span>
+                    <span class="stat-label"><?php echo e(__('messages.total_products')); ?></span>
+                    <span class="stat-sub"><?php echo e(__('messages.complete_inventory')); ?></span>
                 </div>
                 <div class="stat-trend up">
                     <i class="fas fa-boxes-stacked"></i>
@@ -52,9 +50,9 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-value">{{ $stats['active_products'] }}</span>
-                    <span class="stat-label">{{ __('messages.active_products') }}</span>
-                    <span class="stat-sub">{{ __('messages.currently_visible') }}</span>
+                    <span class="stat-value"><?php echo e($stats['active_products']); ?></span>
+                    <span class="stat-label"><?php echo e(__('messages.active_products')); ?></span>
+                    <span class="stat-sub"><?php echo e(__('messages.currently_visible')); ?></span>
                 </div>
                 <div class="stat-trend up">
                     <i class="fas fa-eye"></i>
@@ -66,9 +64,9 @@
                     <i class="fas fa-folder-tree"></i>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-value">{{ $stats['total_categories'] }}</span>
-                    <span class="stat-label">{{ __('messages.total_categories') }}</span>
-                    <span class="stat-sub">{{ __('messages.organize_products') }}</span>
+                    <span class="stat-value"><?php echo e($stats['total_categories']); ?></span>
+                    <span class="stat-label"><?php echo e(__('messages.total_categories')); ?></span>
+                    <span class="stat-sub"><?php echo e(__('messages.organize_products')); ?></span>
                 </div>
                 <div class="stat-trend">
                     <i class="fas fa-layer-group"></i>
@@ -80,9 +78,9 @@
                     <i class="fas fa-award"></i>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-value">{{ $stats['total_brands'] }}</span>
-                    <span class="stat-label">{{ __('messages.total_brands') }}</span>
-                    <span class="stat-sub">{{ __('messages.in_your_store') }}</span>
+                    <span class="stat-value"><?php echo e($stats['total_brands']); ?></span>
+                    <span class="stat-label"><?php echo e(__('messages.total_brands')); ?></span>
+                    <span class="stat-sub"><?php echo e(__('messages.in_your_store')); ?></span>
                 </div>
                 <div class="stat-trend">
                     <i class="fas fa-tag"></i>
@@ -98,8 +96,8 @@
                 <i class="fas fa-star"></i>
             </div>
             <div class="mini-stat-content">
-                <span class="mini-stat-value">{{ $stats['featured_products'] }}</span>
-                <span class="mini-stat-label">{{ __('messages.featured_products_count') }}</span>
+                <span class="mini-stat-value"><?php echo e($stats['featured_products']); ?></span>
+                <span class="mini-stat-label"><?php echo e(__('messages.featured_products_count')); ?></span>
             </div>
             </div>
 
@@ -108,8 +106,8 @@
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
             <div class="mini-stat-content">
-                <span class="mini-stat-value">{{ $stats['out_of_stock'] }}</span>
-                <span class="mini-stat-label">{{ __('messages.out_of_stock_count') }}</span>
+                <span class="mini-stat-value"><?php echo e($stats['out_of_stock']); ?></span>
+                <span class="mini-stat-label"><?php echo e(__('messages.out_of_stock_count')); ?></span>
             </div>
         </div>
 
@@ -118,8 +116,8 @@
                 <i class="fas fa-comments"></i>
             </div>
             <div class="mini-stat-content">
-                <span class="mini-stat-value">{{ $stats['total_reviews'] }}</span>
-                <span class="mini-stat-label">{{ __('messages.total_reviews') }}</span>
+                <span class="mini-stat-value"><?php echo e($stats['total_reviews']); ?></span>
+                <span class="mini-stat-label"><?php echo e(__('messages.total_reviews')); ?></span>
             </div>
         </div>
 
@@ -128,8 +126,8 @@
                 <i class="fas fa-percent"></i>
             </div>
             <div class="mini-stat-content">
-                <span class="mini-stat-value">{{ $stats['active_offers'] }}</span>
-                <span class="mini-stat-label">{{ __('messages.active_offers') }}</span>
+                <span class="mini-stat-value"><?php echo e($stats['active_offers']); ?></span>
+                <span class="mini-stat-label"><?php echo e(__('messages.active_offers')); ?></span>
             </div>
         </div>
     </div>
@@ -139,11 +137,11 @@
         <div class="section-header-pro">
             <div class="section-label">
                 <i class="fas fa-users"></i>
-                <span>{{ __('messages.user_statistics') }}</span>
+                <span><?php echo e(__('messages.user_statistics')); ?></span>
             </div>
             <div class="online-indicator">
                 <span class="pulse-dot"></span>
-                <span>{{ $stats['registered_online_users'] }} {{ __('messages.online_now') }}</span>
+                <span><?php echo e($stats['registered_online_users']); ?> <?php echo e(__('messages.online_now')); ?></span>
             </div>
         </div>
 
@@ -154,17 +152,17 @@
                     <i class="fas fa-user-group"></i>
                 </div>
                 <div class="user-main-info">
-                    <span class="user-main-value">{{ $stats['total_users'] }}</span>
-                    <span class="user-main-label">{{ __('messages.total_users') }}</span>
+                    <span class="user-main-value"><?php echo e($stats['total_users']); ?></span>
+                    <span class="user-main-label"><?php echo e(__('messages.total_users')); ?></span>
                 </div>
                 <div class="user-breakdown">
                     <div class="breakdown-item online">
                         <i class="fas fa-circle"></i>
-                        <span>{{ $stats['registered_online_users'] }} {{ __('messages.online') }}</span>
+                        <span><?php echo e($stats['registered_online_users']); ?> <?php echo e(__('messages.online')); ?></span>
                     </div>
                     <div class="breakdown-item offline">
                         <i class="fas fa-circle"></i>
-                        <span>{{ $stats['registered_offline_users'] }} {{ __('messages.offline') }}</span>
+                        <span><?php echo e($stats['registered_offline_users']); ?> <?php echo e(__('messages.offline')); ?></span>
                     </div>
                 </div>
             </div>
@@ -173,46 +171,46 @@
             <div class="user-stat-card">
                 <div class="user-stat-header">
                     <i class="fas fa-user-secret"></i>
-                    <span class="user-stat-value">{{ $stats['guest_active_sessions'] }}</span>
+                    <span class="user-stat-value"><?php echo e($stats['guest_active_sessions']); ?></span>
                 </div>
-                <span class="user-stat-label">{{ __('messages.guest_sessions') }}</span>
-                <span class="user-stat-sub">{{ __('messages.non_registered_shoppers') }}</span>
+                <span class="user-stat-label"><?php echo e(__('messages.guest_sessions')); ?></span>
+                <span class="user-stat-sub"><?php echo e(__('messages.non_registered_shoppers')); ?></span>
             </div>
 
             <div class="user-stat-card">
                 <div class="user-stat-header">
                     <i class="fas fa-user-shield"></i>
-                    <span class="user-stat-value">{{ $stats['admin_users'] }}</span>
+                    <span class="user-stat-value"><?php echo e($stats['admin_users']); ?></span>
                 </div>
-                <span class="user-stat-label">{{ __('messages.admin_users') }}</span>
-                <span class="user-stat-sub">{{ __('messages.admin_accounts') }}</span>
+                <span class="user-stat-label"><?php echo e(__('messages.admin_users')); ?></span>
+                <span class="user-stat-sub"><?php echo e(__('messages.admin_accounts')); ?></span>
             </div>
 
             <div class="user-stat-card highlight">
                 <div class="user-stat-header">
                     <i class="fas fa-calendar-week"></i>
-                    <span class="user-stat-value">{{ $stats['users_this_week'] }}</span>
+                    <span class="user-stat-value"><?php echo e($stats['users_this_week']); ?></span>
                 </div>
-                <span class="user-stat-label">{{ __('messages.new_this_week') }}</span>
-                <span class="user-stat-sub">{{ __('messages.weekly_signups') }}</span>
+                <span class="user-stat-label"><?php echo e(__('messages.new_this_week')); ?></span>
+                <span class="user-stat-sub"><?php echo e(__('messages.weekly_signups')); ?></span>
             </div>
 
             <div class="user-stat-card">
                 <div class="user-stat-header">
                     <i class="fas fa-calendar-alt"></i>
-                    <span class="user-stat-value">{{ $stats['users_this_month'] }}</span>
+                    <span class="user-stat-value"><?php echo e($stats['users_this_month']); ?></span>
                 </div>
-                <span class="user-stat-label">{{ __('messages.new_this_month') }}</span>
-                <span class="user-stat-sub">{{ __('messages.monthly_signups') }}</span>
+                <span class="user-stat-label"><?php echo e(__('messages.new_this_month')); ?></span>
+                <span class="user-stat-sub"><?php echo e(__('messages.monthly_signups')); ?></span>
             </div>
 
             <div class="user-stat-card">
                 <div class="user-stat-header">
                     <i class="fas fa-chart-line"></i>
-                    <span class="user-stat-value">{{ $stats['active_users_30days'] }}</span>
+                    <span class="user-stat-value"><?php echo e($stats['active_users_30days']); ?></span>
                 </div>
-                <span class="user-stat-label">{{ __('messages.active_30days') }}</span>
-                <span class="user-stat-sub">{{ __('messages.recent_activity') }}</span>
+                <span class="user-stat-label"><?php echo e(__('messages.active_30days')); ?></span>
+                <span class="user-stat-sub"><?php echo e(__('messages.recent_activity')); ?></span>
             </div>
         </div>
 
@@ -223,11 +221,11 @@
                     <i class="fas fa-shopping-bag"></i>
                 </div>
                 <div class="metric-info">
-                    <span class="metric-value">{{ $stats['users_with_orders'] }}</span>
-                    <span class="metric-label">{{ __('messages.with_orders') }}</span>
+                    <span class="metric-value"><?php echo e($stats['users_with_orders']); ?></span>
+                    <span class="metric-label"><?php echo e(__('messages.with_orders')); ?></span>
                 </div>
                 <div class="metric-bar">
-                    <div class="metric-fill" style="width: {{ $stats['total_users'] > 0 ? ($stats['users_with_orders'] / $stats['total_users']) * 100 : 0 }}%"></div>
+                    <div class="metric-fill" style="width: <?php echo e($stats['total_users'] > 0 ? ($stats['users_with_orders'] / $stats['total_users']) * 100 : 0); ?>%"></div>
                 </div>
             </div>
 
@@ -236,11 +234,11 @@
                     <i class="fas fa-heart"></i>
                 </div>
                 <div class="metric-info">
-                    <span class="metric-value">{{ $stats['users_with_favorites'] }}</span>
-                    <span class="metric-label">{{ __('messages.with_favorites') }}</span>
+                    <span class="metric-value"><?php echo e($stats['users_with_favorites']); ?></span>
+                    <span class="metric-label"><?php echo e(__('messages.with_favorites')); ?></span>
                 </div>
                 <div class="metric-bar">
-                    <div class="metric-fill" style="width: {{ $stats['total_users'] > 0 ? ($stats['users_with_favorites'] / $stats['total_users']) * 100 : 0 }}%"></div>
+                    <div class="metric-fill" style="width: <?php echo e($stats['total_users'] > 0 ? ($stats['users_with_favorites'] / $stats['total_users']) * 100 : 0); ?>%"></div>
                 </div>
             </div>
 
@@ -249,11 +247,11 @@
                     <i class="fas fa-star"></i>
                 </div>
                 <div class="metric-info">
-                    <span class="metric-value">{{ $stats['users_with_reviews'] }}</span>
-                    <span class="metric-label">{{ __('messages.with_reviews') }}</span>
+                    <span class="metric-value"><?php echo e($stats['users_with_reviews']); ?></span>
+                    <span class="metric-label"><?php echo e(__('messages.with_reviews')); ?></span>
                 </div>
                 <div class="metric-bar">
-                    <div class="metric-fill" style="width: {{ $stats['total_users'] > 0 ? ($stats['users_with_reviews'] / $stats['total_users']) * 100 : 0 }}%"></div>
+                    <div class="metric-fill" style="width: <?php echo e($stats['total_users'] > 0 ? ($stats['users_with_reviews'] / $stats['total_users']) * 100 : 0); ?>%"></div>
                 </div>
             </div>
         </div>
@@ -263,86 +261,90 @@
     <div class="content-grid">
         <!-- Recent Products -->
         <div class="content-card products-table-card">
-            @if(app()->getLocale() === 'ar' || app()->getLocale() === 'he')
+            <?php if(app()->getLocale() === 'ar' || app()->getLocale() === 'he'): ?>
             <div class="card-header-pro">
-                <a href="{{ route('admin.products.index', ['filter' => 'recent']) }}" class="view-all-btn">
+                <a href="<?php echo e(route('admin.products.index', ['filter' => 'recent'])); ?>" class="view-all-btn">
                     <i class="fas fa-arrow-right" style="transform: rotate(180deg);"></i>
-                    {{ __('messages.view_all') }}
+                    <?php echo e(__('messages.view_all')); ?>
+
                 </a>
                 <div class="header-title">
-                    <h2>{{ __('messages.recent_products') }}</h2>
+                    <h2><?php echo e(__('messages.recent_products')); ?></h2>
                     <i class="fas fa-clock"></i>
                 </div>
             </div>
-            @else
+            <?php else: ?>
             <div class="card-header-pro">
                 <div class="header-title">
                     <i class="fas fa-clock"></i>
-                    <h2>{{ __('messages.recent_products') }}</h2>
+                    <h2><?php echo e(__('messages.recent_products')); ?></h2>
                 </div>
-                <a href="{{ route('admin.products.index', ['filter' => 'recent']) }}" class="view-all-btn">
-                    {{ __('messages.view_all') }}
+                <a href="<?php echo e(route('admin.products.index', ['filter' => 'recent'])); ?>" class="view-all-btn">
+                    <?php echo e(__('messages.view_all')); ?>
+
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
-            @endif
+            <?php endif; ?>
             <div class="card-body-pro">
-                @if($recent_products->count() > 0)
+                <?php if($recent_products->count() > 0): ?>
                 <div class="table-wrapper">
                     <table class="pro-table">
                         <thead>
                             <tr>
-                                <th>{{ __('messages.product_name') }}</th>
-                                <th>{{ __('messages.category') }}</th>
-                                <th>{{ __('messages.price') }}</th>
-                                <th>{{ __('messages.stock') }}</th>
-                                <th>{{ __('messages.status') }}</th>
+                                <th><?php echo e(__('messages.product_name')); ?></th>
+                                <th><?php echo e(__('messages.category')); ?></th>
+                                <th><?php echo e(__('messages.price')); ?></th>
+                                <th><?php echo e(__('messages.stock')); ?></th>
+                                <th><?php echo e(__('messages.status')); ?></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($recent_products as $product)
+                            <?php $__currentLoopData = $recent_products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td>
                                     <div class="product-cell-pro">
-                                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                                        <img src="<?php echo e($product->main_image); ?>" alt="<?php echo e($product->name); ?>">
                                         <div class="product-details">
-                                            <span class="product-name-pro">{{ $product->name_en ?? $product->name }}</span>
-                                            <span class="product-sku-pro">{{ $product->sku }}</span>
+                                            <span class="product-name-pro"><?php echo e($product->name_en ?? $product->name); ?></span>
+                                            <span class="product-sku-pro"><?php echo e($product->sku); ?></span>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    @if($product->category)
-                                    <span class="category-badge">{{ $product->category->name_en ?? $product->category->name }}</span>
-                                    @else
-                                    <span class="category-badge empty">{{ __('messages.no_category') }}</span>
-                                    @endif
+                                    <?php if($product->category): ?>
+                                    <span class="category-badge"><?php echo e($product->category->name_en ?? $product->category->name); ?></span>
+                                    <?php else: ?>
+                                    <span class="category-badge empty"><?php echo e(__('messages.no_category')); ?></span>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
-                                    <span class="price-pro">₪{{ number_format($product->price, 2) }}</span>
+                                    <span class="price-pro">₪<?php echo e(number_format($product->price, 2)); ?></span>
                                 </td>
                                 <td>
-                                    <span class="stock-badge {{ $product->stock_quantity > 10 ? 'good' : ($product->stock_quantity > 0 ? 'low' : 'out') }}">
-                                        {{ $product->stock_quantity }}
+                                    <span class="stock-badge <?php echo e($product->stock_quantity > 10 ? 'good' : ($product->stock_quantity > 0 ? 'low' : 'out')); ?>">
+                                        <?php echo e($product->stock_quantity); ?>
+
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="status-badge {{ $product->is_active ? 'active' : 'inactive' }}">
-                                        <i class="fas {{ $product->is_active ? 'fa-check' : 'fa-times' }}"></i>
-                                        {{ $product->is_active ? __('messages.active') : __('messages.inactive') }}
+                                    <span class="status-badge <?php echo e($product->is_active ? 'active' : 'inactive'); ?>">
+                                        <i class="fas <?php echo e($product->is_active ? 'fa-check' : 'fa-times'); ?>"></i>
+                                        <?php echo e($product->is_active ? __('messages.active') : __('messages.inactive')); ?>
+
                                     </span>
                                 </td>
                             </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
-                @else
+                <?php else: ?>
                 <div class="empty-state">
                     <i class="fas fa-inbox"></i>
-                    <p>{{ __('messages.no_products_yet') }}</p>
+                    <p><?php echo e(__('messages.no_products_yet')); ?></p>
                 </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
 
@@ -351,55 +353,55 @@
             <div class="card-header-pro accent" style="display: flex !important; justify-content: flex-end !important;">
                 <div class="header-title" style="flex-direction: row-reverse !important;">
                     <i class="fas fa-bolt"></i>
-                    <h2 style="color: white !important;">{{ __('messages.quick_actions') }}</h2>
+                    <h2 style="color: white !important;"><?php echo e(__('messages.quick_actions')); ?></h2>
                 </div>
             </div>
             <div class="card-body-pro no-padding">
                 <div class="quick-actions-grid">
-                    <a href="{{ route('admin.products.create') }}" class="quick-action">
+                    <a href="<?php echo e(route('admin.products.create')); ?>" class="quick-action">
                         <div class="action-icon add-product">
                             <i class="fas fa-plus"></i>
                         </div>
-                        <span class="action-label">{{ __('messages.add_new_product') }}</span>
+                        <span class="action-label"><?php echo e(__('messages.add_new_product')); ?></span>
                     </a>
-                    <a href="{{ route('admin.categories.create') }}" class="quick-action">
+                    <a href="<?php echo e(route('admin.categories.create')); ?>" class="quick-action">
                         <div class="action-icon add-category">
                             <i class="fas fa-folder-plus"></i>
                         </div>
-                        <span class="action-label">{{ __('messages.create_category') }}</span>
+                        <span class="action-label"><?php echo e(__('messages.create_category')); ?></span>
                     </a>
-                    <a href="{{ route('admin.brands.create') }}" class="quick-action">
+                    <a href="<?php echo e(route('admin.brands.create')); ?>" class="quick-action">
                         <div class="action-icon add-brand">
                             <i class="fas fa-tag"></i>
                         </div>
-                        <span class="action-label">{{ __('messages.add_new_brand') }}</span>
+                        <span class="action-label"><?php echo e(__('messages.add_new_brand')); ?></span>
                     </a>
-                    <a href="{{ route('admin.promotional-offers.create') }}" class="quick-action">
+                    <a href="<?php echo e(route('admin.promotional-offers.create')); ?>" class="quick-action">
                         <div class="action-icon add-offer">
                             <i class="fas fa-percent"></i>
                         </div>
-                        <span class="action-label">{{ __('messages.add_new_offer') }}</span>
+                        <span class="action-label"><?php echo e(__('messages.add_new_offer')); ?></span>
                     </a>
                 </div>
                 <div class="quick-links">
-                    <a href="{{ route('admin.products.index') }}" class="quick-link">
+                    <a href="<?php echo e(route('admin.products.index')); ?>" class="quick-link">
                         <i class="fas fa-list"></i>
-                        <span>{{ __('messages.manage_products') }}</span>
+                        <span><?php echo e(__('messages.manage_products')); ?></span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    <a href="{{ route('admin.categories.index') }}" class="quick-link">
+                    <a href="<?php echo e(route('admin.categories.index')); ?>" class="quick-link">
                         <i class="fas fa-folder"></i>
-                        <span>{{ __('messages.manage_categories') }}</span>
+                        <span><?php echo e(__('messages.manage_categories')); ?></span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    <a href="{{ route('admin.brands.index') }}" class="quick-link">
+                    <a href="<?php echo e(route('admin.brands.index')); ?>" class="quick-link">
                         <i class="fas fa-tags"></i>
-                        <span>{{ __('messages.manage_brands') }}</span>
+                        <span><?php echo e(__('messages.manage_brands')); ?></span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    <a href="{{ route('admin.orders.index') }}" class="quick-link">
+                    <a href="<?php echo e(route('admin.orders.index')); ?>" class="quick-link">
                         <i class="fas fa-shopping-bag"></i>
-                        <span>{{ __('messages.view_orders') }}</span>
+                        <span><?php echo e(__('messages.view_orders')); ?></span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>
@@ -409,57 +411,58 @@
 
     <!-- Analytics Section -->
     <div class="analytics-section">
-        <div class="section-label" @if(app()->getLocale() === 'ar' || app()->getLocale() === 'he') style="flex-direction: row-reverse; justify-content: flex-end;" @endif>
+        <div class="section-label" <?php if(app()->getLocale() === 'ar' || app()->getLocale() === 'he'): ?> style="flex-direction: row-reverse; justify-content: flex-end;" <?php endif; ?>>
             <i class="fas fa-chart-bar"></i>
-            <span>{{ __('messages.analytics_overview') }}</span>
+            <span><?php echo e(__('messages.analytics_overview')); ?></span>
         </div>
         
-        @php $isRtl = app()->getLocale() === 'ar' || app()->getLocale() === 'he'; @endphp
+        <?php $isRtl = app()->getLocale() === 'ar' || app()->getLocale() === 'he'; ?>
         <div class="analytics-grid">
-            <div class="analytics-card cart" @if($isRtl) style="flex-direction: row-reverse !important;" @endif>
+            <div class="analytics-card cart" <?php if($isRtl): ?> style="flex-direction: row-reverse !important;" <?php endif; ?>>
                 <div class="analytics-icon">
                     <i class="fas fa-shopping-cart"></i>
                 </div>
-                <div class="analytics-content" @if($isRtl) style="text-align: right !important; align-items: flex-start !important;" @endif>
-                    <span class="analytics-value">₪{{ number_format($stats['cart_value'] ?? 0, 2) }}</span>
-                    <span class="analytics-label">{{ __('messages.total_cart_value') }}</span>
-                    <span class="analytics-sub">{{ $stats['active_carts'] ?? 0 }} {{ __('messages.active_carts') }}</span>
+                <div class="analytics-content" <?php if($isRtl): ?> style="text-align: right !important; align-items: flex-start !important;" <?php endif; ?>>
+                    <span class="analytics-value">₪<?php echo e(number_format($stats['cart_value'] ?? 0, 2)); ?></span>
+                    <span class="analytics-label"><?php echo e(__('messages.total_cart_value')); ?></span>
+                    <span class="analytics-sub"><?php echo e($stats['active_carts'] ?? 0); ?> <?php echo e(__('messages.active_carts')); ?></span>
                 </div>
             </div>
 
-            <div class="analytics-card rating" @if($isRtl) style="flex-direction: row-reverse !important;" @endif>
+            <div class="analytics-card rating" <?php if($isRtl): ?> style="flex-direction: row-reverse !important;" <?php endif; ?>>
                 <div class="analytics-icon">
                     <i class="fas fa-star"></i>
                 </div>
-                <div class="analytics-content" @if($isRtl) style="text-align: right !important; align-items: flex-start !important;" @endif>
+                <div class="analytics-content" <?php if($isRtl): ?> style="text-align: right !important; align-items: flex-start !important;" <?php endif; ?>>
                     <span class="analytics-value">
-                        {{ number_format($stats['average_rating'] ?? 0, 1) }}
+                        <?php echo e(number_format($stats['average_rating'] ?? 0, 1)); ?>
+
                         <span class="rating-star"><i class="fas fa-star"></i></span>
                     </span>
-                    <span class="analytics-label">{{ __('messages.average_rating') }}</span>
-                    <span class="analytics-sub">{{ __('messages.from') }} {{ $stats['total_reviews'] ?? 0 }} {{ __('messages.reviews') }}</span>
+                    <span class="analytics-label"><?php echo e(__('messages.average_rating')); ?></span>
+                    <span class="analytics-sub"><?php echo e(__('messages.from')); ?> <?php echo e($stats['total_reviews'] ?? 0); ?> <?php echo e(__('messages.reviews')); ?></span>
                 </div>
             </div>
 
-            <div class="analytics-card stock" @if($isRtl) style="flex-direction: row-reverse !important;" @endif>
+            <div class="analytics-card stock" <?php if($isRtl): ?> style="flex-direction: row-reverse !important;" <?php endif; ?>>
                 <div class="analytics-icon">
                     <i class="fas fa-warehouse"></i>
                 </div>
-                <div class="analytics-content" @if($isRtl) style="text-align: right !important; align-items: flex-start !important;" @endif>
-                    <span class="analytics-value">₪{{ number_format($stats['total_stock_value'] ?? 0, 0) }}</span>
-                    <span class="analytics-label">{{ __('messages.total_stock_value') }}</span>
-                    <span class="analytics-sub">{{ __('messages.inventory_value') }}</span>
+                <div class="analytics-content" <?php if($isRtl): ?> style="text-align: right !important; align-items: flex-start !important;" <?php endif; ?>>
+                    <span class="analytics-value">₪<?php echo e(number_format($stats['total_stock_value'] ?? 0, 0)); ?></span>
+                    <span class="analytics-label"><?php echo e(__('messages.total_stock_value')); ?></span>
+                    <span class="analytics-sub"><?php echo e(__('messages.inventory_value')); ?></span>
                 </div>
             </div>
 
-            <div class="analytics-card favorites" @if($isRtl) style="flex-direction: row-reverse !important;" @endif>
+            <div class="analytics-card favorites" <?php if($isRtl): ?> style="flex-direction: row-reverse !important;" <?php endif; ?>>
                 <div class="analytics-icon">
                     <i class="fas fa-heart"></i>
                 </div>
-                <div class="analytics-content" @if($isRtl) style="text-align: right !important; align-items: flex-start !important;" @endif>
-                    <span class="analytics-value">{{ $stats['total_favorites'] ?? 0 }}</span>
-                    <span class="analytics-label">{{ __('messages.total_favorites') }}</span>
-                    <span class="analytics-sub">{{ __('messages.customer_wishlists') }}</span>
+                <div class="analytics-content" <?php if($isRtl): ?> style="text-align: right !important; align-items: flex-start !important;" <?php endif; ?>>
+                    <span class="analytics-value"><?php echo e($stats['total_favorites'] ?? 0); ?></span>
+                    <span class="analytics-label"><?php echo e(__('messages.total_favorites')); ?></span>
+                    <span class="analytics-sub"><?php echo e(__('messages.customer_wishlists')); ?></span>
                 </div>
             </div>
         </div>
@@ -469,113 +472,117 @@
     <div class="content-grid bottom-grid">
         <!-- Top Rated Products -->
         <div class="content-card">
-            @if(app()->getLocale() === 'ar' || app()->getLocale() === 'he')
+            <?php if(app()->getLocale() === 'ar' || app()->getLocale() === 'he'): ?>
             <div class="card-header-pro">
-                <a href="{{ route('admin.products.index', ['filter' => 'top_rated']) }}" class="view-all-btn">
+                <a href="<?php echo e(route('admin.products.index', ['filter' => 'top_rated'])); ?>" class="view-all-btn">
                     <i class="fas fa-arrow-right" style="transform: rotate(180deg);"></i>
-                    {{ __('messages.view_all') }}
+                    <?php echo e(__('messages.view_all')); ?>
+
                 </a>
                 <div class="header-title">
-                    <h2>{{ __('messages.top_rated_products') }}</h2>
+                    <h2><?php echo e(__('messages.top_rated_products')); ?></h2>
                     <i class="fas fa-trophy"></i>
                 </div>
             </div>
-            @else
+            <?php else: ?>
             <div class="card-header-pro">
                 <div class="header-title">
                     <i class="fas fa-trophy"></i>
-                    <h2>{{ __('messages.top_rated_products') }}</h2>
+                    <h2><?php echo e(__('messages.top_rated_products')); ?></h2>
                 </div>
-                <a href="{{ route('admin.products.index', ['filter' => 'top_rated']) }}" class="view-all-btn">
-                    {{ __('messages.view_all') }}
+                <a href="<?php echo e(route('admin.products.index', ['filter' => 'top_rated'])); ?>" class="view-all-btn">
+                    <?php echo e(__('messages.view_all')); ?>
+
                     <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
-            @endif
+            <?php endif; ?>
             <div class="card-body-pro">
-                @if(isset($top_rated_products) && $top_rated_products->count() > 0)
+                <?php if(isset($top_rated_products) && $top_rated_products->count() > 0): ?>
                 <div class="rated-products-list">
-                    @foreach($top_rated_products as $index => $product)
+                    <?php $__currentLoopData = $top_rated_products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="rated-product-item">
-                        <span class="rank-badge">{{ $index + 1 }}</span>
-                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                        <span class="rank-badge"><?php echo e($index + 1); ?></span>
+                        <img src="<?php echo e($product->main_image); ?>" alt="<?php echo e($product->name); ?>">
                         <div class="rated-product-info">
-                            <span class="rated-product-name">{{ $product->name_en ?? $product->name }}</span>
+                            <span class="rated-product-name"><?php echo e($product->name_en ?? $product->name); ?></span>
                             <div class="rating-display">
-                                <span class="rating-value">{{ number_format($product->reviews_avg_rating, 1) }}</span>
+                                <span class="rating-value"><?php echo e(number_format($product->reviews_avg_rating, 1)); ?></span>
                                 <div class="stars">
-                                    @for($i = 1; $i <= 5; $i++)
-                                    <i class="fas fa-star {{ $i <= round($product->reviews_avg_rating) ? 'filled' : '' }}"></i>
-                                    @endfor
+                                    <?php for($i = 1; $i <= 5; $i++): ?>
+                                    <i class="fas fa-star <?php echo e($i <= round($product->reviews_avg_rating) ? 'filled' : ''); ?>"></i>
+                                    <?php endfor; ?>
                                 </div>
-                                <span class="reviews-count">({{ $product->reviews_count }})</span>
+                                <span class="reviews-count">(<?php echo e($product->reviews_count); ?>)</span>
                             </div>
                         </div>
-                        <span class="rated-product-price">₪{{ number_format($product->price, 2) }}</span>
+                        <span class="rated-product-price">₪<?php echo e(number_format($product->price, 2)); ?></span>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
-                @else
+                <?php else: ?>
                 <div class="empty-state">
                     <i class="fas fa-star"></i>
-                    <p>{{ __('messages.no_rated_products_yet') }}</p>
+                    <p><?php echo e(__('messages.no_rated_products_yet')); ?></p>
                 </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
 
         <!-- Low Stock Alerts -->
         <div class="content-card alerts-card">
-            @if(app()->getLocale() === 'ar' || app()->getLocale() === 'he')
+            <?php if(app()->getLocale() === 'ar' || app()->getLocale() === 'he'): ?>
             <div class="card-header-pro warning" style="justify-content: flex-start;">
                 <div class="header-title" style="margin-left: auto;">
-                    <h2>{{ __('messages.low_stock_alerts') }}</h2>
+                    <h2><?php echo e(__('messages.low_stock_alerts')); ?></h2>
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
-                @if(isset($low_stock_products) && $low_stock_products->count() > 0)
-                <span class="alert-count" style="margin-left: 1rem;">{{ $low_stock_products->count() }}</span>
-                @endif
+                <?php if(isset($low_stock_products) && $low_stock_products->count() > 0): ?>
+                <span class="alert-count" style="margin-left: 1rem;"><?php echo e($low_stock_products->count()); ?></span>
+                <?php endif; ?>
             </div>
-            @else
+            <?php else: ?>
             <div class="card-header-pro warning">
                 <div class="header-title">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <h2>{{ __('messages.low_stock_alerts') }}</h2>
+                    <h2><?php echo e(__('messages.low_stock_alerts')); ?></h2>
                 </div>
-                @if(isset($low_stock_products) && $low_stock_products->count() > 0)
-                <span class="alert-count">{{ $low_stock_products->count() }}</span>
-                @endif
+                <?php if(isset($low_stock_products) && $low_stock_products->count() > 0): ?>
+                <span class="alert-count"><?php echo e($low_stock_products->count()); ?></span>
+                <?php endif; ?>
             </div>
-            @endif
+            <?php endif; ?>
             <div class="card-body-pro">
-                @if(isset($low_stock_products) && $low_stock_products->count() > 0)
+                <?php if(isset($low_stock_products) && $low_stock_products->count() > 0): ?>
                 <div class="alerts-list">
-                    @foreach($low_stock_products as $product)
-                    <div class="alert-item {{ $product->stock_quantity == 0 ? 'critical' : 'warning' }}">
-                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                    <?php $__currentLoopData = $low_stock_products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="alert-item <?php echo e($product->stock_quantity == 0 ? 'critical' : 'warning'); ?>">
+                        <img src="<?php echo e($product->main_image); ?>" alt="<?php echo e($product->name); ?>">
                         <div class="alert-info">
-                            <span class="alert-product-name">{{ $product->name_en ?? $product->name }}</span>
+                            <span class="alert-product-name"><?php echo e($product->name_en ?? $product->name); ?></span>
                             <span class="alert-category">
-                                @if($product->category)
-                                {{ $product->category->name_en ?? $product->category->name }}
-                                @else
-                                {{ __('messages.no_category') }}
-                                @endif
+                                <?php if($product->category): ?>
+                                <?php echo e($product->category->name_en ?? $product->category->name); ?>
+
+                                <?php else: ?>
+                                <?php echo e(__('messages.no_category')); ?>
+
+                                <?php endif; ?>
                             </span>
                         </div>
                         <div class="alert-stock">
-                            <span class="stock-number">{{ $product->stock_quantity ?? 0 }}</span>
-                            <span class="stock-label">{{ __('messages.in_stock') }}</span>
+                            <span class="stock-number"><?php echo e($product->stock_quantity ?? 0); ?></span>
+                            <span class="stock-label"><?php echo e(__('messages.in_stock')); ?></span>
                         </div>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
-                @else
+                <?php else: ?>
                 <div class="empty-state success">
                     <i class="fas fa-check-circle"></i>
-                    <p>{{ __('messages.all_products_well_stocked') }}</p>
+                    <p><?php echo e(__('messages.all_products_well_stocked')); ?></p>
                 </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -2166,14 +2173,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Dynamic greeting based on time
     const hour = new Date().getHours();
     const greetingEl = document.getElementById('greetingTime');
-    let greeting = '{{ __("messages.welcome_back") }}';
+    let greeting = '<?php echo e(__("messages.welcome_back")); ?>';
     
     if (hour < 12) {
-        greeting = '{{ __("messages.good_morning") }}';
+        greeting = '<?php echo e(__("messages.good_morning")); ?>';
     } else if (hour < 18) {
-        greeting = '{{ __("messages.good_afternoon") }}';
+        greeting = '<?php echo e(__("messages.good_afternoon")); ?>';
     } else {
-        greeting = '{{ __("messages.good_evening") }}';
+        greeting = '<?php echo e(__("messages.good_evening")); ?>';
     }
     
     if (greetingEl) {
@@ -2219,4 +2226,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>

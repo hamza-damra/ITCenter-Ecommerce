@@ -259,14 +259,13 @@ class HomeController extends Controller
     public function clearHomeCache()
     {
         try {
-            // Clear home page cache for all locales
-            $locales = ['ar', 'en', 'he'];
-            foreach ($locales as $locale) {
-                Cache::forget("home_page_data_{$locale}");
-            }
+            // Use HomeCacheService for consistent cache clearing
+            \App\Services\HomeCacheService::clearAll();
             
-            // Also clear Laravel application cache to be thorough
-            Cache::flush();
+            // Also clear the entire cache table if using database driver
+            if (config('cache.default') === 'database') {
+                \DB::table('cache')->truncate();
+            }
             
             // Clear compiled views
             \Artisan::call('view:clear');
