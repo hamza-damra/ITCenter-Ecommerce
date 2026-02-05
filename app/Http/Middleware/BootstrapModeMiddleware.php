@@ -17,14 +17,11 @@ class BootstrapModeMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Force non-DB drivers FIRST to prevent any DB queries
-        // This must happen before state detection to avoid cascading failures
-        $this->forceNonDbDrivers();
-
         try {
             $state = DatabaseStateService::detectState();
         } catch (\Exception $e) {
-            // If state detection fails, assume STATE_A and let exception handler deal with it
+            // If state detection fails, force non-DB drivers and let exception handler deal with it
+            $this->forceNonDbDrivers();
             \Illuminate\Support\Facades\Log::warning('Bootstrap mode state detection failed', [
                 'error' => $e->getMessage()
             ]);
@@ -36,6 +33,9 @@ class BootstrapModeMiddleware
 
         // If database is missing (STATE_B), enable bootstrap mode
         if ($state === DatabaseStateService::STATE_B) {
+            // Force non-DB drivers only when database is unavailable
+            $this->forceNonDbDrivers();
+            
             // Skip redirect for bootstrap routes and API routes
             if ($isBootstrapRoute || $request->is('api/*')) {
                 // Allow bootstrap routes to proceed
@@ -52,51 +52,39 @@ class BootstrapModeMiddleware
             return $next($request);
         }
 
-        // If database is available (STATE_C), block bootstrap routes
+        // If database is available (STATE_C), use normal DB-based drivers
         if ($state === DatabaseStateService::STATE_C) {
             if ($isBootstrapRoute) {
                 // Database exists, bootstrap mode should not be accessible
                 abort(404, 'Bootstrap mode is not available when database exists.');
             }
 
-            // Normal mode - restore default drivers if they were changed
-            $this->restoreDefaultDrivers();
-
+            // Normal mode - database is available, no need to force non-DB drivers
             return $next($request);
         }
 
-        // STATE_A: MySQL unreachable - show error page (handled by exception handler)
-        // Don't force drivers here, let exception handler deal with it
+        // STATE_A: MySQL unreachable - force non-DB drivers, show error page (handled by exception handler)
+        $this->forceNonDbDrivers();
         return $next($request);
     }
 
     /**
-     * Force non-DB drivers for bootstrap mode
+     * Force non-DB drivers for bootstrap mode (only called when database is unavailable)
      */
     protected function forceNonDbDrivers(): void
     {
-        // Always force file-based session driver to prevent DB queries
+        // Force file-based session driver to prevent DB queries
         Config::set('session.driver', 'file');
         
-        // Always force file-based cache driver
+        // Force file-based cache driver
         if (Config::get('cache.default') === 'database') {
             Config::set('cache.default', 'file');
         }
 
-        // Always force sync queue connection
+        // Force sync queue connection
         if (Config::get('queue.default') === 'database') {
             Config::set('queue.default', 'sync');
         }
-    }
-
-    /**
-     * Restore default drivers (if needed)
-     */
-    protected function restoreDefaultDrivers(): void
-    {
-        // Only restore if they were explicitly set in .env
-        // Don't override user's configuration
-        // This is mainly for cleanup after bootstrap mode
     }
 }
 
