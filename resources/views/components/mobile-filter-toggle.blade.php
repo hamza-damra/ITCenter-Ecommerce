@@ -67,13 +67,6 @@
     }
 
     .mobile-filter-badge {
-        position: absolute;
-        top: -8px;
-        @if($isRtl)
-        left: -8px;
-        @else
-        right: -8px;
-        @endif
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
         color: white;
         font-size: 0.75rem;
@@ -81,12 +74,13 @@
         min-width: 22px;
         height: 22px;
         border-radius: 11px;
-        display: flex;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
         padding: 0 0.4rem;
         box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
         animation: badgePulse 2s ease-in-out infinite;
+        flex-shrink: 0;
     }
 
     @keyframes badgePulse {
