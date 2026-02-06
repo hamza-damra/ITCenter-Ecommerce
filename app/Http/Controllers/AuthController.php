@@ -16,11 +16,17 @@ class AuthController extends Controller
     /**
      * Show login form
      */
-    public function showLogin()
+    public function showLogin(Request $request)
     {
         if (Auth::check()) {
             return redirect()->route('home');
         }
+        
+        // Store the redirect URL if provided (for returning after login)
+        if ($request->has('redirect')) {
+            session()->put('url.intended', $request->get('redirect'));
+        }
+        
         return view('auth.login');
     }
 
@@ -60,7 +66,15 @@ class AuthController extends Controller
             // CRITICAL FIX: Merge guest cart with user cart
             $this->mergeGuestCart(Auth::user());
 
-            return redirect()->intended(route('home'))
+            // Check for redirect parameter or use intended URL
+            $redirectTo = $request->get('redirect') ?: session()->pull('url.intended', route('home'));
+            
+            // Validate the redirect URL to prevent open redirect attacks
+            if (!$this->isValidRedirectUrl($redirectTo)) {
+                $redirectTo = route('home');
+            }
+
+            return redirect($redirectTo)
                 ->with('success', __t('messages.login_success'));
         }
 
@@ -210,6 +224,31 @@ class AuthController extends Controller
         return redirect()->back()
             ->withErrors(['email' => __t('messages.password_reset_failed')])
             ->withInput($request->only('email'));
+    }
+
+    /**
+     * Validate redirect URL to prevent open redirect attacks
+     */
+    protected function isValidRedirectUrl($url)
+    {
+        if (empty($url)) {
+            return false;
+        }
+        
+        // Allow relative URLs starting with /
+        if (str_starts_with($url, '/') && !str_starts_with($url, '//')) {
+            return true;
+        }
+        
+        // Parse the URL and check if it's the same host
+        $parsedUrl = parse_url($url);
+        if (!isset($parsedUrl['host'])) {
+            return true; // Relative URL without host
+        }
+        
+        // Check if the host matches our app's host
+        $appUrl = parse_url(config('app.url'));
+        return isset($appUrl['host']) && $parsedUrl['host'] === $appUrl['host'];
     }
 
     /**

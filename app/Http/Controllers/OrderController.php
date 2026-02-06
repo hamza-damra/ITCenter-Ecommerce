@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -64,7 +65,8 @@ class OrderController extends Controller
             return redirect()->route('login')->with('error', __t('messages.please_login'));
         }
 
-        $order = Order::where('order_number', $orderNumber)
+        $order = Order::with('items.product')
+            ->where('order_number', $orderNumber)
             ->forUser($user->id)
             ->firstOrFail();
 
@@ -72,10 +74,20 @@ class OrderController extends Controller
             return back()->with('error', __t('messages.cannot_cancel_order'));
         }
 
-        $order->update([
-            'status' => 'cancelled',
-            'cancelled_at' => now(),
-        ]);
+        DB::transaction(function () use ($order) {
+            // Restore stock for each order item
+            foreach ($order->items as $item) {
+                if ($item->product && $item->product->track_stock) {
+                    $item->product->increment('stock_quantity', $item->quantity);
+                    $item->product->updateStockStatus();
+                }
+            }
+
+            $order->update([
+                'status' => 'cancelled',
+                'cancelled_at' => now(),
+            ]);
+        });
 
         return back()->with('success', __t('messages.order_cancelled_successfully'));
     }

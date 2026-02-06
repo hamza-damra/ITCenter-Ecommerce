@@ -44,6 +44,7 @@
             noUiSlider.create(this.priceSlider, {
                 start: [currentMin, currentMax],
                 connect: true,
+                direction: 'ltr', // Always LTR - slider is visually isolated from page RTL via CSS
                 range: {
                     'min': minPrice,
                     'max': maxPrice

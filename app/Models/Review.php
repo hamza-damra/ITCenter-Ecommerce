@@ -50,6 +50,14 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get all votes for this review.
+     */
+    public function votes()
+    {
+        return $this->hasMany(ReviewVote::class);
+    }
+
 
 
 

@@ -27,9 +27,19 @@ class User extends Authenticatable
         'phone',
         'avatar',
         'password',
+        'last_activity',
+    ];
+
+    /**
+     * Guarded attributes that cannot be mass assigned.
+     * Role and status must be set explicitly to prevent privilege escalation.
+     *
+     * @var list<string>
+     */
+    protected $guarded = [
+        'id',
         'role',
         'status',
-        'last_activity',
     ];
 
     /**

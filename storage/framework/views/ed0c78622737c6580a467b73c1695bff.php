@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <title><?php echo $__env->yieldContent('title', 'IT Center'); ?></title>
+    <?php echo $__env->yieldContent('meta'); ?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     
@@ -2281,15 +2282,26 @@
                 const fav = await favRes.json();
 
                 const cartEl = document.getElementById('cart-count');
+                const mobileCartEl = document.getElementById('mobile-cart-count');
                 const favEl = document.getElementById('favorites-count');
 
-                // Update cart counter
+                // Update cart counter (desktop)
                 if (cartEl && typeof cart.count !== 'undefined') {
                     cartEl.textContent = cart.count;
                     if (cart.count > 0) {
                         cartEl.classList.remove('hidden');
                     } else {
                         cartEl.classList.add('hidden');
+                    }
+                }
+                
+                // Update cart counter (mobile)
+                if (mobileCartEl && typeof cart.count !== 'undefined') {
+                    mobileCartEl.textContent = cart.count;
+                    if (cart.count > 0) {
+                        mobileCartEl.classList.remove('hidden');
+                    } else {
+                        mobileCartEl.classList.add('hidden');
                     }
                 }
 
@@ -2527,23 +2539,27 @@
             // Create notification element
             const notification = document.createElement('div');
             notification.textContent = message;
+            const positionSide = isRTL ? 'left: 20px;' : 'right: 20px;';
+            const animName = isRTL ? 'slideInRTL' : 'slideIn';
             notification.style.cssText = `
                 position: fixed;
                 top: 80px;
-                right: 20px;
+                ${positionSide}
                 background: rgba(0, 0, 0, 0.8);
                 color: white;
                 padding: 12px 24px;
                 border-radius: 8px;
                 z-index: 10000;
-                animation: slideIn 0.3s ease-out;
+                direction: ${isRTL ? 'rtl' : 'ltr'};
+                font-family: ${isRTL ? "'Cairo', sans-serif" : "inherit"};
+                animation: ${animName} 0.3s ease-out;
             `;
             
             document.body.appendChild(notification);
             
             // Remove after 2 seconds
             setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease-out';
+                notification.style.animation = (isRTL ? 'slideOutRTL' : 'slideOut') + ' 0.3s ease-out';
                 setTimeout(() => notification.remove(), 300);
             }, 2000);
         }
@@ -2561,6 +2577,16 @@
                     opacity: 1;
                 }
             }
+            @keyframes slideInRTL {
+                from {
+                    transform: translateX(-400px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
             @keyframes slideOut {
                 from {
                     transform: translateX(0);
@@ -2568,6 +2594,16 @@
                 }
                 to {
                     transform: translateX(400px);
+                    opacity: 0;
+                }
+            }
+            @keyframes slideOutRTL {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(-400px);
                     opacity: 0;
                 }
             }

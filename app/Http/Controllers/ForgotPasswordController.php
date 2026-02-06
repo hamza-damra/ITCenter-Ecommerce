@@ -16,6 +16,12 @@ class ForgotPasswordController extends Controller
 {
     // Maximum attempts allowed for verifying a code
     const MAX_ATTEMPTS = 5;
+
+    // Maximum total attempts across all codes for an email before lockout
+    const MAX_GLOBAL_ATTEMPTS = 15;
+
+    // Lockout duration in minutes after exceeding global attempts
+    const LOCKOUT_MINUTES = 30;
     
     /**
      * Show the forgot password form (Step 1)
@@ -37,12 +43,24 @@ class ForgotPasswordController extends Controller
 
         $email = $request->email;
 
-        // Delete any existing unused codes for this email to prevent clutter
+        // Check global lockout: count total failed attempts in the lockout window
+        $recentAttempts = PasswordResetCode::forEmail($email)
+            ->where('created_at', '>=', Carbon::now()->subMinutes(self::LOCKOUT_MINUTES))
+            ->sum('attempts');
+
+        if ($recentAttempts >= self::MAX_GLOBAL_ATTEMPTS) {
+            return back()
+                ->withInput()
+                ->with('error', __t('password_reset.too_many_attempts'));
+        }
+
+        // Keep old codes (don't delete) to preserve global attempt count
+        // Just mark them as used so they can't be verified
         PasswordResetCode::forEmail($email)
             ->where('used', false)
-            ->delete();
+            ->update(['used' => true]);
 
-        // Generate a 4-digit code
+        // Generate a 6-digit code
         $code = PasswordResetCode::generateCode();
 
         // Store the code in the database
@@ -95,7 +113,7 @@ class ForgotPasswordController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'code' => 'required|string|size:4',
+            'code' => 'required|string|size:6',
         ]);
 
         $email = $request->email;
@@ -143,12 +161,12 @@ class ForgotPasswordController extends Controller
                 ->with('error', __t('password_reset.invalid_code'));
         }
 
-        // Code is valid - create a temporary verification token
-        $verificationToken = base64_encode(json_encode([
+        // Code is valid - create a signed verification token using Laravel encryption
+        $verificationToken = encrypt([
             'email' => $email,
             'code_id' => $resetCode->id,
             'timestamp' => time(),
-        ]));
+        ]);
 
         // Store the verification token in session
         Session::put('reset_verified', $verificationToken);
@@ -210,9 +228,17 @@ class ForgotPasswordController extends Controller
                 ->with('error', __t('password_reset.user_not_found'));
         }
 
-        // Get the verification token
+        // Get and decrypt the verification token
         $verificationToken = Session::get('reset_verified');
-        $tokenData = json_decode(base64_decode($verificationToken), true);
+        try {
+            $tokenData = decrypt($verificationToken);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            Session::forget('reset_verified');
+            Session::forget('reset_email');
+            return redirect()
+                ->route('password.request')
+                ->with('error', __t('password_reset.verification_required'));
+        }
 
         // Mark the code as used
         $resetCode = PasswordResetCode::find($tokenData['code_id']);

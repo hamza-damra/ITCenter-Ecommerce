@@ -32,10 +32,20 @@
         letter-spacing: 0.5px;
     }
 
+    [dir="rtl"] .attributes-table th {
+        text-align: right;
+        text-transform: none;
+        letter-spacing: normal;
+    }
+
     .attributes-table td {
         padding: 16px;
         border-bottom: 1px solid var(--border);
         color: var(--secondary);
+    }
+
+    [dir="rtl"] .attributes-table td {
+        text-align: right;
     }
 
     .attributes-table tbody tr:hover {

@@ -119,6 +119,11 @@
             border-left: 4px solid;
         }
 
+        [dir="rtl"] .status-item {
+            border-left: none;
+            border-right: 4px solid;
+        }
+
         .status-item.success {
             background: #d1fae5;
             border-color: var(--success);
@@ -262,6 +267,16 @@
             background: #dbeafe;
             color: #1e40af;
             border-left: 4px solid var(--info);
+        }
+
+        [dir="rtl"] .alert-info {
+            border-left: none;
+            border-right: 4px solid var(--info);
+        }
+
+        [dir="rtl"] .status-item-label {
+            text-transform: none;
+            letter-spacing: normal;
         }
 
         .backup-list {

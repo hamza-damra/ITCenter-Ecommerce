@@ -53,6 +53,16 @@
     --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.12);
     --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.15);
     
+    /* Typography Scale */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+    
     /* Transitions */
     --transition-fast: 0.15s ease;
     --transition-normal: 0.3s ease;
@@ -373,6 +383,12 @@
     padding-right: 2.5rem;
 }
 
+[dir="rtl"] .form-select {
+    background-position: left 0.5rem center;
+    padding-right: var(--space-4);
+    padding-left: 2.5rem;
+}
+
 /* ===== BADGE COMPONENTS ===== */
 .badge {
     display: inline-flex;
@@ -383,6 +399,11 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+[dir="rtl"] .badge {
+    text-transform: none;
+    letter-spacing: normal;
 }
 
 .badge-primary {
@@ -683,6 +704,41 @@
     .xl\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
+/* ===== RTL SUPPORT ===== */
+[dir="rtl"] .form-group {
+    text-align: right;
+}
+
+[dir="rtl"] .form-label {
+    text-align: right;
+}
+
+[dir="rtl"] .form-input {
+    text-align: right;
+    direction: rtl;
+}
+
+[dir="rtl"] .modal-footer {
+    direction: rtl;
+}
+
+[dir="rtl"] .modal-header {
+    direction: rtl;
+}
+
+[dir="rtl"] .modal-body {
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] .product-card-content {
+    text-align: right;
+}
+
+[dir="rtl"] .product-card-footer {
+    direction: rtl;
+}
+
 /* ===== DARK MODE SUPPORT ===== */
 @media (prefers-color-scheme: dark) {
     .dark\:bg-gray-900 { background-color: #111827; }
@@ -730,5 +786,128 @@
     
     .card {
         border: 1px solid currentColor;
+    }
+}
+
+/* ===== PROMOTIONAL AD BANNER STYLES ===== */
+.promotional-ad-overlay {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.promotional-ad-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 20px 40px;
+    text-align: right;
+    z-index: 2;
+}
+
+/* RTL: Align to left side instead */
+[dir="rtl"] .promotional-ad-content {
+    align-items: flex-start;
+    text-align: left;
+    padding: 20px 40px;
+}
+
+.promotional-ad-title {
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 8px 0;
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.5),
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
+}
+
+.promotional-ad-subtitle {
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+    text-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.5),
+        0 2px 6px rgba(0, 0, 0, 0.3);
+    max-width: 85%;
+    opacity: 0.95;
+}
+
+.promotional-ad-button {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.3),
+        0 2px 5px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    min-width: 120px;
+    text-align: center;
+}
+
+.promotional-ad-button:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.4),
+        0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Responsive adjustments for promotional ad content */
+@media (max-width: 768px) {
+    .promotional-ad-content {
+        padding: 15px;
+    }
+    
+    .promotional-ad-title {
+        font-size: 22px !important;
+        margin-bottom: 6px;
+    }
+    
+    .promotional-ad-subtitle {
+        font-size: 13px !important;
+        max-width: 90%;
+        margin-bottom: 12px;
+    }
+    
+    .promotional-ad-button {
+        padding: 10px 20px;
+        font-size: 12px;
+        min-width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .promotional-ad-content {
+        padding: 10px;
+    }
+    
+    .promotional-ad-title {
+        font-size: 18px !important;
+    }
+    
+    .promotional-ad-subtitle {
+        font-size: 11px !important;
+    }
+    
+    .promotional-ad-button {
+        padding: 8px 16px;
+        font-size: 11px;
+        min-width: 80px;
     }
 }

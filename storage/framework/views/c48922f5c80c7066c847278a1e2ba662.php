@@ -593,6 +593,15 @@
         box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
     }
 
+    .btn-add-cart.in-cart {
+        background: #28a745;
+    }
+
+    .btn-add-cart.in-cart:hover {
+        background: #218838;
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+
     .btn-add-cart:disabled,
     .btn-buy-now:disabled,
     .quantity-btn:disabled {
@@ -1672,11 +1681,14 @@
                 <div class="action-buttons">
                     <button class="btn-add-cart"
                             type="button"
+                            id="product-add-cart-btn"
+                            data-product-id="<?php echo e($product->id); ?>"
+                            data-add-text="<?php echo e(__('messages.add_to_cart')); ?>"
+                            data-in-cart-text="<?php echo e(__('messages.in_cart')); ?>"
                             onclick="addToCartWithQuantity(<?php echo e($product->id); ?>, this)"
                             <?php echo e($product->stock_status === 'out_of_stock' ? 'disabled' : ''); ?>>
                         <i class="fas fa-shopping-cart"></i>
-                        <?php echo e($product->stock_status === 'out_of_stock' ? __('messages.out_of_stock') : __('messages.add_to_cart')); ?>
-
+                        <span class="btn-text"><?php echo e($product->stock_status === 'out_of_stock' ? __('messages.out_of_stock') : __('messages.add_to_cart')); ?></span>
                     </button>
                     <button class="btn-buy-now"
                             type="button"
@@ -2128,19 +2140,21 @@
             console.log('Response data:', data);
             
             if (data.success) {
-                // Show success feedback
-                button.innerHTML = '<i class="fas fa-check"></i> Added!';
-                button.style.background = '#28a745';
+                // Update cart count badge in header
+                if (typeof refreshHeaderCounters === 'function') {
+                    refreshHeaderCounters();
+                }
                 
-                // Update cart count in header
-                updateCartCount();
+                // Also call updateCartCount for button states on other pages
+                if (typeof updateCartCount === 'function') {
+                    updateCartCount();
+                }
 
-                // Reset button after 2 seconds
-                setTimeout(() => {
-                    button.disabled = false;
-                    button.innerHTML = originalText;
-                    button.style.background = '';
-                }, 2000);
+                // Re-enable the button
+                button.disabled = false;
+                
+                // Always fetch cart and update this button directly
+                fetchCartAndSync();
 
                 // Show notification
                 showNotification(data.message || 'Product added to cart successfully!');
@@ -2231,6 +2245,130 @@
     }
 
     // Wishlist functionality is handled by the global script in layout
+
+    // ====================================
+    // Cart State Sync for Product Detail
+    // ====================================
+    const CURRENT_PRODUCT_ID = <?php echo e($product->id); ?>;
+    const ADD_TO_CART_TEXT = '<?php echo e(__("messages.add_to_cart")); ?>';
+    const IN_CART_TEXT = '<?php echo e(__("messages.in_cart")); ?>';
+    const OUT_OF_STOCK = <?php echo e($product->stock_status === 'out_of_stock' ? 'true' : 'false'); ?>;
+
+    /**
+     * Update the add-to-cart button based on cart state
+     */
+    function updateAddToCartButton(cartItems) {
+        console.log('🔄 updateAddToCartButton called with', cartItems.length, 'items');
+        const button = document.getElementById('product-add-cart-btn');
+        if (!button) {
+            console.error('❌ Button not found: product-add-cart-btn');
+            return;
+        }
+        if (OUT_OF_STOCK) {
+            console.log('⚠️ Product is out of stock, skipping button update');
+            return;
+        }
+
+        // Find this product in cart
+        const cartItem = cartItems.find(item => {
+            // Handle both product_id and id formats
+            const itemProductId = item.product_id || item.id;
+            console.log('  Checking item:', itemProductId, 'against', CURRENT_PRODUCT_ID);
+            return parseInt(itemProductId) === CURRENT_PRODUCT_ID;
+        });
+
+        console.log('🔍 Found cart item:', cartItem);
+
+        if (cartItem && cartItem.quantity > 0) {
+            // Product is in cart - show quantity
+            console.log('✅ Updating button to IN CART state with quantity:', cartItem.quantity);
+            button.innerHTML = `<i class="fas fa-check"></i> <span class="btn-text">${IN_CART_TEXT} (${cartItem.quantity})</span>`;
+            button.classList.add('in-cart');
+            button.style.background = '#28a745';
+        } else {
+            // Product not in cart
+            console.log('ℹ️ Updating button to ADD TO CART state');
+            button.innerHTML = `<i class="fas fa-shopping-cart"></i> <span class="btn-text">${ADD_TO_CART_TEXT}</span>`;
+            button.classList.remove('in-cart');
+            button.style.background = '';
+        }
+    }
+
+    /**
+     * Initialize cart sync on page load
+     */
+    function initCartSync() {
+        console.log('🚀 initCartSync called');
+        // Always fetch cart directly via API for reliable sync
+        fetchCartAndSync();
+        
+        // Also subscribe to cartManager updates if available (for real-time sync)
+        if (typeof window.cartManager !== 'undefined') {
+            console.log('📡 Subscribing to cartManager updates');
+            window.cartManager.subscribe((state) => {
+                console.log('📡 cartManager update received:', state);
+                updateAddToCartButton(state.items || []);
+            });
+        }
+    }
+
+    /**
+     * Fetch cart items and update button state
+     */
+    function fetchCartAndSync() {
+        console.log('🔄 Fetching cart to sync button state...');
+
+        fetch('/cart/items', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('📦 Cart response:', data);
+            if (data.success && data.items) {
+                console.log('✅ Cart items:', data.items);
+                console.log('🔍 Looking for product ID:', CURRENT_PRODUCT_ID);
+                updateAddToCartButton(data.items);
+            } else {
+                console.warn('⚠️ Cart response missing items:', data);
+            }
+        })
+        .catch(error => {
+            console.error('❌ Failed to fetch cart for sync:', error);
+        });
+    }
+
+    // Initialize cart sync when DOM is ready
+    console.log('🔧 Product detail cart sync script loaded. Product ID:', CURRENT_PRODUCT_ID);
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 DOM loaded, initializing cart sync...');
+            setTimeout(initCartSync, 200);
+        });
+    } else {
+        // DOM already loaded, wait for app.js to initialize
+        console.log('📄 DOM already ready, initializing cart sync...');
+        setTimeout(initCartSync, 200);
+    }
+    
+    // Also run on window load as a fallback
+    window.addEventListener('load', function() {
+        console.log('🌐 Window loaded, running cart sync again...');
+        setTimeout(fetchCartAndSync, 500);
+    });
+
+    // Also listen for custom cart update events (for cross-page sync)
+    document.addEventListener('cart:updated', function() {
+        if (typeof window.cartManager !== 'undefined') {
+            updateAddToCartButton(window.cartManager.getItems() || []);
+        } else {
+            fetchCartAndSync();
+        }
+    });
 </script>
 <?php $__env->stopSection(); ?>
 

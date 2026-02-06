@@ -474,14 +474,6 @@
             <!-- Footer -->
             <div class="footer">
                 <p>{{ __t('errors.db_down.footer') }}</p>
-                @if(config('app.debug') && isset($exception))
-                <details style="margin-top: 1rem; text-align: {{ is_rtl() ? 'right' : 'left' }};">
-                    <summary style="cursor: pointer; color: #ef4444; font-weight: 600;">
-                        <i class="fas fa-bug"></i> Debug Information
-                    </summary>
-                    <pre style="background: #f8fafc; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-top: 0.5rem; font-size: 0.85rem; text-align: left;">{{ $exception->getMessage() }}</pre>
-                </details>
-                @endif
             </div>
         </div>
     </div>

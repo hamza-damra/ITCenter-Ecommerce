@@ -44,9 +44,10 @@ class CategoryController extends Controller
                 $query->where('is_active', $request->is_active);
             }
 
-            // Sorting
-            $sortBy = $request->get('sort_by', 'created_at');
-            $sortOrder = $request->get('sort_order', 'desc');
+            // Sorting — whitelist columns to prevent SQL injection
+            $allowedSorts = ['created_at', 'updated_at', 'name_en', 'name_ar', 'is_active', 'order', 'position'];
+            $sortBy = in_array($request->get('sort_by'), $allowedSorts, true) ? $request->get('sort_by') : 'created_at';
+            $sortOrder = $request->get('sort_order') === 'asc' ? 'asc' : 'desc';
             $query->orderBy($sortBy, $sortOrder);
 
             $perPage = $request->get('per_page', 20);

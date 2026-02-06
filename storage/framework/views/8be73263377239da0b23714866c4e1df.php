@@ -1383,6 +1383,16 @@
     border-bottom: 1px solid var(--border-color);
 }
 
+[dir="rtl"] .pro-table th {
+    text-align: right;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+[dir="rtl"] .pro-table td {
+    text-align: right;
+}
+
 .pro-table td {
     padding: 1rem;
     border-bottom: 1px solid var(--bg-tertiary);
@@ -1838,14 +1848,27 @@
     border-left: 4px solid;
 }
 
+[dir="rtl"] .alert-item {
+    border-left: none;
+    border-right: 4px solid;
+}
+
 .alert-item.warning {
     background: rgba(245, 158, 11, 0.08);
     border-left-color: var(--accent-amber);
 }
 
+[dir="rtl"] .alert-item.warning {
+    border-right-color: var(--accent-amber);
+}
+
 .alert-item.critical {
     background: rgba(244, 63, 94, 0.08);
     border-left-color: var(--accent-rose);
+}
+
+[dir="rtl"] .alert-item.critical {
+    border-right-color: var(--accent-rose);
 }
 
 .alert-item img {
@@ -1939,7 +1962,7 @@
 }
 
 .dashboard-pro[dir="rtl"] .hero-content {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .hero-decoration {
@@ -1948,41 +1971,41 @@
 }
 
 .dashboard-pro[dir="rtl"] .date-display {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 /* Section Labels RTL - Icon and text on the right */
 .dashboard-pro[dir="rtl"] .section-label {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
     justify-content: flex-end !important;
 }
 
 .dashboard-pro[dir="rtl"] .section-header-pro {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .online-indicator {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 /* Primary Stats Cards RTL */
 .dashboard-pro[dir="rtl"] .stat-card {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .stat-info {
     text-align: right;
-    align-items: flex-start;
+    align-items: flex-end;
 }
 
 /* Secondary Stats (Mini Stats) RTL */
 .dashboard-pro[dir="rtl"] .mini-stat {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .mini-stat-content {
     text-align: right;
-    align-items: flex-start;
+    align-items: flex-end;
 }
 
 .dashboard-pro[dir="rtl"] .mini-stat-badge {
@@ -2001,12 +2024,12 @@
 }
 
 .dashboard-pro[dir="rtl"] .user-breakdown {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
     justify-content: flex-start;
 }
 
 .dashboard-pro[dir="rtl"] .breakdown-item {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .user-stat-card {
@@ -2015,31 +2038,31 @@
 }
 
 .dashboard-pro[dir="rtl"] .user-stat-header {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
     justify-content: flex-start;
 }
 
 /* User Metrics RTL */
 .dashboard-pro[dir="rtl"] .metric-card {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .metric-info {
     text-align: right;
-    align-items: flex-start;
+    align-items: flex-end;
 }
 
 /* Card Headers RTL */
 .dashboard-pro[dir="rtl"] .card-header-pro {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .header-title {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .view-all-btn {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .view-all-btn i {
@@ -2053,7 +2076,7 @@
 }
 
 .dashboard-pro[dir="rtl"] .product-cell-pro {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .product-details {
@@ -2072,7 +2095,7 @@
 
 /* Quick Links RTL - text should be on the right */
 .dashboard-pro[dir="rtl"] .quick-link {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .quick-link span {
@@ -2092,22 +2115,22 @@
 
 /* Analytics Cards RTL */
 .dashboard-pro[dir="rtl"] .analytics-card {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .analytics-content {
     text-align: right;
-    align-items: flex-start;
+    align-items: flex-end;
 }
 
 .dashboard-pro[dir="rtl"] .analytics-value {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
     justify-content: flex-start;
 }
 
 /* Rated Products RTL */
 .dashboard-pro[dir="rtl"] .rated-product-item {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 
 .dashboard-pro[dir="rtl"] .rated-product-info {
@@ -2115,13 +2138,13 @@
 }
 
 .dashboard-pro[dir="rtl"] .rating-display {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
     justify-content: flex-start;
 }
 
 /* Alert Items RTL */
 .dashboard-pro[dir="rtl"] .alert-item {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
     border-left: none;
     border-right: 4px solid;
 }
@@ -2164,7 +2187,7 @@
 
 /* Status badge icon alignment */
 .dashboard-pro[dir="rtl"] .status-badge {
-    flex-direction: row-reverse !important;
+    flex-direction: row !important;
 }
 </style>
 
@@ -2199,31 +2222,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // RTL Fixes - dynamically apply flex-direction for RTL
-    const dashboardPro = document.querySelector('.dashboard-pro');
-    if (dashboardPro && dashboardPro.getAttribute('dir') === 'rtl') {
-        // Fix card headers
-        document.querySelectorAll('.card-header-pro').forEach(el => {
-            el.style.flexDirection = 'row-reverse';
-        });
-        // Fix header titles
-        document.querySelectorAll('.header-title').forEach(el => {
-            el.style.flexDirection = 'row-reverse';
-        });
-        // Fix section labels
-        document.querySelectorAll('.section-label').forEach(el => {
-            el.style.flexDirection = 'row-reverse';
-            el.style.justifyContent = 'flex-end';
-        });
-        // Fix analytics cards
-        document.querySelectorAll('.analytics-card').forEach(el => {
-            el.style.flexDirection = 'row-reverse';
-        });
-        // Fix quick links
-        document.querySelectorAll('.quick-link').forEach(el => {
-            el.style.flexDirection = 'row-reverse';
-        });
-    }
+    // RTL is handled by dir="rtl" on .dashboard-pro which makes flex items flow right-to-left automatically
 });
 </script>
 <?php $__env->stopSection(); ?>

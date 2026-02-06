@@ -213,22 +213,19 @@ class AuthController extends Controller
     public function forgotPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email',
         ]);
 
         if ($validator->fails()) {
             return $this->validationErrorResponse($validator->errors()->toArray());
         }
 
+        // Always return success to prevent email enumeration
         $status = Password::sendResetLink(
             $request->only('email')
         );
 
-        if ($status === Password::RESET_LINK_SENT) {
-            return $this->successResponse(null, 'Password reset link sent to your email');
-        }
-
-        return $this->errorResponse('Unable to send reset link. Please try again.', 500);
+        return $this->successResponse(null, 'If an account with that email exists, a password reset link has been sent.');
     }
 
     /**

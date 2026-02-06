@@ -28,12 +28,12 @@ use App\Http\Controllers\Api\ContactController;
 // API v1 Routes
 Route::prefix('v1')->group(function () {
     
-    // Authentication Routes (Public)
+    // Authentication Routes (Public) — rate limited to prevent brute force
     Route::prefix('auth')->group(function () {
-        Route::post('/register', [AuthController::class, 'register']);
-        Route::post('/login', [AuthController::class, 'login']);
-        Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+        Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,1');
+        Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
+        Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:3,1');
+        Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:5,1');
         
         // Protected Authentication Routes
         Route::middleware('auth:sanctum')->group(function () {
@@ -106,8 +106,8 @@ Route::prefix('v1')->group(function () {
         Route::put('/reviews/{review}', [ReviewController::class, 'update']);
         Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
         
-        // Admin Routes (Require Admin Authentication)
-        Route::prefix('admin')->group(function () {
+        // Admin Routes (Require Admin Authentication + Admin Role)
+        Route::prefix('admin')->middleware('admin.api')->group(function () {
             // Dashboard
             Route::get('/dashboard/stats', [App\Http\Controllers\Api\Admin\DashboardController::class, 'stats']);
             

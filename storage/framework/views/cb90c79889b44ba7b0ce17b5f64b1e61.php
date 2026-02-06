@@ -1,4 +1,4 @@
-<?php $__env->startSection('title', 'Edit Product'); ?>
+<?php $__env->startSection('title', __('messages.edit_product')); ?>
 
 <?php $__env->startSection('content'); ?>
 <style>
@@ -126,12 +126,13 @@
 
 <div class="page-header">
     <div class="page-header-content">
-        <h1><i class="fas fa-edit"></i> Edit Product</h1>
-        <p>Update product information: <strong><?php echo e($product->name); ?></strong></p>
+        <h1><i class="fas fa-edit"></i> <?php echo e(__('messages.edit_product')); ?></h1>
+        <p><?php echo e(__('messages.update_product_info')); ?>: <strong><?php echo e($product->name); ?></strong></p>
     </div>
     <div class="page-actions">
         <a href="<?php echo e(route('admin.products.index')); ?>" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Products
+            <i class="fas fa-arrow-left"></i> <?php echo e(__('messages.back_to_products')); ?>
+
         </a>
     </div>
 </div>
@@ -146,13 +147,14 @@
         <!-- Basic Information Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-info-circle"></i> Basic Information</h2>
+                <h2><i class="fas fa-info-circle"></i> <?php echo e(__('messages.basic_information')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name_en" class="form-label">
-                            Product Name (English)
+                            <?php echo e(__('messages.product_name_english')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input 
@@ -267,7 +269,8 @@ unset($__errorArgs, $__bag); ?>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="category_id" class="form-label">
-                            Category
+                            <?php echo e(__('messages.category')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <select id="category_id" name="category_id" class="form-control <?php $__errorArgs = ['category_id'];
@@ -278,7 +281,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" required>
-                            <option value="">Select a Category</option>
+                            <option value=""><?php echo e(__('messages.select_category')); ?></option>
                             <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($category->id); ?>" <?php echo e(old('category_id', $product->category_id) == $category->id ? 'selected' : ''); ?>>
                                     <?php echo e($category->name); ?>
@@ -300,8 +303,9 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group">
                         <label for="brand_id" class="form-label">
-                            Brand
-                            <span style="color: #64748b; font-size: 12px;">(Optional)</span>
+                            <?php echo e(__('messages.brand')); ?>
+
+                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                         </label>
                         <select id="brand_id" name="brand_id" class="form-control <?php $__errorArgs = ['brand_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -311,7 +315,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
-                            <option value="">Select a Brand</option>
+                            <option value=""><?php echo e(__('messages.select_brand')); ?></option>
                             <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $brand): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($brand->id); ?>" <?php echo e(old('brand_id', $product->brand_id) == $brand->id ? 'selected' : ''); ?>>
                                     <?php echo e($brand->name); ?>
@@ -337,13 +341,14 @@ unset($__errorArgs, $__bag); ?>
         <!-- Pricing & Inventory Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-dollar-sign"></i> Pricing & Inventory</h2>
+                <h2><i class="fas fa-dollar-sign"></i> <?php echo e(__('messages.pricing_inventory')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="price" class="form-label">
-                            Regular Price
+                            <?php echo e(__('messages.regular_price')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <div style="position: relative;">
@@ -380,8 +385,9 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group">
                         <label for="sale_price" class="form-label">
-                            Sale Price
-                            <span style="color: #64748b; font-size: 12px;">(Optional)</span>
+                            <?php echo e(__('messages.sale_price')); ?>
+
+                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                         </label>
                         <div style="position: relative;">
                             <span style="position: absolute; left: 12px; top: 12px; color: var(--secondary); font-weight: 600;">$</span>
@@ -416,7 +422,8 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="form-group">
                         <label for="stock_quantity" class="form-label">
-                            Stock Quantity
+                            <?php echo e(__('messages.stock_quantity')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input 
@@ -452,12 +459,13 @@ unset($__errorArgs, $__bag); ?>
         <!-- Images Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-images"></i> Product Images</h2>
+                <h2><i class="fas fa-images"></i> <?php echo e(__('messages.product_images')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <label for="main_image" class="form-label">
-                        Main Product Image
+                        <?php echo e(__('messages.main_product_image')); ?>
+
                         <span class="required">*</span>
                     </label>
                     <input 
@@ -476,7 +484,8 @@ unset($__errorArgs, $__bag); ?>"
                         placeholder="https://picsum.photos/800/800"
                         required>
                     <p class="form-text">
-                        <i class="fas fa-lightbulb"></i> Recommended: Use services like <strong>picsum.photos</strong> or <strong>placehold.co</strong>
+                        <i class="fas fa-lightbulb"></i> <?php echo e(__('messages.image_services_recommendation')); ?>
+
                     </p>
                     <?php $__errorArgs = ['main_image'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -493,7 +502,8 @@ unset($__errorArgs, $__bag); ?>
                         <div class="current-image-container">
                             <div class="current-image-label">
                                 <i class="fas fa-image"></i>
-                                Current Main Image
+                                <?php echo e(__('messages.current_main_image')); ?>
+
                             </div>
                             <img src="<?php echo e($product->main_image); ?>" alt="<?php echo e($product->name); ?>">
                         </div>
@@ -502,8 +512,9 @@ unset($__errorArgs, $__bag); ?>
 
                 <div class="form-group">
                     <label for="additional_images" class="form-label">
-                        Additional Images
-                        <span style="color: #64748b; font-size: 12px;">(Optional - One URL per line)</span>
+                        <?php echo e(__('messages.additional_images')); ?>
+
+                        <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?> - <?php echo e(__('messages.one_url_per_line')); ?>)</span>
                     </label>
                     <textarea 
                         id="additional_images" 
@@ -519,7 +530,8 @@ unset($__errorArgs, $__bag); ?>"
                         rows="5" 
                         placeholder="https://picsum.photos/800/801&#10;https://picsum.photos/800/802&#10;https://picsum.photos/800/803"><?php echo e(old('additional_images', $product->images->where('is_primary', false)->pluck('image_path')->implode("\n"))); ?></textarea>
                     <p class="form-text">
-                        <i class="fas fa-info-circle"></i> Enter each image URL on a new line for the product gallery
+                        <i class="fas fa-info-circle"></i> <?php echo e(__('messages.enter_image_url_per_line')); ?>
+
                     </p>
                     <?php $__errorArgs = ['additional_images'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -536,7 +548,7 @@ unset($__errorArgs, $__bag); ?>
                         <div class="additional-images-preview">
                             <strong>
                                 <i class="fas fa-images"></i>
-                                Current Additional Images (<?php echo e($product->images->where('is_primary', false)->count()); ?>)
+                                <?php echo e(__('messages.current_additional_images')); ?> (<?php echo e($product->images->where('is_primary', false)->count()); ?>)
                             </strong>
                             <div class="images-grid">
                                 <?php $__currentLoopData = $product->images->where('is_primary', false); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -595,14 +607,15 @@ unset($__errorArgs, $__bag); ?>
         <!-- Descriptions Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-align-left"></i> Descriptions</h2>
+                <h2><i class="fas fa-align-left"></i> <?php echo e(__('messages.descriptions')); ?></h2>
             </div>
             <div class="card-body">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="short_description_en" class="form-label">
-                            Short Description (English)
-                            <span style="color: #64748b; font-size: 12px;">(Optional)</span>
+                            <?php echo e(__('messages.short_description_english')); ?>
+
+                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?>)</span>
                         </label>
                         <textarea 
                             id="short_description_en" 
@@ -696,8 +709,9 @@ unset($__errorArgs, $__bag); ?>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="description_en" class="form-label">
-                            Full Description (English)
-                            <span style="color: #64748b; font-size: 12px;">(Optional - max <?php echo e($inputLimits['description'] ?? 3000); ?> chars)</span>
+                            <?php echo e(__('messages.full_description_english')); ?>
+
+                            <span style="color: #64748b; font-size: 12px;">(<?php echo e(__('messages.optional')); ?> - <?php echo e($inputLimits['description'] ?? 3000); ?>)</span>
                         </label>
                         <textarea 
                             id="description_en" 
@@ -1131,7 +1145,7 @@ unset($__errorArgs, $__bag); ?>
         <!-- Product Settings Card -->
         <div class="card">
             <div class="card-header">
-                <h2><i class="fas fa-cog"></i> Product Settings</h2>
+                <h2><i class="fas fa-cog"></i> <?php echo e(__('messages.product_settings')); ?></h2>
             </div>
             <div class="card-body">
                 <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -1151,8 +1165,8 @@ unset($__errorArgs, $__bag); ?>
                             value="1" 
                             <?php echo e(old('is_active', $product->is_active) ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-eye"></i> Active</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Display this product in the store</p>
+                            <strong><i class="fas fa-eye"></i> <?php echo e(__('messages.active')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.display_product_in_store')); ?></p>
                         </span>
                     </label>
 
@@ -1164,8 +1178,8 @@ unset($__errorArgs, $__bag); ?>
                             value="1" 
                             <?php echo e(old('is_featured', $product->is_featured) ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-star"></i> Featured</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Show on homepage featured section</p>
+                            <strong><i class="fas fa-star"></i> <?php echo e(__('messages.featured')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.show_homepage_featured')); ?></p>
                         </span>
                     </label>
 
@@ -1177,8 +1191,8 @@ unset($__errorArgs, $__bag); ?>
                             value="1" 
                             <?php echo e(old('is_new', $product->is_new) ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-badge"></i> New Product</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Mark as new to highlight in store</p>
+                            <strong><i class="fas fa-badge"></i> <?php echo e(__('messages.new_product')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.mark_new_highlight')); ?></p>
                         </span>
                     </label>
 
@@ -1190,8 +1204,8 @@ unset($__errorArgs, $__bag); ?>
                             value="1" 
                             <?php echo e(old('is_bestseller', $product->is_bestseller) ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-fire"></i> Bestseller</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Mark as popular/bestselling product</p>
+                            <strong><i class="fas fa-fire"></i> <?php echo e(__('messages.bestseller')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.mark_bestselling_product')); ?></p>
                         </span>
                     </label>
 
@@ -1203,8 +1217,8 @@ unset($__errorArgs, $__bag); ?>
                             value="1" 
                             <?php echo e(old('is_special_offer', $product->is_special_offer ?? false) ? 'checked' : ''); ?>>
                         <span>
-                            <strong><i class="fas fa-gift"></i> Special Offer</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Show as special offer card on homepage</p>
+                            <strong><i class="fas fa-gift"></i> <?php echo e(__('messages.special_offer')); ?></strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;"><?php echo e(__('messages.show_special_offer_homepage')); ?></p>
                         </span>
                     </label>
 
@@ -1271,8 +1285,8 @@ unset($__errorArgs, $__bag); ?>
         <!-- Product Attributes Card -->
         <div class="card" id="attributes-card" style="<?php echo e(!empty($categoryAttributes) && $categoryAttributes->count() > 0 ? '' : 'display: none;'); ?>">
             <div class="card-header">
-                <h2><i class="fas fa-tags"></i> Product Attributes</h2>
-                <p style="color: #64748b; font-size: 13px; margin-top: 4px;">Select attributes specific to this product's category</p>
+                <h2><i class="fas fa-tags"></i> <?php echo e(__('messages.product_attributes')); ?></h2>
+                <p style="color: #64748b; font-size: 13px; margin-top: 4px;"><?php echo e(__('messages.select_attributes_for_category')); ?></p>
             </div>
             <div class="card-body">
                 <div id="attributes-container">
@@ -1310,7 +1324,8 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                     <?php else: ?>
                         <p style="color: #64748b; text-align: center; padding: 20px;">
-                            <i class="fas fa-info-circle"></i> No attributes configured for this category
+                            <i class="fas fa-info-circle"></i> <?php echo e(__('messages.no_attributes_for_category')); ?>
+
                         </p>
                     <?php endif; ?>
                 </div>
@@ -1439,10 +1454,12 @@ unset($__errorArgs, $__bag); ?>
         <!-- Form Actions -->
         <div style="display: flex; gap: 12px; padding-top: 24px;">
             <button type="submit" class="btn btn-success">
-                <i class="fas fa-save"></i> Update Product
+                <i class="fas fa-save"></i> <?php echo e(__('messages.update_product')); ?>
+
             </button>
             <a href="<?php echo e(route('admin.products.index')); ?>" class="btn btn-secondary">
-                <i class="fas fa-times"></i> Cancel
+                <i class="fas fa-times"></i> <?php echo e(__('messages.cancel')); ?>
+
             </a>
         </div>
 
@@ -1451,11 +1468,13 @@ unset($__errorArgs, $__bag); ?>
             <div class="danger-zone">
                 <h3>
                     <i class="fas fa-exclamation-triangle"></i>
-                    Danger Zone
+                    <?php echo e(__('messages.danger_zone_product')); ?>
+
                 </h3>
-                <p>Deleting this product will permanently remove it from your store. This action cannot be undone.</p>
+                <p><?php echo e(__('messages.delete_product_warning')); ?></p>
                 <button type="button" class="btn btn-danger" onclick="confirmDelete()">
-                    <i class="fas fa-trash-alt"></i> Delete Product
+                    <i class="fas fa-trash-alt"></i> <?php echo e(__('messages.delete_product')); ?>
+
                 </button>
             </div>
         </div>
@@ -1470,7 +1489,7 @@ unset($__errorArgs, $__bag); ?>
 
 <script>
     function confirmDelete() {
-        if (confirm('Are you sure you want to delete "<?php echo e($product->name); ?>"?\n\nThis action cannot be undone and will permanently remove this product from your store.')) {
+        if (confirm('<?php echo e(__("messages.confirm_delete_product_message")); ?>')) {
             document.getElementById('deleteForm').submit();
         }
     }
@@ -1567,11 +1586,11 @@ unset($__errorArgs, $__bag); ?>
             }
 
             // Show loading state for attributes
-            attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading attributes...</p>';
+            attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> <?php echo e(__('messages.loading')); ?>...</p>';
             attributesCard.style.display = 'block';
 
             // Show loading state for specifications
-            specificationsContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading specifications...</p>';
+            specificationsContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> <?php echo e(__('messages.loading')); ?>...</p>';
             specificationsCard.style.display = 'block';
 
             // Fetch attributes for this category
@@ -1581,12 +1600,12 @@ unset($__errorArgs, $__bag); ?>
                     if (data.attributes && data.attributes.length > 0) {
                         renderAttributes(data.attributes, categoryId === currentCategoryId);
                     } else {
-                        attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> No attributes configured for this category</p>';
+                        attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> <?php echo e(__('messages.no_attributes_for_category')); ?></p>';
                     }
                 })
                 .catch(error => {
                     console.error('Error loading attributes:', error);
-                    attributesContainer.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i> Error loading attributes</p>';
+                    attributesContainer.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i> <?php echo e(__('messages.error')); ?></p>';
                 });
 
             // Fetch specification fields for this category
@@ -1603,7 +1622,7 @@ unset($__errorArgs, $__bag); ?>
                 })
                 .catch(error => {
                     console.error('Error loading specifications:', error);
-                    specificationsContainer.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i> Error loading specifications</p>';
+                    specificationsContainer.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i> <?php echo e(__('messages.error')); ?></p>';
                 });
         });
 

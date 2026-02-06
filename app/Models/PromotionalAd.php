@@ -24,6 +24,24 @@ class PromotionalAd extends Model
         'position',
         'link',
         'is_active',
+        // Title fields
+        'title_en',
+        'title_ar',
+        'title_he',
+        'title_color',
+        'title_font_size',
+        // Subtitle fields
+        'subtitle_en',
+        'subtitle_ar',
+        'subtitle_he',
+        'subtitle_color',
+        'subtitle_font_size',
+        // Button fields
+        'button_text_en',
+        'button_text_ar',
+        'button_text_he',
+        'button_bg_color',
+        'button_text_color',
     ];
 
     protected $casts = [
@@ -108,6 +126,75 @@ class PromotionalAd extends Model
     public function isImageFromUrl(): bool
     {
         return $this->image_source === self::SOURCE_URL && !empty($this->image_path);
+    }
+
+    /**
+     * Get the title attribute based on current locale with fallback to English.
+     */
+    public function getTitleAttribute(): ?string
+    {
+        $locale = app()->getLocale();
+        $localizedTitle = $this->{"title_$locale"};
+        
+        if (!empty($localizedTitle)) {
+            return $localizedTitle;
+        }
+        
+        return $this->title_en;
+    }
+
+    /**
+     * Get the subtitle attribute based on current locale with fallback to English.
+     */
+    public function getSubtitleAttribute(): ?string
+    {
+        $locale = app()->getLocale();
+        $localizedSubtitle = $this->{"subtitle_$locale"};
+        
+        if (!empty($localizedSubtitle)) {
+            return $localizedSubtitle;
+        }
+        
+        return $this->subtitle_en;
+    }
+
+    /**
+     * Get the button text attribute based on current locale with fallback to English.
+     */
+    public function getButtonTextAttribute(): ?string
+    {
+        $locale = app()->getLocale();
+        $localizedButtonText = $this->{"button_text_$locale"};
+        
+        if (!empty($localizedButtonText)) {
+            return $localizedButtonText;
+        }
+        
+        return $this->button_text_en;
+    }
+
+    /**
+     * Check if the promotional ad has any title content.
+     */
+    public function hasTitle(): bool
+    {
+        return !empty($this->title_en) || !empty($this->title_ar) || !empty($this->title_he);
+    }
+
+    /**
+     * Check if the promotional ad has any subtitle content.
+     */
+    public function hasSubtitle(): bool
+    {
+        return !empty($this->subtitle_en) || !empty($this->subtitle_ar) || !empty($this->subtitle_he);
+    }
+
+    /**
+     * Check if the promotional ad has any button text.
+     */
+    public function hasButton(): bool
+    {
+        return !empty($this->button_text_en) || !empty($this->button_text_ar) || !empty($this->button_text_he);
     }
 
     /**

@@ -3,6 +3,8 @@
 @section('title', __t('messages.home') . ' - IT Center')
 
 @section('content')
+    <!-- Import shared components CSS -->
+    <link rel="stylesheet" href="{{ asset('css/components.css') }}">
     <style>
         /* Import Google Font - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -4379,12 +4381,38 @@
                                         <div class="gift-ideas-item gift-banner-item strong-offers-banner">
                                             @if($promotionalAds['left']->link)
                                                 <a href="{{ $promotionalAds['left']->link }}"
-                                                    class="product-item-section gift-idea-banner promotional-ad-link"
+                                                    class="product-item-section gift-idea-banner promotional-ad-link promotional-ad-overlay"
                                                     style="background-image: url('{{ $promotionalAds['left']->image_url }}'); cursor: pointer; display: block; text-decoration: none;">
+                                                    @if($promotionalAds['left']->hasTitle() || $promotionalAds['left']->hasSubtitle() || $promotionalAds['left']->hasButton())
+                                                        <div class="promotional-ad-content">
+                                                            @if($promotionalAds['left']->hasTitle())
+                                                                <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['left']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['left']->title_font_size ?? '32px' }};">{{ $promotionalAds['left']->title }}</h3>
+                                                            @endif
+                                                            @if($promotionalAds['left']->hasSubtitle())
+                                                                <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['left']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['left']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['left']->subtitle }}</p>
+                                                            @endif
+                                                            @if($promotionalAds['left']->hasButton())
+                                                                <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['left']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['left']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['left']->button_text }}</span>
+                                                            @endif
+                                                        </div>
+                                                    @endif
                                                 </a>
                                             @else
-                                                <div class="product-item-section gift-idea-banner"
+                                                <div class="product-item-section gift-idea-banner promotional-ad-overlay"
                                                     style="background-image: url('{{ $promotionalAds['left']->image_url }}');">
+                                                    @if($promotionalAds['left']->hasTitle() || $promotionalAds['left']->hasSubtitle() || $promotionalAds['left']->hasButton())
+                                                        <div class="promotional-ad-content">
+                                                            @if($promotionalAds['left']->hasTitle())
+                                                                <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['left']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['left']->title_font_size ?? '32px' }};">{{ $promotionalAds['left']->title }}</h3>
+                                                            @endif
+                                                            @if($promotionalAds['left']->hasSubtitle())
+                                                                <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['left']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['left']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['left']->subtitle }}</p>
+                                                            @endif
+                                                            @if($promotionalAds['left']->hasButton())
+                                                                <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['left']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['left']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['left']->button_text }}</span>
+                                                            @endif
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             @endif
                                         </div>
@@ -4550,12 +4578,38 @@
                                             <div class="gift-ideas-item gift-banner-item">
                                                 @if($promotionalAds['right']->link)
                                                     <a href="{{ $promotionalAds['right']->link }}"
-                                                        class="product-item-section gift-idea-banner promotional-ad-link"
+                                                        class="product-item-section gift-idea-banner promotional-ad-link promotional-ad-overlay"
                                                         style="background-image: url('{{ $promotionalAds['right']->image_url }}'); cursor: pointer; display: block; text-decoration: none;">
+                                                        @if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton())
+                                                            <div class="promotional-ad-content">
+                                                                @if($promotionalAds['right']->hasTitle())
+                                                                    <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['right']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->title_font_size ?? '32px' }};">{{ $promotionalAds['right']->title }}</h3>
+                                                                @endif
+                                                                @if($promotionalAds['right']->hasSubtitle())
+                                                                    <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['right']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['right']->subtitle }}</p>
+                                                                @endif
+                                                                @if($promotionalAds['right']->hasButton())
+                                                                    <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['right']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['right']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['right']->button_text }}</span>
+                                                                @endif
+                                                            </div>
+                                                        @endif
                                                     </a>
                                                 @else
-                                                    <div class="product-item-section gift-idea-banner"
+                                                    <div class="product-item-section gift-idea-banner promotional-ad-overlay"
                                                         style="background-image: url('{{ $promotionalAds['right']->image_url }}');">
+                                                        @if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton())
+                                                            <div class="promotional-ad-content">
+                                                                @if($promotionalAds['right']->hasTitle())
+                                                                    <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['right']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->title_font_size ?? '32px' }};">{{ $promotionalAds['right']->title }}</h3>
+                                                                @endif
+                                                                @if($promotionalAds['right']->hasSubtitle())
+                                                                    <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['right']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['right']->subtitle }}</p>
+                                                                @endif
+                                                                @if($promotionalAds['right']->hasButton())
+                                                                    <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['right']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['right']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['right']->button_text }}</span>
+                                                                @endif
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 @endif
                                             </div>
@@ -4677,12 +4731,38 @@
                                             <div class="gift-ideas-item gift-banner-item">
                                                 @if($promotionalAds['right']->link)
                                                     <a href="{{ $promotionalAds['right']->link }}"
-                                                        class="product-item-section gift-idea-banner promotional-ad-link"
+                                                        class="product-item-section gift-idea-banner promotional-ad-link promotional-ad-overlay"
                                                         style="background-image: url('{{ $promotionalAds['right']->image_url }}'); cursor: pointer; display: block; text-decoration: none;">
+                                                        @if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton())
+                                                            <div class="promotional-ad-content">
+                                                                @if($promotionalAds['right']->hasTitle())
+                                                                    <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['right']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->title_font_size ?? '32px' }};">{{ $promotionalAds['right']->title }}</h3>
+                                                                @endif
+                                                                @if($promotionalAds['right']->hasSubtitle())
+                                                                    <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['right']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['right']->subtitle }}</p>
+                                                                @endif
+                                                                @if($promotionalAds['right']->hasButton())
+                                                                    <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['right']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['right']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['right']->button_text }}</span>
+                                                                @endif
+                                                            </div>
+                                                        @endif
                                                     </a>
                                                 @else
-                                                    <div class="product-item-section gift-idea-banner"
+                                                    <div class="product-item-section gift-idea-banner promotional-ad-overlay"
                                                         style="background-image: url('{{ $promotionalAds['right']->image_url }}');">
+                                                        @if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton())
+                                                            <div class="promotional-ad-content">
+                                                                @if($promotionalAds['right']->hasTitle())
+                                                                    <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['right']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->title_font_size ?? '32px' }};">{{ $promotionalAds['right']->title }}</h3>
+                                                                @endif
+                                                                @if($promotionalAds['right']->hasSubtitle())
+                                                                    <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['right']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['right']->subtitle }}</p>
+                                                                @endif
+                                                                @if($promotionalAds['right']->hasButton())
+                                                                    <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['right']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['right']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['right']->button_text }}</span>
+                                                                @endif
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 @endif
                                             </div>

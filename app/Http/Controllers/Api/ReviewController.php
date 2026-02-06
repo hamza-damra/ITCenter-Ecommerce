@@ -126,8 +126,8 @@ class ReviewController extends Controller
                 'product_id' => $product->id,
                 'user_id' => Auth::id(),
                 'rating' => $request->rating,
-                'title' => $request->title,
-                'comment' => $request->comment,
+                'title' => $request->title ? strip_tags($request->title) : null,
+                'comment' => strip_tags($request->comment),
                 'images' => $imagePaths,
                 'is_verified_purchase' => $this->isVerifiedPurchase($product->id, Auth::id()),
                 'is_approved' => true,
@@ -172,8 +172,8 @@ class ReviewController extends Controller
         try {
             $data = [
                 'rating' => $request->rating,
-                'title' => $request->title,
-                'comment' => $request->comment,
+                'title' => $request->title ? strip_tags($request->title) : null,
+                'comment' => strip_tags($request->comment),
             ];
 
             // Handle new image uploads
@@ -277,17 +277,46 @@ class ReviewController extends Controller
      */
     public function markHelpful($reviewId)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.please_login'),
+            ], 401);
+        }
+
         $review = Review::findOrFail($reviewId);
 
         // Prevent users from voting on their own reviews
-        if (Auth::check() && $review->user_id === Auth::id()) {
+        if ($review->user_id === Auth::id()) {
             return response()->json([
                 'success' => false,
                 'message' => __('messages.cannot_vote_own_review'),
             ], 403);
         }
 
-        $review->increment('helpful_count');
+        // Check for existing vote
+        $existingVote = \App\Models\ReviewVote::where('review_id', $review->id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($existingVote) {
+            if ($existingVote->vote_type === 'helpful') {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('messages.already_voted'),
+                ], 422);
+            }
+            $existingVote->update(['vote_type' => 'helpful']);
+            $review->increment('helpful_count');
+            $review->decrement('unhelpful_count');
+        } else {
+            \App\Models\ReviewVote::create([
+                'review_id' => $review->id,
+                'user_id' => Auth::id(),
+                'vote_type' => 'helpful',
+            ]);
+            $review->increment('helpful_count');
+        }
 
         return response()->json([
             'success' => true,
@@ -303,17 +332,46 @@ class ReviewController extends Controller
      */
     public function markUnhelpful($reviewId)
     {
+        if (!Auth::check()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.please_login'),
+            ], 401);
+        }
+
         $review = Review::findOrFail($reviewId);
 
         // Prevent users from voting on their own reviews
-        if (Auth::check() && $review->user_id === Auth::id()) {
+        if ($review->user_id === Auth::id()) {
             return response()->json([
                 'success' => false,
                 'message' => __('messages.cannot_vote_own_review'),
             ], 403);
         }
 
-        $review->increment('unhelpful_count');
+        // Check for existing vote
+        $existingVote = \App\Models\ReviewVote::where('review_id', $review->id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($existingVote) {
+            if ($existingVote->vote_type === 'unhelpful') {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('messages.already_voted'),
+                ], 422);
+            }
+            $existingVote->update(['vote_type' => 'unhelpful']);
+            $review->decrement('helpful_count');
+            $review->increment('unhelpful_count');
+        } else {
+            \App\Models\ReviewVote::create([
+                'review_id' => $review->id,
+                'user_id' => Auth::id(),
+                'vote_type' => 'unhelpful',
+            ]);
+            $review->increment('unhelpful_count');
+        }
 
         return response()->json([
             'success' => true,

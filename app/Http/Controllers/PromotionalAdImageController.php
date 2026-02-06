@@ -39,8 +39,6 @@ class PromotionalAdImageController extends Controller
                 'Content-Length' => strlen($imageData),
                 'Cache-Control' => 'public, max-age=31536000', // Cache for 1 year
                 'ETag' => md5($promotionalAd->id . $promotionalAd->updated_at),
-                'Access-Control-Allow-Origin' => '*', // Allow cross-origin requests
-                'Access-Control-Allow-Methods' => 'GET',
             ]);
         });
     }

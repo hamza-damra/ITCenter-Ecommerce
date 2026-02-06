@@ -1,6 +1,8 @@
 <?php $__env->startSection('title', __t('messages.home') . ' - IT Center'); ?>
 
 <?php $__env->startSection('content'); ?>
+    <!-- Import shared components CSS -->
+    <link rel="stylesheet" href="<?php echo e(asset('css/components.css')); ?>">
     <style>
         /* Import Google Font - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -4395,12 +4397,38 @@
                                         <div class="gift-ideas-item gift-banner-item strong-offers-banner">
                                             <?php if($promotionalAds['left']->link): ?>
                                                 <a href="<?php echo e($promotionalAds['left']->link); ?>"
-                                                    class="product-item-section gift-idea-banner promotional-ad-link"
+                                                    class="product-item-section gift-idea-banner promotional-ad-link promotional-ad-overlay"
                                                     style="background-image: url('<?php echo e($promotionalAds['left']->image_url); ?>'); cursor: pointer; display: block; text-decoration: none;">
+                                                    <?php if($promotionalAds['left']->hasTitle() || $promotionalAds['left']->hasSubtitle() || $promotionalAds['left']->hasButton()): ?>
+                                                        <div class="promotional-ad-content">
+                                                            <?php if($promotionalAds['left']->hasTitle()): ?>
+                                                                <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['left']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['left']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['left']->title); ?></h3>
+                                                            <?php endif; ?>
+                                                            <?php if($promotionalAds['left']->hasSubtitle()): ?>
+                                                                <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['left']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['left']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['left']->subtitle); ?></p>
+                                                            <?php endif; ?>
+                                                            <?php if($promotionalAds['left']->hasButton()): ?>
+                                                                <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['left']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['left']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['left']->button_text); ?></span>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    <?php endif; ?>
                                                 </a>
                                             <?php else: ?>
-                                                <div class="product-item-section gift-idea-banner"
+                                                <div class="product-item-section gift-idea-banner promotional-ad-overlay"
                                                     style="background-image: url('<?php echo e($promotionalAds['left']->image_url); ?>');">
+                                                    <?php if($promotionalAds['left']->hasTitle() || $promotionalAds['left']->hasSubtitle() || $promotionalAds['left']->hasButton()): ?>
+                                                        <div class="promotional-ad-content">
+                                                            <?php if($promotionalAds['left']->hasTitle()): ?>
+                                                                <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['left']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['left']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['left']->title); ?></h3>
+                                                            <?php endif; ?>
+                                                            <?php if($promotionalAds['left']->hasSubtitle()): ?>
+                                                                <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['left']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['left']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['left']->subtitle); ?></p>
+                                                            <?php endif; ?>
+                                                            <?php if($promotionalAds['left']->hasButton()): ?>
+                                                                <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['left']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['left']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['left']->button_text); ?></span>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    <?php endif; ?>
                                                 </div>
                                             <?php endif; ?>
                                         </div>
@@ -4618,12 +4646,38 @@
                                             <div class="gift-ideas-item gift-banner-item">
                                                 <?php if($promotionalAds['right']->link): ?>
                                                     <a href="<?php echo e($promotionalAds['right']->link); ?>"
-                                                        class="product-item-section gift-idea-banner promotional-ad-link"
+                                                        class="product-item-section gift-idea-banner promotional-ad-link promotional-ad-overlay"
                                                         style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>'); cursor: pointer; display: block; text-decoration: none;">
+                                                        <?php if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton()): ?>
+                                                            <div class="promotional-ad-content">
+                                                                <?php if($promotionalAds['right']->hasTitle()): ?>
+                                                                    <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['right']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['right']->title); ?></h3>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasSubtitle()): ?>
+                                                                    <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['right']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['right']->subtitle); ?></p>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasButton()): ?>
+                                                                    <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['right']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['right']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['right']->button_text); ?></span>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </a>
                                                 <?php else: ?>
-                                                    <div class="product-item-section gift-idea-banner"
+                                                    <div class="product-item-section gift-idea-banner promotional-ad-overlay"
                                                         style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>');">
+                                                        <?php if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton()): ?>
+                                                            <div class="promotional-ad-content">
+                                                                <?php if($promotionalAds['right']->hasTitle()): ?>
+                                                                    <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['right']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['right']->title); ?></h3>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasSubtitle()): ?>
+                                                                    <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['right']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['right']->subtitle); ?></p>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasButton()): ?>
+                                                                    <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['right']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['right']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['right']->button_text); ?></span>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </div>
@@ -4745,12 +4799,38 @@
                                             <div class="gift-ideas-item gift-banner-item">
                                                 <?php if($promotionalAds['right']->link): ?>
                                                     <a href="<?php echo e($promotionalAds['right']->link); ?>"
-                                                        class="product-item-section gift-idea-banner promotional-ad-link"
+                                                        class="product-item-section gift-idea-banner promotional-ad-link promotional-ad-overlay"
                                                         style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>'); cursor: pointer; display: block; text-decoration: none;">
+                                                        <?php if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton()): ?>
+                                                            <div class="promotional-ad-content">
+                                                                <?php if($promotionalAds['right']->hasTitle()): ?>
+                                                                    <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['right']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['right']->title); ?></h3>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasSubtitle()): ?>
+                                                                    <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['right']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['right']->subtitle); ?></p>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasButton()): ?>
+                                                                    <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['right']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['right']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['right']->button_text); ?></span>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </a>
                                                 <?php else: ?>
-                                                    <div class="product-item-section gift-idea-banner"
+                                                    <div class="product-item-section gift-idea-banner promotional-ad-overlay"
                                                         style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>');">
+                                                        <?php if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton()): ?>
+                                                            <div class="promotional-ad-content">
+                                                                <?php if($promotionalAds['right']->hasTitle()): ?>
+                                                                    <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['right']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['right']->title); ?></h3>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasSubtitle()): ?>
+                                                                    <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['right']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['right']->subtitle); ?></p>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasButton()): ?>
+                                                                    <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['right']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['right']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['right']->button_text); ?></span>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </div>

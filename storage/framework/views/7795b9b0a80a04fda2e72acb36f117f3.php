@@ -1646,7 +1646,7 @@
                 }
 
                 const isEdit = !!window.editingReviewId;
-                let url = isEdit ? `/api/v1/reviews/${window.editingReviewId}` : `/api/v1/products/${window.reviewsProductId}/reviews`;
+                let url = isEdit ? `/reviews/${window.editingReviewId}` : `/products/${window.reviewsProductId}/reviews`;
                 let method = 'POST';
                 if (isEdit) {
                     formData.append('_method', 'PUT');
@@ -1666,7 +1666,8 @@
                 // Handle 419 CSRF token mismatch - redirect to login
                 if (response.status === 419) {
                     console.warn('Session expired (419). Redirecting to login...');
-                    window.location.href = '/login';
+                    // Preserve the current URL so user returns here after login
+                    window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
                     return;
                 }
 
@@ -1676,7 +1677,8 @@
                     const errorMessage = errorData.message || '<?php echo e(__("messages.please_login") ?? "Please login to submit a review"); ?>';
                     showToast(errorMessage, 'error');
                     setTimeout(() => {
-                        window.location.href = '/login';
+                        // Preserve the current URL so user returns here after login
+                        window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
                     }, 2000);
                     return;
                 }
@@ -1777,7 +1779,7 @@
             reviewsList.innerHTML = '<div style="text-align: center; padding: 2rem;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #2762f3;"></i></div>';
 
             try {
-                const response = await fetch(`/api/v1/products/${window.reviewsProductId}/reviews?page=${page}&sort_by=${sortBy}&per_page=10`);
+                const response = await fetch(`/products/${window.reviewsProductId}/reviews?page=${page}&sort_by=${sortBy}&per_page=10`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -1825,7 +1827,7 @@
                     const verifiedBadge = review.is_verified_purchase ?
                         `<span class=\"verified-badge\"><i class=\"fas fa-check-circle\"></i> <?php echo e(__("messages.verified_purchase")); ?></span>` : '';
                     const isMine = !!(window.authUserId && review.user && String(review.user.id) === String(window.authUserId));
-                    const yourBadge = isMine ? '<span class=\"your-review-badge\"><i class=\"fas fa-user-check\"></i> Your review</span>' : '';
+                    const yourBadge = isMine ? '<span class=\"your-review-badge\"><i class=\"fas fa-user-check\"></i> <?php echo e(__("messages.your_review")); ?></span>' : '';
 
                     html += `
                         <div class="review-item ${isMine ? 'my-review' : ''}" data-review-id="${review.id}">
@@ -1890,7 +1892,7 @@
             const verifiedBadge = reviewData.is_verified_purchase ?
                 `<span class="verified-badge"><i class="fas fa-check-circle"></i> <?php echo e(__("messages.verified_purchase")); ?></span>` : '';
             const isMine = !!(window.authUserId && reviewData.user && String(reviewData.user.id) === String(window.authUserId));
-            const yourBadge = isMine ? '<span class="your-review-badge"><i class="fas fa-user-check"></i> Your review</span>' : '';
+            const yourBadge = isMine ? '<span class="your-review-badge"><i class="fas fa-user-check"></i> <?php echo e(__("messages.your_review")); ?></span>' : '';
 
             const reviewHTML = `
                 <div class="review-item new-review-animation ${isMine ? 'my-review' : ''}" data-review-id="${reviewData.id}">
@@ -1969,7 +1971,7 @@
             const verifiedBadge = reviewData.is_verified_purchase ?
                 `<span class="verified-badge"><i class="fas fa-check-circle"></i> <?php echo e(__("messages.verified_purchase")); ?></span>` : '';
             const isMine = !!(window.authUserId && reviewData.user && String(reviewData.user.id) === String(window.authUserId));
-            const yourBadge = isMine ? '<span class="your-review-badge"><i class="fas fa-user-check"></i> Your review</span>' : '';
+            const yourBadge = isMine ? '<span class="your-review-badge"><i class="fas fa-user-check"></i> <?php echo e(__("messages.your_review")); ?></span>' : '';
 
             const updatedHTML = `
                 <div class="review-header">
@@ -2224,7 +2226,7 @@
             try {
 
                 const csrfToken = document.querySelector('meta[name="csrf-token"]');
-                const response = await fetch(`/api/v1/reviews/${reviewId}`, {
+                const response = await fetch(`/reviews/${reviewId}`, {
                     method: 'DELETE',
                     credentials: 'same-origin',
                     headers: {
@@ -2237,7 +2239,8 @@
                 // Handle 419 CSRF token mismatch - redirect to login
                 if (response.status === 419) {
                     console.warn('Session expired (419). Redirecting to login...');
-                    window.location.href = '/login';
+                    // Preserve the current URL so user returns here after login
+                    window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
                     return;
                 }
 
@@ -2333,7 +2336,7 @@
                 const helpfulBtn = document.querySelector(`.review-item [onclick*="markHelpful(${reviewId})"]`);
                 const originalText = helpfulBtn ? helpfulBtn.innerHTML : '';
 
-                const response = await fetch(`/api/v1/reviews/${reviewId}/helpful`, {
+                const response = await fetch(`/reviews/${reviewId}/helpful`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': csrfToken.content,
@@ -2344,7 +2347,8 @@
                 // Handle 419 CSRF token mismatch - redirect to login
                 if (response.status === 419) {
                     console.warn('Session expired (419). Redirecting to login...');
-                    window.location.href = '/login';
+                    // Preserve the current URL so user returns here after login
+                    window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
                     return;
                 }
 

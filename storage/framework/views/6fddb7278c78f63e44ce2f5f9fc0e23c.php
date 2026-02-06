@@ -1647,6 +1647,11 @@ unset($__defined_vars, $__key, $__value); ?>
 
         if (sliderElement && typeof noUiSlider !== 'undefined') {
             try {
+                // Skip if slider already initialized by products.blade.php
+                if (sliderElement.noUiSlider) {
+                    priceSlider = sliderElement.noUiSlider;
+                    console.log('Price slider already initialized, reusing existing instance');
+                } else {
                 const sliderMin = parseFloat(sliderElement.dataset.min) || 0;
                 const sliderMax = parseFloat(sliderElement.dataset.max) || 10000;
                 const currentMin = parseFloat(sliderElement.dataset.currentMin) || sliderMin;
@@ -1660,6 +1665,7 @@ unset($__defined_vars, $__key, $__value); ?>
                 priceSlider = noUiSlider.create(sliderElement, {
                     start: [Math.max(sliderMin, currentMin), Math.min(sliderMax, currentMax)],
                     connect: true,
+                    direction: 'ltr', // Always LTR - slider is visually isolated from page RTL via CSS
                     range: {
                         'min': sliderMin,
                         'max': sliderMax
@@ -1696,6 +1702,7 @@ unset($__defined_vars, $__key, $__value); ?>
                     console.log('Price slider changed:', values);
                     debouncedFilterApply(300);
                 });
+                } // end else (new slider creation)
             } catch (error) {
                 console.error('Error initializing price slider:', error);
             }

@@ -42,6 +42,24 @@ class PromotionalAdController extends Controller
             'position' => 'required|in:left,right',
             'link' => 'nullable|string|max:255',
             'is_active' => 'boolean',
+            // Title fields
+            'title_en' => 'nullable|string|max:255',
+            'title_ar' => 'nullable|string|max:255',
+            'title_he' => 'nullable|string|max:255',
+            'title_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'title_font_size' => 'nullable|string|max:20',
+            // Subtitle fields
+            'subtitle_en' => 'nullable|string|max:500',
+            'subtitle_ar' => 'nullable|string|max:500',
+            'subtitle_he' => 'nullable|string|max:500',
+            'subtitle_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'subtitle_font_size' => 'nullable|string|max:20',
+            // Button fields
+            'button_text_en' => 'nullable|string|max:100',
+            'button_text_ar' => 'nullable|string|max:100',
+            'button_text_he' => 'nullable|string|max:100',
+            'button_bg_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'button_text_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
         ]);
 
         // Store image directly in database as compressed base64
@@ -58,6 +76,24 @@ class PromotionalAdController extends Controller
             'position' => $validated['position'],
             'link' => $validated['link'] ?? null,
             'is_active' => $request->boolean('is_active', true),
+            // Title fields
+            'title_en' => $validated['title_en'] ?? null,
+            'title_ar' => $validated['title_ar'] ?? null,
+            'title_he' => $validated['title_he'] ?? null,
+            'title_color' => $validated['title_color'] ?? null,
+            'title_font_size' => $validated['title_font_size'] ?? null,
+            // Subtitle fields
+            'subtitle_en' => $validated['subtitle_en'] ?? null,
+            'subtitle_ar' => $validated['subtitle_ar'] ?? null,
+            'subtitle_he' => $validated['subtitle_he'] ?? null,
+            'subtitle_color' => $validated['subtitle_color'] ?? null,
+            'subtitle_font_size' => $validated['subtitle_font_size'] ?? null,
+            // Button fields
+            'button_text_en' => $validated['button_text_en'] ?? null,
+            'button_text_ar' => $validated['button_text_ar'] ?? null,
+            'button_text_he' => $validated['button_text_he'] ?? null,
+            'button_bg_color' => $validated['button_bg_color'] ?? null,
+            'button_text_color' => $validated['button_text_color'] ?? null,
         ]);
 
         $this->clearHomeCache();
@@ -84,6 +120,24 @@ class PromotionalAdController extends Controller
             'position' => 'required|in:left,right',
             'link' => 'nullable|string|max:255',
             'is_active' => 'boolean',
+            // Title fields
+            'title_en' => 'nullable|string|max:255',
+            'title_ar' => 'nullable|string|max:255',
+            'title_he' => 'nullable|string|max:255',
+            'title_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'title_font_size' => 'nullable|string|max:20',
+            // Subtitle fields
+            'subtitle_en' => 'nullable|string|max:500',
+            'subtitle_ar' => 'nullable|string|max:500',
+            'subtitle_he' => 'nullable|string|max:500',
+            'subtitle_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'subtitle_font_size' => 'nullable|string|max:20',
+            // Button fields
+            'button_text_en' => 'nullable|string|max:100',
+            'button_text_ar' => 'nullable|string|max:100',
+            'button_text_he' => 'nullable|string|max:100',
+            'button_bg_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
+            'button_text_color' => 'nullable|string|max:7|regex:/^#[0-9A-Fa-f]{6}$/',
         ]);
 
         // Prepare update data
@@ -91,6 +145,24 @@ class PromotionalAdController extends Controller
             'position' => $validated['position'],
             'link' => $validated['link'] ?? null,
             'is_active' => $request->boolean('is_active', true),
+            // Title fields
+            'title_en' => $validated['title_en'] ?? null,
+            'title_ar' => $validated['title_ar'] ?? null,
+            'title_he' => $validated['title_he'] ?? null,
+            'title_color' => $validated['title_color'] ?? null,
+            'title_font_size' => $validated['title_font_size'] ?? null,
+            // Subtitle fields
+            'subtitle_en' => $validated['subtitle_en'] ?? null,
+            'subtitle_ar' => $validated['subtitle_ar'] ?? null,
+            'subtitle_he' => $validated['subtitle_he'] ?? null,
+            'subtitle_color' => $validated['subtitle_color'] ?? null,
+            'subtitle_font_size' => $validated['subtitle_font_size'] ?? null,
+            // Button fields
+            'button_text_en' => $validated['button_text_en'] ?? null,
+            'button_text_ar' => $validated['button_text_ar'] ?? null,
+            'button_text_he' => $validated['button_text_he'] ?? null,
+            'button_bg_color' => $validated['button_bg_color'] ?? null,
+            'button_text_color' => $validated['button_text_color'] ?? null,
         ];
 
         // Handle image update if new file provided

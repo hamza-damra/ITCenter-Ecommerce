@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<form action="{{ route('admin.tags.store') }}" method="POST" style="max-width: 800px;">
+<form action="{{ route('admin.tags.store') }}" method="POST">
     @csrf
 
     <div class="card">

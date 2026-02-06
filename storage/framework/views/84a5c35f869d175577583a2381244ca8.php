@@ -169,10 +169,20 @@
             transition: height 0.3s ease;
         }
 
+        [dir="rtl"] .sidebar-menu li a::before {
+            left: auto;
+            right: 0;
+        }
+
         .sidebar-menu li a:hover {
             background: rgba(37, 99, 235, 0.15);
             color: #fff;
             padding-left: 28px;
+        }
+
+        [dir="rtl"] .sidebar-menu li a:hover {
+            padding-left: 24px;
+            padding-right: 28px;
         }
 
         .sidebar-menu li a:hover::before {
@@ -467,6 +477,11 @@
             margin-left: 4px;
         }
 
+        [dir="rtl"] .required {
+            margin-left: 0;
+            margin-right: 4px;
+        }
+
         .form-control {
             width: 100%;
             padding: 12px 16px;
@@ -615,10 +630,21 @@
             font-size: 14px;
         }
 
+        [dir="rtl"] .alert {
+            border-left: none;
+            border-right: 4px solid;
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
         .alert-success {
             background: #ecfdf5;
             color: #065f46;
             border-left-color: var(--success);
+        }
+
+        [dir="rtl"] .alert-success {
+            border-right-color: var(--success);
         }
 
         .alert-error {
@@ -627,10 +653,18 @@
             border-left-color: var(--danger);
         }
 
+        [dir="rtl"] .alert-error {
+            border-right-color: var(--danger);
+        }
+
         .alert-warning {
             background: #fefce8;
             color: #78350f;
             border-left-color: var(--warning);
+        }
+
+        [dir="rtl"] .alert-warning {
+            border-right-color: var(--warning);
         }
 
         /* Tables */
@@ -644,6 +678,11 @@
             padding: 14px 16px;
             text-align: left;
             border-bottom: 1px solid var(--border);
+        }
+
+        [dir="rtl"] table th,
+        [dir="rtl"] table td {
+            text-align: right;
         }
 
         table th {
@@ -1207,6 +1246,110 @@
             [dir="rtl"] .main-content {
                 margin-right: 0;
             }
+        }
+
+        /* ========================================
+           GLOBAL RTL SUPPORT FOR ALL ADMIN PAGES
+           ======================================== */
+
+        /* General text alignment */
+        [dir="rtl"] .main-content {
+            text-align: right;
+            direction: rtl;
+        }
+
+        /* Form elements */
+        [dir="rtl"] .form-group {
+            text-align: right;
+        }
+
+        [dir="rtl"] .form-label {
+            text-align: right;
+        }
+
+        [dir="rtl"] .form-control {
+            text-align: right;
+            direction: rtl;
+        }
+
+        [dir="rtl"] select.form-control {
+            text-align: right;
+            direction: rtl;
+        }
+
+        /* Error messages */
+        [dir="rtl"] .error-message {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        /* Form text/help */
+        [dir="rtl"] .form-text {
+            text-align: right;
+        }
+
+        /* Page header in RTL */
+        [dir="rtl"] .page-header-content h1 {
+            flex-direction: row;
+        }
+
+        [dir="rtl"] .page-header-content p {
+            text-align: right;
+        }
+
+        [dir="rtl"] .page-actions {
+            flex-direction: row;
+        }
+
+        /* Card header */
+        [dir="rtl"] .card-header {
+            text-align: right;
+        }
+
+        /* Action buttons */
+        [dir="rtl"] .action-buttons {
+            direction: rtl;
+        }
+
+        /* Checkbox groups */
+        [dir="rtl"] .checkbox-group {
+            flex-direction: row;
+            text-align: right;
+        }
+
+        [dir="rtl"] .checkbox-group span {
+            text-align: right;
+        }
+
+        [dir="rtl"] .checkbox-group strong {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Stat cards text */
+        [dir="rtl"] .stat-card {
+            text-align: right;
+        }
+
+        /* Section titles */
+        [dir="rtl"] .section-title {
+            text-align: right;
+        }
+
+        /* Form row */
+        [dir="rtl"] .form-row {
+            direction: rtl;
+        }
+
+        /* Language dropdown hover direction */
+        [dir="rtl"] .language-dropdown a:hover {
+            transform: translateX(-4px) !important;
+        }
+
+        [dir="rtl"] .language-dropdown a.active:hover {
+            transform: translateX(-4px) !important;
         }
 
         /* ========================================

@@ -26,7 +26,7 @@ class PasswordResetCode extends Model
      */
     public static function generateCode(): string
     {
-        return str_pad((string) random_int(1000, 9999), 4, '0', STR_PAD_LEFT);
+        return str_pad((string) random_int(100000, 999999), 6, '0', STR_PAD_LEFT);
     }
 
     /**

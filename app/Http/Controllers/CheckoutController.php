@@ -121,19 +121,10 @@ class CheckoutController extends Controller
                 ->with('error', __('messages.cart_empty'));
         }
 
-        // Calculate totals
-        $subtotal = $cartItems->sum(function($item) {
-            return $item->price * $item->quantity;
-        });
-        
-        $taxRate = 0.17; // 17% VAT
-        $tax = $subtotal * $taxRate;
-        $shippingCost = $subtotal >= 200 ? 0 : 25; // Free shipping over $200
-        $total = $subtotal + $tax + $shippingCost;
-
         DB::beginTransaction();
         try {
-            // CRITICAL FIX: Validate stock with locking BEFORE creating order
+            // CRITICAL FIX: Validate stock with locking AND re-validate prices BEFORE creating order
+            $subtotal = 0;
             foreach ($cartItems as $cartItem) {
                 $product = Product::lockForUpdate()->find($cartItem->product_id);
                 
@@ -148,7 +139,21 @@ class CheckoutController extends Controller
                         $product->stock_quantity
                     );
                 }
+
+                // Re-validate price at checkout time (prevent stale sale prices)
+                $currentPrice = ($product->sale_price && $product->sale_price < $product->price)
+                    ? $product->sale_price
+                    : $product->price;
+                $cartItem->price = $currentPrice;
+                $cartItem->save();
+
+                $subtotal += $currentPrice * $cartItem->quantity;
             }
+
+            $taxRate = 0.17; // 17% VAT
+            $tax = $subtotal * $taxRate;
+            $shippingCost = $subtotal >= 200 ? 0 : 25; // Free shipping over $200
+            $total = $subtotal + $tax + $shippingCost;
 
             // Create the order - ONLY for authenticated users
             $order = Order::create([

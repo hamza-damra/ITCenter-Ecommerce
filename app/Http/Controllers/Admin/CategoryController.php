@@ -63,6 +63,9 @@ class CategoryController extends Controller
             'position' => 'nullable|integer|min:0',
             'display_mode' => 'nullable|in:carousel,nav',
             'is_active' => 'boolean',
+            'meta_title' => 'nullable|string|max:60',
+            'meta_description' => 'nullable|string|max:160',
+            'meta_keywords' => 'nullable|string|max:255',
         ]);
 
         $validated['slug'] = $this->generateUniqueSlug($validated['name_en']);
@@ -134,6 +137,9 @@ class CategoryController extends Controller
             'position' => 'nullable|integer|min:0',
             'display_mode' => 'nullable|in:carousel,nav',
             'is_active' => 'boolean',
+            'meta_title' => 'nullable|string|max:60',
+            'meta_description' => 'nullable|string|max:160',
+            'meta_keywords' => 'nullable|string|max:255',
         ]);
 
         $validated['slug'] = $this->generateUniqueSlug($validated['name_en'], $category->id);

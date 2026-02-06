@@ -102,9 +102,10 @@ class ProductController extends Controller
             }
         }
 
-        // Sort
-        $sortBy = $request->get('sort', 'created_at');
-        $sortOrder = $request->get('order', 'desc');
+        // Sort — whitelist columns to prevent SQL injection
+        $allowedSorts = ['created_at', 'price', 'sale_price', 'name_en', 'name_ar', 'name_he', 'sales_count', 'views_count', 'stock_quantity'];
+        $sortBy = in_array($request->get('sort'), $allowedSorts, true) ? $request->get('sort') : 'created_at';
+        $sortOrder = $request->get('order') === 'asc' ? 'asc' : 'desc';
         $query->orderBy($sortBy, $sortOrder);
 
         $products = $query->paginate($request->get('per_page', 12));

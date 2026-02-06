@@ -1077,7 +1077,7 @@ class DatabaseBackupService
         // Get backup frequency in days based on schedule (use config if DB not available)
         try {
             $schedule = $this->isDatabaseAvailable() 
-                ? BackupSetting::get('schedule', config('backup.schedule'))
+                ? BackupSetting::get('auto_backup_interval', config('backup.schedule', 'daily'))
                 : config('backup.schedule', 'daily');
             $retentionDays = $this->isDatabaseAvailable()
                 ? BackupSetting::get('default_retention_days', config('backup.retention_days'))
@@ -1091,6 +1091,9 @@ class DatabaseBackupService
             'daily' => 1,
             'weekly' => 7,
             'monthly' => 30,
+            'hourly', '6_hours', '12_hours' => 1,
+            '5_minutes', '15_minutes', '30_minutes' => 1,
+            'disabled' => 0,
             default => 1
         };
         

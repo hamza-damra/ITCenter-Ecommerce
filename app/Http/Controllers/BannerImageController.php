@@ -39,8 +39,6 @@ class BannerImageController extends Controller
                 'Content-Length' => strlen($imageData),
                 'Cache-Control' => 'public, max-age=31536000', // Cache for 1 year
                 'ETag' => md5($banner->id . $banner->updated_at),
-                'Access-Control-Allow-Origin' => '*', // Allow cross-origin requests
-                'Access-Control-Allow-Methods' => 'GET',
             ]);
         });
     }

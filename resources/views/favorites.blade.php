@@ -3,6 +3,9 @@
 @section('title', __t('messages.favorites') . ' - IT Center')
 
 @section('content')
+<!-- Import shared components CSS -->
+<link rel="stylesheet" href="{{ asset('css/components.css') }}">
+
 <style>
     /* Import Google Font - Poppins */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -359,8 +362,31 @@
         font-size: 1.2rem;
     }
 
-    /* Responsive Design */
+    /* Responsive Design - Tablet/Phone */
     @media (max-width: 768px) {
+        .favorites-container {
+            padding: 1.5rem 1rem;
+        }
+
+        .favorites-header {
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+        }
+
+        .favorites-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .favorites-header i {
+            font-size: 1.5rem;
+        }
+
+        .favorites-items-section {
+            padding: 1rem;
+            border-radius: 12px;
+        }
+
         .product-grid {
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1rem;
@@ -376,9 +402,56 @@
             min-width: 40px;
             font-size: 1rem;
         }
+
+        /* Empty Favorites Mobile */
+        .empty-favorites {
+            padding: 2.5rem 1rem;
+        }
+
+        .empty-favorites i {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-favorites h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .empty-favorites p {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .continue-shopping-btn {
+            padding: 0.875rem 2rem;
+            font-size: 0.95rem;
+        }
     }
     
+    /* Responsive Design - Small Phone */
     @media (max-width: 480px) {
+        .favorites-container {
+            padding: 1rem 0.75rem;
+        }
+
+        .favorites-header {
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .favorites-header h1 {
+            font-size: 1.25rem;
+        }
+
+        .favorites-header i {
+            font-size: 1.25rem;
+        }
+
+        .favorites-items-section {
+            padding: 0.75rem;
+        }
+
         .product-grid {
             grid-template-columns: 1fr;
         }
@@ -390,11 +463,29 @@
             font-size: 1rem;
         }
 
-        .favorites-header h1 {
-            font-size: 1.5rem;
+        .favorites-count {
+            font-size: 0.9rem;
         }
 
-        .favorites-count {
+        /* Empty Favorites Small Phone */
+        .empty-favorites {
+            padding: 2rem 0.75rem;
+        }
+
+        .empty-favorites i {
+            font-size: 3rem;
+        }
+
+        .empty-favorites h2 {
+            font-size: 1.1rem;
+        }
+
+        .empty-favorites p {
+            font-size: 0.85rem;
+        }
+
+        .continue-shopping-btn {
+            padding: 0.75rem 1.5rem;
             font-size: 0.9rem;
         }
     }

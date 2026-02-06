@@ -732,3 +732,126 @@
         border: 1px solid currentColor;
     }
 }
+
+/* ===== PROMOTIONAL AD BANNER STYLES ===== */
+.promotional-ad-overlay {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.promotional-ad-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 20px 40px;
+    text-align: right;
+    z-index: 2;
+}
+
+/* RTL: Align to left side instead */
+[dir="rtl"] .promotional-ad-content {
+    align-items: flex-start;
+    text-align: left;
+    padding: 20px 40px;
+}
+
+.promotional-ad-title {
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 8px 0;
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.5),
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.5px;
+}
+
+.promotional-ad-subtitle {
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+    text-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.5),
+        0 2px 6px rgba(0, 0, 0, 0.3);
+    max-width: 85%;
+    opacity: 0.95;
+}
+
+.promotional-ad-button {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.3),
+        0 2px 5px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    min-width: 120px;
+    text-align: center;
+}
+
+.promotional-ad-button:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.4),
+        0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Responsive adjustments for promotional ad content */
+@media (max-width: 768px) {
+    .promotional-ad-content {
+        padding: 15px;
+    }
+    
+    .promotional-ad-title {
+        font-size: 22px !important;
+        margin-bottom: 6px;
+    }
+    
+    .promotional-ad-subtitle {
+        font-size: 13px !important;
+        max-width: 90%;
+        margin-bottom: 12px;
+    }
+    
+    .promotional-ad-button {
+        padding: 10px 20px;
+        font-size: 12px;
+        min-width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .promotional-ad-content {
+        padding: 10px;
+    }
+    
+    .promotional-ad-title {
+        font-size: 18px !important;
+    }
+    
+    .promotional-ad-subtitle {
+        font-size: 11px !important;
+    }
+    
+    .promotional-ad-button {
+        padding: 8px 16px;
+        font-size: 11px;
+        min-width: 80px;
+    }
+}

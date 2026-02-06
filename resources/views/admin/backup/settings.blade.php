@@ -49,6 +49,34 @@
                 </div>
 
                 <div class="form-section">
+                    <div class="section-title"><i class="fas fa-clock"></i> {{ __('messages.Auto Backup Schedule') }}</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="auto_backup_interval" class="form-label">
+                                {{ __('messages.Auto Backup Interval') }} <span class="required">*</span>
+                            </label>
+                            <select name="auto_backup_interval" id="auto_backup_interval" class="form-control" required>
+                                <option value="disabled" {{ ($settings['auto_backup_interval'] ?? 'daily') == 'disabled' ? 'selected' : '' }}>{{ __('messages.Disabled') }}</option>
+                                <option value="5_minutes" {{ ($settings['auto_backup_interval'] ?? 'daily') == '5_minutes' ? 'selected' : '' }}>{{ __('messages.Every 5 Minutes') }}</option>
+                                <option value="15_minutes" {{ ($settings['auto_backup_interval'] ?? 'daily') == '15_minutes' ? 'selected' : '' }}>{{ __('messages.Every 15 Minutes') }}</option>
+                                <option value="30_minutes" {{ ($settings['auto_backup_interval'] ?? 'daily') == '30_minutes' ? 'selected' : '' }}>{{ __('messages.Every 30 Minutes') }}</option>
+                                <option value="hourly" {{ ($settings['auto_backup_interval'] ?? 'daily') == 'hourly' ? 'selected' : '' }}>{{ __('messages.Every Hour') }}</option>
+                                <option value="6_hours" {{ ($settings['auto_backup_interval'] ?? 'daily') == '6_hours' ? 'selected' : '' }}>{{ __('messages.Every 6 Hours') }}</option>
+                                <option value="12_hours" {{ ($settings['auto_backup_interval'] ?? 'daily') == '12_hours' ? 'selected' : '' }}>{{ __('messages.Every 12 Hours') }}</option>
+                                <option value="daily" {{ ($settings['auto_backup_interval'] ?? 'daily') == 'daily' ? 'selected' : '' }}>{{ __('messages.Daily') }}</option>
+                                <option value="weekly" {{ ($settings['auto_backup_interval'] ?? 'daily') == 'weekly' ? 'selected' : '' }}>{{ __('messages.Weekly') }}</option>
+                                <option value="monthly" {{ ($settings['auto_backup_interval'] ?? 'daily') == 'monthly' ? 'selected' : '' }}>{{ __('messages.Monthly') }}</option>
+                            </select>
+                            @error('auto_backup_interval')
+                                <div class="error-message">{{ $message }}</div>
+                            @enderror
+                            <div class="form-text">{{ __('messages.Set how often automatic backups should be created') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
                     <div class="section-title"><i class="fas fa-calendar-check"></i> {{ __('messages.Default Retention Policy') }}</div>
 
                     <div class="form-row">
@@ -87,6 +115,19 @@
                     <a href="{{ route('admin.backup.index') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> {{ __('messages.Back to Backups') }}</a>
                     <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> {{ __('messages.Save Settings') }}</button>
                 </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-header">
+            <h2><i class="fas fa-trash-alt"></i> {{ __('messages.Cleanup Expired Backups') }}</h2>
+        </div>
+        <div class="card-body">
+            <p style="margin-bottom: 15px;">{{ __('messages.Delete all backups that have exceeded their retention period or are invalid') }}</p>
+            <form method="POST" action="{{ route('admin.backup.cleanup-expired') }}" onsubmit="return confirm('{{ __('messages.Are you sure you want to delete all expired backups?') }}')">
+                @csrf
+                <button type="submit" class="btn btn-danger"><i class="fas fa-broom"></i> {{ __('messages.Delete Expired Backups Now') }}</button>
             </form>
         </div>
     </div>

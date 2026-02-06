@@ -32,10 +32,20 @@
         letter-spacing: 0.5px;
     }
 
+    [dir="rtl"] .values-table th {
+        text-align: right;
+        text-transform: none;
+        letter-spacing: normal;
+    }
+
     .values-table td {
         padding: 16px;
         border-bottom: 1px solid var(--border);
         color: var(--secondary);
+    }
+
+    [dir="rtl"] .values-table td {
+        text-align: right;
     }
 
     .values-table tbody tr:hover {

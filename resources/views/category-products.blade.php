@@ -1,6 +1,24 @@
 @extends('layouts.app')
 
-@section('title', $category->name . ' - IT Center')
+@section('title', ($category->meta_title ?? $category->name) . ' - IT Center')
+
+@section('meta')
+    @if($category->meta_description)
+        <meta name="description" content="{{ $category->meta_description }}">
+    @endif
+    @if($category->meta_keywords)
+        <meta name="keywords" content="{{ $category->meta_keywords }}">
+    @endif
+    <meta property="og:title" content="{{ $category->meta_title ?? $category->name }}">
+    @if($category->meta_description)
+        <meta property="og:description" content="{{ $category->meta_description }}">
+    @endif
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    @if($category->image)
+        <meta property="og:image" content="{{ $category->image }}">
+    @endif
+@endsection
 
 @section('content')
 <!-- Import shared components CSS -->

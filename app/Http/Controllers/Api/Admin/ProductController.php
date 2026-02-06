@@ -55,9 +55,10 @@ class ProductController extends Controller
                 $query->where('stock_status', $request->stock_status);
             }
 
-            // Sorting
-            $sortBy = $request->get('sort_by', 'created_at');
-            $sortOrder = $request->get('sort_order', 'desc');
+            // Sorting — whitelist columns to prevent SQL injection
+            $allowedSorts = ['created_at', 'updated_at', 'price', 'sale_price', 'name_en', 'name_ar', 'stock_quantity', 'sku', 'is_active', 'is_featured'];
+            $sortBy = in_array($request->get('sort_by'), $allowedSorts, true) ? $request->get('sort_by') : 'created_at';
+            $sortOrder = $request->get('sort_order') === 'asc' ? 'asc' : 'desc';
             $query->orderBy($sortBy, $sortOrder);
 
             $perPage = $request->get('per_page', 20);

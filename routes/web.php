@@ -32,7 +32,7 @@ Route::get('/banner-image/{banner}', [App\Http\Controllers\BannerImageController
 Route::get('/promotional-ad-image/{promotionalAd}', [App\Http\Controllers\PromotionalAdImageController::class, 'show'])->name('promotional-ad.image');
 
 Route::get('/test-home', [HomeController::class, 'index'])->name('test.home');
-Route::get('/clear-cache', [HomeController::class, 'clearHomeCache'])->name('clear.cache');
+Route::get('/clear-cache', [HomeController::class, 'clearHomeCache'])->middleware('admin')->name('clear.cache');
 
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
 Route::get('/category/{parentSlug}/{childSlug?}/{subChildSlug?}', [CategoryController::class, 'show'])->name('category.show');
@@ -46,18 +46,18 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1')->name('login.post');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,1')->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Password Reset Routes (OTP-based)
+// Password Reset Routes (OTP-based) — rate limited to prevent brute force
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
-Route::post('/forgot-password', [ForgotPasswordController::class, 'requestReset'])->name('password.request.post');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'requestReset'])->middleware('throttle:3,1')->name('password.request.post');
 Route::get('/verify-code', [ForgotPasswordController::class, 'showVerifyCodeForm'])->name('password.verify.form');
-Route::post('/verify-code', [ForgotPasswordController::class, 'verifyCode'])->name('password.verify.post');
+Route::post('/verify-code', [ForgotPasswordController::class, 'verifyCode'])->middleware('throttle:5,1')->name('password.verify.post');
 Route::get('/reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('password.reset.form');
-Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset.post');
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->middleware('throttle:5,1')->name('password.reset.post');
 
 // Favorites Routes
 Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites');
@@ -97,6 +97,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Review Routes (Web - Public read)
+Route::get('/products/{product}/reviews', [App\Http\Controllers\ReviewController::class, 'index'])->name('reviews.index');
+
+// Review Routes (Protected - Require Authentication)
+Route::middleware('auth')->group(function () {
+    Route::post('/reviews/{review}/helpful', [App\Http\Controllers\ReviewController::class, 'markHelpful'])->name('reviews.helpful');
+    Route::post('/reviews/{review}/unhelpful', [App\Http\Controllers\ReviewController::class, 'markUnhelpful'])->name('reviews.unhelpful');
+    Route::post('/products/{product}/reviews', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+    Route::put('/reviews/{review}', [App\Http\Controllers\ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{review}', [App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
+});
+
 // Bootstrap Mode Routes (DB-less admin access when database is missing)
 // These routes should work even when database is missing, so minimal middleware
 Route::prefix('admin/bootstrap')->name('admin.bootstrap.')->group(function () {
@@ -120,7 +132,7 @@ Route::prefix('admin/bootstrap')->name('admin.bootstrap.')->group(function () {
             'session_driver' => config('session.driver'),
             'cache_driver' => config('cache.default'),
         ]);
-    })->name('debug');
+    })->middleware('admin')->name('debug');
 });
 
 // Admin Authentication Routes
@@ -224,4 +236,5 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Backup Settings
     Route::get('/backup/settings', [App\Http\Controllers\Admin\BackupSettingController::class, 'index'])->name('backup.settings');
     Route::post('/backup/settings', [App\Http\Controllers\Admin\BackupSettingController::class, 'update'])->name('backup.settings.update');
+    Route::post('/backup/cleanup-expired', [App\Http\Controllers\Admin\BackupSettingController::class, 'cleanupExpired'])->name('backup.cleanup-expired');
 });

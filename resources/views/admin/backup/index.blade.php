@@ -72,15 +72,21 @@
             <i class="fas fa-clock"></i>
         </div>
         <h4>{{ __('messages.Backup every') }}</h4>
-        <div class="stat-value">{{ $statistics['backup_frequency_days'] }} 
-            @if($statistics['backup_frequency_days'] == 1)
-                {{ __('messages.day') }}
+        <div class="stat-value">
+            @if($statistics['backup_frequency_days'] == 0)
+                {{ __('messages.Disabled') ?? 'Disabled' }}
+            @elseif($statistics['backup_frequency_days'] == 1)
+                1 {{ __('messages.day') }}
             @elseif($statistics['backup_frequency_days'] == 2)
-                {{ __('messages.two days') }}
+                2 {{ __('messages.two days') }}
+            @elseif($statistics['backup_frequency_days'] == 7)
+                1 {{ __('messages.week') ?? __('messages.Weekly') }}
+            @elseif($statistics['backup_frequency_days'] == 30)
+                1 {{ __('messages.month') ?? __('messages.Monthly') }}
             @elseif($statistics['backup_frequency_days'] >= 3 && $statistics['backup_frequency_days'] <= 10)
-                {{ __('messages.days') }}
+                {{ $statistics['backup_frequency_days'] }} {{ __('messages.days') }}
             @else
-                {{ __('messages.day') }}
+                {{ $statistics['backup_frequency_days'] }} {{ __('messages.day') }}
             @endif
         </div>
     </div>
@@ -95,7 +101,7 @@
         <div class="info-grid">
             <div class="info-item">
                 <strong>{{ __('messages.Schedule:') }}</strong>
-                <span>{{ ucfirst($statistics['schedule']) }}</span>
+                <span>{{ __('messages.' . ucfirst($statistics['schedule'])) }}</span>
             </div>
             <div class="info-item">
                 <strong>{{ __('messages.Retention Period:') }}</strong>
@@ -557,16 +563,31 @@
     gap: 12px;
 }
 
+[dir="rtl"] .alert {
+    text-align: right;
+    direction: rtl;
+}
+
 .alert-success {
     background: #dcfce7;
     border-left: 4px solid #10b981;
     color: #15803d;
 }
 
+[dir="rtl"] .alert-success {
+    border-left: none;
+    border-right: 4px solid #10b981;
+}
+
 .alert-danger {
     background: #fee2e2;
     border-left: 4px solid #ef4444;
     color: #991b1b;
+}
+
+[dir="rtl"] .alert-danger {
+    border-left: none;
+    border-right: 4px solid #ef4444;
 }
 
 /* Modal Styles */
@@ -708,16 +729,34 @@
     text-align: right;
 }
 
+[dir="rtl"] .modal {
+    direction: rtl;
+}
+
+[dir="rtl"] .modal-content {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: right;
+}
+
+[dir="rtl"] .modal-header {
+    direction: rtl;
+}
+
+[dir="rtl"] .modal-body {
+    direction: rtl;
+    text-align: right;
+}
+
 [dir="rtl"] .modal-footer {
-    flex-direction: row-reverse;
+    direction: rtl;
 }
 
 [dir="rtl"] .checkbox-label {
-    flex-direction: row-reverse;
+    direction: rtl;
 }
 
 [dir="rtl"] .action-buttons {
-    flex-direction: row-reverse;
+    direction: rtl;
 }
 
 /* Advanced Backup Modals */
@@ -855,7 +894,6 @@
 
 /* RTL Support for New Components */
 [dir="rtl"] .option-content {
-    flex-direction: row-reverse;
     padding-left: 0;
     padding-right: 8px;
     border-left: none;
@@ -867,8 +905,12 @@
     border-right: 4px solid #2563eb;
 }
 
+[dir="rtl"] .option-details {
+    text-align: right;
+}
+
 [dir="rtl"] .module-checkbox-item {
-    flex-direction: row-reverse;
+    direction: rtl;
 }
 
 /* Critical/Purge Button Styles */
@@ -881,6 +923,11 @@
     letter-spacing: 0.5px;
     box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
     animation: criticalPulse 2s infinite;
+}
+
+[dir="rtl"] .btn-critical {
+    text-transform: none;
+    letter-spacing: normal;
 }
 
 .btn-critical:hover {
@@ -1178,24 +1225,42 @@
 
 /* RTL Support for Purge Modal */
 [dir="rtl"] .purge-warning-banner {
-    flex-direction: row-reverse;
+    direction: rtl;
 }
 
 [dir="rtl"] .purge-warning-content {
     text-align: right;
 }
 
+[dir="rtl"] .purge-warning-content h4 {
+    text-transform: none;
+    letter-spacing: normal;
+}
+
 [dir="rtl"] .purge-info-section h5 {
-    flex-direction: row-reverse;
+    direction: rtl;
 }
 
 [dir="rtl"] .purge-delete-list li,
 [dir="rtl"] .purge-preserve-list li {
-    flex-direction: row-reverse;
+    direction: rtl;
 }
 
 [dir="rtl"] .purge-checkbox-label {
-    flex-direction: row-reverse;
+    direction: rtl;
+}
+
+[dir="rtl"] .purge-step label {
+    text-align: right;
+}
+
+[dir="rtl"] .purge-confirmation-steps {
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] .purge-alert-content {
+    text-align: center;
 }
 
 [dir="rtl"] .password-input-wrapper .purge-input {
@@ -1206,6 +1271,10 @@
 [dir="rtl"] .toggle-password-btn {
     right: auto;
     left: 12px;
+}
+
+[dir="rtl"] .file-upload-area {
+    direction: rtl;
 }
 </style>
 

@@ -187,6 +187,11 @@
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
     }
 
+    [dir="rtl"] .alert-success-custom {
+        border-left: none;
+        border-right: 4px solid #10b981;
+    }
+
     /* Pagination */
     .pagination-wrapper {
         padding: 1.5rem;

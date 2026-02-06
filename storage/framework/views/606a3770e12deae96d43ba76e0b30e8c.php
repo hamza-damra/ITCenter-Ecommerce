@@ -271,17 +271,38 @@
 }
 
 /* RTL Support */
-[dir="rtl"] .confirm-modal-header,
-[dir="rtl"] .confirm-modal-footer {
+[dir="rtl"] .confirm-modal-overlay {
+    direction: rtl;
+}
+
+[dir="rtl"] .confirm-modal-content {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: right;
+}
+
+[dir="rtl"] .confirm-modal-header {
+    direction: rtl;
+}
+
+[dir="rtl"] .confirm-modal-header h3 {
     flex-direction: row-reverse;
 }
 
 [dir="rtl"] .confirm-modal-body {
-    text-align: right;
+    text-align: center;
+    direction: rtl;
 }
 
 [dir="rtl"] .confirm-modal-icon {
     margin: 0 auto 20px;
+}
+
+[dir="rtl"] .confirm-modal-footer {
+    direction: rtl;
+}
+
+[dir="rtl"] .confirm-modal-btn {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Responsive */
@@ -300,7 +321,7 @@
     }
     
     [dir="rtl"] .confirm-modal-footer {
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 }
 </style>

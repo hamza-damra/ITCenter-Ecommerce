@@ -52,6 +52,7 @@
         top: 100px;
         max-height: calc(100vh - 120px);
         overflow-y: auto;
+        overflow-x: clip; /* Prevent overflow-y:auto from clipping slider handles */
         transition: all var(--transition-bounce);
     }
 
@@ -215,7 +216,9 @@
 
     .price-range-slider {
         margin: 1.5rem 0;
-        padding: 0.75rem 0.5rem;
+        padding: 0.75rem 16px;
+        overflow: visible;
+        direction: ltr !important; /* Isolate slider from page RTL */
     }
 
     /* noUiSlider Custom Styles - Professional Design */
@@ -225,6 +228,18 @@
         border-radius: 8px;
         height: 8px;
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+        direction: ltr !important; /* Prevent page-level RTL from breaking slider internals */
+    }
+
+    /* Override noUiSlider RTL text-direction class to prevent origin/handle mispositioning */
+    .noUi-txt-dir-rtl.noUi-horizontal .noUi-origin {
+        left: auto !important;
+        right: 0 !important;
+    }
+
+    .noUi-txt-dir-rtl.noUi-horizontal .noUi-handle {
+        left: auto !important;
+        right: -14px !important;
     }
 
     .noUi-connect {
@@ -243,7 +258,7 @@
         cursor: grab !important;
         top: -10px !important;
         right: -14px !important;
-        transition: all 0.2s ease !important;
+        transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
         outline: none !important;
     }
 
@@ -253,14 +268,12 @@
     }
 
     .noUi-handle:hover {
-        transform: scale(1.15) !important;
         box-shadow: 0 4px 12px rgba(39, 98, 243, 0.4), 0 0 0 4px rgba(39, 98, 243, 0.1) !important;
         border-color: #1a4dbf !important;
     }
 
     .noUi-handle:active {
         cursor: grabbing !important;
-        transform: scale(1.1) !important;
         box-shadow: 0 2px 6px rgba(39, 98, 243, 0.5), 0 0 0 6px rgba(39, 98, 243, 0.15) !important;
     }
 
@@ -290,8 +303,6 @@
         margin-left: 0.5rem;
     }
     <?php endif; ?>
-        background-color: #1a4dbf !important;
-    }
 
     .noUi-target .noUi-handle:focus,
     .noUi-horizontal .noUi-handle:focus {
@@ -302,13 +313,13 @@
 
     .noUi-handle-lower,
     .noUi-handle-upper {
-        right: -1.5px !important;
+        right: -14px !important;
     }
 
-    /* Remove touch area if exists */
+    /* Touch area - full handle size for reliable grabbing */
     .noUi-touch-area {
-        width: 3px !important;
-        height: 24px !important;
+        width: 100% !important;
+        height: 100% !important;
     }
 
     .noUi-tooltip {
@@ -2743,7 +2754,7 @@
                 priceSlider = noUiSlider.create(sliderElement, {
                     start: [Math.max(sliderMin, currentMin), Math.min(sliderMax, currentMax)],
                     connect: true,
-                    direction: FILTER_CONFIG.isRTL ? 'rtl' : 'ltr',
+                    direction: 'ltr', // Always LTR - slider is visually isolated from page RTL via CSS
                     range: {
                         'min': sliderMin,
                         'max': sliderMax

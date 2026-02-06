@@ -40,9 +40,10 @@ class BrandController extends Controller
                 $query->where('is_featured', $request->is_featured);
             }
 
-            // Sorting
-            $sortBy = $request->get('sort_by', 'created_at');
-            $sortOrder = $request->get('sort_order', 'desc');
+            // Sorting — whitelist columns to prevent SQL injection
+            $allowedSorts = ['created_at', 'updated_at', 'name_en', 'name_ar', 'is_active', 'is_featured'];
+            $sortBy = in_array($request->get('sort_by'), $allowedSorts, true) ? $request->get('sort_by') : 'created_at';
+            $sortOrder = $request->get('sort_order') === 'asc' ? 'asc' : 'desc';
             $query->orderBy($sortBy, $sortOrder);
 
             $perPage = $request->get('per_page', 20);

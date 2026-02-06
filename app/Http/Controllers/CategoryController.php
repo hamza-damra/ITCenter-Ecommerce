@@ -54,9 +54,10 @@ class CategoryController extends Controller
         // Apply filters using ProductFilterService (pass category IDs array for multi-category filtering)
         $query = $this->filterService->applyFilters($query, $request, $categoryIds);
 
-        // Sorting
-        $sortBy = $request->get('sort', 'created_at');
-        $sortOrder = $request->get('order', 'desc');
+        // Sorting — whitelist columns to prevent SQL injection
+        $allowedSorts = ['created_at', 'price', 'sale_price', 'name_en', 'name_ar', 'name_he', 'sales_count', 'views_count', 'stock_quantity'];
+        $sortBy = in_array($request->get('sort'), $allowedSorts, true) ? $request->get('sort') : 'created_at';
+        $sortOrder = $request->get('order') === 'asc' ? 'asc' : 'desc';
         $query->orderBy($sortBy, $sortOrder);
 
         // Paginate
