@@ -333,9 +333,9 @@
                         <input type="number"
                                id="minPriceInput"
                                class="price-input"
-                               min="{{ $priceRange['min'] }}"
-                               max="{{ $priceRange['max'] }}"
-                               value="{{ $currentMinPrice ?: $priceRange['min'] }}"
+                               min="0"
+                               max="5000"
+                               value="{{ $currentMinPrice ?: 0 }}"
                                aria-label="{{ $locale === 'ar' ? 'السعر الأدنى' : ($locale === 'he' ? 'מחיר מינימום' : 'Minimum price') }}">
                     </div>
                 </div>
@@ -347,38 +347,47 @@
                         <input type="number"
                                id="maxPriceInput"
                                class="price-input"
-                               min="{{ $priceRange['min'] }}"
-                               max="{{ $priceRange['max'] }}"
-                               value="{{ $currentMaxPrice ?: $priceRange['max'] }}"
+                               min="0"
+                               max="5000"
+                               value="{{ $currentMaxPrice ?: 5000 }}"
                                aria-label="{{ $locale === 'ar' ? 'السعر الأقصى' : ($locale === 'he' ? 'מחיר מקסימום' : 'Maximum price') }}">
                     </div>
                 </div>
             </div>
 
-            <!-- Dual-Handle Range Slider -->
+            <!-- Dual-Handle Range Slider (pure HTML/CSS/JS, no library) -->
             <div class="price-range-slider"
                  role="group"
-                 aria-labelledby="priceRangeLabel"
-                 aria-describedby="priceRangeDescription">
-                <div id="priceSlider"
-                     data-min="{{ $priceRange['min'] }}"
-                     data-max="{{ $priceRange['max'] }}"
-                     data-current-min="{{ $currentMinPrice ?: $priceRange['min'] }}"
-                     data-current-max="{{ $currentMaxPrice ?: $priceRange['max'] }}"></div>
+                 aria-labelledby="priceRangeLabel">
+                <div class="dual-range-wrapper">
+                    <div class="dual-range-track"></div>
+                    <div class="dual-range-highlight"></div>
+                    <input type="range"
+                           id="rangeMin"
+                           min="0"
+                           max="5000"
+                           value="{{ $currentMinPrice ?: 0 }}"
+                           step="1"
+                           aria-label="{{ $locale === 'ar' ? 'السعر الأدنى' : ($locale === 'he' ? 'מחיר מינימום' : 'Minimum price') }}">
+                    <input type="range"
+                           id="rangeMax"
+                           min="0"
+                           max="5000"
+                           value="{{ $currentMaxPrice ?: 5000 }}"
+                           step="1"
+                           aria-label="{{ $locale === 'ar' ? 'السعر الأقصى' : ($locale === 'he' ? 'מחיר מקסימום' : 'Maximum price') }}">
+                </div>
             </div>
-            <span id="priceRangeDescription" class="sr-only">
-                {{ $locale === 'ar' ? 'استخدم مفاتيح الأسهم لتعديل نطاق السعر. اضغط Shift مع السهم للتحرك بشكل أسرع.' : ($locale === 'he' ? 'השתמש במקשי החצים כדי להתאים את טווח המחירים. החזק Shift עם החצים לתנועה מהירה יותר.' : 'Use arrow keys to adjust price range. Hold Shift with arrow keys for faster movement.') }}
-            </span>
 
             <!-- Hidden Input Fields for Form Submission -->
             <input type="hidden"
                    name="min_price"
                    id="minPrice"
-                   value="{{ $currentMinPrice ?: $priceRange['min'] }}">
+                   value="{{ $currentMinPrice ?: 0 }}">
             <input type="hidden"
                    name="max_price"
                    id="maxPrice"
-                   value="{{ $currentMaxPrice ?: $priceRange['max'] }}">
+                   value="{{ $currentMaxPrice ?: 5000 }}">
         </div>
 
         {{-- Attribute Filters --}}
@@ -917,69 +926,8 @@
     }
 
     .price-range-slider {
-        margin: 1.5rem 0;
-        padding: 0.75rem 0.5rem;
-    }
-
-    /* noUiSlider Custom Styles - Professional Design */
-    .noUi-target {
-        background: #e2e8f0;
-        border: none;
-        border-radius: 8px;
-        height: 8px;
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .noUi-connect {
-        background: linear-gradient(90deg, #2762f3 0%, #3b82f6 100%);
-        border-radius: 8px;
-        height: 8px;
-    }
-
-    .noUi-horizontal .noUi-handle {
-        width: 28px !important;
-        height: 28px !important;
-        border-radius: 50% !important;
-        background: #ffffff !important;
-        border: 3px solid #2762f3 !important;
-        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3), 0 0 0 0 rgba(39, 98, 243, 0.2) !important;
-        cursor: grab !important;
-        top: -10px !important;
-        right: -14px !important;
-        transition: all 0.2s ease !important;
-        outline: none !important;
-    }
-
-    .noUi-horizontal .noUi-handle::before,
-    .noUi-horizontal .noUi-handle::after {
-        display: none !important;
-    }
-
-    .noUi-handle:hover {
-        transform: scale(1.15) !important;
-        box-shadow: 0 4px 12px rgba(39, 98, 243, 0.4), 0 0 0 4px rgba(39, 98, 243, 0.1) !important;
-        border-color: #1a4dbf !important;
-    }
-
-    .noUi-handle:active {
-        cursor: grabbing !important;
-        transform: scale(1.1) !important;
-        box-shadow: 0 2px 6px rgba(39, 98, 243, 0.5), 0 0 0 6px rgba(39, 98, 243, 0.15) !important;
-    }
-
-    .noUi-handle:focus {
-        outline: none !important;
-        box-shadow: 0 0 0 4px rgba(39, 98, 243, 0.2), 0 2px 8px rgba(39, 98, 243, 0.3) !important;
-    }
-
-    /* Touch-friendly handles on mobile */
-    @media (max-width: 768px) {
-        .noUi-horizontal .noUi-handle {
-            width: 32px !important;
-            height: 32px !important;
-            top: -12px !important;
-            right: -16px !important;
-        }
+        margin: 1rem 0 0.5rem;
+        padding: 0.75rem 0;
     }
 
     /* RTL Support */
@@ -1569,129 +1517,50 @@
             document.getElementById('brandAccordionContent').hidden = false;
         }
 
-        // Setup price input fields synchronization with slider
-        const minPriceInput = document.getElementById('minPriceInput');
-        const maxPriceInput = document.getElementById('maxPriceInput');
-        const minPriceHidden = document.getElementById('minPrice');
-        const maxPriceHidden = document.getElementById('maxPrice');
-        const sliderElement = document.getElementById('priceSlider');
-        let priceSlider = null;
+        // Setup dual-range slider highlight (fallback if products.blade.php hasn't done it)
+        const rangeMin = document.getElementById('rangeMin');
+        const rangeMax = document.getElementById('rangeMax');
+        const highlight = document.querySelector('.dual-range-highlight');
 
-        if (sliderElement && typeof noUiSlider !== 'undefined') {
-            try {
-                // Skip if slider already initialized by products.blade.php
-                if (sliderElement.noUiSlider) {
-                    priceSlider = sliderElement.noUiSlider;
-                    console.log('Price slider already initialized, reusing existing instance');
-                } else {
-                const sliderMin = parseFloat(sliderElement.dataset.min) || 0;
-                const sliderMax = parseFloat(sliderElement.dataset.max) || 10000;
-                const currentMin = parseFloat(sliderElement.dataset.currentMin) || sliderMin;
-                const currentMax = parseFloat(sliderElement.dataset.currentMax) || sliderMax;
-
-                // Calculate smart step
-                const priceRange = sliderMax - sliderMin;
-                const smartStep = priceRange > 1000 ? Math.max(1, Math.floor(priceRange / 100)) : 1;
-
-                // Initialize slider
-                priceSlider = noUiSlider.create(sliderElement, {
-                    start: [Math.max(sliderMin, currentMin), Math.min(sliderMax, currentMax)],
-                    connect: true,
-                    direction: 'ltr', // Always LTR - slider is visually isolated from page RTL via CSS
-                    range: {
-                        'min': sliderMin,
-                        'max': sliderMax
-                    },
-                    step: smartStep,
-                    margin: smartStep,
-                    format: {
-                        to: function(value) {
-                            return Math.round(value);
-                        },
-                        from: function(value) {
-                            return Number(value);
-                        }
-                    },
-                    keyboardSupport: true,
-                    keyboardDefaultStep: smartStep
-                });
-
-                // Update input fields when slider changes
-                priceSlider.on('update', function(values, handle) {
-                    const value = Math.round(values[handle]);
-                    
-                    if (handle === 0) {
-                        if (minPriceInput) minPriceInput.value = value;
-                        if (minPriceHidden) minPriceHidden.value = value;
-                    } else {
-                        if (maxPriceInput) maxPriceInput.value = value;
-                        if (maxPriceHidden) maxPriceHidden.value = value;
-                    }
-                });
-
-                // Apply filters when slider is released
-                priceSlider.on('change', function(values) {
-                    console.log('Price slider changed:', values);
-                    debouncedFilterApply(300);
-                });
-                } // end else (new slider creation)
-            } catch (error) {
-                console.error('Error initializing price slider:', error);
-            }
+        function updateHighlight() {
+            if (!rangeMin || !rangeMax || !highlight) return;
+            const min = parseInt(rangeMin.value);
+            const max = parseInt(rangeMax.value);
+            const total = parseInt(rangeMin.max) - parseInt(rangeMin.min);
+            if (total <= 0) return;
+            const minPct = ((min - parseInt(rangeMin.min)) / total) * 100;
+            const maxPct = ((max - parseInt(rangeMin.min)) / total) * 100;
+            highlight.style.left = minPct + '%';
+            highlight.style.width = (maxPct - minPct) + '%';
         }
 
-        // Handle manual input changes
-        if (minPriceInput) {
-            minPriceInput.addEventListener('change', function() {
-                let value = parseFloat(this.value) || parseFloat(sliderElement?.dataset.min) || 0;
-                const max = parseFloat(maxPriceInput?.value) || parseFloat(sliderElement?.dataset.max) || 10000;
-                const sliderMax = parseFloat(sliderElement?.dataset.max) || 10000;
-                
-                value = Math.max(parseFloat(sliderElement?.dataset.min) || 0, Math.min(value, max - 1));
-                this.value = value;
-                
-                if (minPriceHidden) minPriceHidden.value = value;
-                if (priceSlider) {
-                    const currentValues = priceSlider.get();
-                    priceSlider.set([value, currentValues[1]]);
-                }
-                debouncedFilterApply(500);
+        if (rangeMin && rangeMax && !rangeMin._initialized) {
+            rangeMin._initialized = true;
+            rangeMax._initialized = true;
+
+            rangeMin.addEventListener('input', function() {
+                if (parseInt(rangeMin.value) > parseInt(rangeMax.value)) rangeMin.value = rangeMax.value;
+                const minPriceInput = document.getElementById('minPriceInput');
+                const minPriceHidden = document.getElementById('minPrice');
+                if (minPriceInput) minPriceInput.value = rangeMin.value;
+                if (minPriceHidden) minPriceHidden.value = rangeMin.value;
+                updateHighlight();
             });
 
-            minPriceInput.addEventListener('blur', function() {
-                let value = parseFloat(this.value) || parseFloat(sliderElement?.dataset.min) || 0;
-                const sliderMin = parseFloat(sliderElement?.dataset.min) || 0;
-                const sliderMax = parseFloat(sliderElement?.dataset.max) || 10000;
-                value = Math.max(sliderMin, Math.min(value, sliderMax));
-                this.value = value;
-            });
-        }
-
-        if (maxPriceInput) {
-            maxPriceInput.addEventListener('change', function() {
-                let value = parseFloat(this.value) || parseFloat(sliderElement?.dataset.max) || 10000;
-                const min = parseFloat(minPriceInput?.value) || parseFloat(sliderElement?.dataset.min) || 0;
-                const sliderMin = parseFloat(sliderElement?.dataset.min) || 0;
-                const sliderMax = parseFloat(sliderElement?.dataset.max) || 10000;
-                
-                value = Math.max(min + 1, Math.min(value, sliderMax));
-                this.value = value;
-                
-                if (maxPriceHidden) maxPriceHidden.value = value;
-                if (priceSlider) {
-                    const currentValues = priceSlider.get();
-                    priceSlider.set([currentValues[0], value]);
-                }
-                debouncedFilterApply(500);
+            rangeMax.addEventListener('input', function() {
+                if (parseInt(rangeMax.value) < parseInt(rangeMin.value)) rangeMax.value = rangeMin.value;
+                const maxPriceInput = document.getElementById('maxPriceInput');
+                const maxPriceHidden = document.getElementById('maxPrice');
+                if (maxPriceInput) maxPriceInput.value = rangeMax.value;
+                if (maxPriceHidden) maxPriceHidden.value = rangeMax.value;
+                updateHighlight();
             });
 
-            maxPriceInput.addEventListener('blur', function() {
-                let value = parseFloat(this.value) || parseFloat(sliderElement?.dataset.max) || 10000;
-                const sliderMin = parseFloat(sliderElement?.dataset.min) || 0;
-                const sliderMax = parseFloat(sliderElement?.dataset.max) || 10000;
-                value = Math.max(sliderMin, Math.min(value, sliderMax));
-                this.value = value;
-            });
+            rangeMin.addEventListener('change', function() { debouncedFilterApply(300); });
+            rangeMax.addEventListener('change', function() { debouncedFilterApply(300); });
+
+            updateHighlight();
+            console.log('✅ Dual-range slider initialized (filter-sidebar)');
         }
     });
 

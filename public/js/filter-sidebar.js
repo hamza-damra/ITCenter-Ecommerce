@@ -31,51 +31,67 @@
         }
 
         /**
-         * Initialize noUiSlider for price range
+         * Initialize custom dual-range price slider (pure JS, no library)
          */
         initPriceSlider() {
-            if (!this.priceSlider || typeof noUiSlider === 'undefined') return;
+            const rangeMin = document.getElementById('rangeMin');
+            const rangeMax = document.getElementById('rangeMax');
+            const highlight = document.querySelector('.dual-range-highlight');
 
-            const minPrice = parseInt(this.priceSlider.dataset.min || 0);
-            const maxPrice = parseInt(this.priceSlider.dataset.max || 10000);
-            const currentMin = parseInt(this.priceSlider.dataset.currentMin || minPrice);
-            const currentMax = parseInt(this.priceSlider.dataset.currentMax || maxPrice);
+            if (!rangeMin || !rangeMax) return;
 
-            noUiSlider.create(this.priceSlider, {
-                start: [currentMin, currentMax],
-                connect: true,
-                direction: 'ltr', // Always LTR - slider is visually isolated from page RTL via CSS
-                range: {
-                    'min': minPrice,
-                    'max': maxPrice
-                },
-                step: 1,
-                format: {
-                    to: function(value) {
-                        return Math.round(value);
-                    },
-                    from: function(value) {
-                        return Number(value);
-                    }
-                }
+            const self = this;
+
+            function updateHighlight() {
+                if (!highlight) return;
+                const min = parseInt(rangeMin.value);
+                const max = parseInt(rangeMax.value);
+                const total = parseInt(rangeMin.max) - parseInt(rangeMin.min);
+                if (total <= 0) return;
+                const minPct = ((min - parseInt(rangeMin.min)) / total) * 100;
+                const maxPct = ((max - parseInt(rangeMin.min)) / total) * 100;
+                highlight.style.left = minPct + '%';
+                highlight.style.width = (maxPct - minPct) + '%';
+            }
+
+            function syncInputs() {
+                const minDisplay = document.getElementById('price-min-display');
+                const maxDisplay = document.getElementById('price-max-display');
+                const minInput = document.getElementById('min-price-input') || document.getElementById('minPriceInput');
+                const maxInput = document.getElementById('max-price-input') || document.getElementById('maxPriceInput');
+                const minHidden = document.getElementById('minPrice');
+                const maxHidden = document.getElementById('maxPrice');
+
+                if (minDisplay) minDisplay.textContent = rangeMin.value;
+                if (maxDisplay) maxDisplay.textContent = rangeMax.value;
+                if (minInput) minInput.value = rangeMin.value;
+                if (maxInput) maxInput.value = rangeMax.value;
+                if (minHidden) minHidden.value = rangeMin.value;
+                if (maxHidden) maxHidden.value = rangeMax.value;
+                updateHighlight();
+            }
+
+            rangeMin.addEventListener('input', function() {
+                if (parseInt(rangeMin.value) > parseInt(rangeMax.value)) rangeMin.value = rangeMax.value;
+                syncInputs();
             });
 
-            // Update display values
-            this.priceSlider.noUiSlider.on('update', (values, handle) => {
-                document.getElementById('price-min-display').textContent = values[0];
-                document.getElementById('price-max-display').textContent = values[1];
-                document.getElementById('min-price-input').value = values[0];
-                document.getElementById('max-price-input').value = values[1];
+            rangeMax.addEventListener('input', function() {
+                if (parseInt(rangeMax.value) < parseInt(rangeMin.value)) rangeMax.value = rangeMin.value;
+                syncInputs();
             });
 
-            // Submit form on change (with debounce)
             let priceChangeTimeout;
-            this.priceSlider.noUiSlider.on('change', (values, handle) => {
+            rangeMin.addEventListener('change', () => {
                 clearTimeout(priceChangeTimeout);
-                priceChangeTimeout = setTimeout(() => {
-                    this.submitForm();
-                }, 500);
+                priceChangeTimeout = setTimeout(() => self.submitForm(), 500);
             });
+            rangeMax.addEventListener('change', () => {
+                clearTimeout(priceChangeTimeout);
+                priceChangeTimeout = setTimeout(() => self.submitForm(), 500);
+            });
+
+            syncInputs();
         }
 
         /**

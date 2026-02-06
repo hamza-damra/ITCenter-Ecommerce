@@ -23,8 +23,6 @@
 @section('content')
 <!-- Import shared components CSS -->
 <link rel="stylesheet" href="{{ asset('css/components.css') }}">
-<!-- noUiSlider CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
     /* Import Google Fonts - Poppins & Cairo for Arabic */
@@ -717,9 +715,6 @@
         </div><!-- End category-container -->
     </div><!-- End container -->
 </div><!-- End category-section -->
-
-<!-- noUiSlider JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!-- Include filter sidebar JavaScript -->
 <script src="{{ asset('js/filter-sidebar.js') }}"></script>
