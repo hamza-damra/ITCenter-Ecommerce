@@ -332,6 +332,7 @@ return [
     'return_policy' => 'سياسة إرجاع لمدة 30 يوم',
     'warranty' => 'ضمان الشركة المصنعة لمدة سنة',
     'customer_support' => 'دعم العملاء على مدار الساعة',
+    'add_to_wishlist' => 'أضف إلى قائمة الأمنيات',
     'buy_now' => 'اشتر الآن',
     'unavailable' => 'غير متوفر',
     'technical_specifications' => 'المواصفات التقنية',

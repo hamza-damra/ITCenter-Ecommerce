@@ -3,8 +3,6 @@
 <?php $__env->startSection('content'); ?>
 <!-- Import shared components CSS -->
 <link rel="stylesheet" href="<?php echo e(asset('css/components.css')); ?>">
-<!-- noUiSlider CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
     /* Import Google Fonts - Poppins & Cairo for Arabic */
@@ -214,84 +212,6 @@
         flex-shrink: 0;
     }
 
-    .price-range-slider {
-        margin: 1.5rem 0;
-        padding: 0.75rem 16px;
-        overflow: visible;
-        direction: ltr !important; /* Isolate slider from page RTL */
-    }
-
-    /* noUiSlider Custom Styles - Professional Design */
-    .noUi-target {
-        background: #e2e8f0;
-        border: none;
-        border-radius: 8px;
-        height: 8px;
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-        direction: ltr !important; /* Prevent page-level RTL from breaking slider internals */
-    }
-
-    /* Override noUiSlider RTL text-direction class to prevent origin/handle mispositioning */
-    .noUi-txt-dir-rtl.noUi-horizontal .noUi-origin {
-        left: auto !important;
-        right: 0 !important;
-    }
-
-    .noUi-txt-dir-rtl.noUi-horizontal .noUi-handle {
-        left: auto !important;
-        right: -14px !important;
-    }
-
-    .noUi-connect {
-        background: linear-gradient(90deg, #2762f3 0%, #3b82f6 100%);
-        border-radius: 8px;
-        height: 8px;
-    }
-
-    .noUi-horizontal .noUi-handle {
-        width: 28px !important;
-        height: 28px !important;
-        border-radius: 50% !important;
-        background: #ffffff !important;
-        border: 3px solid #2762f3 !important;
-        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3), 0 0 0 0 rgba(39, 98, 243, 0.2) !important;
-        cursor: grab !important;
-        top: -10px !important;
-        right: -14px !important;
-        transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
-        outline: none !important;
-    }
-
-    .noUi-horizontal .noUi-handle::before,
-    .noUi-horizontal .noUi-handle::after {
-        display: none !important;
-    }
-
-    .noUi-handle:hover {
-        box-shadow: 0 4px 12px rgba(39, 98, 243, 0.4), 0 0 0 4px rgba(39, 98, 243, 0.1) !important;
-        border-color: #1a4dbf !important;
-    }
-
-    .noUi-handle:active {
-        cursor: grabbing !important;
-        box-shadow: 0 2px 6px rgba(39, 98, 243, 0.5), 0 0 0 6px rgba(39, 98, 243, 0.15) !important;
-    }
-
-    .noUi-handle:focus {
-        outline: none !important;
-        box-shadow: 0 0 0 4px rgba(39, 98, 243, 0.2), 0 2px 8px rgba(39, 98, 243, 0.3) !important;
-    }
-
-    /* Touch-friendly handles on mobile */
-    @media (max-width: 768px) {
-        .noUi-horizontal .noUi-handle {
-            width: 32px !important;
-            height: 32px !important;
-            top: -12px !important;
-            right: -16px !important;
-        }
-    }
-
     /* RTL Support for Price Input */
     <?php if(is_rtl()): ?>
     .price-input-container {
@@ -304,35 +224,143 @@
     }
     <?php endif; ?>
 
-    .noUi-target .noUi-handle:focus,
-    .noUi-horizontal .noUi-handle:focus {
-        background: #1a4dbf !important;
-        background-color: #1a4dbf !important;
-        outline: none !important;
+    /* ========== Custom Dual-Range Price Slider ========== */
+    .price-range-slider {
+        margin: 1rem 0 0.5rem;
+        padding: 0.75rem 0;
     }
 
-    .noUi-handle-lower,
-    .noUi-handle-upper {
-        right: -14px !important;
+    .dual-range-wrapper {
+        position: relative;
+        height: 8px;
+        margin: 18px 0;
+        /* Always LTR so left=min, right=max regardless of page direction */
+        direction: ltr !important;
     }
 
-    /* Touch area - full handle size for reliable grabbing */
-    .noUi-touch-area {
-        width: 100% !important;
-        height: 100% !important;
+    /* The gray background track */
+    .dual-range-track {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #e2e8f0;
+        border-radius: 8px;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
     }
 
-    .noUi-tooltip {
-        display: none !important;
+    /* The blue highlighted range between the two thumbs */
+    .dual-range-highlight {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        background: linear-gradient(90deg, #2762f3 0%, #3b82f6 100%);
+        border-radius: 8px;
+        z-index: 1;
+        pointer-events: none;
     }
 
-    .noUi-marker-horizontal.noUi-marker-large {
-        height: 10px;
+    /* Both native range inputs stacked on top of each other */
+    .dual-range-wrapper input[type="range"] {
+        position: absolute;
+        top: -10px;
+        left: 0;
+        width: 100%;
+        height: 28px;
+        margin: 0;
+        padding: 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: transparent;
+        pointer-events: none; /* Disable track clicks, only thumbs respond */
+        z-index: 3;
+        outline: none;
+        /* Force LTR so the native range always works left-to-right */
+        direction: ltr !important;
     }
 
-    .noUi-value {
-        font-size: 0.75rem;
-        color: #64748b;
+    /* Webkit (Chrome, Safari, Edge) thumb */
+    .dual-range-wrapper input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 3px solid #2762f3;
+        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3);
+        cursor: grab;
+        pointer-events: auto; /* Re-enable pointer events on thumbs only */
+        transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        position: relative;
+        z-index: 4;
+    }
+
+    .dual-range-wrapper input[type="range"]::-webkit-slider-thumb:hover {
+        box-shadow: 0 4px 12px rgba(39, 98, 243, 0.4), 0 0 0 4px rgba(39, 98, 243, 0.1);
+        border-color: #1a4dbf;
+    }
+
+    .dual-range-wrapper input[type="range"]::-webkit-slider-thumb:active {
+        cursor: grabbing;
+        box-shadow: 0 2px 6px rgba(39, 98, 243, 0.5), 0 0 0 6px rgba(39, 98, 243, 0.15);
+    }
+
+    /* Firefox thumb */
+    .dual-range-wrapper input[type="range"]::-moz-range-thumb {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 3px solid #2762f3;
+        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3);
+        cursor: grab;
+        pointer-events: auto;
+        transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .dual-range-wrapper input[type="range"]::-moz-range-thumb:hover {
+        box-shadow: 0 4px 12px rgba(39, 98, 243, 0.4), 0 0 0 4px rgba(39, 98, 243, 0.1);
+        border-color: #1a4dbf;
+    }
+
+    .dual-range-wrapper input[type="range"]::-moz-range-thumb:active {
+        cursor: grabbing;
+        box-shadow: 0 2px 6px rgba(39, 98, 243, 0.5), 0 0 0 6px rgba(39, 98, 243, 0.15);
+    }
+
+    /* Hide native track in Firefox */
+    .dual-range-wrapper input[type="range"]::-moz-range-track {
+        background: transparent;
+        border: none;
+        height: 0;
+    }
+
+    /* Webkit track - full height so thumb centers on input center */
+    .dual-range-wrapper input[type="range"]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Touch-friendly handles on mobile */
+    @media (max-width: 768px) {
+        .dual-range-wrapper input[type="range"]::-webkit-slider-thumb {
+            width: 32px;
+            height: 32px;
+        }
+        .dual-range-wrapper input[type="range"]::-moz-range-thumb {
+            width: 26px;
+            height: 26px;
+        }
+        .dual-range-wrapper input[type="range"] {
+            top: -12px;
+            height: 32px;
+        }
     }
 
 
@@ -2250,22 +2278,18 @@
     </div><!-- End container -->
 </div><!-- End products-section -->
 
-<!-- noUiSlider JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 <script>
 (function() {
     'use strict';
     console.log('🚀 Products Filter System Initialized');
     
     // Filter state
-    let priceSlider = null;
     let debounceTimer = null;
     let isFiltering = false;
     
     const FILTER_CONFIG = {
-        minPrice: <?php echo e($priceRange['min']); ?>,
-        maxPrice: <?php echo e($priceRange['max']); ?>,
+        minPrice: 0,
+        maxPrice: 5000,
         isRTL: <?php echo e(is_rtl() ? 'true' : 'false'); ?>,
         productsRoute: '<?php echo e(route("products")); ?>'
     };
@@ -2313,12 +2337,11 @@
             strongOffersCheckbox.checked = false;
         }
 
-        // Reset price slider
-        if (priceSlider) {
-            priceSlider.set([FILTER_CONFIG.minPrice, FILTER_CONFIG.maxPrice]);
-        }
-        
-        // Reset price input fields
+        // Reset price slider and inputs
+        const rMin = document.getElementById('rangeMin');
+        const rMax = document.getElementById('rangeMax');
+        if (rMin) rMin.value = FILTER_CONFIG.minPrice;
+        if (rMax) rMax.value = FILTER_CONFIG.maxPrice;
         if (minPriceInput) minPriceInput.value = FILTER_CONFIG.minPrice;
         if (maxPriceInput) maxPriceInput.value = FILTER_CONFIG.maxPrice;
 
@@ -2327,6 +2350,10 @@
         const maxPriceHidden = document.getElementById('maxPrice');
         if (minPriceHidden) minPriceHidden.value = FILTER_CONFIG.minPrice;
         if (maxPriceHidden) maxPriceHidden.value = FILTER_CONFIG.maxPrice;
+
+        // Update slider highlight
+        const hl = document.querySelector('.dual-range-highlight');
+        if (hl) { hl.style.left = '0%'; hl.style.width = '100%'; }
 
         // Redirect to products page using AJAX (preserving search if exists)
         const form = document.getElementById('filterForm');
@@ -2671,7 +2698,6 @@
         const maxPriceInput = document.getElementById('maxPriceInput');
         const minPriceHidden = document.getElementById('minPrice');
         const maxPriceHidden = document.getElementById('maxPrice');
-        const sliderElement = document.getElementById('priceSlider');
 
         // Prevent form submission (we handle it with AJAX)
         if (form) {
@@ -2725,113 +2751,78 @@
             console.error('❌ Filter form not found!');
         }
 
-        const currentMin = parseFloat(minPriceInput?.value || minPriceHidden?.value) || FILTER_CONFIG.minPrice;
-        const currentMax = parseFloat(maxPriceInput?.value || maxPriceHidden?.value) || FILTER_CONFIG.maxPrice;
+        // ============================================
+        // Custom Dual-Range Price Slider (pure JS, no library)
+        // ============================================
+        const rangeMin = document.getElementById('rangeMin');
+        const rangeMax = document.getElementById('rangeMax');
+        const highlight = document.querySelector('.dual-range-highlight');
 
-        // Initialize noUiSlider with error handling
-        if (sliderElement) {
-            try {
-                console.log('Initializing slider...');
-
-                // Destroy existing slider if it exists
-                if (sliderElement.noUiSlider) {
-                    console.log('Destroying existing slider...');
-                    sliderElement.noUiSlider.destroy();
-                }
-
-                // Ensure valid range (min must be less than max)
-                let sliderMin = FILTER_CONFIG.minPrice;
-                let sliderMax = FILTER_CONFIG.maxPrice;
-                if (sliderMin >= sliderMax) {
-                    sliderMin = Math.max(0, sliderMin - 1);
-                    sliderMax = sliderMax + 1;
-                }
-
-                // Calculate smart step based on range
-                const priceRange = sliderMax - sliderMin;
-                const smartStep = priceRange > 1000 ? Math.max(1, Math.floor(priceRange / 100)) : 1;
-
-                priceSlider = noUiSlider.create(sliderElement, {
-                    start: [Math.max(sliderMin, currentMin), Math.min(sliderMax, currentMax)],
-                    connect: true,
-                    direction: 'ltr', // Always LTR - slider is visually isolated from page RTL via CSS
-                    range: {
-                        'min': sliderMin,
-                        'max': sliderMax
-                    },
-                    step: smartStep,
-                    margin: smartStep, // Minimum gap between handles
-                    format: {
-                        to: function(value) {
-                            return Math.round(value);
-                        },
-                        from: function(value) {
-                            return Number(value);
-                        }
-                    },
-                    // Enable keyboard support with proper ARIA
-                    keyboardSupport: true,
-                    keyboardDefaultStep: smartStep,
-                    keyboardPageMultiplier: 10,
-                    keyboardMultiplier: 5,
-                    // Add ARIA labels
-                    ariaFormat: {
-                        to: function(value) {
-                            const isRTL = FILTER_CONFIG.isRTL;
-                            return isRTL
-                                ? 'السعر: ' + Math.round(value) + ' شيكل'
-                                : 'Price: ₪' + Math.round(value);
-                        }
-                    }
-                });
-
-                console.log('Slider initialized successfully');
-
-                // Update input fields when slider changes
-                priceSlider.on('update', function(values, handle) {
-                    const value = Math.round(values[handle]);
-
-                    if (handle === 0) {
-                        if (minPriceInput) minPriceInput.value = value;
-                        if (minPriceHidden) minPriceHidden.value = value;
-                    } else {
-                        if (maxPriceInput) maxPriceInput.value = value;
-                        if (maxPriceHidden) maxPriceHidden.value = value;
-                    }
-                });
-
-                // Apply filters when slider is released (change event)
-                priceSlider.on('change', function(values, handle) {
-                    console.log('Slider changed:', values);
-                    debouncedApplyFilters(300);
-                });
-            } catch (error) {
-                console.error('Error initializing price slider:', error);
-                // Continue with checkbox initialization even if slider fails
-            }
+        function updateSliderHighlight() {
+            if (!rangeMin || !rangeMax || !highlight) return;
+            const min = parseInt(rangeMin.value);
+            const max = parseInt(rangeMax.value);
+            const rangeTotal = parseInt(rangeMin.max) - parseInt(rangeMin.min);
+            if (rangeTotal <= 0) return;
+            const minPercent = ((min - parseInt(rangeMin.min)) / rangeTotal) * 100;
+            const maxPercent = ((max - parseInt(rangeMin.min)) / rangeTotal) * 100;
+            highlight.style.left = minPercent + '%';
+            highlight.style.width = (maxPercent - minPercent) + '%';
         }
 
-        // Handle manual input changes
+        function syncSliderToInputs() {
+            if (!rangeMin || !rangeMax) return;
+            const min = parseInt(rangeMin.value);
+            const max = parseInt(rangeMax.value);
+            if (minPriceInput) minPriceInput.value = min;
+            if (maxPriceInput) maxPriceInput.value = max;
+            if (minPriceHidden) minPriceHidden.value = min;
+            if (maxPriceHidden) maxPriceHidden.value = max;
+            updateSliderHighlight();
+        }
+
+        if (rangeMin && rangeMax) {
+            // Min thumb dragged
+            rangeMin.addEventListener('input', function() {
+                if (parseInt(rangeMin.value) > parseInt(rangeMax.value)) {
+                    rangeMin.value = rangeMax.value;
+                }
+                syncSliderToInputs();
+            });
+
+            // Max thumb dragged
+            rangeMax.addEventListener('input', function() {
+                if (parseInt(rangeMax.value) < parseInt(rangeMin.value)) {
+                    rangeMax.value = rangeMin.value;
+                }
+                syncSliderToInputs();
+            });
+
+            // Apply filter on release (not during drag)
+            rangeMin.addEventListener('change', function() { debouncedApplyFilters(300); });
+            rangeMax.addEventListener('change', function() { debouncedApplyFilters(300); });
+
+            // Initialize highlight on load
+            syncSliderToInputs();
+            console.log('✅ Custom dual-range slider initialized');
+        }
+
+        // Handle manual number input changes
         if (minPriceInput) {
             minPriceInput.addEventListener('change', function() {
                 let value = parseFloat(this.value) || FILTER_CONFIG.minPrice;
                 const max = parseFloat(maxPriceInput?.value) || FILTER_CONFIG.maxPrice;
-                
-                value = Math.max(FILTER_CONFIG.minPrice, Math.min(value, max - 1));
-                this.value = value;
-                
-                if (minPriceHidden) minPriceHidden.value = value;
-                if (priceSlider) {
-                    const currentValues = priceSlider.get();
-                    priceSlider.set([value, currentValues[1]]);
-                }
+                value = Math.max(FILTER_CONFIG.minPrice, Math.min(value, max));
+                this.value = Math.round(value);
+                if (minPriceHidden) minPriceHidden.value = this.value;
+                if (rangeMin) { rangeMin.value = this.value; updateSliderHighlight(); }
                 debouncedApplyFilters(500);
             });
 
             minPriceInput.addEventListener('blur', function() {
                 let value = parseFloat(this.value) || FILTER_CONFIG.minPrice;
                 value = Math.max(FILTER_CONFIG.minPrice, Math.min(value, FILTER_CONFIG.maxPrice));
-                this.value = value;
+                this.value = Math.round(value);
             });
         }
 
@@ -2839,22 +2830,17 @@
             maxPriceInput.addEventListener('change', function() {
                 let value = parseFloat(this.value) || FILTER_CONFIG.maxPrice;
                 const min = parseFloat(minPriceInput?.value) || FILTER_CONFIG.minPrice;
-                
-                value = Math.max(min + 1, Math.min(value, FILTER_CONFIG.maxPrice));
-                this.value = value;
-                
-                if (maxPriceHidden) maxPriceHidden.value = value;
-                if (priceSlider) {
-                    const currentValues = priceSlider.get();
-                    priceSlider.set([currentValues[0], value]);
-                }
+                value = Math.max(min, Math.min(value, FILTER_CONFIG.maxPrice));
+                this.value = Math.round(value);
+                if (maxPriceHidden) maxPriceHidden.value = this.value;
+                if (rangeMax) { rangeMax.value = this.value; updateSliderHighlight(); }
                 debouncedApplyFilters(500);
             });
 
             maxPriceInput.addEventListener('blur', function() {
                 let value = parseFloat(this.value) || FILTER_CONFIG.maxPrice;
                 value = Math.max(FILTER_CONFIG.minPrice, Math.min(value, FILTER_CONFIG.maxPrice));
-                this.value = value;
+                this.value = Math.round(value);
             });
         }
 

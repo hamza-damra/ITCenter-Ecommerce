@@ -368,6 +368,7 @@ return [
     'return_policy' => '30-day return policy',
     'warranty' => '1 year manufacturer warranty',
     'customer_support' => '24/7 customer support',
+    'add_to_wishlist' => 'Add to wishlist',
     'buy_now' => 'Buy Now',
     'unavailable' => 'Unavailable',
     'technical_specifications' => 'Technical Specifications',

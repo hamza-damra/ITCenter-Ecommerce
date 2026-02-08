@@ -602,6 +602,9 @@
     @endif
 </div>
 
+@endsection
+
+@push('scripts')
 <script>
 // Scroll Animation - Bottom to Top
 document.addEventListener('DOMContentLoaded', function() {
@@ -677,10 +680,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 // If removed, remove the card from the page after a short delay
                 if (data.action === 'removed') {
                     setTimeout(() => {
-                        const card = button.closest('.product-card');
+                        const cardLink = button.closest('.product-card-link');
+                        const card = cardLink || button.closest('.product-card');
                         if (card) {
                             card.style.opacity = '0';
                             card.style.transform = 'scale(0.8)';
+                            card.style.transition = 'opacity 0.3s, transform 0.3s';
 
                             setTimeout(() => {
                                 card.remove();
@@ -742,4 +747,4 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 })();
 </script>
-@endsection
+@endpush

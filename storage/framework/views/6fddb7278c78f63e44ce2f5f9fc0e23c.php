@@ -42,7 +42,7 @@ unset($__defined_vars, $__key, $__value); ?>
 <?php
     $isRtl = is_rtl();
     $locale = app()->getLocale();
-    
+
     // Extract current filter values from request
     $currentStrongOffers = request('strong_offers', false);
     $currentStock = request('stock', '');
@@ -50,26 +50,27 @@ unset($__defined_vars, $__key, $__value); ?>
     $currentMinPrice = request('min_price', '');
     $currentMaxPrice = request('max_price', '');
     $currentAttributes = request('attr', []);
-    
+
     // Get price range from filters
     $priceRange = $filters['price_range'] ?? ['min' => 0, 'max' => 10000];
-    
+
     // Get brands with counts
     $brands = $filters['brands'] ?? [];
-    
+
     // Get stock options with counts
     $stockOptions = $filters['stock'] ?? [];
-    
+
     // Get attributes with values
     $attributes = $filters['attributes'] ?? [];
-    
+
     // Calculate active filter count
     $activeFilterCount = 0;
     if ($currentStrongOffers) $activeFilterCount++;
     if ($currentStock) $activeFilterCount++;
     $activeFilterCount += count((array)$currentBrands);
-    if ($currentMinPrice && $currentMinPrice != $priceRange['min']) $activeFilterCount++;
-    if ($currentMaxPrice && $currentMaxPrice != $priceRange['max']) $activeFilterCount++;
+    // Price: only count if different from the hardcoded slider defaults (0–5000)
+    if ($currentMinPrice && (int)$currentMinPrice != 0) $activeFilterCount++;
+    if ($currentMaxPrice && (int)$currentMaxPrice != 5000) $activeFilterCount++;
     foreach ((array)$currentAttributes as $attrValues) {
         $activeFilterCount += count((array)$attrValues);
     }
@@ -130,9 +131,9 @@ unset($__defined_vars, $__key, $__value); ?>
             </div>
             <div class="category-list">
                 <div class="category-checkbox">
-                    <input 
-                        type="checkbox" 
-                        name="strong_offers" 
+                    <input
+                        type="checkbox"
+                        name="strong_offers"
                         value="1"
                         id="strong-offers-checkbox"
                         <?php echo e($currentStrongOffers ? 'checked' : ''); ?>
@@ -158,9 +159,9 @@ unset($__defined_vars, $__key, $__value); ?>
             <div class="category-list">
                 <?php $__currentLoopData = $stockOptions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $stock): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="category-checkbox">
-                        <input 
-                            type="radio" 
-                            name="stock" 
+                        <input
+                            type="radio"
+                            name="stock"
                             value="<?php echo e($stock['value']); ?>"
                             id="stock-<?php echo e($stock['value']); ?>"
                             <?php echo e($currentStock === $stock['value'] ? 'checked' : ''); ?>
@@ -175,9 +176,9 @@ unset($__defined_vars, $__key, $__value); ?>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 <?php if($currentStock): ?>
                     <div class="category-checkbox">
-                        <input 
-                            type="radio" 
-                            name="stock" 
+                        <input
+                            type="radio"
+                            name="stock"
                             value=""
                             id="stock-all"
                         >
@@ -282,7 +283,7 @@ unset($__defined_vars, $__key, $__value); ?>
                         $isInitiallyVisible = $index < 10; // Show first 10
                         $hasProducts = ($cat['count'] ?? 0) > 0;
                     ?>
-                    <div class="category-checkbox category-filter-item <?php echo e(!$hasProducts ? 'category-disabled' : ''); ?>" 
+                    <div class="category-checkbox category-filter-item <?php echo e(!$hasProducts ? 'category-disabled' : ''); ?>"
                          data-category-index="<?php echo e($index); ?>"
                          style="<?php echo e(!$isInitiallyVisible ? 'display: none;' : ''); ?>">
                         <input type="checkbox"
@@ -346,8 +347,8 @@ unset($__defined_vars, $__key, $__value); ?>
                         $isInitiallyVisible = $index < 10; // Show first 10
                         $hasProducts = $brand['count'] > 0;
                     ?>
-                    <div class="brand-checkbox brand-filter-item <?php echo e(!$hasProducts ? 'brand-disabled' : ''); ?>" 
-                         data-brand-index="<?php echo e($index); ?>" 
+                    <div class="brand-checkbox brand-filter-item <?php echo e(!$hasProducts ? 'brand-disabled' : ''); ?>"
+                         data-brand-index="<?php echo e($index); ?>"
                          style="<?php echo e(!$isInitiallyVisible ? 'display: none;' : ''); ?>">
                         <input type="checkbox"
                                name="brands[]"
@@ -397,9 +398,9 @@ unset($__defined_vars, $__key, $__value); ?>
                         <input type="number"
                                id="minPriceInput"
                                class="price-input"
-                               min="<?php echo e($priceRange['min']); ?>"
-                               max="<?php echo e($priceRange['max']); ?>"
-                               value="<?php echo e($currentMinPrice ?: $priceRange['min']); ?>"
+                               min="0"
+                               max="5000"
+                               value="<?php echo e($currentMinPrice ?: 0); ?>"
                                aria-label="<?php echo e($locale === 'ar' ? 'السعر الأدنى' : ($locale === 'he' ? 'מחיר מינימום' : 'Minimum price')); ?>">
                     </div>
                 </div>
@@ -411,48 +412,56 @@ unset($__defined_vars, $__key, $__value); ?>
                         <input type="number"
                                id="maxPriceInput"
                                class="price-input"
-                               min="<?php echo e($priceRange['min']); ?>"
-                               max="<?php echo e($priceRange['max']); ?>"
-                               value="<?php echo e($currentMaxPrice ?: $priceRange['max']); ?>"
+                               min="0"
+                               max="5000"
+                               value="<?php echo e($currentMaxPrice ?: 5000); ?>"
                                aria-label="<?php echo e($locale === 'ar' ? 'السعر الأقصى' : ($locale === 'he' ? 'מחיר מקסימום' : 'Maximum price')); ?>">
                     </div>
                 </div>
             </div>
 
-            <!-- Dual-Handle Range Slider -->
+            <!-- Dual-Handle Range Slider (pure HTML/CSS/JS, no library) -->
             <div class="price-range-slider"
                  role="group"
-                 aria-labelledby="priceRangeLabel"
-                 aria-describedby="priceRangeDescription">
-                <div id="priceSlider"
-                     data-min="<?php echo e($priceRange['min']); ?>"
-                     data-max="<?php echo e($priceRange['max']); ?>"
-                     data-current-min="<?php echo e($currentMinPrice ?: $priceRange['min']); ?>"
-                     data-current-max="<?php echo e($currentMaxPrice ?: $priceRange['max']); ?>"></div>
+                 aria-labelledby="priceRangeLabel">
+                <div class="dual-range-wrapper">
+                    <div class="dual-range-track"></div>
+                    <div class="dual-range-highlight"></div>
+                    <input type="range"
+                           id="rangeMin"
+                           min="0"
+                           max="5000"
+                           value="<?php echo e($currentMinPrice ?: 0); ?>"
+                           step="1"
+                           aria-label="<?php echo e($locale === 'ar' ? 'السعر الأدنى' : ($locale === 'he' ? 'מחיר מינימום' : 'Minimum price')); ?>">
+                    <input type="range"
+                           id="rangeMax"
+                           min="0"
+                           max="5000"
+                           value="<?php echo e($currentMaxPrice ?: 5000); ?>"
+                           step="1"
+                           aria-label="<?php echo e($locale === 'ar' ? 'السعر الأقصى' : ($locale === 'he' ? 'מחיר מקסימום' : 'Maximum price')); ?>">
+                </div>
             </div>
-            <span id="priceRangeDescription" class="sr-only">
-                <?php echo e($locale === 'ar' ? 'استخدم مفاتيح الأسهم لتعديل نطاق السعر. اضغط Shift مع السهم للتحرك بشكل أسرع.' : ($locale === 'he' ? 'השתמש במקשי החצים כדי להתאים את טווח המחירים. החזק Shift עם החצים לתנועה מהירה יותר.' : 'Use arrow keys to adjust price range. Hold Shift with arrow keys for faster movement.')); ?>
-
-            </span>
 
             <!-- Hidden Input Fields for Form Submission -->
             <input type="hidden"
                    name="min_price"
                    id="minPrice"
-                   value="<?php echo e($currentMinPrice ?: $priceRange['min']); ?>">
+                   value="<?php echo e($currentMinPrice ?: 0); ?>">
             <input type="hidden"
                    name="max_price"
                    id="maxPrice"
-                   value="<?php echo e($currentMaxPrice ?: $priceRange['max']); ?>">
+                   value="<?php echo e($currentMaxPrice ?: 5000); ?>">
         </div>
 
         
         <?php if(!empty($attributes)): ?>
             <?php $__currentLoopData = $attributes; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $attribute): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="filter-accordion">
-                    <button 
+                    <button
                         type="button"
-                        class="filter-accordion-button" 
+                        class="filter-accordion-button"
                         aria-expanded="false"
                         onclick="toggleAttributeAccordion(this)"
                     >
@@ -470,7 +479,7 @@ unset($__defined_vars, $__key, $__value); ?>
                             <i class="fas fa-plus"></i>
                         </span>
                     </button>
-                    
+
                     <div class="filter-accordion-content" hidden>
                         <div class="category-list">
                             <?php $__currentLoopData = $attribute['values']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -480,9 +489,9 @@ unset($__defined_vars, $__key, $__value); ?>
                                     $isChecked = in_array($value['slug'], (array)$currentAttrValues);
                                 ?>
                                 <div class="category-checkbox">
-                                    <input 
-                                        type="checkbox" 
-                                        name="attr[<?php echo e($attrSlug); ?>][]" 
+                                    <input
+                                        type="checkbox"
+                                        name="attr[<?php echo e($attrSlug); ?>][]"
                                         value="<?php echo e($value['slug']); ?>"
                                         id="attr-<?php echo e($attrSlug); ?>-<?php echo e($value['slug']); ?>"
                                         <?php echo e($isChecked ? 'checked' : ''); ?>
@@ -501,6 +510,14 @@ unset($__defined_vars, $__key, $__value); ?>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         <?php endif; ?>
     </form>
+
+    
+    <div class="mobile-apply-filters-wrapper" id="mobileApplyFiltersWrapper">
+        <button type="button" class="mobile-apply-filters-btn" id="mobileApplyFiltersBtn" onclick="applyAndCloseMobileFilters()">
+            <i class="fas fa-check"></i>
+            <span><?php echo e($locale === 'ar' ? 'عرض النتائج' : ($locale === 'he' ? 'הצג תוצאות' : 'Show Results')); ?></span>
+        </button>
+    </div>
 </aside>
 
 <style>
@@ -709,27 +726,27 @@ unset($__defined_vars, $__key, $__value); ?>
     .tag-filter-list {
         gap: 0.5rem;
     }
-    
+
     .tag-checkbox-item label {
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
     }
-    
+
     .tag-label-content {
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
-    
+
     .tag-color-dot {
         width: 12px;
         height: 12px;
         border-radius: 50%;
         flex-shrink: 0;
     }
-    
+
     .tag-checkbox-item input:checked + label .tag-label-content {
         font-weight: 600;
     }
@@ -985,69 +1002,8 @@ unset($__defined_vars, $__key, $__value); ?>
     }
 
     .price-range-slider {
-        margin: 1.5rem 0;
-        padding: 0.75rem 0.5rem;
-    }
-
-    /* noUiSlider Custom Styles - Professional Design */
-    .noUi-target {
-        background: #e2e8f0;
-        border: none;
-        border-radius: 8px;
-        height: 8px;
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .noUi-connect {
-        background: linear-gradient(90deg, #2762f3 0%, #3b82f6 100%);
-        border-radius: 8px;
-        height: 8px;
-    }
-
-    .noUi-horizontal .noUi-handle {
-        width: 28px !important;
-        height: 28px !important;
-        border-radius: 50% !important;
-        background: #ffffff !important;
-        border: 3px solid #2762f3 !important;
-        box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3), 0 0 0 0 rgba(39, 98, 243, 0.2) !important;
-        cursor: grab !important;
-        top: -10px !important;
-        right: -14px !important;
-        transition: all 0.2s ease !important;
-        outline: none !important;
-    }
-
-    .noUi-horizontal .noUi-handle::before,
-    .noUi-horizontal .noUi-handle::after {
-        display: none !important;
-    }
-
-    .noUi-handle:hover {
-        transform: scale(1.15) !important;
-        box-shadow: 0 4px 12px rgba(39, 98, 243, 0.4), 0 0 0 4px rgba(39, 98, 243, 0.1) !important;
-        border-color: #1a4dbf !important;
-    }
-
-    .noUi-handle:active {
-        cursor: grabbing !important;
-        transform: scale(1.1) !important;
-        box-shadow: 0 2px 6px rgba(39, 98, 243, 0.5), 0 0 0 6px rgba(39, 98, 243, 0.15) !important;
-    }
-
-    .noUi-handle:focus {
-        outline: none !important;
-        box-shadow: 0 0 0 4px rgba(39, 98, 243, 0.2), 0 2px 8px rgba(39, 98, 243, 0.3) !important;
-    }
-
-    /* Touch-friendly handles on mobile */
-    @media (max-width: 768px) {
-        .noUi-horizontal .noUi-handle {
-            width: 32px !important;
-            height: 32px !important;
-            top: -12px !important;
-            right: -16px !important;
-        }
+        margin: 1rem 0 0.5rem;
+        padding: 0.75rem 0;
     }
 
     /* RTL Support */
@@ -1429,16 +1385,103 @@ unset($__defined_vars, $__key, $__value); ?>
             font-size: 0.8rem;
         }
     }
+
+    /* Mobile Apply Filters Button */
+    .mobile-apply-filters-wrapper {
+        display: none;
+    }
+
+    @media (max-width: 1024px) {
+        .mobile-apply-filters-wrapper {
+            display: block;
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 0 0;
+            margin: 0 -1.5rem -1.5rem;
+            background: linear-gradient(to top, #ffffff 70%, rgba(255, 255, 255, 0));
+            z-index: 20;
+        }
+
+        .mobile-apply-filters-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.625rem;
+            width: calc(100% - 2rem);
+            margin: 0 auto 1rem;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #2762f3, #1a4dbf);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(39, 98, 243, 0.35);
+            letter-spacing: 0.3px;
+            font-family: inherit;
+        }
+
+        .mobile-apply-filters-btn:hover {
+            background: linear-gradient(135deg, #1a4dbf, #153fa0);
+            box-shadow: 0 6px 20px rgba(39, 98, 243, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .mobile-apply-filters-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(39, 98, 243, 0.3);
+        }
+
+        .mobile-apply-filters-btn i {
+            font-size: 1rem;
+        }
+
+        /* Add padding at the bottom of the form so content isn't hidden behind the sticky button */
+        #filterForm {
+            padding-bottom: 1rem;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .mobile-apply-filters-wrapper {
+            margin: 0 -1rem -1rem;
+        }
+
+        .mobile-apply-filters-btn {
+            width: calc(100% - 1.5rem);
+            padding: 0.9rem 1.25rem;
+            font-size: 1rem;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .mobile-apply-filters-wrapper {
+            margin: 0 -0.875rem -0.875rem;
+        }
+
+        .mobile-apply-filters-btn {
+            width: calc(100% - 1.25rem);
+            padding: 0.85rem 1rem;
+            font-size: 0.95rem;
+            border-radius: 10px;
+        }
+    }
 </style>
 
 <script>
     // Helper function for accordion toggle
     function toggleAttributeAccordion(button) {
         if (!button) return;
-        
+
         // Find the content element - it's the next sibling with class 'filter-accordion-content'
         let content = button.nextElementSibling;
-        
+
         // If not found directly, try to find it within the parent
         if (!content || !content.classList.contains('filter-accordion-content')) {
             const parent = button.closest('.filter-accordion');
@@ -1446,18 +1489,18 @@ unset($__defined_vars, $__key, $__value); ?>
                 content = parent.querySelector('.filter-accordion-content');
             }
         }
-        
+
         if (!content) {
             console.error('Accordion content not found for button:', button);
             return;
         }
-        
+
         const isExpanded = button.getAttribute('aria-expanded') === 'true';
-        
+
         // Toggle the accordion
         button.setAttribute('aria-expanded', !isExpanded);
         content.hidden = isExpanded;
-        
+
         console.log('Accordion toggled:', button.id || 'unknown', 'expanded:', !isExpanded);
     }
 
@@ -1478,16 +1521,16 @@ unset($__defined_vars, $__key, $__value); ?>
                 if (form) {
                     const formData = new FormData(form);
                     const params = new URLSearchParams();
-                    
+
                     for (const [key, value] of formData.entries()) {
                         if (value && String(value).trim() !== '') {
                             params.append(key, value);
                         }
                     }
-                    
+
                     const url = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
                     window.history.pushState({ path: url }, '', url);
-                    
+
                     // Try to fetch and update product grid directly
                     fetch(url, {
                         headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'text/html' }
@@ -1500,7 +1543,7 @@ unset($__defined_vars, $__key, $__value); ?>
                         const newPagination = doc.querySelector('.pagination-wrapper');
                         const currentGrid = document.querySelector('.product-grid');
                         const currentPagination = document.querySelector('.pagination-wrapper');
-                        
+
                         if (newGrid && currentGrid) {
                             currentGrid.innerHTML = newGrid.innerHTML;
                         }
@@ -1513,11 +1556,11 @@ unset($__defined_vars, $__key, $__value); ?>
             }
         }, delay);
     }
-    
+
     // Initialize all accordion buttons
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Filter sidebar initializing...');
-        
+
         // Prevent form submission - use AJAX instead
         const filterForm = document.getElementById('filterForm');
         if (filterForm) {
@@ -1525,17 +1568,17 @@ unset($__defined_vars, $__key, $__value); ?>
                 e.preventDefault();
                 e.stopPropagation();
                 console.log('⛔ Filter form submission prevented - using AJAX');
-                
+
                 // Use AJAX filter function if available
                 if (typeof window.debouncedApplyFilters === 'function') {
                     window.debouncedApplyFilters(0);
                 } else if (typeof window.applyFilters === 'function') {
                     window.applyFilters();
                 }
-                
+
                 return false;
             }, true); // Use capture phase to catch early
-            
+
             // Also prevent any button clicks that might submit
             filterForm.addEventListener('click', function(e) {
                 const target = e.target;
@@ -1546,30 +1589,30 @@ unset($__defined_vars, $__key, $__value); ?>
                 }
             }, true);
         }
-        
+
         // Setup accordion toggles for tags, categories, brands, and attributes
         const accordionButtons = document.querySelectorAll('.filter-accordion-button');
         console.log('Found accordion buttons:', accordionButtons.length);
-        
+
         accordionButtons.forEach(button => {
             // Remove any existing listeners by cloning
             const newButton = button.cloneNode(true);
             button.parentNode.replaceChild(newButton, button);
-            
+
             newButton.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 toggleAttributeAccordion(this);
             });
         });
-        
+
         // Auto-expand accordion if it has active filters
         const tagAccordion = document.getElementById('tagAccordionToggle');
         if (tagAccordion && document.querySelector('input[name="tag"]:checked')) {
             tagAccordion.setAttribute('aria-expanded', 'true');
             document.getElementById('tagAccordionContent').hidden = false;
         }
-        
+
         const categoryAccordion = document.getElementById('categoryAccordionToggle');
         if (categoryAccordion && document.querySelector('input[name="categories[]"]:checked')) {
             categoryAccordion.setAttribute('aria-expanded', 'true');
@@ -1637,129 +1680,50 @@ unset($__defined_vars, $__key, $__value); ?>
             document.getElementById('brandAccordionContent').hidden = false;
         }
 
-        // Setup price input fields synchronization with slider
-        const minPriceInput = document.getElementById('minPriceInput');
-        const maxPriceInput = document.getElementById('maxPriceInput');
-        const minPriceHidden = document.getElementById('minPrice');
-        const maxPriceHidden = document.getElementById('maxPrice');
-        const sliderElement = document.getElementById('priceSlider');
-        let priceSlider = null;
+        // Setup dual-range slider highlight (fallback if products.blade.php hasn't done it)
+        const rangeMin = document.getElementById('rangeMin');
+        const rangeMax = document.getElementById('rangeMax');
+        const highlight = document.querySelector('.dual-range-highlight');
 
-        if (sliderElement && typeof noUiSlider !== 'undefined') {
-            try {
-                // Skip if slider already initialized by products.blade.php
-                if (sliderElement.noUiSlider) {
-                    priceSlider = sliderElement.noUiSlider;
-                    console.log('Price slider already initialized, reusing existing instance');
-                } else {
-                const sliderMin = parseFloat(sliderElement.dataset.min) || 0;
-                const sliderMax = parseFloat(sliderElement.dataset.max) || 10000;
-                const currentMin = parseFloat(sliderElement.dataset.currentMin) || sliderMin;
-                const currentMax = parseFloat(sliderElement.dataset.currentMax) || sliderMax;
-
-                // Calculate smart step
-                const priceRange = sliderMax - sliderMin;
-                const smartStep = priceRange > 1000 ? Math.max(1, Math.floor(priceRange / 100)) : 1;
-
-                // Initialize slider
-                priceSlider = noUiSlider.create(sliderElement, {
-                    start: [Math.max(sliderMin, currentMin), Math.min(sliderMax, currentMax)],
-                    connect: true,
-                    direction: 'ltr', // Always LTR - slider is visually isolated from page RTL via CSS
-                    range: {
-                        'min': sliderMin,
-                        'max': sliderMax
-                    },
-                    step: smartStep,
-                    margin: smartStep,
-                    format: {
-                        to: function(value) {
-                            return Math.round(value);
-                        },
-                        from: function(value) {
-                            return Number(value);
-                        }
-                    },
-                    keyboardSupport: true,
-                    keyboardDefaultStep: smartStep
-                });
-
-                // Update input fields when slider changes
-                priceSlider.on('update', function(values, handle) {
-                    const value = Math.round(values[handle]);
-                    
-                    if (handle === 0) {
-                        if (minPriceInput) minPriceInput.value = value;
-                        if (minPriceHidden) minPriceHidden.value = value;
-                    } else {
-                        if (maxPriceInput) maxPriceInput.value = value;
-                        if (maxPriceHidden) maxPriceHidden.value = value;
-                    }
-                });
-
-                // Apply filters when slider is released
-                priceSlider.on('change', function(values) {
-                    console.log('Price slider changed:', values);
-                    debouncedFilterApply(300);
-                });
-                } // end else (new slider creation)
-            } catch (error) {
-                console.error('Error initializing price slider:', error);
-            }
+        function updateHighlight() {
+            if (!rangeMin || !rangeMax || !highlight) return;
+            const min = parseInt(rangeMin.value);
+            const max = parseInt(rangeMax.value);
+            const total = parseInt(rangeMin.max) - parseInt(rangeMin.min);
+            if (total <= 0) return;
+            const minPct = ((min - parseInt(rangeMin.min)) / total) * 100;
+            const maxPct = ((max - parseInt(rangeMin.min)) / total) * 100;
+            highlight.style.left = minPct + '%';
+            highlight.style.width = (maxPct - minPct) + '%';
         }
 
-        // Handle manual input changes
-        if (minPriceInput) {
-            minPriceInput.addEventListener('change', function() {
-                let value = parseFloat(this.value) || parseFloat(sliderElement?.dataset.min) || 0;
-                const max = parseFloat(maxPriceInput?.value) || parseFloat(sliderElement?.dataset.max) || 10000;
-                const sliderMax = parseFloat(sliderElement?.dataset.max) || 10000;
-                
-                value = Math.max(parseFloat(sliderElement?.dataset.min) || 0, Math.min(value, max - 1));
-                this.value = value;
-                
-                if (minPriceHidden) minPriceHidden.value = value;
-                if (priceSlider) {
-                    const currentValues = priceSlider.get();
-                    priceSlider.set([value, currentValues[1]]);
-                }
-                debouncedFilterApply(500);
+        if (rangeMin && rangeMax && !rangeMin._initialized) {
+            rangeMin._initialized = true;
+            rangeMax._initialized = true;
+
+            rangeMin.addEventListener('input', function() {
+                if (parseInt(rangeMin.value) > parseInt(rangeMax.value)) rangeMin.value = rangeMax.value;
+                const minPriceInput = document.getElementById('minPriceInput');
+                const minPriceHidden = document.getElementById('minPrice');
+                if (minPriceInput) minPriceInput.value = rangeMin.value;
+                if (minPriceHidden) minPriceHidden.value = rangeMin.value;
+                updateHighlight();
             });
 
-            minPriceInput.addEventListener('blur', function() {
-                let value = parseFloat(this.value) || parseFloat(sliderElement?.dataset.min) || 0;
-                const sliderMin = parseFloat(sliderElement?.dataset.min) || 0;
-                const sliderMax = parseFloat(sliderElement?.dataset.max) || 10000;
-                value = Math.max(sliderMin, Math.min(value, sliderMax));
-                this.value = value;
-            });
-        }
-
-        if (maxPriceInput) {
-            maxPriceInput.addEventListener('change', function() {
-                let value = parseFloat(this.value) || parseFloat(sliderElement?.dataset.max) || 10000;
-                const min = parseFloat(minPriceInput?.value) || parseFloat(sliderElement?.dataset.min) || 0;
-                const sliderMin = parseFloat(sliderElement?.dataset.min) || 0;
-                const sliderMax = parseFloat(sliderElement?.dataset.max) || 10000;
-                
-                value = Math.max(min + 1, Math.min(value, sliderMax));
-                this.value = value;
-                
-                if (maxPriceHidden) maxPriceHidden.value = value;
-                if (priceSlider) {
-                    const currentValues = priceSlider.get();
-                    priceSlider.set([currentValues[0], value]);
-                }
-                debouncedFilterApply(500);
+            rangeMax.addEventListener('input', function() {
+                if (parseInt(rangeMax.value) < parseInt(rangeMin.value)) rangeMax.value = rangeMin.value;
+                const maxPriceInput = document.getElementById('maxPriceInput');
+                const maxPriceHidden = document.getElementById('maxPrice');
+                if (maxPriceInput) maxPriceInput.value = rangeMax.value;
+                if (maxPriceHidden) maxPriceHidden.value = rangeMax.value;
+                updateHighlight();
             });
 
-            maxPriceInput.addEventListener('blur', function() {
-                let value = parseFloat(this.value) || parseFloat(sliderElement?.dataset.max) || 10000;
-                const sliderMin = parseFloat(sliderElement?.dataset.min) || 0;
-                const sliderMax = parseFloat(sliderElement?.dataset.max) || 10000;
-                value = Math.max(sliderMin, Math.min(value, sliderMax));
-                this.value = value;
-            });
+            rangeMin.addEventListener('change', function() { debouncedFilterApply(300); });
+            rangeMax.addEventListener('change', function() { debouncedFilterApply(300); });
+
+            updateHighlight();
+            console.log('✅ Dual-range slider initialized (filter-sidebar)');
         }
     });
 
@@ -1767,7 +1731,7 @@ unset($__defined_vars, $__key, $__value); ?>
     window.openMobileFilters = function() {
         const sidebar = document.getElementById('filterSidebar');
         const overlay = document.getElementById('mobileFilterOverlay');
-        
+
         if (sidebar && overlay) {
             sidebar.classList.add('active');
             overlay.classList.add('active');
@@ -1778,7 +1742,7 @@ unset($__defined_vars, $__key, $__value); ?>
     window.closeMobileFilters = function() {
         const sidebar = document.getElementById('filterSidebar');
         const overlay = document.getElementById('mobileFilterOverlay');
-        
+
         if (sidebar && overlay) {
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
@@ -1786,9 +1750,22 @@ unset($__defined_vars, $__key, $__value); ?>
         }
     };
 
+    window.applyAndCloseMobileFilters = function() {
+        // Trigger filter application
+        if (typeof window.debouncedApplyFilters === 'function') {
+            window.debouncedApplyFilters(0);
+        } else if (typeof window.applyFilters === 'function') {
+            window.applyFilters();
+        } else {
+            debouncedFilterApply(0);
+        }
+        // Close the mobile drawer
+        closeMobileFilters();
+    };
+
     window.toggleMobileFilters = function() {
         const sidebar = document.getElementById('filterSidebar');
-        
+
         if (sidebar && sidebar.classList.contains('active')) {
             closeMobileFilters();
         } else {
@@ -1809,7 +1786,7 @@ unset($__defined_vars, $__key, $__value); ?>
         if (filterForm) {
             // Store original submit handler
             const originalSubmit = filterForm.onsubmit;
-            
+
             // Add close drawer before form submission
             filterForm.addEventListener('submit', function() {
                 closeMobileFilters();
@@ -1826,23 +1803,23 @@ unset($__defined_vars, $__key, $__value); ?>
                 let visibleCount = parseInt(this.dataset.visibleCount) || 10;
                 const totalCount = parseInt(this.dataset.totalCount) || 0;
                 const items = document.querySelectorAll('.category-filter-item');
-                
+
                 // Show next 20 items
                 const newVisibleCount = Math.min(visibleCount + 20, totalCount);
-                
+
                 items.forEach((item, index) => {
                     if (index < newVisibleCount) {
                         item.style.display = 'flex';
                     }
                 });
-                
+
                 this.dataset.visibleCount = newVisibleCount;
-                
+
                 // Update button text or hide if all shown
                 const remaining = totalCount - newVisibleCount;
                 const viewMoreText = document.getElementById('categoryViewMoreText');
                 const viewMoreIcon = document.getElementById('categoryViewMoreIcon');
-                
+
                 if (remaining <= 0) {
                     // All items shown - change to "Show less"
                     viewMoreText.textContent = isRtl ? 'عرض أقل' : 'View less';
@@ -1851,7 +1828,7 @@ unset($__defined_vars, $__key, $__value); ?>
                 } else {
                     viewMoreText.textContent = (isRtl ? 'عرض المزيد' : 'View more') + ' (' + remaining + ')';
                 }
-                
+
                 // If already expanded, collapse back to 10
                 if (this.dataset.expanded === 'true' && remaining <= 0) {
                     this.addEventListener('click', function collapseHandler() {
@@ -1865,11 +1842,11 @@ unset($__defined_vars, $__key, $__value); ?>
                         this.removeEventListener('click', collapseHandler);
                     }, { once: true });
                 }
-                
+
                 console.log('📂 Category pagination: showing ' + newVisibleCount + ' of ' + totalCount);
             });
         }
-        
+
         // Brand pagination - show 20 more items per click
         const brandViewMoreBtn = document.getElementById('brandViewMoreBtn');
         if (brandViewMoreBtn) {
@@ -1878,23 +1855,23 @@ unset($__defined_vars, $__key, $__value); ?>
                 let visibleCount = parseInt(this.dataset.visibleCount) || 10;
                 const totalCount = parseInt(this.dataset.totalCount) || 0;
                 const items = document.querySelectorAll('.brand-filter-item');
-                
+
                 // Show next 20 items
                 const newVisibleCount = Math.min(visibleCount + 20, totalCount);
-                
+
                 items.forEach((item, index) => {
                     if (index < newVisibleCount) {
                         item.style.display = 'flex';
                     }
                 });
-                
+
                 this.dataset.visibleCount = newVisibleCount;
-                
+
                 // Update button text or hide if all shown
                 const remaining = totalCount - newVisibleCount;
                 const viewMoreText = document.getElementById('brandViewMoreText');
                 const viewMoreIcon = document.getElementById('brandViewMoreIcon');
-                
+
                 if (remaining <= 0) {
                     // All items shown - change to "Show less"
                     viewMoreText.textContent = isRtl ? 'عرض أقل' : 'View less';
@@ -1903,7 +1880,7 @@ unset($__defined_vars, $__key, $__value); ?>
                 } else {
                     viewMoreText.textContent = (isRtl ? 'عرض المزيد' : 'View more') + ' (' + remaining + ')';
                 }
-                
+
                 // If already expanded, collapse back to 10
                 if (this.dataset.expanded === 'true' && remaining <= 0) {
                     this.addEventListener('click', function collapseHandler() {
@@ -1917,11 +1894,11 @@ unset($__defined_vars, $__key, $__value); ?>
                         this.removeEventListener('click', collapseHandler);
                     }, { once: true });
                 }
-                
+
                 console.log('🏷️ Brand pagination: showing ' + newVisibleCount + ' of ' + totalCount);
             });
         }
-        
+
         // Auto-show selected items that might be hidden
         const selectedCategories = document.querySelectorAll('input[name="categories[]"]:checked');
         selectedCategories.forEach(function(checkbox) {
@@ -1930,7 +1907,7 @@ unset($__defined_vars, $__key, $__value); ?>
                 item.style.display = 'flex';
             }
         });
-        
+
         const selectedBrands = document.querySelectorAll('input[name="brands[]"]:checked');
         selectedBrands.forEach(function(checkbox) {
             const item = checkbox.closest('.brand-filter-item');

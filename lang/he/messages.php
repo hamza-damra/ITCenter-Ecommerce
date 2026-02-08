@@ -346,6 +346,7 @@ return [
     'return_policy' => 'מדיניות החזרה של 30 יום',
     'warranty' => 'אחריות יצרן לשנה',
     'customer_support' => 'תמיכת לקוחות 24/7',
+    'add_to_wishlist' => 'הוסף לרשימת משאלות',
     'buy_now' => 'קנה עכשיו',
     'unavailable' => 'לא זמין',
     'technical_specifications' => 'מפרט טכני',
