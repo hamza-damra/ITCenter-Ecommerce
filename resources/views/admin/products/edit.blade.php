@@ -316,6 +316,32 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="discount_percentage" class="form-label">
+                            {{ __('messages.discount_percentage') ?? 'Discount Percentage' }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
+                        </label>
+                        <div style="position: relative;">
+                            <input 
+                                type="number" 
+                                id="discount_percentage" 
+                                name="discount_percentage" 
+                                class="form-control @error('discount_percentage') is-invalid @enderror" 
+                                step="0.01" 
+                                min="0"
+                                max="100"
+                                value="{{ old('discount_percentage', $product->discount_percentage) }}" 
+                                placeholder="0.00"
+                                style="padding-right: 32px;">
+                            <span style="position: absolute; right: 12px; top: 12px; color: var(--secondary); font-weight: 600;">%</span>
+                        </div>
+                        @error('discount_percentage')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
                         <label for="stock_quantity" class="form-label">
                             {{ __('messages.stock_quantity') }}
                             <span class="required">*</span>
@@ -976,34 +1002,25 @@
                             <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.mark_as_strong_promotional_offer') ?? 'Mark as strong promotional offer for filtering' }}</p>
                         </span>
                     </label>
-                </div>
 
-                <!-- Strong Offer Discount Percentage -->
-                <div class="form-group" id="discount-percentage-group" style="margin-top: 16px; {{ old('is_strong_offer', $product->is_strong_offer ?? false) ? '' : 'display: none;' }}">
-                    <label for="discount_percentage" class="form-label">
-                        {{ __('messages.discount_percentage') ?? 'Discount Percentage' }}
-                        <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
-                    </label>
-                    <div style="position: relative;">
-                        <input 
-                            type="number" 
-                            id="discount_percentage" 
-                            name="discount_percentage" 
-                            class="form-control @error('discount_percentage') is-invalid @enderror" 
-                            step="0.01" 
-                            min="0"
-                            max="100"
-                            value="{{ old('discount_percentage', $product->discount_percentage) }}" 
-                            placeholder="0.00"
-                            style="padding-right: 32px;">
-                        <span style="position: absolute; right: 12px; top: 12px; color: var(--secondary); font-weight: 600;">%</span>
-                    </div>
-                    <p class="form-text">
-                        <i class="fas fa-info-circle"></i> {{ __('messages.discount_percentage_help') ?? 'Enter discount percentage between 0 and 100' }}
-                    </p>
-                    @error('discount_percentage')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                    <!-- Custom Home Sections -->
+                    @if(isset($customSections) && $customSections->count() > 0)
+                        @foreach($customSections as $cs)
+                        <label class="checkbox-group">
+                            <input 
+                                type="checkbox" 
+                                name="home_sections[]" 
+                                value="{{ $cs->id }}" 
+                                {{ in_array($cs->id, old('home_sections', $selectedHomeSections ?? [])) ? 'checked' : '' }}>
+                            <span>
+                                <strong><i class="fas fa-th-list"></i> {{ $cs->title }}</strong>
+                                @if($cs->subtitle)
+                                    <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ $cs->subtitle }}</p>
+                                @endif
+                            </span>
+                        </label>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
@@ -1224,26 +1241,45 @@
         const specificationsContainer = document.getElementById('specifications-container');
         const currentCategoryId = '{{ $product->category_id }}';
         
-        // Strong Offer checkbox toggle for discount percentage field
-        const strongOfferCheckbox = document.getElementById('is_strong_offer');
-        const discountPercentageGroup = document.getElementById('discount-percentage-group');
-        
-        if (strongOfferCheckbox && discountPercentageGroup) {
-            // Show/hide discount percentage field based on checkbox state
-            function toggleDiscountField() {
-                if (strongOfferCheckbox.checked) {
-                    discountPercentageGroup.style.display = 'block';
-                } else {
-                    discountPercentageGroup.style.display = 'none';
-                    document.getElementById('discount_percentage').value = '';
+        // Pricing auto-calculation: price, sale_price, discount_percentage
+        const priceInput = document.getElementById('price');
+        const salePriceInput = document.getElementById('sale_price');
+        const discountInput = document.getElementById('discount_percentage');
+
+        if (priceInput && salePriceInput && discountInput) {
+            priceInput.addEventListener('input', function() {
+                const price = parseFloat(priceInput.value);
+                const sale = parseFloat(salePriceInput.value);
+                const discount = parseFloat(discountInput.value);
+                if (price > 0 && sale > 0 && sale < price) {
+                    discountInput.value = (((price - sale) / price) * 100).toFixed(2);
+                } else if (price > 0 && discount > 0 && discount <= 100) {
+                    salePriceInput.value = (price * (1 - discount / 100)).toFixed(2);
                 }
-            }
-            
-            // Initial state
-            toggleDiscountField();
-            
-            // Listen for changes
-            strongOfferCheckbox.addEventListener('change', toggleDiscountField);
+            });
+
+            salePriceInput.addEventListener('input', function() {
+                const price = parseFloat(priceInput.value);
+                const sale = parseFloat(salePriceInput.value);
+                if (price > 0 && sale > 0 && sale < price) {
+                    discountInput.value = (((price - sale) / price) * 100).toFixed(2);
+                } else if (sale > 0 && !price) {
+                    discountInput.value = '';
+                }
+            });
+
+            discountInput.addEventListener('input', function() {
+                const price = parseFloat(priceInput.value);
+                const sale = parseFloat(salePriceInput.value);
+                const discount = parseFloat(discountInput.value);
+                if (discount > 0 && discount <= 100) {
+                    if (price > 0) {
+                        salePriceInput.value = (price * (1 - discount / 100)).toFixed(2);
+                    } else if (sale > 0) {
+                        priceInput.value = (sale / (1 - discount / 100)).toFixed(2);
+                    }
+                }
+            });
         }
         
         // Store currently selected attribute values

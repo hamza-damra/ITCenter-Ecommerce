@@ -255,6 +255,16 @@ class Product extends Model
     }
 
     /**
+     * Get the custom home sections this product belongs to.
+     */
+    public function homeSections()
+    {
+        return $this->belongsToMany(HomeSection::class, 'home_section_product')
+            ->withPivot('display_order')
+            ->withTimestamps();
+    }
+
+    /**
      * Scope a query to only include active products.
      */
     public function scopeActive($query)

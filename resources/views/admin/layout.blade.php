@@ -2512,6 +2512,11 @@
                 <li><a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}"><i class="fas fa-star"></i> {{ __('messages.reviews') }}</a></li>
                 @endif
 
+                {{-- Home Page Sections --}}
+                @if($authUser->hasAnyPermissionInGroup('home_sections'))
+                <li><a href="{{ route('admin.home-sections.index') }}" class="{{ request()->routeIs('admin.home-sections.*') ? 'active' : '' }}"><i class="fas fa-th-large"></i> {{ __('messages.home_sections_management') }}</a></li>
+                @endif
+
                 {{-- Employee Management - Admin Only --}}
                 @if($authUser->isAdmin())
                 <li><a href="{{ route('admin.employees.index') }}" class="{{ request()->routeIs('admin.employees.*') ? 'active' : '' }}"><i class="fas fa-users-cog"></i> {{ __('messages.employee_management') }}</a></li>

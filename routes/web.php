@@ -366,6 +366,23 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::delete('/promotional-ads/{promotional_ad}', [App\Http\Controllers\Admin\PromotionalAdController::class, 'destroy'])
         ->middleware('permission:promotional_ads.delete')->name('promotional-ads.destroy');
 
+    // Home Page Sections Management
+    Route::middleware('permission:home_sections.create')->group(function () {
+        Route::get('/home-sections/create', [App\Http\Controllers\Admin\HomeSectionController::class, 'create'])->name('home-sections.create');
+        Route::post('/home-sections', [App\Http\Controllers\Admin\HomeSectionController::class, 'store'])->name('home-sections.store');
+    });
+    Route::middleware('permission:home_sections.view')->group(function () {
+        Route::get('/home-sections', [App\Http\Controllers\Admin\HomeSectionController::class, 'index'])->name('home-sections.index');
+    });
+    Route::middleware('permission:home_sections.edit')->group(function () {
+        Route::get('/home-sections/{home_section}/edit', [App\Http\Controllers\Admin\HomeSectionController::class, 'edit'])->name('home-sections.edit');
+        Route::put('/home-sections/{home_section}', [App\Http\Controllers\Admin\HomeSectionController::class, 'update'])->name('home-sections.update');
+        Route::post('/home-sections/reorder', [App\Http\Controllers\Admin\HomeSectionController::class, 'reorder'])->name('home-sections.reorder');
+        Route::post('/home-sections/{home_section}/toggle', [App\Http\Controllers\Admin\HomeSectionController::class, 'toggleActive'])->name('home-sections.toggle');
+    });
+    Route::delete('/home-sections/{home_section}', [App\Http\Controllers\Admin\HomeSectionController::class, 'destroy'])
+        ->middleware('permission:home_sections.delete')->name('home-sections.destroy');
+
     // Database Backup Management
     Route::middleware('permission:backup.view')->group(function () {
         Route::get('/backup', [App\Http\Controllers\Admin\BackupController::class, 'index'])->name('backup.index');

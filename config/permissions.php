@@ -157,6 +157,17 @@ return [
                 'backup.delete' => 'messages.permission_delete',
             ],
         ],
+        'home_sections' => [
+            'label' => 'messages.home_sections_management',
+            'icon' => 'fas fa-th-large',
+            'sidebar_route' => 'admin.home-sections.*',
+            'permissions' => [
+                'home_sections.view' => 'messages.permission_view',
+                'home_sections.create' => 'messages.permission_create',
+                'home_sections.edit' => 'messages.permission_edit',
+                'home_sections.delete' => 'messages.permission_delete',
+            ],
+        ],
         'employees' => [
             'label' => 'messages.employee_management',
             'icon' => 'fas fa-users-cog',

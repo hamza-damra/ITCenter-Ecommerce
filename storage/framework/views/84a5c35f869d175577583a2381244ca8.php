@@ -2513,6 +2513,11 @@
                 <?php endif; ?>
 
                 
+                <?php if($authUser->hasAnyPermissionInGroup('home_sections')): ?>
+                <li><a href="<?php echo e(route('admin.home-sections.index')); ?>" class="<?php echo e(request()->routeIs('admin.home-sections.*') ? 'active' : ''); ?>"><i class="fas fa-th-large"></i> <?php echo e(__('messages.home_sections_management')); ?></a></li>
+                <?php endif; ?>
+
+                
                 <?php if($authUser->isAdmin()): ?>
                 <li><a href="<?php echo e(route('admin.employees.index')); ?>" class="<?php echo e(request()->routeIs('admin.employees.*') ? 'active' : ''); ?>"><i class="fas fa-users-cog"></i> <?php echo e(__('messages.employee_management')); ?></a></li>
                 <li><a href="<?php echo e(route('admin.roles.index')); ?>" class="<?php echo e(request()->routeIs('admin.roles.*') ? 'active' : ''); ?>"><i class="fas fa-shield-alt"></i> <?php echo e(__('messages.role_management')); ?></a></li>

@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
+use App\Models\HomeSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -123,7 +124,9 @@ class ProductController extends Controller
             'search_keywords' => ProductRequest::SEARCH_KEYWORDS_MAX_LENGTH,
         ];
 
-        return view('admin.products.create', compact('categories', 'brands', 'tags', 'inputLimits'));
+        $customSections = HomeSection::customProductSections()->active()->ordered()->get();
+
+        return view('admin.products.create', compact('categories', 'brands', 'tags', 'inputLimits', 'customSections'));
     }
 
     /**
@@ -222,6 +225,10 @@ class ProductController extends Controller
             // Sync all tags
             $product->tags()->sync($tagIds);
 
+            // Sync home sections
+            $homeSectionIds = $request->input('home_sections', []);
+            $product->homeSections()->sync($homeSectionIds);
+
             // Create main image as first product image
             ProductImage::create([
                 'product_id' => $product->id,
@@ -263,7 +270,7 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $product->load(['images', 'attributeValues.attribute', 'category.attributes.values', 'category.specTemplate.activeFields', 'tags', 'specValues.field']);
+        $product->load(['images', 'attributeValues.attribute', 'category.attributes.values', 'category.specTemplate.activeFields', 'tags', 'specValues.field', 'homeSections']);
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
         
@@ -307,7 +314,10 @@ class ProductController extends Controller
             'search_keywords' => ProductRequest::SEARCH_KEYWORDS_MAX_LENGTH,
         ];
 
-        return view('admin.products.edit', compact('product', 'categories', 'brands', 'tags', 'categoryAttributes', 'selectedAttributeValues', 'specValues', 'specFields', 'inputLimits'));
+        $customSections = HomeSection::customProductSections()->active()->ordered()->get();
+        $selectedHomeSections = $product->homeSections->pluck('id')->toArray();
+
+        return view('admin.products.edit', compact('product', 'categories', 'brands', 'tags', 'categoryAttributes', 'selectedAttributeValues', 'specValues', 'specFields', 'inputLimits', 'customSections', 'selectedHomeSections'));
     }
 
     public function update(ProductRequest $request, Product $product)
@@ -366,6 +376,10 @@ class ProductController extends Controller
             
             // Sync all tags
             $product->tags()->sync($tagIds);
+
+            // Sync home sections
+            $homeSectionIds = $request->input('home_sections', []);
+            $product->homeSections()->sync($homeSectionIds);
 
             // Delete existing images
             ProductImage::where('product_id', $product->id)->delete();

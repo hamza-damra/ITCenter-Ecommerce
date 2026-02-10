@@ -1,10 +1,8 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', __t('messages.home') . ' - IT Center'); ?>
 
-@section('title', __t('messages.home') . ' - IT Center')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <!-- Import shared components CSS -->
-    <link rel="stylesheet" href="{{ asset('css/components.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/components.css')); ?>">
     <style>
         /* Import Google Font - Poppins */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -109,7 +107,8 @@
         .hero-slide-content {
             position: absolute;
             top: 50%;
-            {{ is_rtl() ? 'right' : 'left' }}
+            <?php echo e(is_rtl() ? 'right' : 'left'); ?>
+
             : 6%;
             transform: translateY(-50%);
             z-index: 3;
@@ -122,7 +121,7 @@
         @keyframes slideInContent {
             from {
                 opacity: 0;
-                transform: translateY(-50%) translateX({{ is_rtl() ? '50px' : '-50px' }});
+                transform: translateY(-50%) translateX(<?php echo e(is_rtl() ? '50px' : '-50px'); ?>);
             }
 
             to {
@@ -1086,12 +1085,12 @@
             position: absolute !important;
             top: 10px !important;
             bottom: auto !important;
-            @if(is_rtl())
+            <?php if(is_rtl()): ?>
                 left: 10px !important;
                 right: auto !important;
-            @else right: 10px !important;
+            <?php else: ?> right: 10px !important;
                 left: auto !important;
-            @endif background: rgba(255, 255, 255, 0.85);
+            <?php endif; ?> background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             width: 32px;
@@ -1142,12 +1141,12 @@
             position: absolute !important;
             top: 10px !important;
             bottom: auto !important;
-            @if(is_rtl())
+            <?php if(is_rtl()): ?>
                 right: 10px !important;
                 left: auto !important;
-            @else left: 10px !important;
+            <?php else: ?> left: 10px !important;
                 right: auto !important;
-            @endif background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            <?php endif; ?> background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
             color: #fff;
             padding: 0.3rem 0.65rem;
             border-radius: 10px;
@@ -1625,8 +1624,8 @@
             }
 
             .hero-slide-content {
-                {{ is_rtl() ? 'right' : 'left' }}: 4% !important;
-                {{ is_rtl() ? 'left' : 'right' }}: auto !important;
+                <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 4% !important;
+                <?php echo e(is_rtl() ? 'left' : 'right'); ?>: auto !important;
                 max-width: 70%;
                 padding: 1.25rem;
                 text-align: start;
@@ -1757,20 +1756,20 @@
                 padding: 0.3rem 0.65rem;
                 border-radius: 10px;
                 top: 10px;
-                @if(is_rtl())
+                <?php if(is_rtl()): ?>
                     right: 10px;
-                @else left: 10px;
-                @endif
+                <?php else: ?> left: 10px;
+                <?php endif; ?>
             }
 
             .wishlist-btn {
                 width: 32px;
                 height: 32px;
                 top: 10px;
-                @if(is_rtl())
+                <?php if(is_rtl()): ?>
                     left: 10px;
-                @else right: 10px;
-                @endif
+                <?php else: ?> right: 10px;
+                <?php endif; ?>
             }
 
             .wishlist-btn i {
@@ -1912,8 +1911,8 @@
             }
 
             .hero-slide-content {
-                {{ is_rtl() ? 'right' : 'left' }}: 3% !important;
-                {{ is_rtl() ? 'left' : 'right' }}: auto !important;
+                <?php echo e(is_rtl() ? 'right' : 'left'); ?>: 3% !important;
+                <?php echo e(is_rtl() ? 'left' : 'right'); ?>: auto !important;
                 max-width: 75%;
                 padding: 1rem;
                 text-align: start;
@@ -2172,10 +2171,10 @@
             font-size: 1.1rem;
             position: absolute;
             top: -15px;
-            @if(is_rtl())
+            <?php if(is_rtl()): ?>
                 right: 30px;
-            @else left: 30px;
-            @endif box-shadow: 0 8px 25px rgba(255, 165, 0, 0.5);
+            <?php else: ?> left: 30px;
+            <?php endif; ?> box-shadow: 0 8px 25px rgba(255, 165, 0, 0.5);
             animation: pulse 2s infinite;
             z-index: 100;
             letter-spacing: 1px;
@@ -2433,7 +2432,8 @@
         /* Promo card that spans two product rows - positioned on the left for LTR, right for RTL */
         .promo-featured-card {
             grid-column:
-                {{ is_rtl() ? '5' : '1' }}
+                <?php echo e(is_rtl() ? '5' : '1'); ?>
+
             ;
             grid-row: 1 / 3;
             border: none;
@@ -2446,9 +2446,11 @@
             flex-direction: column;
             padding: 1.2rem;
             transition: all 0.3s ease;
-            {{ is_rtl() ? 'margin-left' : 'margin-right' }}
+            <?php echo e(is_rtl() ? 'margin-left' : 'margin-right'); ?>
+
             : 0;
-            {{ is_rtl() ? 'border-left' : 'border-right' }}
+            <?php echo e(is_rtl() ? 'border-left' : 'border-right'); ?>
+
             : 1px solid rgba(0, 0, 0, 0.08);
         }
 
@@ -2470,7 +2472,8 @@
         .promo-featured-card .badge-save {
             position: absolute;
             top: 12px;
-            {{ is_rtl() ? 'left' : 'right' }}
+            <?php echo e(is_rtl() ? 'left' : 'right'); ?>
+
             : 12px;
             background: #fbbf24;
             color: #111827;
@@ -2658,12 +2661,15 @@
 
             .promo-featured-card {
                 grid-column:
-                    {{ is_rtl() ? '4' : '1' }}
+                    <?php echo e(is_rtl() ? '4' : '1'); ?>
+
                 ;
                 grid-row: 1 / 3;
-                {{ is_rtl() ? 'margin-left' : 'margin-right' }}
+                <?php echo e(is_rtl() ? 'margin-left' : 'margin-right'); ?>
+
                 : 0.3rem;
-                {{ is_rtl() ? 'margin-right' : 'margin-left' }}
+                <?php echo e(is_rtl() ? 'margin-right' : 'margin-left'); ?>
+
                 : 0;
             }
 
@@ -3519,78 +3525,80 @@
         }
     </style>
 
-    @if(isset($homeSections) && $homeSections->count() > 0)
-        {{-- ===== DYNAMIC SECTION RENDERING (Admin-configurable order) ===== --}}
-        @php
+    <?php if(isset($homeSections) && $homeSections->count() > 0): ?>
+        
+        <?php
             $hasCategories = isset($categories) && $categories->count() > 0;
             $hasProducts = (isset($featuredProducts) && $featuredProducts->count() > 0) ||
                 (isset($newProducts) && $newProducts->count() > 0) ||
                 (isset($bestsellerProducts) && $bestsellerProducts->count() > 0) ||
                 (isset($onSaleProducts) && $onSaleProducts->count() > 0);
             $hasNeitherCategoriesNorProducts = !$hasCategories && !$hasProducts;
-        @endphp
+        ?>
 
-        {{-- Render hero banner (always, even when no data) --}}
-        @foreach($homeSections as $homeSection)
-            @if($homeSection->type === \App\Models\HomeSection::TYPE_HERO_BANNER)
-                @include('home.sections.hero-banner')
-                @break
-            @endif
-        @endforeach
+        
+        <?php $__currentLoopData = $homeSections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $homeSection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if($homeSection->type === \App\Models\HomeSection::TYPE_HERO_BANNER): ?>
+                <?php echo $__env->make('home.sections.hero-banner', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                <?php break; ?>
+            <?php endif; ?>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-        @if($hasNeitherCategoriesNorProducts)
+        <?php if($hasNeitherCategoriesNorProducts): ?>
             <!-- Full Page Empty State -->
             <div class="empty-state-full">
                 <div class="empty-state-icon"><i class="fas fa-store"></i></div>
-                <h2 class="empty-state-title">{{ __t('messages.no_data_title') }}</h2>
-                <p class="empty-state-subtitle">{{ __t('messages.no_data_subtitle') }}</p>
+                <h2 class="empty-state-title"><?php echo e(__t('messages.no_data_title')); ?></h2>
+                <p class="empty-state-subtitle"><?php echo e(__t('messages.no_data_subtitle')); ?></p>
                 <div class="empty-state-actions">
-                    <a href="{{ route('contact') }}" class="empty-state-btn primary">
-                        <i class="fas fa-envelope"></i> {{ __t('messages.contact_support') }}
+                    <a href="<?php echo e(route('contact')); ?>" class="empty-state-btn primary">
+                        <i class="fas fa-envelope"></i> <?php echo e(__t('messages.contact_support')); ?>
+
                     </a>
-                    <a href="{{ route('about') }}" class="empty-state-btn secondary">
-                        <i class="fas fa-info-circle"></i> {{ __t('messages.about') }}
+                    <a href="<?php echo e(route('about')); ?>" class="empty-state-btn secondary">
+                        <i class="fas fa-info-circle"></i> <?php echo e(__t('messages.about')); ?>
+
                     </a>
                 </div>
                 <div class="empty-state-decoration"><span></span><span></span><span></span></div>
             </div>
-        @else
-            {{-- Render remaining sections in admin-configured order --}}
-            @foreach($homeSections as $homeSection)
-                @if($homeSection->type !== \App\Models\HomeSection::TYPE_HERO_BANNER)
-                    @include($homeSection->getViewName(), ['section' => $homeSection])
-                @endif
-            @endforeach
-        @endif
+        <?php else: ?>
+            
+            <?php $__currentLoopData = $homeSections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $homeSection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if($homeSection->type !== \App\Models\HomeSection::TYPE_HERO_BANNER): ?>
+                    <?php echo $__env->make($homeSection->getViewName(), ['section' => $homeSection], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                <?php endif; ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        <?php endif; ?>
 
-        {{-- Section scripts and styles --}}
-        @include('home.sections._scripts')
+        
+        <?php echo $__env->make('home.sections._scripts', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
-    @else
-    {{-- ===== FALLBACK: Original hardcoded sections (before migration) ===== --}}
+    <?php else: ?>
+    
 
     <!-- Hero Section - Slider -->
-    @if(isset($banners) && $banners->count() > 0)
+    <?php if(isset($banners) && $banners->count() > 0): ?>
         <div class="hero-section">
             <div class="hero-slider">
-                @foreach($banners as $index => $banner)
-                    @if($banner->link)
-                        <a href="{{ $banner->link }}" class="hero-slide {{ $index === 0 ? 'active' : '' }}"
-                            style="background-image: url('{{ $banner->image_url }}');">
-                    @else
-                            <div class="hero-slide {{ $index === 0 ? 'active' : '' }}"
-                                style="background-image: url('{{ $banner->image_url }}');">
-                        @endif
+                <?php $__currentLoopData = $banners; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $banner): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if($banner->link): ?>
+                        <a href="<?php echo e($banner->link); ?>" class="hero-slide <?php echo e($index === 0 ? 'active' : ''); ?>"
+                            style="background-image: url('<?php echo e($banner->image_url); ?>');">
+                    <?php else: ?>
+                            <div class="hero-slide <?php echo e($index === 0 ? 'active' : ''); ?>"
+                                style="background-image: url('<?php echo e($banner->image_url); ?>');">
+                        <?php endif; ?>
                             <div class="hero-slide-content">
-                                @if($banner->title)
-                                    <h1 @if($banner->title_color) style="background: none; -webkit-background-clip: unset; background-clip: unset; -webkit-text-fill-color: {{ $banner->title_color }}; color: {{ $banner->title_color }};" @endif>{{ $banner->title }}</h1>
-                                @endif
-                                @if($banner->subtitle)
-                                    <p @if($banner->subtitle_color) style="color: {{ $banner->subtitle_color }};" @endif>{{ $banner->subtitle }}</p>
-                                @endif
-                                @if($banner->button_text)
+                                <?php if($banner->title): ?>
+                                    <h1 <?php if($banner->title_color): ?> style="background: none; -webkit-background-clip: unset; background-clip: unset; -webkit-text-fill-color: <?php echo e($banner->title_color); ?>; color: <?php echo e($banner->title_color); ?>;" <?php endif; ?>><?php echo e($banner->title); ?></h1>
+                                <?php endif; ?>
+                                <?php if($banner->subtitle): ?>
+                                    <p <?php if($banner->subtitle_color): ?> style="color: <?php echo e($banner->subtitle_color); ?>;" <?php endif; ?>><?php echo e($banner->subtitle); ?></p>
+                                <?php endif; ?>
+                                <?php if($banner->button_text): ?>
                                     <div class="hero-cta-buttons">
-                                        @php
+                                        <?php
                                             $buttonStyle = '';
                                             if($banner->button_bg_color) {
                                                 $buttonStyle .= "background: {$banner->button_bg_color}; ";
@@ -3598,31 +3606,33 @@
                                             if($banner->button_text_color) {
                                                 $buttonStyle .= "color: {$banner->button_text_color}; ";
                                             }
-                                        @endphp
-                                        @if($banner->link)
-                                            {{-- Use span when slide is already wrapped in <a> to avoid nested links --}}
-                                            <span class="hero-cta-btn primary" @if($buttonStyle) style="{{ $buttonStyle }}" @endif>
+                                        ?>
+                                        <?php if($banner->link): ?>
+                                            
+                                            <span class="hero-cta-btn primary" <?php if($buttonStyle): ?> style="<?php echo e($buttonStyle); ?>" <?php endif; ?>>
                                                 <i class="fas fa-shopping-bag"></i>
-                                                {{ $banner->button_text }}
+                                                <?php echo e($banner->button_text); ?>
+
                                             </span>
-                                        @else
-                                            <span class="hero-cta-btn primary" style="cursor: default; {{ $buttonStyle }}">
+                                        <?php else: ?>
+                                            <span class="hero-cta-btn primary" style="cursor: default; <?php echo e($buttonStyle); ?>">
                                                 <i class="fas fa-shopping-bag"></i>
-                                                {{ $banner->button_text }}
+                                                <?php echo e($banner->button_text); ?>
+
                                             </span>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </div>
-                            @if($banner->link)
+                            <?php if($banner->link): ?>
                                 </a>
-                            @else
+                            <?php else: ?>
                         </div>
-                    @endif
-                @endforeach
+                    <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
             <!-- Navigation Arrows -->
-            @if($banners->count() > 1)
+            <?php if($banners->count() > 1): ?>
                 <div class="slider-arrow prev" onclick="changeSlide(-1)">
                     <i class="fas fa-chevron-left"></i>
                 </div>
@@ -3632,11 +3642,11 @@
 
                 <!-- Navigation Dots -->
                 <div class="slider-dots">
-                    @foreach($banners as $index => $banner)
-                        <div class="slider-dot {{ $index === 0 ? 'active' : '' }}" onclick="goToSlide({{ $index }})"></div>
-                    @endforeach
+                    <?php $__currentLoopData = $banners; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $banner): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div class="slider-dot <?php echo e($index === 0 ? 'active' : ''); ?>" onclick="goToSlide(<?php echo e($index); ?>)"></div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
-            @endif
+            <?php endif; ?>
 
             <!-- Progress Bar -->
             <div class="slider-progress">
@@ -3644,23 +3654,26 @@
             </div>
         </div>
         </div>
-    @else
+    <?php else: ?>
         <!-- Fallback: Static Hero Section when no banners exist -->
         <div class="hero-section">
             <div class="hero-slider">
-                <div class="hero-slide active" style="background-image: url('{{ asset('images/assets/Banner.jpg') }}');">
+                <div class="hero-slide active" style="background-image: url('<?php echo e(asset('images/assets/Banner.jpg')); ?>');">
                     <div class="hero-slide-content">
-                        <h1>{{ is_rtl() ? 'أحدث التقنيات' : 'Latest Technology' }}</h1>
-                        <p>{{ is_rtl() ? 'اكتشف أفضل الأجهزة الإلكترونية والإكسسوارات بأسعار لا تقبل المنافسة' : 'Discover the best electronics and accessories at unbeatable prices' }}
+                        <h1><?php echo e(is_rtl() ? 'أحدث التقنيات' : 'Latest Technology'); ?></h1>
+                        <p><?php echo e(is_rtl() ? 'اكتشف أفضل الأجهزة الإلكترونية والإكسسوارات بأسعار لا تقبل المنافسة' : 'Discover the best electronics and accessories at unbeatable prices'); ?>
+
                         </p>
                         <div class="hero-cta-buttons">
-                            <a href="{{ route('products') }}" class="hero-cta-btn primary">
+                            <a href="<?php echo e(route('products')); ?>" class="hero-cta-btn primary">
                                 <i class="fas fa-shopping-bag"></i>
-                                {{ is_rtl() ? 'تسوق الآن' : 'Shop Now' }}
+                                <?php echo e(is_rtl() ? 'تسوق الآن' : 'Shop Now'); ?>
+
                             </a>
-                            <a href="{{ route('products', ['filter' => 'sale']) }}" class="hero-cta-btn secondary">
+                            <a href="<?php echo e(route('products', ['filter' => 'sale'])); ?>" class="hero-cta-btn secondary">
                                 <i class="fas fa-tags"></i>
-                                {{ is_rtl() ? 'العروض الخاصة' : 'Special Offers' }}
+                                <?php echo e(is_rtl() ? 'العروض الخاصة' : 'Special Offers'); ?>
+
                             </a>
                         </div>
                     </div>
@@ -3672,34 +3685,36 @@
                 </div>
             </div>
         </div>
-    @endif
+    <?php endif; ?>
 
-    {{-- Check if we have neither categories nor products - show full page empty state --}}
-    @php
+    
+    <?php
         $hasCategories = isset($categories) && $categories->count() > 0;
         $hasProducts = (isset($featuredProducts) && $featuredProducts->count() > 0) ||
             (isset($newProducts) && $newProducts->count() > 0) ||
             (isset($bestsellerProducts) && $bestsellerProducts->count() > 0) ||
             (isset($onSaleProducts) && $onSaleProducts->count() > 0);
         $hasNeitherCategoriesNorProducts = !$hasCategories && !$hasProducts;
-    @endphp
+    ?>
 
-    @if($hasNeitherCategoriesNorProducts)
+    <?php if($hasNeitherCategoriesNorProducts): ?>
         <!-- Full Page Empty State - No Categories and No Products -->
         <div class="empty-state-full">
             <div class="empty-state-icon">
                 <i class="fas fa-store"></i>
             </div>
-            <h2 class="empty-state-title">{{ __t('messages.no_data_title') }}</h2>
-            <p class="empty-state-subtitle">{{ __t('messages.no_data_subtitle') }}</p>
+            <h2 class="empty-state-title"><?php echo e(__t('messages.no_data_title')); ?></h2>
+            <p class="empty-state-subtitle"><?php echo e(__t('messages.no_data_subtitle')); ?></p>
             <div class="empty-state-actions">
-                <a href="{{ route('contact') }}" class="empty-state-btn primary">
+                <a href="<?php echo e(route('contact')); ?>" class="empty-state-btn primary">
                     <i class="fas fa-envelope"></i>
-                    {{ __t('messages.contact_support') }}
+                    <?php echo e(__t('messages.contact_support')); ?>
+
                 </a>
-                <a href="{{ route('about') }}" class="empty-state-btn secondary">
+                <a href="<?php echo e(route('about')); ?>" class="empty-state-btn secondary">
                     <i class="fas fa-info-circle"></i>
-                    {{ __t('messages.about') }}
+                    <?php echo e(__t('messages.about')); ?>
+
                 </a>
             </div>
             <div class="empty-state-decoration">
@@ -3708,10 +3723,10 @@
                 <span></span>
             </div>
         </div>
-    @else
+    <?php else: ?>
 
         <!-- Explore Our Products Section - Carousel Design -->
-        @if(isset($categories) && $categories->count() > 0)
+        <?php if(isset($categories) && $categories->count() > 0): ?>
             <div class="explore-products-section">
                 <div class="container">
                     <!-- Section Header with Decorative Elements -->
@@ -3721,7 +3736,7 @@
                                                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#2563eb" stroke="#2563eb" stroke-width="2"/>
                                                     </svg>
                                                 </div>
-                                                <h2 class="discover-title">{{ __t('messages.explore_our_products') }}</h2>
+                                                <h2 class="discover-title"><?php echo e(__t('messages.explore_our_products')); ?></h2>
                                                 <div class="discover-underline">
                                                     <span class="underline-bar"></span>
                                                     <span class="underline-dot"></span>
@@ -3740,23 +3755,23 @@
                         <!-- Carousel Track Container - Always LTR for proper sliding -->
                         <div class="category-carousel-container" dir="ltr">
                             <div class="category-carousel-track" id="categoryCarouselTrack">
-                                @foreach($categories as $category)
-                                    <a href="{{ route('category.show', $category->slug) }}" class="category-carousel-card">
+                                <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <a href="<?php echo e(route('category.show', $category->slug)); ?>" class="category-carousel-card">
                                         <div class="category-carousel-image">
-                                            @if($category->image)
-                                                @if(str_starts_with($category->image, 'http'))
-                                                    <img src="{{ $category->image }}" alt="{{ $category->name }}" loading="lazy">
-                                                @else
-                                                    <img src="{{ asset($category->image) }}" alt="{{ $category->name }}" loading="lazy">
-                                                @endif
-                                            @else
-                                                <img src="https://via.placeholder.com/300x300/f3f4f6/9ca3af?text={{ urlencode($category->name) }}"
-                                                    alt="{{ $category->name }}" loading="lazy">
-                                            @endif
+                                            <?php if($category->image): ?>
+                                                <?php if(str_starts_with($category->image, 'http')): ?>
+                                                    <img src="<?php echo e($category->image); ?>" alt="<?php echo e($category->name); ?>" loading="lazy">
+                                                <?php else: ?>
+                                                    <img src="<?php echo e(asset($category->image)); ?>" alt="<?php echo e($category->name); ?>" loading="lazy">
+                                                <?php endif; ?>
+                                            <?php else: ?>
+                                                <img src="https://via.placeholder.com/300x300/f3f4f6/9ca3af?text=<?php echo e(urlencode($category->name)); ?>"
+                                                    alt="<?php echo e($category->name); ?>" loading="lazy">
+                                            <?php endif; ?>
                                         </div>
-                                        <div class="category-carousel-name" dir="auto">{{ $category->name }}</div>
+                                        <div class="category-carousel-name" dir="auto"><?php echo e($category->name); ?></div>
                                     </a>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                         </div>
 
@@ -3773,7 +3788,7 @@
                     </div>
                 </div>
             </div>
-        @else
+        <?php else: ?>
             <!-- Empty State for Categories -->
             <div class="explore-products-section">
                 <div class="container">
@@ -3781,18 +3796,19 @@
                         <div class="empty-state-icon">
                             <i class="fas fa-th-large"></i>
                         </div>
-                        <h3 class="empty-state-title">{{ __t('messages.no_categories_title') }}</h3>
-                        <p class="empty-state-subtitle">{{ __t('messages.no_categories_subtitle') }}</p>
+                        <h3 class="empty-state-title"><?php echo e(__t('messages.no_categories_title')); ?></h3>
+                        <p class="empty-state-subtitle"><?php echo e(__t('messages.no_categories_subtitle')); ?></p>
                         <div class="empty-state-actions">
-                            <a href="{{ route('products') }}" class="empty-state-btn primary">
+                            <a href="<?php echo e(route('products')); ?>" class="empty-state-btn primary">
                                 <i class="fas fa-shopping-bag"></i>
-                                {{ __t('messages.view_all_products') }}
+                                <?php echo e(__t('messages.view_all_products')); ?>
+
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Category Carousel JavaScript -->
         <script>
@@ -4211,71 +4227,71 @@
                         <!-- Removed top categories section - keeping only the middle one -->
 
                         <!-- Featured Products Section -->
-                        @if(isset($featuredProducts) && $featuredProducts->count() > 0)
+                        <?php if(isset($featuredProducts) && $featuredProducts->count() > 0): ?>
                             <div class="featured-section">
                                 <div class="container">
                                     <div class="product-grid" id="featuredProducts">
-                                        @if(isset($specialOfferProducts) && $specialOfferProducts->count() > 0)
+                                        <?php if(isset($specialOfferProducts) && $specialOfferProducts->count() > 0): ?>
                                             <div class="promo-featured-card special-offer-swapper" id="specialOfferSwapper">
-                                                <div class="special-offer-header">{{ is_rtl() ? 'عرض خاص' : 'Special Offer' }}</div>
+                                                <div class="special-offer-header"><?php echo e(is_rtl() ? 'عرض خاص' : 'Special Offer'); ?></div>
 
-                                                {{-- Products Slides --}}
+                                                
                                                 <div class="special-offer-slides">
-                                                    @foreach($specialOfferProducts as $index => $offerProduct)
-                                                        <div class="special-offer-slide {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
-                                                            @if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price)
+                                                    <?php $__currentLoopData = $specialOfferProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $offerProduct): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <div class="special-offer-slide <?php echo e($index === 0 ? 'active' : ''); ?>" data-index="<?php echo e($index); ?>">
+                                                            <?php if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price): ?>
                                                                 <div class="badge-save">
-                                                                    <span class="save-label">{{ is_rtl() ? 'وفر' : 'Save' }}</span>
+                                                                    <span class="save-label"><?php echo e(is_rtl() ? 'وفر' : 'Save'); ?></span>
                                                                     <span
-                                                                        class="save-amount">₪{{ number_format($offerProduct->price - $offerProduct->sale_price, 0) }}</span>
+                                                                        class="save-amount">₪<?php echo e(number_format($offerProduct->price - $offerProduct->sale_price, 0)); ?></span>
                                                                 </div>
-                                                            @endif
+                                                            <?php endif; ?>
                                                             <div class="promo-media">
-                                                                <img src="{{ $offerProduct->main_image }}" 
-                                                                     alt="{{ $offerProduct->name }}"
+                                                                <img src="<?php echo e($offerProduct->main_image); ?>" 
+                                                                     alt="<?php echo e($offerProduct->name); ?>"
                                                                      loading="lazy"
-                                                                     onerror="this.onerror=null; this.src='{{ \App\Helpers\ImageHelper::assetUrl('images/products/default.png') }}';">
+                                                                     onerror="this.onerror=null; this.src='<?php echo e(\App\Helpers\ImageHelper::assetUrl('images/products/default.png')); ?>';">
                                                             </div>
                                                             <div class="promo-body">
-                                                                <div class="promo-product-name">{{ $offerProduct->name }}</div>
+                                                                <div class="promo-product-name"><?php echo e($offerProduct->name); ?></div>
                                                                 <div class="promo-prices">
-                                                                    @if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price)
-                                                                        <span class="orig">₪{{ number_format($offerProduct->price, 0) }}</span>
-                                                                        <span class="sale">₪{{ number_format($offerProduct->sale_price, 0) }}</span>
-                                                                    @else
-                                                                        <span class="sale">₪{{ number_format($offerProduct->price, 0) }}</span>
-                                                                    @endif
+                                                                    <?php if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price): ?>
+                                                                        <span class="orig">₪<?php echo e(number_format($offerProduct->price, 0)); ?></span>
+                                                                        <span class="sale">₪<?php echo e(number_format($offerProduct->sale_price, 0)); ?></span>
+                                                                    <?php else: ?>
+                                                                        <span class="sale">₪<?php echo e(number_format($offerProduct->price, 0)); ?></span>
+                                                                    <?php endif; ?>
                                                                 </div>
                                                                 <div class="promo-cta">
                                                                     <a
-                                                                        href="{{ route('product.detail', $offerProduct) }}">{{ is_rtl() ? 'تسوق الآن' : 'Shop Now' }}</a>
+                                                                        href="<?php echo e(route('product.detail', $offerProduct)); ?>"><?php echo e(is_rtl() ? 'تسوق الآن' : 'Shop Now'); ?></a>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    @endforeach
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                 </div>
 
-                                                {{-- Navigation Dots --}}
-                                                @if($specialOfferProducts->count() > 1)
+                                                
+                                                <?php if($specialOfferProducts->count() > 1): ?>
                                                     <div class="special-offer-dots">
-                                                        @foreach($specialOfferProducts as $index => $offerProduct)
-                                                            <button class="special-offer-dot {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}"
-                                                                aria-label="Go to product {{ $index + 1 }}"></button>
-                                                        @endforeach
+                                                        <?php $__currentLoopData = $specialOfferProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $offerProduct): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <button class="special-offer-dot <?php echo e($index === 0 ? 'active' : ''); ?>" data-index="<?php echo e($index); ?>"
+                                                                aria-label="Go to product <?php echo e($index + 1); ?>"></button>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </div>
-                                                @endif
+                                                <?php endif; ?>
                                             </div>
-                                        @elseif(isset($promotionalOffers) && $promotionalOffers->count() > 0)
-                                            @php $promo = $promotionalOffers->first(); @endphp
+                                        <?php elseif(isset($promotionalOffers) && $promotionalOffers->count() > 0): ?>
+                                            <?php $promo = $promotionalOffers->first(); ?>
                                             <div class="promo-featured-card">
-                                                <div class="special-offer-header">{{ is_rtl() ? 'عرض خاص' : 'Special Offer' }}</div>
+                                                <div class="special-offer-header"><?php echo e(is_rtl() ? 'عرض خاص' : 'Special Offer'); ?></div>
                                                 <div class="badge-save">
-                                                    <span class="save-label">{{ is_rtl() ? 'وفر' : 'Save' }}</span>
+                                                    <span class="save-label"><?php echo e(is_rtl() ? 'وفر' : 'Save'); ?></span>
                                                     <span
-                                                        class="save-amount">₪{{ number_format($promo->original_price - $promo->sale_price, 0) }}</span>
+                                                        class="save-amount">₪<?php echo e(number_format($promo->original_price - $promo->sale_price, 0)); ?></span>
                                                 </div>
                                                 <div class="promo-media">
-                                                    @php
+                                                    <?php
                                                         $img = null;
                                                         if ($promo->product && $promo->product->main_image) {
                                                             $path = $promo->product->main_image;
@@ -4287,121 +4303,122 @@
                                                                 $img = asset('storage/' . $path);
                                                             }
                                                         }
-                                                    @endphp
-                                                    <img src="{{ $img ?? asset('images/placeholder.png') }}" alt="{{ $promo->title }}">
+                                                    ?>
+                                                    <img src="<?php echo e($img ?? asset('images/placeholder.png')); ?>" alt="<?php echo e($promo->title); ?>">
                                                 </div>
                                                 <div class="promo-body">
-                                                    <div class="promo-title">{{ $promo->title }}</div>
-                                                    @if($promo->product)
-                                                        <div class="promo-product-name">{{ $promo->product->name }}</div>
-                                                    @endif
+                                                    <div class="promo-title"><?php echo e($promo->title); ?></div>
+                                                    <?php if($promo->product): ?>
+                                                        <div class="promo-product-name"><?php echo e($promo->product->name); ?></div>
+                                                    <?php endif; ?>
                                                     <div class="promo-prices">
-                                                        <span class="orig">₪{{ number_format($promo->original_price, 0) }}</span>
-                                                        <span class="sale">₪{{ number_format($promo->sale_price, 0) }}</span>
+                                                        <span class="orig">₪<?php echo e(number_format($promo->original_price, 0)); ?></span>
+                                                        <span class="sale">₪<?php echo e(number_format($promo->sale_price, 0)); ?></span>
                                                     </div>
-                                                    @if($promo->end_date)
-                                                        <div class="promo-countdown" data-end="{{ optional($promo->end_date)->format('c') }}">
-                                                            <div class="label">{{ is_rtl() ? 'العرض ينتهي خلال:' : 'Hurry up! Offer ends in:' }}</div>
+                                                    <?php if($promo->end_date): ?>
+                                                        <div class="promo-countdown" data-end="<?php echo e(optional($promo->end_date)->format('c')); ?>">
+                                                            <div class="label"><?php echo e(is_rtl() ? 'العرض ينتهي خلال:' : 'Hurry up! Offer ends in:'); ?></div>
                                                             <div class="boxes">
                                                                 <div class="box"><span class="num cd-hours">00</span><span
-                                                                        class="unit">{{ is_rtl() ? 'ساعات' : 'HRS' }}</span></div>
+                                                                        class="unit"><?php echo e(is_rtl() ? 'ساعات' : 'HRS'); ?></span></div>
                                                                 <div class="box"><span class="num cd-mins">00</span><span
-                                                                        class="unit">{{ is_rtl() ? 'دقائق' : 'MINS' }}</span></div>
+                                                                        class="unit"><?php echo e(is_rtl() ? 'دقائق' : 'MINS'); ?></span></div>
                                                                 <div class="box"><span class="num cd-secs">00</span><span
-                                                                        class="unit">{{ is_rtl() ? 'ثواني' : 'SECS' }}</span></div>
+                                                                        class="unit"><?php echo e(is_rtl() ? 'ثواني' : 'SECS'); ?></span></div>
                                                             </div>
                                                         </div>
-                                                    @endif
-                                                    @if($promo->product)
+                                                    <?php endif; ?>
+                                                    <?php if($promo->product): ?>
                                                         <div class="promo-cta">
-                                                            <a href="{{ route('product.detail', $promo->product) }}">
-                                                                @if(is_rtl())
-                                                                    {{ 'اطلب الآن' }} <i class="fas fa-shopping-cart"></i>
-                                                                @else
-                                                                    <i class="fas fa-shopping-cart"></i> {{ 'Order Now' }}
-                                                                @endif
+                                                            <a href="<?php echo e(route('product.detail', $promo->product)); ?>">
+                                                                <?php if(is_rtl()): ?>
+                                                                    <?php echo e('اطلب الآن'); ?> <i class="fas fa-shopping-cart"></i>
+                                                                <?php else: ?>
+                                                                    <i class="fas fa-shopping-cart"></i> <?php echo e('Order Now'); ?>
+
+                                                                <?php endif; ?>
                                                             </a>
                                                         </div>
-                                                    @endif
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
-                                        @endif
+                                        <?php endif; ?>
 
-                                        @foreach($featuredProducts->take(8) as $product)
-                                            <a href="{{ route('product.detail', $product) }}" class="product-card-link">
+                                        <?php $__currentLoopData = $featuredProducts->take(8); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <a href="<?php echo e(route('product.detail', $product)); ?>" class="product-card-link">
                                                 <div class="product-card">
                                                     <div class="product-image">
-                                                        @if($product->is_new)
-                                                            <div class="product-badge">{{ __t('messages.new') }}</div>
-                                                        @elseif($product->is_featured)
-                                                            <div class="product-badge">{{ __t('messages.hot') }}</div>
-                                                        @endif
-                                                        <div class="wishlist-btn" data-product-id="{{ $product->id }}" onclick="event.preventDefault(); event.stopPropagation();">
+                                                        <?php if($product->is_new): ?>
+                                                            <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
+                                                        <?php elseif($product->is_featured): ?>
+                                                            <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
+                                                        <?php endif; ?>
+                                                        <div class="wishlist-btn" data-product-id="<?php echo e($product->id); ?>" onclick="event.preventDefault(); event.stopPropagation();">
                                                             <i class="far fa-heart"></i>
                                                         </div>
 
-                                                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}" loading="lazy" decoding="async">
+                                                        <img src="<?php echo e($product->main_image); ?>" alt="<?php echo e($product->name); ?>" loading="lazy" decoding="async">
                                                     </div>
                                                     <div class="product-info">
-                                                        {{-- Product Rating --}}
+                                                        
                                                         <div class="product-rating">
                                                             <div class="stars">
-                                                                @php
+                                                                <?php
                                                                     $rating = $product->average_rating ?? 4.5;
                                                                     $fullStars = floor($rating);
                                                                     $hasHalfStar = ($rating - $fullStars) >= 0.5;
-                                                                @endphp
-                                                                @for($i = 1; $i <= 5; $i++)
-                                                                    @if($i <= $fullStars)
+                                                                ?>
+                                                                <?php for($i = 1; $i <= 5; $i++): ?>
+                                                                    <?php if($i <= $fullStars): ?>
                                                                         <i class="fas fa-star"></i>
-                                                                    @elseif($i == $fullStars + 1 && $hasHalfStar)
+                                                                    <?php elseif($i == $fullStars + 1 && $hasHalfStar): ?>
                                                                         <i class="fas fa-star-half-alt"></i>
-                                                                    @else
+                                                                    <?php else: ?>
                                                                         <i class="far fa-star"></i>
-                                                                    @endif
-                                                                @endfor
+                                                                    <?php endif; ?>
+                                                                <?php endfor; ?>
                                                             </div>
-                                                            <span class="rating-count">({{ $product->reviews_count ?? rand(10, 150) }})</span>
+                                                            <span class="rating-count">(<?php echo e($product->reviews_count ?? rand(10, 150)); ?>)</span>
                                                         </div>
 
-                                                        <div class="product-title">{{ $product->name }}</div>
-                                                        <div class="product-description">{{ Str::limit($product->short_description, 60) }}</div>
+                                                        <div class="product-title"><?php echo e($product->name); ?></div>
+                                                        <div class="product-description"><?php echo e(Str::limit($product->short_description, 60)); ?></div>
                                                         <div class="product-footer">
                                                             <div class="product-price">
-                                                                @if($product->sale_price && $product->sale_price < $product->price)
-                                                                    <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
-                                                                    <span class="current-price">₪ {{ number_format($product->sale_price, 0) }}</span>
-                                                                @else
-                                                                    <span class="current-price">₪ {{ number_format($product->price, 0) }}</span>
-                                                                @endif
+                                                                <?php if($product->sale_price && $product->sale_price < $product->price): ?>
+                                                                    <span class="original-price">₪ <?php echo e(number_format($product->price, 0)); ?></span>
+                                                                    <span class="current-price">₪ <?php echo e(number_format($product->sale_price, 0)); ?></span>
+                                                                <?php else: ?>
+                                                                    <span class="current-price">₪ <?php echo e(number_format($product->price, 0)); ?></span>
+                                                                <?php endif; ?>
                                                             </div>
-                                                            @if($product->stock_status === 'out_of_stock')
-                                                                <button class="add-to-cart-icon out-of-stock" data-product-id="{{ $product->id }}"
-                                                                    data-product-name="{{ $product->name }}" title="{{ __t('messages.request_product') }}"
-                                                                    aria-label="{{ __t('messages.request_product') }}"
-                                                                    onclick="event.preventDefault(); event.stopPropagation(); requestProduct({{ $product->id }}, '{{ $product->name }}');">
+                                                            <?php if($product->stock_status === 'out_of_stock'): ?>
+                                                                <button class="add-to-cart-icon out-of-stock" data-product-id="<?php echo e($product->id); ?>"
+                                                                    data-product-name="<?php echo e($product->name); ?>" title="<?php echo e(__t('messages.request_product')); ?>"
+                                                                    aria-label="<?php echo e(__t('messages.request_product')); ?>"
+                                                                    onclick="event.preventDefault(); event.stopPropagation(); requestProduct(<?php echo e($product->id); ?>, '<?php echo e($product->name); ?>');">
                                                                     <i class="fas fa-bell"></i>
                                                                 </button>
-                                                            @else
-                                                                <button class="add-to-cart-icon {{ in_array($product->id, $cartProductIds) ? 'in-cart' : '' }}"
-                                                                    data-product-id="{{ $product->id }}"
-                                                                    title="{{ in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                                                    aria-label="{{ in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                                                    onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $product->id }}, this);">
+                                                            <?php else: ?>
+                                                                <button class="add-to-cart-icon <?php echo e(in_array($product->id, $cartProductIds) ? 'in-cart' : ''); ?>"
+                                                                    data-product-id="<?php echo e($product->id); ?>"
+                                                                    title="<?php echo e(in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                                                    aria-label="<?php echo e(in_array($product->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                                                    onclick="event.preventDefault(); event.stopPropagation(); addToCart(<?php echo e($product->id); ?>, this);">
                                                                     <i
-                                                                        class="fas {{ in_array($product->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
+                                                                        class="fas <?php echo e(in_array($product->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
                                                                 </button>
-                                                            @endif
+                                                            <?php endif; ?>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </a>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </div>
                                 </div>
                             </div>
                             </div>
-                        @else
+                        <?php else: ?>
                             <!-- Empty State for Featured Products -->
                             <div class="featured-section">
                                 <div class="container">
@@ -4409,433 +4426,503 @@
                                         <div class="empty-state-icon">
                                             <i class="fas fa-box-open"></i>
                                         </div>
-                                        <h3 class="empty-state-title">{{ __t('messages.no_products_title') }}</h3>
-                                        <p class="empty-state-subtitle">{{ __t('messages.no_products_subtitle') }}</p>
+                                        <h3 class="empty-state-title"><?php echo e(__t('messages.no_products_title')); ?></h3>
+                                        <p class="empty-state-subtitle"><?php echo e(__t('messages.no_products_subtitle')); ?></p>
                                         <div class="empty-state-actions">
-                                            <a href="{{ route('contact') }}" class="empty-state-btn secondary">
+                                            <a href="<?php echo e(route('contact')); ?>" class="empty-state-btn secondary">
                                                 <i class="fas fa-envelope"></i>
-                                                {{ __t('messages.contact_support') }}
+                                                <?php echo e(__t('messages.contact_support')); ?>
+
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
-                        {{-- Strong Offers Banner Section --}}
-                        @if(isset($promotionalAds['left']))
-                            <section class="home-section gift-ideas-section strong-offers-section" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
+                        
+                        <?php if(isset($promotionalAds['left'])): ?>
+                            <section class="home-section gift-ideas-section strong-offers-section" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>">
                                 <div class="container">
                                     <div class="gift-ideas-grid">
-                                        {{-- Dynamic Promotional Ad - Left Position --}}
+                                        
                                         <div class="gift-ideas-item gift-banner-item strong-offers-banner">
-                                            @if($promotionalAds['left']->link)
-                                                <a href="{{ $promotionalAds['left']->link }}"
+                                            <?php if($promotionalAds['left']->link): ?>
+                                                <a href="<?php echo e($promotionalAds['left']->link); ?>"
                                                     class="product-item-section gift-idea-banner promotional-ad-link promotional-ad-overlay"
-                                                    style="background-image: url('{{ $promotionalAds['left']->image_url }}'); cursor: pointer; display: block; text-decoration: none;">
-                                                    @if($promotionalAds['left']->hasTitle() || $promotionalAds['left']->hasSubtitle() || $promotionalAds['left']->hasButton())
+                                                    style="background-image: url('<?php echo e($promotionalAds['left']->image_url); ?>'); cursor: pointer; display: block; text-decoration: none;">
+                                                    <?php if($promotionalAds['left']->hasTitle() || $promotionalAds['left']->hasSubtitle() || $promotionalAds['left']->hasButton()): ?>
                                                         <div class="promotional-ad-content">
-                                                            @if($promotionalAds['left']->hasTitle())
-                                                                <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['left']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['left']->title_font_size ?? '32px' }};">{{ $promotionalAds['left']->title }}</h3>
-                                                            @endif
-                                                            @if($promotionalAds['left']->hasSubtitle())
-                                                                <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['left']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['left']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['left']->subtitle }}</p>
-                                                            @endif
-                                                            @if($promotionalAds['left']->hasButton())
-                                                                <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['left']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['left']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['left']->button_text }}</span>
-                                                            @endif
+                                                            <?php if($promotionalAds['left']->hasTitle()): ?>
+                                                                <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['left']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['left']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['left']->title); ?></h3>
+                                                            <?php endif; ?>
+                                                            <?php if($promotionalAds['left']->hasSubtitle()): ?>
+                                                                <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['left']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['left']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['left']->subtitle); ?></p>
+                                                            <?php endif; ?>
+                                                            <?php if($promotionalAds['left']->hasButton()): ?>
+                                                                <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['left']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['left']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['left']->button_text); ?></span>
+                                                            <?php endif; ?>
                                                         </div>
-                                                    @endif
+                                                    <?php endif; ?>
                                                 </a>
-                                            @else
+                                            <?php else: ?>
                                                 <div class="product-item-section gift-idea-banner promotional-ad-overlay"
-                                                    style="background-image: url('{{ $promotionalAds['left']->image_url }}');">
-                                                    @if($promotionalAds['left']->hasTitle() || $promotionalAds['left']->hasSubtitle() || $promotionalAds['left']->hasButton())
+                                                    style="background-image: url('<?php echo e($promotionalAds['left']->image_url); ?>');">
+                                                    <?php if($promotionalAds['left']->hasTitle() || $promotionalAds['left']->hasSubtitle() || $promotionalAds['left']->hasButton()): ?>
                                                         <div class="promotional-ad-content">
-                                                            @if($promotionalAds['left']->hasTitle())
-                                                                <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['left']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['left']->title_font_size ?? '32px' }};">{{ $promotionalAds['left']->title }}</h3>
-                                                            @endif
-                                                            @if($promotionalAds['left']->hasSubtitle())
-                                                                <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['left']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['left']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['left']->subtitle }}</p>
-                                                            @endif
-                                                            @if($promotionalAds['left']->hasButton())
-                                                                <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['left']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['left']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['left']->button_text }}</span>
-                                                            @endif
+                                                            <?php if($promotionalAds['left']->hasTitle()): ?>
+                                                                <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['left']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['left']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['left']->title); ?></h3>
+                                                            <?php endif; ?>
+                                                            <?php if($promotionalAds['left']->hasSubtitle()): ?>
+                                                                <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['left']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['left']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['left']->subtitle); ?></p>
+                                                            <?php endif; ?>
+                                                            <?php if($promotionalAds['left']->hasButton()): ?>
+                                                                <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['left']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['left']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['left']->button_text); ?></span>
+                                                            <?php endif; ?>
                                                         </div>
-                                                    @endif
+                                                    <?php endif; ?>
                                                 </div>
-                                            @endif
+                                            <?php endif; ?>
                                         </div>
 
-                                        {{-- Product 1 --}}
-                                        @if(isset($featuredProducts[6]))
+                                        
+                                        <?php if(isset($featuredProducts[6])): ?>
                                             <div class="gift-ideas-item gift-product-item strong-offers-product">
-                                                <a href="{{ route('product.detail', $featuredProducts[6]) }}" class="product-card-link">
+                                                <a href="<?php echo e(route('product.detail', $featuredProducts[6])); ?>" class="product-card-link">
                                                     <div class="product-card h-100">
                                                         <div class="product-image">
-                                                            @if($featuredProducts[6]->is_new)
-                                                                <div class="product-badge">{{ __t('messages.new') }}</div>
-                                                            @elseif($featuredProducts[6]->is_featured)
-                                                                <div class="product-badge">{{ __t('messages.hot') }}</div>
-                                                            @endif
-                                                            <div class="wishlist-btn" data-product-id="{{ $featuredProducts[6]->id }}"
+                                                            <?php if($featuredProducts[6]->is_new): ?>
+                                                                <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
+                                                            <?php elseif($featuredProducts[6]->is_featured): ?>
+                                                                <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
+                                                            <?php endif; ?>
+                                                            <div class="wishlist-btn" data-product-id="<?php echo e($featuredProducts[6]->id); ?>"
                                                                 onclick="event.preventDefault(); event.stopPropagation();">
                                                                 <i class="far fa-heart"></i>
                                                             </div>
-                                                            <img src="{{ $featuredProducts[6]->main_image }}" alt="{{ $featuredProducts[6]->name }}"
+                                                            <img src="<?php echo e($featuredProducts[6]->main_image); ?>" alt="<?php echo e($featuredProducts[6]->name); ?>"
                                                                 loading="lazy">
                                                         </div>
                                                         <div class="product-info">
-                                                            <div class="product-title">{{ $featuredProducts[6]->name }}</div>
-                                                            <div class="product-description">{{ Str::limit($featuredProducts[6]->short_description, 60) }}
-                                                            </div>
-                                                            <div class="product-footer">
-                                                                <div class="product-price">
-                                                                    @if($featuredProducts[6]->sale_price && $featuredProducts[6]->sale_price < $featuredProducts[6]->price)
-                                                                        <span class="original-price">₪
-                                                                            {{ number_format($featuredProducts[6]->price, 0) }}</span>
-                                                                        <span class="current-price">₪
-                                                                            {{ number_format($featuredProducts[6]->sale_price, 0) }}</span>
-                                                                    @else
-                                                                        <span class="current-price">₪ {{ number_format($featuredProducts[6]->price, 0) }}</span>
-                                                                    @endif
-                                                                </div>
-                                                                @if($featuredProducts[6]->stock_status === 'out_of_stock')
-                                                                    <button class="add-to-cart-icon out-of-stock"
-                                                                        data-product-id="{{ $featuredProducts[6]->id }}"
-                                                                        data-product-name="{{ $featuredProducts[6]->name }}"
-                                                                        title="{{ __t('messages.request_product') }}"
-                                                                        aria-label="{{ __t('messages.request_product') }}"
-                                                                        onclick="event.preventDefault(); event.stopPropagation(); requestProduct({{ $featuredProducts[6]->id }}, '{{ $featuredProducts[6]->name }}');">
-                                                                        <i class="fas fa-bell"></i>
-                                                                    </button>
-                                                                @else
-                                                                    <button
-                                                                        class="add-to-cart-icon {{ in_array($featuredProducts[6]->id, $cartProductIds) ? 'in-cart' : '' }}"
-                                                                        data-product-id="{{ $featuredProducts[6]->id }}"
-                                                                        title="{{ in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                                                        aria-label="{{ in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                                                        onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $featuredProducts[6]->id }}, this);">
-                                                                        <i
-                                                                            class="fas {{ in_array($featuredProducts[6]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
-                                                                    </button>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        @endif
+                                                            <div class="product-title"><?php echo e($featuredProducts[6]->name); ?></div>
+                                                            <div class="product-description"><?php echo e(Str::limit($featuredProducts[6]->short_description, 60)); ?>
 
-                                        {{-- Product 2 --}}
-                                        @if(isset($featuredProducts[7]))
-                                            <div class="gift-ideas-item gift-product-item strong-offers-product">
-                                                <a href="{{ route('product.detail', $featuredProducts[7]) }}" class="product-card-link">
-                                                    <div class="product-card h-100">
-                                                        <div class="product-image">
-                                                            @if($featuredProducts[7]->is_new)
-                                                                <div class="product-badge">{{ __t('messages.new') }}</div>
-                                                            @elseif($featuredProducts[7]->is_featured)
-                                                                <div class="product-badge">{{ __t('messages.hot') }}</div>
-                                                            @endif
-                                                            <div class="wishlist-btn" data-product-id="{{ $featuredProducts[7]->id }}"
-                                                                onclick="event.preventDefault(); event.stopPropagation();">
-                                                                <i class="far fa-heart"></i>
-                                                            </div>
-                                                            <img src="{{ $featuredProducts[7]->main_image }}" alt="{{ $featuredProducts[7]->name }}"
-                                                                loading="lazy">
-                                                        </div>
-                                                        <div class="product-info">
-                                                            <div class="product-title">{{ $featuredProducts[7]->name }}</div>
-                                                            <div class="product-description">{{ Str::limit($featuredProducts[7]->short_description, 60) }}
                                                             </div>
                                                             <div class="product-footer">
                                                                 <div class="product-price">
-                                                                    @if($featuredProducts[7]->sale_price && $featuredProducts[7]->sale_price < $featuredProducts[7]->price)
+                                                                    <?php if($featuredProducts[6]->sale_price && $featuredProducts[6]->sale_price < $featuredProducts[6]->price): ?>
                                                                         <span class="original-price">₪
-                                                                            {{ number_format($featuredProducts[7]->price, 0) }}</span>
+                                                                            <?php echo e(number_format($featuredProducts[6]->price, 0)); ?></span>
                                                                         <span class="current-price">₪
-                                                                            {{ number_format($featuredProducts[7]->sale_price, 0) }}</span>
-                                                                    @else
-                                                                        <span class="current-price">₪ {{ number_format($featuredProducts[7]->price, 0) }}</span>
-                                                                    @endif
+                                                                            <?php echo e(number_format($featuredProducts[6]->sale_price, 0)); ?></span>
+                                                                    <?php else: ?>
+                                                                        <span class="current-price">₪ <?php echo e(number_format($featuredProducts[6]->price, 0)); ?></span>
+                                                                    <?php endif; ?>
                                                                 </div>
-                                                                @if($featuredProducts[7]->stock_status === 'out_of_stock')
+                                                                <?php if($featuredProducts[6]->stock_status === 'out_of_stock'): ?>
                                                                     <button class="add-to-cart-icon out-of-stock"
-                                                                        data-product-id="{{ $featuredProducts[7]->id }}"
-                                                                        data-product-name="{{ $featuredProducts[7]->name }}"
-                                                                        title="{{ __t('messages.request_product') }}"
-                                                                        aria-label="{{ __t('messages.request_product') }}"
-                                                                        onclick="event.preventDefault(); event.stopPropagation(); requestProduct({{ $featuredProducts[7]->id }}, '{{ $featuredProducts[7]->name }}');">
+                                                                        data-product-id="<?php echo e($featuredProducts[6]->id); ?>"
+                                                                        data-product-name="<?php echo e($featuredProducts[6]->name); ?>"
+                                                                        title="<?php echo e(__t('messages.request_product')); ?>"
+                                                                        aria-label="<?php echo e(__t('messages.request_product')); ?>"
+                                                                        onclick="event.preventDefault(); event.stopPropagation(); requestProduct(<?php echo e($featuredProducts[6]->id); ?>, '<?php echo e($featuredProducts[6]->name); ?>');">
                                                                         <i class="fas fa-bell"></i>
                                                                     </button>
-                                                                @else
+                                                                <?php else: ?>
                                                                     <button
-                                                                        class="add-to-cart-icon {{ in_array($featuredProducts[7]->id, $cartProductIds) ? 'in-cart' : '' }}"
-                                                                        data-product-id="{{ $featuredProducts[7]->id }}"
-                                                                        title="{{ in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                                                        aria-label="{{ in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                                                        onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $featuredProducts[7]->id }}, this);">
+                                                                        class="add-to-cart-icon <?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
+                                                                        data-product-id="<?php echo e($featuredProducts[6]->id); ?>"
+                                                                        title="<?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                                                        aria-label="<?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                                                        onclick="event.preventDefault(); event.stopPropagation(); addToCart(<?php echo e($featuredProducts[6]->id); ?>, this);">
                                                                         <i
-                                                                            class="fas {{ in_array($featuredProducts[7]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
+                                                                            class="fas <?php echo e(in_array($featuredProducts[6]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
                                                                     </button>
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </a>
                                             </div>
-                                        @endif
+                                        <?php endif; ?>
+
+                                        
+                                        <?php if(isset($featuredProducts[7])): ?>
+                                            <div class="gift-ideas-item gift-product-item strong-offers-product">
+                                                <a href="<?php echo e(route('product.detail', $featuredProducts[7])); ?>" class="product-card-link">
+                                                    <div class="product-card h-100">
+                                                        <div class="product-image">
+                                                            <?php if($featuredProducts[7]->is_new): ?>
+                                                                <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
+                                                            <?php elseif($featuredProducts[7]->is_featured): ?>
+                                                                <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
+                                                            <?php endif; ?>
+                                                            <div class="wishlist-btn" data-product-id="<?php echo e($featuredProducts[7]->id); ?>"
+                                                                onclick="event.preventDefault(); event.stopPropagation();">
+                                                                <i class="far fa-heart"></i>
+                                                            </div>
+                                                            <img src="<?php echo e($featuredProducts[7]->main_image); ?>" alt="<?php echo e($featuredProducts[7]->name); ?>"
+                                                                loading="lazy">
+                                                        </div>
+                                                        <div class="product-info">
+                                                            <div class="product-title"><?php echo e($featuredProducts[7]->name); ?></div>
+                                                            <div class="product-description"><?php echo e(Str::limit($featuredProducts[7]->short_description, 60)); ?>
+
+                                                            </div>
+                                                            <div class="product-footer">
+                                                                <div class="product-price">
+                                                                    <?php if($featuredProducts[7]->sale_price && $featuredProducts[7]->sale_price < $featuredProducts[7]->price): ?>
+                                                                        <span class="original-price">₪
+                                                                            <?php echo e(number_format($featuredProducts[7]->price, 0)); ?></span>
+                                                                        <span class="current-price">₪
+                                                                            <?php echo e(number_format($featuredProducts[7]->sale_price, 0)); ?></span>
+                                                                    <?php else: ?>
+                                                                        <span class="current-price">₪ <?php echo e(number_format($featuredProducts[7]->price, 0)); ?></span>
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                                <?php if($featuredProducts[7]->stock_status === 'out_of_stock'): ?>
+                                                                    <button class="add-to-cart-icon out-of-stock"
+                                                                        data-product-id="<?php echo e($featuredProducts[7]->id); ?>"
+                                                                        data-product-name="<?php echo e($featuredProducts[7]->name); ?>"
+                                                                        title="<?php echo e(__t('messages.request_product')); ?>"
+                                                                        aria-label="<?php echo e(__t('messages.request_product')); ?>"
+                                                                        onclick="event.preventDefault(); event.stopPropagation(); requestProduct(<?php echo e($featuredProducts[7]->id); ?>, '<?php echo e($featuredProducts[7]->name); ?>');">
+                                                                        <i class="fas fa-bell"></i>
+                                                                    </button>
+                                                                <?php else: ?>
+                                                                    <button
+                                                                        class="add-to-cart-icon <?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
+                                                                        data-product-id="<?php echo e($featuredProducts[7]->id); ?>"
+                                                                        title="<?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                                                        aria-label="<?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                                                        onclick="event.preventDefault(); event.stopPropagation(); addToCart(<?php echo e($featuredProducts[7]->id); ?>, this);">
+                                                                        <i
+                                                                            class="fas <?php echo e(in_array($featuredProducts[7]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
+                                                                    </button>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </section>
-                        @endif
+                        <?php endif; ?>
 
                         <!-- Main Content Container -->
                         <div class="container">
                             <!-- Special Discounts & Offers - HORIZONTAL SCROLLER -->
-                            @if($specialDiscounts->count() > 0)
-                                <x-horizontal-product-scroller :products="$specialDiscounts" title="{{ __t('messages.special_discounts') }}"
-                                    :viewMoreUrl="route('products', ['filter' => 'sale'])" :autoScroll="true" :autoScrollInterval="4500"
-                                    :cardsToScroll="1" :cartProductIds="$cartProductIds" :showDiscountPercentage="true"
-                                    containerId="special-discounts-scroller" />
-                            @endif
+                            <?php if($specialDiscounts->count() > 0): ?>
+                                <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.horizontal-product-scroller','data' => ['products' => $specialDiscounts,'title' => ''.e(__t('messages.special_discounts')).'','viewMoreUrl' => route('products', ['filter' => 'sale']),'autoScroll' => true,'autoScrollInterval' => 4500,'cardsToScroll' => 1,'cartProductIds' => $cartProductIds,'showDiscountPercentage' => true,'containerId' => 'special-discounts-scroller']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('horizontal-product-scroller'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['products' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($specialDiscounts),'title' => ''.e(__t('messages.special_discounts')).'','viewMoreUrl' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('products', ['filter' => 'sale'])),'autoScroll' => true,'autoScrollInterval' => 4500,'cardsToScroll' => 1,'cartProductIds' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($cartProductIds),'showDiscountPercentage' => true,'containerId' => 'special-discounts-scroller']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $attributes = $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $component = $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+                            <?php endif; ?>
 
                             <!-- New Arrivals - HORIZONTAL SCROLLER -->
-                            @if($newProducts->count() > 0)
-                                <x-horizontal-product-scroller :products="$newProducts" title="{{ __t('messages.new_arrivals') }}"
-                                    :viewMoreUrl="route('products')" :autoScroll="true" :autoScrollInterval="5000" :cardsToScroll="2"
-                                    :cartProductIds="$cartProductIds" :hideSaleBadge="true" containerId="new-arrivals-scroller" />
-                            @endif
+                            <?php if($newProducts->count() > 0): ?>
+                                <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.horizontal-product-scroller','data' => ['products' => $newProducts,'title' => ''.e(__t('messages.new_arrivals')).'','viewMoreUrl' => route('products'),'autoScroll' => true,'autoScrollInterval' => 5000,'cardsToScroll' => 2,'cartProductIds' => $cartProductIds,'hideSaleBadge' => true,'containerId' => 'new-arrivals-scroller']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('horizontal-product-scroller'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['products' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($newProducts),'title' => ''.e(__t('messages.new_arrivals')).'','viewMoreUrl' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('products')),'autoScroll' => true,'autoScrollInterval' => 5000,'cardsToScroll' => 2,'cartProductIds' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($cartProductIds),'hideSaleBadge' => true,'containerId' => 'new-arrivals-scroller']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $attributes = $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $component = $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+                            <?php endif; ?>
 
                             <!-- Bestsellers - HORIZONTAL SCROLLER -->
-                            @if($bestsellerProducts->count() > 0)
-                                <x-horizontal-product-scroller :products="$bestsellerProducts" title="{{ __t('messages.best_sellers') }}"
-                                    :viewMoreUrl="route('products', ['filter' => 'bestseller'])" :autoScroll="true" :autoScrollInterval="6000"
-                                    :cartProductIds="$cartProductIds" :hideSaleBadge="true" containerId="bestsellers-scroller" />
-                            @endif
+                            <?php if($bestsellerProducts->count() > 0): ?>
+                                <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.horizontal-product-scroller','data' => ['products' => $bestsellerProducts,'title' => ''.e(__t('messages.best_sellers')).'','viewMoreUrl' => route('products', ['filter' => 'bestseller']),'autoScroll' => true,'autoScrollInterval' => 6000,'cartProductIds' => $cartProductIds,'hideSaleBadge' => true,'containerId' => 'bestsellers-scroller']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('horizontal-product-scroller'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['products' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($bestsellerProducts),'title' => ''.e(__t('messages.best_sellers')).'','viewMoreUrl' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('products', ['filter' => 'bestseller'])),'autoScroll' => true,'autoScrollInterval' => 6000,'cartProductIds' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($cartProductIds),'hideSaleBadge' => true,'containerId' => 'bestsellers-scroller']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $attributes = $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $component = $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <!-- End Main Content Container -->
 
-                        {{-- Gift Ideas Section --}}
-                        @if(isset($promotionalAds['right']))
-                            <section class="home-section gift-ideas-section" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
+                        
+                        <?php if(isset($promotionalAds['right'])): ?>
+                            <section class="home-section gift-ideas-section" dir="<?php echo e(is_rtl() ? 'rtl' : 'ltr'); ?>">
                                 <div class="container">
                                     <div class="gift-ideas-grid">
-                                        {{-- RTL: Banner first (on the right), then products --}}
-                                        @if(is_rtl())
-                                            {{-- Dynamic Promotional Ad - Right Position (RTL) --}}
+                                        
+                                        <?php if(is_rtl()): ?>
+                                            
                                             <div class="gift-ideas-item gift-banner-item">
-                                                @if($promotionalAds['right']->link)
-                                                    <a href="{{ $promotionalAds['right']->link }}"
+                                                <?php if($promotionalAds['right']->link): ?>
+                                                    <a href="<?php echo e($promotionalAds['right']->link); ?>"
                                                         class="product-item-section gift-idea-banner promotional-ad-link promotional-ad-overlay"
-                                                        style="background-image: url('{{ $promotionalAds['right']->image_url }}'); cursor: pointer; display: block; text-decoration: none;">
-                                                        @if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton())
+                                                        style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>'); cursor: pointer; display: block; text-decoration: none;">
+                                                        <?php if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton()): ?>
                                                             <div class="promotional-ad-content">
-                                                                @if($promotionalAds['right']->hasTitle())
-                                                                    <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['right']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->title_font_size ?? '32px' }};">{{ $promotionalAds['right']->title }}</h3>
-                                                                @endif
-                                                                @if($promotionalAds['right']->hasSubtitle())
-                                                                    <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['right']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['right']->subtitle }}</p>
-                                                                @endif
-                                                                @if($promotionalAds['right']->hasButton())
-                                                                    <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['right']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['right']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['right']->button_text }}</span>
-                                                                @endif
+                                                                <?php if($promotionalAds['right']->hasTitle()): ?>
+                                                                    <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['right']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['right']->title); ?></h3>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasSubtitle()): ?>
+                                                                    <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['right']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['right']->subtitle); ?></p>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasButton()): ?>
+                                                                    <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['right']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['right']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['right']->button_text); ?></span>
+                                                                <?php endif; ?>
                                                             </div>
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </a>
-                                                @else
+                                                <?php else: ?>
                                                     <div class="product-item-section gift-idea-banner promotional-ad-overlay"
-                                                        style="background-image: url('{{ $promotionalAds['right']->image_url }}');">
-                                                        @if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton())
+                                                        style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>');">
+                                                        <?php if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton()): ?>
                                                             <div class="promotional-ad-content">
-                                                                @if($promotionalAds['right']->hasTitle())
-                                                                    <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['right']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->title_font_size ?? '32px' }};">{{ $promotionalAds['right']->title }}</h3>
-                                                                @endif
-                                                                @if($promotionalAds['right']->hasSubtitle())
-                                                                    <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['right']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['right']->subtitle }}</p>
-                                                                @endif
-                                                                @if($promotionalAds['right']->hasButton())
-                                                                    <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['right']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['right']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['right']->button_text }}</span>
-                                                                @endif
+                                                                <?php if($promotionalAds['right']->hasTitle()): ?>
+                                                                    <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['right']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['right']->title); ?></h3>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasSubtitle()): ?>
+                                                                    <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['right']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['right']->subtitle); ?></p>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasButton()): ?>
+                                                                    <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['right']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['right']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['right']->button_text); ?></span>
+                                                                <?php endif; ?>
                                                             </div>
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </div>
-                                                @endif
+                                                <?php endif; ?>
                                             </div>
-                                        @endif
+                                        <?php endif; ?>
 
-                                        {{-- Product 1 --}}
-                                        @if(isset($giftIdeas[0]))
+                                        
+                                        <?php if(isset($giftIdeas[0])): ?>
                                             <div class="gift-ideas-item gift-product-item">
-                                                <a href="{{ route('product.detail', $giftIdeas[0]) }}" class="product-card-link">
+                                                <a href="<?php echo e(route('product.detail', $giftIdeas[0])); ?>" class="product-card-link">
                                                     <div class="product-card h-100">
                                                         <div class="product-image">
-                                                            @if($giftIdeas[0]->is_new)
-                                                                <div class="product-badge">{{ __t('messages.new') }}</div>
-                                                            @elseif($giftIdeas[0]->is_featured)
-                                                                <div class="product-badge">{{ __t('messages.hot') }}</div>
-                                                            @endif
-                                                            <div class="wishlist-btn" data-product-id="{{ $giftIdeas[0]->id }}"
+                                                            <?php if($giftIdeas[0]->is_new): ?>
+                                                                <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
+                                                            <?php elseif($giftIdeas[0]->is_featured): ?>
+                                                                <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
+                                                            <?php endif; ?>
+                                                            <div class="wishlist-btn" data-product-id="<?php echo e($giftIdeas[0]->id); ?>"
                                                                 onclick="event.preventDefault(); event.stopPropagation();">
                                                                 <i class="far fa-heart"></i>
                                                             </div>
-                                                            <img src="{{ $giftIdeas[0]->main_image }}" alt="{{ $giftIdeas[0]->name }}" loading="lazy">
+                                                            <img src="<?php echo e($giftIdeas[0]->main_image); ?>" alt="<?php echo e($giftIdeas[0]->name); ?>" loading="lazy">
                                                         </div>
                                                         <div class="product-info">
-                                                            <div class="product-title">{{ $giftIdeas[0]->name }}</div>
-                                                            <div class="product-description">{{ Str::limit($giftIdeas[0]->short_description, 60) }}</div>
+                                                            <div class="product-title"><?php echo e($giftIdeas[0]->name); ?></div>
+                                                            <div class="product-description"><?php echo e(Str::limit($giftIdeas[0]->short_description, 60)); ?></div>
                                                             <div class="product-footer">
                                                                 <div class="product-price">
-                                                                    @if($giftIdeas[0]->sale_price && $giftIdeas[0]->sale_price < $giftIdeas[0]->price)
-                                                                        <span class="original-price">₪ {{ number_format($giftIdeas[0]->price, 0) }}</span>
-                                                                        <span class="current-price">₪ {{ number_format($giftIdeas[0]->sale_price, 0) }}</span>
-                                                                    @else
-                                                                        <span class="current-price">₪ {{ number_format($giftIdeas[0]->price, 0) }}</span>
-                                                                    @endif
+                                                                    <?php if($giftIdeas[0]->sale_price && $giftIdeas[0]->sale_price < $giftIdeas[0]->price): ?>
+                                                                        <span class="original-price">₪ <?php echo e(number_format($giftIdeas[0]->price, 0)); ?></span>
+                                                                        <span class="current-price">₪ <?php echo e(number_format($giftIdeas[0]->sale_price, 0)); ?></span>
+                                                                    <?php else: ?>
+                                                                        <span class="current-price">₪ <?php echo e(number_format($giftIdeas[0]->price, 0)); ?></span>
+                                                                    <?php endif; ?>
                                                                 </div>
-                                                                @if($giftIdeas[0]->stock_status === 'out_of_stock')
-                                                                    <button class="add-to-cart-icon out-of-stock" data-product-id="{{ $giftIdeas[0]->id }}"
-                                                                        data-product-name="{{ $giftIdeas[0]->name }}"
-                                                                        title="{{ __t('messages.request_product') }}"
-                                                                        aria-label="{{ __t('messages.request_product') }}"
-                                                                        onclick="event.preventDefault(); event.stopPropagation(); requestProduct({{ $giftIdeas[0]->id }}, '{{ $giftIdeas[0]->name }}');">
+                                                                <?php if($giftIdeas[0]->stock_status === 'out_of_stock'): ?>
+                                                                    <button class="add-to-cart-icon out-of-stock" data-product-id="<?php echo e($giftIdeas[0]->id); ?>"
+                                                                        data-product-name="<?php echo e($giftIdeas[0]->name); ?>"
+                                                                        title="<?php echo e(__t('messages.request_product')); ?>"
+                                                                        aria-label="<?php echo e(__t('messages.request_product')); ?>"
+                                                                        onclick="event.preventDefault(); event.stopPropagation(); requestProduct(<?php echo e($giftIdeas[0]->id); ?>, '<?php echo e($giftIdeas[0]->name); ?>');">
                                                                         <i class="fas fa-bell"></i>
                                                                     </button>
-                                                                @else
+                                                                <?php else: ?>
                                                                     <button
-                                                                        class="add-to-cart-icon {{ in_array($giftIdeas[0]->id, $cartProductIds) ? 'in-cart' : '' }}"
-                                                                        data-product-id="{{ $giftIdeas[0]->id }}"
-                                                                        title="{{ in_array($giftIdeas[0]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                                                        aria-label="{{ in_array($giftIdeas[0]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                                                        onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $giftIdeas[0]->id }}, this);">
+                                                                        class="add-to-cart-icon <?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
+                                                                        data-product-id="<?php echo e($giftIdeas[0]->id); ?>"
+                                                                        title="<?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                                                        aria-label="<?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                                                        onclick="event.preventDefault(); event.stopPropagation(); addToCart(<?php echo e($giftIdeas[0]->id); ?>, this);">
                                                                         <i
-                                                                        class="fas {{ in_array($giftIdeas[0]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
+                                                                        class="fas <?php echo e(in_array($giftIdeas[0]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
                                                                     </button>
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </a>
                                             </div>
-                                        @endif
+                                        <?php endif; ?>
 
-                                        {{-- Product 2 --}}
-                                        @if(isset($giftIdeas[1]))
+                                        
+                                        <?php if(isset($giftIdeas[1])): ?>
                                             <div class="gift-ideas-item gift-product-item">
-                                                <a href="{{ route('product.detail', $giftIdeas[1]) }}" class="product-card-link">
+                                                <a href="<?php echo e(route('product.detail', $giftIdeas[1])); ?>" class="product-card-link">
                                                     <div class="product-card h-100">
                                                         <div class="product-image">
-                                                            @if($giftIdeas[1]->is_new)
-                                                                <div class="product-badge">{{ __t('messages.new') }}</div>
-                                                            @elseif($giftIdeas[1]->is_featured)
-                                                                <div class="product-badge">{{ __t('messages.hot') }}</div>
-                                                            @endif
-                                                            <div class="wishlist-btn" data-product-id="{{ $giftIdeas[1]->id }}"
+                                                            <?php if($giftIdeas[1]->is_new): ?>
+                                                                <div class="product-badge"><?php echo e(__t('messages.new')); ?></div>
+                                                            <?php elseif($giftIdeas[1]->is_featured): ?>
+                                                                <div class="product-badge"><?php echo e(__t('messages.hot')); ?></div>
+                                                            <?php endif; ?>
+                                                            <div class="wishlist-btn" data-product-id="<?php echo e($giftIdeas[1]->id); ?>"
                                                                 onclick="event.preventDefault(); event.stopPropagation();">
                                                                 <i class="far fa-heart"></i>
                                                             </div>
-                                                            <img src="{{ $giftIdeas[1]->main_image }}" alt="{{ $giftIdeas[1]->name }}" loading="lazy">
+                                                            <img src="<?php echo e($giftIdeas[1]->main_image); ?>" alt="<?php echo e($giftIdeas[1]->name); ?>" loading="lazy">
                                                         </div>
                                                         <div class="product-info">
-                                                            <div class="product-title">{{ $giftIdeas[1]->name }}</div>
-                                                            <div class="product-description">{{ Str::limit($giftIdeas[1]->short_description, 60) }}</div>
+                                                            <div class="product-title"><?php echo e($giftIdeas[1]->name); ?></div>
+                                                            <div class="product-description"><?php echo e(Str::limit($giftIdeas[1]->short_description, 60)); ?></div>
                                                             <div class="product-footer">
                                                                 <div class="product-price">
-                                                                    @if($giftIdeas[1]->sale_price && $giftIdeas[1]->sale_price < $giftIdeas[1]->price)
-                                                                        <span class="original-price">₪ {{ number_format($giftIdeas[1]->price, 0) }}</span>
-                                                                        <span class="current-price">₪ {{ number_format($giftIdeas[1]->sale_price, 0) }}</span>
-                                                                    @else
-                                                                        <span class="current-price">₪ {{ number_format($giftIdeas[1]->price, 0) }}</span>
-                                                                    @endif
+                                                                    <?php if($giftIdeas[1]->sale_price && $giftIdeas[1]->sale_price < $giftIdeas[1]->price): ?>
+                                                                        <span class="original-price">₪ <?php echo e(number_format($giftIdeas[1]->price, 0)); ?></span>
+                                                                        <span class="current-price">₪ <?php echo e(number_format($giftIdeas[1]->sale_price, 0)); ?></span>
+                                                                    <?php else: ?>
+                                                                        <span class="current-price">₪ <?php echo e(number_format($giftIdeas[1]->price, 0)); ?></span>
+                                                                    <?php endif; ?>
                                                                 </div>
-                                                                @if($giftIdeas[1]->stock_status === 'out_of_stock')
-                                                                    <button class="add-to-cart-icon out-of-stock" data-product-id="{{ $giftIdeas[1]->id }}"
-                                                                        data-product-name="{{ $giftIdeas[1]->name }}"
-                                                                        title="{{ __t('messages.request_product') }}"
-                                                                        aria-label="{{ __t('messages.request_product') }}"
-                                                                        onclick="event.preventDefault(); event.stopPropagation(); requestProduct({{ $giftIdeas[1]->id }}, '{{ $giftIdeas[1]->name }}');">
+                                                                <?php if($giftIdeas[1]->stock_status === 'out_of_stock'): ?>
+                                                                    <button class="add-to-cart-icon out-of-stock" data-product-id="<?php echo e($giftIdeas[1]->id); ?>"
+                                                                        data-product-name="<?php echo e($giftIdeas[1]->name); ?>"
+                                                                        title="<?php echo e(__t('messages.request_product')); ?>"
+                                                                        aria-label="<?php echo e(__t('messages.request_product')); ?>"
+                                                                        onclick="event.preventDefault(); event.stopPropagation(); requestProduct(<?php echo e($giftIdeas[1]->id); ?>, '<?php echo e($giftIdeas[1]->name); ?>');">
                                                                         <i class="fas fa-bell"></i>
                                                                     </button>
-                                                                @else
+                                                                <?php else: ?>
                                                                     <button
-                                                                        class="add-to-cart-icon {{ in_array($giftIdeas[1]->id, $cartProductIds) ? 'in-cart' : '' }}"
-                                                                        data-product-id="{{ $giftIdeas[1]->id }}"
-                                                                        title="{{ in_array($giftIdeas[1]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                                                        aria-label="{{ in_array($giftIdeas[1]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart') }}"
-                                                                        onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $giftIdeas[1]->id }}, this);">
+                                                                        class="add-to-cart-icon <?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? 'in-cart' : ''); ?>"
+                                                                        data-product-id="<?php echo e($giftIdeas[1]->id); ?>"
+                                                                        title="<?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                                                        aria-label="<?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? __t('messages.in_cart') : __t('messages.add_to_cart')); ?>"
+                                                                        onclick="event.preventDefault(); event.stopPropagation(); addToCart(<?php echo e($giftIdeas[1]->id); ?>, this);">
                                                                         <i
-                                                                            class="fas {{ in_array($giftIdeas[1]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart' }}"></i>
+                                                                            class="fas <?php echo e(in_array($giftIdeas[1]->id, $cartProductIds) ? 'fa-check' : 'fa-shopping-cart'); ?>"></i>
                                                                     </button>
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </a>
                                             </div>
-                                        @endif
+                                        <?php endif; ?>
 
-                                        {{-- LTR: Banner last (on the left) --}}
-                                        @if(!is_rtl())
-                                            {{-- Dynamic Promotional Ad - Right Position (LTR) --}}
+                                        
+                                        <?php if(!is_rtl()): ?>
+                                            
                                             <div class="gift-ideas-item gift-banner-item">
-                                                @if($promotionalAds['right']->link)
-                                                    <a href="{{ $promotionalAds['right']->link }}"
+                                                <?php if($promotionalAds['right']->link): ?>
+                                                    <a href="<?php echo e($promotionalAds['right']->link); ?>"
                                                         class="product-item-section gift-idea-banner promotional-ad-link promotional-ad-overlay"
-                                                        style="background-image: url('{{ $promotionalAds['right']->image_url }}'); cursor: pointer; display: block; text-decoration: none;">
-                                                        @if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton())
+                                                        style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>'); cursor: pointer; display: block; text-decoration: none;">
+                                                        <?php if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton()): ?>
                                                             <div class="promotional-ad-content">
-                                                                @if($promotionalAds['right']->hasTitle())
-                                                                    <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['right']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->title_font_size ?? '32px' }};">{{ $promotionalAds['right']->title }}</h3>
-                                                                @endif
-                                                                @if($promotionalAds['right']->hasSubtitle())
-                                                                    <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['right']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['right']->subtitle }}</p>
-                                                                @endif
-                                                                @if($promotionalAds['right']->hasButton())
-                                                                    <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['right']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['right']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['right']->button_text }}</span>
-                                                                @endif
+                                                                <?php if($promotionalAds['right']->hasTitle()): ?>
+                                                                    <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['right']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['right']->title); ?></h3>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasSubtitle()): ?>
+                                                                    <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['right']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['right']->subtitle); ?></p>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasButton()): ?>
+                                                                    <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['right']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['right']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['right']->button_text); ?></span>
+                                                                <?php endif; ?>
                                                             </div>
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </a>
-                                                @else
+                                                <?php else: ?>
                                                     <div class="product-item-section gift-idea-banner promotional-ad-overlay"
-                                                        style="background-image: url('{{ $promotionalAds['right']->image_url }}');">
-                                                        @if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton())
+                                                        style="background-image: url('<?php echo e($promotionalAds['right']->image_url); ?>');">
+                                                        <?php if($promotionalAds['right']->hasTitle() || $promotionalAds['right']->hasSubtitle() || $promotionalAds['right']->hasButton()): ?>
                                                             <div class="promotional-ad-content">
-                                                                @if($promotionalAds['right']->hasTitle())
-                                                                    <h3 class="promotional-ad-title" style="color: {{ $promotionalAds['right']->title_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->title_font_size ?? '32px' }};">{{ $promotionalAds['right']->title }}</h3>
-                                                                @endif
-                                                                @if($promotionalAds['right']->hasSubtitle())
-                                                                    <p class="promotional-ad-subtitle" style="color: {{ $promotionalAds['right']->subtitle_color ?? '#FFFFFF' }}; font-size: {{ $promotionalAds['right']->subtitle_font_size ?? '16px' }};">{{ $promotionalAds['right']->subtitle }}</p>
-                                                                @endif
-                                                                @if($promotionalAds['right']->hasButton())
-                                                                    <span class="promotional-ad-button" style="background-color: {{ $promotionalAds['right']->button_bg_color ?? '#2563eb' }}; color: {{ $promotionalAds['right']->button_text_color ?? '#FFFFFF' }};">{{ $promotionalAds['right']->button_text }}</span>
-                                                                @endif
+                                                                <?php if($promotionalAds['right']->hasTitle()): ?>
+                                                                    <h3 class="promotional-ad-title" style="color: <?php echo e($promotionalAds['right']->title_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->title_font_size ?? '32px'); ?>;"><?php echo e($promotionalAds['right']->title); ?></h3>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasSubtitle()): ?>
+                                                                    <p class="promotional-ad-subtitle" style="color: <?php echo e($promotionalAds['right']->subtitle_color ?? '#FFFFFF'); ?>; font-size: <?php echo e($promotionalAds['right']->subtitle_font_size ?? '16px'); ?>;"><?php echo e($promotionalAds['right']->subtitle); ?></p>
+                                                                <?php endif; ?>
+                                                                <?php if($promotionalAds['right']->hasButton()): ?>
+                                                                    <span class="promotional-ad-button" style="background-color: <?php echo e($promotionalAds['right']->button_bg_color ?? '#2563eb'); ?>; color: <?php echo e($promotionalAds['right']->button_text_color ?? '#FFFFFF'); ?>;"><?php echo e($promotionalAds['right']->button_text); ?></span>
+                                                                <?php endif; ?>
                                                             </div>
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </div>
-                                                @endif
+                                                <?php endif; ?>
                                             </div>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </section>
-                        @endif
+                        <?php endif; ?>
 
                         <!-- Continue Main Content Container -->
                         <div class="container">
                             <!-- On Sale Products - HORIZONTAL SCROLLER -->
-                            @if($onSaleProducts->count() > 0)
-                                <x-horizontal-product-scroller :products="$onSaleProducts" title="{{ __t('messages.on_sale') }}"
-                                    :viewMoreUrl="route('products', ['filter' => 'sale'])" :autoScroll="true" :autoScrollInterval="5000"
-                                    :cardsToScroll="1" :cartProductIds="$cartProductIds" :hideSaleBadge="true" containerId="on-sale-scroller" />
-                            @endif
+                            <?php if($onSaleProducts->count() > 0): ?>
+                                <?php if (isset($component)) { $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.horizontal-product-scroller','data' => ['products' => $onSaleProducts,'title' => ''.e(__t('messages.on_sale')).'','viewMoreUrl' => route('products', ['filter' => 'sale']),'autoScroll' => true,'autoScrollInterval' => 5000,'cardsToScroll' => 1,'cartProductIds' => $cartProductIds,'hideSaleBadge' => true,'containerId' => 'on-sale-scroller']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('horizontal-product-scroller'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['products' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($onSaleProducts),'title' => ''.e(__t('messages.on_sale')).'','viewMoreUrl' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('products', ['filter' => 'sale'])),'autoScroll' => true,'autoScrollInterval' => 5000,'cardsToScroll' => 1,'cartProductIds' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($cartProductIds),'hideSaleBadge' => true,'containerId' => 'on-sale-scroller']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $attributes = $__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__attributesOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce)): ?>
+<?php $component = $__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce; ?>
+<?php unset($__componentOriginal87d4e907aef0f5d4d0507d4d54c177ce); ?>
+<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <!-- End Main Content Container -->
 
                         <script>
                             // Store cart product IDs from server
-                            window.cartProductIds = @json($cartProductIds);
+                            window.cartProductIds = <?php echo json_encode($cartProductIds, 15, 512) ?>;
 
                             document.addEventListener('DOMContentLoaded', function () {
                                 // Hide page loader when everything is ready
@@ -5078,8 +5165,9 @@
                             });
                         </script>
 
-    @endif {{-- End of hasNeitherCategoriesNorProducts else block --}}
+    <?php endif; ?> 
 
-    @endif {{-- End of homeSections dynamic/fallback block --}}
+    <?php endif; ?> 
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/home.blade.php ENDPATH**/ ?>

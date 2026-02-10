@@ -10,6 +10,7 @@ use App\Models\PromotionalOffer;
 use App\Models\CartItem;
 use App\Models\Banner;
 use App\Models\PromotionalAd;
+use App\Models\HomeSection;
 use App\Services\CartCacheService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -207,9 +208,18 @@ class HomeController extends Controller
         // Get cart product IDs for current user/session (not cached as it's user-specific)
         $cartProductIds = $this->getCartProductIds();
 
+        // Get home sections ordered by display_order (not cached - lightweight query)
+        // Wrapped in try/catch for safety before migration is run
+        try {
+            $homeSections = HomeSection::active()->ordered()->get();
+        } catch (\Exception $e) {
+            $homeSections = collect();
+        }
+
         return view('home', array_merge($data, [
             'cartProductIds' => $cartProductIds,
             'specialOfferProducts' => $specialOfferProducts,
+            'homeSections' => $homeSections,
         ]));
     }
 
