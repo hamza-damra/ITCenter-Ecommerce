@@ -46,8 +46,8 @@ class HorizontalScroller {
         this.container.addEventListener('mouseleave', () => this.stopDragging());
         
         // Touch support
-        this.container.addEventListener('touchstart', (e) => this.startDragging(e));
-        this.container.addEventListener('touchmove', (e) => this.drag(e));
+        this.container.addEventListener('touchstart', (e) => this.startDragging(e), { passive: true });
+        this.container.addEventListener('touchmove', (e) => this.drag(e), { passive: false });
         this.container.addEventListener('touchend', () => this.stopDragging());
         
         // Auto-scroll pause on hover
@@ -192,8 +192,11 @@ class HorizontalScroller {
     // Drag to scroll
     startDragging(e) {
         this.isDragging = true;
+        this.directionLocked = false;
+        this.isHorizontalSwipe = false;
         this.container.classList.add('dragging');
         this.startX = this.getPositionX(e);
+        this.startY = e.type.includes('mouse') ? e.pageY : e.touches[0].clientY;
         this.scrollLeft = this.currentIndex * this.cardWithGap;
         
         // Pause auto-scroll while dragging
@@ -202,9 +205,32 @@ class HorizontalScroller {
 
     drag(e) {
         if (!this.isDragging) return;
-        e.preventDefault();
         
         const x = this.getPositionX(e);
+        const y = e.type.includes('mouse') ? e.pageY : e.touches[0].clientY;
+        
+        // Determine swipe direction on first significant movement
+        if (!this.directionLocked) {
+            const dx = Math.abs(x - this.startX);
+            const dy = Math.abs(y - this.startY);
+            
+            if (dx > 5 || dy > 5) {
+                this.directionLocked = true;
+                this.isHorizontalSwipe = dx > dy;
+            } else {
+                return; // Not enough movement to determine direction
+            }
+        }
+        
+        // If vertical swipe, let the browser handle native scrolling
+        if (!this.isHorizontalSwipe) {
+            this.isDragging = false;
+            this.container.classList.remove('dragging');
+            return;
+        }
+        
+        e.preventDefault();
+        
         const walk = (x - this.startX) * (this.isRTL ? -1.2 : 1.2);
         const newScrollLeft = this.scrollLeft - walk;
         

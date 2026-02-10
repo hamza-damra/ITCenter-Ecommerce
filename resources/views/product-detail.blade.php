@@ -557,6 +557,7 @@
         font-size: 1.1rem;
         font-weight: 600;
         padding: 0.8rem 0;
+        background: transparent;
     }
 
     /* Action Buttons */
