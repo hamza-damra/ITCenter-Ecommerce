@@ -173,25 +173,6 @@
         transform: translateY(-2px);
     }
 
-    /* Alert */
-    .alert-success-custom {
-        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-        color: #065f46;
-        padding: 1rem 1.5rem;
-        border-radius: 12px;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        border-left: 4px solid #10b981;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
-    }
-
-    [dir="rtl"] .alert-success-custom {
-        border-left: none;
-        border-right: 4px solid #10b981;
-    }
-
     /* Pagination */
     .pagination-wrapper {
         padding: 1.5rem;
@@ -258,13 +239,6 @@
         </div>
     </div>
 </div>
-
-@if(session('success'))
-<div class="alert-success-custom">
-    <i class="fas fa-check-circle"></i>
-    <span>{{ session('success') }}</span>
-</div>
-@endif
 
 <!-- Statistics - Using unified admin-stats-grid component -->
 @php

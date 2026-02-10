@@ -1465,20 +1465,14 @@ async function handleCleanupBackups() {
             console.log('[CLEANUP] Button state restored');
             
             if (response.ok && data.success) {
-                console.log('[CLEANUP] Success! Showing success modal');
+                console.log('[CLEANUP] Success! Showing toast');
                 
-                // Show success modal
-                await window.confirmModal.show({
-                    title: '<?php echo e(__('messages.Success')); ?>',
-                    message: data.message,
-                    confirmText: '<?php echo e(__('messages.OK')); ?>',
-                    type: 'success',
-                    confirmButtonType: 'success'
-                });
+                // Show success toast notification
+                window.showToast('success', data.message);
                 
                 console.log('[CLEANUP] Reloading page...');
                 // Reload page to show updated backup list
-                window.location.reload();
+                setTimeout(function() { window.location.reload(); }, 1500);
             } else {
                 console.error('[CLEANUP] Error response:', data);
                 
@@ -1614,16 +1608,10 @@ document.addEventListener('DOMContentLoaded', async function() {
                     console.log('[DELETE] Response data:', data);
                     
                     if (response.ok && data.success) {
-                        console.log('[DELETE] Success! Showing success modal');
+                        console.log('[DELETE] Success! Showing toast');
                         
-                        // Show success modal
-                        await window.confirmModal.show({
-                            title: '<?php echo e(__('messages.Success')); ?>',
-                            message: data.message || '<?php echo e(__('messages.Backup deleted successfully')); ?>',
-                            confirmText: '<?php echo e(__('messages.OK')); ?>',
-                            type: 'success',
-                            confirmButtonType: 'success'
-                        });
+                        // Show success toast notification
+                        window.showToast('success', data.message || '<?php echo e(__('messages.Backup deleted successfully')); ?>');
                         
                         console.log('[DELETE] Removing row with animation...');
                         // Remove the row from the table with animation
@@ -2075,7 +2063,11 @@ async function executePurge() {
         closePurgeModal();
         
         if (response.ok && data.success) {
-            showPurgeAlert('success', '<?php echo e(__('messages.Success')); ?>', data.message);
+            window.showToast('success', data.message);
+            setTimeout(function() {
+                clearBrowserCaches();
+                window.location.href = window.location.href.split('?')[0] + '?purged=' + Date.now();
+            }, 1500);
         } else {
             showPurgeAlert('error', '<?php echo e(__('messages.Error')); ?>', data.message || '<?php echo e(__('messages.Failed to delete data')); ?>');
         }

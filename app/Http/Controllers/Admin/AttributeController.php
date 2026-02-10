@@ -51,7 +51,7 @@ class AttributeController extends Controller
         Attribute::create($validated);
 
         return redirect()->route('admin.attributes.index')
-            ->with('success', 'Attribute created successfully!');
+            ->with('success', __('messages.attribute_created_successfully'));
     }
 
     public function edit(Attribute $attribute)
@@ -86,7 +86,7 @@ class AttributeController extends Controller
         $attribute->update($validated);
 
         return redirect()->route('admin.attributes.index')
-            ->with('success', 'Attribute updated successfully!');
+            ->with('success', __('messages.attribute_updated_successfully'));
     }
 
     public function destroy(Attribute $attribute)
@@ -104,11 +104,11 @@ class AttributeController extends Controller
             DB::commit();
 
             return redirect()->route('admin.attributes.index')
-                ->with('success', 'Attribute deleted successfully!');
+                ->with('success', __('messages.attribute_deleted_successfully'));
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('admin.attributes.index')
-                ->with('error', 'Error deleting attribute: ' . $e->getMessage());
+                ->with('error', __('messages.error_deleting_attribute', ['error' => $e->getMessage()]));
         }
     }
 

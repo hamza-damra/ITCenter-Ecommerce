@@ -15,12 +15,6 @@
     </div>
 </div>
 
-@if(session('error'))
-    <div class="alert alert-danger">
-        <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
-    </div>
-@endif
-
 <div class="card">
     <div class="card-header">
         <h2><i class="fas fa-info-circle"></i> {{ __('messages.template_information') }}</h2>

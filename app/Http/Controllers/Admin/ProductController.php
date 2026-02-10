@@ -253,11 +253,11 @@ class ProductController extends Controller
             $this->clearHomeCache();
 
             return redirect()->route('admin.products.index')
-                ->with('success', 'Product created successfully with ' . ($product->images->count()) . ' image(s)!');
+                ->with('success', __('messages.product_created_successfully', ['count' => $product->images->count()]));
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()
-                ->with('error', 'Error creating product: ' . $e->getMessage());
+                ->with('error', __('messages.error_creating_product', ['error' => $e->getMessage()]));
         }
     }
 
@@ -401,11 +401,11 @@ class ProductController extends Controller
             $this->clearHomeCache();
 
             return redirect()->route('admin.products.index')
-                ->with('success', 'Product updated successfully with ' . ($product->images()->count()) . ' image(s)!');
+                ->with('success', __('messages.product_updated_successfully', ['count' => $product->images()->count()]));
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()
-                ->with('error', 'Error updating product: ' . $e->getMessage());
+                ->with('error', __('messages.error_updating_product', ['error' => $e->getMessage()]));
         }
     }
 
@@ -417,7 +417,7 @@ class ProductController extends Controller
         $this->clearHomeCache();
 
         return redirect()->route('admin.products.index')
-            ->with('success', 'Product deleted successfully!');
+            ->with('success', __('messages.product_deleted_successfully'));
     }
 
     public function deleteAll(Request $request)

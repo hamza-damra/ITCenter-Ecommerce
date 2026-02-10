@@ -46,7 +46,7 @@ class BackupController extends Controller
             Log::error('Failed to load backup page', ['error' => $e->getMessage()]);
             
             return redirect()->route('admin.dashboard')
-                ->with('error', 'Failed to load backup management page: ' . $e->getMessage());
+                ->with('error', __('messages.error_loading_backups', ['error' => $e->getMessage()]));
         }
     }
 
@@ -66,7 +66,7 @@ class BackupController extends Controller
             $result = $this->backupService->createBackup();
 
             return redirect()->route('admin.backup.index')
-                ->with('success', __('messages.Backup created successfully!') . " " . __('messages.File') . ": {$result['filename']} ({$this->formatBytes($result['size'])})");
+                ->with('success', __('messages.backup_created', ['filename' => $result['filename'], 'size' => $this->formatBytes($result['size'])]));
 
         } catch (Exception $e) {
             Log::error('Backup creation failed', ['error' => $e->getMessage()]);
@@ -117,7 +117,7 @@ class BackupController extends Controller
             ]);
 
             return redirect()->route('admin.backup.index')
-                ->with('success', "Database restored successfully from {$result['filename']}! {$result['statements']} statements executed.{$warningMessage}")
+                ->with('success', __('messages.backup_restored', ['filename' => $result['filename'], 'statements' => $result['statements']]))
                 ->with('warning', $validation['visible'] ? null : $validation['message']);
 
         } catch (BackupRestoreException $e) {
@@ -136,7 +136,7 @@ class BackupController extends Controller
             ]);
             
             return redirect()->route('admin.backup.index')
-                ->with('error', 'Failed to restore backup: ' . $e->getMessage());
+                ->with('error', __('messages.error_restoring_backup', ['error' => $e->getMessage()]));
         }
     }
 
@@ -152,7 +152,7 @@ class BackupController extends Controller
             $deleted = $this->backupService->deleteBackup($filename);
 
             if ($deleted) {
-                $message = "Backup '{$filename}' deleted successfully!";
+                $message = __('messages.backup_deleted', ['filename' => $filename]);
                 
                 Log::info('Backup deleted', [
                     'filename' => $filename,
@@ -171,7 +171,7 @@ class BackupController extends Controller
                     ->with('success', $message);
             }
 
-            $errorMessage = "Backup file not found: {$filename}";
+            $errorMessage = __('messages.backup_not_found', ['filename' => $filename]);
             
             // Return JSON for AJAX requests
             if ($request->expectsJson() || $request->ajax()) {
@@ -190,7 +190,7 @@ class BackupController extends Controller
                 'error' => $e->getMessage()
             ]);
             
-            $errorMessage = 'Failed to delete backup: ' . $e->getMessage();
+            $errorMessage = __('messages.error_deleting_backup', ['error' => $e->getMessage()]);
             
             // Return JSON for AJAX requests
             if ($request->expectsJson() || $request->ajax()) {
@@ -273,7 +273,7 @@ class BackupController extends Controller
             ]);
             
             return redirect()->route('admin.backup.index')
-                ->with('error', 'Failed to download backup: ' . $e->getMessage());
+                ->with('error', __('messages.error_downloading_backup', ['error' => $e->getMessage()]));
         }
     }
 
@@ -290,8 +290,8 @@ class BackupController extends Controller
             $result = $this->backupService->cleanupOldBackups($force);
 
             $message = $force 
-                ? "Force cleanup completed! Deleted {$result['deleted_count']} old backups, kept {$result['kept_count']} most recent backup(s)."
-                : "Cleanup completed! Deleted {$result['deleted_count']} old backups, kept {$result['kept_count']} backups.";
+                ? __('messages.backup_cleanup_force', ['deleted' => $result['deleted_count'], 'kept' => $result['kept_count']])
+                : __('messages.backup_cleanup_done', ['deleted' => $result['deleted_count'], 'kept' => $result['kept_count']]);
 
             return redirect()->route('admin.backup.index')
                 ->with('success', $message);
@@ -300,7 +300,7 @@ class BackupController extends Controller
             Log::error('Backup cleanup failed', ['error' => $e->getMessage()]);
             
             return redirect()->route('admin.backup.index')
-                ->with('error', 'Failed to cleanup backups: ' . $e->getMessage());
+                ->with('error', __('messages.error_cleanup_backups', ['error' => $e->getMessage()]));
         }
     }
 
@@ -324,8 +324,8 @@ class BackupController extends Controller
             ]);
 
             $message = isset($result['mode']) && $result['mode'] === 'force'
-                ? "Force cleanup completed! Deleted {$result['deleted_count']} old backups, kept {$result['kept_count']} most recent backup(s)."
-                : "Cleanup completed! Deleted {$result['deleted_count']} old backups, kept {$result['kept_count']} backups.";
+                ? __('messages.backup_cleanup_force', ['deleted' => $result['deleted_count'], 'kept' => $result['kept_count']])
+                : __('messages.backup_cleanup_done', ['deleted' => $result['deleted_count'], 'kept' => $result['kept_count']]);
 
             return response()->json([
                 'success' => true,
@@ -344,7 +344,7 @@ class BackupController extends Controller
             
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to cleanup backups: ' . $e->getMessage(),
+                'message' => __('messages.error_cleanup_backups', ['error' => $e->getMessage()]),
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -392,7 +392,7 @@ class BackupController extends Controller
             $typeLabel = $this->getBackupTypeLabel($result['type']);
             
             return redirect()->route('admin.backup.index')
-                ->with('success', __('messages.Backup created successfully!') . " " . __('messages.Type') . ": {$typeLabel}, " . __('messages.File') . ": {$result['filename']} ({$this->formatBytes($result['size'])})");
+                ->with('success', __('messages.backup_created_typed', ['type' => $typeLabel, 'filename' => $result['filename'], 'size' => $this->formatBytes($result['size'])]));
 
         } catch (Exception $e) {
             Log::error('Advanced backup creation failed', [
@@ -472,7 +472,7 @@ class BackupController extends Controller
             ]);
 
             return redirect()->route('admin.backup.index')
-                ->with('success', "Backup imported and restored successfully! Original file: {$result['original_filename']}{$warningMessage}")
+                ->with('success', __('messages.backup_imported', ['filename' => $result['original_filename']]))
                 ->with('warning', $validation['visible'] ? null : $validation['message']);
 
         } catch (BackupRestoreException $e) {
@@ -489,7 +489,7 @@ class BackupController extends Controller
             ]);
             
             return redirect()->route('admin.backup.index')
-                ->with('error', 'Failed to import/restore backup: ' . $e->getMessage());
+                ->with('error', __('messages.error_importing_backup', ['error' => $e->getMessage()]));
         }
     }
 

@@ -79,7 +79,7 @@ class ContactController extends Controller
         $message = Contact::findOrFail($id);
         $message->update(['status' => $request->status]);
 
-        return redirect()->back()->with('success', 'Message status updated successfully.');
+        return redirect()->back()->with('success', __('messages.message_status_updated'));
     }
 
     /**
@@ -91,7 +91,7 @@ class ContactController extends Controller
         $message->delete();
 
         return redirect()->route('admin.contacts.index')
-            ->with('success', 'Message deleted successfully.');
+            ->with('success', __('messages.message_deleted_successfully'));
     }
 
     /**

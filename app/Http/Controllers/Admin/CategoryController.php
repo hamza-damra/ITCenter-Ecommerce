@@ -89,7 +89,7 @@ class CategoryController extends Controller
         $this->clearHomeCache();
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category created successfully!');
+            ->with('success', __('messages.category_created_successfully'));
     }
 
     public function edit(Category $category)
@@ -163,7 +163,7 @@ class CategoryController extends Controller
         $this->clearHomeCache();
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category updated successfully!');
+            ->with('success', __('messages.category_updated_successfully'));
     }
 
     public function destroy(Category $category)
@@ -173,7 +173,7 @@ class CategoryController extends Controller
         
         if ($productCount > 0) {
             return redirect()->route('admin.categories.index')
-                ->with('error', "Cannot delete category with {$productCount} assigned products. Please remove or reassign products first.");
+                ->with('error', __('messages.category_has_products', ['count' => $productCount]));
         }
 
         $category->delete();
@@ -182,7 +182,7 @@ class CategoryController extends Controller
         $this->clearHomeCache();
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category deleted successfully!');
+            ->with('success', __('messages.category_deleted_successfully'));
     }
 
     public function deleteAll(Request $request)

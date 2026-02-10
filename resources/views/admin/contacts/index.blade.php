@@ -345,18 +345,6 @@
     </div>
 </div>
 
-@if(session('success'))
-<div class="alert-success-custom" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #065f46; padding: 1.125rem 1.5rem; border-radius: 12px; margin-bottom: 1.25rem; border-left: 4px solid #10b981; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
-    <i class="fas fa-check-circle"></i> <strong>{{ session('success') }}</strong>
-</div>
-<style>
-    [dir="rtl"] .alert-success-custom {
-        border-left: none !important;
-        border-right: 4px solid #10b981 !important;
-    }
-</style>
-@endif
-
 <!-- Statistics - Using unified admin-stats-grid and admin-stat-card components -->
 <div class="admin-stats-grid">
     <div class="admin-stat-card stat-info">

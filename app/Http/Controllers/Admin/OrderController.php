@@ -118,7 +118,7 @@ class OrderController extends Controller
 
         $order->save();
 
-        return redirect()->back()->with('success', "Order status updated from {$oldStatus} to {$validated['status']} successfully!");
+        return redirect()->back()->with('success', __('messages.order_status_updated', ['from' => $oldStatus, 'to' => $validated['status']]));
     }
 
     /**
@@ -139,7 +139,7 @@ class OrderController extends Controller
 
         $order->save();
 
-        return redirect()->back()->with('success', 'Payment status updated successfully!');
+        return redirect()->back()->with('success', __('messages.payment_status_updated'));
     }
 
     /**
@@ -161,7 +161,7 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect()->route('admin.orders.index')
-            ->with('success', 'Order deleted successfully!');
+            ->with('success', __('messages.order_deleted_successfully'));
     }
 
     /**
@@ -200,7 +200,7 @@ class OrderController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', "{$count} orders updated successfully!");
+        return redirect()->back()->with('success', __('messages.orders_bulk_updated', ['count' => $count]));
     }
 
     /**

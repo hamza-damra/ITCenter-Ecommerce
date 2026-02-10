@@ -29,7 +29,7 @@ class SpecTemplate extends Model
     public function getNameAttribute(): string
     {
         $locale = app()->getLocale();
-        return $this->{"name_$locale"} ?? $this->name_en;
+        return $this->{"name_$locale"} ?? $this->name_en ?? '';
     }
 
     /**

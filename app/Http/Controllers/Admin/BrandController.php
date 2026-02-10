@@ -44,7 +44,7 @@ class BrandController extends Controller
         $this->clearHomeCache();
 
         return redirect()->route('admin.brands.index')
-            ->with('success', 'Brand created successfully!');
+            ->with('success', __('messages.brand_created_successfully'));
     }
 
     public function edit(Brand $brand)
@@ -73,7 +73,7 @@ class BrandController extends Controller
         $this->clearHomeCache();
 
         return redirect()->route('admin.brands.index')
-            ->with('success', 'Brand updated successfully!');
+            ->with('success', __('messages.brand_updated_successfully'));
     }
 
     public function destroy(Brand $brand)
@@ -84,7 +84,7 @@ class BrandController extends Controller
         $this->clearHomeCache();
 
         return redirect()->route('admin.brands.index')
-            ->with('success', 'Brand deleted successfully!');
+            ->with('success', __('messages.brand_deleted_successfully'));
     }
 
     public function deleteAll(Request $request)

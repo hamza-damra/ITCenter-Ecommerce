@@ -240,7 +240,6 @@
         .sidebar-logout-btn:hover {
             background: rgba(239, 68, 68, 0.15);
             color: #fff;
-            padding-left: 28px;
         }
 
         .sidebar-logout-btn:hover::before {
@@ -618,7 +617,293 @@
             margin: 0;
         }
 
-        /* Alerts */
+        /* ===== Admin System Notifications ===== */
+        .admin-notifications-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 440px;
+            width: calc(100% - 48px);
+            pointer-events: none;
+        }
+
+        .admin-notifications-container[dir="rtl"],
+        [dir="rtl"] .admin-notifications-container {
+            right: auto;
+            left: 24px;
+        }
+
+        .admin-notification {
+            pointer-events: auto;
+            display: flex;
+            align-items: stretch;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateX(40px);
+            animation: notif-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            position: relative;
+            min-height: 72px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        .admin-notification[dir="rtl"] {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transform: translateX(-40px);
+            animation-name: notif-slide-in-rtl;
+            flex-direction: row-reverse;
+        }
+
+        [dir="rtl"] .admin-notification {
+            transform: translateX(-40px);
+            animation-name: notif-slide-in-rtl;
+        }
+
+        .admin-notification.dismissing {
+            animation: notif-slide-out 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+        }
+
+        .admin-notification[dir="rtl"].dismissing {
+            animation-name: notif-slide-out-rtl;
+        }
+
+        [dir="rtl"] .admin-notification.dismissing {
+            animation-name: notif-slide-out-rtl;
+        }
+
+        @keyframes notif-slide-in {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes notif-slide-in-rtl {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes notif-slide-out {
+            from { opacity: 1; transform: translateX(0); max-height: 120px; margin-bottom: 0; }
+            to { opacity: 0; transform: translateX(60px); max-height: 0; margin-bottom: -12px; }
+        }
+
+        @keyframes notif-slide-out-rtl {
+            from { opacity: 1; transform: translateX(0); max-height: 120px; margin-bottom: 0; }
+            to { opacity: 0; transform: translateX(-60px); max-height: 0; margin-bottom: -12px; }
+        }
+
+        .admin-notification__accent {
+            width: 4px;
+            flex-shrink: 0;
+        }
+
+        .admin-notification__icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            flex-shrink: 0;
+            font-size: 18px;
+        }
+
+        .admin-notification__body {
+            flex: 1;
+            padding: 14px 4px 14px 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 2px;
+        }
+
+        .admin-notification[dir="rtl"] .admin-notification__body {
+            padding: 14px 0 14px 4px;
+            text-align: right;
+        }
+
+        [dir="rtl"] .admin-notification__body {
+            padding: 14px 0 14px 4px;
+        }
+
+        .admin-notification__title {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+        }
+
+        .admin-notification__message {
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.5;
+            opacity: 0.8;
+            word-break: break-word;
+        }
+
+        .admin-notification__actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 10px 14px;
+            flex-shrink: 0;
+        }
+
+        .admin-notification[dir="rtl"] .admin-notification__actions {
+            align-items: flex-start;
+        }
+
+        [dir="rtl"] .admin-notification__actions {
+            align-items: flex-start;
+        }
+
+        .admin-notification__time {
+            font-size: 11px;
+            opacity: 0.45;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .admin-notification__close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            color: inherit;
+            opacity: 0.35;
+            font-size: 13px;
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+
+        .admin-notification__close:hover {
+            opacity: 0.8;
+            background: rgba(0, 0, 0, 0.06);
+        }
+
+        /* Progress bar for auto-dismiss */
+        .admin-notification::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            animation: notif-progress 6s linear forwards;
+            border-radius: 0 0 12px 12px;
+        }
+
+        [dir="rtl"] .admin-notification::after {
+            left: auto;
+            right: 0;
+        }
+
+        @keyframes notif-progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+
+        /* --- Success variant --- */
+        .admin-notification--success { color: #14532d; }
+        .admin-notification--success .admin-notification__accent { background: #22c55e; }
+        .admin-notification--success .admin-notification__icon { color: #16a34a; }
+        .admin-notification--success::after { background: #22c55e; }
+        .admin-notification--success { background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-color: #dcfce7; }
+
+        /* --- Error variant --- */
+        .admin-notification--error { color: #7f1d1d; }
+        .admin-notification--error .admin-notification__accent { background: #ef4444; }
+        .admin-notification--error .admin-notification__icon { color: #dc2626; }
+        .admin-notification--error::after { background: #ef4444; }
+        .admin-notification--error { background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%); border-color: #fecaca; }
+
+        /* --- Warning variant --- */
+        .admin-notification--warning { color: #78350f; }
+        .admin-notification--warning .admin-notification__accent { background: #f59e0b; }
+        .admin-notification--warning .admin-notification__icon { color: #d97706; }
+        .admin-notification--warning::after { background: #f59e0b; }
+        .admin-notification--warning { background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%); border-color: #fde68a; }
+
+        /* --- Info variant --- */
+        .admin-notification--info { color: #1e3a5f; }
+        .admin-notification--info .admin-notification__accent { background: #3b82f6; }
+        .admin-notification--info .admin-notification__icon { color: #2563eb; }
+        .admin-notification--info::after { background: #3b82f6; }
+        .admin-notification--info { background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%); border-color: #bfdbfe; }
+
+        /* Per-message text direction auto-detection */
+        .admin-notification__message {
+            unicode-bidi: plaintext;
+            text-align: start;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        .admin-notification__title {
+            unicode-bidi: plaintext;
+            text-align: start;
+        }
+
+        .admin-notification__time {
+            unicode-bidi: plaintext;
+        }
+
+        /* RTL notification position fix */
+        .admin-notification[dir="rtl"]::after {
+            left: auto;
+            right: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .admin-notifications-container {
+                top: 12px;
+                right: 12px;
+                left: 12px;
+                max-width: 100%;
+                width: auto;
+            }
+
+            [dir="rtl"] .admin-notifications-container {
+                right: 12px;
+                left: 12px;
+            }
+
+            .admin-notification__icon {
+                width: 36px;
+                font-size: 16px;
+            }
+
+            .admin-notification__body {
+                padding: 12px 4px 12px 0;
+            }
+
+            [dir="rtl"] .admin-notification__body,
+            .admin-notification[dir="rtl"] .admin-notification__body {
+                padding: 12px 0 12px 4px;
+            }
+
+            .admin-notification__title {
+                font-size: 12.5px;
+            }
+
+            .admin-notification__message {
+                font-size: 12px;
+            }
+
+            .admin-notification__actions {
+                padding: 8px 10px;
+            }
+        }
+
+        /* Legacy .alert fallback kept for sub-views that haven't migrated yet */
         .alert {
             padding: 16px 20px;
             border-radius: 8px;
@@ -647,13 +932,13 @@
             border-right-color: var(--success);
         }
 
-        .alert-error {
+        .alert-error, .alert-danger {
             background: #fef2f2;
             color: #7f1d1d;
             border-left-color: var(--danger);
         }
 
-        [dir="rtl"] .alert-error {
+        [dir="rtl"] .alert-error, [dir="rtl"] .alert-danger {
             border-right-color: var(--danger);
         }
 
@@ -665,6 +950,16 @@
 
         [dir="rtl"] .alert-warning {
             border-right-color: var(--warning);
+        }
+
+        .alert-info {
+            background: #eff6ff;
+            color: #1e3a5f;
+            border-left-color: var(--primary);
+        }
+
+        [dir="rtl"] .alert-info {
+            border-right-color: var(--primary);
         }
 
         /* Tables */
@@ -2260,20 +2555,10 @@
         </aside>
 
         <main class="main-content">
-            <?php if(session('success')): ?>
-                <div class="alert alert-success">
-                    <i class="fas fa-check-circle"></i>
-                    <div><?php echo e(session('success')); ?></div>
-                </div>
-            <?php elseif(session('error')): ?>
-                <div class="alert alert-error">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <div><?php echo e(session('error')); ?></div>
-                </div>
-            <?php endif; ?>
-
             <?php echo $__env->yieldContent('content'); ?>
         </main>
+
+        <?php echo $__env->make('admin.partials.notifications', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 
     <script>
@@ -2357,6 +2642,97 @@
                 }, 250);
             });
         })();
+    </script>
+
+    <!-- Admin Notification System -->
+    <script>
+        function dismissNotification(btn) {
+            var card = btn.closest('[data-notification]');
+            if (!card) return;
+            card.classList.add('dismissing');
+            card.addEventListener('animationend', function() {
+                card.remove();
+            });
+        }
+
+        (function() {
+            var notifications = document.querySelectorAll('[data-notification]');
+            notifications.forEach(function(n, i) {
+                // Stagger animation delay for multiple notifications
+                if (i > 0) {
+                    n.style.animationDelay = (i * 0.12) + 's';
+                }
+                // Auto-dismiss after 6 seconds (matching the progress bar)
+                setTimeout(function() {
+                    if (n && n.parentNode && !n.classList.contains('dismissing')) {
+                        dismissNotification(n.querySelector('.admin-notification__close'));
+                    }
+                }, 6000 + (i * 400));
+            });
+        })();
+
+        /**
+         * Show a toast notification programmatically (for AJAX responses).
+         * @param {string} type - 'success' | 'error' | 'warning' | 'info'
+         * @param {string} message - The notification message text
+         * @param {Object} [options] - Optional overrides { title, duration }
+         */
+        window.showToast = function(type, message, options) {
+            var opts = options || {};
+            var isRtl = document.documentElement.dir === 'rtl' || document.documentElement.lang === 'ar' || document.documentElement.lang === 'he';
+            var icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-times-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            };
+            var defaultTitles = {
+                success: '<?php echo e(__("messages.notification_success_title")); ?>',
+                error: '<?php echo e(__("messages.notification_error_title")); ?>',
+                warning: '<?php echo e(__("messages.notification_warning_title")); ?>',
+                info: '<?php echo e(__("messages.notification_info_title")); ?>'
+            };
+            var title = opts.title || defaultTitles[type] || '';
+            var icon = icons[type] || icons.info;
+            var duration = opts.duration || 6000;
+
+            var container = document.getElementById('adminNotifications');
+            if (!container) {
+                container = document.createElement('div');
+                container.className = 'admin-notifications-container';
+                container.id = 'adminNotifications';
+                document.body.appendChild(container);
+            }
+
+            var card = document.createElement('div');
+            card.className = 'admin-notification admin-notification--' + type;
+            card.setAttribute('data-notification', '');
+            card.setAttribute('role', 'alert');
+            card.setAttribute('dir', isRtl ? 'rtl' : 'ltr');
+
+            card.innerHTML =
+                '<div class="admin-notification__accent"></div>' +
+                '<div class="admin-notification__icon"><i class="' + icon + '"></i></div>' +
+                '<div class="admin-notification__body">' +
+                    '<div class="admin-notification__title" dir="auto">' + title + '</div>' +
+                    '<div class="admin-notification__message" dir="auto">' + message + '</div>' +
+                '</div>' +
+                '<div class="admin-notification__actions">' +
+                    '<span class="admin-notification__time" dir="auto"><?php echo e(__("messages.notification_just_now")); ?></span>' +
+                    '<button type="button" class="admin-notification__close" onclick="dismissNotification(this)" aria-label="<?php echo e(__("messages.close")); ?>">' +
+                        '<i class="fas fa-times"></i>' +
+                    '</button>' +
+                '</div>';
+
+            container.appendChild(card);
+
+            // Auto-dismiss
+            setTimeout(function() {
+                if (card && card.parentNode && !card.classList.contains('dismissing')) {
+                    dismissNotification(card.querySelector('.admin-notification__close'));
+                }
+            }, duration);
+        };
     </script>
 
     <!-- Global Confirmation Modal -->

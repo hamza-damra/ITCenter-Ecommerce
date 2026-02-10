@@ -59,7 +59,7 @@ class PromotionalOfferController extends Controller
         $this->clearHomeCache();
 
         return redirect()->route('admin.promotional-offers.index')
-            ->with('success', 'تم إنشاء العرض بنجاح');
+            ->with('success', __('messages.offer_created_successfully'));
     }
 
     public function edit(PromotionalOffer $promotionalOffer)
@@ -105,7 +105,7 @@ class PromotionalOfferController extends Controller
         $this->clearHomeCache();
 
         return redirect()->route('admin.promotional-offers.index')
-            ->with('success', 'تم تحديث العرض بنجاح');
+            ->with('success', __('messages.offer_updated_successfully'));
     }
 
     public function destroy(PromotionalOffer $promotionalOffer)
@@ -116,7 +116,7 @@ class PromotionalOfferController extends Controller
         $this->clearHomeCache();
 
         return redirect()->route('admin.promotional-offers.index')
-            ->with('success', 'تم حذف العرض بنجاح');
+            ->with('success', __('messages.offer_deleted_successfully'));
     }
 
     public function toggleActive(PromotionalOffer $promotionalOffer)
@@ -128,7 +128,7 @@ class PromotionalOfferController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'تم تحديث حالة العرض',
+            'message' => __('messages.offer_status_toggled'),
             'is_active' => $promotionalOffer->is_active
         ]);
     }

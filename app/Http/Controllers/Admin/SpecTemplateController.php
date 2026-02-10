@@ -58,7 +58,7 @@ class SpecTemplateController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()
-                ->with('error', 'Error creating template: ' . $e->getMessage());
+                ->with('error', __('messages.error_creating_template', ['error' => $e->getMessage()]));
         }
     }
 
@@ -91,7 +91,7 @@ class SpecTemplateController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()
-                ->with('error', 'Error updating template: ' . $e->getMessage());
+                ->with('error', __('messages.error_updating_template', ['error' => $e->getMessage()]));
         }
     }
 
@@ -113,7 +113,7 @@ class SpecTemplateController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()
-                ->with('error', 'Error deleting template: ' . $e->getMessage());
+                ->with('error', __('messages.error_deleting_template', ['error' => $e->getMessage()]));
         }
     }
 
@@ -145,7 +145,7 @@ class SpecTemplateController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()
-                ->with('error', 'Error adding field: ' . $e->getMessage());
+                ->with('error', __('messages.error_adding_field', ['error' => $e->getMessage()]));
         }
     }
 
@@ -170,7 +170,7 @@ class SpecTemplateController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()
-                ->with('error', 'Error updating field: ' . $e->getMessage());
+                ->with('error', __('messages.error_updating_field', ['error' => $e->getMessage()]));
         }
     }
 
@@ -196,7 +196,7 @@ class SpecTemplateController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()
-                ->with('error', 'Error deleting field: ' . $e->getMessage());
+                ->with('error', __('messages.error_deleting_field', ['error' => $e->getMessage()]));
         }
     }
 

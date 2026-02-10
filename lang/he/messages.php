@@ -1747,4 +1747,81 @@ return [
 
     // Attributes label
     'attributes' => 'תכונות',
+
+    // Admin Notifications
+    'notification_success_title' => 'הפעולה הושלמה',
+    'notification_error_title' => 'הפעולה נכשלה',
+    'notification_warning_title' => 'נדרשת תשומת לב',
+    'notification_info_title' => 'מידע',
+    'notification_just_now' => 'עכשיו',
+
+    // Category flash messages
+    'category_created_successfully' => 'הקטגוריה נוצרה בהצלחה.',
+    'category_updated_successfully' => 'הקטגוריה עודכנה בהצלחה.',
+    'category_deleted_successfully' => 'הקטגוריה נמחקה בהצלחה.',
+    'category_has_products' => 'לא ניתן למחוק — :count מוצרים משויכים לקטגוריה זו.',
+
+    // Brand flash messages
+    'brand_created_successfully' => 'המותג נוצר בהצלחה.',
+    'brand_updated_successfully' => 'המותג עודכן בהצלחה.',
+    'brand_deleted_successfully' => 'המותג נמחק בהצלחה.',
+
+    // Product flash messages
+    'product_created_successfully' => 'המוצר נוצר עם :count תמונה/ות.',
+    'product_updated_successfully' => 'המוצר עודכן עם :count תמונה/ות.',
+    'product_deleted_successfully' => 'המוצר נמחק בהצלחה.',
+    'error_creating_product' => 'יצירת המוצר נכשלה: :error',
+    'error_updating_product' => 'עדכון המוצר נכשל: :error',
+
+    // Order flash messages
+    'order_status_updated' => 'סטטוס ההזמנה שונה מ-:from ל-:to.',
+    'payment_status_updated' => 'סטטוס התשלום עודכן.',
+    'order_deleted_successfully' => 'ההזמנה נמחקה בהצלחה.',
+    'orders_bulk_updated' => ':count הזמנות עודכנו.',
+
+    // Contact flash messages
+    'message_status_updated' => 'סטטוס ההודעה עודכן.',
+    'message_deleted_successfully' => 'ההודעה נמחקה בהצלחה.',
+
+    // Attribute flash messages
+    'attribute_created_successfully' => 'התכונה נוצרה בהצלחה.',
+    'attribute_updated_successfully' => 'התכונה עודכנה בהצלחה.',
+    'attribute_deleted_successfully' => 'התכונה נמחקה בהצלחה.',
+    'error_deleting_attribute' => 'מחיקת התכונה נכשלה: :error',
+
+    // Attribute Value flash messages
+    'attribute_value_created_successfully' => 'ערך התכונה נוצר בהצלחה.',
+    'attribute_value_updated_successfully' => 'ערך התכונה עודכן בהצלחה.',
+    'attribute_value_deleted_successfully' => 'ערך התכונה נמחק בהצלחה.',
+    'error_deleting_attribute_value' => 'מחיקת ערך התכונה נכשלה: :error',
+
+    // Promotional Offer flash messages
+    'offer_created_successfully' => 'המבצע נוצר בהצלחה.',
+    'offer_updated_successfully' => 'המבצע עודכן בהצלחה.',
+    'offer_deleted_successfully' => 'המבצע נמחק בהצלחה.',
+    'offer_status_toggled' => 'סטטוס המבצע עודכן.',
+
+    // Spec Template error flash messages
+    'error_creating_template' => 'יצירת התבנית נכשלה: :error',
+    'error_updating_template' => 'עדכון התבנית נכשל: :error',
+    'error_deleting_template' => 'מחיקת התבנית נכשלה: :error',
+    'error_adding_field' => 'הוספת השדה נכשלה: :error',
+    'error_updating_field' => 'עדכון השדה נכשל: :error',
+    'error_deleting_field' => 'מחיקת השדה נכשלה: :error',
+
+    // Backup flash messages
+    'backup_created' => 'הגיבוי נוצר — :filename (:size)',
+    'backup_created_typed' => 'הגיבוי נוצר — סוג: :type, קובץ: :filename (:size)',
+    'backup_deleted' => 'הגיבוי ":filename" נמחק.',
+    'backup_not_found' => 'קובץ הגיבוי לא נמצא: :filename',
+    'backup_restored' => 'מסד הנתונים שוחזר מ-:filename — :statements פקודות בוצעו.',
+    'backup_imported' => 'הגיבוי יובא ושוחזר מ-:filename.',
+    'backup_cleanup_done' => 'הניקוי הושלם — :deleted גיבויים נמחקו, :kept נשמרו.',
+    'backup_cleanup_force' => 'ניקוי כפוי הושלם — :deleted גיבויים נמחקו, :kept נשמרו.',
+    'error_restoring_backup' => 'שחזור הגיבוי נכשל: :error',
+    'error_deleting_backup' => 'מחיקת הגיבוי נכשלה: :error',
+    'error_downloading_backup' => 'הורדת הגיבוי נכשלה: :error',
+    'error_cleanup_backups' => 'ניקוי הגיבויים נכשל: :error',
+    'error_importing_backup' => 'ייבוא/שחזור הגיבוי נכשל: :error',
+    'error_loading_backups' => 'טעינת דף ניהול הגיבויים נכשלה: :error',
 ];

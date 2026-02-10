@@ -1943,4 +1943,81 @@ return [
 
     // Attributes label
     'attributes' => 'Attributes',
+
+    // Admin Notifications
+    'notification_success_title' => 'Operation Successful',
+    'notification_error_title' => 'Operation Failed',
+    'notification_warning_title' => 'Attention Required',
+    'notification_info_title' => 'Information',
+    'notification_just_now' => 'Just now',
+
+    // Category flash messages
+    'category_created_successfully' => 'Category has been created.',
+    'category_updated_successfully' => 'Category has been updated.',
+    'category_deleted_successfully' => 'Category has been deleted.',
+    'category_has_products' => 'Cannot delete — :count products are assigned to this category.',
+
+    // Brand flash messages
+    'brand_created_successfully' => 'Brand has been created.',
+    'brand_updated_successfully' => 'Brand has been updated.',
+    'brand_deleted_successfully' => 'Brand has been deleted.',
+
+    // Product flash messages
+    'product_created_successfully' => 'Product created with :count image(s).',
+    'product_updated_successfully' => 'Product updated with :count image(s).',
+    'product_deleted_successfully' => 'Product has been deleted.',
+    'error_creating_product' => 'Failed to create product: :error',
+    'error_updating_product' => 'Failed to update product: :error',
+
+    // Order flash messages
+    'order_status_updated' => 'Order status changed from :from to :to.',
+    'payment_status_updated' => 'Payment status has been updated.',
+    'order_deleted_successfully' => 'Order has been deleted.',
+    'orders_bulk_updated' => ':count order(s) updated.',
+
+    // Contact flash messages
+    'message_status_updated' => 'Message status has been updated.',
+    'message_deleted_successfully' => 'Message has been deleted.',
+
+    // Attribute flash messages
+    'attribute_created_successfully' => 'Attribute has been created.',
+    'attribute_updated_successfully' => 'Attribute has been updated.',
+    'attribute_deleted_successfully' => 'Attribute has been deleted.',
+    'error_deleting_attribute' => 'Failed to delete attribute: :error',
+
+    // Attribute Value flash messages
+    'attribute_value_created_successfully' => 'Attribute value has been created.',
+    'attribute_value_updated_successfully' => 'Attribute value has been updated.',
+    'attribute_value_deleted_successfully' => 'Attribute value has been deleted.',
+    'error_deleting_attribute_value' => 'Failed to delete attribute value: :error',
+
+    // Promotional Offer flash messages
+    'offer_created_successfully' => 'Promotional offer has been created.',
+    'offer_updated_successfully' => 'Promotional offer has been updated.',
+    'offer_deleted_successfully' => 'Promotional offer has been deleted.',
+    'offer_status_toggled' => 'Offer status has been updated.',
+
+    // Spec Template error flash messages
+    'error_creating_template' => 'Failed to create template: :error',
+    'error_updating_template' => 'Failed to update template: :error',
+    'error_deleting_template' => 'Failed to delete template: :error',
+    'error_adding_field' => 'Failed to add field: :error',
+    'error_updating_field' => 'Failed to update field: :error',
+    'error_deleting_field' => 'Failed to delete field: :error',
+
+    // Backup flash messages
+    'backup_created' => 'Backup created — :filename (:size)',
+    'backup_created_typed' => 'Backup created — Type: :type, File: :filename (:size)',
+    'backup_deleted' => 'Backup ":filename" has been deleted.',
+    'backup_not_found' => 'Backup file not found: :filename',
+    'backup_restored' => 'Database restored from :filename — :statements statements executed.',
+    'backup_imported' => 'Backup imported and restored from :filename.',
+    'backup_cleanup_done' => 'Cleanup complete — :deleted backup(s) removed, :kept kept.',
+    'backup_cleanup_force' => 'Force cleanup complete — :deleted backup(s) removed, :kept kept.',
+    'error_restoring_backup' => 'Failed to restore backup: :error',
+    'error_deleting_backup' => 'Failed to delete backup: :error',
+    'error_downloading_backup' => 'Failed to download backup: :error',
+    'error_cleanup_backups' => 'Failed to cleanup backups: :error',
+    'error_importing_backup' => 'Failed to import/restore backup: :error',
+    'error_loading_backups' => 'Failed to load backup management page: :error',
 ];

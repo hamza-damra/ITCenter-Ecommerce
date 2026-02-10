@@ -1855,4 +1855,81 @@ return [
 
     // Attributes label
     'attributes' => 'الخصائص',
+
+    // Admin Notifications
+    'notification_success_title' => 'تمّت العملية',
+    'notification_error_title' => 'حدث خطأ',
+    'notification_warning_title' => 'يرجى الانتباه',
+    'notification_info_title' => 'معلومة',
+    'notification_just_now' => 'الآن',
+
+    // Category flash messages
+    'category_created_successfully' => 'تم إنشاء الفئة بنجاح.',
+    'category_updated_successfully' => 'تم تحديث الفئة بنجاح.',
+    'category_deleted_successfully' => 'تم حذف الفئة بنجاح.',
+    'category_has_products' => 'لا يمكن الحذف — يوجد :count منتج مرتبط بهذه الفئة.',
+
+    // Brand flash messages
+    'brand_created_successfully' => 'تم إنشاء العلامة التجارية.',
+    'brand_updated_successfully' => 'تم تحديث العلامة التجارية.',
+    'brand_deleted_successfully' => 'تم حذف العلامة التجارية.',
+
+    // Product flash messages
+    'product_created_successfully' => 'تم إنشاء المنتج مع :count صورة.',
+    'product_updated_successfully' => 'تم تحديث المنتج مع :count صورة.',
+    'product_deleted_successfully' => 'تم حذف المنتج.',
+    'error_creating_product' => 'فشل إنشاء المنتج: :error',
+    'error_updating_product' => 'فشل تحديث المنتج: :error',
+
+    // Order flash messages
+    'order_status_updated' => 'تم تغيير حالة الطلب من :from إلى :to.',
+    'payment_status_updated' => 'تم تحديث حالة الدفع.',
+    'order_deleted_successfully' => 'تم حذف الطلب.',
+    'orders_bulk_updated' => 'تم تحديث :count طلب.',
+
+    // Contact flash messages
+    'message_status_updated' => 'تم تحديث حالة الرسالة.',
+    'message_deleted_successfully' => 'تم حذف الرسالة.',
+
+    // Attribute flash messages
+    'attribute_created_successfully' => 'تم إنشاء الخاصية.',
+    'attribute_updated_successfully' => 'تم تحديث الخاصية.',
+    'attribute_deleted_successfully' => 'تم حذف الخاصية.',
+    'error_deleting_attribute' => 'فشل حذف الخاصية: :error',
+
+    // Attribute Value flash messages
+    'attribute_value_created_successfully' => 'تم إنشاء قيمة الخاصية.',
+    'attribute_value_updated_successfully' => 'تم تحديث قيمة الخاصية.',
+    'attribute_value_deleted_successfully' => 'تم حذف قيمة الخاصية.',
+    'error_deleting_attribute_value' => 'فشل حذف قيمة الخاصية: :error',
+
+    // Promotional Offer flash messages
+    'offer_created_successfully' => 'تم إنشاء العرض الترويجي.',
+    'offer_updated_successfully' => 'تم تحديث العرض الترويجي.',
+    'offer_deleted_successfully' => 'تم حذف العرض الترويجي.',
+    'offer_status_toggled' => 'تم تحديث حالة العرض.',
+
+    // Spec Template error flash messages
+    'error_creating_template' => 'فشل إنشاء القالب: :error',
+    'error_updating_template' => 'فشل تحديث القالب: :error',
+    'error_deleting_template' => 'فشل حذف القالب: :error',
+    'error_adding_field' => 'فشل إضافة الحقل: :error',
+    'error_updating_field' => 'فشل تحديث الحقل: :error',
+    'error_deleting_field' => 'فشل حذف الحقل: :error',
+
+    // Backup flash messages
+    'backup_created' => 'تم إنشاء النسخة الاحتياطية — :filename (:size)',
+    'backup_created_typed' => 'تم إنشاء النسخة الاحتياطية — النوع: :type، الملف: :filename (:size)',
+    'backup_deleted' => 'تم حذف النسخة الاحتياطية ":filename".',
+    'backup_not_found' => 'ملف النسخة الاحتياطية غير موجود: :filename',
+    'backup_restored' => 'تمت استعادة قاعدة البيانات من :filename — تم تنفيذ :statements عملية.',
+    'backup_imported' => 'تم استيراد واستعادة النسخة الاحتياطية من :filename.',
+    'backup_cleanup_done' => 'اكتمل التنظيف — تم حذف :deleted نسخة، تم الاحتفاظ بـ :kept.',
+    'backup_cleanup_force' => 'اكتمل التنظيف الإجباري — تم حذف :deleted نسخة، تم الاحتفاظ بـ :kept.',
+    'error_restoring_backup' => 'فشلت استعادة النسخة الاحتياطية: :error',
+    'error_deleting_backup' => 'فشل حذف النسخة الاحتياطية: :error',
+    'error_downloading_backup' => 'فشل تحميل النسخة الاحتياطية: :error',
+    'error_cleanup_backups' => 'فشل تنظيف النسخ الاحتياطية: :error',
+    'error_importing_backup' => 'فشل استيراد/استعادة النسخة الاحتياطية: :error',
+    'error_loading_backups' => 'فشل تحميل صفحة إدارة النسخ الاحتياطية: :error',
 ];

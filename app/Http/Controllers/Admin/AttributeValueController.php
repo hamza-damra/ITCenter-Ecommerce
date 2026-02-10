@@ -59,7 +59,7 @@ class AttributeValueController extends Controller
         AttributeValue::create($validated);
 
         return redirect()->route('admin.attribute-values.index', $attribute)
-            ->with('success', 'Attribute value created successfully!');
+            ->with('success', __('messages.attribute_value_created_successfully'));
     }
 
     /**
@@ -107,7 +107,7 @@ class AttributeValueController extends Controller
         $attributeValue->update($validated);
 
         return redirect()->route('admin.attribute-values.index', $attribute)
-            ->with('success', 'Attribute value updated successfully!');
+            ->with('success', __('messages.attribute_value_updated_successfully'));
     }
 
     /**
@@ -130,11 +130,11 @@ class AttributeValueController extends Controller
             DB::commit();
 
             return redirect()->route('admin.attribute-values.index', $attribute)
-                ->with('success', 'Attribute value deleted successfully!');
+                ->with('success', __('messages.attribute_value_deleted_successfully'));
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('admin.attribute-values.index', $attribute)
-                ->with('error', 'Error deleting attribute value: ' . $e->getMessage());
+                ->with('error', __('messages.error_deleting_attribute_value', ['error' => $e->getMessage()]));
         }
     }
 }

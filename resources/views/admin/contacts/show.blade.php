@@ -244,13 +244,6 @@
     {{ __('messages.back_to_messages') }}
 </a>
 
-@if(session('success'))
-<div class="alert-success">
-    <i class="fas fa-check-circle"></i>
-    <span>{{ session('success') }}</span>
-</div>
-@endif
-
 <div class="message-header">
     <h1 class="message-title">
         <i class="fas fa-envelope"></i>

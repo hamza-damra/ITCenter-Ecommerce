@@ -263,19 +263,19 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::middleware('permission:spec_templates.view')->group(function () {
         Route::get('/spec-templates', [App\Http\Controllers\Admin\SpecTemplateController::class, 'index'])->name('spec-templates.index');
         Route::get('/spec-templates/category-fields/{categoryId}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'getCategorySpecFields'])->name('spec-templates.category-fields');
-        Route::get('/spec-templates/{spec_template}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'show'])->name('spec-templates.show');
+        Route::get('/spec-templates/{template}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'show'])->name('spec-templates.show');
     });
     Route::middleware('permission:spec_templates.create')->group(function () {
         Route::post('/spec-templates/{template}/fields', [App\Http\Controllers\Admin\SpecTemplateController::class, 'storeField'])->name('spec-templates.fields.store');
     });
     Route::middleware('permission:spec_templates.edit')->group(function () {
-        Route::get('/spec-templates/{spec_template}/edit', [App\Http\Controllers\Admin\SpecTemplateController::class, 'edit'])->name('spec-templates.edit');
-        Route::put('/spec-templates/{spec_template}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'update'])->name('spec-templates.update');
+        Route::get('/spec-templates/{template}/edit', [App\Http\Controllers\Admin\SpecTemplateController::class, 'edit'])->name('spec-templates.edit');
+        Route::put('/spec-templates/{template}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'update'])->name('spec-templates.update');
         Route::put('/spec-templates/{template}/fields/{field}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'updateField'])->name('spec-templates.fields.update');
         Route::post('/spec-templates/{template}/reorder-fields', [App\Http\Controllers\Admin\SpecTemplateController::class, 'reorderFields'])->name('spec-templates.reorder-fields');
     });
     Route::middleware('permission:spec_templates.delete')->group(function () {
-        Route::delete('/spec-templates/{spec_template}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'destroy'])->name('spec-templates.destroy');
+        Route::delete('/spec-templates/{template}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'destroy'])->name('spec-templates.destroy');
         Route::delete('/spec-templates/{template}/fields/{field}', [App\Http\Controllers\Admin\SpecTemplateController::class, 'destroyField'])->name('spec-templates.fields.destroy');
     });
 
