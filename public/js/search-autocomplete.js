@@ -17,6 +17,8 @@
         // Create dropdown
         const dropdown = document.createElement('div');
         dropdown.className = 'search-autocomplete-dropdown';
+        dropdown.id = 'search-autocomplete-listbox';
+        dropdown.setAttribute('role', 'listbox');
         searchBar.appendChild(dropdown);
 
         let debounceTimer = null;
@@ -54,6 +56,7 @@
                 console.log('[Search] Opening dropdown');
             }
             dropdown.classList.add('open');
+            searchInput.setAttribute('aria-expanded', 'true');
         }
 
         function closeDropdown() {
@@ -61,6 +64,7 @@
                 console.log('[Search] Closing dropdown');
             }
             dropdown.classList.remove('open');
+            searchInput.setAttribute('aria-expanded', 'false');
         }
 
         function showLoading() {

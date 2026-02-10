@@ -1758,4 +1758,101 @@ return [
     'enter_button_text_hebrew' => 'أدخل نص الزر بالعبرية',
     'add_new_banner_to_slider' => 'إضافة بانر جديد للشريط',
     'upload_too_large' => 'الملف المرفوع كبير جداً. الحد الأقصى المسموح به هو :size.',
+
+    // =============================================
+    // Employee & Role Management (RBAC)
+    // =============================================
+
+    // Permissions
+    'permissions' => 'الصلاحيات',
+    'permission_view' => 'عرض',
+    'permission_create' => 'إنشاء',
+    'permission_edit' => 'تعديل',
+    'permission_delete' => 'حذف',
+    'permission_export' => 'تصدير',
+    'permission_restore' => 'استعادة',
+    'permission_view_dashboard' => 'عرض لوحة التحكم',
+    'select_all' => 'تحديد الكل',
+
+    // Role Management
+    'role_management' => 'إدارة الأدوار',
+    'role_management_subtitle' => 'إنشاء وإدارة أدوار الموظفين مع صلاحيات دقيقة',
+    'create_role' => 'إنشاء دور',
+    'create_role_subtitle' => 'تحديد دور جديد للموظف مع صلاحيات محددة',
+    'edit_role' => 'تعديل الدور',
+    'edit_role_subtitle' => 'تعديل تفاصيل الدور والصلاحيات',
+    'role_information' => 'معلومات الدور',
+    'role_name' => 'اسم الدور',
+    'role_name_placeholder' => 'مثال: مدير المنتجات، محرر المحتوى',
+    'role_description_placeholder' => 'وصف الغرض ونطاق هذا الدور...',
+    'role_active_description' => 'الدور النشط يمكن تعيينه للموظفين',
+    'role_created_successfully' => 'تم إنشاء الدور بنجاح!',
+    'role_updated_successfully' => 'تم تحديث الدور بنجاح!',
+    'role_deleted_successfully' => 'تم حذف الدور بنجاح!',
+    'role_has_employees' => 'لا يمكن حذف هذا الدور لأنه مُعيّن لموظفين. يرجى إعادة تعيينهم أولاً.',
+    'confirm_delete_role' => 'هل أنت متأكد من حذف هذا الدور؟',
+    'total_roles' => 'إجمالي الأدوار',
+    'active_roles' => 'الأدوار النشطة',
+    'no_roles_found' => 'لم يتم العثور على أدوار',
+    'no_roles_description' => 'أنشئ أول دور لبدء إدارة صلاحيات الموظفين.',
+    'create_first_role' => 'إنشاء أول دور',
+    'permissions_label' => 'صلاحية',
+    'more' => 'المزيد',
+
+    // Employee Management
+    'employee_management' => 'إدارة الموظفين',
+    'employee_management_subtitle' => 'إنشاء وإدارة حسابات الموظفين مع صلاحيات حسب الدور',
+    'add_employee' => 'إضافة موظف',
+    'add_employee_subtitle' => 'إنشاء حساب موظف جديد وتعيين دور',
+    'edit_employee' => 'تعديل الموظف',
+    'edit_employee_subtitle' => 'تحديث تفاصيل حساب الموظف وتعيين الدور',
+    'employee_information' => 'معلومات الموظف',
+    'employee' => 'الموظف',
+    'employees_label' => 'موظفين',
+    'employees_list' => 'قائمة الموظفين',
+    'total_employees' => 'إجمالي الموظفين',
+    'active_employees' => 'الموظفون النشطون',
+    'inactive_employees' => 'الموظفون غير النشطين',
+    'employee_created_successfully' => 'تم إنشاء حساب الموظف بنجاح!',
+    'employee_updated_successfully' => 'تم تحديث حساب الموظف بنجاح!',
+    'employee_deleted_successfully' => 'تم حذف حساب الموظف بنجاح!',
+    'employee_status_updated' => 'تم تحديث حالة الموظف بنجاح!',
+    'employee_role_inactive' => 'تم إلغاء تنشيط دور الموظف الخاص بك. يرجى التواصل مع المسؤول.',
+    'confirm_delete_employee' => 'هل أنت متأكد من حذف حساب هذا الموظف؟',
+    'no_employees_found' => 'لم يتم العثور على موظفين',
+    'no_employees_description' => 'أنشئ أول حساب موظف لبدء تفويض العمل.',
+    'add_first_employee' => 'إضافة أول موظف',
+    'search_employees' => 'البحث عن موظفين بالاسم أو البريد الإلكتروني...',
+    'all_roles' => 'جميع الأدوار',
+    'manage_roles' => 'إدارة الأدوار',
+    'select_role' => 'اختر دوراً',
+    'no_role' => 'بدون دور',
+    'toggle_status' => 'تبديل الحالة',
+
+    // Employee Form Fields
+    'full_name' => 'الاسم الكامل',
+    'enter_full_name' => 'أدخل الاسم الكامل',
+    'enter_email' => 'أدخل عنوان البريد الإلكتروني',
+    'enter_phone' => 'أدخل رقم الهاتف',
+    'enter_password' => 'أدخل كلمة المرور',
+    'new_password' => 'كلمة مرور جديدة',
+    'confirm_password' => 'تأكيد كلمة المرور',
+    'confirm_password_placeholder' => 'أعد إدخال كلمة المرور',
+    'password_min_length' => 'يجب أن تكون كلمة المرور 8 أحرف على الأقل.',
+    'leave_blank_to_keep' => 'اتركه فارغاً للاحتفاظ بكلمة المرور الحالية',
+    'password_change_hint' => 'املأ فقط إذا كنت تريد تغيير كلمة المرور.',
+    'role' => 'الدور',
+    'phone' => 'الهاتف',
+    'created_at' => 'تاريخ الإنشاء',
+
+    // Access Control
+    'access_denied' => 'الوصول مرفوض',
+    'access_denied_description' => 'ليس لديك صلاحية للوصول إلى هذه الصفحة. يرجى التواصل مع المسؤول إذا كنت تعتقد أن هذا خطأ.',
+    'back_to_dashboard' => 'العودة إلى لوحة التحكم',
+
+    // Backup Management label (unified)
+    'backup_management' => 'النسخ الاحتياطي',
+
+    // Attributes label
+    'attributes' => 'الخصائص',
 ];

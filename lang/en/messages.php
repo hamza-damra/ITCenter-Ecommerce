@@ -1846,4 +1846,101 @@ return [
     'enter_button_text_hebrew' => 'Enter button text in Hebrew',
     'add_new_banner_to_slider' => 'Add New Banner to Slider',
     'upload_too_large' => 'The uploaded file is too large. Maximum allowed size is :size.',
+
+    // =============================================
+    // Employee & Role Management (RBAC)
+    // =============================================
+
+    // Permissions
+    'permissions' => 'Permissions',
+    'permission_view' => 'View',
+    'permission_create' => 'Create',
+    'permission_edit' => 'Edit',
+    'permission_delete' => 'Delete',
+    'permission_export' => 'Export',
+    'permission_restore' => 'Restore',
+    'permission_view_dashboard' => 'View Dashboard',
+    'select_all' => 'Select All',
+
+    // Role Management
+    'role_management' => 'Role Management',
+    'role_management_subtitle' => 'Create and manage employee roles with granular permissions',
+    'create_role' => 'Create Role',
+    'create_role_subtitle' => 'Define a new employee role with specific permissions',
+    'edit_role' => 'Edit Role',
+    'edit_role_subtitle' => 'Modify role details and permissions',
+    'role_information' => 'Role Information',
+    'role_name' => 'Role Name',
+    'role_name_placeholder' => 'e.g. Product Manager, Content Editor',
+    'role_description_placeholder' => 'Describe the purpose and scope of this role...',
+    'role_active_description' => 'Active role can be assigned to employees',
+    'role_created_successfully' => 'Role created successfully!',
+    'role_updated_successfully' => 'Role updated successfully!',
+    'role_deleted_successfully' => 'Role deleted successfully!',
+    'role_has_employees' => 'Cannot delete this role because it is assigned to employees. Please reassign them first.',
+    'confirm_delete_role' => 'Are you sure you want to delete this role?',
+    'total_roles' => 'Total Roles',
+    'active_roles' => 'Active Roles',
+    'no_roles_found' => 'No Roles Found',
+    'no_roles_description' => 'Create your first role to start managing employee permissions.',
+    'create_first_role' => 'Create First Role',
+    'permissions_label' => 'permissions',
+    'more' => 'more',
+
+    // Employee Management
+    'employee_management' => 'Employee Management',
+    'employee_management_subtitle' => 'Create and manage employee accounts with role-based access',
+    'add_employee' => 'Add Employee',
+    'add_employee_subtitle' => 'Create a new employee account and assign a role',
+    'edit_employee' => 'Edit Employee',
+    'edit_employee_subtitle' => 'Update employee account details and role assignment',
+    'employee_information' => 'Employee Information',
+    'employee' => 'Employee',
+    'employees_label' => 'employees',
+    'employees_list' => 'Employees List',
+    'total_employees' => 'Total Employees',
+    'active_employees' => 'Active Employees',
+    'inactive_employees' => 'Inactive Employees',
+    'employee_created_successfully' => 'Employee account created successfully!',
+    'employee_updated_successfully' => 'Employee account updated successfully!',
+    'employee_deleted_successfully' => 'Employee account deleted successfully!',
+    'employee_status_updated' => 'Employee status updated successfully!',
+    'employee_role_inactive' => 'Your employee role has been deactivated. Please contact the administrator.',
+    'confirm_delete_employee' => 'Are you sure you want to delete this employee account?',
+    'no_employees_found' => 'No Employees Found',
+    'no_employees_description' => 'Create your first employee account to start delegating work.',
+    'add_first_employee' => 'Add First Employee',
+    'search_employees' => 'Search employees by name or email...',
+    'all_roles' => 'All Roles',
+    'manage_roles' => 'Manage Roles',
+    'select_role' => 'Select a role',
+    'no_role' => 'No Role',
+    'toggle_status' => 'Toggle Status',
+
+    // Employee Form Fields
+    'full_name' => 'Full Name',
+    'enter_full_name' => 'Enter full name',
+    'enter_email' => 'Enter email address',
+    'enter_phone' => 'Enter phone number',
+    'enter_password' => 'Enter password',
+    'new_password' => 'New Password',
+    'confirm_password' => 'Confirm Password',
+    'confirm_password_placeholder' => 'Re-enter password',
+    'password_min_length' => 'Password must be at least 8 characters long.',
+    'leave_blank_to_keep' => 'Leave blank to keep current password',
+    'password_change_hint' => 'Only fill if you want to change the password.',
+    'role' => 'Role',
+    'phone' => 'Phone',
+    'created_at' => 'Created At',
+
+    // Access Control
+    'access_denied' => 'Access Denied',
+    'access_denied_description' => 'You do not have permission to access this page. Please contact your administrator if you believe this is an error.',
+    'back_to_dashboard' => 'Back to Dashboard',
+
+    // Backup Management label (unified)
+    'backup_management' => 'Database Backup',
+
+    // Attributes label
+    'attributes' => 'Attributes',
 ];

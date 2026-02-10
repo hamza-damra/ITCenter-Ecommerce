@@ -2145,20 +2145,83 @@
             <div class="sidebar-header">
                 <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
             </div>
+            @php $authUser = auth()->user(); @endphp
             <ul class="sidebar-menu">
+                {{-- Dashboard - visible to all staff --}}
+                @if($authUser->hasAnyPermissionInGroup('dashboard'))
                 <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> {{ __('messages.dashboard') }}</a></li>
-                <li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i class="fas fa-shopping-bag"></i> {{ __t('messages.orders') }}</a></li>
+                @endif
+
+                {{-- Orders --}}
+                @if($authUser->hasAnyPermissionInGroup('orders'))
+                <li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i class="fas fa-shopping-bag"></i> {{ __('messages.orders') }}</a></li>
+                @endif
+
+                {{-- Contact Messages --}}
+                @if($authUser->hasAnyPermissionInGroup('contacts'))
                 <li><a href="{{ route('admin.contacts.index') }}" class="{{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}"><i class="fas fa-envelope"></i> {{ __('messages.contact_messages') }}</a></li>
+                @endif
+
+                {{-- Promotional Offers --}}
+                @if($authUser->hasAnyPermissionInGroup('promotional_offers'))
                 <li><a href="{{ route('admin.promotional-offers.index') }}" class="{{ request()->routeIs('admin.promotional-offers.*') ? 'active' : '' }}"><i class="fas fa-bullhorn"></i> {{ __('messages.promotional_management') }}</a></li>
+                @endif
+
+                {{-- Banners --}}
+                @if($authUser->hasAnyPermissionInGroup('banners'))
                 <li><a href="{{ route('admin.banners.index') }}" class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}"><i class="fas fa-images"></i> {{ __('messages.banner_management') }}</a></li>
+                @endif
+
+                {{-- Promotional Ads --}}
+                @if($authUser->hasAnyPermissionInGroup('promotional_ads'))
                 <li><a href="{{ route('admin.promotional-ads.index') }}" class="{{ request()->routeIs('admin.promotional-ads.*') ? 'active' : '' }}"><i class="fas fa-ad"></i> {{ __('messages.promotional_ads') }}</a></li>
+                @endif
+
+                {{-- Products --}}
+                @if($authUser->hasAnyPermissionInGroup('products'))
                 <li><a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><i class="fas fa-box"></i> {{ __('messages.products') }}</a></li>
+                @endif
+
+                {{-- Categories --}}
+                @if($authUser->hasAnyPermissionInGroup('categories'))
                 <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-folder"></i> {{ __('messages.categories') }}</a></li>
+                @endif
+
+                {{-- Brands --}}
+                @if($authUser->hasAnyPermissionInGroup('brands'))
                 <li><a href="{{ route('admin.brands.index') }}" class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}"><i class="fas fa-tag"></i> {{ __('messages.brands') }}</a></li>
+                @endif
+
+                {{-- Attributes --}}
+                @if($authUser->hasAnyPermissionInGroup('attributes'))
+                <li><a href="{{ route('admin.attributes.index') }}" class="{{ request()->routeIs('admin.attributes.*') ? 'active' : '' }}"><i class="fas fa-sliders-h"></i> {{ __('messages.attributes') }}</a></li>
+                @endif
+
+                {{-- Tags --}}
+                @if($authUser->hasAnyPermissionInGroup('tags'))
                 <li><a href="{{ route('admin.tags.index') }}" class="{{ request()->routeIs('admin.tags.*') ? 'active' : '' }}"><i class="fas fa-tags"></i> {{ __('messages.tags_management') }}</a></li>
+                @endif
+
+                {{-- Specification Templates --}}
+                @if($authUser->hasAnyPermissionInGroup('spec_templates'))
                 <li><a href="{{ route('admin.spec-templates.index') }}" class="{{ request()->routeIs('admin.spec-templates.*') ? 'active' : '' }}"><i class="fas fa-clipboard-list"></i> {{ __('messages.specification_templates') }}</a></li>
-                <li><a href="{{ route('admin.backup.index') }}" class="{{ request()->routeIs('admin.backup.*') ? 'active' : '' }}"><i class="fas fa-database"></i> {{ __('messages.Database Backup Management') }}</a></li>
+                @endif
+
+                {{-- Backup --}}
+                @if($authUser->hasAnyPermissionInGroup('backup'))
+                <li><a href="{{ route('admin.backup.index') }}" class="{{ request()->routeIs('admin.backup.*') ? 'active' : '' }}"><i class="fas fa-database"></i> {{ __('messages.backup_management') }}</a></li>
+                @endif
+
+                {{-- Reviews --}}
+                @if($authUser->hasAnyPermissionInGroup('reviews'))
                 <li><a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}"><i class="fas fa-star"></i> {{ __('messages.reviews') }}</a></li>
+                @endif
+
+                {{-- Employee Management - Admin Only --}}
+                @if($authUser->isAdmin())
+                <li><a href="{{ route('admin.employees.index') }}" class="{{ request()->routeIs('admin.employees.*') ? 'active' : '' }}"><i class="fas fa-users-cog"></i> {{ __('messages.employee_management') }}</a></li>
+                <li><a href="{{ route('admin.roles.index') }}" class="{{ request()->routeIs('admin.roles.*') ? 'active' : '' }}"><i class="fas fa-shield-alt"></i> {{ __('messages.role_management') }}</a></li>
+                @endif
 
                 <li><a href="{{ route('home') }}" target="_blank"><i class="fas fa-globe"></i> {{ __('messages.view') }} {{ __('messages.home') }}</a></li>
                 <li>

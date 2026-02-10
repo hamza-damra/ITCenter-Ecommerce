@@ -56,6 +56,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\IsAdmin::class,
             'admin.api' => \App\Http\Middleware\IsAdminApi::class,
+            'permission' => \App\Http\Middleware\CheckPermission::class,
             'bootstrap.mode' => \App\Http\Middleware\BootstrapModeMiddleware::class,
             'bootstrap.ip' => \App\Http\Middleware\BootstrapIpAllowlist::class,
         ]);

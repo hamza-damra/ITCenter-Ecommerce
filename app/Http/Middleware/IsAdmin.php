@@ -11,6 +11,7 @@ class IsAdmin
 {
     /**
      * Handle an incoming request.
+     * Allows access to admins and employees with active roles.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
@@ -21,12 +22,26 @@ class IsAdmin
                 ->with('error', __('messages.admin_login_required'));
         }
 
-        if (Auth::user()->role !== 'admin') {
-            Auth::logout();
-            return redirect()->route('admin.login')
-                ->with('error', __('messages.admin_permission_denied'));
+        $user = Auth::user();
+
+        // Admins always have full access
+        if ($user->isAdmin()) {
+            return $next($request);
         }
 
-        return $next($request);
+        // Employees need an active role
+        if ($user->isEmployee()) {
+            if ($user->employeeRole && $user->employeeRole->is_active) {
+                return $next($request);
+            }
+
+            Auth::logout();
+            return redirect()->route('admin.login')
+                ->with('error', __('messages.employee_role_inactive'));
+        }
+
+        Auth::logout();
+        return redirect()->route('admin.login')
+            ->with('error', __('messages.admin_permission_denied'));
     }
 }

@@ -104,5 +104,14 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('assetUrl', function ($expression) {
             return "<?php echo \App\Helpers\ImageHelper::assetUrl($expression); ?>";
         });
+
+        // RBAC Blade directives
+        Blade::if('permission', function (string $permission) {
+            return auth()->check() && auth()->user()->hasPermission($permission);
+        });
+
+        Blade::if('adminOnly', function () {
+            return auth()->check() && auth()->user()->isAdmin();
+        });
     }
 }

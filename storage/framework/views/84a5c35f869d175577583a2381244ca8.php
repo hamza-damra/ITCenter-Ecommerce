@@ -2145,20 +2145,83 @@
             <div class="sidebar-header">
                 <img src="<?php echo e(asset('images/assets/logo.png')); ?>" alt="IT Center Logo">
             </div>
+            <?php $authUser = auth()->user(); ?>
             <ul class="sidebar-menu">
+                
+                <?php if($authUser->hasAnyPermissionInGroup('dashboard')): ?>
                 <li><a href="<?php echo e(route('admin.dashboard')); ?>" class="<?php echo e(request()->routeIs('admin.dashboard') ? 'active' : ''); ?>"><i class="fas fa-chart-line"></i> <?php echo e(__('messages.dashboard')); ?></a></li>
-                <li><a href="<?php echo e(route('admin.orders.index')); ?>" class="<?php echo e(request()->routeIs('admin.orders.*') ? 'active' : ''); ?>"><i class="fas fa-shopping-bag"></i> <?php echo e(__t('messages.orders')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('orders')): ?>
+                <li><a href="<?php echo e(route('admin.orders.index')); ?>" class="<?php echo e(request()->routeIs('admin.orders.*') ? 'active' : ''); ?>"><i class="fas fa-shopping-bag"></i> <?php echo e(__('messages.orders')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('contacts')): ?>
                 <li><a href="<?php echo e(route('admin.contacts.index')); ?>" class="<?php echo e(request()->routeIs('admin.contacts.*') ? 'active' : ''); ?>"><i class="fas fa-envelope"></i> <?php echo e(__('messages.contact_messages')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('promotional_offers')): ?>
                 <li><a href="<?php echo e(route('admin.promotional-offers.index')); ?>" class="<?php echo e(request()->routeIs('admin.promotional-offers.*') ? 'active' : ''); ?>"><i class="fas fa-bullhorn"></i> <?php echo e(__('messages.promotional_management')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('banners')): ?>
                 <li><a href="<?php echo e(route('admin.banners.index')); ?>" class="<?php echo e(request()->routeIs('admin.banners.*') ? 'active' : ''); ?>"><i class="fas fa-images"></i> <?php echo e(__('messages.banner_management')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('promotional_ads')): ?>
                 <li><a href="<?php echo e(route('admin.promotional-ads.index')); ?>" class="<?php echo e(request()->routeIs('admin.promotional-ads.*') ? 'active' : ''); ?>"><i class="fas fa-ad"></i> <?php echo e(__('messages.promotional_ads')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('products')): ?>
                 <li><a href="<?php echo e(route('admin.products.index')); ?>" class="<?php echo e(request()->routeIs('admin.products.*') ? 'active' : ''); ?>"><i class="fas fa-box"></i> <?php echo e(__('messages.products')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('categories')): ?>
                 <li><a href="<?php echo e(route('admin.categories.index')); ?>" class="<?php echo e(request()->routeIs('admin.categories.*') ? 'active' : ''); ?>"><i class="fas fa-folder"></i> <?php echo e(__('messages.categories')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('brands')): ?>
                 <li><a href="<?php echo e(route('admin.brands.index')); ?>" class="<?php echo e(request()->routeIs('admin.brands.*') ? 'active' : ''); ?>"><i class="fas fa-tag"></i> <?php echo e(__('messages.brands')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('attributes')): ?>
+                <li><a href="<?php echo e(route('admin.attributes.index')); ?>" class="<?php echo e(request()->routeIs('admin.attributes.*') ? 'active' : ''); ?>"><i class="fas fa-sliders-h"></i> <?php echo e(__('messages.attributes')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('tags')): ?>
                 <li><a href="<?php echo e(route('admin.tags.index')); ?>" class="<?php echo e(request()->routeIs('admin.tags.*') ? 'active' : ''); ?>"><i class="fas fa-tags"></i> <?php echo e(__('messages.tags_management')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('spec_templates')): ?>
                 <li><a href="<?php echo e(route('admin.spec-templates.index')); ?>" class="<?php echo e(request()->routeIs('admin.spec-templates.*') ? 'active' : ''); ?>"><i class="fas fa-clipboard-list"></i> <?php echo e(__('messages.specification_templates')); ?></a></li>
-                <li><a href="<?php echo e(route('admin.backup.index')); ?>" class="<?php echo e(request()->routeIs('admin.backup.*') ? 'active' : ''); ?>"><i class="fas fa-database"></i> <?php echo e(__('messages.Database Backup Management')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('backup')): ?>
+                <li><a href="<?php echo e(route('admin.backup.index')); ?>" class="<?php echo e(request()->routeIs('admin.backup.*') ? 'active' : ''); ?>"><i class="fas fa-database"></i> <?php echo e(__('messages.backup_management')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->hasAnyPermissionInGroup('reviews')): ?>
                 <li><a href="<?php echo e(route('admin.reviews.index')); ?>" class="<?php echo e(request()->routeIs('admin.reviews.*') ? 'active' : ''); ?>"><i class="fas fa-star"></i> <?php echo e(__('messages.reviews')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->isAdmin()): ?>
+                <li><a href="<?php echo e(route('admin.employees.index')); ?>" class="<?php echo e(request()->routeIs('admin.employees.*') ? 'active' : ''); ?>"><i class="fas fa-users-cog"></i> <?php echo e(__('messages.employee_management')); ?></a></li>
+                <li><a href="<?php echo e(route('admin.roles.index')); ?>" class="<?php echo e(request()->routeIs('admin.roles.*') ? 'active' : ''); ?>"><i class="fas fa-shield-alt"></i> <?php echo e(__('messages.role_management')); ?></a></li>
+                <?php endif; ?>
 
                 <li><a href="<?php echo e(route('home')); ?>" target="_blank"><i class="fas fa-globe"></i> <?php echo e(__('messages.view')); ?> <?php echo e(__('messages.home')); ?></a></li>
                 <li>

@@ -118,6 +118,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the employee role assigned to this user.
+     */
+    public function employeeRole()
+    {
+        return $this->belongsTo(EmployeeRole::class, 'employee_role_id');
+    }
+
+    /**
      * Check if the user is an admin.
      *
      * @return bool
@@ -125,6 +133,66 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
+    }
+
+    /**
+     * Check if the user is an employee.
+     *
+     * @return bool
+     */
+    public function isEmployee(): bool
+    {
+        return $this->role === 'employee';
+    }
+
+    /**
+     * Check if the user is an admin or employee (can access admin panel).
+     *
+     * @return bool
+     */
+    public function isStaff(): bool
+    {
+        return $this->isAdmin() || $this->isEmployee();
+    }
+
+    /**
+     * Check if the user has a specific permission.
+     * Admins always have all permissions.
+     *
+     * @param string $permission
+     * @return bool
+     */
+    public function hasPermission(string $permission): bool
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        if (!$this->isEmployee() || !$this->employeeRole) {
+            return false;
+        }
+
+        return $this->employeeRole->hasPermission($permission);
+    }
+
+    /**
+     * Check if the user has any permission within a group.
+     * Admins always return true.
+     *
+     * @param string $group
+     * @return bool
+     */
+    public function hasAnyPermissionInGroup(string $group): bool
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        if (!$this->isEmployee() || !$this->employeeRole) {
+            return false;
+        }
+
+        return $this->employeeRole->hasAnyPermissionInGroup($group);
     }
 
     /**

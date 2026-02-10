@@ -25,7 +25,7 @@ class AuthController extends Controller
         }
 
         try {
-            if (Auth::check() && Auth::user()->role === 'admin') {
+            if (Auth::check() && Auth::user()->isStaff()) {
                 return redirect()->route('admin.dashboard');
             }
         } catch (\Exception $e) {
@@ -61,12 +61,22 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $user = Auth::user();
             
-            // Check if user is admin
-            if ($user->role !== 'admin') {
+            // Check if user is admin or employee
+            if (!$user->isStaff()) {
                 Auth::logout();
                 return redirect()->back()
                     ->withErrors(['email' => __('messages.invalid_admin_credentials')])
                     ->withInput($request->only('email'));
+            }
+
+            // Employees must have an active role
+            if ($user->isEmployee()) {
+                if (!$user->employeeRole || !$user->employeeRole->is_active) {
+                    Auth::logout();
+                    return redirect()->back()
+                        ->withErrors(['email' => __('messages.employee_role_inactive')])
+                        ->withInput($request->only('email'));
+                }
             }
 
             $request->session()->regenerate();

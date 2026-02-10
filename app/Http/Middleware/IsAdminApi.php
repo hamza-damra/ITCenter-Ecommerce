@@ -16,7 +16,9 @@ class IsAdminApi
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->user() || $request->user()->role !== 'admin') {
+        $user = $request->user();
+
+        if (!$user) {
             return response()->json([
                 'success' => false,
                 'message' => 'Forbidden: Admin access required.',
@@ -24,6 +26,20 @@ class IsAdminApi
             ], 403);
         }
 
-        return $next($request);
+        // Admins always have full access
+        if ($user->isAdmin()) {
+            return $next($request);
+        }
+
+        // Employees with active roles can access
+        if ($user->isEmployee() && $user->employeeRole && $user->employeeRole->is_active) {
+            return $next($request);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Forbidden: Admin access required.',
+            'error' => 'Forbidden',
+        ], 403);
     }
 }
