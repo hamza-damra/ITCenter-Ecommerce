@@ -6,10 +6,14 @@ use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ShippingRegion;
+use App\Models\ShippingSetting;
+use App\Rules\PalestinePostalCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 /**
  * Web Controller - Returns views only
@@ -60,7 +64,16 @@ class CheckoutController extends Controller
 
         $user = Auth::user();
 
-        return view('checkout', compact('cartItems', 'subtotal', 'tax', 'shippingFee', 'total', 'user'));
+        // Palestine shipping data from database (dynamic, admin-managed)
+        $shippingRegions = ShippingRegion::active()->ordered()->with('activeCities')->get();
+        $shippingCountry = ShippingSetting::getValue('shipping_country', 'Palestine');
+        $postalCodeDigits = (int) ShippingSetting::getValue('postal_code_digits', 7);
+
+        return response()
+            ->view('checkout', compact('cartItems', 'subtotal', 'tax', 'shippingFee', 'total', 'user', 'shippingRegions', 'shippingCountry', 'postalCodeDigits'))
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
     }
 
     /**
@@ -75,17 +88,19 @@ class CheckoutController extends Controller
                 ->with('error', __('messages.must_login_to_place_order'));
         }
 
-        // Validate the request
+        // Validate the request with strict Palestine shipping rules
+        $validCityKeys = PalestinePostalCode::getValidCityKeys();
+
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
             'address' => 'required|string|max:500',
-            'city' => 'required|string|max:255',
-            'state' => 'nullable|string|max:255',
-            'postal_code' => 'required|string|max:20',
-            'country' => 'required|string|max:255',
+            'city' => ['required', 'string', Rule::in($validCityKeys)],
+            'governorate' => 'nullable|string|max:255',
+            'postal_code' => ['required', 'string', 'max:10', new PalestinePostalCode()],
+            'country' => ['required', 'string', Rule::in([ShippingSetting::getValue('shipping_country', 'Palestine')])],
             'notes' => 'nullable|string|max:1000',
         ]);
 
@@ -164,7 +179,7 @@ class CheckoutController extends Controller
                 'customer_phone' => $validated['phone'],
                 'shipping_address' => $validated['address'],
                 'shipping_city' => $validated['city'],
-                'shipping_state' => $validated['state'] ?? null,
+                'shipping_state' => $validated['governorate'] ?? null,
                 'shipping_postal_code' => $validated['postal_code'],
                 'shipping_country' => $validated['country'],
                 'subtotal' => $subtotal,
@@ -226,11 +241,21 @@ class CheckoutController extends Controller
             // Clear session to prevent back button issues
             Session::forget('cart_identifier');
             
-            // Redirect to order confirmation
-            // Note: The order page view should handle preventing back navigation via JavaScript
-            return redirect()->route('orders.show', $order->order_number)
-                ->with('success', __('messages.order_placed_successfully'))
-                ->with('order_completed', true); // Flag to indicate fresh order completion
+            // Flash success message for the order page
+            Session::flash('success', __('messages.order_placed_successfully'));
+            Session::flash('order_completed', true);
+
+            // For AJAX requests: return JSON with redirect URL so client can use location.replace()
+            // This prevents the checkout page from remaining in browser history
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'redirect' => route('orders.show', $order->order_number),
+                ]);
+            }
+
+            // For non-AJAX: standard redirect
+            return redirect()->route('orders.show', $order->order_number);
                 
         } catch (\App\Exceptions\OutOfStockException $e) {
             DB::rollBack();

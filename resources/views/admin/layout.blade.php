@@ -2517,6 +2517,11 @@
                 <li><a href="{{ route('admin.home-sections.index') }}" class="{{ request()->routeIs('admin.home-sections.*') ? 'active' : '' }}"><i class="fas fa-th-large"></i> {{ __('messages.home_sections_management') }}</a></li>
                 @endif
 
+                {{-- Shipping Management --}}
+                @if($authUser->hasAnyPermissionInGroup('shipping'))
+                <li><a href="{{ route('admin.shipping.index') }}" class="{{ request()->routeIs('admin.shipping.*') ? 'active' : '' }}"><i class="fas fa-truck"></i> {{ __('messages.shipping_management') }}</a></li>
+                @endif
+
                 {{-- Employee Management - Admin Only --}}
                 @if($authUser->isAdmin())
                 <li><a href="{{ route('admin.employees.index') }}" class="{{ request()->routeIs('admin.employees.*') ? 'active' : '' }}"><i class="fas fa-users-cog"></i> {{ __('messages.employee_management') }}</a></li>

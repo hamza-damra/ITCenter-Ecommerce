@@ -2518,6 +2518,11 @@
                 <?php endif; ?>
 
                 
+                <?php if($authUser->hasAnyPermissionInGroup('shipping')): ?>
+                <li><a href="<?php echo e(route('admin.shipping.index')); ?>" class="<?php echo e(request()->routeIs('admin.shipping.*') ? 'active' : ''); ?>"><i class="fas fa-truck"></i> <?php echo e(__('messages.shipping_management')); ?></a></li>
+                <?php endif; ?>
+
+                
                 <?php if($authUser->isAdmin()): ?>
                 <li><a href="<?php echo e(route('admin.employees.index')); ?>" class="<?php echo e(request()->routeIs('admin.employees.*') ? 'active' : ''); ?>"><i class="fas fa-users-cog"></i> <?php echo e(__('messages.employee_management')); ?></a></li>
                 <li><a href="<?php echo e(route('admin.roles.index')); ?>" class="<?php echo e(request()->routeIs('admin.roles.*') ? 'active' : ''); ?>"><i class="fas fa-shield-alt"></i> <?php echo e(__('messages.role_management')); ?></a></li>

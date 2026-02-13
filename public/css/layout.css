@@ -1260,9 +1260,10 @@ footer::after {
         background: #ffffff !important;
         flex-direction: column !important;
         align-items: stretch !important;
-        padding: 0 !important;
+        padding: 0 0 calc(40px + env(safe-area-inset-bottom, 0px)) 0 !important;
         gap: 0 !important;
         overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
         z-index: 1060 !important;
         box-shadow: 4px 0 25px rgba(0, 0, 0, 0.2) !important;
         visibility: hidden !important;

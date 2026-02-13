@@ -409,6 +409,30 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         Route::post('/backup/cleanup-expired', [App\Http\Controllers\Admin\BackupSettingController::class, 'cleanupExpired'])->name('backup.cleanup-expired');
     });
 
+    // Shipping Management
+    Route::middleware('permission:shipping.view')->group(function () {
+        Route::get('/shipping', [App\Http\Controllers\Admin\ShippingManagementController::class, 'index'])->name('shipping.index');
+    });
+    Route::middleware('permission:shipping.create')->group(function () {
+        Route::post('/shipping/regions', [App\Http\Controllers\Admin\ShippingManagementController::class, 'storeRegion'])->name('shipping.regions.store');
+        Route::post('/shipping/cities', [App\Http\Controllers\Admin\ShippingManagementController::class, 'storeCity'])->name('shipping.cities.store');
+        Route::post('/shipping/blocked-ranges', [App\Http\Controllers\Admin\ShippingManagementController::class, 'storeBlockedRange'])->name('shipping.blocked-ranges.store');
+    });
+    Route::middleware('permission:shipping.edit')->group(function () {
+        Route::put('/shipping/regions/{region}', [App\Http\Controllers\Admin\ShippingManagementController::class, 'updateRegion'])->name('shipping.regions.update');
+        Route::put('/shipping/cities/{city}', [App\Http\Controllers\Admin\ShippingManagementController::class, 'updateCity'])->name('shipping.cities.update');
+        Route::put('/shipping/blocked-ranges/{blocked_range}', [App\Http\Controllers\Admin\ShippingManagementController::class, 'updateBlockedRange'])->name('shipping.blocked-ranges.update');
+        Route::put('/shipping/settings', [App\Http\Controllers\Admin\ShippingManagementController::class, 'updateSettings'])->name('shipping.settings.update');
+        Route::post('/shipping/regions/{region}/toggle-status', [App\Http\Controllers\Admin\ShippingManagementController::class, 'toggleRegionStatus'])->name('shipping.regions.toggle-status');
+        Route::post('/shipping/citys/{city}/toggle-status', [App\Http\Controllers\Admin\ShippingManagementController::class, 'toggleCityStatus'])->name('shipping.cities.toggle-status');
+        Route::post('/shipping/blocked-ranges/{blocked_range}/toggle-status', [App\Http\Controllers\Admin\ShippingManagementController::class, 'toggleBlockedRangeStatus'])->name('shipping.blocked-ranges.toggle-status');
+    });
+    Route::middleware('permission:shipping.delete')->group(function () {
+        Route::delete('/shipping/regions/{region}', [App\Http\Controllers\Admin\ShippingManagementController::class, 'destroyRegion'])->name('shipping.regions.destroy');
+        Route::delete('/shipping/cities/{city}', [App\Http\Controllers\Admin\ShippingManagementController::class, 'destroyCity'])->name('shipping.cities.destroy');
+        Route::delete('/shipping/blocked-ranges/{blocked_range}', [App\Http\Controllers\Admin\ShippingManagementController::class, 'destroyBlockedRange'])->name('shipping.blocked-ranges.destroy');
+    });
+
     // Employee Roles Management (Admin Only)
     Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
 

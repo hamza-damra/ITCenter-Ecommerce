@@ -168,6 +168,17 @@ return [
                 'home_sections.delete' => 'messages.permission_delete',
             ],
         ],
+        'shipping' => [
+            'label' => 'messages.shipping_management',
+            'icon' => 'fas fa-truck',
+            'sidebar_route' => 'admin.shipping.*',
+            'permissions' => [
+                'shipping.view' => 'messages.permission_view',
+                'shipping.create' => 'messages.permission_create',
+                'shipping.edit' => 'messages.permission_edit',
+                'shipping.delete' => 'messages.permission_delete',
+            ],
+        ],
         'employees' => [
             'label' => 'messages.employee_management',
             'icon' => 'fas fa-users-cog',

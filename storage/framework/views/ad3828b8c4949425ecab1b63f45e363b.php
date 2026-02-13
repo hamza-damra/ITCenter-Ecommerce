@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', __('messages.checkout') . ' - IT Center'); ?>
 
-@section('title', __('messages.checkout') . ' - IT Center')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <style>
     /* Import Google Font - Poppins */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -1461,52 +1459,55 @@
             <div class="step-circle">
                 <i class="fas fa-check"></i>
             </div>
-            <div class="step-label">{{ __('messages.cart') }}</div>
+            <div class="step-label"><?php echo e(__('messages.cart')); ?></div>
         </div>
         <div class="progress-step active">
             <div class="step-circle">2</div>
-            <div class="step-label">{{ __('messages.checkout') }}</div>
+            <div class="step-label"><?php echo e(__('messages.checkout')); ?></div>
         </div>
         <div class="progress-step">
             <div class="step-circle">3</div>
-            <div class="step-label">{{ __('messages.confirmation') }}</div>
+            <div class="step-label"><?php echo e(__('messages.confirmation')); ?></div>
         </div>
     </div>
 
     <div class="checkout-content">
         <!-- Checkout Form -->
         <div class="checkout-form-section">
-            <form id="checkout-form" method="POST" action="{{ route('checkout.process') }}">
-                @csrf
+            <form id="checkout-form" method="POST" action="<?php echo e(route('checkout.process')); ?>">
+                <?php echo csrf_field(); ?>
                 
                 <!-- Contact Information -->
                 <div class="section-title">
                     <i class="fas fa-user"></i>
-                    {{ __('messages.contact_information') }}
+                    <?php echo e(__('messages.contact_information')); ?>
+
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="first_name">
-                            {{ __('messages.first_name') }}
+                            <?php echo e(__('messages.first_name')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="text" 
                                id="first_name" 
                                name="first_name" 
-                               value="{{ old('first_name', $user->first_name ?? '') }}"
+                               value="<?php echo e(old('first_name', $user->first_name ?? '')); ?>"
                                required>
                     </div>
 
                     <div class="form-group">
                         <label for="last_name">
-                            {{ __('messages.last_name') }}
+                            <?php echo e(__('messages.last_name')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="text" 
                                id="last_name" 
                                name="last_name" 
-                               value="{{ old('last_name', $user->last_name ?? '') }}"
+                               value="<?php echo e(old('last_name', $user->last_name ?? '')); ?>"
                                required>
                     </div>
                 </div>
@@ -1514,25 +1515,27 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="email">
-                            {{ __('messages.email') }}
+                            <?php echo e(__('messages.email')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="email" 
                                id="email" 
                                name="email" 
-                               value="{{ old('email', $user->email ?? '') }}"
+                               value="<?php echo e(old('email', $user->email ?? '')); ?>"
                                required>
                     </div>
 
                     <div class="form-group">
                         <label for="phone">
-                            {{ __('messages.phone') }}
+                            <?php echo e(__('messages.phone')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="tel" 
                                id="phone" 
                                name="phone" 
-                               value="{{ old('phone', $user->phone ?? '') }}"
+                               value="<?php echo e(old('phone', $user->phone ?? '')); ?>"
                                required>
                     </div>
                 </div>
@@ -1540,78 +1543,82 @@
                 <!-- Shipping Address -->
                 <div class="section-title" style="margin-top: 2rem;">
                     <i class="fas fa-map-marker-alt"></i>
-                    {{ __('messages.shipping_address') }}
+                    <?php echo e(__('messages.shipping_address')); ?>
+
                 </div>
 
                 <!-- Shipping Restriction Notice -->
                 <div class="shipping-notice">
                     <i class="fas fa-info-circle"></i>
-                    <span>{{ __('messages.shipping_palestine_only') }}</span>
+                    <span><?php echo e(__('messages.shipping_palestine_only')); ?></span>
                 </div>
 
                 <!-- Server-side Validation Errors -->
-                @if ($errors->any())
+                <?php if($errors->any()): ?>
                     <div class="checkout-errors">
                         <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li><?php echo e($error); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                     </div>
-                @endif
+                <?php endif; ?>
 
                 <div class="form-grid full">
                     <div class="form-group">
                         <label for="address">
-                            {{ __('messages.street_address') }}
+                            <?php echo e(__('messages.street_address')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="text" 
                                id="address" 
                                name="address" 
-                               value="{{ old('address') }}"
-                               placeholder="{{ __('messages.address_placeholder') }}"
+                               value="<?php echo e(old('address')); ?>"
+                               placeholder="<?php echo e(__('messages.address_placeholder')); ?>"
                                required>
                     </div>
                 </div>
 
-                @php $locale = app()->getLocale(); @endphp
+                <?php $locale = app()->getLocale(); ?>
 
                 <div class="form-grid">
                     <!-- City Dropdown (grouped by region) -->
                     <div class="form-group" id="city-group">
                         <label for="city">
-                            {{ __('messages.city') }}
+                            <?php echo e(__('messages.city')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <select id="city" name="city" required>
-                            <option value="">{{ __('messages.select_city') }}</option>
-                            @foreach ($shippingRegions as $region)
-                                <optgroup label="{{ $region->{'name_' . $locale} ?? $region->name_en }}">
-                                    @foreach ($region->activeCities as $city)
-                                        <option value="{{ $city->key }}"
-                                                data-postal-min="{{ $city->postal_code_min }}"
-                                                data-postal-max="{{ $city->postal_code_max }}"
-                                                data-governorate="{{ $city->{'governorate_' . $locale} ?? $city->governorate_en }}"
-                                                {{ old('city') == $city->key ? 'selected' : '' }}>
-                                            {{ $city->{'name_' . $locale} ?? $city->name_en }}
+                            <option value=""><?php echo e(__('messages.select_city')); ?></option>
+                            <?php $__currentLoopData = $shippingRegions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $region): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <optgroup label="<?php echo e($region->{'name_' . $locale} ?? $region->name_en); ?>">
+                                    <?php $__currentLoopData = $region->activeCities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $city): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($city->key); ?>"
+                                                data-postal-min="<?php echo e($city->postal_code_min); ?>"
+                                                data-postal-max="<?php echo e($city->postal_code_max); ?>"
+                                                data-governorate="<?php echo e($city->{'governorate_' . $locale} ?? $city->governorate_en); ?>"
+                                                <?php echo e(old('city') == $city->key ? 'selected' : ''); ?>>
+                                            <?php echo e($city->{'name_' . $locale} ?? $city->name_en); ?>
+
                                         </option>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </optgroup>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                         <div id="city-validation" class="validation-msg" style="display:none;"></div>
                     </div>
 
                     <!-- Governorate (auto-populated, read-only) -->
                     <div class="form-group">
-                        <label for="governorate_display">{{ __('messages.governorate') }}</label>
+                        <label for="governorate_display"><?php echo e(__('messages.governorate')); ?></label>
                         <input type="text" 
                                id="governorate_display" 
-                               value="{{ old('governorate', '') }}"
+                               value="<?php echo e(old('governorate', '')); ?>"
                                readonly
                                style="background: #f3f4f6; cursor: not-allowed;">
-                        <input type="hidden" id="governorate" name="governorate" value="{{ old('governorate', '') }}">
+                        <input type="hidden" id="governorate" name="governorate" value="<?php echo e(old('governorate', '')); ?>">
                     </div>
                 </div>
 
@@ -1619,26 +1626,27 @@
                     <!-- Postal Code with P Prefix -->
                     <div class="form-group" id="postal-group">
                         <label for="postal_code_input">
-                            {{ __('messages.postal_code') }}
+                            <?php echo e(__('messages.postal_code')); ?>
+
                             <span class="required">*</span>
                         </label>
-                        @php $suffixDigits = $postalCodeDigits - 3; @endphp
+                        <?php $suffixDigits = $postalCodeDigits - 3; ?>
                         <div class="postal-code-wrapper">
                             <span class="postal-prefix">P</span>
                             <span class="postal-city-prefix" id="postal_city_prefix">---</span>
                             <input type="text" 
                                    id="postal_code_input"
                                    inputmode="numeric"
-                                   pattern="[0-9]{{ '{' . $suffixDigits . '}' }}"
-                                   maxlength="{{ $suffixDigits }}"
-                                   placeholder="{{ str_repeat('0', $suffixDigits) }}"
-                                   value="{{ old('postal_code') ? substr(ltrim(strtoupper(old('postal_code')), 'P'), 3) : '' }}"
+                                   pattern="[0-9]<?php echo e('{' . $suffixDigits . '}'); ?>"
+                                   maxlength="<?php echo e($suffixDigits); ?>"
+                                   placeholder="<?php echo e(str_repeat('0', $suffixDigits)); ?>"
+                                   value="<?php echo e(old('postal_code') ? substr(ltrim(strtoupper(old('postal_code')), 'P'), 3) : ''); ?>"
                                    disabled
                                    required>
                         </div>
-                        <input type="hidden" id="postal_code" name="postal_code" value="{{ old('postal_code', '') }}">
-                        <input type="hidden" id="postal_code_digits" value="{{ $postalCodeDigits }}">
-                        <input type="hidden" id="postal_suffix_digits" value="{{ $suffixDigits }}">
+                        <input type="hidden" id="postal_code" name="postal_code" value="<?php echo e(old('postal_code', '')); ?>">
+                        <input type="hidden" id="postal_code_digits" value="<?php echo e($postalCodeDigits); ?>">
+                        <input type="hidden" id="postal_suffix_digits" value="<?php echo e($suffixDigits); ?>">
                         <div id="postal-hint" class="postal-hint" style="display:none;">
                             <i class="fas fa-info-circle"></i>
                             <span></span>
@@ -1646,7 +1654,8 @@
                         <div id="postal-validation" class="validation-msg" style="display:none;"></div>
                         <a href="https://postcode.palestine.ps/" target="_blank" rel="noopener noreferrer" class="postal-lookup-link">
                             <i class="fas fa-search-location"></i>
-                            {{ __('messages.find_your_postal_code') }}
+                            <?php echo e(__('messages.find_your_postal_code')); ?>
+
                             <i class="fas fa-external-link-alt" style="font-size: 0.7em; opacity: 0.7;"></i>
                         </a>
                     </div>
@@ -1654,19 +1663,21 @@
                     <!-- Country (Fixed to Palestine) -->
                     <div class="form-group">
                         <label for="country_display">
-                            {{ __('messages.country') }}
+                            <?php echo e(__('messages.country')); ?>
+
                             <span class="required">*</span>
                         </label>
                         <input type="text" 
                                id="country_display"
-                               value="{{ __('messages.palestine') }}"
+                               value="<?php echo e(__('messages.palestine')); ?>"
                                class="country-fixed"
                                disabled
                                readonly>
-                        <input type="hidden" id="country" name="country" value="{{ $shippingCountry }}">
+                        <input type="hidden" id="country" name="country" value="<?php echo e($shippingCountry); ?>">
                         <div class="country-fixed-badge">
                             <i class="fas fa-lock"></i>
-                            {{ __('messages.shipping_country_locked') }}
+                            <?php echo e(__('messages.shipping_country_locked')); ?>
+
                         </div>
                     </div>
                 </div>
@@ -1675,7 +1686,8 @@
                 <div class="payment-methods">
                     <div class="section-title">
                         <i class="fas fa-credit-card"></i>
-                        {{ __('messages.payment_method') }}
+                        <?php echo e(__('messages.payment_method')); ?>
+
                     </div>
 
                     <label class="payment-option">
@@ -1683,8 +1695,8 @@
                         <div class="payment-option-label">
                             <i class="fas fa-money-bill-wave payment-icon"></i>
                             <div class="payment-info">
-                                <h4>{{ __('messages.cash_on_delivery') }}</h4>
-                                <p>{{ __('messages.cod_description') }}</p>
+                                <h4><?php echo e(__('messages.cash_on_delivery')); ?></h4>
+                                <p><?php echo e(__('messages.cod_description')); ?></p>
                             </div>
                         </div>
                     </label>
@@ -1694,8 +1706,8 @@
                         <div class="payment-option-label">
                             <i class="fas fa-university payment-icon"></i>
                             <div class="payment-info">
-                                <h4>{{ __('messages.bank_transfer') }}</h4>
-                                <p>{{ __('messages.bank_transfer_description') }}</p>
+                                <h4><?php echo e(__('messages.bank_transfer')); ?></h4>
+                                <p><?php echo e(__('messages.bank_transfer_description')); ?></p>
                             </div>
                         </div>
                     </label>
@@ -1704,10 +1716,10 @@
                 <!-- Order Notes -->
                 <div class="form-grid full" style="margin-top: 2rem;">
                     <div class="form-group">
-                        <label for="notes">{{ __('messages.order_notes') }}</label>
+                        <label for="notes"><?php echo e(__('messages.order_notes')); ?></label>
                         <textarea id="notes" 
                                   name="notes" 
-                                  placeholder="{{ __('messages.order_notes_placeholder') }}">{{ old('notes') }}</textarea>
+                                  placeholder="<?php echo e(__('messages.order_notes_placeholder')); ?>"><?php echo e(old('notes')); ?></textarea>
                     </div>
                 </div>
             </form>
@@ -1719,11 +1731,12 @@
             <button type="button" class="summary-toggle-btn" id="summaryToggleBtn" aria-expanded="false" aria-controls="summaryCollapsible">
                 <span class="summary-toggle-left">
                     <i class="fas fa-receipt"></i>
-                    {{ __('messages.order_summary') }}
-                    <span style="font-size:0.8rem; opacity:0.8; font-weight:400;">({{ $cartItems->sum('quantity') }})</span>
+                    <?php echo e(__('messages.order_summary')); ?>
+
+                    <span style="font-size:0.8rem; opacity:0.8; font-weight:400;">(<?php echo e($cartItems->sum('quantity')); ?>)</span>
                 </span>
                 <span class="summary-toggle-right">
-                    <span class="summary-toggle-total">₪{{ number_format($total, 2) }}</span>
+                    <span class="summary-toggle-total">₪<?php echo e(number_format($total, 2)); ?></span>
                     <i class="fas fa-chevron-down summary-toggle-chevron"></i>
                 </span>
             </button>
@@ -1732,15 +1745,15 @@
             <div class="summary-collapsible" id="summaryCollapsible">
             <div class="summary-collapsible-inner">
 
-            <h2 class="summary-header">{{ __('messages.order_summary') }}</h2>
+            <h2 class="summary-header"><?php echo e(__('messages.order_summary')); ?></h2>
 
             <div class="summary-items">
-                @foreach($cartItems as $item)
-                    @if($item->product)
-                        <a href="{{ route('product.detail', $item->product) }}" class="summary-item-link">
+                <?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if($item->product): ?>
+                        <a href="<?php echo e(route('product.detail', $item->product)); ?>" class="summary-item-link">
                             <div class="summary-item">
                                 <div class="summary-item-image">
-                                    @php
+                                    <?php
                                         // Get raw main_image value from database
                                         $mainImage = $item->product->getAttributes()['main_image'] ?? null;
                                         $imageSrc = \App\Helpers\ImageHelper::assetUrl('images/products/default.png'); // default
@@ -1754,47 +1767,52 @@
                                                 $imageSrc = asset('storage/' . $mainImage);
                                             }
                                         }
-                                    @endphp
-                                    <img src="{{ $imageSrc }}" 
-                                         alt="{{ $item->product->name }}"
-                                         onerror="this.src='{{ \App\Helpers\ImageHelper::assetUrl('images/products/default.png') }}'">
+                                    ?>
+                                    <img src="<?php echo e($imageSrc); ?>" 
+                                         alt="<?php echo e($item->product->name); ?>"
+                                         onerror="this.src='<?php echo e(\App\Helpers\ImageHelper::assetUrl('images/products/default.png')); ?>'">
                                 </div>
                                 <div class="summary-item-details">
                                     <div class="summary-item-name">
-                                        {{ $item->product->{'name_' . current_locale()} }}
+                                        <?php echo e($item->product->{'name_' . current_locale()}); ?>
+
                                     </div>
                                     <div class="summary-item-qty">
-                                        {{ __('messages.quantity') }}: {{ $item->quantity }}
+                                        <?php echo e(__('messages.quantity')); ?>: <?php echo e($item->quantity); ?>
+
                                     </div>
                                 </div>
                                 <div class="summary-item-price">
-                                    ₪{{ number_format($item->price * $item->quantity, 2) }}
+                                    ₪<?php echo e(number_format($item->price * $item->quantity, 2)); ?>
+
                                 </div>
                             </div>
                         </a>
-                    @endif
-                @endforeach
+                    <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
 
             <div class="summary-totals">
                 <div class="summary-row">
-                    <span class="label">{{ __('messages.subtotal') }}</span>
-                    <span class="value">₪{{ number_format($subtotal, 2) }}</span>
+                    <span class="label"><?php echo e(__('messages.subtotal')); ?></span>
+                    <span class="value">₪<?php echo e(number_format($subtotal, 2)); ?></span>
                 </div>
                 <div class="summary-row total">
-                    <span class="label">{{ __('messages.total') }}</span>
-                    <span class="value">₪{{ number_format($total, 2) }}</span>
+                    <span class="label"><?php echo e(__('messages.total')); ?></span>
+                    <span class="value">₪<?php echo e(number_format($total, 2)); ?></span>
                 </div>
             </div>
 
             <button type="submit" form="checkout-form" class="place-order-btn">
                 <i class="fas fa-check-circle"></i>
-                {{ __('messages.place_order') }}
+                <?php echo e(__('messages.place_order')); ?>
+
             </button>
 
             <div class="secure-badge">
                 <i class="fas fa-lock"></i>
-                {{ __('messages.secure_checkout') }}
+                <?php echo e(__('messages.secure_checkout')); ?>
+
             </div>
 
             </div><!-- /.summary-collapsible-inner -->
@@ -1806,12 +1824,13 @@
 <!-- Mobile Sticky Place Order Bar -->
 <div class="mobile-sticky-order-bar" id="mobileStickyOrderBar">
     <div class="sticky-total">
-        <span class="sticky-total-label">{{ __('messages.total') }}</span>
-        <span class="sticky-total-value">₪{{ number_format($total, 2) }}</span>
+        <span class="sticky-total-label"><?php echo e(__('messages.total')); ?></span>
+        <span class="sticky-total-value">₪<?php echo e(number_format($total, 2)); ?></span>
     </div>
     <button type="submit" form="checkout-form" class="sticky-order-btn" id="mobilePlaceOrderBtn">
         <i class="fas fa-check-circle"></i>
-        {{ __('messages.place_order') }}
+        <?php echo e(__('messages.place_order')); ?>
+
     </button>
 </div>
 
@@ -1835,12 +1854,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Translation strings
     const translations = {
-        postalMismatch: @json(__('messages.postal_code_mismatch', ['min' => ':min', 'max' => ':max'])),
-        postalValid: @json(__('messages.postal_code_valid')),
-        postalHintRange: @json(__('messages.postal_hint_range')),
-        citySelected: @json(__('messages.city_selected_success')),
-        selectCityFirst: @json(__('messages.select_city_first')),
-        invalidPostalFormat: @json(__('messages.invalid_postal_format')),
+        postalMismatch: <?php echo json_encode(__('messages.postal_code_mismatch', ['min' => ':min', 'max' => ':max'])) ?>,
+        postalValid: <?php echo json_encode(__('messages.postal_code_valid'), 15, 512) ?>,
+        postalHintRange: <?php echo json_encode(__('messages.postal_hint_range'), 15, 512) ?>,
+        citySelected: <?php echo json_encode(__('messages.city_selected_success'), 15, 512) ?>,
+        selectCityFirst: <?php echo json_encode(__('messages.select_city_first'), 15, 512) ?>,
+        invalidPostalFormat: <?php echo json_encode(__('messages.invalid_postal_format'), 15, 512) ?>,
     };
 
     let currentMin = null;
@@ -2020,11 +2039,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const mobileOriginalText = mobileSubmitBtn ? mobileSubmitBtn.innerHTML : '';
         if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("messages.processing_order") }}...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <?php echo e(__("messages.processing_order")); ?>...';
         }
         if (mobileSubmitBtn) {
             mobileSubmitBtn.disabled = true;
-            mobileSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {{ __("messages.processing_order") }}...';
+            mobileSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <?php echo e(__("messages.processing_order")); ?>...';
         }
 
         // Submit form via AJAX
@@ -2069,7 +2088,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
                 console.error('Order error:', errData);
-                alert('{{ __("messages.order_error") }}');
+                alert('<?php echo e(__("messages.order_error")); ?>');
             }
         });
     });
@@ -2138,4 +2157,6 @@ window.addEventListener('pageshow', function(event) {
     }
 });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Hamza Damra\Documents\ITCenter-Ecommerce\resources\views/checkout.blade.php ENDPATH**/ ?>
