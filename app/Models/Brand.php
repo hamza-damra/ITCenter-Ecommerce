@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUploadedImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +10,15 @@ use Illuminate\Support\Str;
 
 class Brand extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasUploadedImage;
+
+    /**
+     * Image columns managed by HasUploadedImage trait.
+     */
+    protected function imageColumns(): array
+    {
+        return ['logo'];
+    }
 
     protected $fillable = [
         'name_en',

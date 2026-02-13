@@ -275,6 +275,12 @@ return [
     'order_error' => 'An error occurred while processing your order. Please try again.',
     'order_placed_successfully' => 'Your order has been placed successfully!',
     'return_to_orders_list' => 'Return to orders list?',
+    'checkout_token_invalid' => 'Your checkout session has expired or this order was already submitted. Please try again.',
+    'order_confirmed_title' => 'Order Confirmed!',
+    'order_confirmed_subtitle' => 'Thank you for your purchase. Your order has been placed successfully.',
+    'view_order_details' => 'View Order Details',
+    'continue_shopping_home' => 'Continue Shopping',
+    'order_confirmed_note' => 'You will receive updates about your order status.',
 
     // Palestine Shipping Validation
     'select_city' => 'Select City',
@@ -1022,6 +1028,11 @@ return [
     'payment_paid' => 'Paid',
     'payment_failed' => 'Payment Failed',
     'payment_refunded' => 'Refunded',
+    'please_login' => 'Please login first',
+    'order_details' => 'Order Details',
+    'cannot_cancel_order' => 'This order can no longer be cancelled.',
+    'order_cancelled_successfully' => 'Order cancelled successfully.',
+    'confirm_cancel_order' => 'Are you sure you want to cancel this order?',
     
     // Contact Page
     'get_in_touch' => 'Get in touch with our team',

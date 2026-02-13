@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderCancellation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -41,6 +42,25 @@ class OrderController extends Controller
         return view('orders.index', compact('orders', 'statusCounts'));
     }
 
+    /**
+     * Display the order confirmation page (PRG pattern landing page)
+     */
+    public function confirmation($orderNumber)
+    {
+        $user = Auth::user();
+        
+        if (!$user) {
+            return redirect()->route('login')->with('error', __t('messages.please_login'));
+        }
+
+        $order = Order::with(['items.product', 'user'])
+            ->where('order_number', $orderNumber)
+            ->forUser($user->id)
+            ->firstOrFail();
+
+        return view('orders.confirmation', compact('order'));
+    }
+
     public function show($orderNumber)
     {
         $user = Auth::user();
@@ -57,12 +77,14 @@ class OrderController extends Controller
         return view('orders.show', compact('order'));
     }
 
-    public function cancel($orderNumber)
+    public function cancel(Request $request, $orderNumber)
     {
         $user = Auth::user();
         
         if (!$user) {
-            return redirect()->route('login')->with('error', __t('messages.please_login'));
+            return response()->json([
+                'message' => __t('messages.please_login'),
+            ], 401);
         }
 
         $order = Order::with('items.product')
@@ -71,10 +93,17 @@ class OrderController extends Controller
             ->firstOrFail();
 
         if (!$order->canBeCancelled()) {
-            return back()->with('error', __t('messages.cannot_cancel_order'));
+            return response()->json([
+                'message' => __t('messages.cannot_cancel_order'),
+            ], 403);
         }
 
-        DB::transaction(function () use ($order) {
+        $request->validate([
+            'reason' => 'required|string|max:255',
+            'note' => 'nullable|string|max:1000',
+        ]);
+
+        DB::transaction(function () use ($order, $request, $user) {
             // Restore stock for each order item
             foreach ($order->items as $item) {
                 if ($item->product && $item->product->track_stock) {
@@ -87,8 +116,17 @@ class OrderController extends Controller
                 'status' => 'cancelled',
                 'cancelled_at' => now(),
             ]);
+
+            OrderCancellation::create([
+                'order_id' => $order->id,
+                'user_id' => $user->id,
+                'reason' => $request->reason,
+                'note' => $request->note,
+            ]);
         });
 
-        return back()->with('success', __t('messages.order_cancelled_successfully'));
+        return response()->json([
+            'message' => __t('messages.order_cancelled_successfully'),
+        ]);
     }
 }

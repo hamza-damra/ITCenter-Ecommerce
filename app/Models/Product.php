@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUploadedImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +10,16 @@ use Illuminate\Support\Str;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasUploadedImage;
+
+    /**
+     * Image columns managed by HasUploadedImage trait.
+     * Files in these columns are auto-deleted on force delete and cleaned up on update.
+     */
+    protected function imageColumns(): array
+    {
+        return ['main_image'];
+    }
 
     protected $fillable = [
         'name_en',

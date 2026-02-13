@@ -2,12 +2,22 @@
 
 namespace App\Models;
 
+use App\Traits\HasUploadedImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ProductImage extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUploadedImage;
+
+    /**
+     * Image columns managed by HasUploadedImage trait.
+     * Files in these columns are auto-deleted on delete and cleaned up on update.
+     */
+    protected function imageColumns(): array
+    {
+        return ['image_path', 'thumbnail_path'];
+    }
 
     protected $fillable = [
         'product_id',

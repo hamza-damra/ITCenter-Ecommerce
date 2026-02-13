@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
 {
@@ -36,6 +37,7 @@ class Order extends Model
         'shipped_at',
         'delivered_at',
         'cancelled_at',
+        'approved_at',
     ];
 
     protected $casts = [
@@ -48,6 +50,7 @@ class Order extends Model
         'shipped_at' => 'datetime',
         'delivered_at' => 'datetime',
         'cancelled_at' => 'datetime',
+        'approved_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -61,6 +64,11 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function cancellation(): HasOne
+    {
+        return $this->hasOne(OrderCancellation::class);
     }
 
     // Accessors
@@ -127,6 +135,15 @@ class Order extends Model
 
     public function canBeCancelled(): bool
     {
-        return in_array($this->status, ['pending', 'processing']);
+        return $this->status === 'pending'
+            && !$this->approved_at
+            && !$this->shipped_at
+            && $this->created_at->diffInMinutes(now()) <= 30;
+    }
+
+    public function getCancellationWindowRemainingAttribute(): int
+    {
+        $minutes = 30 - $this->created_at->diffInMinutes(now());
+        return max(0, $minutes);
     }
 }

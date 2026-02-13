@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function () {
 // Order Routes (Protected)
 Route::middleware('auth')->group(function () {
     Route::get('/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{orderNumber}/confirmation', [App\Http\Controllers\OrderController::class, 'confirmation'])->name('orders.confirmation');
     Route::get('/orders/{orderNumber}', [App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{orderNumber}/cancel', [App\Http\Controllers\OrderController::class, 'cancel'])->name('orders.cancel');
 });
@@ -431,6 +432,16 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         Route::delete('/shipping/regions/{region}', [App\Http\Controllers\Admin\ShippingManagementController::class, 'destroyRegion'])->name('shipping.regions.destroy');
         Route::delete('/shipping/cities/{city}', [App\Http\Controllers\Admin\ShippingManagementController::class, 'destroyCity'])->name('shipping.cities.destroy');
         Route::delete('/shipping/blocked-ranges/{blocked_range}', [App\Http\Controllers\Admin\ShippingManagementController::class, 'destroyBlockedRange'])->name('shipping.blocked-ranges.destroy');
+    });
+
+    // Image Upload (AJAX endpoints for admin forms)
+    Route::prefix('upload')->name('upload.')->group(function () {
+        Route::post('/product-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'uploadProductImage'])->name('product-image');
+        Route::post('/category-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'uploadCategoryImage'])->name('category-image');
+        Route::post('/brand-logo', [App\Http\Controllers\Admin\ImageUploadController::class, 'uploadBrandLogo'])->name('brand-logo');
+        Route::post('/banner-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'uploadBannerImage'])->name('banner-image');
+        Route::delete('/delete-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'deleteImage'])->name('delete-image');
+        Route::get('/check-storage', [App\Http\Controllers\Admin\ImageUploadController::class, 'checkStorage'])->name('check-storage');
     });
 
     // Employee Roles Management (Admin Only)

@@ -1476,6 +1476,7 @@
         <div class="checkout-form-section">
             <form id="checkout-form" method="POST" action="<?php echo e(route('checkout.process')); ?>">
                 <?php echo csrf_field(); ?>
+                <input type="hidden" name="checkout_token" value="<?php echo e($checkoutToken); ?>">
                 
                 <!-- Contact Information -->
                 <div class="section-title">
@@ -2062,12 +2063,22 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (response.status === 422) {
                 // Validation errors
                 return response.json().then(data => { throw data; });
+            } else if (response.status === 409) {
+                // Duplicate submission / stale checkout token
+                return response.json().then(data => {
+                    if (data.success && data.redirect) {
+                        // Recent order found — redirect to its confirmation
+                        window.location.replace(data.redirect);
+                        return null;
+                    }
+                    throw { tokenError: true, message: data.message || '<?php echo e(__("messages.checkout_token_invalid")); ?>' };
+                });
             } else {
                 throw { message: 'Server error' };
             }
         })
         .then(data => {
-            if (data.success && data.redirect) {
+            if (data && data.success && data.redirect) {
                 // Use location.replace() to REPLACE checkout in browser history
                 // so back button won't return to checkout page
                 window.location.replace(data.redirect);
@@ -2076,7 +2087,14 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(errData => {
             if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = originalText; }
             if (mobileSubmitBtn) { mobileSubmitBtn.disabled = false; mobileSubmitBtn.innerHTML = mobileOriginalText; }
-            if (errData && errData.errors) {
+            if (errData && errData.tokenError) {
+                // Checkout token expired / duplicate submission
+                let errorHtml = '<div class="checkout-errors"><ul><li>' + errData.message + '</li></ul></div>';
+                const existingErrors = document.querySelector('.checkout-errors');
+                if (existingErrors) existingErrors.remove();
+                document.querySelector('.shipping-notice').insertAdjacentHTML('afterend', errorHtml);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (errData && errData.errors) {
                 let errorHtml = '<div class="checkout-errors"><ul>';
                 Object.values(errData.errors).forEach(errs => {
                     errs.forEach(err => { errorHtml += '<li>' + err + '</li>'; });

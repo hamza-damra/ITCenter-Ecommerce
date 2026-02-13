@@ -243,6 +243,12 @@ return [
     'order_error' => 'אירעה שגיאה בעיבוד ההזמנה שלך. אנא נסה שוב.',
     'order_placed_successfully' => 'ההזמנה שלך בוצעה בהצלחה!',
     'return_to_orders_list' => 'לחזור לרשימת ההזמנות?',
+    'checkout_token_invalid' => 'פג תוקף הקופה או שההזמנה כבר נשלחה. אנא נסה שוב.',
+    'order_confirmed_title' => 'ההזמנה אושרה!',
+    'order_confirmed_subtitle' => 'תודה על הרכישה. ההזמנה שלך בוצעה בהצלחה.',
+    'view_order_details' => 'צפה בפרטי ההזמנה',
+    'continue_shopping_home' => 'המשך קניות',
+    'order_confirmed_note' => 'תקבל עדכונים על סטטוס ההזמנה שלך.',
 
     // Palestine Shipping Validation
     'select_city' => 'בחר עיר',
@@ -338,6 +344,11 @@ return [
     'payment_paid' => 'שולם',
     'payment_failed' => 'תשלום נכשל',
     'payment_refunded' => 'הוחזר',
+    'please_login' => 'אנא התחבר תחילה',
+    'order_details' => 'פרטי הזמנה',
+    'cannot_cancel_order' => 'לא ניתן לבטל הזמנה זו יותר.',
+    'order_cancelled_successfully' => 'ההזמנה בוטלה בהצלחה.',
+    'confirm_cancel_order' => 'האם אתה בטוח שברצונך לבטל הזמנה זו?',
     
     'error_removing_cart' => 'שגיאה בהסרת פריט מהעגלה',
     'checkout_coming_soon' => 'תכונת תשלום בקרוב!',

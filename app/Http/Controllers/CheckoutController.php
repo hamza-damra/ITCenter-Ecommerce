@@ -24,7 +24,7 @@ class CheckoutController extends Controller
      * Display the checkout page
      * IMPORTANT: Only accessible to authenticated users
      */
-    public function index()
+    public function index()  
     {
         // Extra defensive check (middleware already protects this route)
         if (!Auth::check()) {
@@ -69,8 +69,12 @@ class CheckoutController extends Controller
         $shippingCountry = ShippingSetting::getValue('shipping_country', 'Palestine');
         $postalCodeDigits = (int) ShippingSetting::getValue('postal_code_digits', 7);
 
+        // Generate unique checkout token to prevent duplicate order submissions
+        $checkoutToken = bin2hex(random_bytes(32));
+        Session::put('checkout_token', $checkoutToken);
+
         return response()
-            ->view('checkout', compact('cartItems', 'subtotal', 'tax', 'shippingFee', 'total', 'user', 'shippingRegions', 'shippingCountry', 'postalCodeDigits'))
+            ->view('checkout', compact('cartItems', 'subtotal', 'tax', 'shippingFee', 'total', 'user', 'shippingRegions', 'shippingCountry', 'postalCodeDigits', 'checkoutToken'))
             ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
             ->header('Pragma', 'no-cache')
             ->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
@@ -86,6 +90,39 @@ class CheckoutController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')
                 ->with('error', __('messages.must_login_to_place_order'));
+        }
+
+        // Validate checkout token to prevent duplicate submissions
+        $submittedToken = $request->input('checkout_token');
+        $sessionToken = Session::get('checkout_token');
+
+        if (!$submittedToken || !$sessionToken || !hash_equals($sessionToken, $submittedToken)) {
+            // Token mismatch — likely a duplicate submission or stale form
+            // Check if user already has a recent order (cart was already converted)
+            $recentOrder = Order::where('user_id', Auth::id())
+                ->where('created_at', '>=', now()->subMinutes(5))
+                ->latest()
+                ->first();
+
+            if ($recentOrder) {
+                // Redirect to existing order confirmation
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json([
+                        'success' => true,
+                        'redirect' => route('orders.confirmation', $recentOrder->order_number),
+                    ]);
+                }
+                return redirect()->route('orders.confirmation', $recentOrder->order_number);
+            }
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('messages.checkout_token_invalid'),
+                ], 409);
+            }
+            return redirect()->route('checkout.index')
+                ->with('error', __('messages.checkout_token_invalid'));
         }
 
         // Validate the request with strict Palestine shipping rules
@@ -238,24 +275,27 @@ class CheckoutController extends Controller
 
             DB::commit();
 
+            // Invalidate checkout token to prevent duplicate submissions
+            Session::forget('checkout_token');
+
             // Clear session to prevent back button issues
             Session::forget('cart_identifier');
             
-            // Flash success message for the order page
+            // Flash success message for the confirmation page
             Session::flash('success', __('messages.order_placed_successfully'));
             Session::flash('order_completed', true);
 
+            // PRG Pattern: Redirect to dedicated confirmation page
             // For AJAX requests: return JSON with redirect URL so client can use location.replace()
-            // This prevents the checkout page from remaining in browser history
             if ($request->ajax() || $request->wantsJson()) {
                 return response()->json([
                     'success' => true,
-                    'redirect' => route('orders.show', $order->order_number),
+                    'redirect' => route('orders.confirmation', $order->order_number),
                 ]);
             }
 
-            // For non-AJAX: standard redirect
-            return redirect()->route('orders.show', $order->order_number);
+            // For non-AJAX: standard PRG redirect to confirmation
+            return redirect()->route('orders.confirmation', $order->order_number);
                 
         } catch (\App\Exceptions\OutOfStockException $e) {
             DB::rollBack();

@@ -243,6 +243,12 @@ return [
     'order_error' => 'حدث خطأ أثناء معالجة طلبك. يرجى المحاولة مرة أخرى.',
     'order_placed_successfully' => 'تم تقديم طلبك بنجاح!',
     'return_to_orders_list' => 'العودة إلى قائمة الطلبات؟',
+    'checkout_token_invalid' => 'انتهت جلسة الدفع أو تم تقديم هذا الطلب بالفعل. يرجى المحاولة مرة أخرى.',
+    'order_confirmed_title' => 'تم تأكيد الطلب!',
+    'order_confirmed_subtitle' => 'شكراً لشرائك. تم تقديم طلبك بنجاح.',
+    'view_order_details' => 'عرض تفاصيل الطلب',
+    'continue_shopping_home' => 'متابعة التسوق',
+    'order_confirmed_note' => 'ستتلقى تحديثات حول حالة طلبك.',
 
     // Palestine Shipping Validation
     'select_city' => 'اختر المدينة',
