@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\SendResetCodeMail;
 use App\Models\PasswordResetCode;
 use App\Models\User;
+use App\Notifications\SendOtpVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 
@@ -63,23 +62,23 @@ class ForgotPasswordController extends Controller
         // Generate a 6-digit code
         $code = PasswordResetCode::generateCode();
 
-        // Store the code in the database
+        // Store the code in the database (60-minute expiry)
         PasswordResetCode::create([
             'email' => $email,
             'code' => $code,
-            'expires_at' => Carbon::now()->addMinutes(10),
+            'expires_at' => Carbon::now()->addMinutes(60),
             'used' => false,
             'attempts' => 0,
         ]);
 
-        // Send the code via email (only if the user exists, but don't reveal this)
+        // Send the notification (only if the user exists, but don't reveal this)
         $user = User::where('email', $email)->first();
         if ($user) {
             try {
-                Mail::to($email)->send(new SendResetCodeMail($code, $email));
+                $user->notify(new SendOtpVerification($code));
             } catch (\Exception $e) {
                 // Log the error but don't reveal to the user
-                \Log::error('Failed to send reset code email: ' . $e->getMessage());
+                \Log::error('Failed to send OTP verification email: ' . $e->getMessage());
             }
         }
 

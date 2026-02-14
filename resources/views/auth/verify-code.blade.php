@@ -219,9 +219,9 @@
                             value="{{ old('code') }}" 
                             required 
                             autofocus
-                            maxlength="4"
-                            pattern="[0-9]{4}"
-                            placeholder="****"
+                            maxlength="6"
+                            pattern="[0-9]{6}"
+                            placeholder="******"
                         >
                     </div>
                     @error('code')

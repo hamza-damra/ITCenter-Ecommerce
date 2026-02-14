@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,10 @@ Route::prefix('v1')->group(function () {
         Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:10,1');
         Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->middleware('throttle:3,1');
         Route::post('/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:5,1');
+
+        // OTP-based Password Reset
+        Route::post('/send-otp', [PasswordResetController::class, 'sendOtp'])->middleware('throttle:3,1');
+        Route::post('/verify-otp-reset', [PasswordResetController::class, 'verifyOtpAndReset'])->middleware('throttle:5,1');
         
         // Protected Authentication Routes
         Route::middleware('auth:sanctum')->group(function () {
