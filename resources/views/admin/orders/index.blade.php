@@ -26,7 +26,7 @@
                 </div>
                 <div class="hero-stat-divider"></div>
                 <div class="hero-stat highlight">
-                    <span class="hero-stat-value">₪{{ number_format($stats['total_revenue'], 0) }}</span>
+                    <span class="hero-stat-value">&#8362;{{ number_format($stats['total_revenue'], 0) }}</span>
                     <span class="hero-stat-label">{{ __('messages.revenue') }}</span>
                 </div>
             </div>
@@ -252,7 +252,7 @@
                             <span class="items-badge">{{ $order->items->count() }}</span>
                         </td>
                         <td>
-                            <span class="order-total">₪{{ number_format($order->total, 2) }}</span>
+                            <span class="order-total">&#8362;{{ number_format($order->total, 2) }}</span>
                         </td>
                         <td>
                             <span class="status-chip status-{{ $order->status }}">

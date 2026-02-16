@@ -308,10 +308,10 @@
                         <strong>{{ $offer->title }}</strong>
                     </td>
                     <td>
-                        <span class="price-original">₪{{ number_format($offer->original_price, 2) }}</span>
+                        <span class="price-original">&#8362;{{ number_format($offer->original_price, 2) }}</span>
                     </td>
                     <td>
-                        <span class="price-sale">₪{{ number_format($offer->sale_price, 2) }}</span>
+                        <span class="price-sale">&#8362;{{ number_format($offer->sale_price, 2) }}</span>
                     </td>
                     <td>
                         <span class="discount-badge">

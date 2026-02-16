@@ -73,6 +73,8 @@ return [
     'mark_as_strong_promotional_offer' => 'סמן כהצעה קידומית חזקה לסינון',
     'discount_percentage' => 'אחוז הנחה',
     'discount_percentage_help' => 'הזן אחוז הנחה בין 0 ל-100',
+    'save_label' => "\xD7\x97\xD7\xA1\xD7\x9B\xD7\x95\xD7\x9F",
+    'order_now' => "\xD7\x94\xD7\x96\xD7\x9E\xD7\x9F \xD7\xA2\xD7\x9B\xD7\xA9\xD7\x99\xD7\x95",
     'save_amount' => 'חסוך :amount',
     'game_controller_offer' => 'בקר משחקים + כבל USB 3.0',
     'hurry_up_offer_ends' => 'מהרו! ההצעה מסתיימת בעוד:',

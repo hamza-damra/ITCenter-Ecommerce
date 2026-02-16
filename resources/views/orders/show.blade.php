@@ -548,7 +548,7 @@
                             <div class="item-meta">
                                 <div class="item-meta-item">
                                     <i class="fas fa-hashtag"></i>
-                                    <span>{{ $item->quantity }} x ${{ number_format($item->price, 2) }}</span>
+                                    <span>{{ $item->quantity }} x &#8362;{{ number_format($item->price, 2) }}</span>
                                 </div>
                                 @if($item->product_sku)
                                     <div class="item-meta-item">
@@ -560,10 +560,10 @@
                         </div>
 
                         <div class="item-pricing">
-                            <div class="item-price">${{ number_format($item->subtotal, 2) }}</div>
+                            <div class="item-price">&#8362;{{ number_format($item->subtotal, 2) }}</div>
                             @if($item->has_discount)
                                 <div class="item-original-price">
-                                    ${{ number_format($item->original_price * $item->quantity, 2) }}
+                                    &#8362;{{ number_format($item->original_price * $item->quantity, 2) }}
                                 </div>
                             @endif
                             <div class="item-subtotal">
@@ -719,7 +719,7 @@
                             Subtotal
                         @endif
                     </span>
-                    <span class="summary-value">${{ number_format($order->subtotal, 2) }}</span>
+                    <span class="summary-value">&#8362;{{ number_format($order->subtotal, 2) }}</span>
                 </div>
 
                 @if($order->tax > 0)
@@ -733,7 +733,7 @@
                                 Tax
                             @endif
                         </span>
-                        <span class="summary-value">${{ number_format($order->tax, 2) }}</span>
+                        <span class="summary-value">&#8362;{{ number_format($order->tax, 2) }}</span>
                     </div>
                 @endif
 
@@ -749,7 +749,7 @@
                     </span>
                     <span class="summary-value">
                         @if($order->shipping_cost > 0)
-                            ${{ number_format($order->shipping_cost, 2) }}
+                            &#8362;{{ number_format($order->shipping_cost, 2) }}
                         @else
                             @if(current_locale() === 'ar')
                                 Ù…Ø¬Ø§Ù†ÙŠ
@@ -773,7 +773,7 @@
                                 Discount
                             @endif
                         </span>
-                        <span class="summary-value discount">-${{ number_format($order->discount, 2) }}</span>
+                        <span class="summary-value discount">-&#8362;{{ number_format($order->discount, 2) }}</span>
                     </div>
                 @endif
 
@@ -787,7 +787,7 @@
                             Total
                         @endif
                     </span>
-                    <span class="summary-value total">${{ number_format($order->total, 2) }}</span>
+                    <span class="summary-value total">&#8362;{{ number_format($order->total, 2) }}</span>
                 </div>
 
                 <!-- Actions -->

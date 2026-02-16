@@ -71,7 +71,7 @@
                                             data-image="{{ $product->main_image }}"
                                             data-name="{{ $product->name }}"
                                             {{ old('product_id') == $product->id ? 'selected' : '' }}>
-                                        {{ $product->name }} (₪{{ number_format($product->price, 2) }})
+                                        {{ $product->name }} (&#8362;{{ number_format($product->price, 2) }})
                                     </option>
                                     @endforeach
                                 </select>
@@ -255,7 +255,7 @@
                                     <span class="required-dot"></span>
                                 </label>
                                 <div class="currency-input">
-                                    <span class="currency-symbol">₪</span>
+                                    <span class="currency-symbol">&#8362;</span>
                                     <input type="number" step="0.01" name="original_price" id="original_price" 
                                            class="number-input" 
                                            value="{{ old('original_price') }}" 
@@ -274,7 +274,7 @@
                                     <span class="required-dot"></span>
                                 </label>
                                 <div class="currency-input sale">
-                                    <span class="currency-symbol">₪</span>
+                                    <span class="currency-symbol">&#8362;</span>
                                     <input type="number" step="0.01" name="sale_price" id="sale_price" 
                                            class="number-input" 
                                            value="{{ old('sale_price') }}" 
@@ -1439,7 +1439,7 @@ document.addEventListener('DOMContentLoaded', function() {
             productPreview.style.display = 'flex';
             previewImage.src = productImage;
             previewName.textContent = productName;
-            previewPrice.textContent = '₪' + parseFloat(productPrice).toFixed(2);
+            previewPrice.textContent = '&#8362;' + parseFloat(productPrice).toFixed(2);
 
             calculateDiscount();
         } else {
@@ -1463,7 +1463,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             discountDisplay.innerHTML = `
                 <div class="discount-result">
-                    <div class="discount-amount">-₪${discountAmount.toFixed(2)}</div>
+                    <div class="discount-amount">-&#8362;${discountAmount.toFixed(2)}</div>
                     <div class="discount-percent">
                         <i class="fas fa-arrow-down"></i>
                         ${discountPercentage}% OFF

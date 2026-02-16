@@ -330,7 +330,7 @@
                 <div class="price-input-wrapper">
                     <label for="minPriceInput" class="price-input-label">{{ $locale === 'ar' ? 'من' : ($locale === 'he' ? 'מ' : 'Min') }}</label>
                     <div class="price-input-group">
-                        <span class="price-currency">₪</span>
+                        <span class="price-currency">&#8362;</span>
                         <input type="number"
                                id="minPriceInput"
                                class="price-input"
@@ -344,7 +344,7 @@
                 <div class="price-input-wrapper">
                     <label for="maxPriceInput" class="price-input-label">{{ $locale === 'ar' ? 'إلى' : ($locale === 'he' ? 'עד' : 'Max') }}</label>
                     <div class="price-input-group">
-                        <span class="price-currency">₪</span>
+                        <span class="price-currency">&#8362;</span>
                         <input type="number"
                                id="maxPriceInput"
                                class="price-input"

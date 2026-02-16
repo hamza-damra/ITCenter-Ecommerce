@@ -637,11 +637,11 @@
 
                     <td>
                         <div class="product-price-cell">
-                            ${{ number_format($product->price, 2) }}
+                            &#8362;{{ number_format($product->price, 2) }}
                         </div>
                         @if($product->sale_price)
                             <div class="product-sale-price">
-                                ${{ number_format($product->sale_price, 2) }}
+                                &#8362;{{ number_format($product->sale_price, 2) }}
                             </div>
                         @endif
                     </td>

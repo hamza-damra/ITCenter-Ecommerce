@@ -784,7 +784,7 @@
                                 <a href="{{ route('product.detail', $item->product) }}" class="cart-item-title">
                                     {{ $item->product->name }}
                                 </a>
-                                <div class="cart-item-price">${{ number_format($item->price, 2) }}</div>
+                                <div class="cart-item-price">&#8362;{{ number_format($item->price, 2) }}</div>
                                 
                                 <div class="quantity-controls">
                                     <button class="quantity-btn decrease-qty" data-product-id="{{ $item->product_id }}">
@@ -800,7 +800,7 @@
                         
                         <div class="cart-item-actions">
                             <div class="cart-item-total">
-                                ${{ number_format($item->price * $item->quantity, 2) }}
+                                &#8362;{{ number_format($item->price * $item->quantity, 2) }}
                             </div>
                             <button class="remove-btn" data-product-id="{{ $item->product_id }}">
                                 <i class="fas fa-trash"></i>
@@ -817,7 +817,7 @@
                 
                 <div class="summary-row">
                     <span>{{ __('messages.subtotal') }}</span>
-                    <span class="amount" id="subtotal-amount">${{ number_format($total, 2) }}</span>
+                    <span class="amount" id="subtotal-amount">&#8362;{{ number_format($total, 2) }}</span>
                 </div>
                 
                 <div class="summary-row">
@@ -827,7 +827,7 @@
                 
                 <div class="summary-row total">
                     <span>{{ __('messages.total') }}</span>
-                    <span class="amount" id="total-amount">${{ number_format($total, 2) }}</span>
+                    <span class="amount" id="total-amount">&#8362;{{ number_format($total, 2) }}</span>
                 </div>
                 
                 <a href="{{ route('checkout.index') }}" class="checkout-btn" style="text-decoration: none;">

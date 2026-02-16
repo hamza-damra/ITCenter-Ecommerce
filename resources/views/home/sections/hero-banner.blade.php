@@ -89,11 +89,11 @@
                     <div class="hero-cta-buttons">
                         <a href="{{ route('products') }}" class="hero-cta-btn primary">
                             <i class="fas fa-shopping-bag"></i>
-                            {{ is_rtl() ? 'تسوق الآن' : 'Shop Now' }}
+                            {{ __t('messages.shop_now') }}
                         </a>
                         <a href="{{ route('products', ['filter' => 'sale']) }}" class="hero-cta-btn secondary">
                             <i class="fas fa-tags"></i>
-                            {{ is_rtl() ? 'العروض الخاصة' : 'Special Offers' }}
+                            {{ __t('messages.special_offers') }}
                         </a>
                     </div>
                 </div>

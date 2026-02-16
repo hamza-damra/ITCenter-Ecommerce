@@ -22,7 +22,7 @@
                         </div>
                         <div class="product-card-content">
                             <h3 class="product-card-title">{{ $relatedProduct->name }}</h3>
-                            <div class="product-card-price">${{ number_format($relatedProduct->final_price, 2) }}</div>
+                            <div class="product-card-price">&#8362;{{ number_format($relatedProduct->final_price, 2) }}</div>
                         </div>
                     </div>
                 </a>

@@ -980,9 +980,9 @@
                                     </div>
                                 </div>
                                 <div class="item-price">
-                                    <div class="current-price">${{ number_format($item->price, 2) }}</div>
+                                    <div class="current-price">&#8362;{{ number_format($item->price, 2) }}</div>
                                     @if($item->has_discount)
-                                        <div class="original-price">${{ number_format($item->original_price, 2) }}</div>
+                                        <div class="original-price">&#8362;{{ number_format($item->original_price, 2) }}</div>
                                     @endif
                                 </div>
                             </div>
@@ -1013,7 +1013,7 @@
                                     Total Amount
                                 @endif
                             </div>
-                            <div class="order-total-amount">${{ number_format($order->total, 2) }}</div>
+                            <div class="order-total-amount">&#8362;{{ number_format($order->total, 2) }}</div>
                         </div>
                         <div class="order-actions">
                             <a href="{{ route('orders.show', $order->order_number) }}" class="btn btn-primary">

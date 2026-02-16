@@ -1620,9 +1620,9 @@
                 </div>
 
                 <div class="product-price">
-                    <span class="current-price">${{ number_format($product->final_price, 2) }}</span>
+                    <span class="current-price">&#8362;{{ number_format($product->final_price, 2) }}</span>
                     @if($product->is_on_sale)
-                        <span class="original-price">${{ number_format($product->price, 2) }}</span>
+                        <span class="original-price">&#8362;{{ number_format($product->price, 2) }}</span>
                         <span class="discount-badge">-{{ $product->discount_percentage }}%</span>
                     @endif
                 </div>
@@ -1836,7 +1836,7 @@
                         </div>
                         <div class="product-card-content">
                             <h3 class="product-card-title">{{ $relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name }}</h3>
-                            <div class="product-card-price">${{ number_format($relatedProduct->final_price, 2) }}</div>
+                            <div class="product-card-price">&#8362;{{ number_format($relatedProduct->final_price, 2) }}</div>
                         </div>
                     </div>
                 </a>

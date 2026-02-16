@@ -73,6 +73,8 @@ return [
     'mark_as_strong_promotional_offer' => 'Mark as strong promotional offer for filtering',
     'discount_percentage' => 'Discount Percentage',
     'discount_percentage_help' => 'Enter discount percentage between 0 and 100',
+    'save_label' => 'Save',
+    'order_now' => 'Order Now',
     'save_amount' => 'Save :amount',
     'game_controller_offer' => 'Game Console Controller + USB 3.0 Cable',
     'hurry_up_offer_ends' => 'Hurry Up! Offer ends in:',

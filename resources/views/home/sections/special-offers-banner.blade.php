@@ -68,12 +68,12 @@
                                     <div class="product-footer">
                                         <div class="product-price">
                                             @if($featuredProducts[6]->sale_price && $featuredProducts[6]->sale_price < $featuredProducts[6]->price)
-                                                <span class="original-price">₪
+                                                <span class="original-price">&#8362;
                                                     {{ number_format($featuredProducts[6]->price, 0) }}</span>
-                                                <span class="current-price">₪
+                                                <span class="current-price">&#8362;
                                                     {{ number_format($featuredProducts[6]->sale_price, 0) }}</span>
                                             @else
-                                                <span class="current-price">₪ {{ number_format($featuredProducts[6]->price, 0) }}</span>
+                                                <span class="current-price">&#8362; {{ number_format($featuredProducts[6]->price, 0) }}</span>
                                             @endif
                                         </div>
                                         @if($featuredProducts[6]->stock_status === 'out_of_stock')
@@ -128,12 +128,12 @@
                                     <div class="product-footer">
                                         <div class="product-price">
                                             @if($featuredProducts[7]->sale_price && $featuredProducts[7]->sale_price < $featuredProducts[7]->price)
-                                                <span class="original-price">₪
+                                                <span class="original-price">&#8362;
                                                     {{ number_format($featuredProducts[7]->price, 0) }}</span>
-                                                <span class="current-price">₪
+                                                <span class="current-price">&#8362;
                                                     {{ number_format($featuredProducts[7]->sale_price, 0) }}</span>
                                             @else
-                                                <span class="current-price">₪ {{ number_format($featuredProducts[7]->price, 0) }}</span>
+                                                <span class="current-price">&#8362; {{ number_format($featuredProducts[7]->price, 0) }}</span>
                                             @endif
                                         </div>
                                         @if($featuredProducts[7]->stock_status === 'out_of_stock')

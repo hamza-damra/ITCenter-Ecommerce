@@ -387,7 +387,7 @@
         </div>
         <div class="meta-item">
             <div class="meta-label">{{ __('messages.total_amount') }}</div>
-            <div class="meta-value">${{ number_format($order->total, 2) }}</div>
+            <div class="meta-value">&#8362;{{ number_format($order->total, 2) }}</div>
         </div>
     </div>
 </div>
@@ -417,14 +417,14 @@
                     <div class="item-details">
                         <div class="item-name">{{ $item->product_name }}</div>
                         <div class="item-info">
-                            {{ __('messages.quantity') }}: {{ $item->quantity }} × ${{ number_format($item->price, 2) }}
+                            {{ __('messages.quantity') }}: {{ $item->quantity }} × &#8362;{{ number_format($item->price, 2) }}
                             @if($item->product_sku)
                                 | {{ __('messages.sku') }}: {{ $item->product_sku }}
                             @endif
                         </div>
                     </div>
                     <div class="item-price">
-                        ${{ number_format($item->subtotal, 2) }}
+                        &#8362;{{ number_format($item->subtotal, 2) }}
                     </div>
                 </div>
             @endforeach
@@ -479,19 +479,19 @@
             
             <div class="summary-row">
                 <span>{{ __('messages.subtotal') }}:</span>
-                <strong>${{ number_format($order->subtotal, 2) }}</strong>
+                <strong>&#8362;{{ number_format($order->subtotal, 2) }}</strong>
             </div>
             @if($order->tax > 0)
                 <div class="summary-row">
                     <span>{{ __('messages.tax') }}:</span>
-                    <strong>${{ number_format($order->tax, 2) }}</strong>
+                    <strong>&#8362;{{ number_format($order->tax, 2) }}</strong>
                 </div>
             @endif
             <div class="summary-row">
                 <span>{{ __('messages.shipping') }}:</span>
                 <strong>
                     @if($order->shipping_cost > 0)
-                        ${{ number_format($order->shipping_cost, 2) }}
+                        &#8362;{{ number_format($order->shipping_cost, 2) }}
                     @else
                         {{ __('messages.free') }}
                     @endif
@@ -500,12 +500,12 @@
             @if($order->discount > 0)
                 <div class="summary-row">
                     <span>{{ __('messages.discount') }}:</span>
-                    <strong style="color: #10b981;">-${{ number_format($order->discount, 2) }}</strong>
+                    <strong style="color: #10b981;">-&#8362;{{ number_format($order->discount, 2) }}</strong>
                 </div>
             @endif
             <div class="summary-row total">
                 <span>{{ __('messages.total') }}:</span>
-                <span>${{ number_format($order->total, 2) }}</span>
+                <span>&#8362;{{ number_format($order->total, 2) }}</span>
             </div>
         </div>
 

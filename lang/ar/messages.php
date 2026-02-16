@@ -73,6 +73,8 @@ return [
     'mark_as_strong_promotional_offer' => 'وضع علامة كعرض ترويجي قوي للتصفية',
     'discount_percentage' => 'نسبة الخصم',
     'discount_percentage_help' => 'أدخل نسبة الخصم بين 0 و 100',
+    'save_label' => "\xD9\x88\xD9\x81\xD8\xB1",
+    'order_now' => "\xD8\xA7\xD8\xB7\xD9\x84\xD8\xA8 \xD8\xA7\xD9\x84\xD8\xA2\xD9\x86",
     'save_amount' => 'وفر :amount',
     'game_controller_offer' => 'جهاز تحكم الألعاب + كابل USB 3.0',
     'hurry_up_offer_ends' => 'أسرع! العرض ينتهي خلال:',

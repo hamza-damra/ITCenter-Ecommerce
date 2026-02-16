@@ -36,7 +36,7 @@
                         <option value="">{{ __('messages.select_product_placeholder') }}</option>
                         @foreach($products as $product)
                         <option value="{{ $product->id }}" data-price="{{ $product->price }}" {{ old('product_id', $promotionalOffer->product_id) == $product->id ? 'selected' : '' }}>
-                            {{ $product->name }} (₪{{ number_format($product->price, 2) }})
+                            {{ $product->name }} (&#8362;{{ number_format($product->price, 2) }})
                         </option>
                         @endforeach
                     </select>
@@ -175,7 +175,7 @@ function calculateDiscount() {
         const discount = original - sale;
         const percentage = Math.round((discount / original) * 100);
         document.getElementById('discount_preview').innerHTML = `
-            <span style="color: #28a745;">وفر ₪${discount.toFixed(2)} (${percentage}%)</span>
+            <span style="color: #28a745;">وفر &#8362;${discount.toFixed(2)} (${percentage}%)</span>
         `;
     } else {
         document.getElementById('discount_preview').textContent = '--';

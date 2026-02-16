@@ -858,7 +858,7 @@
                 <div class="product-title">Transcend 1TB ESD270C</div>
                 <div class="product-description">The Transcend ESD270C 1TB Portable External SSD</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 390</div>
+                    <div class="product-price">&#8362; 390</div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>
@@ -875,7 +875,7 @@
                 <div class="product-title">EMK Optical Splitter</div>
                 <div class="product-description">The EMK Optical Splitter 1in to 2out</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 25</div>
+                    <div class="product-price">&#8362; 25</div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>
@@ -893,7 +893,7 @@
                 <div class="product-title">Mechanical Keyboard RGB</div>
                 <div class="product-description">Gaming mechanical keyboard with customizable RGB lighting</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 129</div>
+                    <div class="product-price">&#8362; 129</div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>
@@ -910,7 +910,7 @@
                 <div class="product-title">USB-C to Lightning</div>
                 <div class="product-description">The Cycle Premium USB-C to Lightning Cable</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 19</div>
+                    <div class="product-price">&#8362; 19</div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>
@@ -928,7 +928,7 @@
                 <div class="product-title">Samsung 27" 4K Monitor</div>
                 <div class="product-description">Ultra HD display with HDR support</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 499</div>
+                    <div class="product-price">&#8362; 499</div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>
@@ -945,7 +945,7 @@
                 <div class="product-title">Logitech G Pro Wireless</div>
                 <div class="product-description">Professional gaming mouse with HERO sensor</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 149</div>
+                    <div class="product-price">&#8362; 149</div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>
@@ -963,7 +963,7 @@
                 <div class="product-title">Xbox Wireless Controller</div>
                 <div class="product-description">Compatible with Xbox and PC</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 59</div>
+                    <div class="product-price">&#8362; 59</div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>
@@ -980,7 +980,7 @@
                 <div class="product-title">Logitech C920 HD Pro</div>
                 <div class="product-description">Full HD 1080p webcam for streaming</div>
                 <div class="product-footer">
-                    <div class="product-price">₪ 89</div>
+                    <div class="product-price">&#8362; 89</div>
                     <button class="add-to-cart" onclick="event.stopPropagation();">Add to cart</button>
                 </div>
             </div>

@@ -69,10 +69,10 @@
                                     <div class="product-footer">
                                         <div class="product-price">
                                             @if($giftIdeas[0]->sale_price && $giftIdeas[0]->sale_price < $giftIdeas[0]->price)
-                                                <span class="original-price">₪ {{ number_format($giftIdeas[0]->price, 0) }}</span>
-                                                <span class="current-price">₪ {{ number_format($giftIdeas[0]->sale_price, 0) }}</span>
+                                                <span class="original-price">&#8362; {{ number_format($giftIdeas[0]->price, 0) }}</span>
+                                                <span class="current-price">&#8362; {{ number_format($giftIdeas[0]->sale_price, 0) }}</span>
                                             @else
-                                                <span class="current-price">₪ {{ number_format($giftIdeas[0]->price, 0) }}</span>
+                                                <span class="current-price">&#8362; {{ number_format($giftIdeas[0]->price, 0) }}</span>
                                             @endif
                                         </div>
                                         @if($giftIdeas[0]->stock_status === 'out_of_stock')
@@ -124,10 +124,10 @@
                                     <div class="product-footer">
                                         <div class="product-price">
                                             @if($giftIdeas[1]->sale_price && $giftIdeas[1]->sale_price < $giftIdeas[1]->price)
-                                                <span class="original-price">₪ {{ number_format($giftIdeas[1]->price, 0) }}</span>
-                                                <span class="current-price">₪ {{ number_format($giftIdeas[1]->sale_price, 0) }}</span>
+                                                <span class="original-price">&#8362; {{ number_format($giftIdeas[1]->price, 0) }}</span>
+                                                <span class="current-price">&#8362; {{ number_format($giftIdeas[1]->sale_price, 0) }}</span>
                                             @else
-                                                <span class="current-price">₪ {{ number_format($giftIdeas[1]->price, 0) }}</span>
+                                                <span class="current-price">&#8362; {{ number_format($giftIdeas[1]->price, 0) }}</span>
                                             @endif
                                         </div>
                                         @if($giftIdeas[1]->stock_status === 'out_of_stock')

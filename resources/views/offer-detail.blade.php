@@ -425,7 +425,7 @@
                             @if($offer->discount_type === 'percentage')
                                 {{ $offer->discount_value }}% OFF
                             @else
-                                ₪{{ number_format($offer->discount_value, 0) }} OFF
+                                &#8362;{{ number_format($offer->discount_value, 0) }} OFF
                             @endif
                         </span>
                     </div>
@@ -473,7 +473,7 @@
                     @if($offer->discount_type === 'percentage')
                         {{ $offer->discount_value }}%
                     @else
-                        ₪{{ number_format($offer->discount_value, 0) }}
+                        &#8362;{{ number_format($offer->discount_value, 0) }}
                     @endif
                 </div>
                 <div class="stat-label">Discount Value</div>
@@ -481,7 +481,7 @@
             @endif
             @if($offer->min_purchase_amount)
             <div class="stat-card">
-                <div class="stat-value">₪{{ number_format($offer->min_purchase_amount, 0) }}</div>
+                <div class="stat-value">&#8362;{{ number_format($offer->min_purchase_amount, 0) }}</div>
                 <div class="stat-label">Minimum Purchase</div>
             </div>
             @endif
@@ -505,7 +505,7 @@
                         @if($offer->discount_type === 'percentage')
                         <div class="discount-badge">-{{ $offer->discount_value }}%</div>
                         @elseif($offer->discount_type === 'fixed')
-                        <div class="discount-badge">-₪{{ number_format($offer->discount_value, 0) }}</div>
+                        <div class="discount-badge">-&#8362;{{ number_format($offer->discount_value, 0) }}</div>
                         @endif
                         
                         @if($product->is_new)
@@ -531,14 +531,14 @@
 
                         <div class="product-pricing">
                             @if($product->sale_price && $product->sale_price < $product->price)
-                                <span class="original-price">₪{{ number_format($product->price, 0) }}</span>
-                                <span class="sale-price">₪{{ number_format($product->sale_price, 0) }}</span>
+                                <span class="original-price">&#8362;{{ number_format($product->price, 0) }}</span>
+                                <span class="sale-price">&#8362;{{ number_format($product->sale_price, 0) }}</span>
                                 @php
                                     $savings = (($product->price - $product->sale_price) / $product->price) * 100;
                                 @endphp
                                 <span class="savings">Save {{ number_format($savings, 0) }}%</span>
                             @else
-                                <span class="sale-price">₪{{ number_format($product->price, 0) }}</span>
+                                <span class="sale-price">&#8362;{{ number_format($product->price, 0) }}</span>
                             @endif
                         </div>
 

@@ -319,7 +319,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <span class="price-pro">₪{{ number_format($product->price, 2) }}</span>
+                                    <span class="price-pro">&#8362;{{ number_format($product->price, 2) }}</span>
                                 </td>
                                 <td>
                                     <span class="stock-badge {{ $product->stock_quantity > 10 ? 'good' : ($product->stock_quantity > 0 ? 'low' : 'out') }}">
@@ -421,7 +421,7 @@
                     <i class="fas fa-shopping-cart"></i>
                 </div>
                 <div class="analytics-content" @if($isRtl) style="text-align: right !important; align-items: flex-start !important;" @endif>
-                    <span class="analytics-value">₪{{ number_format($stats['cart_value'] ?? 0, 2) }}</span>
+                    <span class="analytics-value">&#8362;{{ number_format($stats['cart_value'] ?? 0, 2) }}</span>
                     <span class="analytics-label">{{ __('messages.total_cart_value') }}</span>
                     <span class="analytics-sub">{{ $stats['active_carts'] ?? 0 }} {{ __('messages.active_carts') }}</span>
                 </div>
@@ -446,7 +446,7 @@
                     <i class="fas fa-warehouse"></i>
                 </div>
                 <div class="analytics-content" @if($isRtl) style="text-align: right !important; align-items: flex-start !important;" @endif>
-                    <span class="analytics-value">₪{{ number_format($stats['total_stock_value'] ?? 0, 0) }}</span>
+                    <span class="analytics-value">&#8362;{{ number_format($stats['total_stock_value'] ?? 0, 0) }}</span>
                     <span class="analytics-label">{{ __('messages.total_stock_value') }}</span>
                     <span class="analytics-sub">{{ __('messages.inventory_value') }}</span>
                 </div>
@@ -511,7 +511,7 @@
                                 <span class="reviews-count">({{ $product->reviews_count }})</span>
                             </div>
                         </div>
-                        <span class="rated-product-price">₪{{ number_format($product->price, 2) }}</span>
+                        <span class="rated-product-price">&#8362;{{ number_format($product->price, 2) }}</span>
                     </div>
                     @endforeach
                 </div>
