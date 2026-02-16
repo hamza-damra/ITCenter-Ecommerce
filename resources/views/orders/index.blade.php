@@ -795,13 +795,7 @@
                 {{ __t('messages.my_orders') }}
             </h1>
             <p class="page-subtitle">
-                @if(current_locale() === 'ar')
-                    ØªØªØ¨Ø¹ ÙˆØ¥Ø¯Ø§Ø±Ø© Ø¬Ù…ÙŠØ¹ Ø·Ù„Ø¨Ø§ØªÙƒ Ù…Ù† Ù…ÙƒØ§Ù† ÙˆØ§Ø­Ø¯
-                @elseif(current_locale() === 'he')
-                    ×¢×§×•×‘ ×•× ×™×”×œ ××ª ×›×œ ×”×”×–×ž× ×•×ª ×©×œ×š ×ž×ž×§×•× ××—×“
-                @else
-                    Track and manage all your orders in one place
-                @endif
+                {{ __t('messages.track_orders_desc') }}
             </p>
         </div>
     </div>
@@ -812,13 +806,7 @@
             <a href="{{ route('orders.index', ['status' => 'all']) }}" 
                class="status-tab {{ (!request('status') || request('status') === 'all') ? 'active' : '' }}">
                 <i class="fas fa-list"></i>
-                @if(current_locale() === 'ar')
-                    Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø·Ù„Ø¨Ø§Øª
-                @elseif(current_locale() === 'he')
-                    ×›×œ ×”×”×–×ž× ×•×ª
-                @else
-                    All Orders
-                @endif
+                {{ __t('messages.all_orders') }}
                 <span class="status-count">{{ $statusCounts['all'] }}</span>
             </a>
 
@@ -884,13 +872,7 @@
                             <div class="order-info-item">
                                 <i class="fas fa-box"></i>
                                 <span>{{ $order->items->count() }} 
-                                    @if(current_locale() === 'ar')
-                                        Ù…Ù†ØªØ¬
-                                    @elseif(current_locale() === 'he')
-                                        ×ž×•×¦×¨×™×
-                                    @else
-                                        items
-                                    @endif
+                                    {{ __t('messages.items') }}
                                 </span>
                             </div>
                             <div class="order-info-item">
@@ -972,13 +954,7 @@
                                     <button type="submit" class="btn btn-secondary" 
                                             onclick="return confirm('{{ __t('messages.confirm_cancel_order') }}')">
                                         <i class="fas fa-times"></i>
-                                        @if(current_locale() === 'ar')
-                                            Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø·Ù„Ø¨
-                                        @elseif(current_locale() === 'he')
-                                            ×‘×˜×œ ×”×–×ž× ×”
-                                        @else
-                                            Cancel Order
-                                        @endif
+                                        {{ __t('messages.cancel_order') }}
                                     </button>
                                 </form>
                             @endif
@@ -999,32 +975,14 @@
                 <i class="fas fa-shopping-bag"></i>
             </div>
             <h2 class="empty-state-title">
-                @if(current_locale() === 'ar')
-                    Ù„Ø§ ØªÙˆØ¬Ø¯ Ø·Ù„Ø¨Ø§Øª
-                @elseif(current_locale() === 'he')
-                    ××™×Ÿ ×”×–×ž× ×•×ª
-                @else
-                    No Orders Found
-                @endif
+                {{ __t('messages.no_orders_found') }}
             </h2>
             <p class="empty-state-text">
-                @if(current_locale() === 'ar')
-                    Ù„Ù… ØªÙ‚Ù… Ø¨Ø£ÙŠ Ø·Ù„Ø¨Ø§Øª Ø¨Ø¹Ø¯. Ø§Ø¨Ø¯Ø£ Ø§Ù„ØªØ³ÙˆÙ‚ Ø§Ù„Ø¢Ù†!
-                @elseif(current_locale() === 'he')
-                    ×¢×“×™×™×Ÿ ×œ× ×‘×™×¦×¢×ª ×”×–×ž× ×•×ª. ×”×ª×—×œ ×œ×§× ×•×ª ×¢×›×©×™×•!
-                @else
-                    You haven't placed any orders yet. Start shopping now!
-                @endif
+                {{ __t('messages.no_orders_yet_desc') }}
             </p>
             <a href="{{ route('products') }}" class="btn btn-primary">
                 <i class="fas fa-shopping-cart"></i>
-                @if(current_locale() === 'ar')
-                    ØªØµÙØ­ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª
-                @elseif(current_locale() === 'he')
-                    ×¢×™×™×Ÿ ×‘×ž×•×¦×¨×™×
-                @else
-                    Browse Products
-                @endif
+                {{ __t('messages.browse_products') }}
             </a>
         </div>
     @endif

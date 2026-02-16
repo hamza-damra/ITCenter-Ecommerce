@@ -3656,17 +3656,17 @@
             <div class="hero-slider">
                 <div class="hero-slide active" style="background-image: url('{{ asset('images/assets/Banner.jpg') }}');">
                     <div class="hero-slide-content">
-                        <h1>{{ is_rtl() ? 'Ø£Ø­Ø¯Ø« Ø§Ù„ØªÙ‚Ù†ÙŠØ§Øª' : 'Latest Technology' }}</h1>
-                        <p>{{ is_rtl() ? 'Ø§ÙƒØªØ´Ù Ø£ÙØ¶Ù„ Ø§Ù„Ø£Ø¬Ù‡Ø²Ø© Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØ© ÙˆØ§Ù„Ø¥ÙƒØ³Ø³ÙˆØ§Ø±Ø§Øª Ø¨Ø£Ø³Ø¹Ø§Ø± Ù„Ø§ ØªÙ‚Ø¨Ù„ Ø§Ù„Ù…Ù†Ø§ÙØ³Ø©' : 'Discover the best electronics and accessories at unbeatable prices' }}
+                        <h1>{{ __t('messages.hero_title') }}</h1>
+                        <p>{{ __t('messages.hero_subtitle') }}
                         </p>
                         <div class="hero-cta-buttons">
                             <a href="{{ route('products') }}" class="hero-cta-btn primary">
                                 <i class="fas fa-shopping-bag"></i>
-                                {{ is_rtl() ? 'ØªØ³ÙˆÙ‚ Ø§Ù„Ø¢Ù†' : 'Shop Now' }}
+                                {{ __t('messages.shop_now') }}
                             </a>
                             <a href="{{ route('products', ['filter' => 'sale']) }}" class="hero-cta-btn secondary">
                                 <i class="fas fa-tags"></i>
-                                {{ is_rtl() ? 'Ø§Ù„Ø¹Ø±ÙˆØ¶ Ø§Ù„Ø®Ø§ØµØ©' : 'Special Offers' }}
+                                {{ __t('messages.special_offers') }}
                             </a>
                         </div>
                     </div>
@@ -4223,7 +4223,7 @@
                                     <div class="product-grid" id="featuredProducts">
                                         @if(isset($specialOfferProducts) && $specialOfferProducts->count() > 0)
                                             <div class="promo-featured-card special-offer-swapper" id="specialOfferSwapper">
-                                                <div class="special-offer-header">{{ is_rtl() ? 'Ø¹Ø±Ø¶ Ø®Ø§Øµ' : 'Special Offer' }}</div>
+                                                <div class="special-offer-header">{{ __t('messages.special_offer') }}</div>
 
                                                 {{-- Products Slides --}}
                                                 <div class="special-offer-slides">
@@ -4231,7 +4231,7 @@
                                                         <div class="special-offer-slide {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
                                                             @if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price)
                                                                 <div class="badge-save">
-                                                                    <span class="save-label">{{ is_rtl() ? 'ÙˆÙØ±' : 'Save' }}</span>
+                                                                    <span class="save-label">{{ __t('messages.save_label') }}</span>
                                                                     <span
                                                                         class="save-amount">â‚ª{{ number_format($offerProduct->price - $offerProduct->sale_price, 0) }}</span>
                                                                 </div>
@@ -4253,7 +4253,7 @@
                                                                 </div>
                                                                 <div class="promo-cta">
                                                                     <a
-                                                                        href="{{ route('product.detail', $offerProduct) }}">{{ is_rtl() ? 'ØªØ³ÙˆÙ‚ Ø§Ù„Ø¢Ù†' : 'Shop Now' }}</a>
+                                                                        href="{{ route('product.detail', $offerProduct) }}">{{ __t('messages.shop_now') }}</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -4273,9 +4273,9 @@
                                         @elseif(isset($promotionalOffers) && $promotionalOffers->count() > 0)
                                             @php $promo = $promotionalOffers->first(); @endphp
                                             <div class="promo-featured-card">
-                                                <div class="special-offer-header">{{ is_rtl() ? 'Ø¹Ø±Ø¶ Ø®Ø§Øµ' : 'Special Offer' }}</div>
+                                                <div class="special-offer-header">{{ __t('messages.special_offer') }}</div>
                                                 <div class="badge-save">
-                                                    <span class="save-label">{{ is_rtl() ? 'ÙˆÙØ±' : 'Save' }}</span>
+                                                    <span class="save-label">{{ __t('messages.save_label') }}</span>
                                                     <span
                                                         class="save-amount">â‚ª{{ number_format($promo->original_price - $promo->sale_price, 0) }}</span>
                                                 </div>
@@ -4306,14 +4306,14 @@
                                                     </div>
                                                     @if($promo->end_date)
                                                         <div class="promo-countdown" data-end="{{ optional($promo->end_date)->format('c') }}">
-                                                            <div class="label">{{ is_rtl() ? 'Ø§Ù„Ø¹Ø±Ø¶ ÙŠÙ†ØªÙ‡ÙŠ Ø®Ù„Ø§Ù„:' : 'Hurry up! Offer ends in:' }}</div>
+                                                            <div class="label">{{ __t('messages.hurry_up_offer_ends') }}</div>
                                                             <div class="boxes">
                                                                 <div class="box"><span class="num cd-hours">00</span><span
-                                                                        class="unit">{{ is_rtl() ? 'Ø³Ø§Ø¹Ø§Øª' : 'HRS' }}</span></div>
+                                                                        class="unit">{{ __t('messages.hours') }}</span></div>
                                                                 <div class="box"><span class="num cd-mins">00</span><span
-                                                                        class="unit">{{ is_rtl() ? 'Ø¯Ù‚Ø§Ø¦Ù‚' : 'MINS' }}</span></div>
+                                                                        class="unit">{{ __t('messages.mins') }}</span></div>
                                                                 <div class="box"><span class="num cd-secs">00</span><span
-                                                                        class="unit">{{ is_rtl() ? 'Ø«ÙˆØ§Ù†ÙŠ' : 'SECS' }}</span></div>
+                                                                        class="unit">{{ __t('messages.secs') }}</span></div>
                                                             </div>
                                                         </div>
                                                     @endif
@@ -4321,9 +4321,9 @@
                                                         <div class="promo-cta">
                                                             <a href="{{ route('product.detail', $promo->product) }}">
                                                                 @if(is_rtl())
-                                                                    {{ 'Ø§Ø·Ù„Ø¨ Ø§Ù„Ø¢Ù†' }} <i class="fas fa-shopping-cart"></i>
+                                                                    {{ __t('messages.order_now') }} <i class="fas fa-shopping-cart"></i>
                                                                 @else
-                                                                    <i class="fas fa-shopping-cart"></i> {{ 'Order Now' }}
+                                                                    <i class="fas fa-shopping-cart"></i> {{ __t('messages.order_now') }}
                                                                 @endif
                                                             </a>
                                                         </div>

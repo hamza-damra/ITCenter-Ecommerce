@@ -1055,6 +1055,12 @@ return [
     'cannot_cancel_anymore' => 'This order can no longer be cancelled. Please contact support.',
     'cancel_order_number' => 'Cancel Order :number',
     'more_products_count' => '+ :count more products',
+    'track_orders_desc' => 'Track and manage all your orders in one place',
+    'all_orders' => 'All Orders',
+    'no_orders_yet_desc' => 'You haven\'t placed any orders yet. Start shopping now!',
+    'browse_products' => 'Browse Products',
+    'cancel_within' => 'You can cancel within',
+    'please_select_cancel_reason' => 'Please select a cancellation reason',
     
     // Contact Page
     'get_in_touch' => 'Get in touch with our team',
