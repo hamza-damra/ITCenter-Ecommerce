@@ -77,17 +77,16 @@ class HorizontalScroller {
         
         if (this.totalCards === 0) return;
         
-        // Get card width including gap
+        // Batch all DOM reads together to avoid forced reflow
         const firstCard = cards[0];
-        const cardStyle = window.getComputedStyle(firstCard);
         const cardWidth = firstCard.offsetWidth;
+        const containerWidth = this.container.offsetWidth;
         const gap = parseFloat(window.getComputedStyle(this.track).gap) || 0;
         
         this.cardWidth = cardWidth;
         this.cardWithGap = cardWidth + gap;
         
         // Calculate visible cards
-        const containerWidth = this.container.offsetWidth;
         this.visibleCards = Math.floor(containerWidth / this.cardWithGap);
         this.maxIndex = Math.max(0, this.totalCards - this.visibleCards);
         

@@ -1,5 +1,9 @@
 {{-- Hero Section - Slider --}}
 @if(isset($banners) && $banners->count() > 0)
+    {{-- Preload LCP image (first banner) for faster Largest Contentful Paint --}}
+    @push('head')
+        <link rel="preload" as="image" href="{{ $banners->first()->image_url }}" fetchpriority="high">
+    @endpush
     <div class="hero-section">
         <div class="hero-slider">
             @foreach($banners as $index => $banner)

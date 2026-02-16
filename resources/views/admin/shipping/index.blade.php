@@ -346,15 +346,123 @@
     .toggle-switch input:checked + .toggle-slider { background: var(--primary); }
     .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); }
 
-    @media (max-width: 768px) {
-        .shipping-tabs { flex-direction: column; }
-        .shipping-tab { border-bottom: none; border-left: 3px solid transparent; }
-        .shipping-tab.active { border-left-color: var(--primary); border-bottom-color: transparent; }
-        .modal-form-grid { grid-template-columns: 1fr; }
+    /* ==================== RESPONSIVE ==================== */
+
+    /* Scrollable table wrapper */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Tab header (title + add button) */
+    .tab-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 12px;
+    }
+
+    .tab-header h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #1e293b;
+    }
+
+    @media (max-width: 992px) {
         .settings-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+        /* Tabs: horizontal scroll instead of vertical stack */
+        .shipping-tabs {
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .shipping-tabs::-webkit-scrollbar { display: none; }
+
+        .shipping-tab {
+            padding: 12px 18px;
+            font-size: 13px;
+        }
+
+        .shipping-tab i { display: none; }
+
         .tab-content { padding: 16px; }
-        .shipping-table { font-size: 12px; }
-        .shipping-table th, .shipping-table td { padding: 10px 8px; }
+
+        /* Tab header stacks on narrow screens */
+        .tab-header {
+            flex-wrap: wrap;
+        }
+
+        .tab-header h3 {
+            font-size: 16px;
+        }
+
+        /* Tables */
+        .shipping-table { font-size: 13px; min-width: 600px; }
+        .shipping-table th, .shipping-table td { padding: 10px 10px; }
+
+        /* Modals */
+        .modal-form-grid { grid-template-columns: 1fr; }
+        .shipping-modal { width: 98%; border-radius: 12px; }
+        .shipping-modal-header { padding: 16px; }
+        .shipping-modal-body { padding: 16px; }
+        .shipping-modal-footer { padding: 12px 16px; }
+        .shipping-modal-overlay { padding-top: 2vh; }
+
+        /* Settings */
+        .setting-item { padding: 14px; }
+    }
+
+    @media (max-width: 480px) {
+        .shipping-tabs {
+            gap: 0;
+        }
+
+        .shipping-tab {
+            padding: 10px 14px;
+            font-size: 12px;
+            gap: 4px;
+        }
+
+        .shipping-tab .badge {
+            font-size: 10px;
+            padding: 1px 6px;
+        }
+
+        .tab-content { padding: 12px; }
+
+        .tab-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .tab-header .btn-add {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Tighter tables */
+        .shipping-table { min-width: 500px; font-size: 12px; }
+        .shipping-table th, .shipping-table td { padding: 8px 6px; white-space: nowrap; }
+
+        .btn-xs {
+            padding: 5px 8px;
+            font-size: 11px;
+        }
+
+        .shipping-modal-header h3 { font-size: 16px; }
+
+        /* Settings save button full width */
+        .settings-save-wrapper {
+            text-align: center;
+        }
+        .settings-save-wrapper .btn {
+            width: 100%;
+        }
     }
 </style>
 
@@ -414,13 +522,14 @@
 
 <!-- ==================== REGIONS TAB ==================== -->
 <div class="tab-content active" id="tab-regions">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="margin: 0; font-size: 18px; color: #1e293b;">{{ __('messages.shipping_regions') }}</h3>
+    <div class="tab-header">
+        <h3>{{ __('messages.shipping_regions') }}</h3>
         <button class="btn-add" onclick="openModal('regionModal')">
             <i class="fas fa-plus-circle"></i> {{ __('messages.add_region') }}
         </button>
     </div>
 
+    <div class="table-responsive">
     <table class="shipping-table">
         <thead>
             <tr>
@@ -467,12 +576,13 @@
             @endforelse
         </tbody>
     </table>
+    </div>
 </div>
 
 <!-- ==================== CITIES TAB ==================== -->
 <div class="tab-content" id="tab-cities">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="margin: 0; font-size: 18px; color: #1e293b;">{{ __('messages.shipping_cities') }}</h3>
+    <div class="tab-header">
+        <h3>{{ __('messages.shipping_cities') }}</h3>
         <button class="btn-add" onclick="openModal('cityModal')">
             <i class="fas fa-plus-circle"></i> {{ __('messages.add_city') }}
         </button>
@@ -484,6 +594,7 @@
             {{ $region->name_en }} / {{ $region->name_ar }}
             <span class="badge" style="margin-inline-start: 8px;">{{ $region->cities->count() }}</span>
         </h4>
+        <div class="table-responsive">
         <table class="shipping-table" style="margin-bottom: 20px;">
             <thead>
                 <tr>
@@ -526,18 +637,20 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
     @endforeach
 </div>
 
 <!-- ==================== BLOCKED RANGES TAB ==================== -->
 <div class="tab-content" id="tab-blocked">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="margin: 0; font-size: 18px; color: #1e293b;">{{ __('messages.shipping_blocked_ranges') }}</h3>
+    <div class="tab-header">
+        <h3>{{ __('messages.shipping_blocked_ranges') }}</h3>
         <button class="btn-add" onclick="openModal('blockedModal')">
             <i class="fas fa-plus-circle"></i> {{ __('messages.add_blocked_range') }}
         </button>
     </div>
 
+    <div class="table-responsive">
     <table class="shipping-table">
         <thead>
             <tr>
@@ -580,6 +693,7 @@
             @endforelse
         </tbody>
     </table>
+    </div>
 </div>
 
 <!-- ==================== SETTINGS TAB ==================== -->
@@ -617,7 +731,7 @@
                 </label>
             </div>
         </div>
-        <div style="margin-top: 24px; text-align: end;">
+        <div class="settings-save-wrapper" style="margin-top: 24px; text-align: end;">
             <button type="submit" class="btn btn-primary" style="padding: 12px 32px; font-weight: 700;">
                 <i class="fas fa-save"></i> {{ __('messages.save_settings') }}
             </button>

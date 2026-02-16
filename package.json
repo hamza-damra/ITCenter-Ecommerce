@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "minify": "npx esbuild public/css/layout.css --minify --outfile=public/css/layout.min.css && npx esbuild public/js/layout.js --minify --outfile=public/js/layout.min.js"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

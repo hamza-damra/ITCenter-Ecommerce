@@ -119,7 +119,7 @@ return [
         ],
         'contacts' => [
             'name' => 'Contact Messages',
-            'tables' => ['contacts'],
+            'tables' => ['contact_messages'],
         ],
         'attributes' => [
             'name' => 'Product Attributes',

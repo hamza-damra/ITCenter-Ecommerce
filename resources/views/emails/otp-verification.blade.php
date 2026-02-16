@@ -5,107 +5,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>IT Centre - رمز استعادة كلمة المرور</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
 </head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background-color: #f0f2f5; direction: rtl; text-align: right; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" dir="rtl" style="background-color: #f0f2f5; padding: 40px 20px; direction: rtl;" role="presentation">
-        <tr>
-            <td align="center">
-                <!-- الحاوية الرئيسية -->
-                <table width="100%" cellpadding="0" cellspacing="0" border="0" dir="rtl" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); direction: rtl;" align="center" role="presentation">
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Arial, sans-serif; background-color: #f1f5f9; direction: rtl; text-align: right; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; width: 100%;">
 
-                    <!-- الترويسة -->
+    <!-- خلفية الصفحة -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" dir="rtl" style="background-color: #f1f5f9; direction: rtl;" role="presentation">
+        <tr>
+            <td align="center" style="padding: 32px 16px;">
+
+                <!-- الشعار فوق البطاقة -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 520px;" align="center" role="presentation">
                     <tr>
-                        <td style="background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%); padding: 40px 30px; text-align: center;">
-                            <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: 1px;">IT Centre</h1>
-                            <p style="margin: 14px 0 0 0; color: rgba(255,255,255,0.9); font-size: 16px; font-weight: 400;">رمز استعادة كلمة المرور الخاص بك</p>
+                        <td align="center" style="padding-bottom: 24px;">
+                            <h1 style="margin: 0; font-size: 26px; font-weight: 700; color: #0f172a; letter-spacing: -0.5px;">IT Centre</h1>
                         </td>
+                    </tr>
+                </table>
+
+                <!-- البطاقة الرئيسية -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" dir="rtl" style="max-width: 520px; width: 100%; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; direction: rtl;" align="center" role="presentation">
+
+                    <!-- شريط علوي ملوّن -->
+                    <tr>
+                        <td style="height: 4px; background: linear-gradient(90deg, #1e293b 0%, #2563eb 50%, #3b82f6 100%); font-size: 0; line-height: 0;">&nbsp;</td>
                     </tr>
 
                     <!-- المحتوى -->
                     <tr>
-                        <td style="padding: 36px 32px 0 32px; direction: rtl; text-align: right;" dir="rtl">
-                            <!-- التحية -->
-                            <p style="margin: 0 0 18px 0; font-size: 20px; color: #1a237e; font-weight: 600; text-align: right;">مرحباً،</p>
+                        <td style="padding: 40px 36px 32px 36px; direction: rtl; text-align: right;" dir="rtl">
 
-                            <!-- النص التمهيدي -->
-                            <p style="margin: 0 0 28px 0; color: #555555; font-size: 15px; line-height: 1.9; text-align: right;">
-                                لقد تلقينا طلباً لإعادة تعيين كلمة المرور الخاصة بحسابك في
-                                <strong style="color: #1a237e;">IT Centre</strong>.
-                                استخدم الرمز التالي لإتمام العملية:
-                            </p>
-
-                            <!-- صندوق رمز التحقق -->
-                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 28px 0;" role="presentation">
+                            <!-- أيقونة القفل -->
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
                                 <tr>
-                                    <td style="background: linear-gradient(135deg, #e8eaf6 0%, #f5f5ff 100%); border: 2px solid #c5cae9; border-radius: 12px; padding: 28px 20px; text-align: center;">
-                                        <p style="margin: 0 0 14px 0; font-size: 14px; color: #7986cb; font-weight: 600; letter-spacing: 1px;">رمز التحقق</p>
-                                        <table cellpadding="0" cellspacing="0" border="0" align="center" style="direction: ltr;" role="presentation">
+                                    <td align="center" style="padding-bottom: 24px;">
+                                        <table cellpadding="0" cellspacing="0" border="0" role="presentation">
                                             <tr>
-                                                @foreach(str_split($otp) as $digit)
-                                                <td style="padding: 0 5px;">
-                                                    <div style="width: 50px; height: 58px; background-color: #ffffff; border: 2px solid #1a237e; border-radius: 10px; line-height: 58px; text-align: center; font-size: 34px; font-weight: 700; color: #1a237e; font-family: 'Courier New', monospace; box-shadow: 0 2px 8px rgba(26,35,126,0.1);">{{ $digit }}</div>
+                                                <td style="width: 56px; height: 56px; background-color: #f0f4ff; border-radius: 50%; text-align: center; line-height: 56px; font-size: 24px;">
+                                                    &#128272;
                                                 </td>
-                                                @endforeach
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
                             </table>
 
-                            <!-- تنبيه انتهاء الصلاحية -->
-                            <table width="100%" cellpadding="0" cellspacing="0" border="0" dir="rtl" style="margin: 0 0 22px 0; direction: rtl;" role="presentation">
+                            <!-- العنوان -->
+                            <h2 style="margin: 0 0 8px 0; font-size: 22px; color: #0f172a; font-weight: 700; text-align: center; line-height: 1.4;">
+                                رمز استعادة كلمة المرور
+                            </h2>
+
+                            <!-- النص التمهيدي -->
+                            <p style="margin: 0 0 32px 0; color: #64748b; font-size: 15px; line-height: 1.8; text-align: center;">
+                                أدخل الرمز التالي لإعادة تعيين كلمة المرور الخاصة بحسابك.
+                            </p>
+
+                            <!-- رمز التحقق -->
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 32px 0;" role="presentation">
                                 <tr>
-                                    <td style="background-color: #fff8e1; border-right: 4px solid #ffa000; padding: 16px 18px; border-radius: 6px; text-align: right;">
-                                        <p style="margin: 0; color: #e65100; font-size: 14px; line-height: 1.7; font-weight: 500; text-align: right;">
-                                            &#9201; هذا الرمز صالح لمدة <strong>60 دقيقة</strong> فقط.
-                                        </p>
+                                    <td align="center">
+                                        <table cellpadding="0" cellspacing="0" border="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 24px 16px;" role="presentation">
+                                            <tr>
+                                                <td align="center" style="padding: 24px 16px;">
+                                                    <table cellpadding="0" cellspacing="0" border="0" align="center" style="direction: ltr;" role="presentation">
+                                                        <tr>
+                                                            @foreach(str_split($otp) as $index => $digit)
+                                                            <td style="padding: 0 4px;">
+                                                                <div style="width: 44px; height: 52px; background-color: #ffffff; border: 2px solid #1e293b; border-radius: 8px; line-height: 52px; text-align: center; font-size: 28px; font-weight: 700; color: #0f172a; font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;">{{ $digit }}</div>
+                                                            </td>
+                                                            @endforeach
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </td>
                                 </tr>
                             </table>
 
-                            <!-- تنبيه أمان -->
-                            <table width="100%" cellpadding="0" cellspacing="0" border="0" dir="rtl" style="margin: 0 0 22px 0; direction: rtl;" role="presentation">
+                            <!-- صلاحية الرمز -->
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
                                 <tr>
-                                    <td style="background-color: #e8f5e9; border-right: 4px solid #43a047; padding: 16px 18px; border-radius: 6px; text-align: right;">
-                                        <p style="margin: 0; color: #2e7d32; font-size: 14px; line-height: 1.7; font-weight: 500; text-align: right;">
-                                            &#128274; لا تشارك هذا الرمز مع أي شخص. فريق IT Centre لن يطلب منك هذا الرمز أبداً.
+                                    <td align="center" style="padding-bottom: 24px;">
+                                        <table cellpadding="0" cellspacing="0" border="0" role="presentation">
+                                            <tr>
+                                                <td style="background-color: #fef9ee; border: 1px solid #fde68a; border-radius: 6px; padding: 10px 20px; text-align: center;">
+                                                    <p style="margin: 0; color: #92400e; font-size: 13px; font-weight: 600;">
+                                                        صالح لمدة 60 دقيقة فقط
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- خط فاصل -->
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin: 0 0 24px 0;" role="presentation">
+                                <tr>
+                                    <td style="height: 1px; background-color: #f1f5f9;"></td>
+                                </tr>
+                            </table>
+
+                            <!-- ملاحظة أمان -->
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" dir="rtl" style="margin: 0 0 20px 0; direction: rtl;" role="presentation">
+                                <tr>
+                                    <td style="padding: 14px 16px; background-color: #f8fafc; border-radius: 6px; text-align: right;">
+                                        <p style="margin: 0 0 6px 0; color: #334155; font-size: 13px; font-weight: 600; text-align: right;">
+                                            تنبيه أمان
+                                        </p>
+                                        <p style="margin: 0; color: #64748b; font-size: 13px; line-height: 1.7; text-align: right;">
+                                            لا تشارك هذا الرمز مع أي شخص. فريق IT Centre لن يطلب منك هذا الرمز أبداً.
                                         </p>
                                     </td>
                                 </tr>
                             </table>
 
                             <!-- ملاحظة التجاهل -->
-                            <p style="margin: 0 0 8px 0; color: #888888; font-size: 13px; line-height: 1.8; text-align: right;">
+                            <p style="margin: 0; color: #94a3b8; font-size: 13px; line-height: 1.7; text-align: right;">
                                 إذا لم تقم بطلب إعادة تعيين كلمة المرور، يمكنك تجاهل هذا البريد الإلكتروني بأمان ولن يتم إجراء أي تغيير على حسابك.
                             </p>
                         </td>
                     </tr>
+                </table>
 
-                    <!-- الفاصل -->
+                <!-- التذييل خارج البطاقة -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 520px;" align="center" role="presentation">
                     <tr>
-                        <td style="padding: 24px 32px;">
-                            <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
-                                <tr><td style="height: 1px; background-color: #e0e0e0;"></td></tr>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <!-- التذييل -->
-                    <tr>
-                        <td style="background-color: #fafafa; padding: 28px 32px; text-align: center; border-top: 1px solid #eeeeee;" dir="rtl">
-                            <p style="margin: 0 0 10px 0; color: #1a237e; font-size: 15px; font-weight: 600;">
-                                مع تحيات فريق عمل IT Centre
-                            </p>
-                            <p style="margin: 0 0 6px 0; color: #9e9e9e; font-size: 13px;">
+                        <td align="center" style="padding: 28px 16px 0 16px;">
+                            <p style="margin: 0 0 6px 0; color: #94a3b8; font-size: 12px; line-height: 1.6;">
                                 هذا البريد الإلكتروني تم إرساله تلقائياً، يرجى عدم الرد عليه.
                             </p>
-                            <p style="margin: 16px 0 0 0; color: #bdbdbd; font-size: 11px;">
+                            <p style="margin: 0; color: #cbd5e1; font-size: 11px;">
                                 &copy; {{ date('Y') }} IT Centre. جميع الحقوق محفوظة.
                             </p>
                         </td>
                     </tr>
-
                 </table>
+
             </td>
         </tr>
     </table>

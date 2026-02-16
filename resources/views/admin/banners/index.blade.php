@@ -54,19 +54,14 @@
         letter-spacing: 0.3px;
     }
 
-    .source-badge.source-database {
-        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-        color: #1e40af;
-    }
-
-    .source-badge.source-url {
+    .source-badge.source-file {
         background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
         color: #065f46;
     }
 
-    .source-badge.source-legacy {
-        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-        color: #dc2626;
+    .source-badge.source-url {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        color: #1e40af;
     }
 
     /* Title Cell */
@@ -304,10 +299,7 @@
                 <tr>
                     <td>
                         <div class="image-cell">
-                            @php
-                                $hasValidImage = $banner->isImageInDatabase() || $banner->isImageFromUrl() || $banner->isImageInFile();
-                            @endphp
-                            @if($hasValidImage)
+                            @if($banner->hasImage())
                                 <img src="{{ $banner->image_url }}" 
                                      alt="{{ $banner->title_en ?? 'Banner' }}" 
                                      class="banner-thumbnail"
@@ -318,22 +310,11 @@
                                     <small>{{ __('messages.no_image') }}</small>
                                 </div>
                             @endif
-                            @php
-                                $sourceClass = match($banner->image_source) {
-                                    'database' => 'source-database',
-                                    'url' => 'source-url',
-                                    default => 'source-legacy'
-                                };
-                                $sourceIcon = match($banner->image_source) {
-                                    'database' => 'fa-database',
-                                    'url' => 'fa-link',
-                                    default => 'fa-exclamation-triangle'
-                                };
-                            @endphp
-                            <span class="source-badge {{ $sourceClass }}" @if($banner->image_source === 'file') title="{{ __('messages.legacy_file_warning') }}" @endif>
-                                <i class="fas {{ $sourceIcon }}"></i>
-                                {{ $banner->image_source_label }}
-                            </span>
+                            @if($banner->isImageFromUrl())
+                                <span class="source-badge source-url"><i class="fas fa-link"></i> URL</span>
+                            @elseif($banner->isImageInFile())
+                                <span class="source-badge source-file"><i class="fas fa-hdd"></i> {{ __('messages.stored_on_server') ?? 'Server' }}</span>
+                            @endif
                         </div>
                     </td>
                     <td class="banner-title-cell">

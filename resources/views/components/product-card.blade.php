@@ -10,6 +10,9 @@
             <img src="{{ $product->main_image }}" 
                  alt="{{ $product->name }}" 
                  loading="lazy"
+                 decoding="async"
+                 width="200"
+                 height="200"
                  onerror="this.src='{{ \App\Helpers\ImageHelper::assetUrl('images/products/default.png') }}'">
 
             {{-- Product Badge --}}

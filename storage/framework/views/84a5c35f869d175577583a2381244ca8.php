@@ -266,6 +266,8 @@
             margin-left: 260px;
             padding: 24px;
             overflow-y: auto;
+            overflow-x: hidden;
+            min-width: 0;
         }
 
         /* Page Header */
@@ -2520,6 +2522,11 @@
                 
                 <?php if($authUser->hasAnyPermissionInGroup('shipping')): ?>
                 <li><a href="<?php echo e(route('admin.shipping.index')); ?>" class="<?php echo e(request()->routeIs('admin.shipping.*') ? 'active' : ''); ?>"><i class="fas fa-truck"></i> <?php echo e(__('messages.shipping_management')); ?></a></li>
+                <?php endif; ?>
+
+                
+                <?php if($authUser->isAdmin()): ?>
+                <li><a href="<?php echo e(route('admin.site-settings.index')); ?>" class="<?php echo e(request()->routeIs('admin.site-settings.*') ? 'active' : ''); ?>"><i class="fas fa-cog"></i> <?php echo e(__('messages.site_settings')); ?></a></li>
                 <?php endif; ?>
 
                 

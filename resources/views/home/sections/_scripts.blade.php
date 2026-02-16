@@ -239,7 +239,7 @@
             if (totalSlides === 0) return;
             slides.forEach(s => s.classList.remove('active'));
             dots.forEach(d => d.classList.remove('active'));
-            if (progressBar) progressBar.style.width = '0%';
+            if (progressBar) progressBar.style.transform = 'scaleX(0)';
             if (slides[currentSlide]) slides[currentSlide].classList.add('active');
             if (dots[currentSlide]) dots[currentSlide].classList.add('active');
         }
@@ -252,7 +252,7 @@
             progressInterval = setInterval(() => {
                 progress += increment;
                 if (progress >= 100) { progress = 100; clearInterval(progressInterval); }
-                progressBar.style.width = progress + '%';
+                progressBar.style.transform = 'scaleX(' + (progress / 100) + ')';
             }, 50);
         }
 

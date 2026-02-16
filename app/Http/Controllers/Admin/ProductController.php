@@ -11,6 +11,8 @@ use App\Models\Brand;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
 use App\Models\HomeSection;
+use App\Models\SiteSetting;
+use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +21,9 @@ use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
+    public function __construct(
+        protected ImageUploadService $imageService
+    ) {}
     public function index(Request $request)
     {
         $query = Product::with(['category', 'brand', 'images']);
@@ -185,7 +190,7 @@ class ProductController extends Controller
 
         DB::beginTransaction();
         try {
-            $validated['slug'] = Str::slug($validated['name_en']);
+            $validated['slug'] = $this->generateUniqueSlug($validated['name_en']);
             $validated['sku'] = 'SKU-' . strtoupper(Str::random(10));
             $validated['stock_status'] = $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock';
 
@@ -229,18 +234,38 @@ class ProductController extends Controller
             $homeSectionIds = $request->input('home_sections', []);
             $product->homeSections()->sync($homeSectionIds);
 
+            // Determine main image path (file upload or URL)
+            $mainImagePath = $this->resolveMainImage($request, $validated);
+            if ($mainImagePath) {
+                $product->update(['main_image' => $mainImagePath]);
+            }
+
             // Create main image as first product image
             ProductImage::create([
                 'product_id' => $product->id,
-                'image_path' => $validated['main_image'],
+                'image_path' => $mainImagePath ?? $validated['main_image'] ?? '',
                 'order' => 0,
                 'is_primary' => true,
             ]);
 
-            // Process additional images if provided
+            // Process additional images (file uploads)
+            $order = 1;
+            if ($request->hasFile('additional_images_files')) {
+                $uploadOptions = $this->getImageUploadOptions();
+                foreach ($request->file('additional_images_files') as $file) {
+                    $path = $this->imageService->upload($file, 'products', $uploadOptions);
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_path' => $path,
+                        'order' => $order++,
+                        'is_primary' => false,
+                    ]);
+                }
+            }
+
+            // Process additional images (URLs - legacy support)
             if ($additionalImages) {
                 $imageUrls = array_filter(array_map('trim', explode("\n", $additionalImages)));
-                $order = 1;
                 
                 foreach ($imageUrls as $imageUrl) {
                     if (filter_var($imageUrl, FILTER_VALIDATE_URL)) {
@@ -341,7 +366,7 @@ class ProductController extends Controller
         try {
             // Only regenerate slug if name_en has changed
             if ($product->name_en !== $validated['name_en']) {
-                $validated['slug'] = Str::slug($validated['name_en']);
+                $validated['slug'] = $this->generateUniqueSlug($validated['name_en'], $product->id);
             }
             $validated['stock_status'] = $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock';
 
@@ -381,21 +406,45 @@ class ProductController extends Controller
             $homeSectionIds = $request->input('home_sections', []);
             $product->homeSections()->sync($homeSectionIds);
 
-            // Delete existing images
-            ProductImage::where('product_id', $product->id)->delete();
+            // Resolve main image (file upload, URL, or keep existing)
+            $mainImagePath = $this->resolveMainImage($request, $validated, $product);
+            if ($mainImagePath && $mainImagePath !== $product->getRawOriginal('main_image')) {
+                $product->update(['main_image' => $mainImagePath]);
+            } else {
+                $mainImagePath = $mainImagePath ?? $product->getRawOriginal('main_image');
+            }
+
+            // Delete existing product images (the HasUploadedImage trait handles file cleanup)
+            ProductImage::where('product_id', $product->id)->each(function ($img) {
+                $img->delete();
+            });
 
             // Create main image as first product image
             ProductImage::create([
                 'product_id' => $product->id,
-                'image_path' => $validated['main_image'],
+                'image_path' => $mainImagePath ?? '',
                 'order' => 0,
                 'is_primary' => true,
             ]);
 
-            // Process additional images if provided
+            // Process additional images (file uploads)
+            $order = 1;
+            if ($request->hasFile('additional_images_files')) {
+                $uploadOptions = $this->getImageUploadOptions();
+                foreach ($request->file('additional_images_files') as $file) {
+                    $path = $this->imageService->upload($file, 'products', $uploadOptions);
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_path' => $path,
+                        'order' => $order++,
+                        'is_primary' => false,
+                    ]);
+                }
+            }
+
+            // Process additional images (URLs - legacy support)
             if ($additionalImages) {
                 $imageUrls = array_filter(array_map('trim', explode("\n", $additionalImages)));
-                $order = 1;
                 
                 foreach ($imageUrls as $imageUrl) {
                     if (filter_var($imageUrl, FILTER_VALIDATE_URL)) {
@@ -420,6 +469,52 @@ class ProductController extends Controller
             DB::rollBack();
             return back()->withInput()
                 ->with('error', __('messages.error_updating_product', ['error' => $e->getMessage()]));
+        }
+    }
+
+    public function deleteProductImage(Request $request, Product $product)
+    {
+        $request->validate([
+            'image_id' => 'required|integer',
+            'type' => 'required|in:main,additional',
+        ]);
+
+        $imageId = $request->input('image_id');
+        $type = $request->input('type');
+
+        try {
+            if ($type === 'main') {
+                $image = ProductImage::where('product_id', $product->id)
+                    ->where('id', $imageId)
+                    ->where('is_primary', true)
+                    ->firstOrFail();
+
+                $image->delete();
+
+                $product->update(['main_image' => null]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => __('messages.main_image_deleted_successfully') ?? 'Main image deleted successfully.',
+                ]);
+            } else {
+                $image = ProductImage::where('product_id', $product->id)
+                    ->where('id', $imageId)
+                    ->where('is_primary', false)
+                    ->firstOrFail();
+
+                $image->delete();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => __('messages.image_deleted_successfully') ?? 'Image deleted successfully.',
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.error_deleting_image') ?? 'Error deleting image.',
+            ], 500);
         }
     }
 
@@ -521,6 +616,69 @@ class ProductController extends Controller
                 'attribute_values' => ['Selected attribute values do not belong to the product\'s category attributes.'],
             ]);
         }
+    }
+
+    /**
+     * Generate a unique slug, appending -2, -3, etc. if the base slug already exists.
+     *
+     * @param string $name
+     * @param int|null $excludeId Product ID to exclude (for updates)
+     * @return string
+     */
+    private function generateUniqueSlug(string $name, ?int $excludeId = null): string
+    {
+        $slug = Str::slug($name);
+        $originalSlug = $slug;
+        $counter = 2;
+
+        while (true) {
+            $query = Product::withTrashed()->where('slug', $slug);
+            if ($excludeId) {
+                $query->where('id', '!=', $excludeId);
+            }
+            if (!$query->exists()) {
+                break;
+            }
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
+    /**
+     * Get image upload options from site settings.
+     */
+    private function getImageUploadOptions(): array
+    {
+        return [
+            'optimize' => true,
+            'max_width' => SiteSetting::getValue('max_image_width', 1920),
+            'max_height' => SiteSetting::getValue('max_image_height', 1080),
+            'quality' => SiteSetting::getValue('image_quality', 80),
+            'convert_to_webp' => (bool) SiteSetting::getValue('convert_to_webp', true),
+        ];
+    }
+
+    private function resolveMainImage(ProductRequest $request, array $validated, ?Product $existingProduct = null): ?string
+    {
+        // Priority 1: File upload
+        if ($request->hasFile('main_image_file')) {
+            $file = $request->file('main_image_file');
+            return $this->imageService->upload($file, 'products', $this->getImageUploadOptions());
+        }
+
+        // Priority 2: URL provided
+        if (!empty($validated['main_image'])) {
+            return $validated['main_image'];
+        }
+
+        // Priority 3: Keep existing image (on update)
+        if ($existingProduct) {
+            return $existingProduct->getRawOriginal('main_image');
+        }
+
+        return null;
     }
 
     /**

@@ -40,6 +40,17 @@ class BootstrapUser implements Authenticatable
      */
     public function getAuthPassword()
     {
+        // Priority 1: Check DB-stored password hash (changed via Site Settings)
+        try {
+            $dbHash = \App\Models\SiteSetting::getValue('admin_password_hash');
+            if ($dbHash) {
+                return $dbHash;
+            }
+        } catch (\Exception $e) {
+            // DB not available, fall through to env-based hash
+        }
+
+        // Priority 2: Environment variable hash
         return env('BOOTSTRAP_ADMIN_PASSWORD_HASH');
     }
 

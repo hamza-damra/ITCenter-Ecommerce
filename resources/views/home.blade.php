@@ -2,12 +2,16 @@
 
 @section('title', __t('messages.home') . ' - IT Center')
 
+@push('head')
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+@endpush
+
 @section('content')
-    <!-- Import shared components CSS -->
-    <link rel="stylesheet" href="{{ asset('css/components.css') }}">
+    <!-- Import shared components CSS (deferred - non-critical) -->
+    <link rel="stylesheet" href="{{ asset('css/components.css') }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ asset('css/components.css') }}"></noscript>
     <style>
-        /* Import Google Font - Poppins */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
         /* Override font - exclude Font Awesome icons */
         body,
@@ -270,11 +274,14 @@
         .slider-progress-bar {
             height: 100%;
             background: linear-gradient(90deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
-            width: 0%;
-            transition: width 0.1s linear;
+            width: 100%;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.1s linear;
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
             position: relative;
             z-index: 1;
+            will-change: transform;
         }
 
         .hero-container {
@@ -2533,7 +2540,7 @@
         }
 
         .promo-featured-card .promo-product-name {
-            color: #6b7280;
+            color: #4b5563;
             font-weight: 600;
             font-size: .85rem;
             text-align: center;
@@ -2548,8 +2555,7 @@
 
         .promo-featured-card .promo-prices .orig {
             text-decoration: line-through;
-            opacity: .6;
-            color: #6b7280;
+            color: #737980;
         }
 
         .promo-featured-card .promo-prices .sale {

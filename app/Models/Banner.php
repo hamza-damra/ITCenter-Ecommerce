@@ -2,27 +2,24 @@
 
 namespace App\Models;
 
+use App\Traits\HasUploadedImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Banner extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUploadedImage;
 
     /**
      * Image source types
-     * Note: SOURCE_FILE is kept for legacy data compatibility but not used for new banners
      */
-    const SOURCE_FILE = 'file'; // Legacy - not used for new banners
-    const SOURCE_DATABASE = 'database';
+    const SOURCE_FILE = 'file';
     const SOURCE_URL = 'url';
+    const SOURCE_DATABASE = 'database'; // Legacy
 
     protected $fillable = [
         'image_path',
         'image_source',
-        'image_data',
-        'image_filename',
-        'image_mime_type',
         'title_en',
         'title_ar',
         'title_he',
@@ -47,12 +44,12 @@ class Banner extends Model
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     * Hide the large image_data from JSON responses by default.
+     * Get the image columns that hold uploaded file paths.
      */
-    protected $hidden = [
-        'image_data',
-    ];
+    protected function imageColumns(): array
+    {
+        return ['image_path'];
+    }
 
     /**
      * Get the title attribute based on current locale with fallback to English.
@@ -103,55 +100,17 @@ class Banner extends Model
     }
 
     /**
-     * Get the full URL for the banner image based on image source type.
+     * Get the full URL for the banner image.
      */
     public function getImageUrlAttribute(): string
     {
-        // Default to database storage if image_source is null (for existing records)
-        $imageSource = $this->image_source ?? self::SOURCE_DATABASE;
-        
-        // Handle based on image source type
-        switch ($imageSource) {
-            case self::SOURCE_DATABASE:
-                // For database-stored images, return a route that serves the image
-                if (!empty($this->image_data)) {
-                    return route('banner.image', ['banner' => $this->id]);
-                }
-                // If no database data but has image_path, try to use it as fallback
-                if (!empty($this->image_path)) {
-                    // If it's already a full URL, return as is
-                    if (str_starts_with($this->image_path, 'http')) {
-                        return $this->image_path;
-                    }
-                    // Check if file exists before trying to use it
-                    $filePath = public_path('storage/' . $this->image_path);
-                    if (file_exists($filePath)) {
-                        return asset('storage/' . $this->image_path);
-                    }
-                }
-                break;
-
-            case self::SOURCE_URL:
-                // For external URLs, return the URL directly
-                if (!empty($this->image_path)) {
-                    return $this->image_path;
-                }
-                break;
-
-            case self::SOURCE_FILE:
-                // For file storage, return the asset URL only if file exists
-                if (!empty($this->image_path)) {
-                    // If it's already a full URL (legacy support), return as is
-                    if (str_starts_with($this->image_path, 'http')) {
-                        return $this->image_path;
-                    }
-                    // Check if file exists before trying to use it
-                    $filePath = public_path('storage/' . $this->image_path);
-                    if (file_exists($filePath)) {
-                        return asset('storage/' . $this->image_path);
-                    }
-                }
-                break;
+        if (!empty($this->image_path)) {
+            // If it's already a full URL (legacy/external URL support), return as is
+            if (str_starts_with($this->image_path, 'http')) {
+                return $this->image_path;
+            }
+            // Local file storage - use the trait helper
+            return $this->getImageUrl('image_path', asset('images/assets/Banner.jpg'));
         }
 
         // Default fallback image
@@ -159,25 +118,11 @@ class Banner extends Model
     }
 
     /**
-     * Get the image as a base64 data URI for inline embedding.
-     * Useful for displaying database-stored images directly in HTML.
+     * Check if banner has a valid image.
      */
-    public function getImageDataUriAttribute(): ?string
+    public function hasImage(): bool
     {
-        if ($this->image_source === self::SOURCE_DATABASE && !empty($this->image_data)) {
-            $mimeType = $this->image_mime_type ?? 'image/jpeg';
-            return "data:{$mimeType};base64,{$this->image_data}";
-        }
-        
-        return null;
-    }
-
-    /**
-     * Check if image is stored in database.
-     */
-    public function isImageInDatabase(): bool
-    {
-        return $this->image_source === self::SOURCE_DATABASE && !empty($this->image_data);
+        return !empty($this->image_path);
     }
 
     /**
@@ -185,28 +130,15 @@ class Banner extends Model
      */
     public function isImageFromUrl(): bool
     {
-        return $this->image_source === self::SOURCE_URL && !empty($this->image_path);
+        return $this->image_source === self::SOURCE_URL;
     }
 
     /**
-     * Check if image is stored as file.
+     * Check if image is stored as local file.
      */
     public function isImageInFile(): bool
     {
-        return $this->image_source === self::SOURCE_FILE && !empty($this->image_path);
-    }
-
-    /**
-     * Get human-readable image source label.
-     */
-    public function getImageSourceLabelAttribute(): string
-    {
-        return match($this->image_source) {
-            self::SOURCE_DATABASE => __('messages.stored_in_database'),
-            self::SOURCE_URL => __('messages.external_url'),
-            self::SOURCE_FILE => __('messages.legacy_storage'),
-            default => __('messages.unknown'),
-        };
+        return $this->image_source === self::SOURCE_FILE || ($this->image_source !== self::SOURCE_URL && !empty($this->image_path) && !str_starts_with($this->image_path, 'http'));
     }
 
     /**

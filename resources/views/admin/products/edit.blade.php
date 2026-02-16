@@ -97,6 +97,14 @@
         border: 2px solid var(--border);
     }
 
+    .current-additional-image-item {
+        position: relative;
+    }
+
+    .current-additional-image-item .dropzone-remove {
+        z-index: 2;
+    }
+
     .delete-section {
         margin-top: 24px;
         padding-top: 24px;
@@ -138,7 +146,7 @@
     </div>
 </div>
 
-<form action="{{ route('admin.products.update', $product) }}" method="POST" class="product-form-grid">
+<form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data" class="product-form-grid">
     @csrf
     @method('PUT')
 
@@ -368,71 +376,356 @@
                 <h2><i class="fas fa-images"></i> {{ __('messages.product_images') }}</h2>
             </div>
             <div class="card-body">
-                <div class="form-group">
-                    <label for="main_image" class="form-label">
-                        {{ __('messages.main_product_image') }}
-                        <span class="required">*</span>
-                    </label>
-                    <input 
-                        type="url" 
-                        id="main_image" 
-                        name="main_image" 
-                        class="form-control @error('main_image') is-invalid @enderror" 
-                        value="{{ old('main_image', $product->main_image) }}" 
-                        placeholder="https://picsum.photos/800/800"
-                        required>
-                    <p class="form-text">
-                        <i class="fas fa-lightbulb"></i> {{ __('messages.image_services_recommendation') }}
-                    </p>
-                    @error('main_image')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
-                    
-                    @if($product->main_image)
-                        <div class="current-image-container">
-                            <div class="current-image-label">
-                                <i class="fas fa-image"></i>
-                                {{ __('messages.current_main_image') }}
-                            </div>
-                            <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
-                        </div>
-                    @endif
+                <!-- Image Source Toggle -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label">{{ __('messages.image_source') ?? 'Image Source' }}</label>
+                    <div style="display: flex; gap: 12px;">
+                        <label class="checkbox-group" style="margin: 0; flex: 1; padding: 12px; border: 2px solid var(--primary); border-radius: 8px; background: #eff6ff; cursor: pointer;" id="source-file-label">
+                            <input type="radio" name="image_source_type" value="file" {{ old('image_source_type', 'file') === 'file' ? 'checked' : '' }} onchange="toggleImageSource('file')">
+                            <span>
+                                <strong><i class="fas fa-upload"></i> {{ __('messages.upload_files') ?? 'Upload Files' }}</strong>
+                                <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.upload_from_device') ?? 'Upload images from your device (stored on server)' }}</p>
+                            </span>
+                        </label>
+                        <label class="checkbox-group" style="margin: 0; flex: 1; padding: 12px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer;" id="source-url-label">
+                            <input type="radio" name="image_source_type" value="url" {{ old('image_source_type', 'file') === 'url' ? 'checked' : '' }} onchange="toggleImageSource('url')">
+                            <span>
+                                <strong><i class="fas fa-link"></i> {{ __('messages.image_url') ?? 'Image URL' }}</strong>
+                                <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.paste_external_url') ?? 'Paste external image URLs' }}</p>
+                            </span>
+                        </label>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="additional_images" class="form-label">
-                        {{ __('messages.additional_images') }}
-                        <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }} - {{ __('messages.one_url_per_line') }})</span>
-                    </label>
-                    <textarea 
-                        id="additional_images" 
-                        name="additional_images" 
-                        class="form-control @error('additional_images') is-invalid @enderror" 
-                        rows="5" 
-                        placeholder="https://picsum.photos/800/801&#10;https://picsum.photos/800/802&#10;https://picsum.photos/800/803">{{ old('additional_images', $product->images->where('is_primary', false)->pluck('image_path')->implode("\n")) }}</textarea>
-                    <p class="form-text">
-                        <i class="fas fa-info-circle"></i> {{ __('messages.enter_image_url_per_line') }}
-                    </p>
-                    @error('additional_images')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
-                    
-                    @if($product->images->where('is_primary', false)->count() > 0)
-                        <div class="additional-images-preview">
-                            <strong>
-                                <i class="fas fa-images"></i>
-                                {{ __('messages.current_additional_images') }} ({{ $product->images->where('is_primary', false)->count() }})
-                            </strong>
-                            <div class="images-grid">
-                                @foreach($product->images->where('is_primary', false) as $image)
-                                    <img src="{{ $image->image_path }}" alt="Product Image">
-                                @endforeach
+                <!-- Current Main Image Preview -->
+                @if($product->main_image)
+                    @php $primaryImage = $product->images->where('is_primary', true)->first(); @endphp
+                    <div class="current-image-container" style="margin-bottom: 16px; position: relative;" id="current-main-image-container">
+                        <div class="current-image-label">
+                            <i class="fas fa-image"></i>
+                            {{ __('messages.current_main_image') }}
+                        </div>
+                        <div style="position: relative; display: inline-block;">
+                            <img src="{{ $product->main_image }}" alt="{{ $product->name }}">
+                            @if($primaryImage)
+                                <button type="button" class="dropzone-remove" onclick="deleteCurrentImage({{ $primaryImage->id }}, 'main', this)" title="{{ __('messages.delete') ?? 'Delete' }}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            @endif
+                        </div>
+                        <p class="form-text" style="margin-top: 8px;">
+                            <i class="fas fa-info-circle"></i> {{ __('messages.leave_empty_to_keep') ?? 'Leave empty to keep the current image' }}
+                        </p>
+                    </div>
+                @endif
+
+                <!-- FILE UPLOAD MODE -->
+                <div id="image-source-file" style="{{ old('image_source_type', 'file') === 'file' ? '' : 'display:none;' }}">
+                    <div class="form-group">
+                        <label class="form-label">
+                            {{ __('messages.main_product_image') }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_on_edit') }})</span>
+                        </label>
+                        <div class="dropzone-area @error('main_image_file') dropzone-error @enderror" id="main-dropzone" onclick="document.getElementById('main_image_file').click()">
+                            <input type="file" id="main_image_file" name="main_image_file" accept="image/jpeg,image/png,image/webp" style="display:none;">
+                            <div class="dropzone-content" id="main-dropzone-content">
+                                <div class="dropzone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                <p class="dropzone-title">{{ __('messages.drag_drop_image') }}</p>
+                                <p class="dropzone-subtitle">{{ __('messages.or_click_to_browse') }}</p>
+                                <span class="dropzone-formats">{{ __('messages.accepted_formats') }}</span>
+                            </div>
+                            <div class="dropzone-preview" id="main-dropzone-preview" style="display:none;">
+                                <img id="main-image-preview-img" src="" alt="Preview">
+                                <button type="button" class="dropzone-remove" onclick="event.stopPropagation(); removeMainImage();" title="{{ __('messages.remove') }}">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                         </div>
-                    @endif
+                        @error('main_image_file')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label class="form-label">
+                            {{ __('messages.additional_images') }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }} - {{ __('messages.max_10_files') }})</span>
+                        </label>
+                        <div class="dropzone-area dropzone-multi @error('additional_images_files') dropzone-error @enderror @error('additional_images_files.*') dropzone-error @enderror" id="additional-dropzone" onclick="document.getElementById('additional_images_files').click()">
+                            <input type="file" id="additional_images_files" name="additional_images_files[]" accept="image/jpeg,image/png,image/webp" multiple style="display:none;">
+                            <div class="dropzone-content" id="additional-dropzone-content">
+                                <div class="dropzone-icon"><i class="fas fa-images"></i></div>
+                                <p class="dropzone-title">{{ __('messages.drag_drop_images') }}</p>
+                                <p class="dropzone-subtitle">{{ __('messages.or_click_to_browse') }}</p>
+                                <span class="dropzone-formats">{{ __('messages.select_multiple_images') }}</span>
+                            </div>
+                        </div>
+                        <div class="dropzone-grid" id="additional-images-preview"></div>
+                        @error('additional_images_files')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                        @error('additional_images_files.*')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
+
+                <!-- URL MODE (legacy) -->
+                <div id="image-source-url" style="{{ old('image_source_type', 'file') === 'url' ? '' : 'display:none;' }}">
+                    <div class="form-group">
+                        <label for="main_image" class="form-label">
+                            {{ __('messages.main_product_image') }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_on_edit') ?? 'Optional - leave empty to keep current' }})</span>
+                        </label>
+                        <input 
+                            type="url" 
+                            id="main_image" 
+                            name="main_image" 
+                            class="form-control @error('main_image') is-invalid @enderror" 
+                            value="{{ old('main_image') }}" 
+                            placeholder="https://example.com/image.jpg">
+                        <p class="form-text">
+                            <i class="fas fa-lightbulb"></i> {{ __('messages.image_services_recommendation') }}
+                        </p>
+                        @error('main_image')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additional_images" class="form-label">
+                            {{ __('messages.additional_images') }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_one_url_per_line') ?? 'Optional - one URL per line' }})</span>
+                        </label>
+                        <textarea 
+                            id="additional_images" 
+                            name="additional_images" 
+                            class="form-control @error('additional_images') is-invalid @enderror" 
+                            rows="5" 
+                            placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg">{{ old('additional_images', $product->images->where('is_primary', false)->pluck('image_path')->implode("\n")) }}</textarea>
+                        <p class="form-text">
+                            <i class="fas fa-info-circle"></i> {{ __('messages.enter_image_url_per_line') ?? 'Enter each image URL on a separate line' }}
+                        </p>
+                        @error('additional_images')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Current Additional Images -->
+                @if($product->images->where('is_primary', false)->count() > 0)
+                    <div class="additional-images-preview" style="margin-top: 16px;" id="current-additional-images-container">
+                        <strong>
+                            <i class="fas fa-images"></i>
+                            <span id="additional-images-count-label">{{ __('messages.current_additional_images') }} ({{ $product->images->where('is_primary', false)->count() }})</span>
+                        </strong>
+                        <div class="images-grid" style="margin-top: 10px;">
+                            @foreach($product->images->where('is_primary', false) as $image)
+                                <div class="current-additional-image-item" id="additional-image-{{ $image->id }}">
+                                    <img src="{{ $image->image_url }}" alt="Product Image">
+                                    <button type="button" class="dropzone-remove" onclick="deleteCurrentImage({{ $image->id }}, 'additional', this)" title="{{ __('messages.delete') ?? 'Delete' }}">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
+
+        <style>
+            .dropzone-area {
+                border: 2px dashed var(--border);
+                border-radius: 12px;
+                padding: 32px 20px;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                position: relative;
+            }
+            .dropzone-area:hover, .dropzone-area.dragover {
+                border-color: var(--primary);
+                background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+            }
+            .dropzone-area.dropzone-error {
+                border-color: var(--danger);
+                background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            }
+            .dropzone-icon { font-size: 36px; color: var(--primary); margin-bottom: 12px; opacity: 0.7; }
+            .dropzone-area:hover .dropzone-icon { opacity: 1; }
+            .dropzone-title { font-size: 15px; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+            .dropzone-subtitle { font-size: 13px; color: var(--secondary); margin-bottom: 8px; }
+            .dropzone-formats { display: inline-block; font-size: 12px; color: var(--secondary); background: white; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); }
+            .dropzone-preview { position: relative; display: inline-block; }
+            .dropzone-preview img { max-width: 100%; max-height: 220px; border-radius: 10px; object-fit: contain; }
+            .dropzone-remove { position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; background: var(--danger); color: white; border: 2px solid white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 2px 8px rgba(239,68,68,0.4); transition: transform 0.2s; }
+            .dropzone-remove:hover { transform: scale(1.15); }
+            [dir="rtl"] .dropzone-remove { right: auto; left: -8px; }
+            .dropzone-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; margin-top: 12px; }
+            .dropzone-grid-item { position: relative; border-radius: 10px; overflow: hidden; border: 2px solid var(--border); background: #f8fafc; }
+            .dropzone-grid-item img { width: 100%; height: 100px; object-fit: cover; display: block; }
+            .dropzone-grid-item .file-name { font-size: 11px; color: var(--secondary); padding: 4px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        </style>
+
+        <script>
+        function toggleImageSource(type) {
+            const fileSection = document.getElementById('image-source-file');
+            const urlSection = document.getElementById('image-source-url');
+            const fileLabel = document.getElementById('source-file-label');
+            const urlLabel = document.getElementById('source-url-label');
+            if (type === 'file') {
+                fileSection.style.display = '';
+                urlSection.style.display = 'none';
+                fileLabel.style.borderColor = 'var(--primary)';
+                fileLabel.style.background = '#eff6ff';
+                urlLabel.style.borderColor = 'var(--border)';
+                urlLabel.style.background = '';
+            } else {
+                fileSection.style.display = 'none';
+                urlSection.style.display = '';
+                urlLabel.style.borderColor = 'var(--primary)';
+                urlLabel.style.background = '#eff6ff';
+                fileLabel.style.borderColor = 'var(--border)';
+                fileLabel.style.background = '';
+            }
+        }
+
+        function removeMainImage() {
+            const input = document.getElementById('main_image_file');
+            input.value = '';
+            document.getElementById('main-dropzone-preview').style.display = 'none';
+            document.getElementById('main-dropzone-content').style.display = '';
+        }
+
+        function setupDropzone(dropzoneId, inputId) {
+            const zone = document.getElementById(dropzoneId);
+            if (!zone) return;
+            ['dragenter', 'dragover'].forEach(e => {
+                zone.addEventListener(e, function(ev) { ev.preventDefault(); zone.classList.add('dragover'); });
+            });
+            ['dragleave', 'drop'].forEach(e => {
+                zone.addEventListener(e, function(ev) { ev.preventDefault(); zone.classList.remove('dragover'); });
+            });
+            zone.addEventListener('drop', function(ev) {
+                const input = document.getElementById(inputId);
+                if (ev.dataTransfer.files.length) {
+                    input.files = ev.dataTransfer.files;
+                    input.dispatchEvent(new Event('change'));
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupDropzone('main-dropzone', 'main_image_file');
+            setupDropzone('additional-dropzone', 'additional_images_files');
+
+            const mainInput = document.getElementById('main_image_file');
+            if (mainInput) {
+                mainInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            document.getElementById('main-image-preview-img').src = e.target.result;
+                            document.getElementById('main-dropzone-preview').style.display = '';
+                            document.getElementById('main-dropzone-content').style.display = 'none';
+                        };
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                });
+            }
+
+            const additionalInput = document.getElementById('additional_images_files');
+            if (additionalInput) {
+                additionalInput.addEventListener('change', function() {
+                    const grid = document.getElementById('additional-images-preview');
+                    grid.innerHTML = '';
+                    if (this.files && this.files.length) {
+                        document.getElementById('additional-dropzone-content').innerHTML =
+                            '<div class="dropzone-icon"><i class="fas fa-check-circle" style="color:var(--success);"></i></div>' +
+                            '<p class="dropzone-title">' + this.files.length + ' {{ __("messages.files_selected") }}</p>' +
+                            '<p class="dropzone-subtitle">{{ __("messages.click_to_change") }}</p>';
+                        Array.from(this.files).forEach(function(file) {
+                            const item = document.createElement('div');
+                            item.className = 'dropzone-grid-item';
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                item.innerHTML = '<img src="' + e.target.result + '" alt="Preview"><div class="file-name">' + file.name + '</div>';
+                            };
+                            reader.readAsDataURL(file);
+                            grid.appendChild(item);
+                        });
+                    }
+                });
+            }
+        });
+
+        function deleteCurrentImage(imageId, type, buttonEl) {
+            if (!confirm('{{ __("messages.confirm_delete_image") ?? "Are you sure you want to delete this image?" }}')) {
+                return;
+            }
+
+            const url = '{{ route("admin.products.delete-image", $product->id) }}';
+            const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
+            buttonEl.disabled = true;
+            buttonEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ image_id: imageId, type: type })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (type === 'main') {
+                        const container = document.getElementById('current-main-image-container');
+                        if (container) {
+                            container.style.transition = 'opacity 0.3s ease';
+                            container.style.opacity = '0';
+                            setTimeout(() => container.remove(), 300);
+                        }
+                    } else {
+                        const item = document.getElementById('additional-image-' + imageId);
+                        if (item) {
+                            item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                            item.style.opacity = '0';
+                            item.style.transform = 'scale(0.8)';
+                            setTimeout(() => {
+                                item.remove();
+                                const remaining = document.querySelectorAll('.current-additional-image-item');
+                                const countLabel = document.getElementById('additional-images-count-label');
+                                if (remaining.length === 0) {
+                                    const container = document.getElementById('current-additional-images-container');
+                                    if (container) container.remove();
+                                } else if (countLabel) {
+                                    countLabel.textContent = '{{ __("messages.current_additional_images") }} (' + remaining.length + ')';
+                                }
+                            }, 300);
+                        }
+                    }
+                } else {
+                    alert(data.message || '{{ __("messages.error_deleting_image") ?? "Error deleting image." }}');
+                    buttonEl.disabled = false;
+                    buttonEl.innerHTML = '<i class="fas fa-times"></i>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('{{ __("messages.error_deleting_image") ?? "Error deleting image." }}');
+                buttonEl.disabled = false;
+                buttonEl.innerHTML = '<i class="fas fa-times"></i>';
+            });
+        }
+        </script>
 
         <!-- Search Keywords Card -->
         <div class="card">

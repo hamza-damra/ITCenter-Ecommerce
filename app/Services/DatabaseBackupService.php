@@ -181,8 +181,17 @@ class DatabaseBackupService
      */
     protected function backupTable($handle, string $table): void
     {
-        // Get table structure
-        $createTable = DB::select("SHOW CREATE TABLE `{$table}`");
+        // Verify table exists before attempting backup
+        try {
+            $createTable = DB::select("SHOW CREATE TABLE `{$table}`");
+        } catch (Exception $e) {
+            Log::warning("Skipping table `{$table}` during backup: table not found or inaccessible", [
+                'table' => $table,
+                'error' => $e->getMessage(),
+            ]);
+            fwrite($handle, "-- Skipped table `{$table}` (not found)\n\n");
+            return;
+        }
         
         fwrite($handle, "-- Table structure for `{$table}`\n");
         fwrite($handle, "DROP TABLE IF EXISTS `{$table}`;\n");
@@ -1087,14 +1096,18 @@ class DatabaseBackupService
             $retentionDays = config('backup.retention_days', 30);
         }
 
-        $backupFrequencyDays = match($schedule) {
-            'daily' => 1,
-            'weekly' => 7,
-            'monthly' => 30,
-            'hourly', '6_hours', '12_hours' => 1,
-            '5_minutes', '15_minutes', '30_minutes' => 1,
-            'disabled' => 0,
-            default => 1
+        $backupFrequencyLabel = match($schedule) {
+            '5_minutes' => __('messages.Every 5 Minutes'),
+            '15_minutes' => __('messages.Every 15 Minutes'),
+            '30_minutes' => __('messages.Every 30 Minutes'),
+            'hourly' => __('messages.Every Hour'),
+            '6_hours' => __('messages.Every 6 Hours'),
+            '12_hours' => __('messages.Every 12 Hours'),
+            'daily' => __('messages.Daily'),
+            'weekly' => __('messages.Weekly'),
+            'monthly' => __('messages.Monthly'),
+            'disabled' => __('messages.Disabled'),
+            default => ucfirst(str_replace('_', ' ', $schedule))
         };
         
         return [
@@ -1105,7 +1118,7 @@ class DatabaseBackupService
             'newest_backup' => !empty($backups) ? $backups[0]['created_at_formatted'] : null,
             'retention_days' => $retentionDays,
             'schedule' => $schedule,
-            'backup_frequency_days' => $backupFrequencyDays
+            'backup_frequency_label' => $backupFrequencyLabel
         ];
     }
 

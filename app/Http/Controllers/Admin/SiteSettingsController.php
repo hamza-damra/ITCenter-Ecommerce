@@ -1,0 +1,97 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\SiteSetting;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
+
+class SiteSettingsController extends Controller
+{
+    /**
+     * Display the site settings page.
+     */
+    public function index()
+    {
+        $imageSettings = [
+            'max_image_size_kb' => SiteSetting::getValue('max_image_size_kb', 5120),
+            'allowed_image_formats' => SiteSetting::getValue('allowed_image_formats', 'jpg,jpeg,png,webp'),
+            'max_additional_images' => SiteSetting::getValue('max_additional_images', 10),
+            'image_quality' => SiteSetting::getValue('image_quality', 80),
+            'convert_to_webp' => SiteSetting::getValue('convert_to_webp', true),
+            'max_image_width' => SiteSetting::getValue('max_image_width', 1920),
+            'max_image_height' => SiteSetting::getValue('max_image_height', 1080),
+        ];
+
+        return view('admin.site-settings.index', compact('imageSettings'));
+    }
+
+    /**
+     * Update image upload settings.
+     */
+    public function updateImageSettings(Request $request)
+    {
+        $validated = $request->validate([
+            'max_image_size_kb' => 'required|integer|min:256|max:20480',
+            'allowed_image_formats' => 'required|string',
+            'max_additional_images' => 'required|integer|min:1|max:50',
+            'image_quality' => 'required|integer|min:10|max:100',
+            'convert_to_webp' => 'nullable|boolean',
+            'max_image_width' => 'required|integer|min:320|max:7680',
+            'max_image_height' => 'required|integer|min:320|max:4320',
+        ]);
+
+        SiteSetting::setValue('max_image_size_kb', $validated['max_image_size_kb'], 'integer', 'images');
+        SiteSetting::setValue('allowed_image_formats', $validated['allowed_image_formats'], 'string', 'images');
+        SiteSetting::setValue('max_additional_images', $validated['max_additional_images'], 'integer', 'images');
+        SiteSetting::setValue('image_quality', $validated['image_quality'], 'integer', 'images');
+        SiteSetting::setValue('convert_to_webp', $request->boolean('convert_to_webp'), 'boolean', 'images');
+        SiteSetting::setValue('max_image_width', $validated['max_image_width'], 'integer', 'images');
+        SiteSetting::setValue('max_image_height', $validated['max_image_height'], 'integer', 'images');
+
+        return redirect()->route('admin.site-settings.index', ['tab' => 'images'])
+            ->with('success', __('messages.image_settings_updated'));
+    }
+
+    /**
+     * Change admin password.
+     */
+    public function changePassword(Request $request)
+    {
+        $validated = $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => ['required', 'string', Password::min(8)->mixedCase()->numbers(), 'confirmed'],
+        ]);
+
+        $user = Auth::user();
+
+        // Verify current password
+        if (!Hash::check($validated['current_password'], $user->getAuthPassword())) {
+            return back()->withErrors(['current_password' => __('messages.current_password_incorrect')])->with('tab', 'password');
+        }
+
+        // Check if this is a BootstrapUser or an Eloquent User
+        if ($user instanceof \App\Auth\BootstrapUser) {
+            // For bootstrap users, store the new hash in site_settings
+            $newHash = Hash::make($validated['new_password']);
+            SiteSetting::setValue('admin_password_hash', $newHash, 'string', 'security');
+
+            return redirect()->route('admin.site-settings.index', ['tab' => 'password'])
+                ->with('success', __('messages.password_changed_successfully'));
+        }
+
+        // For Eloquent users (admin/employees)
+        if ($user instanceof \App\Models\User) {
+            $user->password = $validated['new_password'];
+            $user->save();
+
+            return redirect()->route('admin.site-settings.index', ['tab' => 'password'])
+                ->with('success', __('messages.password_changed_successfully'));
+        }
+
+        return back()->withErrors(['current_password' => __('messages.password_change_failed')])->with('tab', 'password');
+    }
+}

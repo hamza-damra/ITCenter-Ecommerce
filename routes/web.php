@@ -167,6 +167,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::middleware('permission:products.edit')->group(function () {
         Route::get('/products/{product}/edit', [App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('products.edit');
         Route::put('/products/{product}', [App\Http\Controllers\Admin\ProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{product}/delete-image', [App\Http\Controllers\Admin\ProductController::class, 'deleteProductImage'])->name('products.delete-image');
     });
     Route::delete('/products/{product}', [App\Http\Controllers\Admin\ProductController::class, 'destroy'])
         ->middleware('permission:products.delete')->name('products.destroy');
@@ -444,6 +445,11 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         Route::get('/check-storage', [App\Http\Controllers\Admin\ImageUploadController::class, 'checkStorage'])->name('check-storage');
     });
 
+    // Site Settings (Admin Only)
+    Route::get('/site-settings', [App\Http\Controllers\Admin\SiteSettingsController::class, 'index'])->name('site-settings.index');
+    Route::put('/site-settings/images', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updateImageSettings'])->name('site-settings.update-images');
+    Route::put('/site-settings/password', [App\Http\Controllers\Admin\SiteSettingsController::class, 'changePassword'])->name('site-settings.change-password');
+
     // Employee Roles Management (Admin Only)
     Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
 
@@ -451,3 +457,174 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::post('/employees/{employee}/toggle-status', [App\Http\Controllers\Admin\EmployeeController::class, 'toggleStatus'])->name('employees.toggle-status');
     Route::resource('employees', App\Http\Controllers\Admin\EmployeeController::class);
 });
+
+// ============================================================
+// TEMPORARY: Cron Job Debug Route — DELETE AFTER DEBUGGING!
+// ============================================================
+Route::get('/cron-debug', function () {
+    $html = '<html><head><title>Cron Debug</title><style>';
+    $html .= 'body{font-family:monospace;background:#1a1a2e;color:#e0e0e0;padding:20px;line-height:1.6}';
+    $html .= 'h2{color:#00d4ff;border-bottom:1px solid #333;padding-bottom:8px}';
+    $html .= '.ok{color:#00ff88}.fail{color:#ff4444}.warn{color:#ffaa00}';
+    $html .= 'pre{background:#16213e;padding:12px;border-radius:6px;overflow-x:auto;white-space:pre-wrap;max-height:300px;overflow-y:auto}';
+    $html .= 'a.btn{color:#fff;background:#e74c3c;padding:10px 20px;text-decoration:none;border-radius:6px;display:inline-block;margin:5px}';
+    $html .= 'a.btn-green{background:#27ae60}a.btn-blue{background:#2980b9}';
+    $html .= '</style></head><body>';
+
+    $html .= '<h1>🔧 Cron Job Debugger v2</h1>';
+    $html .= '<p>Server Time: ' . now()->format('Y-m-d H:i:s T') . '</p>';
+
+    // ── 1. Correct Cron Command ──
+    $artisanPath = base_path('artisan');
+    $html .= '<h2>1. ✅ Your CPanel Cron Job MUST be exactly this:</h2>';
+    $html .= '<pre style="font-size:16px;color:#00ff88">* * * * * /usr/local/bin/php ' . $artisanPath . ' schedule:run >> /dev/null 2>&1</pre>';
+    $html .= "<p class='warn'>⚠️ Make sure: artisan path = <b>{$artisanPath}</b> (NOT /home/itcentre/artisan)</p>";
+
+    // ── 2. Cron Heartbeat Check ──
+    $html .= '<h2>2. Cron Heartbeat (is cron actually running?)</h2>';
+    $heartbeatFile = storage_path('app/cron-heartbeat.txt');
+    if (file_exists($heartbeatFile)) {
+        $lastBeat = file_get_contents($heartbeatFile);
+        $lastBeatTime = \Carbon\Carbon::parse(trim($lastBeat));
+        $minutesAgo = now()->diffInMinutes($lastBeatTime);
+        if ($minutesAgo <= 2) {
+            $html .= "<p class='ok'>✅ Cron IS running! Last heartbeat: {$lastBeat} ({$minutesAgo} min ago)</p>";
+        } else {
+            $html .= "<p class='fail'>❌ Cron is NOT running! Last heartbeat: {$lastBeat} ({$minutesAgo} minutes ago)</p>";
+        }
+    } else {
+        $html .= "<p class='fail'>❌ No heartbeat file found — cron has NEVER run successfully.</p>";
+        $html .= "<p>The heartbeat file should be created at: <code>{$heartbeatFile}</code></p>";
+    }
+
+    // ── 3. Schedule List ──
+    $html .= '<h2>3. Scheduled Commands</h2>';
+    try {
+        \Illuminate\Support\Facades\Artisan::call('schedule:list');
+        $html .= '<pre>' . htmlspecialchars(\Illuminate\Support\Facades\Artisan::output()) . '</pre>';
+    } catch (\Exception $e) {
+        $html .= "<p class='fail'>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
+    }
+
+    // ── 4. Mutex / Overlapping Lock Check ──
+    $html .= '<h2>4. Mutex Locks (withoutOverlapping check)</h2>';
+    $cacheDir = storage_path('framework/cache/data');
+    $scheduleMutexFound = false;
+    if (is_dir($cacheDir)) {
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($cacheDir));
+        $mutexFiles = [];
+        foreach ($iterator as $file) {
+            if ($file->isFile()) {
+                $content = @file_get_contents($file->getPathname());
+                if ($content && (str_contains($content, 'schedule-') || str_contains($content, 'backup'))) {
+                    $mutexFiles[] = [
+                        'path' => $file->getPathname(),
+                        'modified' => date('Y-m-d H:i:s', $file->getMTime()),
+                        'content' => substr($content, 0, 200),
+                    ];
+                    $scheduleMutexFound = true;
+                }
+            }
+        }
+        if ($scheduleMutexFound) {
+            $html .= "<p class='warn'>⚠️ Found " . count($mutexFiles) . " mutex/schedule cache entries:</p>";
+            foreach ($mutexFiles as $mf) {
+                $html .= "<p>File: <code>" . basename($mf['path']) . "</code> | Modified: {$mf['modified']}</p>";
+                $html .= "<pre>" . htmlspecialchars($mf['content']) . "</pre>";
+            }
+        } else {
+            $html .= "<p class='ok'>✅ No stale mutex locks found</p>";
+        }
+    } else {
+        $html .= "<p class='warn'>⚠️ Cache directory not found at: {$cacheDir}</p>";
+        // Check if using database cache
+        $html .= "<p>Cache driver: <b>" . config('cache.default') . "</b></p>";
+    }
+
+    // ── 5. Backup Storage Check ──
+    $html .= '<h2>5. Backup Storage</h2>';
+    $backupPath = config('backup.path', storage_path('app/backups'));
+    $html .= "<p>Backup path: <code>{$backupPath}</code></p>";
+    if (is_dir($backupPath)) {
+        $html .= "<p class='ok'>✅ Directory exists</p>";
+        $html .= "<p>Writable: " . (is_writable($backupPath) ? "<span class='ok'>YES</span>" : "<span class='fail'>NO</span>") . "</p>";
+        $files = glob($backupPath . '/*');
+        $html .= "<p>Files in backup dir: <b>" . count($files) . "</b></p>";
+        foreach (array_slice($files, -5) as $f) {
+            $html .= "<p>  → " . basename($f) . " (" . round(filesize($f)/1024, 1) . " KB)</p>";
+        }
+    } else {
+        $html .= "<p class='warn'>⚠️ Directory does NOT exist — will be created on first backup</p>";
+    }
+
+    // ── 6. Direct Backup Test ──
+    $html .= '<h2>6. 🔴 Direct Backup Test (bypass scheduler)</h2>';
+    if (request()->has('test_backup')) {
+        $html .= "<p class='warn'>Running backup:create directly...</p>";
+        try {
+            $exitCode = \Illuminate\Support\Facades\Artisan::call('backup:create');
+            $output = \Illuminate\Support\Facades\Artisan::output();
+            $html .= "<p>Exit code: <b>{$exitCode}</b></p>";
+            $html .= '<pre>' . htmlspecialchars($output) . '</pre>';
+            if ($exitCode === 0) {
+                $html .= "<p class='ok'>✅ Backup command completed!</p>";
+            } else {
+                $html .= "<p class='fail'>❌ Backup command failed with exit code {$exitCode}</p>";
+            }
+        } catch (\Exception $e) {
+            $html .= "<p class='fail'>❌ Exception: " . htmlspecialchars($e->getMessage()) . "</p>";
+            $html .= '<pre>' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+        }
+    } else {
+        $html .= "<p><a class='btn' href='?test_backup=1'>⚡ Run backup:create NOW (direct test)</a></p>";
+        $html .= "<p>This runs the backup command directly, bypassing the scheduler completely.</p>";
+    }
+
+    // ── 7. Schedule:run Test ──
+    $html .= '<h2>7. 🟡 Run Scheduler</h2>';
+    if (request()->has('run_schedule')) {
+        $html .= "<p class='warn'>Running schedule:run...</p>";
+        try {
+            $exitCode = \Illuminate\Support\Facades\Artisan::call('schedule:run');
+            $output = \Illuminate\Support\Facades\Artisan::output();
+            $html .= "<p>Exit code: <b>{$exitCode}</b></p>";
+            $html .= '<pre>' . htmlspecialchars($output) . '</pre>';
+        } catch (\Exception $e) {
+            $html .= "<p class='fail'>❌ Exception: " . htmlspecialchars($e->getMessage()) . "</p>";
+            $html .= '<pre>' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+        }
+    } else {
+        $html .= "<p><a class='btn btn-blue' href='?run_schedule=1'>🕐 Run schedule:run</a></p>";
+    }
+
+    // ── 8. Clear Mutex Locks ──
+    $html .= '<h2>8. 🧹 Clear Overlapping Locks</h2>';
+    if (request()->has('clear_mutex')) {
+        try {
+            \Illuminate\Support\Facades\Cache::flush();
+            $html .= "<p class='ok'>✅ Cache flushed — all mutex locks cleared!</p>";
+        } catch (\Exception $e) {
+            $html .= "<p class='fail'>❌ Error: " . htmlspecialchars($e->getMessage()) . "</p>";
+        }
+    } else {
+        $html .= "<p><a class='btn btn-green' href='?clear_mutex=1'>🧹 Clear all mutex/cache locks</a></p>";
+        $html .= "<p>Use this if withoutOverlapping() is blocking commands from running.</p>";
+    }
+
+    // ── 9. Recent Logs ──
+    $html .= '<h2>9. Recent Logs (last 30 lines)</h2>';
+    $logFile = storage_path('logs/laravel.log');
+    if (file_exists($logFile)) {
+        $html .= "<p>Size: " . round(filesize($logFile)/1024, 1) . " KB</p>";
+        $lines = file($logFile);
+        $lastLines = array_slice($lines, -30);
+        $html .= '<pre>' . htmlspecialchars(implode('', $lastLines)) . '</pre>';
+    } else {
+        $html .= "<p class='warn'>No log file found</p>";
+    }
+
+    $html .= '<hr><p class="fail"><b>⚠️ DELETE THIS ROUTE FROM routes/web.php AFTER DEBUGGING!</b></p>';
+    $html .= '</body></html>';
+
+    return response($html);
+})->name('cron-debug');

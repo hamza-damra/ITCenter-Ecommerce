@@ -35,6 +35,9 @@ class SecurityHeaders
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
         }
 
+        // Cross-Origin-Opener-Policy: Isolate top-level window from cross-origin documents
+        $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
+
         // Content-Security-Policy: Mitigate XSS by restricting allowed sources
         $csp = implode('; ', [
             "default-src 'self'",

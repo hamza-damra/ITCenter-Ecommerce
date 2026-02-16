@@ -266,6 +266,8 @@
             margin-left: 260px;
             padding: 24px;
             overflow-y: auto;
+            overflow-x: hidden;
+            min-width: 0;
         }
 
         /* Page Header */
@@ -2520,6 +2522,11 @@
                 {{-- Shipping Management --}}
                 @if($authUser->hasAnyPermissionInGroup('shipping'))
                 <li><a href="{{ route('admin.shipping.index') }}" class="{{ request()->routeIs('admin.shipping.*') ? 'active' : '' }}"><i class="fas fa-truck"></i> {{ __('messages.shipping_management') }}</a></li>
+                @endif
+
+                {{-- Site Settings - Admin Only --}}
+                @if($authUser->isAdmin())
+                <li><a href="{{ route('admin.site-settings.index') }}" class="{{ request()->routeIs('admin.site-settings.*') ? 'active' : '' }}"><i class="fas fa-cog"></i> {{ __('messages.site_settings') }}</a></li>
                 @endif
 
                 {{-- Employee Management - Admin Only --}}

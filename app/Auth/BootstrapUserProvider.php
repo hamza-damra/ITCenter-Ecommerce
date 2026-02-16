@@ -86,7 +86,17 @@ class BootstrapUserProvider implements UserProvider
             return false;
         }
 
-        // Get password hash from environment
+        // Priority 1: Check DB-stored password hash (from Site Settings)
+        try {
+            $dbHash = \App\Models\SiteSetting::getValue('admin_password_hash');
+            if ($dbHash && Hash::check($password, $dbHash)) {
+                return true;
+            }
+        } catch (\Exception $e) {
+            // DB not available, fall through to env-based check
+        }
+
+        // Priority 2: Check environment variable hash
         $passwordHash = env('BOOTSTRAP_ADMIN_PASSWORD_HASH');
 
         if (!$passwordHash) {
@@ -100,7 +110,6 @@ class BootstrapUserProvider implements UserProvider
         }
 
         // Also check if it's a plain bcrypt hash (for initial setup)
-        // This allows setting a plain hash during initial configuration
         if (password_verify($password, $passwordHash)) {
             return true;
         }

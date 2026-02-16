@@ -5,22 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'IT Center')</title>
+    <meta name="description" content="@yield('meta_description', 'IT Center - Your trusted source for the latest technology, electronics, laptops, desktops, and accessories at competitive prices.')">
     @yield('meta')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    {{-- Horizontal Scroller CSS --}}
-    <link rel="stylesheet" href="{{ asset('css/horizontal-scroller.css') }}">
-    
-    {{-- Search Autocomplete CSS --}}
-    <link rel="stylesheet" href="{{ asset('css/search-autocomplete.css') }}">
-    
-    @if(is_rtl())
+
+    {{-- Preconnect to external origins for faster resource loading --}}
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+    {{-- Font Awesome CSS (deferred to avoid render-blocking) --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    {{-- Force font-display:swap on Font Awesome to prevent render blocking --}}
+    <style>
+        @font-face { font-family: "Font Awesome 6 Free"; font-display: swap; }
+        @font-face { font-family: "Font Awesome 6 Brands"; font-display: swap; }
+    </style>
+
+    {{-- Critical CSS loaded normally --}}
+    <link rel="stylesheet" href="{{ asset('css/layout.min.css') }}">
+
+    {{-- Non-critical CSS deferred via media trick --}}
+    <link rel="stylesheet" href="{{ asset('css/horizontal-scroller.css') }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ asset('css/horizontal-scroller.css') }}"></noscript>
+    <link rel="stylesheet" href="{{ asset('css/search-autocomplete.css') }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ asset('css/search-autocomplete.css') }}"></noscript>
+
+    @if(is_rtl())
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"></noscript>
     @endif
-    {{-- Layout CSS (extracted to external file for browser caching) --}}
-    <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
+
+    @stack('head')
 </head>
 <body data-t-request-product="{{ __t('messages.request_product') }}" data-t-contact-us="{{ __t('messages.contact_us') }}">
     @sectionMissing('hideHeader')
@@ -212,7 +228,7 @@
 
             <div class="logo">
                 <a href="{{ route('home') }}">
-                    <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
+                    <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo" width="125" height="35">
                 </a>
             </div>
 
@@ -388,14 +404,14 @@
         <div class="footer-content">
             <div class="footer-section">
                 <div class="footer-logo">
-                    <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
+                    <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo" width="161" height="45">
                 </div>
                 <p>{{ __('messages.footer_description') }}</p>
                 <div class="footer-social">
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                 </div>
             </div>
             <div class="footer-section">
@@ -432,14 +448,14 @@
     @endif
 
     {{-- Layout JS (extracted to external file for browser caching) --}}
-    <script src="{{ asset('js/layout.js') }}" defer></script>
+    <script src="{{ asset('js/layout.min.js') }}" defer></script>
 
     
     {{-- Horizontal Scroller JavaScript --}}
-    <script src="{{ asset('js/horizontal-scroller.js') }}"></script>
+    <script src="{{ asset('js/horizontal-scroller.js') }}" defer></script>
     
     {{-- Search Autocomplete JavaScript --}}
-    <script src="{{ asset('js/search-autocomplete.js') }}"></script>
+    <script src="{{ asset('js/search-autocomplete.js') }}" defer></script>
     
     @stack('scripts')
 </body>

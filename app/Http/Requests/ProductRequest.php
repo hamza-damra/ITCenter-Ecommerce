@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Category;
+use App\Models\SiteSetting;
 
 class ProductRequest extends FormRequest
 {
@@ -43,8 +44,16 @@ class ProductRequest extends FormRequest
             'sale_price' => 'nullable|numeric|min:0|lt:price',
             'stock_quantity' => 'required|integer|min:0',
             
-            // Images
-            'main_image' => 'required|url',
+            // Image source type
+            'image_source_type' => 'nullable|string|in:file,url',
+            
+            // Images - file upload mode (dynamic limits from site settings)
+            'main_image_file' => 'nullable|file|mimes:' . SiteSetting::getValue('allowed_image_formats', 'jpg,jpeg,png,webp') . '|max:' . SiteSetting::getValue('max_image_size_kb', 5120),
+            'additional_images_files' => 'nullable|array|max:' . SiteSetting::getValue('max_additional_images', 10),
+            'additional_images_files.*' => 'file|mimes:' . SiteSetting::getValue('allowed_image_formats', 'jpg,jpeg,png,webp') . '|max:' . SiteSetting::getValue('max_image_size_kb', 5120),
+            
+            // Images - URL mode (legacy)
+            'main_image' => 'nullable|url',
             'additional_images' => 'nullable|string',
             
             // Descriptions with limits
@@ -104,8 +113,31 @@ class ProductRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
+            $this->validateMainImage($validator);
             $this->validateSpecValues($validator);
         });
+    }
+
+    /**
+     * Validate that a main image is provided via file upload or URL.
+     */
+    protected function validateMainImage($validator): void
+    {
+        $sourceType = $this->input('image_source_type', 'file');
+        $hasFile = $this->hasFile('main_image_file');
+        $hasUrl = $this->filled('main_image');
+        $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH');
+
+        // On create, at least one source is required
+        // On update, it's optional (keeps existing image)
+        if (!$isUpdate && !$hasFile && !$hasUrl) {
+            $validator->errors()->add('main_image', __('validation.required', ['attribute' => 'main image']));
+        }
+
+        // If file mode selected but no file provided on create
+        if (!$isUpdate && $sourceType === 'file' && !$hasFile && !$hasUrl) {
+            $validator->errors()->add('main_image_file', __('validation.required', ['attribute' => 'main image file']));
+        }
     }
 
     /**

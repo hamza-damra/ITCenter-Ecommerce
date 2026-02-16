@@ -18,13 +18,13 @@
                                 <div class="category-carousel-image">
                                     @if($category->image)
                                         @if(str_starts_with($category->image, 'http'))
-                                            <img src="{{ $category->image }}" alt="{{ $category->name }}" loading="lazy">
+                                            <img src="{{ $category->image }}" alt="" loading="lazy" width="124" height="124" decoding="async">
                                         @else
-                                            <img src="{{ asset($category->image) }}" alt="{{ $category->name }}" loading="lazy">
+                                            <img src="{{ asset($category->image) }}" alt="" loading="lazy" width="124" height="124" decoding="async">
                                         @endif
                                     @else
                                         <img src="https://via.placeholder.com/300x300/f3f4f6/9ca3af?text={{ urlencode($category->name) }}"
-                                            alt="{{ $category->name }}" loading="lazy">
+                                            alt="" loading="lazy" width="124" height="124" decoding="async">
                                     @endif
                                 </div>
                                 <div class="category-carousel-name" dir="auto">{{ $category->name }}</div>
