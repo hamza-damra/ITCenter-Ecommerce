@@ -772,7 +772,6 @@
                                     @endphp
                                     <img src="{{ $imageUrl }}" 
                                          alt="{{ $item->product->name }}" 
-                                         loading="lazy"
                                          onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'no-image\'><i class=\'fas fa-image\'></i></div>';">
                                 @else
                                     <div class="no-image">

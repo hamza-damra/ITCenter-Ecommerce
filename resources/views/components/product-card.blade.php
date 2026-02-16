@@ -9,7 +9,6 @@
         <div class="product-card-image">
             <img src="{{ $product->main_image }}" 
                  alt="{{ $product->name }}" 
-                 loading="lazy"
                  decoding="async"
                  width="200"
                  height="200"

@@ -61,7 +61,7 @@
                                         onclick="event.preventDefault(); event.stopPropagation();">
                                         <i class="far fa-heart"></i>
                                     </div>
-                                    <img src="{{ $giftIdeas[0]->main_image }}" alt="{{ $giftIdeas[0]->name }}" loading="lazy">
+                                    <img src="{{ $giftIdeas[0]->main_image }}" alt="{{ $giftIdeas[0]->name }}">
                                 </div>
                                 <div class="product-info">
                                     <div class="product-title">{{ $giftIdeas[0]->name }}</div>
@@ -116,7 +116,7 @@
                                         onclick="event.preventDefault(); event.stopPropagation();">
                                         <i class="far fa-heart"></i>
                                     </div>
-                                    <img src="{{ $giftIdeas[1]->main_image }}" alt="{{ $giftIdeas[1]->name }}" loading="lazy">
+                                    <img src="{{ $giftIdeas[1]->main_image }}" alt="{{ $giftIdeas[1]->name }}">
                                 </div>
                                 <div class="product-info">
                                     <div class="product-title">{{ $giftIdeas[1]->name }}</div>

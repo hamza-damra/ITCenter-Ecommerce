@@ -21,7 +21,6 @@
                                     <div class="promo-media">
                                         <img src="{{ $offerProduct->main_image }}" 
                                              alt="{{ $offerProduct->name }}"
-                                             loading="lazy"
                                              onerror="this.onerror=null; this.src='{{ \App\Helpers\ImageHelper::assetUrl('images/products/default.png') }}';">
                                     </div>
                                     <div class="promo-body">
@@ -128,7 +127,7 @@
                                     <i class="far fa-heart"></i>
                                 </div>
 
-                                <img src="{{ $product->main_image }}" alt="{{ $product->name }}" loading="lazy" decoding="async">
+                                <img src="{{ $product->main_image }}" alt="{{ $product->name }}" decoding="async">
                             </div>
                             <div class="product-info">
                                 {{-- Product Rating --}}

@@ -1,5 +1,5 @@
 {{-- Explore Our Products Section - Category Carousel --}}
-@if(isset($categories) && $categories->count() > 0)
+@if (isset($categories) && $categories->count() > 0)
     <div class="explore-products-section">
         <div class="container">
             <!-- Category Carousel -->
@@ -13,18 +13,21 @@
                 <!-- Carousel Track Container - Always LTR for proper sliding -->
                 <div class="category-carousel-container" dir="ltr">
                     <div class="category-carousel-track" id="categoryCarouselTrack">
-                        @foreach($categories as $category)
+                        @foreach ($categories as $category)
                             <a href="{{ route('category.show', $category->slug) }}" class="category-carousel-card">
                                 <div class="category-carousel-image">
-                                    @if($category->image)
-                                        @if(str_starts_with($category->image, 'http'))
-                                            <img src="{{ $category->image }}" alt="" loading="eager" width="124" height="124" decoding="async">
+                                    @if ($category->image)
+                                        @if (str_starts_with($category->image, 'http'))
+                                            <img src="{{ $category->image }}" alt="" loading="eager"
+                                                width="124" height="124" decoding="async">
                                         @else
-                                            <img src="{{ asset($category->image) }}" alt="" loading="eager" width="124" height="124" decoding="async">
+                                            <img src="{{ asset($category->image) }}" alt="" loading="eager"
+                                                width="124" height="124" decoding="async">
                                         @endif
                                     @else
                                         <img src="https://via.placeholder.com/300x300/f3f4f6/9ca3af?text={{ urlencode($category->name) }}"
-                                            alt="" loading="eager" width="124" height="124" decoding="async">
+                                            alt="" loading="eager" width="124" height="124"
+                                            decoding="async">
                                     @endif
                                 </div>
                                 <div class="category-carousel-name" dir="auto">{{ $category->name }}</div>

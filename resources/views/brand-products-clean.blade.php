@@ -50,7 +50,7 @@
                                     <img src="{{ asset('media/' . $product->main_image) }}" 
                                          alt="{{ $product->name }}" 
                                          class="product-image"
-                                         loading="lazy">
+                                        >
                                 @endif
                                 
                                 {{-- Product Badges --}}

@@ -59,7 +59,7 @@
                                         <i class="far fa-heart"></i>
                                     </div>
                                     <img src="{{ $featuredProducts[6]->main_image }}" alt="{{ $featuredProducts[6]->name }}"
-                                        loading="lazy">
+                                       >
                                 </div>
                                 <div class="product-info">
                                     <div class="product-title">{{ $featuredProducts[6]->name }}</div>
@@ -119,7 +119,7 @@
                                         <i class="far fa-heart"></i>
                                     </div>
                                     <img src="{{ $featuredProducts[7]->main_image }}" alt="{{ $featuredProducts[7]->name }}"
-                                        loading="lazy">
+                                       >
                                 </div>
                                 <div class="product-info">
                                     <div class="product-title">{{ $featuredProducts[7]->name }}</div>

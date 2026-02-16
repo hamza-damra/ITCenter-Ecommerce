@@ -4239,7 +4239,6 @@
                                                             <div class="promo-media">
                                                                 <img src="{{ $offerProduct->main_image }}" 
                                                                      alt="{{ $offerProduct->name }}"
-                                                                     loading="lazy"
                                                                      onerror="this.onerror=null; this.src='{{ \App\Helpers\ImageHelper::assetUrl('images/products/default.png') }}';">
                                                             </div>
                                                             <div class="promo-body">
@@ -4346,7 +4345,7 @@
                                                             <i class="far fa-heart"></i>
                                                         </div>
 
-                                                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}" loading="lazy" decoding="async">
+                                                        <img src="{{ $product->main_image }}" alt="{{ $product->name }}" decoding="async">
                                                     </div>
                                                     <div class="product-info">
                                                         {{-- Product Rating --}}
@@ -4489,7 +4488,7 @@
                                                                 <i class="far fa-heart"></i>
                                                             </div>
                                                             <img src="{{ $featuredProducts[6]->main_image }}" alt="{{ $featuredProducts[6]->name }}"
-                                                                loading="lazy">
+                                                               >
                                                         </div>
                                                         <div class="product-info">
                                                             <div class="product-title">{{ $featuredProducts[6]->name }}</div>
@@ -4549,7 +4548,7 @@
                                                                 <i class="far fa-heart"></i>
                                                             </div>
                                                             <img src="{{ $featuredProducts[7]->main_image }}" alt="{{ $featuredProducts[7]->name }}"
-                                                                loading="lazy">
+                                                               >
                                                         </div>
                                                         <div class="product-info">
                                                             <div class="product-title">{{ $featuredProducts[7]->name }}</div>
@@ -4686,7 +4685,7 @@
                                                                 onclick="event.preventDefault(); event.stopPropagation();">
                                                                 <i class="far fa-heart"></i>
                                                             </div>
-                                                            <img src="{{ $giftIdeas[0]->main_image }}" alt="{{ $giftIdeas[0]->name }}" loading="lazy">
+                                                            <img src="{{ $giftIdeas[0]->main_image }}" alt="{{ $giftIdeas[0]->name }}">
                                                         </div>
                                                         <div class="product-info">
                                                             <div class="product-title">{{ $giftIdeas[0]->name }}</div>
@@ -4741,7 +4740,7 @@
                                                                 onclick="event.preventDefault(); event.stopPropagation();">
                                                                 <i class="far fa-heart"></i>
                                                             </div>
-                                                            <img src="{{ $giftIdeas[1]->main_image }}" alt="{{ $giftIdeas[1]->name }}" loading="lazy">
+                                                            <img src="{{ $giftIdeas[1]->main_image }}" alt="{{ $giftIdeas[1]->name }}">
                                                         </div>
                                                         <div class="product-info">
                                                             <div class="product-title">{{ $giftIdeas[1]->name }}</div>

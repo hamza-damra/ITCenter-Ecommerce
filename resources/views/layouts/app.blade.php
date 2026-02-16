@@ -110,10 +110,10 @@
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}"><i
                             class="fas fa-home"></i> {{ __t('messages.home') }}</a></li>
                 <li><a href="{{ route('categories') }}"
-                        class="{{ request()->routeIs('categories') ? 'active' : '' }}"><i
-                            class="fas fa-th-large"></i> {{ __t('messages.categories') }}</a></li>
-                <li><a href="{{ route('products') }}"
-                        class="{{ request()->routeIs('products') ? 'active' : '' }}"><i class="fas fa-box"></i>
+                        class="{{ request()->routeIs('categories') ? 'active' : '' }}"><i class="fas fa-th-large"></i>
+                        {{ __t('messages.categories') }}</a></li>
+                <li><a href="{{ route('products') }}" class="{{ request()->routeIs('products') ? 'active' : '' }}"><i
+                            class="fas fa-box"></i>
                         {{ __t('messages.products') }}</a></li>
                 <li><a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}"><i
                             class="fas fa-info-circle"></i> {{ __t('messages.about') }}</a></li>
@@ -527,6 +527,31 @@
 
     {{-- Search Autocomplete JavaScript --}}
     <script src="{{ asset('js/search-autocomplete.js') }}" defer></script>
+
+    {{-- Smart Lazy Loading: dynamically apply loading="lazy" to offscreen images
+         after initial render to avoid the browser "[Intervention] Images loaded lazily
+         and replaced with placeholders" warning in Edge/Chrome --}}
+    <script>
+    (function() {
+        function applyLazyLoading() {
+            if (!('loading' in HTMLImageElement.prototype)) return;
+            var imgs = document.querySelectorAll('img:not([loading])');
+            for (var i = 0; i < imgs.length; i++) {
+                var rect = imgs[i].getBoundingClientRect();
+                if (rect.bottom < 0 || rect.top > window.innerHeight) {
+                    imgs[i].loading = 'lazy';
+                }
+            }
+        }
+        if (document.readyState === 'complete') {
+            requestAnimationFrame(applyLazyLoading);
+        } else {
+            window.addEventListener('load', function() {
+                requestAnimationFrame(applyLazyLoading);
+            });
+        }
+    })();
+    </script>
 
     @stack('scripts')
 </body>
