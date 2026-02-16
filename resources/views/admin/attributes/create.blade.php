@@ -1,23 +1,23 @@
 @extends('admin.layout')
 
-@section('title', 'Create Attribute')
+@section('title', __('messages.create_new_attribute'))
 
 @section('content')
 <div class="page-header">
     <div class="page-header-content">
-        <h1>Create New Attribute</h1>
-        <p>Add a new product attribute for filtering</p>
+        <h1>{{ __('messages.create_new_attribute') }}</h1>
+        <p>{{ __('messages.manage_attributes_subtitle') }}</p>
     </div>
     <div class="page-actions">
         <a href="{{ route('admin.attributes.index') }}" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Attributes
+            <i class="fas fa-arrow-{{ app()->getLocale() === 'ar' || app()->getLocale() === 'he' ? 'right' : 'left' }}"></i> {{ __('messages.back_to_attributes') }}
         </a>
     </div>
 </div>
 
 <div class="card">
     <div class="card-header">
-        <h2><i class="fas fa-plus-circle"></i> Attribute Information</h2>
+        <h2><i class="fas fa-plus-circle"></i> {{ __('messages.attribute_information') }}</h2>
     </div>
     <div class="card-body">
         <form action="{{ route('admin.attributes.store') }}" method="POST" class="form-layout">
@@ -25,12 +25,12 @@
 
             <!-- Multi-language Names Section -->
             <div class="form-section">
-                <h3 class="section-title">Attribute Names (Multi-language)</h3>
+                <h3 class="section-title">{{ __('messages.attribute_names_multilang') }}</h3>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name_en" class="form-label">
-                            Name (English)
+                            {{ __('messages.name_english') }}
                             <span class="required">*</span>
                         </label>
                         <input 
@@ -40,6 +40,7 @@
                             class="form-control @error('name_en') is-invalid @enderror" 
                             value="{{ old('name_en') }}" 
                             placeholder="e.g., Refresh Rate"
+                            dir="ltr"
                             required>
                         @error('name_en')
                             <span class="error-message">{{ $message }}</span>
@@ -48,7 +49,7 @@
 
                     <div class="form-group">
                         <label for="name_ar" class="form-label">
-                            Name (Arabic)
+                            {{ __('messages.name_arabic') }}
                             <span class="required">*</span>
                         </label>
                         <input 
@@ -69,7 +70,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name_he" class="form-label">
-                            Name (Hebrew)
+                            {{ __('messages.name_hebrew') }}
                             <span class="required">*</span>
                         </label>
                         <input 
@@ -88,7 +89,7 @@
 
                     <div class="form-group">
                         <label for="slug" class="form-label">
-                            Slug
+                            {{ __('messages.slug_field') }}
                         </label>
                         <input 
                             type="text" 
@@ -96,9 +97,10 @@
                             name="slug" 
                             class="form-control @error('slug') is-invalid @enderror" 
                             value="{{ old('slug') }}" 
-                            placeholder="Auto-generated from English name">
+                            placeholder="{{ __('messages.slug_placeholder') }}"
+                            dir="ltr">
                         <p class="form-text">
-                            <i class="fas fa-info-circle"></i> Leave empty to auto-generate from English name
+                            <i class="fas fa-info-circle"></i> {{ __('messages.slug_auto_generate') }}
                         </p>
                         @error('slug')
                             <span class="error-message">{{ $message }}</span>
@@ -109,12 +111,12 @@
 
             <!-- Attribute Configuration Section -->
             <div class="form-section">
-                <h3 class="section-title">Attribute Configuration</h3>
+                <h3 class="section-title">{{ __('messages.attribute_configuration') }}</h3>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="type" class="form-label">
-                            Type
+                            {{ __('messages.type_field') }}
                             <span class="required">*</span>
                         </label>
                         <select 
@@ -122,11 +124,11 @@
                             name="type" 
                             class="form-control @error('type') is-invalid @enderror"
                             required>
-                            <option value="">Select Type</option>
-                            <option value="select" {{ old('type') == 'select' ? 'selected' : '' }}>Select (Single Choice)</option>
-                            <option value="multi_select" {{ old('type') == 'multi_select' ? 'selected' : '' }}>Multi-Select (Multiple Choices)</option>
-                            <option value="range" {{ old('type') == 'range' ? 'selected' : '' }}>Range (Min-Max)</option>
-                            <option value="color" {{ old('type') == 'color' ? 'selected' : '' }}>Color</option>
+                            <option value="">{{ __('messages.select_type') }}</option>
+                            <option value="select" {{ old('type') == 'select' ? 'selected' : '' }}>{{ __('messages.type_select') }}</option>
+                            <option value="multi_select" {{ old('type') == 'multi_select' ? 'selected' : '' }}>{{ __('messages.type_multi_select') }}</option>
+                            <option value="range" {{ old('type') == 'range' ? 'selected' : '' }}>{{ __('messages.type_range') }}</option>
+                            <option value="color" {{ old('type') == 'color' ? 'selected' : '' }}>{{ __('messages.type_color') }}</option>
                         </select>
                         @error('type')
                             <span class="error-message">{{ $message }}</span>
@@ -135,7 +137,7 @@
 
                     <div class="form-group">
                         <label for="unit" class="form-label">
-                            Unit
+                            {{ __('messages.unit_field') }}
                         </label>
                         <input 
                             type="text" 
@@ -143,9 +145,9 @@
                             name="unit" 
                             class="form-control @error('unit') is-invalid @enderror" 
                             value="{{ old('unit') }}" 
-                            placeholder="e.g., Hz, GB, inches">
+                            placeholder="{{ __('messages.unit_placeholder') }}">
                         <p class="form-text">
-                            <i class="fas fa-info-circle"></i> Optional unit of measurement (e.g., Hz, GB, inches)
+                            <i class="fas fa-info-circle"></i> {{ __('messages.unit_help') }}
                         </p>
                         @error('unit')
                             <span class="error-message">{{ $message }}</span>
@@ -156,7 +158,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="order" class="form-label">
-                            Display Order
+                            {{ __('messages.display_order') }}
                         </label>
                         <input 
                             type="number" 
@@ -167,7 +169,7 @@
                             min="0"
                             placeholder="0">
                         <p class="form-text">
-                            <i class="fas fa-info-circle"></i> Lower numbers appear first
+                            <i class="fas fa-info-circle"></i> {{ __('messages.order_help') }}
                         </p>
                         @error('order')
                             <span class="error-message">{{ $message }}</span>
@@ -178,7 +180,7 @@
 
             <!-- Settings Section -->
             <div class="form-section">
-                <h3 class="section-title">Settings</h3>
+                <h3 class="section-title">{{ __('messages.settings') }}</h3>
                 
                 <div style="display: flex; flex-direction: column; gap: 12px;">
                     <label class="checkbox-group">
@@ -189,8 +191,8 @@
                             value="1" 
                             {{ old('is_filterable', true) ? 'checked' : '' }}>
                         <span>
-                            <strong>Filterable</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Show this attribute in filter sidebars</p>
+                            <strong>{{ __('messages.filterable_label') }}</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.filterable_help') }}</p>
                         </span>
                     </label>
 
@@ -202,8 +204,8 @@
                             value="1" 
                             {{ old('is_active', true) ? 'checked' : '' }}>
                         <span>
-                            <strong>Active</strong>
-                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">Make this attribute available for use</p>
+                            <strong>{{ __('messages.active_label') }}</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.active_help') }}</p>
                         </span>
                     </label>
                 </div>
@@ -212,10 +214,10 @@
             <!-- Form Actions -->
             <div style="display: flex; gap: 12px; padding-top: 24px; border-top: 1px solid #e2e8f0; margin-top: 24px;">
                 <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save"></i> Create Attribute
+                    <i class="fas fa-save"></i> {{ __('messages.create_attribute_btn') }}
                 </button>
                 <a href="{{ route('admin.attributes.index') }}" class="btn btn-secondary">
-                    <i class="fas fa-times"></i> Cancel
+                    <i class="fas fa-times"></i> {{ __('messages.cancel') }}
                 </a>
             </div>
         </form>

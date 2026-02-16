@@ -7,9 +7,6 @@
 <div class="admin-hero" dir="{{ app()->getLocale() === 'ar' || app()->getLocale() === 'he' ? 'rtl' : 'ltr' }}">
     <div class="admin-hero-content">
         <div class="admin-hero-text">
-            <div class="admin-hero-icon">
-                <i class="fas fa-database"></i>
-            </div>
             <div>
                 <h1>{{ __('messages.Database Backup Management') }}</h1>
                 <p>{{ __('messages.Create, restore, and manage database backups') }}</p>
@@ -34,8 +31,8 @@
             <button type="button" class="btn btn-critical" onclick="showPurgeModal()">
                 <i class="fas fa-skull-crossbones"></i> {{ __('messages.Delete All Data') }}
             </button>
-            <button type="button" class="btn btn-primary" onclick="clearFrontendCache()" title="Clear frontend cache to refresh home page data">
-                <i class="fas fa-sync-alt"></i> Clear Frontend Cache
+            <button type="button" class="btn btn-primary" onclick="clearFrontendCache()" title="{{ __('messages.clear_frontend_cache_description') }}">
+                <i class="fas fa-sync-alt"></i> {{ __('messages.clear_frontend_cache') }}
             </button>
         </div>
     </div>
@@ -72,23 +69,7 @@
             <i class="fas fa-clock"></i>
         </div>
         <h4>{{ __('messages.Backup every') }}</h4>
-        <div class="stat-value">
-            @if($statistics['backup_frequency_days'] == 0)
-                {{ __('messages.Disabled') ?? 'Disabled' }}
-            @elseif($statistics['backup_frequency_days'] == 1)
-                1 {{ __('messages.day') }}
-            @elseif($statistics['backup_frequency_days'] == 2)
-                2 {{ __('messages.two days') }}
-            @elseif($statistics['backup_frequency_days'] == 7)
-                1 {{ __('messages.week') ?? __('messages.Weekly') }}
-            @elseif($statistics['backup_frequency_days'] == 30)
-                1 {{ __('messages.month') ?? __('messages.Monthly') }}
-            @elseif($statistics['backup_frequency_days'] >= 3 && $statistics['backup_frequency_days'] <= 10)
-                {{ $statistics['backup_frequency_days'] }} {{ __('messages.days') }}
-            @else
-                {{ $statistics['backup_frequency_days'] }} {{ __('messages.day') }}
-            @endif
-        </div>
+        <div class="stat-value">{{ $statistics['backup_frequency_label'] }}</div>
     </div>
 </div>
 
@@ -101,7 +82,7 @@
         <div class="info-grid">
             <div class="info-item">
                 <strong>{{ __('messages.Schedule:') }}</strong>
-                <span>{{ __('messages.' . ucfirst($statistics['schedule'])) }}</span>
+                <span>{{ $statistics['backup_frequency_label'] }}</span>
             </div>
             <div class="info-item">
                 <strong>{{ __('messages.Retention Period:') }}</strong>

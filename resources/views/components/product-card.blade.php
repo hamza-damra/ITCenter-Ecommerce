@@ -78,8 +78,10 @@
                 {{-- Add to Cart Button --}}
                 @if($product->stock_quantity > 0)
                     <button class="btn btn-primary btn-sm add-to-cart" 
-                            onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $product->id }})"
-                            data-product-id="{{ $product->id }}">
+                            onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $product->id }}, this)"
+                            data-product-id="{{ $product->id }}"
+                            data-added-text="{{ __('messages.in_cart') }}"
+                            data-original-text="{{ __('messages.add_to_cart') }}">
                         <i class="fas fa-shopping-cart"></i>
                         {{ __('messages.add_to_cart') }}
                     </button>

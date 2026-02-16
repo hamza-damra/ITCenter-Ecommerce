@@ -243,12 +243,21 @@
     .action-cell {
         display: flex;
         gap: 10px;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: nowrap;
+    }
+
+    .action-cell form {
+        display: inline-flex;
+        margin: 0;
     }
 
     .action-cell .btn {
         padding: 8px 16px;
         font-size: 13px;
         flex-shrink: 0;
+        white-space: nowrap;
     }
 
     /* Hero Add Button */
@@ -667,7 +676,7 @@
                         <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i> {{ __('messages.edit') }}
                         </a>
-                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" style="display: inline;" 
+                        <form action="{{ route('admin.products.destroy', $product) }}" method="POST" 
                               onsubmit="handleFormConfirm(event, {
                                   message: '{{ __('messages.delete_product_confirm') }}',
                                   confirmText: '{{ __('messages.yes_delete') }}',

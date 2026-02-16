@@ -424,7 +424,7 @@
 
             <!-- Card Footer with Actions -->
             <div class="brand-card-footer">
-                <a href="{{ route('admin.brands.edit', $brand) }}" class="btn btn-primary btn-sm">
+                <a href="{{ route('admin.brands.edit', $brand) }}" class="btn btn-primary btn-sm" style="flex: 1; text-align: center;">
                     <i class="fas fa-edit"></i> {{ __('messages.edit') }}
                 </a>
                 <form action="{{ route('admin.brands.destroy', $brand) }}" method="POST" style="flex: 1;" 

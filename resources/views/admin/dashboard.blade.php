@@ -348,8 +348,8 @@
 
         <!-- Quick Actions Panel -->
         <div class="content-card quick-actions-card">
-            <div class="card-header-pro accent" style="display: flex !important; justify-content: flex-end !important;">
-                <div class="header-title" style="flex-direction: row-reverse !important;">
+            <div class="card-header-pro accent">
+                <div class="header-title">
                     <i class="fas fa-bolt"></i>
                     <h2 style="color: white !important;">{{ __('messages.quick_actions') }}</h2>
                 </div>
@@ -1290,11 +1290,6 @@
 
 .card-header-pro.accent .header-title {
     color: white;
-    justify-content: flex-end;
-}
-
-.quick-actions-card .card-header-pro.accent {
-    justify-content: flex-end !important;
 }
 
 .card-header-pro.accent .header-title i {
