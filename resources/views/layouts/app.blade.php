@@ -532,25 +532,25 @@
          after initial render to avoid the browser "[Intervention] Images loaded lazily
          and replaced with placeholders" warning in Edge/Chrome --}}
     <script>
-    (function() {
-        function applyLazyLoading() {
-            if (!('loading' in HTMLImageElement.prototype)) return;
-            var imgs = document.querySelectorAll('img:not([loading])');
-            for (var i = 0; i < imgs.length; i++) {
-                var rect = imgs[i].getBoundingClientRect();
-                if (rect.bottom < 0 || rect.top > window.innerHeight) {
-                    imgs[i].loading = 'lazy';
+        (function() {
+            function applyLazyLoading() {
+                if (!('loading' in HTMLImageElement.prototype)) return;
+                var imgs = document.querySelectorAll('img:not([loading])');
+                for (var i = 0; i < imgs.length; i++) {
+                    var rect = imgs[i].getBoundingClientRect();
+                    if (rect.bottom < 0 || rect.top > window.innerHeight) {
+                        imgs[i].loading = 'lazy';
+                    }
                 }
             }
-        }
-        if (document.readyState === 'complete') {
-            requestAnimationFrame(applyLazyLoading);
-        } else {
-            window.addEventListener('load', function() {
+            if (document.readyState === 'complete') {
                 requestAnimationFrame(applyLazyLoading);
-            });
-        }
-    })();
+            } else {
+                window.addEventListener('load', function() {
+                    requestAnimationFrame(applyLazyLoading);
+                });
+            }
+        })();
     </script>
 
     @stack('scripts')
