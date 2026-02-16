@@ -14,10 +14,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    {{-- Font Awesome CSS (self-hosted to avoid CDN tracking prevention warnings in Edge) --}}
-    <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}" media="print" onload="this.media='all'">
+    {{-- Font Awesome CSS (CDN) --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl0IMmXUF0GDa9MjjIJjSyzYGlZSTGLetEPA65VHiQGTjQHJKqMsEbA+RHSIKQ0BYHrBOhqCXtqON7g==" crossorigin="anonymous" referrerpolicy="no-referrer" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl0IMmXUF0GDa9MjjIJjSyzYGlZSTGLetEPA65VHiQGTjQHJKqMsEbA+RHSIKQ0BYHrBOhqCXtqON7g==" crossorigin="anonymous" referrerpolicy="no-referrer">
     </noscript>
     {{-- Force font-display:swap on Font Awesome to prevent render blocking --}}
     <style>
