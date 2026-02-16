@@ -402,13 +402,7 @@
     <!-- Back Button -->
     <a href="{{ route('orders.index') }}" class="back-button">
         <i class="fas fa-arrow-{{ is_rtl() ? 'right' : 'left' }}"></i>
-        @if(current_locale() === 'ar')
-            Ø§Ù„Ø¹ÙˆØ¯Ø© Ø¥Ù„Ù‰ Ø§Ù„Ø·Ù„Ø¨Ø§Øª
-        @elseif(current_locale() === 'he')
-            ×—×–×¨×” ×œ×”×–×ž× ×•×ª
-        @else
-            Back to Orders
-        @endif
+        {{ __t('messages.back_to_orders') }}
     </a>
 
     <!-- Order Header -->
@@ -427,13 +421,7 @@
         <div class="order-meta-grid">
             <div class="order-meta-item">
                 <div class="order-meta-label">
-                    @if(current_locale() === 'ar')
-                        ØªØ§Ø±ÙŠØ® Ø§Ù„Ø·Ù„Ø¨
-                    @elseif(current_locale() === 'he')
-                        ×ª××¨×™×š ×”×–×ž× ×”
-                    @else
-                        Order Date
-                    @endif
+                    {{ __t('messages.order_date') }}
                 </div>
                 <div class="order-meta-value">
                     <i class="fas fa-calendar-alt"></i>
@@ -443,13 +431,7 @@
 
             <div class="order-meta-item">
                 <div class="order-meta-label">
-                    @if(current_locale() === 'ar')
-                        Ø­Ø§Ù„Ø© Ø§Ù„Ø¯ÙØ¹
-                    @elseif(current_locale() === 'he')
-                        ×¡×˜×˜×•×¡ ×ª×©×œ×•×
-                    @else
-                        Payment Status
-                    @endif
+                    {{ __t('messages.payment_status') }}
                 </div>
                 <div class="order-meta-value">
                     <i class="fas fa-credit-card"></i>
@@ -459,35 +441,17 @@
 
             <div class="order-meta-item">
                 <div class="order-meta-label">
-                    @if(current_locale() === 'ar')
-                        Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø¯ÙØ¹
-                    @elseif(current_locale() === 'he')
-                        ××ž×¦×¢×™ ×ª×©×œ×•×
-                    @else
-                        Payment Method
-                    @endif
+                    {{ __t('messages.payment_method') }}
                 </div>
                 <div class="order-meta-value">
                     <i class="fas fa-money-bill-wave"></i>
-                    @if(current_locale() === 'ar')
-                        Ø§Ù„Ø¯ÙØ¹ Ø¹Ù†Ø¯ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…
-                    @elseif(current_locale() === 'he')
-                        ×ª×©×œ×•× ×‘×ž×–×•×ž×Ÿ
-                    @else
-                        Cash on Delivery
-                    @endif
+                    {{ __t('messages.cash_on_delivery') }}
                 </div>
             </div>
 
             <div class="order-meta-item">
                 <div class="order-meta-label">
-                    @if(current_locale() === 'ar')
-                        Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª
-                    @elseif(current_locale() === 'he')
-                        ×ž×¡×¤×¨ ×¤×¨×™×˜×™×
-                    @else
-                        Total Items
-                    @endif
+                    {{ __t('messages.total_items') }}
                 </div>
                 <div class="order-meta-value">
                     <i class="fas fa-box"></i>
@@ -505,13 +469,7 @@
             <div class="section-card" style="margin-bottom: 2rem;">
                 <h2 class="section-title">
                     <i class="fas fa-shopping-bag"></i>
-                    @if(current_locale() === 'ar')
-                        Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©
-                    @elseif(current_locale() === 'he')
-                        ×¤×¨×™×˜×™ ×”×–×ž× ×”
-                    @else
-                        Order Items
-                    @endif
+                    {{ __t('messages.order_items') }}
                 </h2>
 
                 @foreach($order->items as $item)
@@ -567,13 +525,7 @@
                                 </div>
                             @endif
                             <div class="item-subtotal">
-                                @if(current_locale() === 'ar')
-                                    Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ Ø§Ù„ÙØ±Ø¹ÙŠ
-                                @elseif(current_locale() === 'he')
-                                    ×¡×›×•× ×‘×™× ×™×™×
-                                @else
-                                    Subtotal
-                                @endif
+                                {{ __t('messages.subtotal') }}
                             </div>
                         </div>
                     </div>
@@ -584,13 +536,7 @@
             <div class="section-card">
                 <h2 class="section-title">
                     <i class="fas fa-user"></i>
-                    @if(current_locale() === 'ar')
-                        Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø¹Ù…ÙŠÙ„
-                    @elseif(current_locale() === 'he')
-                        ×¤×¨×˜×™ ×œ×§×•×—
-                    @else
-                        Customer Information
-                    @endif
+                    {{ __t('messages.customer_information') }}
                 </h2>
 
                 <div class="info-grid">
@@ -600,13 +546,7 @@
                         </div>
                         <div class="info-content">
                             <div class="info-label">
-                                @if(current_locale() === 'ar')
-                                    Ø§Ù„Ø§Ø³Ù…
-                                @elseif(current_locale() === 'he')
-                                    ×©×
-                                @else
-                                    Name
-                                @endif
+                                {{ __t('messages.name') }}
                             </div>
                             <div class="info-value">{{ $order->customer_name }}</div>
                         </div>
@@ -618,13 +558,7 @@
                         </div>
                         <div class="info-content">
                             <div class="info-label">
-                                @if(current_locale() === 'ar')
-                                    Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ
-                                @elseif(current_locale() === 'he')
-                                    ××™×ž×™×™×œ
-                                @else
-                                    Email
-                                @endif
+                                {{ __t('messages.email') }}
                             </div>
                             <div class="info-value">{{ $order->customer_email }}</div>
                         </div>
@@ -636,13 +570,7 @@
                         </div>
                         <div class="info-content">
                             <div class="info-label">
-                                @if(current_locale() === 'ar')
-                                    Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ
-                                @elseif(current_locale() === 'he')
-                                    ×˜×œ×¤×•×Ÿ
-                                @else
-                                    Phone
-                                @endif
+                                {{ __t('messages.phone') }}
                             </div>
                             <div class="info-value">{{ $order->customer_phone }}</div>
                         </div>
@@ -654,13 +582,7 @@
                         </div>
                         <div class="info-content">
                             <div class="info-label">
-                                @if(current_locale() === 'ar')
-                                    Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ø´Ø­Ù†
-                                @elseif(current_locale() === 'he')
-                                    ×›×ª×•×‘×ª ×ž×©×œ×•×—
-                                @else
-                                    Shipping Address
-                                @endif
+                                {{ __t('messages.shipping_address') }}
                             </div>
                             <div class="info-value">
                                 {{ $order->shipping_address }}, {{ $order->shipping_city }}<br>
@@ -679,13 +601,7 @@
                             </div>
                             <div class="info-content">
                                 <div class="info-label">
-                                    @if(current_locale() === 'ar')
-                                        Ù…Ù„Ø§Ø­Ø¸Ø§Øª
-                                    @elseif(current_locale() === 'he')
-                                        ×”×¢×¨×•×ª
-                                    @else
-                                        Notes
-                                    @endif
+                                    {{ __t('messages.notes') }}
                                 </div>
                                 <div class="info-value">{{ $order->notes }}</div>
                             </div>
@@ -700,24 +616,12 @@
             <div class="section-card order-summary">
                 <h2 class="section-title">
                     <i class="fas fa-calculator"></i>
-                    @if(current_locale() === 'ar')
-                        Ù…Ù„Ø®Øµ Ø§Ù„Ø·Ù„Ø¨
-                    @elseif(current_locale() === 'he')
-                        ×¡×™×›×•× ×”×–×ž× ×”
-                    @else
-                        Order Summary
-                    @endif
+                    {{ __t('messages.order_summary') }}
                 </h2>
 
                 <div class="summary-row">
                     <span class="summary-label">
-                        @if(current_locale() === 'ar')
-                            Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ Ø§Ù„ÙØ±Ø¹ÙŠ
-                        @elseif(current_locale() === 'he')
-                            ×¡×›×•× ×‘×™× ×™×™×
-                        @else
-                            Subtotal
-                        @endif
+                        {{ __t('messages.subtotal') }}
                     </span>
                     <span class="summary-value">&#8362;{{ number_format($order->subtotal, 2) }}</span>
                 </div>
@@ -725,13 +629,7 @@
                 @if($order->tax > 0)
                     <div class="summary-row">
                         <span class="summary-label">
-                            @if(current_locale() === 'ar')
-                                Ø§Ù„Ø¶Ø±ÙŠØ¨Ø©
-                            @elseif(current_locale() === 'he')
-                                ×ž×¡
-                            @else
-                                Tax
-                            @endif
+                            {{ __t('messages.tax') }}
                         </span>
                         <span class="summary-value">&#8362;{{ number_format($order->tax, 2) }}</span>
                     </div>
@@ -739,25 +637,13 @@
 
                 <div class="summary-row">
                     <span class="summary-label">
-                        @if(current_locale() === 'ar')
-                            Ø§Ù„Ø´Ø­Ù†
-                        @elseif(current_locale() === 'he')
-                            ×ž×©×œ×•×—
-                        @else
-                            Shipping
-                        @endif
+                        {{ __t('messages.shipping') }}
                     </span>
                     <span class="summary-value">
                         @if($order->shipping_cost > 0)
                             &#8362;{{ number_format($order->shipping_cost, 2) }}
                         @else
-                            @if(current_locale() === 'ar')
-                                Ù…Ø¬Ø§Ù†ÙŠ
-                            @elseif(current_locale() === 'he')
-                                ×—×™× ×
-                            @else
-                                Free
-                            @endif
+                            {{ __t('messages.free') }}
                         @endif
                     </span>
                 </div>
@@ -765,13 +651,7 @@
                 @if($order->discount > 0)
                     <div class="summary-row">
                         <span class="summary-label">
-                            @if(current_locale() === 'ar')
-                                Ø§Ù„Ø®ØµÙ…
-                            @elseif(current_locale() === 'he')
-                                ×”× ×—×”
-                            @else
-                                Discount
-                            @endif
+                            {{ __t('messages.discount') }}
                         </span>
                         <span class="summary-value discount">-&#8362;{{ number_format($order->discount, 2) }}</span>
                     </div>
@@ -779,13 +659,7 @@
 
                 <div class="summary-row total">
                     <span class="summary-label">
-                        @if(current_locale() === 'ar')
-                            Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ Ø§Ù„ÙƒÙ„ÙŠ
-                        @elseif(current_locale() === 'he')
-                            ×¡×”"×›
-                        @else
-                            Total
-                        @endif
+                        {{ __t('messages.total') }}
                     </span>
                     <span class="summary-value total">&#8362;{{ number_format($order->total, 2) }}</span>
                 </div>
@@ -795,13 +669,7 @@
                     @if($order->canBeCancelled())
                         <button type="button" class="btn btn-danger" id="openCancelModalBtn" onclick="openCancelModal()">
                             <i class="fas fa-times-circle"></i>
-                            @if(current_locale() === 'ar')
-                                Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø·Ù„Ø¨
-                            @elseif(current_locale() === 'he')
-                                ×‘×˜×œ ×”×–×ž× ×”
-                            @else
-                                Cancel Order
-                            @endif
+                            {{ __t('messages.cancel_order') }}
                         </button>
                         @if($order->cancellation_window_remaining > 0)
                             <div style="text-align: center; margin-top: 0.75rem; font-size: 0.85rem; color: #6b7280;">
@@ -812,13 +680,7 @@
                     @elseif($order->status !== 'cancelled')
                         <div style="text-align: center; padding: 1rem; background: #fef3cd; border-radius: 12px; color: #856404; font-size: 0.9rem;">
                             <i class="fas fa-info-circle"></i>
-                            @if(current_locale() === 'ar')
-                                Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø¥Ù„ØºØ§Ø¡ Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ Ø¨Ø¹Ø¯ Ø§Ù„Ø¢Ù†. ÙŠØ±Ø¬Ù‰ Ø§Ù„ØªÙˆØ§ØµÙ„ Ù…Ø¹ Ø§Ù„Ø¯Ø¹Ù….
-                            @elseif(current_locale() === 'he')
-                                ×œ× × ×™×ª×Ÿ ×œ×‘×˜×œ ×”×–×ž× ×” ×–×• ×™×•×ª×¨. ×× × ×¦×•×¨ ×§×©×¨ ×¢× ×”×ª×ž×™×›×”.
-                            @else
-                                This order can no longer be cancelled. Please contact support.
-                            @endif
+                            {{ __t('messages.cannot_cancel_anymore') }}
                         </div>
                     @endif
                 </div>
@@ -835,13 +697,7 @@
         <div class="cancel-modal-header">
             <div class="cancel-modal-title">
                 <i class="fas fa-times-circle"></i>
-                @if(current_locale() === 'ar')
-                    Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø·Ù„Ø¨ {{ $order->order_number }}
-                @elseif(current_locale() === 'he')
-                    ×‘×™×˜×•×œ ×”×–×ž× ×” {{ $order->order_number }}
-                @else
-                    Cancel Order {{ $order->order_number }}
-                @endif
+                {{ __t('messages.cancel_order_number', ['number' => $order->order_number]) }}
             </div>
             <button class="cancel-modal-close" onclick="closeCancelModal()" aria-label="Close">
                 <i class="fas fa-times"></i>
@@ -851,13 +707,7 @@
         <!-- Modal Body -->
         <div class="cancel-modal-body">
             <p class="cancel-modal-question">
-                @if(current_locale() === 'ar')
-                    Ù„Ù…Ø§Ø°Ø§ ØªØ±ÙŠØ¯ Ø¥Ù„ØºØ§Ø¡ Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ØŸ
-                @elseif(current_locale() === 'he')
-                    ×ž×“×•×¢ ×‘×¨×¦×•× ×š ×œ×‘×˜×œ ×”×–×ž× ×” ×–×•?
-                @else
-                    Why are you cancelling this order?
-                @endif
+                {{ __t('messages.why_cancel_order') }}
             </p>
 
             <div class="cancel-reasons" id="cancelReasons">
@@ -865,65 +715,35 @@
                     <input type="radio" name="cancel_reason" value="ordered_by_mistake">
                     <span class="cancel-reason-radio"></span>
                     <span class="cancel-reason-text">
-                        @if(current_locale() === 'ar')
-                            Ø·Ù„Ø¨ Ø¹Ù† Ø·Ø±ÙŠÙ‚ Ø§Ù„Ø®Ø·Ø£
-                        @elseif(current_locale() === 'he')
-                            ×”×•×–×ž×Ÿ ×‘×˜×¢×•×ª
-                        @else
-                            Ordered by mistake
-                        @endif
+                        {{ __t('messages.ordered_by_mistake') }}
                     </span>
                 </label>
                 <label class="cancel-reason-option">
                     <input type="radio" name="cancel_reason" value="found_better_price">
                     <span class="cancel-reason-radio"></span>
                     <span class="cancel-reason-text">
-                        @if(current_locale() === 'ar')
-                            ÙˆØ¬Ø¯Øª Ø³Ø¹Ø±Ø§Ù‹ Ø£ÙØ¶Ù„
-                        @elseif(current_locale() === 'he')
-                            ×ž×¦××ª×™ ×ž×—×™×¨ ×˜×•×‘ ×™×•×ª×¨
-                        @else
-                            Found a better price
-                        @endif
+                        {{ __t('messages.found_better_price') }}
                     </span>
                 </label>
                 <label class="cancel-reason-option">
                     <input type="radio" name="cancel_reason" value="delivery_too_long">
                     <span class="cancel-reason-radio"></span>
                     <span class="cancel-reason-text">
-                        @if(current_locale() === 'ar')
-                            ÙˆÙ‚Øª Ø§Ù„ØªÙˆØµÙŠÙ„ Ø·ÙˆÙŠÙ„ Ø¬Ø¯Ø§Ù‹
-                        @elseif(current_locale() === 'he')
-                            ×–×ž×Ÿ ×”×ž×©×œ×•×— ××¨×•×š ×ž×“×™
-                        @else
-                            Delivery time too long
-                        @endif
+                        {{ __t('messages.delivery_too_long') }}
                     </span>
                 </label>
                 <label class="cancel-reason-option">
                     <input type="radio" name="cancel_reason" value="payment_issue">
                     <span class="cancel-reason-radio"></span>
                     <span class="cancel-reason-text">
-                        @if(current_locale() === 'ar')
-                            Ù…Ø´ÙƒÙ„Ø© ÙÙŠ Ø§Ù„Ø¯ÙØ¹
-                        @elseif(current_locale() === 'he')
-                            ×‘×¢×™×™×ª ×ª×©×œ×•×
-                        @else
-                            Payment issue
-                        @endif
+                        {{ __t('messages.payment_issue') }}
                     </span>
                 </label>
                 <label class="cancel-reason-option">
                     <input type="radio" name="cancel_reason" value="other">
                     <span class="cancel-reason-radio"></span>
                     <span class="cancel-reason-text">
-                        @if(current_locale() === 'ar')
-                            Ø³Ø¨Ø¨ Ø¢Ø®Ø±
-                        @elseif(current_locale() === 'he')
-                            ×¡×™×‘×” ××—×¨×ª
-                        @else
-                            Other
-                        @endif
+                        {{ __t('messages.other_reason') }}
                     </span>
                 </label>
             </div>
@@ -931,28 +751,16 @@
             <!-- Other reason textarea (hidden by default) -->
             <div class="cancel-note-wrapper" id="cancelNoteWrapper" style="display: none;">
                 <textarea id="cancelNote" class="cancel-note-textarea" rows="3"
-                    placeholder="@if(current_locale() === 'ar')ÙŠØ±Ø¬Ù‰ ØªÙˆØ¶ÙŠØ­ Ø§Ù„Ø³Ø¨Ø¨...@elseif(current_locale() === 'he')×× × ×¤×¨×˜ ××ª ×”×¡×™×‘×”...@elsePlease specify your reason...@endif"></textarea>
+                    placeholder="{{ __t('messages.please_specify_reason') }}"></textarea>
             </div>
 
             <!-- Refund Info -->
             <div class="cancel-refund-info">
                 <i class="fas fa-info-circle"></i>
                 @if($order->payment_method === 'cash_on_delivery')
-                    @if(current_locale() === 'ar')
-                        Ù„Ù… ÙŠØªÙ… Ø®ØµÙ… Ø£ÙŠ Ù…Ø¨Ù„Øº Ù…Ù† Ø­Ø³Ø§Ø¨Ùƒ.
-                    @elseif(current_locale() === 'he')
-                        ×œ× ×—×•×™×‘×ª ×‘×ª×©×œ×•×.
-                    @else
-                        No payment has been charged.
-                    @endif
+                    {{ __t('messages.no_payment_charged') }}
                 @else
-                    @if(current_locale() === 'ar')
-                        Ø³ÙŠØªÙ… Ø¥Ø±Ø¬Ø§Ø¹ Ø§Ù„Ù…Ø¨Ù„Øº Ø¥Ù„Ù‰ ÙˆØ³ÙŠÙ„Ø© Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ø£ØµÙ„ÙŠØ© Ø®Ù„Ø§Ù„ 3-5 Ø£ÙŠØ§Ù… Ø¹Ù…Ù„.
-                    @elseif(current_locale() === 'he')
-                        ×”×”×—×–×¨ ×™×•×¢×‘×¨ ×œ××ž×¦×¢×™ ×”×ª×©×œ×•× ×”×ž×§×•×¨×™ ×©×œ×š ×ª×•×š 3-5 ×™×ž×™ ×¢×¡×§×™×.
-                    @else
-                        Your refund will be processed to your original payment method within 3â€“5 business days.
-                    @endif
+                    {{ __t('messages.refund_processed_days') }}
                 @endif
             </div>
 
@@ -967,25 +775,13 @@
         <div class="cancel-modal-footer">
             <button type="button" class="cancel-modal-btn cancel-modal-btn-keep" onclick="closeCancelModal()">
                 <i class="fas fa-shopping-bag"></i>
-                @if(current_locale() === 'ar')
-                    Ø§Ù„Ø§Ø­ØªÙØ§Ø¸ Ø¨Ø§Ù„Ø·Ù„Ø¨
-                @elseif(current_locale() === 'he')
-                    ×©×ž×•×¨ ×”×–×ž× ×”
-                @else
-                    Keep Order
-                @endif
+                {{ __t('messages.keep_order') }}
             </button>
             <button type="button" class="cancel-modal-btn cancel-modal-btn-confirm" id="confirmCancelBtn" onclick="confirmCancellation()">
                 <i class="fas fa-times-circle" id="confirmCancelIcon"></i>
                 <span class="cancel-spinner" id="cancelSpinner" style="display: none;"></span>
                 <span id="confirmCancelText">
-                    @if(current_locale() === 'ar')
-                        ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø¥Ù„ØºØ§Ø¡
-                    @elseif(current_locale() === 'he')
-                        ××©×¨ ×‘×™×˜×•×œ
-                    @else
-                        Confirm Cancellation
-                    @endif
+                    {{ __t('messages.confirm_cancellation') }}
                 </span>
             </button>
         </div>
@@ -1420,13 +1216,7 @@
         const selected = document.querySelector('input[name="cancel_reason"]:checked');
         if (!selected) {
             showCancelError(
-                @if(current_locale() === 'ar')
-                    'ÙŠØ±Ø¬Ù‰ Ø§Ø®ØªÙŠØ§Ø± Ø³Ø¨Ø¨ Ø§Ù„Ø¥Ù„ØºØ§Ø¡'
-                @elseif(current_locale() === 'he')
-                    '×× × ×‘×—×¨ ×¡×™×‘×ª ×‘×™×˜×•×œ'
-                @else
-                    'Please select a cancellation reason'
-                @endif
+                '{{ __t("messages.please_select_cancel_reason") }}'
             );
             return;
         }
@@ -1436,13 +1226,7 @@
 
         if (reason === 'other' && !note) {
             showCancelError(
-                @if(current_locale() === 'ar')
-                    'ÙŠØ±Ø¬Ù‰ ØªÙˆØ¶ÙŠØ­ Ø³Ø¨Ø¨ Ø§Ù„Ø¥Ù„ØºØ§Ø¡'
-                @elseif(current_locale() === 'he')
-                    '×× × ×¤×¨×˜ ××ª ×¡×™×‘×ª ×”×‘×™×˜×•×œ'
-                @else
-                    'Please specify your cancellation reason'
-                @endif
+                '{{ __t("messages.please_specify_reason") }}'
             );
             return;
         }
@@ -1478,13 +1262,7 @@
                 const badge = document.querySelector('.order-status-badge');
                 if (badge) {
                     badge.innerHTML = '<i class="fas fa-circle" style="font-size: 0.5rem; color: #ef4444;"></i> ' +
-                        @if(current_locale() === 'ar')
-                            'Ù…Ù„ØºÙŠ';
-                        @elseif(current_locale() === 'he')
-                            '×‘×•×˜×œ';
-                        @else
-                            'Cancelled';
-                        @endif
+                        '{{ __t("messages.order_status_cancelled") }}';
                     badge.style.color = '#ef4444';
                 }
 
@@ -1496,13 +1274,7 @@
 
                 // Show success toast
                 showToast('success', result.data.message ||
-                    @if(current_locale() === 'ar')
-                        'ØªÙ… Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø·Ù„Ø¨ Ø¨Ù†Ø¬Ø§Ø­.'
-                    @elseif(current_locale() === 'he')
-                        '×”×”×–×ž× ×” ×‘×•×˜×œ×” ×‘×”×¦×œ×—×”.'
-                    @else
-                        'Order successfully cancelled.'
-                    @endif
+                    '{{ __t("messages.order_cancelled_successfully") }}'
                 );
             } else {
                 // Re-enable button
@@ -1511,13 +1283,7 @@
                 document.getElementById('cancelSpinner').style.display = 'none';
 
                 showCancelError(result.data.message ||
-                    @if(current_locale() === 'ar')
-                        'Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø¥Ù„ØºØ§Ø¡ Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨.'
-                    @elseif(current_locale() === 'he')
-                        '×œ× × ×™×ª×Ÿ ×œ×‘×˜×œ ×”×–×ž× ×” ×–×•.'
-                    @else
-                        'This order can no longer be cancelled.'
-                    @endif
+                    '{{ __t("messages.cannot_cancel_order") }}'
                 );
             }
         })
@@ -1526,13 +1292,7 @@
             document.getElementById('confirmCancelIcon').style.display = '';
             document.getElementById('cancelSpinner').style.display = 'none';
             showCancelError(
-                @if(current_locale() === 'ar')
-                    'Ø­Ø¯Ø« Ø®Ø·Ø£. ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.'
-                @elseif(current_locale() === 'he')
-                    '××™×¨×¢×” ×©×’×™××”. ×× × × ×¡×” ×©×•×‘.'
-                @else
-                    'An error occurred. Please try again.'
-                @endif
+                '{{ __t("messages.error_occurred") }}'
             );
         });
     }
@@ -1572,13 +1332,7 @@
                     actionsSection.innerHTML =
                         '<div style="text-align:center;padding:1rem;background:#fef3cd;border-radius:12px;color:#856404;font-size:0.9rem;">' +
                         '<i class="fas fa-info-circle"></i> ' +
-                        @if(current_locale() === 'ar')
-                            'Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø¥Ù„ØºØ§Ø¡ Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ Ø¨Ø¹Ø¯ Ø§Ù„Ø¢Ù†. ÙŠØ±Ø¬Ù‰ Ø§Ù„ØªÙˆØ§ØµÙ„ Ù…Ø¹ Ø§Ù„Ø¯Ø¹Ù….'
-                        @elseif(current_locale() === 'he')
-                            '×œ× × ×™×ª×Ÿ ×œ×‘×˜×œ ×”×–×ž× ×” ×–×• ×™×•×ª×¨. ×× × ×¦×•×¨ ×§×©×¨ ×¢× ×”×ª×ž×™×›×”.'
-                        @else
-                            'This order can no longer be cancelled. Please contact support.'
-                        @endif
+                        '{{ __t("messages.cannot_cancel_anymore") }}'
                     + '</div>';
                 }
                 return;
@@ -1587,13 +1341,7 @@
             var mins = Math.floor(totalSeconds / 60);
             var secs = totalSeconds % 60;
 
-            @if(current_locale() === 'ar')
-                el.textContent = 'ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ù„Ø¥Ù„ØºØ§Ø¡ Ø®Ù„Ø§Ù„ ' + mins + ':' + (secs < 10 ? '0' : '') + secs;
-            @elseif(current_locale() === 'he')
-                el.textContent = '× ×™×ª×Ÿ ×œ×‘×˜×œ ×ª×•×š ' + mins + ':' + (secs < 10 ? '0' : '') + secs;
-            @else
-                el.textContent = 'You can cancel within ' + mins + ':' + (secs < 10 ? '0' : '') + secs;
-            @endif
+            el.textContent = '{{ __t("messages.cancel_within") }} ' + mins + ':' + (secs < 10 ? '0' : '') + secs;
 
             totalSeconds--;
             setTimeout(updateCountdown, 1000);

@@ -792,13 +792,7 @@
         <div class="page-header-content">
             <h1 class="page-title">
                 <i class="fas fa-shopping-bag"></i>
-                @if(current_locale() === 'ar')
-                    Ø·Ù„Ø¨Ø§ØªÙŠ
-                @elseif(current_locale() === 'he')
-                    ×”×”×–×ž× ×•×ª ×©×œ×™
-                @else
-                    My Orders
-                @endif
+                {{ __t('messages.my_orders') }}
             </h1>
             <p class="page-subtitle">
                 @if(current_locale() === 'ar')
@@ -831,65 +825,35 @@
             <a href="{{ route('orders.index', ['status' => 'pending']) }}" 
                class="status-tab {{ request('status') === 'pending' ? 'active' : '' }}">
                 <i class="fas fa-clock"></i>
-                @if(current_locale() === 'ar')
-                    Ù‚ÙŠØ¯ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±
-                @elseif(current_locale() === 'he')
-                    ×ž×ž×ª×™×Ÿ
-                @else
-                    Pending
-                @endif
+                {{ __t('messages.pending') }}
                 <span class="status-count">{{ $statusCounts['pending'] }}</span>
             </a>
 
             <a href="{{ route('orders.index', ['status' => 'processing']) }}" 
                class="status-tab {{ request('status') === 'processing' ? 'active' : '' }}">
                 <i class="fas fa-cog"></i>
-                @if(current_locale() === 'ar')
-                    Ù‚ÙŠØ¯ Ø§Ù„Ù…Ø¹Ø§Ù„Ø¬Ø©
-                @elseif(current_locale() === 'he')
-                    ×‘×¢×™×‘×•×“
-                @else
-                    Processing
-                @endif
+                {{ __t('messages.processing') }}
                 <span class="status-count">{{ $statusCounts['processing'] }}</span>
             </a>
 
             <a href="{{ route('orders.index', ['status' => 'shipped']) }}" 
                class="status-tab {{ request('status') === 'shipped' ? 'active' : '' }}">
                 <i class="fas fa-shipping-fast"></i>
-                @if(current_locale() === 'ar')
-                    ØªÙ… Ø§Ù„Ø´Ø­Ù†
-                @elseif(current_locale() === 'he')
-                    × ×©×œ×—
-                @else
-                    Shipped
-                @endif
+                {{ __t('messages.shipped') }}
                 <span class="status-count">{{ $statusCounts['shipped'] }}</span>
             </a>
 
             <a href="{{ route('orders.index', ['status' => 'delivered']) }}" 
                class="status-tab {{ request('status') === 'delivered' ? 'active' : '' }}">
                 <i class="fas fa-check-circle"></i>
-                @if(current_locale() === 'ar')
-                    ØªÙ… Ø§Ù„ØªÙˆØµÙŠÙ„
-                @elseif(current_locale() === 'he')
-                    × ×ž×¡×¨
-                @else
-                    Delivered
-                @endif
+                {{ __t('messages.delivered') }}
                 <span class="status-count">{{ $statusCounts['delivered'] }}</span>
             </a>
 
             <a href="{{ route('orders.index', ['status' => 'cancelled']) }}" 
                class="status-tab {{ request('status') === 'cancelled' ? 'active' : '' }}">
                 <i class="fas fa-times-circle"></i>
-                @if(current_locale() === 'ar')
-                    Ù…Ù„ØºÙŠ
-                @elseif(current_locale() === 'he')
-                    ×ž×‘×•×˜×œ
-                @else
-                    Cancelled
-                @endif
+                {{ __t('messages.order_status_cancelled') }}
                 <span class="status-count">{{ $statusCounts['cancelled'] }}</span>
             </a>
         </div>
@@ -965,13 +929,7 @@
                                     </a>
                                     <div class="item-info">
                                         <span>
-                                            @if(current_locale() === 'ar')
-                                                Ø§Ù„ÙƒÙ…ÙŠØ©:
-                                            @elseif(current_locale() === 'he')
-                                                ×›×ž×•×ª:
-                                            @else
-                                                Qty:
-                                            @endif
+                                            {{ __t('messages.quantity') }}
                                             {{ $item->quantity }}
                                         </span>
                                         @if($item->product_sku)
@@ -990,13 +948,7 @@
 
                         @if($order->items->count() > 3)
                             <div style="text-align: center; padding: 1rem; color: #6b7280;">
-                                @if(current_locale() === 'ar')
-                                    + {{ $order->items->count() - 3 }} Ù…Ù†ØªØ¬Ø§Øª Ø£Ø®Ø±Ù‰
-                                @elseif(current_locale() === 'he')
-                                    + {{ $order->items->count() - 3 }} ×ž×•×¦×¨×™× × ×•×¡×¤×™×
-                                @else
-                                    + {{ $order->items->count() - 3 }} more items
-                                @endif
+                                {{ __t('messages.more_products_count', ['count' => $order->items->count() - 3]) }}
                             </div>
                         @endif
                     </div>
@@ -1005,26 +957,14 @@
                     <div class="order-footer">
                         <div class="order-total">
                             <div class="order-total-label">
-                                @if(current_locale() === 'ar')
-                                    Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ Ø§Ù„ÙƒÙ„ÙŠ
-                                @elseif(current_locale() === 'he')
-                                    ×¡×”"×›
-                                @else
-                                    Total Amount
-                                @endif
+                                {{ __t('messages.total_amount') }}
                             </div>
                             <div class="order-total-amount">&#8362;{{ number_format($order->total, 2) }}</div>
                         </div>
                         <div class="order-actions">
                             <a href="{{ route('orders.show', $order->order_number) }}" class="btn btn-primary">
                                 <i class="fas fa-eye"></i>
-                                @if(current_locale() === 'ar')
-                                    Ø¹Ø±Ø¶ Ø§Ù„ØªÙØ§ØµÙŠÙ„
-                                @elseif(current_locale() === 'he')
-                                    ×¦×¤×” ×‘×¤×¨×˜×™×
-                                @else
-                                    View Details
-                                @endif
+                                {{ __t('messages.view_details') }}
                             </a>
                             @if($order->canBeCancelled())
                                 <form action="{{ route('orders.cancel', $order->order_number) }}" method="POST" style="display: inline;">
