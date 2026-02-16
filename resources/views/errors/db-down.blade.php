@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ current_locale() }}" dir="{{ locale_direction() }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ __t('errors.db_down.title') }} - IT Center</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    @if(is_rtl())
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
+    @if (is_rtl())
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     @endif
     <style>
         * {
@@ -38,14 +39,19 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: 
-                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.05) 35px, rgba(255,255,255,.05) 70px);
+            background-image:
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, .05) 35px, rgba(255, 255, 255, .05) 70px);
             animation: slideBackground 20s linear infinite;
         }
 
         @keyframes slideBackground {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(70px); }
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(70px);
+            }
         }
 
         .error-container {
@@ -78,9 +84,12 @@
         }
 
         @keyframes floatDatabase {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0) rotateY(0deg);
             }
+
             50% {
                 transform: translateY(-20px) rotateY(10deg);
             }
@@ -104,10 +113,13 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
                 box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
             }
+
             50% {
                 transform: scale(1.1);
                 box-shadow: 0 4px 30px rgba(239, 68, 68, 0.8);
@@ -119,7 +131,7 @@
             font-weight: 900;
             color: rgba(255, 255, 255, 0.15);
             line-height: 1;
-            text-shadow: 
+            text-shadow:
                 2px 2px 0 rgba(255, 255, 255, 0.2),
                 4px 4px 0 rgba(0, 0, 0, 0.1);
             position: relative;
@@ -135,25 +147,32 @@
             color: white;
             font-size: inherit;
             animation: glitch 2s infinite;
-            text-shadow: 
+            text-shadow:
                 -2px 0 #ff00de,
                 2px 0 #00fff2;
             clip-path: inset(0 100% 0 0);
         }
 
         @keyframes glitch {
-            0%, 90%, 100% {
+
+            0%,
+            90%,
+            100% {
                 clip-path: inset(0 100% 0 0);
             }
+
             92% {
                 clip-path: inset(0 0 0 0);
             }
+
             94% {
                 clip-path: inset(0 100% 0 0);
             }
+
             96% {
                 clip-path: inset(0 0 0 0);
             }
+
             98% {
                 clip-path: inset(0 100% 0 0);
             }
@@ -164,7 +183,7 @@
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 3rem 2rem;
-            box-shadow: 
+            box-shadow:
                 0 20px 60px rgba(0, 0, 0, 0.3),
                 0 0 0 1px rgba(255, 255, 255, 0.5);
             animation: slideUp 0.6s ease-out;
@@ -175,6 +194,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -260,9 +280,12 @@
         }
 
         @keyframes statusPulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
             }
+
             50% {
                 box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
             }
@@ -277,8 +300,15 @@
         }
 
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
         }
 
         .btn-container {
@@ -337,7 +367,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .language-switcher {
@@ -405,14 +437,15 @@
         }
 
         /* RTL specific adjustments */
-        @if(is_rtl())
-        .info-box li::before {
-            right: 0;
-            left: auto;
-        }
+        @if (is_rtl())
+            .info-box li::before {
+                right: 0;
+                left: auto;
+            }
         @endif
     </style>
 </head>
+
 <body>
     <!-- Language Switcher -->
     <div class="language-switcher">
@@ -505,4 +538,5 @@
         });
     </script>
 </body>
+
 </html>

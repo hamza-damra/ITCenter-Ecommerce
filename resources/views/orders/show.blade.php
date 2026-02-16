@@ -403,9 +403,9 @@
     <a href="{{ route('orders.index') }}" class="back-button">
         <i class="fas fa-arrow-{{ is_rtl() ? 'right' : 'left' }}"></i>
         @if(current_locale() === 'ar')
-            العودة إلى الطلبات
+            Ø§Ù„Ø¹ÙˆØ¯Ø© Ø¥Ù„Ù‰ Ø§Ù„Ø·Ù„Ø¨Ø§Øª
         @elseif(current_locale() === 'he')
-            חזרה להזמנות
+            ×—×–×¨×” ×œ×”×–×ž× ×•×ª
         @else
             Back to Orders
         @endif
@@ -428,9 +428,9 @@
             <div class="order-meta-item">
                 <div class="order-meta-label">
                     @if(current_locale() === 'ar')
-                        تاريخ الطلب
+                        ØªØ§Ø±ÙŠØ® Ø§Ù„Ø·Ù„Ø¨
                     @elseif(current_locale() === 'he')
-                        תאריך הזמנה
+                        ×ª××¨×™×š ×”×–×ž× ×”
                     @else
                         Order Date
                     @endif
@@ -444,9 +444,9 @@
             <div class="order-meta-item">
                 <div class="order-meta-label">
                     @if(current_locale() === 'ar')
-                        حالة الدفع
+                        Ø­Ø§Ù„Ø© Ø§Ù„Ø¯ÙØ¹
                     @elseif(current_locale() === 'he')
-                        סטטוס תשלום
+                        ×¡×˜×˜×•×¡ ×ª×©×œ×•×
                     @else
                         Payment Status
                     @endif
@@ -460,9 +460,9 @@
             <div class="order-meta-item">
                 <div class="order-meta-label">
                     @if(current_locale() === 'ar')
-                        طريقة الدفع
+                        Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„Ø¯ÙØ¹
                     @elseif(current_locale() === 'he')
-                        אמצעי תשלום
+                        ××ž×¦×¢×™ ×ª×©×œ×•×
                     @else
                         Payment Method
                     @endif
@@ -470,9 +470,9 @@
                 <div class="order-meta-value">
                     <i class="fas fa-money-bill-wave"></i>
                     @if(current_locale() === 'ar')
-                        الدفع عند الاستلام
+                        Ø§Ù„Ø¯ÙØ¹ Ø¹Ù†Ø¯ Ø§Ù„Ø§Ø³ØªÙ„Ø§Ù…
                     @elseif(current_locale() === 'he')
-                        תשלום במזומן
+                        ×ª×©×œ×•× ×‘×ž×–×•×ž×Ÿ
                     @else
                         Cash on Delivery
                     @endif
@@ -482,9 +482,9 @@
             <div class="order-meta-item">
                 <div class="order-meta-label">
                     @if(current_locale() === 'ar')
-                        عدد المنتجات
+                        Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª
                     @elseif(current_locale() === 'he')
-                        מספר פריטים
+                        ×ž×¡×¤×¨ ×¤×¨×™×˜×™×
                     @else
                         Total Items
                     @endif
@@ -506,9 +506,9 @@
                 <h2 class="section-title">
                     <i class="fas fa-shopping-bag"></i>
                     @if(current_locale() === 'ar')
-                        المنتجات المطلوبة
+                        Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©
                     @elseif(current_locale() === 'he')
-                        פריטי הזמנה
+                        ×¤×¨×™×˜×™ ×”×–×ž× ×”
                     @else
                         Order Items
                     @endif
@@ -529,7 +529,7 @@
                                     $imageSrc = asset($item->product_image);
                                 } else {
                                     // Storage folder
-                                    $imageSrc = asset('storage/' . $item->product_image);
+                                    $imageSrc = asset('media/' . $item->product_image);
                                 }
                             }
                         @endphp
@@ -568,9 +568,9 @@
                             @endif
                             <div class="item-subtotal">
                                 @if(current_locale() === 'ar')
-                                    المجموع الفرعي
+                                    Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ Ø§Ù„ÙØ±Ø¹ÙŠ
                                 @elseif(current_locale() === 'he')
-                                    סכום ביניים
+                                    ×¡×›×•× ×‘×™× ×™×™×
                                 @else
                                     Subtotal
                                 @endif
@@ -585,9 +585,9 @@
                 <h2 class="section-title">
                     <i class="fas fa-user"></i>
                     @if(current_locale() === 'ar')
-                        معلومات العميل
+                        Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø¹Ù…ÙŠÙ„
                     @elseif(current_locale() === 'he')
-                        פרטי לקוח
+                        ×¤×¨×˜×™ ×œ×§×•×—
                     @else
                         Customer Information
                     @endif
@@ -601,9 +601,9 @@
                         <div class="info-content">
                             <div class="info-label">
                                 @if(current_locale() === 'ar')
-                                    الاسم
+                                    Ø§Ù„Ø§Ø³Ù…
                                 @elseif(current_locale() === 'he')
-                                    שם
+                                    ×©×
                                 @else
                                     Name
                                 @endif
@@ -619,9 +619,9 @@
                         <div class="info-content">
                             <div class="info-label">
                                 @if(current_locale() === 'ar')
-                                    البريد الإلكتروني
+                                    Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ
                                 @elseif(current_locale() === 'he')
-                                    אימייל
+                                    ××™×ž×™×™×œ
                                 @else
                                     Email
                                 @endif
@@ -637,9 +637,9 @@
                         <div class="info-content">
                             <div class="info-label">
                                 @if(current_locale() === 'ar')
-                                    رقم الهاتف
+                                    Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ
                                 @elseif(current_locale() === 'he')
-                                    טלפון
+                                    ×˜×œ×¤×•×Ÿ
                                 @else
                                     Phone
                                 @endif
@@ -655,9 +655,9 @@
                         <div class="info-content">
                             <div class="info-label">
                                 @if(current_locale() === 'ar')
-                                    عنوان الشحن
+                                    Ø¹Ù†ÙˆØ§Ù† Ø§Ù„Ø´Ø­Ù†
                                 @elseif(current_locale() === 'he')
-                                    כתובת משלוח
+                                    ×›×ª×•×‘×ª ×ž×©×œ×•×—
                                 @else
                                     Shipping Address
                                 @endif
@@ -680,9 +680,9 @@
                             <div class="info-content">
                                 <div class="info-label">
                                     @if(current_locale() === 'ar')
-                                        ملاحظات
+                                        Ù…Ù„Ø§Ø­Ø¸Ø§Øª
                                     @elseif(current_locale() === 'he')
-                                        הערות
+                                        ×”×¢×¨×•×ª
                                     @else
                                         Notes
                                     @endif
@@ -701,9 +701,9 @@
                 <h2 class="section-title">
                     <i class="fas fa-calculator"></i>
                     @if(current_locale() === 'ar')
-                        ملخص الطلب
+                        Ù…Ù„Ø®Øµ Ø§Ù„Ø·Ù„Ø¨
                     @elseif(current_locale() === 'he')
-                        סיכום הזמנה
+                        ×¡×™×›×•× ×”×–×ž× ×”
                     @else
                         Order Summary
                     @endif
@@ -712,9 +712,9 @@
                 <div class="summary-row">
                     <span class="summary-label">
                         @if(current_locale() === 'ar')
-                            المجموع الفرعي
+                            Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ Ø§Ù„ÙØ±Ø¹ÙŠ
                         @elseif(current_locale() === 'he')
-                            סכום ביניים
+                            ×¡×›×•× ×‘×™× ×™×™×
                         @else
                             Subtotal
                         @endif
@@ -726,9 +726,9 @@
                     <div class="summary-row">
                         <span class="summary-label">
                             @if(current_locale() === 'ar')
-                                الضريبة
+                                Ø§Ù„Ø¶Ø±ÙŠØ¨Ø©
                             @elseif(current_locale() === 'he')
-                                מס
+                                ×ž×¡
                             @else
                                 Tax
                             @endif
@@ -740,9 +740,9 @@
                 <div class="summary-row">
                     <span class="summary-label">
                         @if(current_locale() === 'ar')
-                            الشحن
+                            Ø§Ù„Ø´Ø­Ù†
                         @elseif(current_locale() === 'he')
-                            משלוח
+                            ×ž×©×œ×•×—
                         @else
                             Shipping
                         @endif
@@ -752,9 +752,9 @@
                             ${{ number_format($order->shipping_cost, 2) }}
                         @else
                             @if(current_locale() === 'ar')
-                                مجاني
+                                Ù…Ø¬Ø§Ù†ÙŠ
                             @elseif(current_locale() === 'he')
-                                חינם
+                                ×—×™× ×
                             @else
                                 Free
                             @endif
@@ -766,9 +766,9 @@
                     <div class="summary-row">
                         <span class="summary-label">
                             @if(current_locale() === 'ar')
-                                الخصم
+                                Ø§Ù„Ø®ØµÙ…
                             @elseif(current_locale() === 'he')
-                                הנחה
+                                ×”× ×—×”
                             @else
                                 Discount
                             @endif
@@ -780,9 +780,9 @@
                 <div class="summary-row total">
                     <span class="summary-label">
                         @if(current_locale() === 'ar')
-                            المجموع الكلي
+                            Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ Ø§Ù„ÙƒÙ„ÙŠ
                         @elseif(current_locale() === 'he')
-                            סה"כ
+                            ×¡×”"×›
                         @else
                             Total
                         @endif
@@ -796,9 +796,9 @@
                         <button type="button" class="btn btn-danger" id="openCancelModalBtn" onclick="openCancelModal()">
                             <i class="fas fa-times-circle"></i>
                             @if(current_locale() === 'ar')
-                                إلغاء الطلب
+                                Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø·Ù„Ø¨
                             @elseif(current_locale() === 'he')
-                                בטל הזמנה
+                                ×‘×˜×œ ×”×–×ž× ×”
                             @else
                                 Cancel Order
                             @endif
@@ -813,9 +813,9 @@
                         <div style="text-align: center; padding: 1rem; background: #fef3cd; border-radius: 12px; color: #856404; font-size: 0.9rem;">
                             <i class="fas fa-info-circle"></i>
                             @if(current_locale() === 'ar')
-                                لا يمكن إلغاء هذا الطلب بعد الآن. يرجى التواصل مع الدعم.
+                                Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø¥Ù„ØºØ§Ø¡ Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ Ø¨Ø¹Ø¯ Ø§Ù„Ø¢Ù†. ÙŠØ±Ø¬Ù‰ Ø§Ù„ØªÙˆØ§ØµÙ„ Ù…Ø¹ Ø§Ù„Ø¯Ø¹Ù….
                             @elseif(current_locale() === 'he')
-                                לא ניתן לבטל הזמנה זו יותר. אנא צור קשר עם התמיכה.
+                                ×œ× × ×™×ª×Ÿ ×œ×‘×˜×œ ×”×–×ž× ×” ×–×• ×™×•×ª×¨. ×× × ×¦×•×¨ ×§×©×¨ ×¢× ×”×ª×ž×™×›×”.
                             @else
                                 This order can no longer be cancelled. Please contact support.
                             @endif
@@ -836,9 +836,9 @@
             <div class="cancel-modal-title">
                 <i class="fas fa-times-circle"></i>
                 @if(current_locale() === 'ar')
-                    إلغاء الطلب {{ $order->order_number }}
+                    Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø·Ù„Ø¨ {{ $order->order_number }}
                 @elseif(current_locale() === 'he')
-                    ביטול הזמנה {{ $order->order_number }}
+                    ×‘×™×˜×•×œ ×”×–×ž× ×” {{ $order->order_number }}
                 @else
                     Cancel Order {{ $order->order_number }}
                 @endif
@@ -852,9 +852,9 @@
         <div class="cancel-modal-body">
             <p class="cancel-modal-question">
                 @if(current_locale() === 'ar')
-                    لماذا تريد إلغاء هذا الطلب؟
+                    Ù„Ù…Ø§Ø°Ø§ ØªØ±ÙŠØ¯ Ø¥Ù„ØºØ§Ø¡ Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ØŸ
                 @elseif(current_locale() === 'he')
-                    מדוע ברצונך לבטל הזמנה זו?
+                    ×ž×“×•×¢ ×‘×¨×¦×•× ×š ×œ×‘×˜×œ ×”×–×ž× ×” ×–×•?
                 @else
                     Why are you cancelling this order?
                 @endif
@@ -866,9 +866,9 @@
                     <span class="cancel-reason-radio"></span>
                     <span class="cancel-reason-text">
                         @if(current_locale() === 'ar')
-                            طلب عن طريق الخطأ
+                            Ø·Ù„Ø¨ Ø¹Ù† Ø·Ø±ÙŠÙ‚ Ø§Ù„Ø®Ø·Ø£
                         @elseif(current_locale() === 'he')
-                            הוזמן בטעות
+                            ×”×•×–×ž×Ÿ ×‘×˜×¢×•×ª
                         @else
                             Ordered by mistake
                         @endif
@@ -879,9 +879,9 @@
                     <span class="cancel-reason-radio"></span>
                     <span class="cancel-reason-text">
                         @if(current_locale() === 'ar')
-                            وجدت سعراً أفضل
+                            ÙˆØ¬Ø¯Øª Ø³Ø¹Ø±Ø§Ù‹ Ø£ÙØ¶Ù„
                         @elseif(current_locale() === 'he')
-                            מצאתי מחיר טוב יותר
+                            ×ž×¦××ª×™ ×ž×—×™×¨ ×˜×•×‘ ×™×•×ª×¨
                         @else
                             Found a better price
                         @endif
@@ -892,9 +892,9 @@
                     <span class="cancel-reason-radio"></span>
                     <span class="cancel-reason-text">
                         @if(current_locale() === 'ar')
-                            وقت التوصيل طويل جداً
+                            ÙˆÙ‚Øª Ø§Ù„ØªÙˆØµÙŠÙ„ Ø·ÙˆÙŠÙ„ Ø¬Ø¯Ø§Ù‹
                         @elseif(current_locale() === 'he')
-                            זמן המשלוח ארוך מדי
+                            ×–×ž×Ÿ ×”×ž×©×œ×•×— ××¨×•×š ×ž×“×™
                         @else
                             Delivery time too long
                         @endif
@@ -905,9 +905,9 @@
                     <span class="cancel-reason-radio"></span>
                     <span class="cancel-reason-text">
                         @if(current_locale() === 'ar')
-                            مشكلة في الدفع
+                            Ù…Ø´ÙƒÙ„Ø© ÙÙŠ Ø§Ù„Ø¯ÙØ¹
                         @elseif(current_locale() === 'he')
-                            בעיית תשלום
+                            ×‘×¢×™×™×ª ×ª×©×œ×•×
                         @else
                             Payment issue
                         @endif
@@ -918,9 +918,9 @@
                     <span class="cancel-reason-radio"></span>
                     <span class="cancel-reason-text">
                         @if(current_locale() === 'ar')
-                            سبب آخر
+                            Ø³Ø¨Ø¨ Ø¢Ø®Ø±
                         @elseif(current_locale() === 'he')
-                            סיבה אחרת
+                            ×¡×™×‘×” ××—×¨×ª
                         @else
                             Other
                         @endif
@@ -931,7 +931,7 @@
             <!-- Other reason textarea (hidden by default) -->
             <div class="cancel-note-wrapper" id="cancelNoteWrapper" style="display: none;">
                 <textarea id="cancelNote" class="cancel-note-textarea" rows="3"
-                    placeholder="@if(current_locale() === 'ar')يرجى توضيح السبب...@elseif(current_locale() === 'he')אנא פרט את הסיבה...@elsePlease specify your reason...@endif"></textarea>
+                    placeholder="@if(current_locale() === 'ar')ÙŠØ±Ø¬Ù‰ ØªÙˆØ¶ÙŠØ­ Ø§Ù„Ø³Ø¨Ø¨...@elseif(current_locale() === 'he')×× × ×¤×¨×˜ ××ª ×”×¡×™×‘×”...@elsePlease specify your reason...@endif"></textarea>
             </div>
 
             <!-- Refund Info -->
@@ -939,19 +939,19 @@
                 <i class="fas fa-info-circle"></i>
                 @if($order->payment_method === 'cash_on_delivery')
                     @if(current_locale() === 'ar')
-                        لم يتم خصم أي مبلغ من حسابك.
+                        Ù„Ù… ÙŠØªÙ… Ø®ØµÙ… Ø£ÙŠ Ù…Ø¨Ù„Øº Ù…Ù† Ø­Ø³Ø§Ø¨Ùƒ.
                     @elseif(current_locale() === 'he')
-                        לא חויבת בתשלום.
+                        ×œ× ×—×•×™×‘×ª ×‘×ª×©×œ×•×.
                     @else
                         No payment has been charged.
                     @endif
                 @else
                     @if(current_locale() === 'ar')
-                        سيتم إرجاع المبلغ إلى وسيلة الدفع الأصلية خلال 3-5 أيام عمل.
+                        Ø³ÙŠØªÙ… Ø¥Ø±Ø¬Ø§Ø¹ Ø§Ù„Ù…Ø¨Ù„Øº Ø¥Ù„Ù‰ ÙˆØ³ÙŠÙ„Ø© Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ø£ØµÙ„ÙŠØ© Ø®Ù„Ø§Ù„ 3-5 Ø£ÙŠØ§Ù… Ø¹Ù…Ù„.
                     @elseif(current_locale() === 'he')
-                        ההחזר יועבר לאמצעי התשלום המקורי שלך תוך 3-5 ימי עסקים.
+                        ×”×”×—×–×¨ ×™×•×¢×‘×¨ ×œ××ž×¦×¢×™ ×”×ª×©×œ×•× ×”×ž×§×•×¨×™ ×©×œ×š ×ª×•×š 3-5 ×™×ž×™ ×¢×¡×§×™×.
                     @else
-                        Your refund will be processed to your original payment method within 3–5 business days.
+                        Your refund will be processed to your original payment method within 3â€“5 business days.
                     @endif
                 @endif
             </div>
@@ -968,9 +968,9 @@
             <button type="button" class="cancel-modal-btn cancel-modal-btn-keep" onclick="closeCancelModal()">
                 <i class="fas fa-shopping-bag"></i>
                 @if(current_locale() === 'ar')
-                    الاحتفاظ بالطلب
+                    Ø§Ù„Ø§Ø­ØªÙØ§Ø¸ Ø¨Ø§Ù„Ø·Ù„Ø¨
                 @elseif(current_locale() === 'he')
-                    שמור הזמנה
+                    ×©×ž×•×¨ ×”×–×ž× ×”
                 @else
                     Keep Order
                 @endif
@@ -980,9 +980,9 @@
                 <span class="cancel-spinner" id="cancelSpinner" style="display: none;"></span>
                 <span id="confirmCancelText">
                     @if(current_locale() === 'ar')
-                        تأكيد الإلغاء
+                        ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø¥Ù„ØºØ§Ø¡
                     @elseif(current_locale() === 'he')
-                        אשר ביטול
+                        ××©×¨ ×‘×™×˜×•×œ
                     @else
                         Confirm Cancellation
                     @endif
@@ -1421,9 +1421,9 @@
         if (!selected) {
             showCancelError(
                 @if(current_locale() === 'ar')
-                    'يرجى اختيار سبب الإلغاء'
+                    'ÙŠØ±Ø¬Ù‰ Ø§Ø®ØªÙŠØ§Ø± Ø³Ø¨Ø¨ Ø§Ù„Ø¥Ù„ØºØ§Ø¡'
                 @elseif(current_locale() === 'he')
-                    'אנא בחר סיבת ביטול'
+                    '×× × ×‘×—×¨ ×¡×™×‘×ª ×‘×™×˜×•×œ'
                 @else
                     'Please select a cancellation reason'
                 @endif
@@ -1437,9 +1437,9 @@
         if (reason === 'other' && !note) {
             showCancelError(
                 @if(current_locale() === 'ar')
-                    'يرجى توضيح سبب الإلغاء'
+                    'ÙŠØ±Ø¬Ù‰ ØªÙˆØ¶ÙŠØ­ Ø³Ø¨Ø¨ Ø§Ù„Ø¥Ù„ØºØ§Ø¡'
                 @elseif(current_locale() === 'he')
-                    'אנא פרט את סיבת הביטול'
+                    '×× × ×¤×¨×˜ ××ª ×¡×™×‘×ª ×”×‘×™×˜×•×œ'
                 @else
                     'Please specify your cancellation reason'
                 @endif
@@ -1479,9 +1479,9 @@
                 if (badge) {
                     badge.innerHTML = '<i class="fas fa-circle" style="font-size: 0.5rem; color: #ef4444;"></i> ' +
                         @if(current_locale() === 'ar')
-                            'ملغي';
+                            'Ù…Ù„ØºÙŠ';
                         @elseif(current_locale() === 'he')
-                            'בוטל';
+                            '×‘×•×˜×œ';
                         @else
                             'Cancelled';
                         @endif
@@ -1497,9 +1497,9 @@
                 // Show success toast
                 showToast('success', result.data.message ||
                     @if(current_locale() === 'ar')
-                        'تم إلغاء الطلب بنجاح.'
+                        'ØªÙ… Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø·Ù„Ø¨ Ø¨Ù†Ø¬Ø§Ø­.'
                     @elseif(current_locale() === 'he')
-                        'ההזמנה בוטלה בהצלחה.'
+                        '×”×”×–×ž× ×” ×‘×•×˜×œ×” ×‘×”×¦×œ×—×”.'
                     @else
                         'Order successfully cancelled.'
                     @endif
@@ -1512,9 +1512,9 @@
 
                 showCancelError(result.data.message ||
                     @if(current_locale() === 'ar')
-                        'لا يمكن إلغاء هذا الطلب.'
+                        'Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø¥Ù„ØºØ§Ø¡ Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨.'
                     @elseif(current_locale() === 'he')
-                        'לא ניתן לבטל הזמנה זו.'
+                        '×œ× × ×™×ª×Ÿ ×œ×‘×˜×œ ×”×–×ž× ×” ×–×•.'
                     @else
                         'This order can no longer be cancelled.'
                     @endif
@@ -1527,9 +1527,9 @@
             document.getElementById('cancelSpinner').style.display = 'none';
             showCancelError(
                 @if(current_locale() === 'ar')
-                    'حدث خطأ. يرجى المحاولة مرة أخرى.'
+                    'Ø­Ø¯Ø« Ø®Ø·Ø£. ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.'
                 @elseif(current_locale() === 'he')
-                    'אירעה שגיאה. אנא נסה שוב.'
+                    '××™×¨×¢×” ×©×’×™××”. ×× × × ×¡×” ×©×•×‘.'
                 @else
                     'An error occurred. Please try again.'
                 @endif
@@ -1573,9 +1573,9 @@
                         '<div style="text-align:center;padding:1rem;background:#fef3cd;border-radius:12px;color:#856404;font-size:0.9rem;">' +
                         '<i class="fas fa-info-circle"></i> ' +
                         @if(current_locale() === 'ar')
-                            'لا يمكن إلغاء هذا الطلب بعد الآن. يرجى التواصل مع الدعم.'
+                            'Ù„Ø§ ÙŠÙ…ÙƒÙ† Ø¥Ù„ØºØ§Ø¡ Ù‡Ø°Ø§ Ø§Ù„Ø·Ù„Ø¨ Ø¨Ø¹Ø¯ Ø§Ù„Ø¢Ù†. ÙŠØ±Ø¬Ù‰ Ø§Ù„ØªÙˆØ§ØµÙ„ Ù…Ø¹ Ø§Ù„Ø¯Ø¹Ù….'
                         @elseif(current_locale() === 'he')
-                            'לא ניתן לבטל הזמנה זו יותר. אנא צור קשר עם התמיכה.'
+                            '×œ× × ×™×ª×Ÿ ×œ×‘×˜×œ ×”×–×ž× ×” ×–×• ×™×•×ª×¨. ×× × ×¦×•×¨ ×§×©×¨ ×¢× ×”×ª×ž×™×›×”.'
                         @else
                             'This order can no longer be cancelled. Please contact support.'
                         @endif
@@ -1588,9 +1588,9 @@
             var secs = totalSeconds % 60;
 
             @if(current_locale() === 'ar')
-                el.textContent = 'يمكنك الإلغاء خلال ' + mins + ':' + (secs < 10 ? '0' : '') + secs;
+                el.textContent = 'ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ù„Ø¥Ù„ØºØ§Ø¡ Ø®Ù„Ø§Ù„ ' + mins + ':' + (secs < 10 ? '0' : '') + secs;
             @elseif(current_locale() === 'he')
-                el.textContent = 'ניתן לבטל תוך ' + mins + ':' + (secs < 10 ? '0' : '') + secs;
+                el.textContent = '× ×™×ª×Ÿ ×œ×‘×˜×œ ×ª×•×š ' + mins + ':' + (secs < 10 ? '0' : '') + secs;
             @else
                 el.textContent = 'You can cancel within ' + mins + ':' + (secs < 10 ? '0' : '') + secs;
             @endif

@@ -6,7 +6,7 @@
             $mainImageUrl = $product->main_image 
                 ? (filter_var($product->main_image, FILTER_VALIDATE_URL) 
                     ? $product->main_image 
-                    : asset('storage/' . $product->main_image))
+                    : asset('media/' . $product->main_image))
                 : 'https://via.placeholder.com/800x800/f5f5f5/666666?text=' . urlencode($product->name);
         @endphp
         <img 
@@ -26,7 +26,7 @@
                         $thumbnailUrl = $image->image_path 
                             ? (filter_var($image->image_path, FILTER_VALIDATE_URL) 
                                 ? $image->image_path 
-                                : asset('storage/' . $image->image_path))
+                                : asset('media/' . $image->image_path))
                             : 'https://via.placeholder.com/200x200/f5f5f5/666666?text=Image+' . ($index + 1);
                     @endphp
                     <img 

@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ in_array(app()->getLocale(), ['ar', 'he']) ? 'rtl' : 'ltr' }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin Panel') - IT Center</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    @if(in_array(app()->getLocale(), ['ar', 'he']))
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
+    @if (in_array(app()->getLocale(), ['ar', 'he']))
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     @endif
     <style>
         * {
@@ -42,7 +43,7 @@
             --border: #e2e8f0;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            
+
             /* Unified accent colors */
             --accent-blue: #0ea5e9;
             --accent-indigo: #6366f1;
@@ -50,21 +51,21 @@
             --accent-amber: #f59e0b;
             --accent-rose: #f43f5e;
             --accent-violet: #8b5cf6;
-            
+
             /* Hero/Header gradients */
             --hero-gradient-start: #0f172a;
             --hero-gradient-mid: #1e293b;
             --hero-gradient-end: #334155;
-            
+
             /* Background colors */
             --bg-primary: #ffffff;
             --bg-secondary: #f8fafc;
             --bg-tertiary: #f1f5f9;
-            
+
             /* Unified shadows */
             --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.08);
             --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.12);
-            
+
             /* Border radius */
             --radius-sm: 8px;
             --radius-md: 12px;
@@ -502,19 +503,24 @@
             background-color: #ffffff;
             background-image: none !important;
             background: #ffffff none !important;
-            padding: 12px 16px; /* match .form-control */
+            padding: 12px 16px;
+            /* match .form-control */
             cursor: pointer;
             font-weight: 500;
         }
 
         /* Ensure legacy IE/Edge don't paint extra dropdown glyph */
-        select.form-control::-ms-expand { display: none; }
+        select.form-control::-ms-expand {
+            display: none;
+        }
 
         select.form-control:hover {
             border-color: #94a3b8;
         }
 
-        select.form-control:focus { background-image: none !important; }
+        select.form-control:focus {
+            background-image: none !important;
+        }
 
         /* Style options - CRITICAL: Remove all markers and backgrounds */
         select.form-control option {
@@ -681,23 +687,59 @@
         }
 
         @keyframes notif-slide-in {
-            from { opacity: 0; transform: translateX(40px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         @keyframes notif-slide-in-rtl {
-            from { opacity: 0; transform: translateX(-40px); }
-            to { opacity: 1; transform: translateX(0); }
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         @keyframes notif-slide-out {
-            from { opacity: 1; transform: translateX(0); max-height: 120px; margin-bottom: 0; }
-            to { opacity: 0; transform: translateX(60px); max-height: 0; margin-bottom: -12px; }
+            from {
+                opacity: 1;
+                transform: translateX(0);
+                max-height: 120px;
+                margin-bottom: 0;
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(60px);
+                max-height: 0;
+                margin-bottom: -12px;
+            }
         }
 
         @keyframes notif-slide-out-rtl {
-            from { opacity: 1; transform: translateX(0); max-height: 120px; margin-bottom: 0; }
-            to { opacity: 0; transform: translateX(-60px); max-height: 0; margin-bottom: -12px; }
+            from {
+                opacity: 1;
+                transform: translateX(0);
+                max-height: 120px;
+                margin-bottom: 0;
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(-60px);
+                max-height: 0;
+                margin-bottom: -12px;
+            }
         }
 
         .admin-notification__accent {
@@ -808,37 +850,102 @@
         }
 
         @keyframes notif-progress {
-            from { width: 100%; }
-            to { width: 0%; }
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
         }
 
         /* --- Success variant --- */
-        .admin-notification--success { color: #14532d; }
-        .admin-notification--success .admin-notification__accent { background: #22c55e; }
-        .admin-notification--success .admin-notification__icon { color: #16a34a; }
-        .admin-notification--success::after { background: #22c55e; }
-        .admin-notification--success { background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border-color: #dcfce7; }
+        .admin-notification--success {
+            color: #14532d;
+        }
+
+        .admin-notification--success .admin-notification__accent {
+            background: #22c55e;
+        }
+
+        .admin-notification--success .admin-notification__icon {
+            color: #16a34a;
+        }
+
+        .admin-notification--success::after {
+            background: #22c55e;
+        }
+
+        .admin-notification--success {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+            border-color: #dcfce7;
+        }
 
         /* --- Error variant --- */
-        .admin-notification--error { color: #7f1d1d; }
-        .admin-notification--error .admin-notification__accent { background: #ef4444; }
-        .admin-notification--error .admin-notification__icon { color: #dc2626; }
-        .admin-notification--error::after { background: #ef4444; }
-        .admin-notification--error { background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%); border-color: #fecaca; }
+        .admin-notification--error {
+            color: #7f1d1d;
+        }
+
+        .admin-notification--error .admin-notification__accent {
+            background: #ef4444;
+        }
+
+        .admin-notification--error .admin-notification__icon {
+            color: #dc2626;
+        }
+
+        .admin-notification--error::after {
+            background: #ef4444;
+        }
+
+        .admin-notification--error {
+            background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+            border-color: #fecaca;
+        }
 
         /* --- Warning variant --- */
-        .admin-notification--warning { color: #78350f; }
-        .admin-notification--warning .admin-notification__accent { background: #f59e0b; }
-        .admin-notification--warning .admin-notification__icon { color: #d97706; }
-        .admin-notification--warning::after { background: #f59e0b; }
-        .admin-notification--warning { background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%); border-color: #fde68a; }
+        .admin-notification--warning {
+            color: #78350f;
+        }
+
+        .admin-notification--warning .admin-notification__accent {
+            background: #f59e0b;
+        }
+
+        .admin-notification--warning .admin-notification__icon {
+            color: #d97706;
+        }
+
+        .admin-notification--warning::after {
+            background: #f59e0b;
+        }
+
+        .admin-notification--warning {
+            background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+            border-color: #fde68a;
+        }
 
         /* --- Info variant --- */
-        .admin-notification--info { color: #1e3a5f; }
-        .admin-notification--info .admin-notification__accent { background: #3b82f6; }
-        .admin-notification--info .admin-notification__icon { color: #2563eb; }
-        .admin-notification--info::after { background: #3b82f6; }
-        .admin-notification--info { background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%); border-color: #bfdbfe; }
+        .admin-notification--info {
+            color: #1e3a5f;
+        }
+
+        .admin-notification--info .admin-notification__accent {
+            background: #3b82f6;
+        }
+
+        .admin-notification--info .admin-notification__icon {
+            color: #2563eb;
+        }
+
+        .admin-notification--info::after {
+            background: #3b82f6;
+        }
+
+        .admin-notification--info {
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+            border-color: #bfdbfe;
+        }
 
         /* Per-message text direction auto-detection */
         .admin-notification__message {
@@ -934,13 +1041,15 @@
             border-right-color: var(--success);
         }
 
-        .alert-error, .alert-danger {
+        .alert-error,
+        .alert-danger {
             background: #fef2f2;
             color: #7f1d1d;
             border-left-color: var(--danger);
         }
 
-        [dir="rtl"] .alert-error, [dir="rtl"] .alert-danger {
+        [dir="rtl"] .alert-error,
+        [dir="rtl"] .alert-danger {
             border-right-color: var(--danger);
         }
 
@@ -1420,6 +1529,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -1655,7 +1765,8 @@
 
         /* Admin Hero Component - Unified Page Header */
         .admin-hero {
-            background: #1e293b; /* Fallback for older browsers */
+            background: #1e293b;
+            /* Fallback for older browsers */
             background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-mid) 50%, var(--hero-gradient-end) 100%);
             border-radius: var(--radius-xl);
             padding: 2rem 2.5rem;
@@ -2100,6 +2211,7 @@
 
         /* Responsive Table */
         @media (max-width: 1024px) {
+
             .admin-table th,
             .admin-table td {
                 padding: 0.875rem 1rem;
@@ -2188,6 +2300,7 @@
         }
 
         @media (max-width: 480px) {
+
             .admin-table th,
             .admin-table td {
                 padding: 0.625rem 0.75rem;
@@ -2292,7 +2405,7 @@
                 gap: 0.75rem;
             }
 
-            .filters-row > * {
+            .filters-row>* {
                 width: 100%;
             }
 
@@ -2307,6 +2420,7 @@
 
         /* Responsive Image Thumbnails */
         @media (max-width: 768px) {
+
             .product-thumbnail,
             .category-thumbnail,
             .brand-thumbnail {
@@ -2424,9 +2538,11 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Mobile Menu Toggle Button -->
-    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="{{ __('messages.toggle_menu') ?? 'Toggle Menu' }}">
+    <button class="mobile-menu-toggle" id="mobileMenuToggle"
+        aria-label="{{ __('messages.toggle_menu') ?? 'Toggle Menu' }}">
         <div class="hamburger-icon">
             <span></span>
             <span></span>
@@ -2445,97 +2561,137 @@
             @php $authUser = auth()->user(); @endphp
             <ul class="sidebar-menu">
                 {{-- Dashboard - visible to all staff --}}
-                @if($authUser->hasAnyPermissionInGroup('dashboard'))
-                <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fas fa-chart-line"></i> {{ __('messages.dashboard') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('dashboard'))
+                    <li><a href="{{ route('admin.dashboard') }}"
+                            class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i
+                                class="fas fa-chart-line"></i> {{ __('messages.dashboard') }}</a></li>
                 @endif
 
                 {{-- Orders --}}
-                @if($authUser->hasAnyPermissionInGroup('orders'))
-                <li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i class="fas fa-shopping-bag"></i> {{ __('messages.orders') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('orders'))
+                    <li><a href="{{ route('admin.orders.index') }}"
+                            class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i
+                                class="fas fa-shopping-bag"></i> {{ __('messages.orders') }}</a></li>
                 @endif
 
                 {{-- Contact Messages --}}
-                @if($authUser->hasAnyPermissionInGroup('contacts'))
-                <li><a href="{{ route('admin.contacts.index') }}" class="{{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}"><i class="fas fa-envelope"></i> {{ __('messages.contact_messages') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('contacts'))
+                    <li><a href="{{ route('admin.contacts.index') }}"
+                            class="{{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}"><i
+                                class="fas fa-envelope"></i> {{ __('messages.contact_messages') }}</a></li>
                 @endif
 
                 {{-- Promotional Offers --}}
-                @if($authUser->hasAnyPermissionInGroup('promotional_offers'))
-                <li><a href="{{ route('admin.promotional-offers.index') }}" class="{{ request()->routeIs('admin.promotional-offers.*') ? 'active' : '' }}"><i class="fas fa-bullhorn"></i> {{ __('messages.promotional_management') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('promotional_offers'))
+                    <li><a href="{{ route('admin.promotional-offers.index') }}"
+                            class="{{ request()->routeIs('admin.promotional-offers.*') ? 'active' : '' }}"><i
+                                class="fas fa-bullhorn"></i> {{ __('messages.promotional_management') }}</a></li>
                 @endif
 
                 {{-- Banners --}}
-                @if($authUser->hasAnyPermissionInGroup('banners'))
-                <li><a href="{{ route('admin.banners.index') }}" class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}"><i class="fas fa-images"></i> {{ __('messages.banner_management') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('banners'))
+                    <li><a href="{{ route('admin.banners.index') }}"
+                            class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}"><i
+                                class="fas fa-images"></i> {{ __('messages.banner_management') }}</a></li>
                 @endif
 
                 {{-- Promotional Ads --}}
-                @if($authUser->hasAnyPermissionInGroup('promotional_ads'))
-                <li><a href="{{ route('admin.promotional-ads.index') }}" class="{{ request()->routeIs('admin.promotional-ads.*') ? 'active' : '' }}"><i class="fas fa-ad"></i> {{ __('messages.promotional_ads') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('promotional_ads'))
+                    <li><a href="{{ route('admin.promotional-ads.index') }}"
+                            class="{{ request()->routeIs('admin.promotional-ads.*') ? 'active' : '' }}"><i
+                                class="fas fa-ad"></i> {{ __('messages.promotional_ads') }}</a></li>
                 @endif
 
                 {{-- Products --}}
-                @if($authUser->hasAnyPermissionInGroup('products'))
-                <li><a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><i class="fas fa-box"></i> {{ __('messages.products') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('products'))
+                    <li><a href="{{ route('admin.products.index') }}"
+                            class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}"><i
+                                class="fas fa-box"></i> {{ __('messages.products') }}</a></li>
                 @endif
 
                 {{-- Categories --}}
-                @if($authUser->hasAnyPermissionInGroup('categories'))
-                <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-folder"></i> {{ __('messages.categories') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('categories'))
+                    <li><a href="{{ route('admin.categories.index') }}"
+                            class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i
+                                class="fas fa-folder"></i> {{ __('messages.categories') }}</a></li>
                 @endif
 
                 {{-- Brands --}}
-                @if($authUser->hasAnyPermissionInGroup('brands'))
-                <li><a href="{{ route('admin.brands.index') }}" class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}"><i class="fas fa-tag"></i> {{ __('messages.brands') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('brands'))
+                    <li><a href="{{ route('admin.brands.index') }}"
+                            class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}"><i
+                                class="fas fa-tag"></i> {{ __('messages.brands') }}</a></li>
                 @endif
 
                 {{-- Attributes --}}
-                @if($authUser->hasAnyPermissionInGroup('attributes'))
-                <li><a href="{{ route('admin.attributes.index') }}" class="{{ request()->routeIs('admin.attributes.*') ? 'active' : '' }}"><i class="fas fa-sliders-h"></i> {{ __('messages.attributes') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('attributes'))
+                    <li><a href="{{ route('admin.attributes.index') }}"
+                            class="{{ request()->routeIs('admin.attributes.*') ? 'active' : '' }}"><i
+                                class="fas fa-sliders-h"></i> {{ __('messages.attributes') }}</a></li>
                 @endif
 
                 {{-- Tags --}}
-                @if($authUser->hasAnyPermissionInGroup('tags'))
-                <li><a href="{{ route('admin.tags.index') }}" class="{{ request()->routeIs('admin.tags.*') ? 'active' : '' }}"><i class="fas fa-tags"></i> {{ __('messages.tags_management') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('tags'))
+                    <li><a href="{{ route('admin.tags.index') }}"
+                            class="{{ request()->routeIs('admin.tags.*') ? 'active' : '' }}"><i
+                                class="fas fa-tags"></i> {{ __('messages.tags_management') }}</a></li>
                 @endif
 
                 {{-- Specification Templates --}}
-                @if($authUser->hasAnyPermissionInGroup('spec_templates'))
-                <li><a href="{{ route('admin.spec-templates.index') }}" class="{{ request()->routeIs('admin.spec-templates.*') ? 'active' : '' }}"><i class="fas fa-clipboard-list"></i> {{ __('messages.specification_templates') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('spec_templates'))
+                    <li><a href="{{ route('admin.spec-templates.index') }}"
+                            class="{{ request()->routeIs('admin.spec-templates.*') ? 'active' : '' }}"><i
+                                class="fas fa-clipboard-list"></i> {{ __('messages.specification_templates') }}</a>
+                    </li>
                 @endif
 
                 {{-- Backup --}}
-                @if($authUser->hasAnyPermissionInGroup('backup'))
-                <li><a href="{{ route('admin.backup.index') }}" class="{{ request()->routeIs('admin.backup.*') ? 'active' : '' }}"><i class="fas fa-database"></i> {{ __('messages.backup_management') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('backup'))
+                    <li><a href="{{ route('admin.backup.index') }}"
+                            class="{{ request()->routeIs('admin.backup.*') ? 'active' : '' }}"><i
+                                class="fas fa-database"></i> {{ __('messages.backup_management') }}</a></li>
                 @endif
 
                 {{-- Reviews --}}
-                @if($authUser->hasAnyPermissionInGroup('reviews'))
-                <li><a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}"><i class="fas fa-star"></i> {{ __('messages.reviews') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('reviews'))
+                    <li><a href="{{ route('admin.reviews.index') }}"
+                            class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}"><i
+                                class="fas fa-star"></i> {{ __('messages.reviews') }}</a></li>
                 @endif
 
                 {{-- Home Page Sections --}}
-                @if($authUser->hasAnyPermissionInGroup('home_sections'))
-                <li><a href="{{ route('admin.home-sections.index') }}" class="{{ request()->routeIs('admin.home-sections.*') ? 'active' : '' }}"><i class="fas fa-th-large"></i> {{ __('messages.home_sections_management') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('home_sections'))
+                    <li><a href="{{ route('admin.home-sections.index') }}"
+                            class="{{ request()->routeIs('admin.home-sections.*') ? 'active' : '' }}"><i
+                                class="fas fa-th-large"></i> {{ __('messages.home_sections_management') }}</a></li>
                 @endif
 
                 {{-- Shipping Management --}}
-                @if($authUser->hasAnyPermissionInGroup('shipping'))
-                <li><a href="{{ route('admin.shipping.index') }}" class="{{ request()->routeIs('admin.shipping.*') ? 'active' : '' }}"><i class="fas fa-truck"></i> {{ __('messages.shipping_management') }}</a></li>
+                @if ($authUser->hasAnyPermissionInGroup('shipping'))
+                    <li><a href="{{ route('admin.shipping.index') }}"
+                            class="{{ request()->routeIs('admin.shipping.*') ? 'active' : '' }}"><i
+                                class="fas fa-truck"></i> {{ __('messages.shipping_management') }}</a></li>
                 @endif
 
                 {{-- Site Settings - Admin Only --}}
-                @if($authUser->isAdmin())
-                <li><a href="{{ route('admin.site-settings.index') }}" class="{{ request()->routeIs('admin.site-settings.*') ? 'active' : '' }}"><i class="fas fa-cog"></i> {{ __('messages.site_settings') }}</a></li>
+                @if ($authUser->isAdmin())
+                    <li><a href="{{ route('admin.site-settings.index') }}"
+                            class="{{ request()->routeIs('admin.site-settings.*') ? 'active' : '' }}"><i
+                                class="fas fa-cog"></i> {{ __('messages.site_settings') }}</a></li>
                 @endif
 
                 {{-- Employee Management - Admin Only --}}
-                @if($authUser->isAdmin())
-                <li><a href="{{ route('admin.employees.index') }}" class="{{ request()->routeIs('admin.employees.*') ? 'active' : '' }}"><i class="fas fa-users-cog"></i> {{ __('messages.employee_management') }}</a></li>
-                <li><a href="{{ route('admin.roles.index') }}" class="{{ request()->routeIs('admin.roles.*') ? 'active' : '' }}"><i class="fas fa-shield-alt"></i> {{ __('messages.role_management') }}</a></li>
+                @if ($authUser->isAdmin())
+                    <li><a href="{{ route('admin.employees.index') }}"
+                            class="{{ request()->routeIs('admin.employees.*') ? 'active' : '' }}"><i
+                                class="fas fa-users-cog"></i> {{ __('messages.employee_management') }}</a></li>
+                    <li><a href="{{ route('admin.roles.index') }}"
+                            class="{{ request()->routeIs('admin.roles.*') ? 'active' : '' }}"><i
+                                class="fas fa-shield-alt"></i> {{ __('messages.role_management') }}</a></li>
                 @endif
 
-                <li><a href="{{ route('home') }}" target="_blank"><i class="fas fa-globe"></i> {{ __('messages.view') }} {{ __('messages.home') }}</a></li>
+                <li><a href="{{ route('home') }}" target="_blank"><i class="fas fa-globe"></i>
+                        {{ __('messages.view') }} {{ __('messages.home') }}</a></li>
                 <li>
                     <form method="POST" action="{{ route('admin.logout') }}" style="margin: 0;">
                         @csrf
@@ -2554,15 +2710,18 @@
                     <i class="fas fa-chevron-down"></i>
                 </button>
                 <div class="language-dropdown" id="languageDropdown">
-                    <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'active' : '' }}">
+                    <a href="{{ route('lang.switch', 'en') }}"
+                        class="{{ app()->getLocale() == 'en' ? 'active' : '' }}">
                         <span class="lang-flag">🇬🇧</span>
                         <span>English</span>
                     </a>
-                    <a href="{{ route('lang.switch', 'ar') }}" class="{{ app()->getLocale() == 'ar' ? 'active' : '' }}">
+                    <a href="{{ route('lang.switch', 'ar') }}"
+                        class="{{ app()->getLocale() == 'ar' ? 'active' : '' }}">
                         <span class="lang-flag">🇸🇦</span>
                         <span>العربية</span>
                     </a>
-                    <a href="{{ route('lang.switch', 'he') }}" class="{{ app()->getLocale() == 'he' ? 'active' : '' }}">
+                    <a href="{{ route('lang.switch', 'he') }}"
+                        class="{{ app()->getLocale() == 'he' ? 'active' : '' }}">
                         <span class="lang-flag">🇮🇱</span>
                         <span>עברית</span>
                     </a>
@@ -2695,7 +2854,8 @@
          */
         window.showToast = function(type, message, options) {
             var opts = options || {};
-            var isRtl = document.documentElement.dir === 'rtl' || document.documentElement.lang === 'ar' || document.documentElement.lang === 'he';
+            var isRtl = document.documentElement.dir === 'rtl' || document.documentElement.lang === 'ar' || document
+                .documentElement.lang === 'he';
             var icons = {
                 success: 'fas fa-check-circle',
                 error: 'fas fa-times-circle',
@@ -2703,10 +2863,10 @@
                 info: 'fas fa-info-circle'
             };
             var defaultTitles = {
-                success: '{{ __("messages.notification_success_title") }}',
-                error: '{{ __("messages.notification_error_title") }}',
-                warning: '{{ __("messages.notification_warning_title") }}',
-                info: '{{ __("messages.notification_info_title") }}'
+                success: '{{ __('messages.notification_success_title') }}',
+                error: '{{ __('messages.notification_error_title') }}',
+                warning: '{{ __('messages.notification_warning_title') }}',
+                info: '{{ __('messages.notification_info_title') }}'
             };
             var title = opts.title || defaultTitles[type] || '';
             var icon = icons[type] || icons.info;
@@ -2730,14 +2890,14 @@
                 '<div class="admin-notification__accent"></div>' +
                 '<div class="admin-notification__icon"><i class="' + icon + '"></i></div>' +
                 '<div class="admin-notification__body">' +
-                    '<div class="admin-notification__title" dir="auto">' + title + '</div>' +
-                    '<div class="admin-notification__message" dir="auto">' + message + '</div>' +
+                '<div class="admin-notification__title" dir="auto">' + title + '</div>' +
+                '<div class="admin-notification__message" dir="auto">' + message + '</div>' +
                 '</div>' +
                 '<div class="admin-notification__actions">' +
-                    '<span class="admin-notification__time" dir="auto">{{ __("messages.notification_just_now") }}</span>' +
-                    '<button type="button" class="admin-notification__close" onclick="dismissNotification(this)" aria-label="{{ __("messages.close") }}">' +
-                        '<i class="fas fa-times"></i>' +
-                    '</button>' +
+                '<span class="admin-notification__time" dir="auto">{{ __('messages.notification_just_now') }}</span>' +
+                '<button type="button" class="admin-notification__close" onclick="dismissNotification(this)" aria-label="{{ __('messages.close') }}">' +
+                '<i class="fas fa-times"></i>' +
+                '</button>' +
                 '</div>';
 
             container.appendChild(card);
@@ -2759,4 +2919,5 @@
 
     @stack('scripts')
 </body>
+
 </html>

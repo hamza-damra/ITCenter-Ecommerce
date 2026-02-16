@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ __('messages.admin_panel') }} - IT Center</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -56,6 +57,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -78,16 +80,25 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
             animation: pulse 15s ease-in-out infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.3; }
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.3;
+            }
         }
 
-        .login-header > * {
+        .login-header>* {
             position: relative;
             z-index: 1;
         }
@@ -396,6 +407,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-card">
@@ -409,25 +421,25 @@
             </div>
 
             <div class="login-body">
-                @if(session('success'))
+                @if (session('success'))
                     <div class="alert alert-success">
                         <i class="fas fa-check-circle"></i>
                         <span>{{ session('success') }}</span>
                     </div>
                 @endif
 
-                @if(session('error'))
+                @if (session('error'))
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-circle"></i>
                         <span>{{ session('error') }}</span>
                     </div>
                 @endif
 
-                @if($errors->any())
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-circle"></i>
                         <div>
-                            @foreach($errors->all() as $error)
+                            @foreach ($errors->all() as $error)
                                 <div>{{ $error }}</div>
                             @endforeach
                         </div>
@@ -444,16 +456,9 @@
                         </label>
                         <div class="input-wrapper">
                             <i class="fas fa-envelope"></i>
-                            <input 
-                                type="email" 
-                                id="email" 
-                                name="email" 
-                                class="form-control @error('email') is-invalid @enderror" 
-                                value="{{ old('email') }}" 
-                                placeholder="{{ __('messages.email_placeholder') }}"
-                                required 
-                                autofocus
-                            >
+                            <input type="email" id="email" name="email"
+                                class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"
+                                placeholder="{{ __('messages.email_placeholder') }}" required autofocus>
                         </div>
                         @error('email')
                             <span class="invalid-feedback">{{ $message }}</span>
@@ -467,14 +472,9 @@
                         </label>
                         <div class="input-wrapper">
                             <i class="fas fa-lock"></i>
-                            <input 
-                                type="password" 
-                                id="password" 
-                                name="password" 
-                                class="form-control password-input @error('password') is-invalid @enderror" 
-                                placeholder="{{ __('messages.password_placeholder') }}"
-                                required
-                            >
+                            <input type="password" id="password" name="password"
+                                class="form-control password-input @error('password') is-invalid @enderror"
+                                placeholder="{{ __('messages.password_placeholder') }}" required>
                             <button type="button" class="password-toggle" onclick="togglePassword()">
                                 <i class="fas fa-eye" id="toggleIcon"></i>
                             </button>
@@ -511,7 +511,7 @@
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const toggleIcon = document.getElementById('toggleIcon');
-            
+
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 toggleIcon.classList.remove('fa-eye');
@@ -541,4 +541,5 @@
         }, 5000);
     </script>
 </body>
+
 </html>

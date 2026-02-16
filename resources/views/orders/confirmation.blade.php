@@ -583,7 +583,7 @@
                             } elseif (str_starts_with($item->product_image, 'images/')) {
                                 $imageSrc = asset($item->product_image);
                             } else {
-                                $imageSrc = asset('storage/' . $item->product_image);
+                                $imageSrc = asset('media/' . $item->product_image);
                             }
                         }
                     @endphp
@@ -593,9 +593,9 @@
                          onerror="this.src='{{ asset('images/placeholder.png') }}'">
                     <div class="conf-item-details">
                         <div class="conf-item-name">{{ $item->product_name }}</div>
-                        <div class="conf-item-qty">{{ __('messages.quantity') }}: {{ $item->quantity }} × ₪{{ number_format($item->price, 2) }}</div>
+                        <div class="conf-item-qty">{{ __('messages.quantity') }}: {{ $item->quantity }} Ã— â‚ª{{ number_format($item->price, 2) }}</div>
                     </div>
-                    <div class="conf-item-price">₪{{ number_format($item->subtotal, 2) }}</div>
+                    <div class="conf-item-price">â‚ª{{ number_format($item->subtotal, 2) }}</div>
                 </div>
             @endforeach
         </div>
@@ -604,19 +604,19 @@
         <div class="confirmation-totals">
             <div class="conf-total-row">
                 <span class="label">{{ __('messages.subtotal') }}</span>
-                <span class="value">₪{{ number_format($order->subtotal, 2) }}</span>
+                <span class="value">â‚ª{{ number_format($order->subtotal, 2) }}</span>
             </div>
             @if($order->tax > 0)
                 <div class="conf-total-row">
                     <span class="label">{{ __('messages.tax') }}</span>
-                    <span class="value">₪{{ number_format($order->tax, 2) }}</span>
+                    <span class="value">â‚ª{{ number_format($order->tax, 2) }}</span>
                 </div>
             @endif
             <div class="conf-total-row">
                 <span class="label">{{ __('messages.shipping') ?? 'Shipping' }}</span>
                 <span class="value">
                     @if($order->shipping_cost > 0)
-                        ₪{{ number_format($order->shipping_cost, 2) }}
+                        â‚ª{{ number_format($order->shipping_cost, 2) }}
                     @else
                         {{ __('messages.free') }}
                     @endif
@@ -625,12 +625,12 @@
             @if($order->discount > 0)
                 <div class="conf-total-row">
                     <span class="label">{{ __('messages.discount') ?? 'Discount' }}</span>
-                    <span class="value" style="color: #10b981;">-₪{{ number_format($order->discount, 2) }}</span>
+                    <span class="value" style="color: #10b981;">-â‚ª{{ number_format($order->discount, 2) }}</span>
                 </div>
             @endif
             <div class="conf-total-row grand-total">
                 <span class="label">{{ __('messages.total') }}</span>
-                <span class="value">₪{{ number_format($order->total, 2) }}</span>
+                <span class="value">â‚ª{{ number_format($order->total, 2) }}</span>
             </div>
         </div>
     </div>
@@ -660,7 +660,7 @@
                     {{ $order->shipping_address }}, {{ $order->shipping_city }}
                     @if($order->shipping_state), {{ $order->shipping_state }}@endif
                     <br>{{ $order->shipping_country }}
-                    @if($order->shipping_postal_code) — {{ $order->shipping_postal_code }}@endif
+                    @if($order->shipping_postal_code) â€” {{ $order->shipping_postal_code }}@endif
                 </span>
             </div>
             <div class="shipping-detail-item">
@@ -721,7 +721,7 @@
 <script>
 window.addEventListener('pageshow', function(event) {
     if (event.persisted) {
-        // Page served from bfcache — no action needed here since this is confirmation
+        // Page served from bfcache â€” no action needed here since this is confirmation
         // But ensure we don't have stale state
     }
 });

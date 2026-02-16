@@ -201,7 +201,7 @@ class ImageUploadService
 
         $path = $this->normalizePathForStorage($path);
 
-        return asset('storage/' . $path);
+        return asset('media/' . $path);
     }
 
     /**
@@ -532,30 +532,41 @@ class ImageUploadService
     {
         $htaccessPath = storage_path('app/public/.htaccess');
 
-        if (!file_exists($htaccessPath)) {
-            $htaccessContent = <<<'HTACCESS'
+        // Security .htaccess for storage directory
+        // NOTE: Do NOT use RewriteEngine Off here - it disables inherited rewrite rules
+        // which prevents the parent .htaccess from routing /storage/ through Laravel
+        $htaccessContent = <<<'HTACCESS'
 # Prevent PHP execution in upload directories
 <FilesMatch "\.(?:php|phtml|php3|php4|php5|php7|php8|phar|phps)$">
-    Require all denied
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
 </FilesMatch>
 
 # Prevent directory listing
 Options -Indexes
 
-# Only allow specific image file types to be served
-<FilesMatch "\.(?:jpg|jpeg|png|webp|gif|svg|ico)$">
+# Allow all access to public files in this directory
+<IfModule mod_authz_core.c>
     Require all granted
-</FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order Allow,Deny
+    Allow from all
+</IfModule>
 HTACCESS;
 
-            try {
-                file_put_contents($htaccessPath, $htaccessContent);
-            } catch (\Exception $e) {
-                Log::warning('ImageUploadService: Failed to create .htaccess', [
-                    'path' => $htaccessPath,
-                    'error' => $e->getMessage(),
-                ]);
-            }
+        try {
+            file_put_contents($htaccessPath, $htaccessContent);
+        } catch (\Exception $e) {
+            Log::warning('ImageUploadService: Failed to create .htaccess', [
+                'path' => $htaccessPath,
+                'error' => $e->getMessage(),
+            ]);
         }
     }
 }

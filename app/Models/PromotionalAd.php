@@ -88,9 +88,9 @@ class PromotionalAd extends Model
                 return $this->image_path;
             }
             // Check if file exists before trying to use it
-            $filePath = public_path('storage/' . $this->image_path);
+            $filePath = storage_path('app/public/' . $this->image_path);
             if (file_exists($filePath)) {
-                return asset('storage/' . $this->image_path);
+                return asset('media/' . $this->image_path);
             }
         }
 

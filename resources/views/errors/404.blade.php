@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ current_locale() }}" dir="{{ locale_direction() }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ __t('404') }} - IT Center</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    @if(is_rtl())
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
+    @if (is_rtl())
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     @endif
     <style>
         * {
@@ -46,7 +47,7 @@
             font-weight: 900;
             color: rgba(255, 255, 255, 0.1);
             line-height: 1;
-            text-shadow: 
+            text-shadow:
                 2px 2px 0 rgba(255, 255, 255, 0.2),
                 4px 4px 0 rgba(255, 255, 255, 0.15),
                 6px 6px 0 rgba(255, 255, 255, 0.1);
@@ -55,18 +56,24 @@
         }
 
         @keyframes glitch {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translate(0);
             }
+
             20% {
                 transform: translate(-2px, 2px);
             }
+
             40% {
                 transform: translate(-2px, -2px);
             }
+
             60% {
                 transform: translate(2px, 2px);
             }
+
             80% {
                 transform: translate(2px, -2px);
             }
@@ -83,9 +90,12 @@
         }
 
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translate(-50%, -50%) translateY(0);
             }
+
             50% {
                 transform: translate(-50%, -50%) translateY(-20px);
             }
@@ -107,6 +117,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -195,9 +206,11 @@
                 transform: translateY(100vh) scale(0);
                 opacity: 0;
             }
+
             50% {
                 opacity: 1;
             }
+
             100% {
                 transform: translateY(-100vh) scale(1);
                 opacity: 0;
@@ -290,6 +303,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="particles">
         <div class="particle"></div>
@@ -314,7 +328,7 @@
 
         <div class="error-content">
             <h1 class="error-title">
-                @if(current_locale() === 'ar')
+                @if (current_locale() === 'ar')
                     عذراً! الصفحة غير موجودة
                 @elseif(current_locale() === 'he')
                     מצטערים! הדף לא נמצא
@@ -323,18 +337,20 @@
                 @endif
             </h1>
             <p class="error-message">
-                @if(current_locale() === 'ar')
-                    الصفحة التي تبحث عنها غير متوفرة أو ربما تم نقلها إلى موقع آخر. يمكنك العودة إلى الصفحة الرئيسية أو استخدام زر الرجوع.
+                @if (current_locale() === 'ar')
+                    الصفحة التي تبحث عنها غير متوفرة أو ربما تم نقلها إلى موقع آخر. يمكنك العودة إلى الصفحة الرئيسية أو
+                    استخدام زر الرجوع.
                 @elseif(current_locale() === 'he')
                     הדף שאתה מחפש אינו זמין או אולי הועבר למיקום אחר. אתה יכול לחזור לדף הבית או להשתמש בכפתור חזור.
                 @else
-                    The page you're looking for is not available or may have been moved to another location. You can return to the home page or use the back button.
+                    The page you're looking for is not available or may have been moved to another location. You can
+                    return to the home page or use the back button.
                 @endif
             </p>
             <div class="error-actions">
                 <a href="{{ route('home') }}" class="btn btn-primary">
                     <i class="fas fa-home"></i>
-                    @if(current_locale() === 'ar')
+                    @if (current_locale() === 'ar')
                         العودة للرئيسية
                     @elseif(current_locale() === 'he')
                         חזרה לדף הבית
@@ -344,7 +360,7 @@
                 </a>
                 <button onclick="window.history.back()" class="btn btn-secondary">
                     <i class="fas fa-arrow-{{ is_rtl() ? 'right' : 'left' }}"></i>
-                    @if(current_locale() === 'ar')
+                    @if (current_locale() === 'ar')
                         الرجوع للخلف
                     @elseif(current_locale() === 'he')
                         חזור אחורה
@@ -366,4 +382,5 @@
         });
     </script>
 </body>
+
 </html>

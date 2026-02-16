@@ -768,7 +768,7 @@
                                         $imagePath = $item->product->images->first()->image_path;
                                         $imageUrl = (str_starts_with($imagePath, 'http://') || str_starts_with($imagePath, 'https://'))
                                             ? $imagePath
-                                            : asset('storage/' . $imagePath);
+                                            : asset('media/' . $imagePath);
                                     @endphp
                                     <img src="{{ $imageUrl }}" 
                                          alt="{{ $item->product->name }}" 

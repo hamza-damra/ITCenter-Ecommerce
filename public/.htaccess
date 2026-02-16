@@ -45,6 +45,10 @@
         Options -MultiViews -Indexes
     </IfModule>
 
+    # Required for mod_rewrite on cPanel/shared hosting
+    # Try FollowSymLinks first, fall back to SymLinksIfOwnerMatch
+    Options +FollowSymLinks
+
     RewriteEngine On
 
     # Handle Authorization Header
@@ -59,6 +63,10 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
+
+    # Force /storage/ requests through Laravel (cPanel symlink fix)
+    # This must come BEFORE the generic front controller rule
+    RewriteRule ^storage/(.*)$ index.php [L]
 
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d

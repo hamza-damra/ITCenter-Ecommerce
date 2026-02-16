@@ -471,7 +471,7 @@
         <div class="profile-header-content">
             <div class="profile-avatar-section">
                 @if($user->avatar)
-                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="profile-avatar">
+                    <img src="{{ asset('media/' . $user->avatar) }}" alt="{{ $user->name }}" class="profile-avatar">
                 @else
                     <div class="profile-avatar-placeholder">
                         {{ strtoupper(substr($user->first_name ?? $user->name, 0, 1)) }}
@@ -521,7 +521,7 @@
                 <!-- Avatar Upload -->
                 <div class="avatar-upload-section">
                     @if($user->avatar)
-                        <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="avatar-preview" id="avatarPreview">
+                        <img src="{{ asset('media/' . $user->avatar) }}" alt="{{ $user->name }}" class="avatar-preview" id="avatarPreview">
                     @else
                         <div class="avatar-preview-placeholder" id="avatarPreview">
                             {{ strtoupper(substr($user->first_name ?? $user->name, 0, 1)) }}

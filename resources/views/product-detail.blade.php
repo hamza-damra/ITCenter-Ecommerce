@@ -983,17 +983,17 @@
         justify-content: flex-end;
     }
 
-    /* أخفي الأسهم في كروم/إيدج/سفاري */
+    /* Ø£Ø®ÙÙŠ Ø§Ù„Ø£Ø³Ù‡Ù… ÙÙŠ ÙƒØ±ÙˆÙ…/Ø¥ÙŠØ¯Ø¬/Ø³ÙØ§Ø±ÙŠ */
 .quantity-input::-webkit-outer-spin-button,
 .quantity-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* أخفيها في فايرفوكس */
+/* Ø£Ø®ÙÙŠÙ‡Ø§ ÙÙŠ ÙØ§ÙŠØ±ÙÙˆÙƒØ³ */
 .quantity-input {
   -moz-appearance: textfield;
-  appearance: textfield; /* دعم عام */
+  appearance: textfield; /* Ø¯Ø¹Ù… Ø¹Ø§Ù… */
 }
 
 /* ==================== COMPREHENSIVE MOBILE RESPONSIVE STYLES ==================== */
@@ -1572,7 +1572,7 @@
                         $mainImageUrl = $product->main_image 
                             ? (filter_var($product->main_image, FILTER_VALIDATE_URL) 
                                 ? $product->main_image 
-                                : asset('storage/' . $product->main_image))
+                                : asset('media/' . $product->main_image))
                             : 'https://via.placeholder.com/800x800/f5f5f5/666666?text=' . urlencode($product->name);
                     @endphp
                     <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}" id="mainImage" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22800%22%3E%3Crect width=%22800%22 height=%22800%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2224%22%3ENo Image%3C/text%3E%3C/svg%3E';">
@@ -1585,7 +1585,7 @@
                                     $thumbnailUrl = $image->image_path 
                                         ? (filter_var($image->image_path, FILTER_VALIDATE_URL) 
                                             ? $image->image_path 
-                                            : asset('storage/' . $image->image_path))
+                                            : asset('media/' . $image->image_path))
                                         : 'https://via.placeholder.com/200x200/f5f5f5/666666?text=Image+' . ($index + 1);
                                 @endphp
                                 <img src="{{ $thumbnailUrl }}" alt="{{ $product->name }}" onclick="changeImage(this)" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
@@ -1780,7 +1780,7 @@
                             <i class="fas fa-cube"></i>
                             {{ __('messages.dimensions') ?? 'Dimensions' }}:
                         </span>
-                        <span class="spec-value">{{ $product->length }} × {{ $product->width }} × {{ $product->height }} <span class="spec-unit">cm</span></span>
+                        <span class="spec-value">{{ $product->length }} Ã— {{ $product->width }} Ã— {{ $product->height }} <span class="spec-unit">cm</span></span>
                     </div>
                 @endif
                 
@@ -1829,7 +1829,7 @@
                                 $relatedImageUrl = $relatedProduct->main_image 
                                     ? (filter_var($relatedProduct->main_image, FILTER_VALIDATE_URL) 
                                         ? $relatedProduct->main_image 
-                                        : asset('storage/' . $relatedProduct->main_image))
+                                        : asset('media/' . $relatedProduct->main_image))
                                     : 'https://via.placeholder.com/300x200/f5f5f5/666666?text=' . urlencode($relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name);
                             @endphp
                             <img src="{{ $relatedImageUrl }}" alt="{{ $relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name }}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect width=%22300%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">
@@ -1857,7 +1857,7 @@
     $firstImageUrl = $firstImagePath
         ? (filter_var($firstImagePath, FILTER_VALIDATE_URL)
             ? $firstImagePath
-            : asset('storage/' . $firstImagePath))
+            : asset('media/' . $firstImagePath))
         : 'https://via.placeholder.com/1000x800/f5f5f5/666666?text=' . urlencode($product->name);
 @endphp
 <div class="image-zoom-modal" id="imageZoomModal">
@@ -1896,7 +1896,7 @@
                         $imageUrl = $imagePath 
                             ? (filter_var($imagePath, FILTER_VALIDATE_URL) 
                                 ? $imagePath 
-                                : asset('storage/' . $imagePath))
+                                : asset('media/' . $imagePath))
                             : 'https://via.placeholder.com/200x200/f5f5f5/666666?text=Image+' . ($index + 1);
                     @endphp
                     <div class="modal-thumbnail {{ $index === 0 ? 'active' : '' }}" onclick="selectModalImage({{ $index }})">
@@ -2250,14 +2250,14 @@
      * Update the add-to-cart button based on cart state
      */
     function updateAddToCartButton(cartItems) {
-        console.log('🔄 updateAddToCartButton called with', cartItems.length, 'items');
+        console.log('ðŸ”„ updateAddToCartButton called with', cartItems.length, 'items');
         const button = document.getElementById('product-add-cart-btn');
         if (!button) {
-            console.error('❌ Button not found: product-add-cart-btn');
+            console.error('âŒ Button not found: product-add-cart-btn');
             return;
         }
         if (OUT_OF_STOCK) {
-            console.log('⚠️ Product is out of stock, skipping button update');
+            console.log('âš ï¸ Product is out of stock, skipping button update');
             return;
         }
 
@@ -2269,17 +2269,17 @@
             return parseInt(itemProductId) === CURRENT_PRODUCT_ID;
         });
 
-        console.log('🔍 Found cart item:', cartItem);
+        console.log('ðŸ” Found cart item:', cartItem);
 
         if (cartItem && cartItem.quantity > 0) {
             // Product is in cart - show quantity
-            console.log('✅ Updating button to IN CART state with quantity:', cartItem.quantity);
+            console.log('âœ… Updating button to IN CART state with quantity:', cartItem.quantity);
             button.innerHTML = `<i class="fas fa-check"></i> <span class="btn-text">${IN_CART_TEXT} (${cartItem.quantity})</span>`;
             button.classList.add('in-cart');
             button.style.background = '#28a745';
         } else {
             // Product not in cart
-            console.log('ℹ️ Updating button to ADD TO CART state');
+            console.log('â„¹ï¸ Updating button to ADD TO CART state');
             button.innerHTML = `<i class="fas fa-shopping-cart"></i> <span class="btn-text">${ADD_TO_CART_TEXT}</span>`;
             button.classList.remove('in-cart');
             button.style.background = '';
@@ -2290,15 +2290,15 @@
      * Initialize cart sync on page load
      */
     function initCartSync() {
-        console.log('🚀 initCartSync called');
+        console.log('ðŸš€ initCartSync called');
         // Always fetch cart directly via API for reliable sync
         fetchCartAndSync();
         
         // Also subscribe to cartManager updates if available (for real-time sync)
         if (typeof window.cartManager !== 'undefined') {
-            console.log('📡 Subscribing to cartManager updates');
+            console.log('ðŸ“¡ Subscribing to cartManager updates');
             window.cartManager.subscribe((state) => {
-                console.log('📡 cartManager update received:', state);
+                console.log('ðŸ“¡ cartManager update received:', state);
                 updateAddToCartButton(state.items || []);
             });
         }
@@ -2308,7 +2308,7 @@
      * Fetch cart items and update button state
      */
     function fetchCartAndSync() {
-        console.log('🔄 Fetching cart to sync button state...');
+        console.log('ðŸ”„ Fetching cart to sync button state...');
 
         fetch('/cart/items', {
             method: 'GET',
@@ -2319,37 +2319,37 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log('📦 Cart response:', data);
+            console.log('ðŸ“¦ Cart response:', data);
             if (data.success && data.items) {
-                console.log('✅ Cart items:', data.items);
-                console.log('🔍 Looking for product ID:', CURRENT_PRODUCT_ID);
+                console.log('âœ… Cart items:', data.items);
+                console.log('ðŸ” Looking for product ID:', CURRENT_PRODUCT_ID);
                 updateAddToCartButton(data.items);
             } else {
-                console.warn('⚠️ Cart response missing items:', data);
+                console.warn('âš ï¸ Cart response missing items:', data);
             }
         })
         .catch(error => {
-            console.error('❌ Failed to fetch cart for sync:', error);
+            console.error('âŒ Failed to fetch cart for sync:', error);
         });
     }
 
     // Initialize cart sync when DOM is ready
-    console.log('🔧 Product detail cart sync script loaded. Product ID:', CURRENT_PRODUCT_ID);
+    console.log('ðŸ”§ Product detail cart sync script loaded. Product ID:', CURRENT_PRODUCT_ID);
     
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📄 DOM loaded, initializing cart sync...');
+            console.log('ðŸ“„ DOM loaded, initializing cart sync...');
             setTimeout(initCartSync, 200);
         });
     } else {
         // DOM already loaded, wait for app.js to initialize
-        console.log('📄 DOM already ready, initializing cart sync...');
+        console.log('ðŸ“„ DOM already ready, initializing cart sync...');
         setTimeout(initCartSync, 200);
     }
     
     // Also run on window load as a fallback
     window.addEventListener('load', function() {
-        console.log('🌐 Window loaded, running cart sync again...');
+        console.log('ðŸŒ Window loaded, running cart sync again...');
         setTimeout(fetchCartAndSync, 500);
     });
 

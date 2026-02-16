@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ __('Bootstrap Mode Login') }} - IT Center</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -56,6 +57,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -193,6 +195,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-card">
@@ -204,14 +207,14 @@
                 <p>Database Recovery Access</p>
             </div>
             <div class="login-body">
-                @if(session('info'))
+                @if (session('info'))
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle"></i>
                         {{ session('info') }}
                     </div>
                 @endif
 
-                @if(session('error'))
+                @if (session('error'))
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-circle"></i>
                         {{ session('error') }}
@@ -223,16 +226,9 @@
 
                     <div class="form-group">
                         <label class="form-label" for="email">{{ __('Email Address') }}</label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            class="form-input @error('email') error @enderror" 
-                            value="{{ old('email') }}" 
-                            required 
-                            autofocus
-                            placeholder="admin@example.com"
-                        >
+                        <input type="email" id="email" name="email"
+                            class="form-input @error('email') error @enderror" value="{{ old('email') }}" required
+                            autofocus placeholder="admin@example.com">
                         @error('email')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
@@ -240,14 +236,8 @@
 
                     <div class="form-group">
                         <label class="form-label" for="password">{{ __('Password') }}</label>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            class="form-input @error('password') error @enderror" 
-                            required
-                            placeholder="••••••••"
-                        >
+                        <input type="password" id="password" name="password"
+                            class="form-input @error('password') error @enderror" required placeholder="••••••••">
                         @error('password')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
@@ -272,5 +262,5 @@
         </div>
     </div>
 </body>
-</html>
 
+</html>

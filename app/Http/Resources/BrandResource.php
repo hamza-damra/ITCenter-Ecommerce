@@ -23,7 +23,7 @@ class BrandResource extends JsonResource
             'description' => $this->description,
             'description_en' => $this->description_en,
             'description_ar' => $this->description_ar,
-            'logo' => $this->logo ? asset('storage/' . $this->logo) : null,
+            'logo' => $this->logo ? asset('media/' . $this->logo) : null,
             'website' => $this->website,
             'email' => $this->email,
             'phone' => $this->phone,

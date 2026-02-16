@@ -36,16 +36,16 @@ class ConvertImagesToDatabase extends Command
         $force = $this->option('force');
 
         if ($dryRun) {
-            $this->info('🔍 DRY RUN MODE - No changes will be made');
+            $this->info('ðŸ” DRY RUN MODE - No changes will be made');
         }
 
-        $this->info('🔄 Converting banners...');
+        $this->info('ðŸ”„ Converting banners...');
         $this->convertBanners($dryRun, $force);
 
-        $this->info('🔄 Converting promotional ads...');
+        $this->info('ðŸ”„ Converting promotional ads...');
         $this->convertPromotionalAds($dryRun, $force);
 
-        $this->info('✅ Conversion complete!');
+        $this->info('âœ… Conversion complete!');
     }
 
     /**
@@ -64,16 +64,16 @@ class ConvertImagesToDatabase extends Command
         $failed = 0;
 
         foreach ($banners as $banner) {
-            $filePath = public_path('storage/' . $banner->image_path);
+            $filePath = storage_path('app/public/' . $banner->image_path);
             
             if (!file_exists($filePath) && !$force) {
-                $this->warn("  ⚠️  Banner #{$banner->id}: File not found: {$banner->image_path}");
+                $this->warn("  âš ï¸  Banner #{$banner->id}: File not found: {$banner->image_path}");
                 $skipped++;
                 continue;
             }
 
             if (!file_exists($filePath)) {
-                $this->warn("  ⚠️  Banner #{$banner->id}: File not found, skipping");
+                $this->warn("  âš ï¸  Banner #{$banner->id}: File not found, skipping");
                 $skipped++;
                 continue;
             }
@@ -111,15 +111,15 @@ class ConvertImagesToDatabase extends Command
                     fclose($tempFile);
                 }
                 
-                $this->info("  ✅ Banner #{$banner->id}: Converted successfully");
+                $this->info("  âœ… Banner #{$banner->id}: Converted successfully");
                 $converted++;
             } catch (\Exception $e) {
-                $this->error("  ❌ Banner #{$banner->id}: {$e->getMessage()}");
+                $this->error("  âŒ Banner #{$banner->id}: {$e->getMessage()}");
                 $failed++;
             }
         }
 
-        $this->info("  📊 Banners: {$converted} converted, {$skipped} skipped, {$failed} failed");
+        $this->info("  ðŸ“Š Banners: {$converted} converted, {$skipped} skipped, {$failed} failed");
     }
 
     /**
@@ -138,16 +138,16 @@ class ConvertImagesToDatabase extends Command
         $failed = 0;
 
         foreach ($promotionalAds as $ad) {
-            $filePath = public_path('storage/' . $ad->image_path);
+            $filePath = storage_path('app/public/' . $ad->image_path);
             
             if (!file_exists($filePath) && !$force) {
-                $this->warn("  ⚠️  Promotional Ad #{$ad->id}: File not found: {$ad->image_path}");
+                $this->warn("  âš ï¸  Promotional Ad #{$ad->id}: File not found: {$ad->image_path}");
                 $skipped++;
                 continue;
             }
 
             if (!file_exists($filePath)) {
-                $this->warn("  ⚠️  Promotional Ad #{$ad->id}: File not found, skipping");
+                $this->warn("  âš ï¸  Promotional Ad #{$ad->id}: File not found, skipping");
                 $skipped++;
                 continue;
             }
@@ -185,15 +185,15 @@ class ConvertImagesToDatabase extends Command
                     fclose($tempFile);
                 }
                 
-                $this->info("  ✅ Promotional Ad #{$ad->id}: Converted successfully");
+                $this->info("  âœ… Promotional Ad #{$ad->id}: Converted successfully");
                 $converted++;
             } catch (\Exception $e) {
-                $this->error("  ❌ Promotional Ad #{$ad->id}: {$e->getMessage()}");
+                $this->error("  âŒ Promotional Ad #{$ad->id}: {$e->getMessage()}");
                 $failed++;
             }
         }
 
-        $this->info("  📊 Promotional Ads: {$converted} converted, {$skipped} skipped, {$failed} failed");
+        $this->info("  ðŸ“Š Promotional Ads: {$converted} converted, {$skipped} skipped, {$failed} failed");
     }
 }
 

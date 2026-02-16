@@ -1,24 +1,102 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\OfferController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FavoriteController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Route;
+
+// Media File Serving Route (cPanel/shared hosting compatibility)
+// Uses /media/ path to avoid conflict with public/storage/ directory
+// Serves files from storage/app/public
+Route::get('/media/{path}', function (string $path) {
+    try {
+        // Sanitize path - remove any directory traversal attempts
+        $path = str_replace(['../', '..\\', '..'], '', $path);
+        $path = ltrim($path, '/\\');
+        $path = preg_replace('#/+#', '/', $path); // collapse multiple slashes
+
+        // Reject empty paths or paths with null bytes
+        if (empty($path) || str_contains($path, "\0")) {
+            abort(404);
+        }
+
+        $fullPath = storage_path('app/public/'.$path);
+
+        if (! file_exists($fullPath) || ! is_file($fullPath)) {
+            abort(404);
+        }
+
+        // Only allow safe file types for security
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'ico', 'pdf', 'mp4', 'webm', 'mp3', 'ogg', 'zip'];
+        $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+        if (! in_array($extension, $allowedExtensions)) {
+            abort(403);
+        }
+
+        // Prevent directory traversal - use normalized string comparison
+        $normalizedFull = str_replace('\\', '/', $fullPath);
+        $normalizedRoot = str_replace('\\', '/', storage_path('app/public'));
+
+        if (! str_starts_with($normalizedFull, $normalizedRoot.'/')) {
+            abort(403);
+        }
+
+        // Determine MIME type
+        $mimeTypes = [
+            'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png',
+            'webp' => 'image/webp', 'gif' => 'image/gif', 'svg' => 'image/svg+xml',
+            'ico' => 'image/x-icon', 'pdf' => 'application/pdf',
+            'mp4' => 'video/mp4', 'webm' => 'video/webm',
+            'mp3' => 'audio/mpeg', 'ogg' => 'audio/ogg', 'zip' => 'application/zip',
+        ];
+        $mimeType = $mimeTypes[$extension] ?? (mime_content_type($fullPath) ?: 'application/octet-stream');
+        $fileSize = filesize($fullPath);
+
+        // Read file content and return as response
+        $content = file_get_contents($fullPath);
+        if ($content === false) {
+            \Illuminate\Support\Facades\Log::error('Media route: file_get_contents failed', ['path' => $fullPath]);
+            abort(500);
+        }
+
+        return response($content, 200)
+            ->header('Content-Type', $mimeType)
+            ->header('Content-Length', $fileSize)
+            ->header('Cache-Control', 'public, max-age=2592000')
+            ->header('Access-Control-Allow-Origin', '*')
+            ->header('X-Content-Type-Options', 'nosniff');
+    } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+        throw $e; // Re-throw HTTP exceptions (404, 403) as-is
+    } catch (\Throwable $e) {
+        \Illuminate\Support\Facades\Log::error('Media route exception', [
+            'path' => $path ?? 'unknown',
+            'error' => $e->getMessage(),
+            'class' => get_class($e),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+        ]);
+        abort(500);
+    }
+})->where('path', '.*')->name('media.serve');
+
+// Backward compatibility: redirect old /storage/ URLs to /media/
+Route::get('/storage/{path}', function (string $path) {
+    return redirect('/media/'.$path, 301);
+})->where('path', '.*')->name('storage.serve');
 
 // Language Routes
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, config('app.available_locales', ['en', 'ar', 'he']))) {
         session(['locale' => $locale]);
     }
+
     return redirect()->back();
 })->name('lang.switch');
 
@@ -123,9 +201,10 @@ Route::prefix('admin/bootstrap')->name('admin.bootstrap.')->group(function () {
     Route::post('/import-sql', [App\Http\Controllers\Admin\BootstrapController::class, 'importSql'])->name('import-sql');
     Route::post('/restore-backup', [App\Http\Controllers\Admin\BootstrapController::class, 'restoreBackup'])->name('restore-backup');
     Route::post('/validate-database', [App\Http\Controllers\Admin\BootstrapController::class, 'validateDatabase'])->name('validate-database');
-    Route::get('/debug', function() {
+    Route::get('/debug', function () {
         $state = \App\Services\DatabaseStateService::detectState();
         $stateInfo = \App\Services\DatabaseStateService::getStateInfo();
+
         return response()->json([
             'state' => $state,
             'state_info' => $stateInfo,
@@ -472,12 +551,12 @@ Route::get('/cron-debug', function () {
     $html .= '</style></head><body>';
 
     $html .= '<h1>🔧 Cron Job Debugger v2</h1>';
-    $html .= '<p>Server Time: ' . now()->format('Y-m-d H:i:s T') . '</p>';
+    $html .= '<p>Server Time: '.now()->format('Y-m-d H:i:s T').'</p>';
 
     // ── 1. Correct Cron Command ──
     $artisanPath = base_path('artisan');
     $html .= '<h2>1. ✅ Your CPanel Cron Job MUST be exactly this:</h2>';
-    $html .= '<pre style="font-size:16px;color:#00ff88">* * * * * /usr/local/bin/php ' . $artisanPath . ' schedule:run >> /dev/null 2>&1</pre>';
+    $html .= '<pre style="font-size:16px;color:#00ff88">* * * * * /usr/local/bin/php '.$artisanPath.' schedule:run >> /dev/null 2>&1</pre>';
     $html .= "<p class='warn'>⚠️ Make sure: artisan path = <b>{$artisanPath}</b> (NOT /home/itcentre/artisan)</p>";
 
     // ── 2. Cron Heartbeat Check ──
@@ -501,9 +580,9 @@ Route::get('/cron-debug', function () {
     $html .= '<h2>3. Scheduled Commands</h2>';
     try {
         \Illuminate\Support\Facades\Artisan::call('schedule:list');
-        $html .= '<pre>' . htmlspecialchars(\Illuminate\Support\Facades\Artisan::output()) . '</pre>';
+        $html .= '<pre>'.htmlspecialchars(\Illuminate\Support\Facades\Artisan::output()).'</pre>';
     } catch (\Exception $e) {
-        $html .= "<p class='fail'>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
+        $html .= "<p class='fail'>Error: ".htmlspecialchars($e->getMessage()).'</p>';
     }
 
     // ── 4. Mutex / Overlapping Lock Check ──
@@ -527,10 +606,10 @@ Route::get('/cron-debug', function () {
             }
         }
         if ($scheduleMutexFound) {
-            $html .= "<p class='warn'>⚠️ Found " . count($mutexFiles) . " mutex/schedule cache entries:</p>";
+            $html .= "<p class='warn'>⚠️ Found ".count($mutexFiles).' mutex/schedule cache entries:</p>';
             foreach ($mutexFiles as $mf) {
-                $html .= "<p>File: <code>" . basename($mf['path']) . "</code> | Modified: {$mf['modified']}</p>";
-                $html .= "<pre>" . htmlspecialchars($mf['content']) . "</pre>";
+                $html .= '<p>File: <code>'.basename($mf['path'])."</code> | Modified: {$mf['modified']}</p>";
+                $html .= '<pre>'.htmlspecialchars($mf['content']).'</pre>';
             }
         } else {
             $html .= "<p class='ok'>✅ No stale mutex locks found</p>";
@@ -538,7 +617,7 @@ Route::get('/cron-debug', function () {
     } else {
         $html .= "<p class='warn'>⚠️ Cache directory not found at: {$cacheDir}</p>";
         // Check if using database cache
-        $html .= "<p>Cache driver: <b>" . config('cache.default') . "</b></p>";
+        $html .= '<p>Cache driver: <b>'.config('cache.default').'</b></p>';
     }
 
     // ── 5. Backup Storage Check ──
@@ -547,11 +626,11 @@ Route::get('/cron-debug', function () {
     $html .= "<p>Backup path: <code>{$backupPath}</code></p>";
     if (is_dir($backupPath)) {
         $html .= "<p class='ok'>✅ Directory exists</p>";
-        $html .= "<p>Writable: " . (is_writable($backupPath) ? "<span class='ok'>YES</span>" : "<span class='fail'>NO</span>") . "</p>";
-        $files = glob($backupPath . '/*');
-        $html .= "<p>Files in backup dir: <b>" . count($files) . "</b></p>";
+        $html .= '<p>Writable: '.(is_writable($backupPath) ? "<span class='ok'>YES</span>" : "<span class='fail'>NO</span>").'</p>';
+        $files = glob($backupPath.'/*');
+        $html .= '<p>Files in backup dir: <b>'.count($files).'</b></p>';
         foreach (array_slice($files, -5) as $f) {
-            $html .= "<p>  → " . basename($f) . " (" . round(filesize($f)/1024, 1) . " KB)</p>";
+            $html .= '<p>  → '.basename($f).' ('.round(filesize($f) / 1024, 1).' KB)</p>';
         }
     } else {
         $html .= "<p class='warn'>⚠️ Directory does NOT exist — will be created on first backup</p>";
@@ -565,19 +644,19 @@ Route::get('/cron-debug', function () {
             $exitCode = \Illuminate\Support\Facades\Artisan::call('backup:create');
             $output = \Illuminate\Support\Facades\Artisan::output();
             $html .= "<p>Exit code: <b>{$exitCode}</b></p>";
-            $html .= '<pre>' . htmlspecialchars($output) . '</pre>';
+            $html .= '<pre>'.htmlspecialchars($output).'</pre>';
             if ($exitCode === 0) {
                 $html .= "<p class='ok'>✅ Backup command completed!</p>";
             } else {
                 $html .= "<p class='fail'>❌ Backup command failed with exit code {$exitCode}</p>";
             }
         } catch (\Exception $e) {
-            $html .= "<p class='fail'>❌ Exception: " . htmlspecialchars($e->getMessage()) . "</p>";
-            $html .= '<pre>' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+            $html .= "<p class='fail'>❌ Exception: ".htmlspecialchars($e->getMessage()).'</p>';
+            $html .= '<pre>'.htmlspecialchars($e->getTraceAsString()).'</pre>';
         }
     } else {
         $html .= "<p><a class='btn' href='?test_backup=1'>⚡ Run backup:create NOW (direct test)</a></p>";
-        $html .= "<p>This runs the backup command directly, bypassing the scheduler completely.</p>";
+        $html .= '<p>This runs the backup command directly, bypassing the scheduler completely.</p>';
     }
 
     // ── 7. Schedule:run Test ──
@@ -588,10 +667,10 @@ Route::get('/cron-debug', function () {
             $exitCode = \Illuminate\Support\Facades\Artisan::call('schedule:run');
             $output = \Illuminate\Support\Facades\Artisan::output();
             $html .= "<p>Exit code: <b>{$exitCode}</b></p>";
-            $html .= '<pre>' . htmlspecialchars($output) . '</pre>';
+            $html .= '<pre>'.htmlspecialchars($output).'</pre>';
         } catch (\Exception $e) {
-            $html .= "<p class='fail'>❌ Exception: " . htmlspecialchars($e->getMessage()) . "</p>";
-            $html .= '<pre>' . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+            $html .= "<p class='fail'>❌ Exception: ".htmlspecialchars($e->getMessage()).'</p>';
+            $html .= '<pre>'.htmlspecialchars($e->getTraceAsString()).'</pre>';
         }
     } else {
         $html .= "<p><a class='btn btn-blue' href='?run_schedule=1'>🕐 Run schedule:run</a></p>";
@@ -604,21 +683,21 @@ Route::get('/cron-debug', function () {
             \Illuminate\Support\Facades\Cache::flush();
             $html .= "<p class='ok'>✅ Cache flushed — all mutex locks cleared!</p>";
         } catch (\Exception $e) {
-            $html .= "<p class='fail'>❌ Error: " . htmlspecialchars($e->getMessage()) . "</p>";
+            $html .= "<p class='fail'>❌ Error: ".htmlspecialchars($e->getMessage()).'</p>';
         }
     } else {
         $html .= "<p><a class='btn btn-green' href='?clear_mutex=1'>🧹 Clear all mutex/cache locks</a></p>";
-        $html .= "<p>Use this if withoutOverlapping() is blocking commands from running.</p>";
+        $html .= '<p>Use this if withoutOverlapping() is blocking commands from running.</p>';
     }
 
     // ── 9. Recent Logs ──
     $html .= '<h2>9. Recent Logs (last 30 lines)</h2>';
     $logFile = storage_path('logs/laravel.log');
     if (file_exists($logFile)) {
-        $html .= "<p>Size: " . round(filesize($logFile)/1024, 1) . " KB</p>";
+        $html .= '<p>Size: '.round(filesize($logFile) / 1024, 1).' KB</p>';
         $lines = file($logFile);
         $lastLines = array_slice($lines, -30);
-        $html .= '<pre>' . htmlspecialchars(implode('', $lastLines)) . '</pre>';
+        $html .= '<pre>'.htmlspecialchars(implode('', $lastLines)).'</pre>';
     } else {
         $html .= "<p class='warn'>No log file found</p>";
     }

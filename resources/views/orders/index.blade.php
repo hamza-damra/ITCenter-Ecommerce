@@ -793,18 +793,18 @@
             <h1 class="page-title">
                 <i class="fas fa-shopping-bag"></i>
                 @if(current_locale() === 'ar')
-                    طلباتي
+                    Ø·Ù„Ø¨Ø§ØªÙŠ
                 @elseif(current_locale() === 'he')
-                    ההזמנות שלי
+                    ×”×”×–×ž× ×•×ª ×©×œ×™
                 @else
                     My Orders
                 @endif
             </h1>
             <p class="page-subtitle">
                 @if(current_locale() === 'ar')
-                    تتبع وإدارة جميع طلباتك من مكان واحد
+                    ØªØªØ¨Ø¹ ÙˆØ¥Ø¯Ø§Ø±Ø© Ø¬Ù…ÙŠØ¹ Ø·Ù„Ø¨Ø§ØªÙƒ Ù…Ù† Ù…ÙƒØ§Ù† ÙˆØ§Ø­Ø¯
                 @elseif(current_locale() === 'he')
-                    עקוב וניהל את כל ההזמנות שלך ממקום אחד
+                    ×¢×§×•×‘ ×•× ×™×”×œ ××ª ×›×œ ×”×”×–×ž× ×•×ª ×©×œ×š ×ž×ž×§×•× ××—×“
                 @else
                     Track and manage all your orders in one place
                 @endif
@@ -819,9 +819,9 @@
                class="status-tab {{ (!request('status') || request('status') === 'all') ? 'active' : '' }}">
                 <i class="fas fa-list"></i>
                 @if(current_locale() === 'ar')
-                    جميع الطلبات
+                    Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø·Ù„Ø¨Ø§Øª
                 @elseif(current_locale() === 'he')
-                    כל ההזמנות
+                    ×›×œ ×”×”×–×ž× ×•×ª
                 @else
                     All Orders
                 @endif
@@ -832,9 +832,9 @@
                class="status-tab {{ request('status') === 'pending' ? 'active' : '' }}">
                 <i class="fas fa-clock"></i>
                 @if(current_locale() === 'ar')
-                    قيد الانتظار
+                    Ù‚ÙŠØ¯ Ø§Ù„Ø§Ù†ØªØ¸Ø§Ø±
                 @elseif(current_locale() === 'he')
-                    ממתין
+                    ×ž×ž×ª×™×Ÿ
                 @else
                     Pending
                 @endif
@@ -845,9 +845,9 @@
                class="status-tab {{ request('status') === 'processing' ? 'active' : '' }}">
                 <i class="fas fa-cog"></i>
                 @if(current_locale() === 'ar')
-                    قيد المعالجة
+                    Ù‚ÙŠØ¯ Ø§Ù„Ù…Ø¹Ø§Ù„Ø¬Ø©
                 @elseif(current_locale() === 'he')
-                    בעיבוד
+                    ×‘×¢×™×‘×•×“
                 @else
                     Processing
                 @endif
@@ -858,9 +858,9 @@
                class="status-tab {{ request('status') === 'shipped' ? 'active' : '' }}">
                 <i class="fas fa-shipping-fast"></i>
                 @if(current_locale() === 'ar')
-                    تم الشحن
+                    ØªÙ… Ø§Ù„Ø´Ø­Ù†
                 @elseif(current_locale() === 'he')
-                    נשלח
+                    × ×©×œ×—
                 @else
                     Shipped
                 @endif
@@ -871,9 +871,9 @@
                class="status-tab {{ request('status') === 'delivered' ? 'active' : '' }}">
                 <i class="fas fa-check-circle"></i>
                 @if(current_locale() === 'ar')
-                    تم التوصيل
+                    ØªÙ… Ø§Ù„ØªÙˆØµÙŠÙ„
                 @elseif(current_locale() === 'he')
-                    נמסר
+                    × ×ž×¡×¨
                 @else
                     Delivered
                 @endif
@@ -884,9 +884,9 @@
                class="status-tab {{ request('status') === 'cancelled' ? 'active' : '' }}">
                 <i class="fas fa-times-circle"></i>
                 @if(current_locale() === 'ar')
-                    ملغي
+                    Ù…Ù„ØºÙŠ
                 @elseif(current_locale() === 'he')
-                    מבוטל
+                    ×ž×‘×•×˜×œ
                 @else
                     Cancelled
                 @endif
@@ -921,9 +921,9 @@
                                 <i class="fas fa-box"></i>
                                 <span>{{ $order->items->count() }} 
                                     @if(current_locale() === 'ar')
-                                        منتج
+                                        Ù…Ù†ØªØ¬
                                     @elseif(current_locale() === 'he')
-                                        מוצרים
+                                        ×ž×•×¦×¨×™×
                                     @else
                                         items
                                     @endif
@@ -950,7 +950,7 @@
                                         } elseif (str_starts_with($productImage, 'images/')) {
                                             $imageSrc = asset($productImage);
                                         } else {
-                                            $imageSrc = asset('storage/' . $productImage);
+                                            $imageSrc = asset('media/' . $productImage);
                                         }
                                     }
                                 @endphp
@@ -966,9 +966,9 @@
                                     <div class="item-info">
                                         <span>
                                             @if(current_locale() === 'ar')
-                                                الكمية:
+                                                Ø§Ù„ÙƒÙ…ÙŠØ©:
                                             @elseif(current_locale() === 'he')
-                                                כמות:
+                                                ×›×ž×•×ª:
                                             @else
                                                 Qty:
                                             @endif
@@ -991,9 +991,9 @@
                         @if($order->items->count() > 3)
                             <div style="text-align: center; padding: 1rem; color: #6b7280;">
                                 @if(current_locale() === 'ar')
-                                    + {{ $order->items->count() - 3 }} منتجات أخرى
+                                    + {{ $order->items->count() - 3 }} Ù…Ù†ØªØ¬Ø§Øª Ø£Ø®Ø±Ù‰
                                 @elseif(current_locale() === 'he')
-                                    + {{ $order->items->count() - 3 }} מוצרים נוספים
+                                    + {{ $order->items->count() - 3 }} ×ž×•×¦×¨×™× × ×•×¡×¤×™×
                                 @else
                                     + {{ $order->items->count() - 3 }} more items
                                 @endif
@@ -1006,9 +1006,9 @@
                         <div class="order-total">
                             <div class="order-total-label">
                                 @if(current_locale() === 'ar')
-                                    المجموع الكلي
+                                    Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ Ø§Ù„ÙƒÙ„ÙŠ
                                 @elseif(current_locale() === 'he')
-                                    סה"כ
+                                    ×¡×”"×›
                                 @else
                                     Total Amount
                                 @endif
@@ -1019,9 +1019,9 @@
                             <a href="{{ route('orders.show', $order->order_number) }}" class="btn btn-primary">
                                 <i class="fas fa-eye"></i>
                                 @if(current_locale() === 'ar')
-                                    عرض التفاصيل
+                                    Ø¹Ø±Ø¶ Ø§Ù„ØªÙØ§ØµÙŠÙ„
                                 @elseif(current_locale() === 'he')
-                                    צפה בפרטים
+                                    ×¦×¤×” ×‘×¤×¨×˜×™×
                                 @else
                                     View Details
                                 @endif
@@ -1033,9 +1033,9 @@
                                             onclick="return confirm('{{ __t('messages.confirm_cancel_order') }}')">
                                         <i class="fas fa-times"></i>
                                         @if(current_locale() === 'ar')
-                                            إلغاء الطلب
+                                            Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø·Ù„Ø¨
                                         @elseif(current_locale() === 'he')
-                                            בטל הזמנה
+                                            ×‘×˜×œ ×”×–×ž× ×”
                                         @else
                                             Cancel Order
                                         @endif
@@ -1060,18 +1060,18 @@
             </div>
             <h2 class="empty-state-title">
                 @if(current_locale() === 'ar')
-                    لا توجد طلبات
+                    Ù„Ø§ ØªÙˆØ¬Ø¯ Ø·Ù„Ø¨Ø§Øª
                 @elseif(current_locale() === 'he')
-                    אין הזמנות
+                    ××™×Ÿ ×”×–×ž× ×•×ª
                 @else
                     No Orders Found
                 @endif
             </h2>
             <p class="empty-state-text">
                 @if(current_locale() === 'ar')
-                    لم تقم بأي طلبات بعد. ابدأ التسوق الآن!
+                    Ù„Ù… ØªÙ‚Ù… Ø¨Ø£ÙŠ Ø·Ù„Ø¨Ø§Øª Ø¨Ø¹Ø¯. Ø§Ø¨Ø¯Ø£ Ø§Ù„ØªØ³ÙˆÙ‚ Ø§Ù„Ø¢Ù†!
                 @elseif(current_locale() === 'he')
-                    עדיין לא ביצעת הזמנות. התחל לקנות עכשיו!
+                    ×¢×“×™×™×Ÿ ×œ× ×‘×™×¦×¢×ª ×”×–×ž× ×•×ª. ×”×ª×—×œ ×œ×§× ×•×ª ×¢×›×©×™×•!
                 @else
                     You haven't placed any orders yet. Start shopping now!
                 @endif
@@ -1079,9 +1079,9 @@
             <a href="{{ route('products') }}" class="btn btn-primary">
                 <i class="fas fa-shopping-cart"></i>
                 @if(current_locale() === 'ar')
-                    تصفح المنتجات
+                    ØªØµÙØ­ Ø§Ù„Ù…Ù†ØªØ¬Ø§Øª
                 @elseif(current_locale() === 'he')
-                    עיין במוצרים
+                    ×¢×™×™×Ÿ ×‘×ž×•×¦×¨×™×
                 @else
                     Browse Products
                 @endif

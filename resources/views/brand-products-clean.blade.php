@@ -8,7 +8,7 @@
         {{-- Brand Header --}}
         <header class="brand-header" data-brand-id="{{ $brand->id }}">
             @if($brand->logo)
-                <img src="{{ asset('storage/' . $brand->logo) }}" 
+                <img src="{{ asset('media/' . $brand->logo) }}" 
                      alt="{{ $brand->name }}" 
                      class="brand-logo">
             @endif
@@ -47,7 +47,7 @@
                             {{-- Product Image --}}
                             <div class="product-image-wrapper">
                                 @if($product->main_image)
-                                    <img src="{{ asset('storage/' . $product->main_image) }}" 
+                                    <img src="{{ asset('media/' . $product->main_image) }}" 
                                          alt="{{ $product->name }}" 
                                          class="product-image"
                                          loading="lazy">
@@ -87,7 +87,7 @@
                                 @if($product->avg_rating > 0)
                                     <div class="product-rating" data-rating="{{ $product->avg_rating }}">
                                         <span class="rating-stars" aria-label="{{ __('Rating') }}: {{ $product->avg_rating }}">
-                                            {{ str_repeat('★', floor($product->avg_rating)) }}{{ str_repeat('☆', 5 - floor($product->avg_rating)) }}
+                                            {{ str_repeat('â˜…', floor($product->avg_rating)) }}{{ str_repeat('â˜†', 5 - floor($product->avg_rating)) }}
                                         </span>
                                         <span class="rating-count">({{ $product->reviews_count }})</span>
                                     </div>
@@ -107,7 +107,7 @@
                                     class="btn-favorite" 
                                     data-product-id="{{ $product->id }}"
                                     aria-label="{{ __('Add to favorites') }}">
-                                ♡
+                                â™¡
                             </button>
                         </div>
                     </article>

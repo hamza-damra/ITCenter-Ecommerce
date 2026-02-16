@@ -476,7 +476,7 @@
         display: none;
     }
 
-    /* ========== Mobile Responsive - Tablet (≤968px) ========== */
+    /* ========== Mobile Responsive - Tablet (â‰¤968px) ========== */
     @media (max-width: 968px) {
         .checkout-container {
             padding: 2rem 1rem;
@@ -532,7 +532,7 @@
         }
     }
 
-    /* ========== Mobile Responsive - Phone (≤768px) ========== */
+    /* ========== Mobile Responsive - Phone (â‰¤768px) ========== */
     @media (max-width: 768px) {
         .checkout-container {
             padding: 1rem 0.75rem;
@@ -846,7 +846,7 @@
         }
     }
 
-    /* ========== Mobile Responsive - Small Phone (≤480px) ========== */
+    /* ========== Mobile Responsive - Small Phone (â‰¤480px) ========== */
     @media (max-width: 480px) {
         .checkout-container {
             padding: 0.75rem 0.5rem;
@@ -1001,7 +1001,7 @@
         }
     }
 
-    /* ========== Ultra-small phones (≤360px) ========== */
+    /* ========== Ultra-small phones (â‰¤360px) ========== */
     @media (max-width: 360px) {
         .checkout-container {
             padding: 0.5rem 0.35rem;
@@ -1724,7 +1724,7 @@
                     <span style="font-size:0.8rem; opacity:0.8; font-weight:400;">({{ $cartItems->sum('quantity') }})</span>
                 </span>
                 <span class="summary-toggle-right">
-                    <span class="summary-toggle-total">₪{{ number_format($total, 2) }}</span>
+                    <span class="summary-toggle-total">â‚ª{{ number_format($total, 2) }}</span>
                     <i class="fas fa-chevron-down summary-toggle-chevron"></i>
                 </span>
             </button>
@@ -1752,7 +1752,7 @@
                                             } elseif (str_starts_with($mainImage, 'images/')) {
                                                 $imageSrc = asset($mainImage);
                                             } else {
-                                                $imageSrc = asset('storage/' . $mainImage);
+                                                $imageSrc = asset('media/' . $mainImage);
                                             }
                                         }
                                     @endphp
@@ -1769,7 +1769,7 @@
                                     </div>
                                 </div>
                                 <div class="summary-item-price">
-                                    ₪{{ number_format($item->price * $item->quantity, 2) }}
+                                    â‚ª{{ number_format($item->price * $item->quantity, 2) }}
                                 </div>
                             </div>
                         </a>
@@ -1780,11 +1780,11 @@
             <div class="summary-totals">
                 <div class="summary-row">
                     <span class="label">{{ __('messages.subtotal') }}</span>
-                    <span class="value">₪{{ number_format($subtotal, 2) }}</span>
+                    <span class="value">â‚ª{{ number_format($subtotal, 2) }}</span>
                 </div>
                 <div class="summary-row total">
                     <span class="label">{{ __('messages.total') }}</span>
-                    <span class="value">₪{{ number_format($total, 2) }}</span>
+                    <span class="value">â‚ª{{ number_format($total, 2) }}</span>
                 </div>
             </div>
 
@@ -1808,7 +1808,7 @@
 <div class="mobile-sticky-order-bar" id="mobileStickyOrderBar">
     <div class="sticky-total">
         <span class="sticky-total-label">{{ __('messages.total') }}</span>
-        <span class="sticky-total-value">₪{{ number_format($total, 2) }}</span>
+        <span class="sticky-total-value">â‚ª{{ number_format($total, 2) }}</span>
     </div>
     <button type="submit" form="checkout-form" class="sticky-order-btn" id="mobilePlaceOrderBtn">
         <i class="fas fa-check-circle"></i>
@@ -1978,7 +1978,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Valid — city prefix auto-set + user entered all remaining digits
+        // Valid â€” city prefix auto-set + user entered all remaining digits
         postalGroup.classList.remove('has-error');
         postalGroup.classList.add('has-success');
         postalValidation.innerHTML = '<i class="fas fa-check-circle"></i> ' + translations.postalValid + ' (P' + currentCityPrefix + suffix + ')';
@@ -2048,7 +2048,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Duplicate submission / stale checkout token
                 return response.json().then(data => {
                     if (data.success && data.redirect) {
-                        // Recent order found — redirect to its confirmation
+                        // Recent order found â€” redirect to its confirmation
                         window.location.replace(data.redirect);
                         return null;
                     }

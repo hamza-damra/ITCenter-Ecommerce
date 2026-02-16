@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ is_rtl() ? 'rtl' : 'ltr' }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ __('Database Setup') }} - Bootstrap Mode</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/fontawesome/all.min.css') }}">
     <style>
         * {
             margin: 0;
@@ -163,7 +164,8 @@
             color: var(--dark);
         }
 
-        .form-input, .form-select {
+        .form-input,
+        .form-select {
             width: 100%;
             padding: 12px;
             border: 2px solid var(--border);
@@ -171,7 +173,8 @@
             font-size: 15px;
         }
 
-        .form-input:focus, .form-select:focus {
+        .form-input:focus,
+        .form-select:focus {
             outline: none;
             border-color: var(--primary);
         }
@@ -313,6 +316,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -330,15 +334,16 @@
             </div>
         </div>
 
-        @if(session('success'))
+        @if (session('success'))
             <div class="alert alert-info">
                 <i class="fas fa-check-circle"></i>
                 <div>{{ session('success') }}</div>
             </div>
         @endif
 
-        @if(session('error'))
-            <div class="alert alert-info" style="background: #fee2e2; color: #991b1b; border-left-color: var(--danger);">
+        @if (session('error'))
+            <div class="alert alert-info"
+                style="background: #fee2e2; color: #991b1b; border-left-color: var(--danger);">
                 <i class="fas fa-exclamation-circle"></i>
                 <div>{{ session('error') }}</div>
             </div>
@@ -360,7 +365,8 @@
                 </div>
                 <div class="status-item info">
                     <div class="status-item-label">MySQL Host</div>
-                    <div class="status-item-value">{{ $stateInfo['host'] ?? 'Unknown' }}:{{ $stateInfo['port'] ?? '3306' }}</div>
+                    <div class="status-item-value">
+                        {{ $stateInfo['host'] ?? 'Unknown' }}:{{ $stateInfo['port'] ?? '3306' }}</div>
                 </div>
             </div>
         </div>
@@ -405,14 +411,14 @@
             <div class="card-title">
                 <i class="fas fa-history"></i> Restore from Backup
             </div>
-            @if(count($availableBackups) > 0)
+            @if (count($availableBackups) > 0)
                 <div class="backup-list">
-                    @foreach($availableBackups as $backup)
+                    @foreach ($availableBackups as $backup)
                         <div class="backup-item">
                             <div class="backup-item-info">
                                 <div class="backup-item-name">{{ $backup['filename'] }}</div>
                                 <div class="backup-item-meta">
-                                    Size: {{ number_format($backup['size'] / 1024 / 1024, 2) }} MB | 
+                                    Size: {{ number_format($backup['size'] / 1024 / 1024, 2) }} MB |
                                     Created: {{ $backup['created_at'] ?? 'Unknown' }}
                                 </div>
                             </div>
@@ -476,13 +482,13 @@
         document.getElementById('importSqlForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const formData = new FormData(this);
-            
+
             document.getElementById('importProgress').classList.remove('hidden');
             document.getElementById('importLog').innerHTML = '<div class="log-entry">Starting import...</div>';
             updateProgress(10);
 
             try {
-                const response = await fetch('{{ route("admin.bootstrap.import-sql") }}', {
+                const response = await fetch('{{ route('admin.bootstrap.import-sql') }}', {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': csrfToken
@@ -497,7 +503,7 @@
                     addLog('Import completed successfully!', 'success');
                     addLog(`Executed ${data.data.statements} statements`, 'success');
                     setTimeout(() => {
-                        window.location.href = '{{ route("admin.login") }}';
+                        window.location.href = '{{ route('admin.login') }}';
                     }, 2000);
                 } else {
                     addLog('Import failed: ' + data.message, 'error');
@@ -522,7 +528,7 @@
                 formData.append('backup_filename', filename);
                 formData.append('_token', csrfToken);
 
-                const response = await fetch('{{ route("admin.bootstrap.restore-backup") }}', {
+                const response = await fetch('{{ route('admin.bootstrap.restore-backup') }}', {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': csrfToken
@@ -536,7 +542,7 @@
                 if (data.success) {
                     addLog('Restore completed successfully!', 'success');
                     setTimeout(() => {
-                        window.location.href = data.redirect || '{{ route("admin.login") }}';
+                        window.location.href = data.redirect || '{{ route('admin.login') }}';
                     }, 2000);
                 } else {
                     addLog('Restore failed: ' + data.message, 'error');
@@ -559,7 +565,8 @@
             }
 
             document.getElementById('importProgress').classList.remove('hidden');
-            document.getElementById('importLog').innerHTML = '<div class="log-entry">Starting upload and restore...</div>';
+            document.getElementById('importLog').innerHTML =
+                '<div class="log-entry">Starting upload and restore...</div>';
             updateProgress(10);
 
             try {
@@ -567,7 +574,7 @@
                 formData.append('backup_file', fileInput.files[0]);
                 formData.append('_token', csrfToken);
 
-                const response = await fetch('{{ route("admin.bootstrap.restore-backup") }}', {
+                const response = await fetch('{{ route('admin.bootstrap.restore-backup') }}', {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': csrfToken
@@ -581,7 +588,7 @@
                 if (data.success) {
                     addLog('Upload and restore completed successfully!', 'success');
                     setTimeout(() => {
-                        window.location.href = data.redirect || '{{ route("admin.login") }}';
+                        window.location.href = data.redirect || '{{ route('admin.login') }}';
                     }, 2000);
                 } else {
                     addLog('Restore failed: ' + data.message, 'error');
@@ -594,9 +601,9 @@
         // Check status
         async function checkStatus() {
             try {
-                const response = await fetch('{{ route("admin.bootstrap.status") }}');
+                const response = await fetch('{{ route('admin.bootstrap.status') }}');
                 const data = await response.json();
-                
+
                 if (data.success) {
                     location.reload();
                 }
@@ -620,5 +627,5 @@
         }
     </script>
 </body>
-</html>
 
+</html>

@@ -5,7 +5,7 @@
             <div class="product-grid" id="featuredProducts">
                 @if(isset($specialOfferProducts) && $specialOfferProducts->count() > 0)
                     <div class="promo-featured-card special-offer-swapper" id="specialOfferSwapper">
-                        <div class="special-offer-header">{{ is_rtl() ? 'عرض خاص' : 'Special Offer' }}</div>
+                        <div class="special-offer-header">{{ is_rtl() ? 'Ø¹Ø±Ø¶ Ø®Ø§Øµ' : 'Special Offer' }}</div>
 
                         {{-- Products Slides --}}
                         <div class="special-offer-slides">
@@ -13,9 +13,9 @@
                                 <div class="special-offer-slide {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
                                     @if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price)
                                         <div class="badge-save">
-                                            <span class="save-label">{{ is_rtl() ? 'وفر' : 'Save' }}</span>
+                                            <span class="save-label">{{ is_rtl() ? 'ÙˆÙØ±' : 'Save' }}</span>
                                             <span
-                                                class="save-amount">₪{{ number_format($offerProduct->price - $offerProduct->sale_price, 0) }}</span>
+                                                class="save-amount">â‚ª{{ number_format($offerProduct->price - $offerProduct->sale_price, 0) }}</span>
                                         </div>
                                     @endif
                                     <div class="promo-media">
@@ -28,15 +28,15 @@
                                         <div class="promo-product-name">{{ $offerProduct->name }}</div>
                                         <div class="promo-prices">
                                             @if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price)
-                                                <span class="orig">₪{{ number_format($offerProduct->price, 0) }}</span>
-                                                <span class="sale">₪{{ number_format($offerProduct->sale_price, 0) }}</span>
+                                                <span class="orig">â‚ª{{ number_format($offerProduct->price, 0) }}</span>
+                                                <span class="sale">â‚ª{{ number_format($offerProduct->sale_price, 0) }}</span>
                                             @else
-                                                <span class="sale">₪{{ number_format($offerProduct->price, 0) }}</span>
+                                                <span class="sale">â‚ª{{ number_format($offerProduct->price, 0) }}</span>
                                             @endif
                                         </div>
                                         <div class="promo-cta">
                                             <a
-                                                href="{{ route('product.detail', $offerProduct) }}">{{ is_rtl() ? 'تسوق الآن' : 'Shop Now' }}</a>
+                                                href="{{ route('product.detail', $offerProduct) }}">{{ is_rtl() ? 'ØªØ³ÙˆÙ‚ Ø§Ù„Ø¢Ù†' : 'Shop Now' }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -56,11 +56,11 @@
                 @elseif(isset($promotionalOffers) && $promotionalOffers->count() > 0)
                     @php $promo = $promotionalOffers->first(); @endphp
                     <div class="promo-featured-card">
-                        <div class="special-offer-header">{{ is_rtl() ? 'عرض خاص' : 'Special Offer' }}</div>
+                        <div class="special-offer-header">{{ is_rtl() ? 'Ø¹Ø±Ø¶ Ø®Ø§Øµ' : 'Special Offer' }}</div>
                         <div class="badge-save">
-                            <span class="save-label">{{ is_rtl() ? 'وفر' : 'Save' }}</span>
+                            <span class="save-label">{{ is_rtl() ? 'ÙˆÙØ±' : 'Save' }}</span>
                             <span
-                                class="save-amount">₪{{ number_format($promo->original_price - $promo->sale_price, 0) }}</span>
+                                class="save-amount">â‚ª{{ number_format($promo->original_price - $promo->sale_price, 0) }}</span>
                         </div>
                         <div class="promo-media">
                             @php
@@ -72,7 +72,7 @@
                                     } elseif (str_starts_with($path, 'storage/') || str_starts_with($path, 'images/')) {
                                         $img = asset($path);
                                     } else {
-                                        $img = asset('storage/' . $path);
+                                        $img = asset('media/' . $path);
                                     }
                                 }
                             @endphp
@@ -84,19 +84,19 @@
                                 <div class="promo-product-name">{{ $promo->product->name }}</div>
                             @endif
                             <div class="promo-prices">
-                                <span class="orig">₪{{ number_format($promo->original_price, 0) }}</span>
-                                <span class="sale">₪{{ number_format($promo->sale_price, 0) }}</span>
+                                <span class="orig">â‚ª{{ number_format($promo->original_price, 0) }}</span>
+                                <span class="sale">â‚ª{{ number_format($promo->sale_price, 0) }}</span>
                             </div>
                             @if($promo->end_date)
                                 <div class="promo-countdown" data-end="{{ optional($promo->end_date)->format('c') }}">
-                                    <div class="label">{{ is_rtl() ? 'العرض ينتهي خلال:' : 'Hurry up! Offer ends in:' }}</div>
+                                    <div class="label">{{ is_rtl() ? 'Ø§Ù„Ø¹Ø±Ø¶ ÙŠÙ†ØªÙ‡ÙŠ Ø®Ù„Ø§Ù„:' : 'Hurry up! Offer ends in:' }}</div>
                                     <div class="boxes">
                                         <div class="box"><span class="num cd-hours">00</span><span
-                                                class="unit">{{ is_rtl() ? 'ساعات' : 'HRS' }}</span></div>
+                                                class="unit">{{ is_rtl() ? 'Ø³Ø§Ø¹Ø§Øª' : 'HRS' }}</span></div>
                                         <div class="box"><span class="num cd-mins">00</span><span
-                                                class="unit">{{ is_rtl() ? 'دقائق' : 'MINS' }}</span></div>
+                                                class="unit">{{ is_rtl() ? 'Ø¯Ù‚Ø§Ø¦Ù‚' : 'MINS' }}</span></div>
                                         <div class="box"><span class="num cd-secs">00</span><span
-                                                class="unit">{{ is_rtl() ? 'ثواني' : 'SECS' }}</span></div>
+                                                class="unit">{{ is_rtl() ? 'Ø«ÙˆØ§Ù†ÙŠ' : 'SECS' }}</span></div>
                                     </div>
                                 </div>
                             @endif
@@ -104,7 +104,7 @@
                                 <div class="promo-cta">
                                     <a href="{{ route('product.detail', $promo->product) }}">
                                         @if(is_rtl())
-                                            {{ 'اطلب الآن' }} <i class="fas fa-shopping-cart"></i>
+                                            {{ 'Ø§Ø·Ù„Ø¨ Ø§Ù„Ø¢Ù†' }} <i class="fas fa-shopping-cart"></i>
                                         @else
                                             <i class="fas fa-shopping-cart"></i> {{ 'Order Now' }}
                                         @endif
@@ -157,10 +157,10 @@
                                 <div class="product-footer">
                                     <div class="product-price">
                                         @if($product->sale_price && $product->sale_price < $product->price)
-                                            <span class="original-price">₪ {{ number_format($product->price, 0) }}</span>
-                                            <span class="current-price">₪ {{ number_format($product->sale_price, 0) }}</span>
+                                            <span class="original-price">â‚ª {{ number_format($product->price, 0) }}</span>
+                                            <span class="current-price">â‚ª {{ number_format($product->sale_price, 0) }}</span>
                                         @else
-                                            <span class="current-price">₪ {{ number_format($product->price, 0) }}</span>
+                                            <span class="current-price">â‚ª {{ number_format($product->price, 0) }}</span>
                                         @endif
                                     </div>
                                     @if($product->stock_status === 'out_of_stock')

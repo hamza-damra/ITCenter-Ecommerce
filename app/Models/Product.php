@@ -135,9 +135,9 @@ class Product extends Model
         }
         
         // Try adding 'storage/' prefix for files stored in storage/app/public
-        $storagePath = public_path('storage/' . $value);
+        $storagePath = storage_path('app/public/' . $value);
         if (file_exists($storagePath)) {
-            return asset('storage/' . $value);
+            return asset('media/' . $value);
         }
         
         // Try the path directly in public folder

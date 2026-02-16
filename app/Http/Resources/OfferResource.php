@@ -39,7 +39,7 @@ class OfferResource extends JsonResource
                 'is_active' => $this->is_active,
                 'is_valid' => $this->isValid(),
             ],
-            'banner_image' => $this->banner_image ? asset('storage/' . $this->banner_image) : null,
+            'banner_image' => $this->banner_image ? asset('media/' . $this->banner_image) : null,
             'products' => ProductResource::collection($this->whenLoaded('products')),
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),

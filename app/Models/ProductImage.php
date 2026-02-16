@@ -51,7 +51,7 @@ class ProductImage extends Model
             return $this->image_path;
         }
         // Otherwise, assume it's a storage path
-        return asset('storage/' . $this->image_path);
+        return asset('media/' . $this->image_path);
     }
 
     /**
@@ -63,7 +63,7 @@ class ProductImage extends Model
             if (filter_var($this->thumbnail_path, FILTER_VALIDATE_URL)) {
                 return $this->thumbnail_path;
             }
-            return asset('storage/' . $this->thumbnail_path);
+            return asset('media/' . $this->thumbnail_path);
         }
         return $this->getImageUrlAttribute();
     }

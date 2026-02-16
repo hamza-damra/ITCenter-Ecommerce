@@ -11,7 +11,7 @@
                                 $relatedImageUrl = $relatedProduct->main_image 
                                     ? (filter_var($relatedProduct->main_image, FILTER_VALIDATE_URL) 
                                         ? $relatedProduct->main_image 
-                                        : asset('storage/' . $relatedProduct->main_image))
+                                        : asset('media/' . $relatedProduct->main_image))
                                     : 'https://via.placeholder.com/300x200/f5f5f5/666666?text=' . urlencode($relatedProduct->name);
                             @endphp
                             <img 
