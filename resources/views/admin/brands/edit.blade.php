@@ -3,69 +3,494 @@
 @section('title', __('messages.edit_brand'))
 
 @section('content')
-<div class="top-bar">
-    <h1>{{ __('messages.edit_brand') }}: {{ $brand->name }}</h1>
-    <a href="{{ route('admin.brands.index') }}" class="btn btn-primary">← {{ __('messages.back_to_brands') }}</a>
+<style>
+    .current-image-container {
+        margin-top: 12px;
+        padding: 12px;
+        background: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+    }
+    .current-image-container img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 8px;
+        display: block;
+    }
+    .current-image-label {
+        font-size: 12px;
+        color: var(--secondary);
+        margin-bottom: 8px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .delete-section {
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 2px solid #fee2e2;
+    }
+    .danger-zone {
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        border: 1px solid #fca5a5;
+        border-radius: 8px;
+        padding: 20px;
+    }
+    .danger-zone h3 {
+        color: #dc2626;
+        font-size: 16px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .danger-zone p {
+        color: #7f1d1d;
+        font-size: 13px;
+        margin-bottom: 16px;
+    }
+</style>
+
+<div class="page-header">
+    <div class="page-header-content">
+        <h1><i class="fas fa-edit"></i> {{ __('messages.edit_brand') }}</h1>
+        <p>{{ __('messages.update_brand') }}: <strong>{{ $brand->name }}</strong></p>
+    </div>
+    <div class="page-actions">
+        <a href="{{ route('admin.brands.index') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> {{ __('messages.back_to_brands') }}
+        </a>
+    </div>
 </div>
 
-<div class="content-box">
-    <form action="{{ route('admin.brands.update', $brand) }}" method="POST">
-        @csrf
-        @method('PUT')
+<form action="{{ route('admin.brands.update', $brand) }}" method="POST" enctype="multipart/form-data" style="max-width: 900px; margin: 0 auto;">
+    @csrf
+    @method('PUT')
 
-        <div class="form-group">
-            <label for="name_en">{{ __('messages.brand_name_english') }} *</label>
-            <input type="text" id="name_en" name="name_en" class="form-control" value="{{ old('name_en', $brand->name_en) }}" required>
-            @error('name_en')<span style="color: red;">{{ $message }}</span>@enderror
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+
+        <!-- Basic Information Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-info-circle"></i> {{ __('messages.basic_information') }}</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name_en" class="form-label">
+                            {{ __('messages.brand_name_english') }}
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="name_en" 
+                            name="name_en" 
+                            class="form-control @error('name_en') is-invalid @enderror" 
+                            value="{{ old('name_en', $brand->name_en) }}" 
+                            placeholder="{{ __('messages.brand_name_placeholder_en') }}"
+                            required>
+                        @error('name_en')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name_ar" class="form-label">
+                            {{ __('messages.brand_name_arabic') }}
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="name_ar" 
+                            name="name_ar" 
+                            class="form-control @error('name_ar') is-invalid @enderror" 
+                            value="{{ old('name_ar', $brand->name_ar) }}" 
+                            placeholder="{{ __('messages.brand_name_placeholder_ar') }}"
+                            required 
+                            dir="rtl">
+                        @error('name_ar')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="website" class="form-label">
+                        {{ __('messages.website_url') }}
+                        <span style="color: #64748b; font-size: 12px;">{{ __('messages.optional') ?? 'Optional' }}</span>
+                    </label>
+                    <input 
+                        type="url" 
+                        id="website" 
+                        name="website" 
+                        class="form-control @error('website') is-invalid @enderror" 
+                        value="{{ old('website', $brand->website) }}"
+                        placeholder="{{ __('messages.website_placeholder') }}">
+                    @error('website')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="name_ar">{{ __('messages.brand_name_arabic') }} *</label>
-            <input type="text" id="name_ar" name="name_ar" class="form-control" value="{{ old('name_ar', $brand->name_ar) }}" required dir="rtl">
-            @error('name_ar')<span style="color: red;">{{ $message }}</span>@enderror
+        <!-- Brand Logo Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-image"></i> {{ __('messages.logo_url') ?? 'Brand Logo' }}</h2>
+            </div>
+            <div class="card-body">
+                <!-- Image Source Toggle -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label">{{ __('messages.image_source') ?? 'Image Source' }}</label>
+                    <div style="display: flex; gap: 12px;">
+                        <label class="checkbox-group" style="margin: 0; flex: 1; padding: 12px; border: 2px solid var(--primary); border-radius: 8px; background: #eff6ff; cursor: pointer;" id="source-file-label">
+                            <input type="radio" name="image_source_type" value="file" {{ old('image_source_type', 'file') === 'file' ? 'checked' : '' }} onchange="toggleImageSource('file')">
+                            <span>
+                                <strong><i class="fas fa-upload"></i> {{ __('messages.upload_files') ?? 'Upload Files' }}</strong>
+                                <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.upload_from_device') ?? 'Upload images from your device (stored on server)' }}</p>
+                            </span>
+                        </label>
+                        <label class="checkbox-group" style="margin: 0; flex: 1; padding: 12px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer;" id="source-url-label">
+                            <input type="radio" name="image_source_type" value="url" {{ old('image_source_type', 'file') === 'url' ? 'checked' : '' }} onchange="toggleImageSource('url')">
+                            <span>
+                                <strong><i class="fas fa-link"></i> {{ __('messages.image_url') ?? 'Image URL' }}</strong>
+                                <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.paste_external_url') ?? 'Paste external image URLs' }}</p>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Current Logo Preview -->
+                @if($brand->getRawOriginal('logo'))
+                    <div class="current-image-container" style="margin-bottom: 16px; position: relative;" id="current-main-image-container">
+                        <div class="current-image-label">
+                            <i class="fas fa-image"></i>
+                            {{ __('messages.current_logo') ?? 'Current Logo' }}
+                        </div>
+                        <div style="position: relative; display: inline-block;">
+                            <img src="{{ $brand->logo }}" alt="{{ $brand->name }}">
+                            <button type="button" class="dropzone-remove" onclick="deleteCurrentImage(this)" title="{{ __('messages.delete') ?? 'Delete' }}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <p class="form-text" style="margin-top: 8px;">
+                            <i class="fas fa-info-circle"></i> {{ __('messages.leave_empty_to_keep') ?? 'Leave empty to keep the current image' }}
+                        </p>
+                    </div>
+                @endif
+
+                <!-- FILE UPLOAD MODE -->
+                <div id="image-source-file" style="{{ old('image_source_type', 'file') === 'file' ? '' : 'display:none;' }}">
+                    <div class="form-group">
+                        <label class="form-label">
+                            {{ __('messages.logo_url') ?? 'Brand Logo' }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_on_edit') ?? 'Optional - leave empty to keep current' }})</span>
+                        </label>
+                        <div class="dropzone-area @error('logo_file') dropzone-error @enderror" id="main-dropzone" onclick="document.getElementById('logo_file').click()">
+                            <input type="file" id="logo_file" name="logo_file" accept="image/jpeg,image/png,image/webp" style="display:none;">
+                            <div class="dropzone-content" id="main-dropzone-content">
+                                <div class="dropzone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                <p class="dropzone-title">{{ __('messages.drag_drop_image') }}</p>
+                                <p class="dropzone-subtitle">{{ __('messages.or_click_to_browse') }}</p>
+                                <span class="dropzone-formats">{{ __('messages.accepted_formats') }}</span>
+                            </div>
+                            <div class="dropzone-preview" id="main-dropzone-preview" style="display:none;">
+                                <img id="main-image-preview-img" src="" alt="Preview">
+                                <button type="button" class="dropzone-remove" onclick="event.stopPropagation(); removeMainImage();" title="{{ __('messages.remove') }}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        @error('logo_file')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- URL MODE -->
+                <div id="image-source-url" style="{{ old('image_source_type', 'file') === 'url' ? '' : 'display:none;' }}">
+                    <div class="form-group">
+                        <label for="logo" class="form-label">
+                            {{ __('messages.logo_url') }}
+                            <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_on_edit') ?? 'Optional - leave empty to keep current' }})</span>
+                        </label>
+                        <input 
+                            type="url" 
+                            id="logo" 
+                            name="logo" 
+                            class="form-control @error('logo') is-invalid @enderror" 
+                            value="{{ old('logo') }}" 
+                            placeholder="{{ __('messages.logo_placeholder') }}">
+                        <p class="form-text">
+                            <i class="fas fa-info-circle"></i> {{ __('messages.logo_tip') }}
+                        </p>
+                        @error('logo')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="logo">{{ __('messages.logo_url') }}</label>
-            <input type="url" id="logo" name="logo" class="form-control" value="{{ old('logo', $brand->logo) }}">
-            @error('logo')<span style="color: red;">{{ $message }}</span>@enderror
-            @if($brand->logo)
-                <img src="{{ $brand->logo }}" alt="{{ __('messages.current_logo') }}" style="max-width: 200px; margin-top: 10px; border-radius: 5px;">
-            @endif
+        <style>
+            .dropzone-area {
+                border: 2px dashed var(--border);
+                border-radius: 12px;
+                padding: 32px 20px;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                position: relative;
+            }
+            .dropzone-area:hover, .dropzone-area.dragover {
+                border-color: var(--primary);
+                background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+            }
+            .dropzone-area.dropzone-error {
+                border-color: var(--danger);
+                background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            }
+            .dropzone-icon { font-size: 36px; color: var(--primary); margin-bottom: 12px; opacity: 0.7; }
+            .dropzone-area:hover .dropzone-icon { opacity: 1; }
+            .dropzone-title { font-size: 15px; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+            .dropzone-subtitle { font-size: 13px; color: var(--secondary); margin-bottom: 8px; }
+            .dropzone-formats { display: inline-block; font-size: 12px; color: var(--secondary); background: white; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); }
+            .dropzone-preview { position: relative; display: inline-block; }
+            .dropzone-preview img { max-width: 100%; max-height: 220px; border-radius: 10px; object-fit: contain; }
+            .dropzone-remove { position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; background: var(--danger); color: white; border: 2px solid white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 2px 8px rgba(239,68,68,0.4); transition: transform 0.2s; }
+            .dropzone-remove:hover { transform: scale(1.15); }
+            [dir="rtl"] .dropzone-remove { right: auto; left: -8px; }
+        </style>
+
+        <!-- Descriptions Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-align-left"></i> {{ __('messages.descriptions') }}</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="description_en" class="form-label">
+                            {{ __('messages.brand_description_english') }}
+                            <span style="color: #64748b; font-size: 12px;">{{ __('messages.optional') ?? 'Optional' }}</span>
+                        </label>
+                        <textarea 
+                            id="description_en" 
+                            name="description_en" 
+                            class="form-control @error('description_en') is-invalid @enderror"
+                            placeholder="{{ __('messages.brand_description_placeholder_en') }}"
+                            style="min-height: 100px;">{{ old('description_en', $brand->description_en) }}</textarea>
+                        @error('description_en')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description_ar" class="form-label">
+                            {{ __('messages.brand_description_arabic') }}
+                            <span style="color: #64748b; font-size: 12px;">{{ __('messages.optional') ?? 'Optional' }}</span>
+                        </label>
+                        <textarea 
+                            id="description_ar" 
+                            name="description_ar" 
+                            class="form-control @error('description_ar') is-invalid @enderror"
+                            dir="rtl"
+                            placeholder="{{ __('messages.brand_description_placeholder_ar') }}"
+                            style="min-height: 100px;">{{ old('description_ar', $brand->description_ar) }}</textarea>
+                        @error('description_ar')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="website">{{ __('messages.website_url') }}</label>
-            <input type="url" id="website" name="website" class="form-control" value="{{ old('website', $brand->website) }}">
-            @error('website')<span style="color: red;">{{ $message }}</span>@enderror
+        <!-- Settings Card -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-cog"></i> {{ __('messages.settings') }}</h2>
+            </div>
+            <div class="card-body">
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <label class="checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="is_active" 
+                            name="is_active" 
+                            value="1" 
+                            {{ old('is_active', $brand->is_active) ? 'checked' : '' }}>
+                        <span>
+                            <strong><i class="fas fa-eye"></i> {{ __('messages.active_brand') }}</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.make_brand_visible') }}</p>
+                        </span>
+                    </label>
+
+                    <label class="checkbox-group">
+                        <input 
+                            type="checkbox" 
+                            id="is_featured" 
+                            name="is_featured" 
+                            value="1" 
+                            {{ old('is_featured', $brand->is_featured) ? 'checked' : '' }}>
+                        <span>
+                            <strong><i class="fas fa-star"></i> {{ __('messages.featured_brand') }}</strong>
+                            <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.display_featured_section') }}</p>
+                        </span>
+                    </label>
+                </div>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="description_en">{{ __('messages.brand_description_english') }}</label>
-            <textarea id="description_en" name="description_en" class="form-control">{{ old('description_en', $brand->description_en) }}</textarea>
-            @error('description_en')<span style="color: red;">{{ $message }}</span>@enderror
+        <!-- Form Actions -->
+        <div style="display: flex; gap: 12px; padding-top: 24px;">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> {{ __('messages.update_brand') }}
+            </button>
+            <a href="{{ route('admin.brands.index') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> {{ __('messages.cancel') }}
+            </a>
         </div>
 
-        <div class="form-group">
-            <label for="description_ar">{{ __('messages.brand_description_arabic') }}</label>
-            <textarea id="description_ar" name="description_ar" class="form-control" dir="rtl">{{ old('description_ar', $brand->description_ar) }}</textarea>
-            @error('description_ar')<span style="color: red;">{{ $message }}</span>@enderror
+        <!-- Danger Zone -->
+        <div class="delete-section">
+            <div class="danger-zone">
+                <h3>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ __('messages.danger_zone') }}
+                </h3>
+                <p>{{ __('messages.delete_brand_warning') ?? 'Once you delete this brand, there is no going back. Please be certain.' }}</p>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+                    <i class="fas fa-trash-alt"></i> {{ __('messages.delete_brand') ?? 'Delete Brand' }}
+                </button>
+            </div>
         </div>
+    </div>
+</form>
 
-        <div class="form-group checkbox-group">
-            <input type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', $brand->is_active) ? 'checked' : '' }}>
-            <label for="is_active">{{ __('messages.active') }}</label>
-        </div>
+<!-- Delete Form (Hidden) -->
+<form id="deleteForm" action="{{ route('admin.brands.destroy', $brand) }}" method="POST" style="display: none;">
+    @csrf
+    @method('DELETE')
+</form>
 
-        <div class="form-group checkbox-group">
-            <input type="checkbox" id="is_featured" name="is_featured" value="1" {{ old('is_featured', $brand->is_featured) ? 'checked' : '' }}>
-            <label for="is_featured">{{ __('messages.featured') }}</label>
-        </div>
+<script>
+    function toggleImageSource(type) {
+        const fileSection = document.getElementById('image-source-file');
+        const urlSection = document.getElementById('image-source-url');
+        const fileLabel = document.getElementById('source-file-label');
+        const urlLabel = document.getElementById('source-url-label');
+        if (type === 'file') {
+            fileSection.style.display = '';
+            urlSection.style.display = 'none';
+            fileLabel.style.borderColor = 'var(--primary)';
+            fileLabel.style.background = '#eff6ff';
+            urlLabel.style.borderColor = 'var(--border)';
+            urlLabel.style.background = '';
+        } else {
+            fileSection.style.display = 'none';
+            urlSection.style.display = '';
+            urlLabel.style.borderColor = 'var(--primary)';
+            urlLabel.style.background = '#eff6ff';
+            fileLabel.style.borderColor = 'var(--border)';
+            fileLabel.style.background = '';
+        }
+    }
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-success">{{ __('messages.update_brand') }}</button>
-            <a href="{{ route('admin.brands.index') }}" class="btn" style="background: #95a5a6; color: white;">{{ __('messages.cancel') }}</a>
-        </div>
-    </form>
-</div>
+    function removeMainImage() {
+        const input = document.getElementById('logo_file');
+        input.value = '';
+        document.getElementById('main-dropzone-preview').style.display = 'none';
+        document.getElementById('main-dropzone-content').style.display = '';
+    }
+
+    function setupDropzone(dropzoneId, inputId) {
+        const zone = document.getElementById(dropzoneId);
+        if (!zone) return;
+        ['dragenter', 'dragover'].forEach(e => {
+            zone.addEventListener(e, function(ev) { ev.preventDefault(); zone.classList.add('dragover'); });
+        });
+        ['dragleave', 'drop'].forEach(e => {
+            zone.addEventListener(e, function(ev) { ev.preventDefault(); zone.classList.remove('dragover'); });
+        });
+        zone.addEventListener('drop', function(ev) {
+            const input = document.getElementById(inputId);
+            if (ev.dataTransfer.files.length) {
+                input.files = ev.dataTransfer.files;
+                input.dispatchEvent(new Event('change'));
+            }
+        });
+    }
+
+    function deleteCurrentImage(buttonEl) {
+        if (!confirm('{{ __("messages.confirm_delete_image") ?? "Are you sure you want to delete this image?" }}')) {
+            return;
+        }
+
+        const url = '{{ route("admin.brands.delete-image", $brand->id) }}';
+        const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
+        buttonEl.disabled = true;
+        buttonEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token,
+                'Accept': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const container = document.getElementById('current-main-image-container');
+                if (container) {
+                    container.style.transition = 'opacity 0.3s ease';
+                    container.style.opacity = '0';
+                    setTimeout(() => container.remove(), 300);
+                }
+            } else {
+                alert(data.message || '{{ __("messages.error_deleting_image") ?? "Error deleting image." }}');
+                buttonEl.disabled = false;
+                buttonEl.innerHTML = '<i class="fas fa-times"></i>';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{{ __("messages.error_deleting_image") ?? "Error deleting image." }}');
+            buttonEl.disabled = false;
+            buttonEl.innerHTML = '<i class="fas fa-times"></i>';
+        });
+    }
+
+    function confirmDelete() {
+        if (confirm('{{ __("messages.confirm_delete") ?? "Are you sure you want to delete this?" }} "{{ $brand->name }}"?')) {
+            document.getElementById('deleteForm').submit();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        setupDropzone('main-dropzone', 'logo_file');
+
+        const mainInput = document.getElementById('logo_file');
+        if (mainInput) {
+            mainInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('main-image-preview-img').src = e.target.result;
+                        document.getElementById('main-dropzone-preview').style.display = '';
+                        document.getElementById('main-dropzone-content').style.display = 'none';
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        }
+    });
+</script>
 @endsection

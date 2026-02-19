@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\SiteSetting;
 use App\Rules\ValidCategoryParent;
+use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +15,9 @@ use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
+    public function __construct(
+        protected ImageUploadService $imageService
+    ) {}
     public function index()
     {
         $categories = Category::with('parent')
@@ -59,6 +64,8 @@ class CategoryController extends Controller
             'description_ar' => 'nullable|string',
             'description_he' => 'nullable|string',
             'image' => 'nullable|url',
+            'image_file' => 'nullable|file|image|mimes:jpeg,jpg,png,webp|max:2048',
+            'image_source_type' => 'nullable|in:file,url',
             'icon' => 'nullable|string|max:255',
             'position' => 'nullable|integer|min:0',
             'display_mode' => 'nullable|in:carousel,nav',
@@ -81,7 +88,10 @@ class CategoryController extends Controller
         }
         
         // Remove nav-specific fields before creating
-        unset($validated['nav_type'], $validated['nav_parent_id']);
+        unset($validated['nav_type'], $validated['nav_parent_id'], $validated['image_file'], $validated['image_source_type']);
+
+        // Handle image: file upload takes priority over URL
+        $validated['image'] = $this->resolveImage($request, $validated);
 
         Category::create($validated);
 
@@ -133,6 +143,8 @@ class CategoryController extends Controller
             'description_ar' => 'nullable|string',
             'description_he' => 'nullable|string',
             'image' => 'nullable|url',
+            'image_file' => 'nullable|file|image|mimes:jpeg,jpg,png,webp|max:2048',
+            'image_source_type' => 'nullable|in:file,url',
             'icon' => 'nullable|string|max:255',
             'position' => 'nullable|integer|min:0',
             'display_mode' => 'nullable|in:carousel,nav',
@@ -155,7 +167,10 @@ class CategoryController extends Controller
         }
         
         // Remove nav-specific fields before updating
-        unset($validated['nav_type'], $validated['nav_parent_id']);
+        unset($validated['nav_type'], $validated['nav_parent_id'], $validated['image_file'], $validated['image_source_type']);
+
+        // Handle image: file upload takes priority, then URL, then keep existing
+        $validated['image'] = $this->resolveImage($request, $validated, $category);
 
         $category->update($validated);
 
@@ -248,6 +263,65 @@ class CategoryController extends Controller
                 'message' => 'Error: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function deleteImage(Request $request, Category $category)
+    {
+        try {
+            $rawImage = $category->getRawOriginal('image');
+            if ($rawImage) {
+                $this->imageService->delete($rawImage);
+            }
+            $category->update(['image' => null]);
+
+            return response()->json([
+                'success' => true,
+                'message' => __('messages.image_deleted_successfully') ?? 'Image deleted successfully.',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => __('messages.error_deleting_image') ?? 'Error deleting image.',
+            ], 500);
+        }
+    }
+
+    /**
+     * Resolve image from file upload, URL, or keep existing.
+     */
+    private function resolveImage(Request $request, array $validated, ?Category $existingCategory = null): ?string
+    {
+        // Priority 1: File upload
+        if ($request->hasFile('image_file')) {
+            $file = $request->file('image_file');
+            return $this->imageService->upload($file, 'categories', $this->getImageUploadOptions());
+        }
+
+        // Priority 2: URL provided
+        if (!empty($validated['image'])) {
+            return $validated['image'];
+        }
+
+        // Priority 3: Keep existing image (on update)
+        if ($existingCategory) {
+            return $existingCategory->getRawOriginal('image');
+        }
+
+        return null;
+    }
+
+    /**
+     * Get image upload options from site settings.
+     */
+    private function getImageUploadOptions(): array
+    {
+        return [
+            'optimize' => true,
+            'max_width' => SiteSetting::getValue('max_image_width', 1920),
+            'max_height' => SiteSetting::getValue('max_image_height', 1080),
+            'quality' => SiteSetting::getValue('image_quality', 80),
+            'convert_to_webp' => (bool) SiteSetting::getValue('convert_to_webp', true),
+        ];
     }
 
     /**

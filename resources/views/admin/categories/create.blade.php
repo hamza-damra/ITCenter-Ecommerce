@@ -10,19 +10,6 @@
         margin: 0 auto;
     }
 
-    .image-preview {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        margin-top: 8px;
-        display: none;
-    }
-
-    .image-preview.visible {
-        display: block;
-    }
 </style>
 
 <div class="page-header">
@@ -37,7 +24,7 @@
     </div>
 </div>
 
-<form action="{{ route('admin.categories.store') }}" method="POST" class="category-form-grid">
+<form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data" class="category-form-grid">
     @csrf
 
     <!-- Main Form Content -->
@@ -225,29 +212,112 @@
                 <h2><i class="fas fa-image"></i> {{ __('messages.category_image') }}</h2>
             </div>
             <div class="card-body">
-                <div class="form-group">
-                    <label for="image" class="form-label">
-                        {{ __('messages.category_image_url') }}
-                        <span style="color: #64748b; font-size: 12px;">{{ __('messages.optional') }}</span>
-                    </label>
-                    <input 
-                        type="url" 
-                        id="image" 
-                        name="image" 
-                        class="form-control @error('image') is-invalid @enderror" 
-                        value="{{ old('image') }}" 
-                        placeholder="{{ __('messages.image_url_placeholder') }}"
-                        oninput="previewImage(this.value)">
-                    <p class="form-text">
-                        <i class="fas fa-lightbulb"></i> {!! __('messages.image_services_tip') !!}
-                    </p>
-                    @error('image')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
-                    <img id="imagePreview" class="image-preview" alt="Category preview">
+                <!-- Image Source Toggle -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label class="form-label">{{ __('messages.image_source') ?? 'Image Source' }}</label>
+                    <div style="display: flex; gap: 12px;">
+                        <label class="checkbox-group" style="margin: 0; flex: 1; padding: 12px; border: 2px solid var(--primary); border-radius: 8px; background: #eff6ff; cursor: pointer;" id="source-file-label">
+                            <input type="radio" name="image_source_type" value="file" {{ old('image_source_type', 'file') === 'file' ? 'checked' : '' }} onchange="toggleImageSource('file')">
+                            <span>
+                                <strong><i class="fas fa-upload"></i> {{ __('messages.upload_files') ?? 'Upload Files' }}</strong>
+                                <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.upload_from_device') ?? 'Upload images from your device (stored on server)' }}</p>
+                            </span>
+                        </label>
+                        <label class="checkbox-group" style="margin: 0; flex: 1; padding: 12px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer;" id="source-url-label">
+                            <input type="radio" name="image_source_type" value="url" {{ old('image_source_type', 'file') === 'url' ? 'checked' : '' }} onchange="toggleImageSource('url')">
+                            <span>
+                                <strong><i class="fas fa-link"></i> {{ __('messages.image_url') ?? 'Image URL' }}</strong>
+                                <p style="color: #64748b; font-size: 12px; margin-top: 2px;">{{ __('messages.paste_external_url') ?? 'Paste external image URLs' }}</p>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- FILE UPLOAD MODE -->
+                <div id="image-source-file" style="{{ old('image_source_type', 'file') === 'file' ? '' : 'display:none;' }}">
+                    <div class="form-group">
+                        <label class="form-label">
+                            {{ __('messages.category_image') }}
+                            <span style="color: #64748b; font-size: 12px;">{{ __('messages.optional') }}</span>
+                        </label>
+                        <div class="dropzone-area @error('image_file') dropzone-error @enderror" id="main-dropzone" onclick="document.getElementById('image_file').click()">
+                            <input type="file" id="image_file" name="image_file" accept="image/jpeg,image/png,image/webp" style="display:none;">
+                            <div class="dropzone-content" id="main-dropzone-content">
+                                <div class="dropzone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                <p class="dropzone-title">{{ __('messages.drag_drop_image') }}</p>
+                                <p class="dropzone-subtitle">{{ __('messages.or_click_to_browse') }}</p>
+                                <span class="dropzone-formats">{{ __('messages.accepted_formats') }}</span>
+                            </div>
+                            <div class="dropzone-preview" id="main-dropzone-preview" style="display:none;">
+                                <img id="main-image-preview-img" src="" alt="Preview">
+                                <button type="button" class="dropzone-remove" onclick="event.stopPropagation(); removeMainImage();" title="{{ __('messages.remove') }}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        @error('image_file')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- URL MODE -->
+                <div id="image-source-url" style="{{ old('image_source_type', 'file') === 'url' ? '' : 'display:none;' }}">
+                    <div class="form-group">
+                        <label for="image" class="form-label">
+                            {{ __('messages.category_image_url') }}
+                            <span style="color: #64748b; font-size: 12px;">{{ __('messages.optional') }}</span>
+                        </label>
+                        <input 
+                            type="url" 
+                            id="image" 
+                            name="image" 
+                            class="form-control @error('image') is-invalid @enderror" 
+                            value="{{ old('image') }}" 
+                            placeholder="{{ __('messages.image_url_placeholder') }}">
+                        <p class="form-text">
+                            <i class="fas fa-lightbulb"></i> {!! __('messages.image_services_tip') !!}
+                        </p>
+                        @error('image')
+                            <span class="error-message">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>
+
+        <style>
+            .dropzone-area {
+                border: 2px dashed var(--border);
+                border-radius: 12px;
+                padding: 32px 20px;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                position: relative;
+            }
+            .dropzone-area:hover, .dropzone-area.dragover {
+                border-color: var(--primary);
+                background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+            }
+            .dropzone-area.dropzone-error {
+                border-color: var(--danger);
+                background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            }
+            .dropzone-icon { font-size: 36px; color: var(--primary); margin-bottom: 12px; opacity: 0.7; }
+            .dropzone-area:hover .dropzone-icon { opacity: 1; }
+            .dropzone-title { font-size: 15px; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+            .dropzone-subtitle { font-size: 13px; color: var(--secondary); margin-bottom: 8px; }
+            .dropzone-formats { display: inline-block; font-size: 12px; color: var(--secondary); background: white; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); }
+            .dropzone-preview { position: relative; display: inline-block; }
+            .dropzone-preview img { max-width: 100%; max-height: 220px; border-radius: 10px; object-fit: contain; }
+            .dropzone-remove { position: absolute; top: -8px; right: -8px; width: 28px; height: 28px; border-radius: 50%; background: var(--danger); color: white; border: 2px solid white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; box-shadow: 0 2px 8px rgba(239,68,68,0.4); transition: transform 0.2s; }
+            .dropzone-remove:hover { transform: scale(1.15); }
+            [dir="rtl"] .dropzone-remove { right: auto; left: -8px; }
+        </style>
 
         <!-- Descriptions Card (Only for Carousel mode) -->
         <div class="card" id="descriptionsCard">
@@ -400,17 +470,51 @@
 </form>
 
 <script>
-    function previewImage(url) {
-        const preview = document.getElementById('imagePreview');
-        if (url) {
-            preview.src = url;
-            preview.classList.add('visible');
-            preview.onerror = function() {
-                preview.classList.remove('visible');
-            };
+    function toggleImageSource(type) {
+        const fileSection = document.getElementById('image-source-file');
+        const urlSection = document.getElementById('image-source-url');
+        const fileLabel = document.getElementById('source-file-label');
+        const urlLabel = document.getElementById('source-url-label');
+        if (type === 'file') {
+            fileSection.style.display = '';
+            urlSection.style.display = 'none';
+            fileLabel.style.borderColor = 'var(--primary)';
+            fileLabel.style.background = '#eff6ff';
+            urlLabel.style.borderColor = 'var(--border)';
+            urlLabel.style.background = '';
         } else {
-            preview.classList.remove('visible');
+            fileSection.style.display = 'none';
+            urlSection.style.display = '';
+            urlLabel.style.borderColor = 'var(--primary)';
+            urlLabel.style.background = '#eff6ff';
+            fileLabel.style.borderColor = 'var(--border)';
+            fileLabel.style.background = '';
         }
+    }
+
+    function removeMainImage() {
+        const input = document.getElementById('image_file');
+        input.value = '';
+        document.getElementById('main-dropzone-preview').style.display = 'none';
+        document.getElementById('main-dropzone-content').style.display = '';
+    }
+
+    function setupDropzone(dropzoneId, inputId) {
+        const zone = document.getElementById(dropzoneId);
+        if (!zone) return;
+        ['dragenter', 'dragover'].forEach(e => {
+            zone.addEventListener(e, function(ev) { ev.preventDefault(); zone.classList.add('dragover'); });
+        });
+        ['dragleave', 'drop'].forEach(e => {
+            zone.addEventListener(e, function(ev) { ev.preventDefault(); zone.classList.remove('dragover'); });
+        });
+        zone.addEventListener('drop', function(ev) {
+            const input = document.getElementById(inputId);
+            if (ev.dataTransfer.files.length) {
+                input.files = ev.dataTransfer.files;
+                input.dispatchEvent(new Event('change'));
+            }
+        });
     }
 
     function toggleDisplayModeFields() {
@@ -423,26 +527,20 @@
         const parentIdGroup = document.getElementById('parent_id').closest('.form-group');
         
         if (displayMode === 'nav') {
-            // Hide cards not needed for nav mode
             imageCard.style.display = 'none';
             descriptionsCard.style.display = 'none';
             seoCard.style.display = 'none';
             iconGroup.style.display = 'none';
             navTypeGroup.style.display = 'block';
-            parentIdGroup.style.display = 'none'; // Hide regular parent dropdown for nav mode
-            
-            // Toggle nav type fields
+            parentIdGroup.style.display = 'none';
             toggleNavTypeFields();
         } else {
-            // Show all cards for carousel mode
             imageCard.style.display = 'block';
             descriptionsCard.style.display = 'block';
             seoCard.style.display = 'block';
             iconGroup.style.display = 'block';
             navTypeGroup.style.display = 'none';
-            parentIdGroup.style.display = 'block'; // Show regular parent dropdown for carousel mode
-            
-            // Hide nav parent selection
+            parentIdGroup.style.display = 'block';
             document.getElementById('navParentGroup').style.display = 'none';
         }
     }
@@ -461,13 +559,26 @@
         }
     }
 
-    // Preview on load if image exists
     document.addEventListener('DOMContentLoaded', function() {
-        const imageInput = document.getElementById('image');
-        if (imageInput.value) {
-            previewImage(imageInput.value);
+        // Setup drag-drop zone
+        setupDropzone('main-dropzone', 'image_file');
+
+        // Main image preview
+        const mainInput = document.getElementById('image_file');
+        if (mainInput) {
+            mainInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('main-image-preview-img').src = e.target.result;
+                        document.getElementById('main-dropzone-preview').style.display = '';
+                        document.getElementById('main-dropzone-content').style.display = 'none';
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
         }
-        
+
         // Toggle fields based on display mode
         toggleDisplayModeFields();
         

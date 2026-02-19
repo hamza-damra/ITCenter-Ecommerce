@@ -268,6 +268,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::middleware('permission:categories.edit')->group(function () {
         Route::get('/categories/{category}/edit', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('categories.edit');
         Route::put('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{category}/delete-image', [App\Http\Controllers\Admin\CategoryController::class, 'deleteImage'])->name('categories.delete-image');
         Route::put('/categories/{category}/attributes', [App\Http\Controllers\Admin\CategoryAttributeController::class, 'update'])->name('categories.attributes.update');
     });
     Route::delete('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])
@@ -287,6 +288,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::middleware('permission:brands.edit')->group(function () {
         Route::get('/brands/{brand}/edit', [App\Http\Controllers\Admin\BrandController::class, 'edit'])->name('brands.edit');
         Route::put('/brands/{brand}', [App\Http\Controllers\Admin\BrandController::class, 'update'])->name('brands.update');
+        Route::delete('/brands/{brand}/delete-image', [App\Http\Controllers\Admin\BrandController::class, 'deleteImage'])->name('brands.delete-image');
     });
     Route::delete('/brands/{brand}', [App\Http\Controllers\Admin\BrandController::class, 'destroy'])
         ->middleware('permission:brands.delete')->name('brands.destroy');
