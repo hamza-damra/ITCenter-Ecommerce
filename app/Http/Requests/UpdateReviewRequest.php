@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\SiteSetting;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,7 +39,7 @@ class UpdateReviewRequest extends FormRequest
             'title' => 'nullable|string|max:100',
             'comment' => 'required|string|min:10|max:1000',
             'images' => 'nullable|array|max:5',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:' . SiteSetting::getValue('max_image_size_kb', 5120),
         ];
     }
 

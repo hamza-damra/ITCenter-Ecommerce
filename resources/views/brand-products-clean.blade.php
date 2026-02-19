@@ -8,7 +8,7 @@
         {{-- Brand Header --}}
         <header class="brand-header" data-brand-id="{{ $brand->id }}">
             @if($brand->logo)
-                <img src="{{ asset('media/' . $brand->logo) }}" 
+                <img src="{{ $brand->logo }}" 
                      alt="{{ $brand->name }}" 
                      class="brand-logo">
             @endif
@@ -47,7 +47,7 @@
                             {{-- Product Image --}}
                             <div class="product-image-wrapper">
                                 @if($product->main_image)
-                                    <img src="{{ asset('media/' . $product->main_image) }}" 
+                                    <img src="{{ $product->main_image }}" 
                                          alt="{{ $product->name }}" 
                                          class="product-image"
                                         >

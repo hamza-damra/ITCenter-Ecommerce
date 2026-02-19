@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PolicyController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
@@ -12,43 +13,35 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-// Media File Serving Route (cPanel/shared hosting compatibility)
-// Uses /media/ path to avoid conflict with public/storage/ directory
-// Serves files from storage/app/public
-Route::get('/media/{path}', function (string $path) {
-    try {
-        // Sanitize path - remove any directory traversal attempts
+// Shared helper: serve a file from storage/app/public safely
+if (! function_exists('serveStorageFile')) {
+    function serveStorageFile(string $path): \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        // 1. Sanitize: strip traversal patterns, leading slashes, collapse duplicates
         $path = str_replace(['../', '..\\', '..'], '', $path);
         $path = ltrim($path, '/\\');
-        $path = preg_replace('#/+#', '/', $path); // collapse multiple slashes
+        $path = preg_replace('#[/\\\\]+#', '/', $path);
 
-        // Reject empty paths or paths with null bytes
-        if (empty($path) || str_contains($path, "\0")) {
+        // 2. Reject dangerous input
+        if (empty($path) || str_contains($path, "\0") || str_contains($path, '..')) {
             abort(404);
         }
 
-        $fullPath = storage_path('app/public/'.$path);
+        // 3. Build full path & verify it exists
+        $fullPath = storage_path('app/public/' . $path);
 
         if (! file_exists($fullPath) || ! is_file($fullPath)) {
             abort(404);
         }
 
-        // Only allow safe file types for security
+        // 4. Allow only safe file extensions
         $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'ico', 'pdf', 'mp4', 'webm', 'mp3', 'ogg', 'zip'];
         $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
         if (! in_array($extension, $allowedExtensions)) {
             abort(403);
         }
 
-        // Prevent directory traversal - use normalized string comparison
-        $normalizedFull = str_replace('\\', '/', $fullPath);
-        $normalizedRoot = str_replace('\\', '/', storage_path('app/public'));
-
-        if (! str_starts_with($normalizedFull, $normalizedRoot.'/')) {
-            abort(403);
-        }
-
-        // Determine MIME type
+        // 5. Determine MIME type
         $mimeTypes = [
             'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png',
             'webp' => 'image/webp', 'gif' => 'image/gif', 'svg' => 'image/svg+xml',
@@ -57,39 +50,48 @@ Route::get('/media/{path}', function (string $path) {
             'mp3' => 'audio/mpeg', 'ogg' => 'audio/ogg', 'zip' => 'application/zip',
         ];
         $mimeType = $mimeTypes[$extension] ?? (mime_content_type($fullPath) ?: 'application/octet-stream');
-        $fileSize = filesize($fullPath);
 
-        // Read file content and return as response
-        $content = file_get_contents($fullPath);
-        if ($content === false) {
-            \Illuminate\Support\Facades\Log::error('Media route: file_get_contents failed', ['path' => $fullPath]);
-            abort(500);
-        }
+        // 6. Serve the file with proper headers
+        return response()->file($fullPath, [
+            'Content-Type' => $mimeType,
+            'Cache-Control' => 'public, max-age=2592000',
+            'Access-Control-Allow-Origin' => '*',
+            'X-Content-Type-Options' => 'nosniff',
+        ]);
+    }
+}
 
-        return response($content, 200)
-            ->header('Content-Type', $mimeType)
-            ->header('Content-Length', $fileSize)
-            ->header('Cache-Control', 'public, max-age=2592000')
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('X-Content-Type-Options', 'nosniff');
+// Storage file serving route (primary)
+// Serves files from storage/app/public via Laravel when symlink is broken on shared hosting
+// .htaccess forces /storage/* through index.php so this route catches those requests
+Route::get('/storage/{path}', function (string $path) {
+    try {
+        return serveStorageFile($path);
     } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
-        throw $e; // Re-throw HTTP exceptions (404, 403) as-is
+        throw $e;
+    } catch (\Throwable $e) {
+        \Illuminate\Support\Facades\Log::error('Storage route exception', [
+            'path' => $path ?? 'unknown',
+            'error' => $e->getMessage(),
+        ]);
+        abort(500);
+    }
+})->where('path', '.*')->name('storage.serve');
+
+// Media file serving route (backward compatibility - same logic)
+Route::get('/media/{path}', function (string $path) {
+    try {
+        return serveStorageFile($path);
+    } catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
+        throw $e;
     } catch (\Throwable $e) {
         \Illuminate\Support\Facades\Log::error('Media route exception', [
             'path' => $path ?? 'unknown',
             'error' => $e->getMessage(),
-            'class' => get_class($e),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
         ]);
         abort(500);
     }
 })->where('path', '.*')->name('media.serve');
-
-// Backward compatibility: redirect old /storage/ URLs to /media/
-Route::get('/storage/{path}', function (string $path) {
-    return redirect('/media/'.$path, 301);
-})->where('path', '.*')->name('storage.serve');
 
 // Language Routes
 Route::get('/lang/{locale}', function ($locale) {
@@ -121,6 +123,9 @@ Route::get('/product/{product}', [ProductController::class, 'show'])->name('prod
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+Route::get('/privacy-policy', [PolicyController::class, 'privacyPolicy'])->name('privacy-policy');
+Route::get('/refund-policy', [PolicyController::class, 'refundPolicy'])->name('refund-policy');
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -530,6 +535,8 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/site-settings', [App\Http\Controllers\Admin\SiteSettingsController::class, 'index'])->name('site-settings.index');
     Route::put('/site-settings/images', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updateImageSettings'])->name('site-settings.update-images');
     Route::put('/site-settings/password', [App\Http\Controllers\Admin\SiteSettingsController::class, 'changePassword'])->name('site-settings.change-password');
+    Route::put('/site-settings/privacy-policy', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updatePrivacyPolicy'])->name('site-settings.update-privacy-policy');
+    Route::put('/site-settings/refund-policy', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updateRefundPolicy'])->name('site-settings.update-refund-policy');
 
     // Employee Roles Management (Admin Only)
     Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);

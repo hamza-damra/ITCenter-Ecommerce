@@ -87,11 +87,8 @@ class PromotionalAd extends Model
             if (str_starts_with($this->image_path, 'http')) {
                 return $this->image_path;
             }
-            // Check if file exists before trying to use it
-            $filePath = storage_path('app/public/' . $this->image_path);
-            if (file_exists($filePath)) {
-                return asset('media/' . $this->image_path);
-            }
+            // Serve via /media/ route (no file_exists check - let the route handle 404)
+            return asset('media/' . $this->image_path);
         }
 
         // Default fallback image

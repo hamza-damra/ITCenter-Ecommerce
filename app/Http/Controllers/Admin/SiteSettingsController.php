@@ -26,7 +26,19 @@ class SiteSettingsController extends Controller
             'max_image_height' => SiteSetting::getValue('max_image_height', 1080),
         ];
 
-        return view('admin.site-settings.index', compact('imageSettings'));
+        $privacyPolicy = [
+            'en' => SiteSetting::getValue('privacy_policy_en', ''),
+            'ar' => SiteSetting::getValue('privacy_policy_ar', ''),
+            'he' => SiteSetting::getValue('privacy_policy_he', ''),
+        ];
+
+        $refundPolicy = [
+            'en' => SiteSetting::getValue('refund_policy_en', ''),
+            'ar' => SiteSetting::getValue('refund_policy_ar', ''),
+            'he' => SiteSetting::getValue('refund_policy_he', ''),
+        ];
+
+        return view('admin.site-settings.index', compact('imageSettings', 'privacyPolicy', 'refundPolicy'));
     }
 
     /**
@@ -93,5 +105,43 @@ class SiteSettingsController extends Controller
         }
 
         return back()->withErrors(['current_password' => __('messages.password_change_failed')])->with('tab', 'password');
+    }
+
+    /**
+     * Update privacy policy content.
+     */
+    public function updatePrivacyPolicy(Request $request)
+    {
+        $validated = $request->validate([
+            'privacy_policy_en' => 'nullable|string|max:65000',
+            'privacy_policy_ar' => 'nullable|string|max:65000',
+            'privacy_policy_he' => 'nullable|string|max:65000',
+        ]);
+
+        SiteSetting::setValue('privacy_policy_en', $validated['privacy_policy_en'] ?? '', 'text', 'policies');
+        SiteSetting::setValue('privacy_policy_ar', $validated['privacy_policy_ar'] ?? '', 'text', 'policies');
+        SiteSetting::setValue('privacy_policy_he', $validated['privacy_policy_he'] ?? '', 'text', 'policies');
+
+        return redirect()->route('admin.site-settings.index', ['tab' => 'privacy-policy'])
+            ->with('success', __('messages.privacy_policy_updated'));
+    }
+
+    /**
+     * Update refund policy content.
+     */
+    public function updateRefundPolicy(Request $request)
+    {
+        $validated = $request->validate([
+            'refund_policy_en' => 'nullable|string|max:65000',
+            'refund_policy_ar' => 'nullable|string|max:65000',
+            'refund_policy_he' => 'nullable|string|max:65000',
+        ]);
+
+        SiteSetting::setValue('refund_policy_en', $validated['refund_policy_en'] ?? '', 'text', 'policies');
+        SiteSetting::setValue('refund_policy_ar', $validated['refund_policy_ar'] ?? '', 'text', 'policies');
+        SiteSetting::setValue('refund_policy_he', $validated['refund_policy_he'] ?? '', 'text', 'policies');
+
+        return redirect()->route('admin.site-settings.index', ['tab' => 'refund-policy'])
+            ->with('success', __('messages.refund_policy_updated'));
     }
 }

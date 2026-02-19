@@ -3,10 +3,8 @@
     {{-- Main Image --}}
     <div class="main-image">
         @php
-            $mainImageUrl = $product->main_image 
-                ? (filter_var($product->main_image, FILTER_VALIDATE_URL) 
-                    ? $product->main_image 
-                    : asset('media/' . $product->main_image))
+            $mainImageUrl = $product->getRawOriginal('main_image')
+                ? $product->main_image
                 : 'https://via.placeholder.com/800x800/f5f5f5/666666?text=' . urlencode($product->name);
         @endphp
         <img 

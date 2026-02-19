@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -89,7 +90,7 @@ class ReviewController extends Controller
             'title' => 'nullable|string|max:100',
             'comment' => 'required|string|min:10|max:1000',
             'images' => 'nullable|array|max:5',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:' . SiteSetting::getValue('max_image_size_kb', 5120),
         ], [
             'rating.required' => __('messages.review_rating_required'),
             'rating.integer' => __('messages.review_rating_invalid'),
@@ -206,7 +207,7 @@ class ReviewController extends Controller
             'title' => 'nullable|string|max:100',
             'comment' => 'required|string|min:10|max:1000',
             'images' => 'nullable|array|max:5',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:' . SiteSetting::getValue('max_image_size_kb', 5120),
         ]);
 
         DB::beginTransaction();

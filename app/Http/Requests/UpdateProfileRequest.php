@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\SiteSetting;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -35,7 +36,7 @@ class UpdateProfileRequest extends FormRequest
                 Rule::unique('users')->ignore($userId),
             ],
             'phone' => 'nullable|string|max:20',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:' . SiteSetting::getValue('max_image_size_kb', 5120),
         ];
     }
 

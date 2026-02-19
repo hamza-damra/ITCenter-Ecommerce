@@ -96,6 +96,7 @@ class SiteSetting extends Model
             Cache::forget('site_settings.images');
             Cache::forget('site_settings.general');
             Cache::forget('site_settings.security');
+            Cache::forget('site_settings.policies');
         } catch (\Exception $e) {
             // Silently fail if DB not available
         }

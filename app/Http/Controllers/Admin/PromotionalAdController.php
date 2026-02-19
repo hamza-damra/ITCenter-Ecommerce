@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PromotionalAd;
+use App\Models\SiteSetting;
 use App\Helpers\ImageHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -38,7 +39,7 @@ class PromotionalAdController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:' . SiteSetting::getValue('max_image_size_kb', 5120),
             'position' => 'required|in:left,right',
             'link' => 'nullable|string|max:255',
             'is_active' => 'boolean',
@@ -116,7 +117,7 @@ class PromotionalAdController extends Controller
     public function update(Request $request, PromotionalAd $promotionalAd)
     {
         $validated = $request->validate([
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:' . SiteSetting::getValue('max_image_size_kb', 5120),
             'position' => 'required|in:left,right',
             'link' => 'nullable|string|max:255',
             'is_active' => 'boolean',

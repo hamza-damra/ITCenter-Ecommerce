@@ -485,6 +485,10 @@
                                 href="{{ route('about') }}">{{ __('messages.about') }}</a></li>
                         <li><i class="fas fa-chevron-{{ is_rtl() ? 'left' : 'right' }}"></i><a
                                 href="{{ route('contact') }}">{{ __('messages.contact_us') }}</a></li>
+                        <li><i class="fas fa-chevron-{{ is_rtl() ? 'left' : 'right' }}"></i><a
+                                href="{{ route('privacy-policy') }}">{{ __('messages.privacy_policy') }}</a></li>
+                        <li><i class="fas fa-chevron-{{ is_rtl() ? 'left' : 'right' }}"></i><a
+                                href="{{ route('refund-policy') }}">{{ __('messages.refund_policy_tab') }}</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">

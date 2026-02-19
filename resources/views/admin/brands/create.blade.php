@@ -124,7 +124,7 @@
                                 <div class="dropzone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
                                 <p class="dropzone-title">{{ __('messages.drag_drop_image') }}</p>
                                 <p class="dropzone-subtitle">{{ __('messages.or_click_to_browse') }}</p>
-                                <span class="dropzone-formats">{{ __('messages.accepted_formats') }}</span>
+                                <span class="dropzone-formats">{{ __('messages.accepted_formats', ['max_size' => \App\Models\SiteSetting::getValue('max_image_size_kb', 5120) >= 1024 ? round(\App\Models\SiteSetting::getValue('max_image_size_kb', 5120) / 1024, 1) . 'MB' : \App\Models\SiteSetting::getValue('max_image_size_kb', 5120) . 'KB']) }}</span>
                             </div>
                             <div class="dropzone-preview" id="main-dropzone-preview" style="display:none;">
                                 <img id="main-image-preview-img" src="" alt="Preview">

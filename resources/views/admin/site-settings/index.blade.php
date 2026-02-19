@@ -261,6 +261,116 @@
         right: auto;
         left: 12px;
     }
+
+    .policy-language-tabs {
+        display: flex;
+        gap: 0;
+        margin-bottom: 16px;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        width: fit-content;
+    }
+
+    .policy-lang-tab {
+        padding: 10px 22px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--secondary);
+        background: #f8fafc;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: inherit;
+        border-right: 1px solid var(--border);
+    }
+
+    .policy-lang-tab:last-child {
+        border-right: none;
+    }
+
+    [dir="rtl"] .policy-lang-tab {
+        border-right: none;
+        border-left: 1px solid var(--border);
+    }
+
+    [dir="rtl"] .policy-lang-tab:last-child {
+        border-left: none;
+    }
+
+    .policy-lang-tab:hover {
+        background: #eff6ff;
+        color: var(--primary);
+    }
+
+    .policy-lang-tab.active {
+        background: var(--primary);
+        color: white;
+    }
+
+    .policy-lang-content {
+        display: none;
+    }
+
+    .policy-lang-content.active {
+        display: block;
+    }
+
+    .policy-lang-content .form-label {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .policy-textarea {
+        font-family: 'Courier New', Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        min-height: 300px;
+        resize: vertical;
+        white-space: pre-wrap;
+    }
+
+    .policy-hint {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        padding: 10px 14px;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #92400e;
+    }
+
+    .policy-hint i {
+        color: #d97706;
+        font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+        .settings-tabs {
+            flex-wrap: wrap;
+        }
+
+        .settings-tab {
+            padding: 12px 16px;
+            font-size: 13px;
+        }
+
+        .policy-language-tabs {
+            width: 100%;
+        }
+
+        .policy-lang-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px 12px;
+        }
+    }
 </style>
 
 <div class="page-header">
@@ -278,6 +388,12 @@
         </button>
         <button class="settings-tab {{ request('tab') === 'password' || session('tab') === 'password' ? 'active' : '' }}" onclick="switchTab('password')" type="button">
             <i class="fas fa-lock"></i> {{ __('messages.change_password') }}
+        </button>
+        <button class="settings-tab {{ request('tab') === 'privacy-policy' ? 'active' : '' }}" onclick="switchTab('privacy-policy')" type="button">
+            <i class="fas fa-shield-alt"></i> {{ __('messages.privacy_policy') }}
+        </button>
+        <button class="settings-tab {{ request('tab') === 'refund-policy' ? 'active' : '' }}" onclick="switchTab('refund-policy')" type="button">
+            <i class="fas fa-undo-alt"></i> {{ __('messages.refund_policy_tab') }}
         </button>
     </div>
 
@@ -525,6 +641,99 @@
             </form>
         </div>
     </div>
+    <!-- Privacy Policy Tab -->
+    <div class="tab-content {{ request('tab') === 'privacy-policy' ? 'active' : '' }}" id="tab-privacy-policy">
+        <div class="card-body">
+            <div class="settings-info-box">
+                <i class="fas fa-shield-alt"></i>
+                <p>{{ __('messages.privacy_policy_admin_description') }}</p>
+            </div>
+
+            <form action="{{ route('admin.site-settings.update-privacy-policy') }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="policy-language-tabs">
+                    <button type="button" class="policy-lang-tab active" onclick="switchPolicyLang(this, 'privacy', 'en')">English</button>
+                    <button type="button" class="policy-lang-tab" onclick="switchPolicyLang(this, 'privacy', 'ar')">العربية</button>
+                    <button type="button" class="policy-lang-tab" onclick="switchPolicyLang(this, 'privacy', 'he')">עברית</button>
+                </div>
+
+                <div class="policy-lang-content active" id="privacy-lang-en">
+                    <label for="privacy_policy_en" class="form-label">{{ __('messages.policy_content_english') }}</label>
+                    <textarea id="privacy_policy_en" name="privacy_policy_en" class="form-control policy-textarea" rows="15" dir="ltr" placeholder="{{ __('messages.policy_html_placeholder') }}">{{ old('privacy_policy_en', $privacyPolicy['en']) }}</textarea>
+                </div>
+
+                <div class="policy-lang-content" id="privacy-lang-ar">
+                    <label for="privacy_policy_ar" class="form-label">{{ __('messages.policy_content_arabic') }}</label>
+                    <textarea id="privacy_policy_ar" name="privacy_policy_ar" class="form-control policy-textarea" rows="15" dir="rtl" placeholder="{{ __('messages.policy_html_placeholder') }}">{{ old('privacy_policy_ar', $privacyPolicy['ar']) }}</textarea>
+                </div>
+
+                <div class="policy-lang-content" id="privacy-lang-he">
+                    <label for="privacy_policy_he" class="form-label">{{ __('messages.policy_content_hebrew') }}</label>
+                    <textarea id="privacy_policy_he" name="privacy_policy_he" class="form-control policy-textarea" rows="15" dir="rtl" placeholder="{{ __('messages.policy_html_placeholder') }}">{{ old('privacy_policy_he', $privacyPolicy['he']) }}</textarea>
+                </div>
+
+                <div class="policy-hint">
+                    <i class="fas fa-code"></i>
+                    <span>{{ __('messages.policy_html_hint') }}</span>
+                </div>
+
+                <div style="margin-top: 24px; display: flex; justify-content: flex-end;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> {{ __('messages.save_privacy_policy') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Refund Policy Tab -->
+    <div class="tab-content {{ request('tab') === 'refund-policy' ? 'active' : '' }}" id="tab-refund-policy">
+        <div class="card-body">
+            <div class="settings-info-box">
+                <i class="fas fa-undo-alt"></i>
+                <p>{{ __('messages.refund_policy_admin_description') }}</p>
+            </div>
+
+            <form action="{{ route('admin.site-settings.update-refund-policy') }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="policy-language-tabs">
+                    <button type="button" class="policy-lang-tab active" onclick="switchPolicyLang(this, 'refund', 'en')">English</button>
+                    <button type="button" class="policy-lang-tab" onclick="switchPolicyLang(this, 'refund', 'ar')">العربية</button>
+                    <button type="button" class="policy-lang-tab" onclick="switchPolicyLang(this, 'refund', 'he')">עברית</button>
+                </div>
+
+                <div class="policy-lang-content active" id="refund-lang-en">
+                    <label for="refund_policy_en" class="form-label">{{ __('messages.policy_content_english') }}</label>
+                    <textarea id="refund_policy_en" name="refund_policy_en" class="form-control policy-textarea" rows="15" dir="ltr" placeholder="{{ __('messages.policy_html_placeholder') }}">{{ old('refund_policy_en', $refundPolicy['en']) }}</textarea>
+                </div>
+
+                <div class="policy-lang-content" id="refund-lang-ar">
+                    <label for="refund_policy_ar" class="form-label">{{ __('messages.policy_content_arabic') }}</label>
+                    <textarea id="refund_policy_ar" name="refund_policy_ar" class="form-control policy-textarea" rows="15" dir="rtl" placeholder="{{ __('messages.policy_html_placeholder') }}">{{ old('refund_policy_ar', $refundPolicy['ar']) }}</textarea>
+                </div>
+
+                <div class="policy-lang-content" id="refund-lang-he">
+                    <label for="refund_policy_he" class="form-label">{{ __('messages.policy_content_hebrew') }}</label>
+                    <textarea id="refund_policy_he" name="refund_policy_he" class="form-control policy-textarea" rows="15" dir="rtl" placeholder="{{ __('messages.policy_html_placeholder') }}">{{ old('refund_policy_he', $refundPolicy['he']) }}</textarea>
+                </div>
+
+                <div class="policy-hint">
+                    <i class="fas fa-code"></i>
+                    <span>{{ __('messages.policy_html_hint') }}</span>
+                </div>
+
+                <div style="margin-top: 24px; display: flex; justify-content: flex-end;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> {{ __('messages.save_refund_policy') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -555,13 +764,29 @@ function togglePasswordVisibility(inputId, btn) {
     }
 }
 
+function switchPolicyLang(btn, policy, lang) {
+    // Update language tab buttons within this policy
+    const tabsContainer = btn.parentElement;
+    tabsContainer.querySelectorAll('.policy-lang-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Update language content panels
+    const parent = tabsContainer.parentElement;
+    parent.querySelectorAll('.policy-lang-content').forEach(c => c.classList.remove('active'));
+    document.getElementById(policy + '-lang-' + lang).classList.add('active');
+}
+
 // Restore active tab from URL or session
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get('tab') || '{{ session("tab", "images") }}';
     if (tab && tab !== 'images') {
-        const tabBtn = document.querySelector(`.settings-tab:nth-child(${tab === 'password' ? 2 : 1})`);
-        if (tabBtn) tabBtn.click();
+        const tabNames = ['images', 'password', 'privacy-policy', 'refund-policy'];
+        const idx = tabNames.indexOf(tab);
+        if (idx > 0) {
+            const tabBtn = document.querySelector(`.settings-tab:nth-child(${idx + 1})`);
+            if (tabBtn) tabBtn.click();
+        }
     }
 });
 </script>

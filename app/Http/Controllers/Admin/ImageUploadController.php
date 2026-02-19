@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\SiteSetting;
 use App\Rules\SecureImage;
 use App\Services\ImageUploadService;
 use Illuminate\Http\JsonResponse;
@@ -29,6 +30,20 @@ class ImageUploadController extends Controller
     ) {}
 
     /**
+     * Get the dynamic image settings from site settings.
+     */
+    protected function getImageSettings(): array
+    {
+        return [
+            'max_size_kb' => (int) SiteSetting::getValue('max_image_size_kb', 5120),
+            'max_width' => (int) SiteSetting::getValue('max_image_width', 1920),
+            'max_height' => (int) SiteSetting::getValue('max_image_height', 1080),
+            'quality' => (int) SiteSetting::getValue('image_quality', 80),
+            'convert_to_webp' => (bool) SiteSetting::getValue('convert_to_webp', true),
+        ];
+    }
+
+    /**
      * Upload a product image.
      *
      * POST /admin/upload/product-image
@@ -38,8 +53,10 @@ class ImageUploadController extends Controller
      */
     public function uploadProductImage(Request $request): JsonResponse
     {
+        $settings = $this->getImageSettings();
+
         $request->validate([
-            'image' => ['required', new SecureImage(2048)],
+            'image' => ['required', new SecureImage($settings['max_size_kb'])],
         ]);
 
         try {
@@ -48,10 +65,10 @@ class ImageUploadController extends Controller
                 'products',
                 [
                     'optimize' => true,
-                    'max_width' => 1920,
-                    'max_height' => 1080,
-                    'quality' => 80,
-                    'convert_to_webp' => true,
+                    'max_width' => $settings['max_width'],
+                    'max_height' => $settings['max_height'],
+                    'quality' => $settings['quality'],
+                    'convert_to_webp' => $settings['convert_to_webp'],
                 ]
             );
 
@@ -83,8 +100,10 @@ class ImageUploadController extends Controller
      */
     public function uploadCategoryImage(Request $request): JsonResponse
     {
+        $settings = $this->getImageSettings();
+
         $request->validate([
-            'image' => ['required', new SecureImage(2048)],
+            'image' => ['required', new SecureImage($settings['max_size_kb'])],
         ]);
 
         try {
@@ -95,7 +114,7 @@ class ImageUploadController extends Controller
                     'optimize' => true,
                     'max_width' => 800,
                     'max_height' => 800,
-                    'quality' => 80,
+                    'quality' => $settings['quality'],
                     'organize_by_date' => false,
                 ]
             );
@@ -128,8 +147,10 @@ class ImageUploadController extends Controller
      */
     public function uploadBrandLogo(Request $request): JsonResponse
     {
+        $settings = $this->getImageSettings();
+
         $request->validate([
-            'image' => ['required', new SecureImage(2048)],
+            'image' => ['required', new SecureImage($settings['max_size_kb'])],
         ]);
 
         try {
@@ -140,7 +161,7 @@ class ImageUploadController extends Controller
                     'optimize' => true,
                     'max_width' => 500,
                     'max_height' => 500,
-                    'quality' => 85,
+                    'quality' => $settings['quality'],
                     'organize_by_date' => false,
                 ]
             );
@@ -173,8 +194,10 @@ class ImageUploadController extends Controller
      */
     public function uploadBannerImage(Request $request): JsonResponse
     {
+        $settings = $this->getImageSettings();
+
         $request->validate([
-            'image' => ['required', new SecureImage(2048)],
+            'image' => ['required', new SecureImage($settings['max_size_kb'])],
         ]);
 
         try {
@@ -183,10 +206,10 @@ class ImageUploadController extends Controller
                 'banners',
                 [
                     'optimize' => true,
-                    'max_width' => 1920,
+                    'max_width' => $settings['max_width'],
                     'max_height' => 600,
-                    'quality' => 85,
-                    'convert_to_webp' => true,
+                    'quality' => $settings['quality'],
+                    'convert_to_webp' => $settings['convert_to_webp'],
                 ]
             );
 

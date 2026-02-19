@@ -134,10 +134,18 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        // Preserve locale before session is destroyed
+        $locale = $request->session()->get('locale');
+
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        // Restore locale so the user stays in their chosen language
+        if ($locale) {
+            $request->session()->put('locale', $locale);
+        }
 
         return redirect()->route('home')
             ->with('success', __t('messages.logout_success'));

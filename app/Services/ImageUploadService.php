@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\SiteSetting;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -43,9 +44,9 @@ class ImageUploadService
     ];
 
     /**
-     * Maximum file size in bytes (2MB).
+     * Maximum file size in bytes (dynamically loaded from site settings).
      */
-    protected int $maxFileSize = 2097152;
+    protected ?int $maxFileSize = null;
 
     /**
      * Default image quality (0-100).
@@ -225,10 +226,13 @@ class ImageUploadService
      */
     protected function validateFile(UploadedFile $file): void
     {
+        // Resolve max file size from site settings if not explicitly set
+        $maxFileSize = $this->maxFileSize ?? ((int) SiteSetting::getValue('max_image_size_kb', 5120) * 1024);
+
         // Check file size
-        if ($file->getSize() > $this->maxFileSize) {
+        if ($file->getSize() > $maxFileSize) {
             throw new \InvalidArgumentException(
-                "File size exceeds maximum allowed size of " . ($this->maxFileSize / 1048576) . "MB."
+                "File size exceeds maximum allowed size of " . round($maxFileSize / 1048576, 1) . "MB."
             );
         }
 

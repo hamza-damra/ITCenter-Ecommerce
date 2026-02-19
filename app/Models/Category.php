@@ -72,35 +72,18 @@ class Category extends Model
             return $value;
         }
         
-        // Handle different storage path formats
+        // If path starts with 'storage/', strip it (normalize)
         if (str_starts_with($value, 'storage/')) {
-            $imagePath = public_path($value);
-            if (file_exists($imagePath)) {
-                return asset($value);
-            }
+            $value = substr($value, 8);
         }
         
+        // If path starts with 'images/', it's in the public folder
         if (str_starts_with($value, 'images/')) {
-            $imagePath = public_path($value);
-            if (file_exists($imagePath)) {
-                return asset($value);
-            }
-        }
-        
-        // Try adding 'storage/' prefix
-        $storagePath = storage_path('app/public/' . $value);
-        if (file_exists($storagePath)) {
-            return asset('media/' . $value);
-        }
-        
-        // Try the path directly in public folder
-        $publicPath = public_path($value);
-        if (file_exists($publicPath)) {
             return asset($value);
         }
         
-        // Fallback to default image
-        return \App\Helpers\ImageHelper::assetUrl('images/products/default.png');
+        // All other paths are in storage/app/public, served via /media/ route
+        return asset('media/' . $value);
     }
 
     /**

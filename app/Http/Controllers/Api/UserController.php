@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\ReviewResource;
 use App\Models\Review;
+use App\Models\SiteSetting;
 use App\Traits\ApiResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +55,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'phone' => 'nullable|string|max:20',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:' . SiteSetting::getValue('max_image_size_kb', 5120),
         ]);
 
         if ($validator->fails()) {

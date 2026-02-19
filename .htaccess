@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Force /storage/ and /media/ requests directly to Laravel's front controller
+    # This MUST come BEFORE the public/ rewrite to bypass public/storage/.htaccess
+    # which has RewriteEngine Off and prevents the parent rewrite rules from working
+    RewriteRule ^storage/(.*)$ public/index.php [L]
+    RewriteRule ^media/(.*)$ public/index.php [L]
+
+    # Rewrite everything else to the public directory
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

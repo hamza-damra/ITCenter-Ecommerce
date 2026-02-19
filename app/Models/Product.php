@@ -113,41 +113,20 @@ class Product extends Model
             return $value;
         }
         
-        // Handle different storage path formats:
-        // 1. "storage/products/image.png" - already has storage prefix
-        // 2. "products/image.png" - needs storage prefix added
-        // 3. "images/products/image.png" - public folder path
-        
-        // If path already starts with 'storage/', check if file exists
+        // If path starts with 'storage/', strip it (normalize)
         if (str_starts_with($value, 'storage/')) {
-            $imagePath = public_path($value);
-            if (file_exists($imagePath)) {
-                return asset($value);
-            }
+            $value = substr($value, 8);
         }
         
         // If path starts with 'images/', it's in the public folder
         if (str_starts_with($value, 'images/')) {
-            $imagePath = public_path($value);
-            if (file_exists($imagePath)) {
-                return asset($value);
-            }
-        }
-        
-        // Try adding 'storage/' prefix for files stored in storage/app/public
-        $storagePath = storage_path('app/public/' . $value);
-        if (file_exists($storagePath)) {
-            return asset('media/' . $value);
-        }
-        
-        // Try the path directly in public folder
-        $publicPath = public_path($value);
-        if (file_exists($publicPath)) {
             return asset($value);
         }
         
-        // Fallback to default image
-        return \App\Helpers\ImageHelper::assetUrl('images/products/default.png');
+        // All other paths are in storage/app/public, served via /media/ route
+        // Using /media/ instead of /storage/ because public/storage/.htaccess on cPanel
+        // has RewriteEngine Off which blocks the parent rewrite rules
+        return asset('media/' . $value);
     }
 
     /**

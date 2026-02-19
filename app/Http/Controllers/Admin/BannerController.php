@@ -66,7 +66,7 @@ class BannerController extends Controller
         $imageSource = $request->input('image_source', 'file');
 
         if ($imageSource === 'file') {
-            $rules['image'] = 'required|image|mimes:jpg,jpeg,png,webp|max:2048';
+            $rules['image'] = 'required|image|mimes:jpg,jpeg,png,webp|max:' . SiteSetting::getValue('max_image_size_kb', 5120);
         } else {
             // Both 'url' and 'download_url' require a URL
             $rules['image_url'] = 'required|url|max:2048';
@@ -155,7 +155,7 @@ class BannerController extends Controller
         $imageSource = $request->input('image_source', 'keep');
 
         if ($imageSource === 'file') {
-            $rules['image'] = 'required|image|mimes:jpg,jpeg,png,webp|max:2048';
+            $rules['image'] = 'required|image|mimes:jpg,jpeg,png,webp|max:' . SiteSetting::getValue('max_image_size_kb', 5120);
         } elseif ($imageSource === 'url' || $imageSource === 'download_url') {
             $rules['image_url'] = 'required|url|max:2048';
         }

@@ -477,9 +477,9 @@
                     <input type="checkbox" id="terms" name="terms" required>
                     <label for="terms">
                         {{ __t('messages.agree_to') }}
-                        <a href="#">{{ __t('messages.terms_conditions') }}</a>
+                        <a href="{{ route('refund-policy') }}" target="_blank">{{ __t('messages.refund_policy_tab') }}</a>
                         {{ __t('messages.and') }}
-                        <a href="#">{{ __t('messages.privacy_policy') }}</a>
+                        <a href="{{ route('privacy-policy') }}" target="_blank">{{ __t('messages.privacy_policy') }}</a>
                     </label>
                 </div>
 

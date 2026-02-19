@@ -41,7 +41,7 @@ class ProductResource extends JsonResource
                 'is_in_stock' => $this->is_in_stock,
                 'track_stock' => $this->track_stock,
             ],
-            'main_image' => $this->main_image ? asset('media/' . $this->main_image) : null,
+            'main_image' => $this->getRawOriginal('main_image') ? $this->main_image : null,
             'images' => ProductImageResource::collection($this->whenLoaded('images')),
             'category' => new CategoryResource($this->whenLoaded('category')),
             'brand' => new BrandResource($this->whenLoaded('brand')),
