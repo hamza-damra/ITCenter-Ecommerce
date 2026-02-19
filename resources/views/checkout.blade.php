@@ -1724,7 +1724,7 @@
                     <span style="font-size:0.8rem; opacity:0.8; font-weight:400;">({{ $cartItems->sum('quantity') }})</span>
                 </span>
                 <span class="summary-toggle-right">
-                    <span class="summary-toggle-total">â‚ª{{ number_format($total, 2) }}</span>
+                    <span class="summary-toggle-total">&#8362;{{ number_format($total, 2) }}</span>
                     <i class="fas fa-chevron-down summary-toggle-chevron"></i>
                 </span>
             </button>
@@ -1769,7 +1769,7 @@
                                     </div>
                                 </div>
                                 <div class="summary-item-price">
-                                    â‚ª{{ number_format($item->price * $item->quantity, 2) }}
+                                    &#8362;{{ number_format($item->price * $item->quantity, 2) }}
                                 </div>
                             </div>
                         </a>
@@ -1780,11 +1780,11 @@
             <div class="summary-totals">
                 <div class="summary-row">
                     <span class="label">{{ __('messages.subtotal') }}</span>
-                    <span class="value">â‚ª{{ number_format($subtotal, 2) }}</span>
+                    <span class="value">&#8362;{{ number_format($subtotal, 2) }}</span>
                 </div>
                 <div class="summary-row total">
                     <span class="label">{{ __('messages.total') }}</span>
-                    <span class="value">â‚ª{{ number_format($total, 2) }}</span>
+                    <span class="value">&#8362;{{ number_format($total, 2) }}</span>
                 </div>
             </div>
 
@@ -1808,7 +1808,7 @@
 <div class="mobile-sticky-order-bar" id="mobileStickyOrderBar">
     <div class="sticky-total">
         <span class="sticky-total-label">{{ __('messages.total') }}</span>
-        <span class="sticky-total-value">â‚ª{{ number_format($total, 2) }}</span>
+        <span class="sticky-total-value">&#8362;{{ number_format($total, 2) }}</span>
     </div>
     <button type="submit" form="checkout-form" class="sticky-order-btn" id="mobilePlaceOrderBtn">
         <i class="fas fa-check-circle"></i>

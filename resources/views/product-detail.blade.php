@@ -1569,10 +1569,8 @@
             <div class="product-images">
                 <div class="main-image">
                     @php
-                        $mainImageUrl = $product->main_image 
-                            ? (filter_var($product->main_image, FILTER_VALIDATE_URL) 
-                                ? $product->main_image 
-                                : asset('media/' . $product->main_image))
+                        $mainImageUrl = $product->getRawOriginal('main_image')
+                            ? $product->main_image
                             : 'https://via.placeholder.com/800x800/f5f5f5/666666?text=' . urlencode($product->name);
                     @endphp
                     <img src="{{ $mainImageUrl }}" alt="{{ $product->name }}" id="mainImage" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22800%22%3E%3Crect width=%22800%22 height=%22800%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2224%22%3ENo Image%3C/text%3E%3C/svg%3E';">
@@ -1780,7 +1778,7 @@
                             <i class="fas fa-cube"></i>
                             {{ __('messages.dimensions') ?? 'Dimensions' }}:
                         </span>
-                        <span class="spec-value">{{ $product->length }} Ã— {{ $product->width }} Ã— {{ $product->height }} <span class="spec-unit">cm</span></span>
+                        <span class="spec-value">{{ $product->length }} &times; {{ $product->width }} &times; {{ $product->height }} <span class="spec-unit">cm</span></span>
                     </div>
                 @endif
                 
@@ -1826,10 +1824,8 @@
                     <div class="product-card">
                         <div class="product-card-image">
                             @php
-                                $relatedImageUrl = $relatedProduct->main_image 
-                                    ? (filter_var($relatedProduct->main_image, FILTER_VALIDATE_URL) 
-                                        ? $relatedProduct->main_image 
-                                        : asset('media/' . $relatedProduct->main_image))
+                                $relatedImageUrl = $relatedProduct->getRawOriginal('main_image')
+                                    ? $relatedProduct->main_image
                                     : 'https://via.placeholder.com/300x200/f5f5f5/666666?text=' . urlencode($relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name);
                             @endphp
                             <img src="{{ $relatedImageUrl }}" alt="{{ $relatedProduct->{'name_' . current_locale()} ?? $relatedProduct->name }}" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect width=%22300%22 height=%22200%22 fill=%22%23f5f5f5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23666%22 font-family=%22Arial%22 font-size=%2216%22%3ENo Image%3C/text%3E%3C/svg%3E';">

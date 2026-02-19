@@ -4233,7 +4233,7 @@
                                                                 <div class="badge-save">
                                                                     <span class="save-label">{{ __t('messages.save_label') }}</span>
                                                                     <span
-                                                                        class="save-amount">â‚ª{{ number_format($offerProduct->price - $offerProduct->sale_price, 0) }}</span>
+                                                                        class="save-amount">&#8362;{{ number_format($offerProduct->price - $offerProduct->sale_price, 0) }}</span>
                                                                 </div>
                                                             @endif
                                                             <div class="promo-media">
@@ -4245,10 +4245,10 @@
                                                                 <div class="promo-product-name">{{ $offerProduct->name }}</div>
                                                                 <div class="promo-prices">
                                                                     @if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price)
-                                                                        <span class="orig">â‚ª{{ number_format($offerProduct->price, 0) }}</span>
-                                                                        <span class="sale">â‚ª{{ number_format($offerProduct->sale_price, 0) }}</span>
+                                                                        <span class="orig">&#8362;{{ number_format($offerProduct->price, 0) }}</span>
+                                                                        <span class="sale">&#8362;{{ number_format($offerProduct->sale_price, 0) }}</span>
                                                                     @else
-                                                                        <span class="sale">â‚ª{{ number_format($offerProduct->price, 0) }}</span>
+                                                                        <span class="sale">&#8362;{{ number_format($offerProduct->price, 0) }}</span>
                                                                     @endif
                                                                 </div>
                                                                 <div class="promo-cta">
@@ -4277,7 +4277,7 @@
                                                 <div class="badge-save">
                                                     <span class="save-label">{{ __t('messages.save_label') }}</span>
                                                     <span
-                                                        class="save-amount">â‚ª{{ number_format($promo->original_price - $promo->sale_price, 0) }}</span>
+                                                        class="save-amount">&#8362;{{ number_format($promo->original_price - $promo->sale_price, 0) }}</span>
                                                 </div>
                                                 <div class="promo-media">
                                                     @php
@@ -4301,8 +4301,8 @@
                                                         <div class="promo-product-name">{{ $promo->product->name }}</div>
                                                     @endif
                                                     <div class="promo-prices">
-                                                        <span class="orig">â‚ª{{ number_format($promo->original_price, 0) }}</span>
-                                                        <span class="sale">â‚ª{{ number_format($promo->sale_price, 0) }}</span>
+                                                        <span class="orig">&#8362;{{ number_format($promo->original_price, 0) }}</span>
+                                                        <span class="sale">&#8362;{{ number_format($promo->sale_price, 0) }}</span>
                                                     </div>
                                                     @if($promo->end_date)
                                                         <div class="promo-countdown" data-end="{{ optional($promo->end_date)->format('c') }}">
@@ -4374,10 +4374,10 @@
                                                         <div class="product-footer">
                                                             <div class="product-price">
                                                                 @if($product->sale_price && $product->sale_price < $product->price)
-                                                                    <span class="original-price">â‚ª {{ number_format($product->price, 0) }}</span>
-                                                                    <span class="current-price">â‚ª {{ number_format($product->sale_price, 0) }}</span>
+                                                                    <span class="original-price">&#8362; {{ number_format($product->price, 0) }}</span>
+                                                                    <span class="current-price">&#8362; {{ number_format($product->sale_price, 0) }}</span>
                                                                 @else
-                                                                    <span class="current-price">â‚ª {{ number_format($product->price, 0) }}</span>
+                                                                    <span class="current-price">&#8362; {{ number_format($product->price, 0) }}</span>
                                                                 @endif
                                                             </div>
                                                             @if($product->stock_status === 'out_of_stock')
@@ -4497,12 +4497,12 @@
                                                             <div class="product-footer">
                                                                 <div class="product-price">
                                                                     @if($featuredProducts[6]->sale_price && $featuredProducts[6]->sale_price < $featuredProducts[6]->price)
-                                                                        <span class="original-price">â‚ª
+                                                                        <span class="original-price">&#8362;
                                                                             {{ number_format($featuredProducts[6]->price, 0) }}</span>
-                                                                        <span class="current-price">â‚ª
+                                                                        <span class="current-price">&#8362;
                                                                             {{ number_format($featuredProducts[6]->sale_price, 0) }}</span>
                                                                     @else
-                                                                        <span class="current-price">â‚ª {{ number_format($featuredProducts[6]->price, 0) }}</span>
+                                                                        <span class="current-price">&#8362; {{ number_format($featuredProducts[6]->price, 0) }}</span>
                                                                     @endif
                                                                 </div>
                                                                 @if($featuredProducts[6]->stock_status === 'out_of_stock')
@@ -4557,12 +4557,12 @@
                                                             <div class="product-footer">
                                                                 <div class="product-price">
                                                                     @if($featuredProducts[7]->sale_price && $featuredProducts[7]->sale_price < $featuredProducts[7]->price)
-                                                                        <span class="original-price">â‚ª
+                                                                        <span class="original-price">&#8362;
                                                                             {{ number_format($featuredProducts[7]->price, 0) }}</span>
-                                                                        <span class="current-price">â‚ª
+                                                                        <span class="current-price">&#8362;
                                                                             {{ number_format($featuredProducts[7]->sale_price, 0) }}</span>
                                                                     @else
-                                                                        <span class="current-price">â‚ª {{ number_format($featuredProducts[7]->price, 0) }}</span>
+                                                                        <span class="current-price">&#8362; {{ number_format($featuredProducts[7]->price, 0) }}</span>
                                                                     @endif
                                                                 </div>
                                                                 @if($featuredProducts[7]->stock_status === 'out_of_stock')
@@ -4693,10 +4693,10 @@
                                                             <div class="product-footer">
                                                                 <div class="product-price">
                                                                     @if($giftIdeas[0]->sale_price && $giftIdeas[0]->sale_price < $giftIdeas[0]->price)
-                                                                        <span class="original-price">â‚ª {{ number_format($giftIdeas[0]->price, 0) }}</span>
-                                                                        <span class="current-price">â‚ª {{ number_format($giftIdeas[0]->sale_price, 0) }}</span>
+                                                                        <span class="original-price">&#8362; {{ number_format($giftIdeas[0]->price, 0) }}</span>
+                                                                        <span class="current-price">&#8362; {{ number_format($giftIdeas[0]->sale_price, 0) }}</span>
                                                                     @else
-                                                                        <span class="current-price">â‚ª {{ number_format($giftIdeas[0]->price, 0) }}</span>
+                                                                        <span class="current-price">&#8362; {{ number_format($giftIdeas[0]->price, 0) }}</span>
                                                                     @endif
                                                                 </div>
                                                                 @if($giftIdeas[0]->stock_status === 'out_of_stock')
@@ -4748,10 +4748,10 @@
                                                             <div class="product-footer">
                                                                 <div class="product-price">
                                                                     @if($giftIdeas[1]->sale_price && $giftIdeas[1]->sale_price < $giftIdeas[1]->price)
-                                                                        <span class="original-price">â‚ª {{ number_format($giftIdeas[1]->price, 0) }}</span>
-                                                                        <span class="current-price">â‚ª {{ number_format($giftIdeas[1]->sale_price, 0) }}</span>
+                                                                        <span class="original-price">&#8362; {{ number_format($giftIdeas[1]->price, 0) }}</span>
+                                                                        <span class="current-price">&#8362; {{ number_format($giftIdeas[1]->sale_price, 0) }}</span>
                                                                     @else
-                                                                        <span class="current-price">â‚ª {{ number_format($giftIdeas[1]->price, 0) }}</span>
+                                                                        <span class="current-price">&#8362; {{ number_format($giftIdeas[1]->price, 0) }}</span>
                                                                     @endif
                                                                 </div>
                                                                 @if($giftIdeas[1]->stock_status === 'out_of_stock')
