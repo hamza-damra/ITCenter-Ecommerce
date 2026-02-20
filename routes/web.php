@@ -537,6 +537,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/site-settings/password', [App\Http\Controllers\Admin\SiteSettingsController::class, 'changePassword'])->name('site-settings.change-password');
     Route::put('/site-settings/privacy-policy', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updatePrivacyPolicy'])->name('site-settings.update-privacy-policy');
     Route::put('/site-settings/refund-policy', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updateRefundPolicy'])->name('site-settings.update-refund-policy');
+    Route::put('/site-settings/social-links', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updateSocialLinks'])->name('site-settings.update-social-links');
 
     // Employee Roles Management (Admin Only)
     Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);

@@ -417,17 +417,25 @@
             <x-category-nav :categories="$navigationCategories" />
         @endif
 
+        @php
+            $socialLinksRaw = \App\Models\SiteSetting::getValue('social_links', null);
+            if (!is_array($socialLinksRaw)) {
+                $socialLinksRaw = [
+                    ['platform'=>'facebook',  'label'=>'Facebook',  'icon'=>'fab fa-facebook-f', 'url'=>'https://facebook.com',  'visible'=>true],
+                    ['platform'=>'instagram', 'label'=>'Instagram', 'icon'=>'fab fa-instagram',  'url'=>'https://instagram.com', 'visible'=>true],
+                    ['platform'=>'whatsapp',  'label'=>'WhatsApp',  'icon'=>'fab fa-whatsapp',   'url'=>'https://wa.me/',        'visible'=>true],
+                ];
+            }
+            $visibleSocialLinks = array_filter($socialLinksRaw, fn($l) => !empty($l['visible']) && !empty($l['url']));
+        @endphp
+
         <!-- Desktop Social Icons -->
         <div class="social-icons">
-            <a href="https://facebook.com" target="_blank" class="social-icon" aria-label="Facebook">
-                <i class="fab fa-facebook-f"></i>
+            @foreach($visibleSocialLinks as $sl)
+            <a href="{{ $sl['url'] }}" target="_blank" class="social-icon" aria-label="{{ $sl['label'] }}">
+                <i class="{{ $sl['icon'] }}"></i>
             </a>
-            <a href="https://instagram.com" target="_blank" class="social-icon" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://wa.me/" target="_blank" class="social-icon" aria-label="WhatsApp">
-                <i class="fab fa-whatsapp"></i>
-            </a>
+            @endforeach
         </div>
 
         <!-- Mobile Social Icons Toggle -->
@@ -438,15 +446,11 @@
 
         <!-- Mobile Social Icons Popup -->
         <div class="social-icons-mobile">
-            <a href="https://facebook.com" target="_blank" class="social-icon" aria-label="Facebook">
-                <i class="fab fa-facebook-f"></i>
+            @foreach($visibleSocialLinks as $sl)
+            <a href="{{ $sl['url'] }}" target="_blank" class="social-icon" aria-label="{{ $sl['label'] }}">
+                <i class="{{ $sl['icon'] }}"></i>
             </a>
-            <a href="https://instagram.com" target="_blank" class="social-icon" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://wa.me/" target="_blank" class="social-icon" aria-label="WhatsApp">
-                <i class="fab fa-whatsapp"></i>
-            </a>
+            @endforeach
         </div>
     @endif
 
@@ -464,14 +468,9 @@
                     </div>
                     <p>{{ __('messages.footer_description') }}</p>
                     <div class="footer-social">
-                        <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i
-                                class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/" target="_blank" aria-label="WhatsApp"><i
-                                class="fab fa-whatsapp"></i></a>
-                        <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i
-                                class="fab fa-twitter"></i></a>
+                        @foreach($visibleSocialLinks as $sl)
+                        <a href="{{ $sl['url'] }}" target="_blank" aria-label="{{ $sl['label'] }}"><i class="{{ $sl['icon'] }}"></i></a>
+                        @endforeach
                     </div>
                 </div>
                 <div class="footer-section">

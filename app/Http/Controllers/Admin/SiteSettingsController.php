@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
@@ -38,7 +39,19 @@ class SiteSettingsController extends Controller
             'he' => SiteSetting::getValue('refund_policy_he', ''),
         ];
 
-        return view('admin.site-settings.index', compact('imageSettings', 'privacyPolicy', 'refundPolicy'));
+        $defaultSocialLinks = [
+            ['platform' => 'facebook',  'label' => 'Facebook',    'icon' => 'fab fa-facebook-f', 'url' => 'https://facebook.com',  'visible' => true],
+            ['platform' => 'instagram', 'label' => 'Instagram',   'icon' => 'fab fa-instagram',  'url' => 'https://instagram.com', 'visible' => true],
+            ['platform' => 'whatsapp',  'label' => 'WhatsApp',    'icon' => 'fab fa-whatsapp',   'url' => 'https://wa.me/',        'visible' => true],
+            ['platform' => 'twitter',   'label' => 'Twitter / X', 'icon' => 'fab fa-twitter',    'url' => 'https://twitter.com',   'visible' => false],
+        ];
+
+        $socialLinks = SiteSetting::getValue('social_links', $defaultSocialLinks);
+        if (!is_array($socialLinks)) {
+            $socialLinks = $defaultSocialLinks;
+        }
+
+        return view('admin.site-settings.index', compact('imageSettings', 'privacyPolicy', 'refundPolicy', 'socialLinks'));
     }
 
     /**
@@ -105,6 +118,36 @@ class SiteSettingsController extends Controller
         }
 
         return back()->withErrors(['current_password' => __('messages.password_change_failed')])->with('tab', 'password');
+    }
+
+    /**
+     * Update social media links.
+     */
+    public function updateSocialLinks(Request $request)
+    {
+        $links = [];
+        $platforms  = $request->input('platform', []);
+        $labels     = $request->input('label', []);
+        $icons      = $request->input('icon', []);
+        $urls       = $request->input('url', []);
+        $visibles   = $request->input('visible', []);
+
+        foreach ($platforms as $i => $platform) {
+            if (empty($platform)) continue;
+            $links[] = [
+                'platform' => $platform,
+                'label'    => $labels[$i] ?? $platform,
+                'icon'     => $icons[$i] ?? 'fab fa-link',
+                'url'      => $urls[$i] ?? '',
+                'visible'  => ($visibles[$i] ?? '0') === '1',
+            ];
+        }
+
+        SiteSetting::setValue('social_links', $links, 'json', 'social');
+        Cache::forget('site_setting.social_links');
+
+        return redirect()->route('admin.site-settings.index', ['tab' => 'social-links'])
+            ->with('success', __('messages.social_links_updated'));
     }
 
     /**

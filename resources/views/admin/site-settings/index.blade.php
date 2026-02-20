@@ -351,25 +351,108 @@
         font-size: 14px;
     }
 
+    .social-links-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+
+    .social-link-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        background: #f8fafc;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        transition: border-color 0.2s;
+    }
+
+    .social-link-row:hover { border-color: var(--primary); }
+
+    .social-link-icon {
+        width: 38px; height: 38px;
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        color: white; font-size: 15px; flex-shrink: 0;
+    }
+
+    .social-link-name {
+        font-weight: 600; font-size: 14px; color: var(--dark);
+        min-width: 110px; flex-shrink: 0;
+    }
+
+    .social-link-url { flex: 1; }
+
+    .social-toggle-btn, .social-delete-btn {
+        width: 36px; height: 36px;
+        border-radius: 8px; border: 1px solid var(--border);
+        background: white; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; flex-shrink: 0; transition: all 0.2s;
+    }
+
+    .social-toggle-btn.active  { background: #dcfce7; border-color: #86efac; color: #16a34a; }
+    .social-toggle-btn:not(.active) { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
+    .social-delete-btn { border-color: #fca5a5; background: #fef2f2; color: #dc2626; }
+    .social-delete-btn:hover { background: #dc2626; color: white; }
+
+    .add-social-btn {
+        display: flex; align-items: center; gap: 8px;
+        padding: 12px 20px; background: #eff6ff;
+        border: 2px dashed var(--primary); border-radius: 12px;
+        color: var(--primary); font-weight: 600; font-size: 14px;
+        cursor: pointer; width: 100%; justify-content: center;
+        transition: all 0.2s; margin-bottom: 20px; font-family: inherit;
+    }
+    .add-social-btn:hover { background: var(--primary); color: white; }
+
+    .platform-picker-modal {
+        display: none; position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); z-index: 9999;
+        align-items: center; justify-content: center;
+    }
+    .platform-picker-modal.show { display: flex; }
+
+    .platform-picker-content {
+        background: white; border-radius: 16px; padding: 24px;
+        width: 520px; max-width: 95vw; max-height: 80vh;
+        overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .platform-picker-title {
+        font-size: 18px; font-weight: 700; color: var(--dark);
+        margin-bottom: 20px;
+        display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .platform-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 10px; margin-bottom: 20px;
+    }
+
+    .platform-option {
+        display: flex; flex-direction: column; align-items: center; gap: 8px;
+        padding: 14px 10px; border: 2px solid var(--border);
+        border-radius: 12px; cursor: pointer; transition: all 0.2s;
+        background: white; font-family: inherit;
+    }
+    .platform-option:hover { border-color: var(--primary); background: #eff6ff; }
+    .platform-option.already-added { opacity: 0.45; cursor: not-allowed; }
+
+    .platform-option-icon {
+        width: 44px; height: 44px; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        color: white; font-size: 20px;
+    }
+    .platform-option-name { font-size: 12px; font-weight: 600; color: var(--dark); text-align: center; }
+
+    .custom-platform-form { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 4px; }
+
     @media (max-width: 768px) {
-        .settings-tabs {
-            flex-wrap: wrap;
-        }
-
-        .settings-tab {
-            padding: 12px 16px;
-            font-size: 13px;
-        }
-
-        .policy-language-tabs {
-            width: 100%;
-        }
-
-        .policy-lang-tab {
-            flex: 1;
-            text-align: center;
-            padding: 10px 12px;
-        }
+        .settings-tabs { flex-wrap: wrap; }
+        .settings-tab { padding: 12px 16px; font-size: 13px; }
+        .policy-language-tabs { width: 100%; }
+        .policy-lang-tab { flex: 1; text-align: center; padding: 10px 12px; }
+        .social-link-name { min-width: 80px; }
     }
 </style>
 
@@ -394,6 +477,9 @@
         </button>
         <button class="settings-tab {{ request('tab') === 'refund-policy' ? 'active' : '' }}" onclick="switchTab('refund-policy')" type="button">
             <i class="fas fa-undo-alt"></i> {{ __('messages.refund_policy_tab') }}
+        </button>
+        <button class="settings-tab {{ request('tab') === 'social-links' ? 'active' : '' }}" onclick="switchTab('social-links')" type="button">
+            <i class="fas fa-share-alt"></i> {{ __('messages.social_links') }}
         </button>
     </div>
 
@@ -734,6 +820,88 @@
             </form>
         </div>
     </div>
+    @php
+    $platformColors = [
+        'facebook'  => '#1877F2', 'instagram' => '#E1306C', 'whatsapp'  => '#25D366',
+        'twitter'   => '#1DA1F2', 'youtube'   => '#FF0000', 'tiktok'    => '#010101',
+        'linkedin'  => '#0A66C2', 'snapchat'  => '#FFFC00', 'telegram'  => '#0088CC',
+        'pinterest' => '#E60023', 'x'         => '#000000',
+    ];
+    @endphp
+
+    <!-- Social Links Tab -->
+    <div class="tab-content {{ request('tab') === 'social-links' ? 'active' : '' }}" id="tab-social-links">
+        <div class="card-body">
+            <div class="settings-info-box">
+                <i class="fas fa-share-alt"></i>
+                <p>{{ __('messages.social_links_admin_description') }}</p>
+            </div>
+
+            <form action="{{ route('admin.site-settings.update-social-links') }}" method="POST" id="social-links-form">
+                @csrf
+                @method('PUT')
+
+                <div class="social-links-list" id="social-links-list">
+                    @foreach($socialLinks as $index => $link)
+                    <div class="social-link-row" data-index="{{ $index }}">
+                        <input type="hidden" name="platform[{{ $index }}]" value="{{ $link['platform'] }}">
+                        <input type="hidden" name="label[{{ $index }}]" value="{{ $link['label'] }}">
+                        <input type="hidden" name="icon[{{ $index }}]" value="{{ $link['icon'] }}">
+                        <input type="hidden" name="visible[{{ $index }}]" class="visibility-input" value="{{ !empty($link['visible']) ? '1' : '0' }}">
+                        <div class="social-link-icon" style="background: {{ $platformColors[$link['platform']] ?? '#6b7280' }};">
+                            <i class="{{ $link['icon'] }}"></i>
+                        </div>
+                        <span class="social-link-name">{{ $link['label'] }}</span>
+                        <input type="text" name="url[{{ $index }}]" class="form-control social-link-url" value="{{ $link['url'] }}" placeholder="https://...">
+                        <button type="button" class="social-toggle-btn {{ !empty($link['visible']) ? 'active' : '' }}" onclick="toggleSocialVisible(this)" title="{{ !empty($link['visible']) ? __('messages.hide') : __('messages.show') }}">
+                            <i class="fas fa-{{ !empty($link['visible']) ? 'eye' : 'eye-slash' }}"></i>
+                        </button>
+                        <button type="button" class="social-delete-btn" onclick="removeSocialRow(this)" title="{{ __('messages.delete') }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    @endforeach
+                </div>
+
+                <button type="button" class="add-social-btn" onclick="openPlatformPicker()">
+                    <i class="fas fa-plus-circle"></i> {{ __('messages.add_social_platform') }}
+                </button>
+
+                <div style="display:flex;justify-content:flex-end;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> {{ __('messages.save_social_links') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Platform Picker Modal -->
+<div class="platform-picker-modal" id="platform-picker-modal">
+    <div class="platform-picker-content">
+        <div class="platform-picker-title">
+            <span><i class="fas fa-share-alt"></i> {{ __('messages.choose_platform') }}</span>
+            <button type="button" onclick="closePlatformPicker()" style="background:none;border:none;cursor:pointer;font-size:20px;color:var(--secondary);"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="platform-grid" id="platform-grid"></div>
+        <div class="custom-platform-form">
+            <p style="font-size:13px;font-weight:600;color:var(--dark);margin-bottom:12px;">{{ __('messages.or_custom_platform') }}</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <label class="form-label" style="font-size:13px;">{{ __('messages.platform_name') }}</label>
+                    <input type="text" id="custom-platform-name" class="form-control" placeholder="e.g. Pinterest">
+                </div>
+                <div>
+                    <label class="form-label" style="font-size:13px;">{{ __('messages.platform_icon') }}</label>
+                    <input type="text" id="custom-platform-icon" class="form-control" placeholder="fab fa-pinterest">
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" style="margin-top:12px;font-size:13px;" onclick="addCustomPlatform()">
+                <i class="fas fa-plus"></i> {{ __('messages.add_custom') }}
+            </button>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -764,6 +932,85 @@ function togglePasswordVisibility(inputId, btn) {
     }
 }
 
+let socialLinkCounter = {{ count($socialLinks) }};
+const SOCIAL_PLATFORMS = [
+    { platform: 'facebook',  label: 'Facebook',    icon: 'fab fa-facebook-f',  color: '#1877F2' },
+    { platform: 'instagram', label: 'Instagram',   icon: 'fab fa-instagram',   color: '#E1306C' },
+    { platform: 'whatsapp',  label: 'WhatsApp',    icon: 'fab fa-whatsapp',    color: '#25D366' },
+    { platform: 'twitter',   label: 'Twitter / X', icon: 'fab fa-twitter',     color: '#1DA1F2' },
+    { platform: 'youtube',   label: 'YouTube',     icon: 'fab fa-youtube',     color: '#FF0000' },
+    { platform: 'tiktok',    label: 'TikTok',      icon: 'fab fa-tiktok',      color: '#010101' },
+    { platform: 'linkedin',  label: 'LinkedIn',    icon: 'fab fa-linkedin-in', color: '#0A66C2' },
+    { platform: 'snapchat',  label: 'Snapchat',    icon: 'fab fa-snapchat',    color: '#FFFC00' },
+    { platform: 'telegram',  label: 'Telegram',    icon: 'fab fa-telegram',    color: '#0088CC' },
+    { platform: 'pinterest', label: 'Pinterest',   icon: 'fab fa-pinterest',   color: '#E60023' },
+];
+
+function openPlatformPicker() {
+    const modal = document.getElementById('platform-picker-modal');
+    const grid  = document.getElementById('platform-grid');
+    grid.innerHTML = '';
+    const existing = Array.from(document.querySelectorAll('[name^="platform["]')).map(i => i.value);
+    SOCIAL_PLATFORMS.forEach(p => {
+        const added = existing.includes(p.platform);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'platform-option' + (added ? ' already-added' : '');
+        if (!added) btn.onclick = () => { addPlatformRow(p); closePlatformPicker(); };
+        btn.innerHTML = `<div class="platform-option-icon" style="background:${p.color}"><i class="${p.icon}"></i></div><span class="platform-option-name">${p.label}</span>${added ? '<span style="font-size:10px;color:#9ca3af">✓ Added</span>' : ''}`;
+        grid.appendChild(btn);
+    });
+    modal.classList.add('show');
+}
+
+function closePlatformPicker() {
+    document.getElementById('platform-picker-modal').classList.remove('show');
+}
+
+function addPlatformRow(p) {
+    const idx  = socialLinkCounter++;
+    const list = document.getElementById('social-links-list');
+    const row  = document.createElement('div');
+    row.className = 'social-link-row';
+    row.dataset.index = idx;
+    row.innerHTML = `
+        <input type="hidden" name="platform[${idx}]" value="${p.platform}">
+        <input type="hidden" name="label[${idx}]" value="${p.label}">
+        <input type="hidden" name="icon[${idx}]" value="${p.icon}">
+        <input type="hidden" name="visible[${idx}]" class="visibility-input" value="1">
+        <div class="social-link-icon" style="background:${p.color}"><i class="${p.icon}"></i></div>
+        <span class="social-link-name">${p.label}</span>
+        <input type="text" name="url[${idx}]" class="form-control social-link-url" value="" placeholder="https://...">
+        <button type="button" class="social-toggle-btn active" onclick="toggleSocialVisible(this)"><i class="fas fa-eye"></i></button>
+        <button type="button" class="social-delete-btn" onclick="removeSocialRow(this)"><i class="fas fa-trash"></i></button>
+    `;
+    list.appendChild(row);
+}
+
+function addCustomPlatform() {
+    const name = document.getElementById('custom-platform-name').value.trim();
+    const icon = document.getElementById('custom-platform-icon').value.trim();
+    if (!name) { alert('{{ __('messages.platform_name_required') }}'); return; }
+    addPlatformRow({ platform: name.toLowerCase().replace(/\s+/g,'_'), label: name, icon: icon || 'fas fa-link', color: '#6b7280' });
+    closePlatformPicker();
+}
+
+function toggleSocialVisible(btn) {
+    const input = btn.closest('.social-link-row').querySelector('.visibility-input');
+    const nowVisible = input.value !== '1';
+    input.value = nowVisible ? '1' : '0';
+    btn.classList.toggle('active', nowVisible);
+    btn.querySelector('i').className = nowVisible ? 'fas fa-eye' : 'fas fa-eye-slash';
+}
+
+function removeSocialRow(btn) {
+    if (confirm('{{ __('messages.confirm_delete_social') }}')) {
+        btn.closest('.social-link-row').remove();
+    }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePlatformPicker(); });
+
 function switchPolicyLang(btn, policy, lang) {
     // Update language tab buttons within this policy
     const tabsContainer = btn.parentElement;
@@ -781,7 +1028,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get('tab') || '{{ session("tab", "images") }}';
     if (tab && tab !== 'images') {
-        const tabNames = ['images', 'password', 'privacy-policy', 'refund-policy'];
+        const tabNames = ['images', 'password', 'privacy-policy', 'refund-policy', 'social-links'];
         const idx = tabNames.indexOf(tab);
         if (idx > 0) {
             const tabBtn = document.querySelector(`.settings-tab:nth-child(${idx + 1})`);
