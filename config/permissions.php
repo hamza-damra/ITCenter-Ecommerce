@@ -126,15 +126,15 @@ return [
                 'spec_templates.delete' => 'messages.permission_delete',
             ],
         ],
-        'attributes' => [
-            'label' => 'messages.attributes',
-            'icon' => 'fas fa-sliders-h',
-            'sidebar_route' => 'admin.attributes.*',
+        'filters' => [
+            'label' => 'messages.filters_management',
+            'icon' => 'fas fa-filter',
+            'sidebar_route' => 'admin.filters.*',
             'permissions' => [
-                'attributes.view' => 'messages.permission_view',
-                'attributes.create' => 'messages.permission_create',
-                'attributes.edit' => 'messages.permission_edit',
-                'attributes.delete' => 'messages.permission_delete',
+                'filters.view' => 'messages.permission_view',
+                'filters.create' => 'messages.permission_create',
+                'filters.edit' => 'messages.permission_edit',
+                'filters.delete' => 'messages.permission_delete',
             ],
         ],
         'reviews' => [

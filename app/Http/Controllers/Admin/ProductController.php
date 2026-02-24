@@ -8,11 +8,12 @@ use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Category;
 use App\Models\Brand;
-use App\Models\Attribute;
-use App\Models\AttributeValue;
 use App\Models\HomeSection;
 use App\Models\SiteSetting;
 use App\Services\ImageUploadService;
+use App\Services\FilterResolutionService;
+use App\Models\Filter;
+use App\Models\ProductFilterNumericValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -82,14 +83,14 @@ class ProductController extends Controller
                     // Recent products (latest)
                     $query->latest();
                     break;
-                    
+
                 case 'top_rated':
                     // Top rated products
                     $query->withAvg('reviews', 'rating')
                           ->where('reviews_count', '>', 0)
                           ->orderByDesc('reviews_avg_rating');
                     break;
-                    
+
                 default:
                     $query->latest();
                     break;
@@ -99,7 +100,7 @@ class ProductController extends Controller
         }
 
         $products = $query->paginate(20);
-        
+
         // Preserve all parameters in pagination
         $products->appends($request->except('page'));
 
@@ -110,17 +111,17 @@ class ProductController extends Controller
     {
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
-        
+
         // Fallback to English if the locale column doesn't exist
         $availableColumns = ['name_en', 'name_ar'];
         if (!in_array($nameColumn, $availableColumns)) {
             $nameColumn = 'name_en';
         }
-        
+
         $categories = Category::active()->with('specTemplate.activeFields')->orderBy($nameColumn)->get();
         $brands = Brand::active()->orderBy($nameColumn)->get();
         $tags = \App\Models\Tag::active()->ordered()->get();
-        
+
         // Input limits for frontend validation
         $inputLimits = [
             'name' => ProductRequest::NAME_MAX_LENGTH,
@@ -134,51 +135,9 @@ class ProductController extends Controller
         return view('admin.products.create', compact('categories', 'brands', 'tags', 'inputLimits', 'customSections'));
     }
 
-    /**
-     * Get category-specific attributes via AJAX
-     */
-    public function getCategoryAttributes($categoryId)
-    {
-        $category = Category::findOrFail($categoryId);
-        
-        $attributes = $category->attributes()
-            ->where('is_filterable', true)
-            ->where('is_active', true)
-            ->with(['values' => function ($query) {
-                $query->where('is_active', true)->orderBy('order');
-            }])
-            ->orderBy('order')
-            ->get();
-
-        return response()->json([
-            'attributes' => $attributes->map(function ($attribute) {
-                return [
-                    'id' => $attribute->id,
-                    'name' => $attribute->name,
-                    'slug' => $attribute->slug,
-                    'type' => $attribute->type,
-                    'unit' => $attribute->unit,
-                    'values' => $attribute->values->map(function ($value) {
-                        return [
-                            'id' => $value->id,
-                            'value' => $value->value,
-                            'slug' => $value->slug,
-                            'color_code' => $value->color_code,
-                        ];
-                    }),
-                ];
-            }),
-        ]);
-    }
-
     public function store(ProductRequest $request)
     {
         $validated = $request->validated();
-
-        // Validate that selected attribute values belong to category attributes
-        if (!empty($validated['attribute_values'])) {
-            $this->validateAttributeValues($validated['category_id'], $validated['attribute_values']);
-        }
 
         // Handle checkboxes properly - convert to boolean
         $validated['is_active'] = $request->input('is_active') == '1';
@@ -194,39 +153,38 @@ class ProductController extends Controller
             $validated['sku'] = 'SKU-' . strtoupper(Str::random(10));
             $validated['stock_status'] = $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock';
 
-            // Remove additional_images, attribute_values, and spec_values from validated data before creating product
+            // Remove additional_images and spec_values from validated data before creating product
             $additionalImages = $validated['additional_images'] ?? null;
-            $attributeValues = $validated['attribute_values'] ?? [];
             $specValues = $validated['spec_values'] ?? [];
-            unset($validated['additional_images'], $validated['attribute_values'], $validated['spec_values']);
+            $filterOptions = $request->input('filter_options', []);
+            $filterNumericValues = $request->input('filter_numeric_values', []);
+            unset($validated['additional_images'], $validated['spec_values']);
 
             $product = Product::create($validated);
-
-            // Sync attribute values
-            if (!empty($attributeValues)) {
-                $product->attributeValues()->sync($attributeValues);
-            }
 
             // Sync specification values
             if (!empty($specValues)) {
                 $product->syncSpecValues($specValues);
             }
 
+            // Sync filter option values
+            $this->syncProductFilterValues($product, $filterOptions, $filterNumericValues);
+
             // Handle tags - both existing and new
             $tagIds = $request->input('tags', []);
-            
+
             // Create new tags if provided (from comma-separated string)
             if ($request->filled('new_tags')) {
                 $newTagIds = $this->createNewTags($request->input('new_tags'));
                 $tagIds = array_merge($tagIds, $newTagIds);
             }
-            
+
             // Create new tags from array (from tag input component)
             if ($request->has('new_tags_array')) {
                 $newTagIds = $this->createNewTagsFromArray($request->input('new_tags_array', []));
                 $tagIds = array_merge($tagIds, $newTagIds);
             }
-            
+
             // Sync all tags
             $product->tags()->sync($tagIds);
 
@@ -266,7 +224,7 @@ class ProductController extends Controller
             // Process additional images (URLs - legacy support)
             if ($additionalImages) {
                 $imageUrls = array_filter(array_map('trim', explode("\n", $additionalImages)));
-                
+
                 foreach ($imageUrls as $imageUrl) {
                     if (filter_var($imageUrl, FILTER_VALIDATE_URL)) {
                         ProductImage::create([
@@ -295,42 +253,26 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $product->load(['images', 'attributeValues.attribute', 'category.attributes.values', 'category.specTemplate.activeFields', 'tags', 'specValues.field', 'homeSections']);
+        $product->load(['images', 'category.specTemplate.activeFields', 'tags', 'specValues.field', 'homeSections', 'filterOptions', 'filterNumericValues']);
         $locale = app()->getLocale();
         $nameColumn = "name_{$locale}";
-        
+
         // Fallback to English if the locale column doesn't exist
         $availableColumns = ['name_en', 'name_ar'];
         if (!in_array($nameColumn, $availableColumns)) {
             $nameColumn = 'name_en';
         }
-        
+
         $categories = Category::active()->with('specTemplate.activeFields')->orderBy($nameColumn)->get();
         $brands = Brand::active()->orderBy($nameColumn)->get();
         $tags = \App\Models\Tag::active()->ordered()->get();
-
-        // Get category-specific attributes
-        $categoryAttributes = [];
-        if ($product->category) {
-            $categoryAttributes = $product->category->attributes()
-                ->where('is_filterable', true)
-                ->where('is_active', true)
-                ->with(['values' => function ($query) {
-                    $query->where('is_active', true)->orderBy('order');
-                }])
-                ->orderBy('order')
-                ->get();
-        }
-
-        // Get selected attribute value IDs
-        $selectedAttributeValues = $product->attributeValues->pluck('id')->toArray();
 
         // Get spec values as [field_id => value]
         $specValues = $product->specValues->pluck('value', 'spec_field_id')->toArray();
 
         // Get spec fields for current category
         $specFields = $product->category?->specTemplate?->activeFields ?? collect();
-        
+
         // Input limits for frontend validation
         $inputLimits = [
             'name' => ProductRequest::NAME_MAX_LENGTH,
@@ -342,17 +284,33 @@ class ProductController extends Controller
         $customSections = HomeSection::customProductSections()->active()->ordered()->get();
         $selectedHomeSections = $product->homeSections->pluck('id')->toArray();
 
-        return view('admin.products.edit', compact('product', 'categories', 'brands', 'tags', 'categoryAttributes', 'selectedAttributeValues', 'specValues', 'specFields', 'inputLimits', 'customSections', 'selectedHomeSections'));
+        // Get category-specific filters
+        $categoryFilters = [];
+        $selectedFilterOptions = [];
+        $selectedFilterNumericValues = [];
+        if ($product->category) {
+            $filterResolutionService = app(FilterResolutionService::class);
+            $resolvedFilters = $filterResolutionService->getFiltersForCategory($product->category);
+            $categoryFilters = $resolvedFilters->map(function ($filter) {
+                return [
+                    'id' => $filter->id,
+                    'title' => $filter->title,
+                    'type' => $filter->type,
+                    'options' => $filter->activeOptions->map(function ($opt) {
+                        return ['id' => $opt->id, 'label' => $opt->label, 'color_code' => $opt->color_code];
+                    })->toArray(),
+                ];
+            })->toArray();
+            $selectedFilterOptions = $product->filterOptions->pluck('id')->toArray();
+            $selectedFilterNumericValues = $product->filterNumericValues->pluck('numeric_value', 'filter_id')->toArray();
+        }
+
+        return view('admin.products.edit', compact('product', 'categories', 'brands', 'tags', 'specValues', 'specFields', 'inputLimits', 'customSections', 'selectedHomeSections', 'categoryFilters', 'selectedFilterOptions', 'selectedFilterNumericValues'));
     }
 
     public function update(ProductRequest $request, Product $product)
     {
         $validated = $request->validated();
-
-        // Validate that selected attribute values belong to category attributes
-        if (!empty($validated['attribute_values'])) {
-            $this->validateAttributeValues($validated['category_id'], $validated['attribute_values']);
-        }
 
         // Handle checkboxes properly - convert to boolean
         $validated['is_active'] = $request->input('is_active') == '1';
@@ -370,35 +328,36 @@ class ProductController extends Controller
             }
             $validated['stock_status'] = $validated['stock_quantity'] > 0 ? 'in_stock' : 'out_of_stock';
 
-            // Remove additional_images, attribute_values, and spec_values from validated data before updating product
+            // Remove additional_images and spec_values from validated data before updating product
             $additionalImages = $validated['additional_images'] ?? null;
-            $attributeValues = $validated['attribute_values'] ?? [];
             $specValues = $validated['spec_values'] ?? [];
-            unset($validated['additional_images'], $validated['attribute_values'], $validated['spec_values']);
+            $filterOptions = $request->input('filter_options', []);
+            $filterNumericValues = $request->input('filter_numeric_values', []);
+            unset($validated['additional_images'], $validated['spec_values']);
 
             $product->update($validated);
-
-            // Sync attribute values
-            $product->attributeValues()->sync($attributeValues);
 
             // Sync specification values
             $product->syncSpecValues($specValues);
 
+            // Sync filter option values
+            $this->syncProductFilterValues($product, $filterOptions, $filterNumericValues);
+
             // Handle tags - both existing and new
             $tagIds = $request->input('tags', []);
-            
+
             // Create new tags if provided (from comma-separated string)
             if ($request->filled('new_tags')) {
                 $newTagIds = $this->createNewTags($request->input('new_tags'));
                 $tagIds = array_merge($tagIds, $newTagIds);
             }
-            
+
             // Create new tags from array (from tag input component)
             if ($request->has('new_tags_array')) {
                 $newTagIds = $this->createNewTagsFromArray($request->input('new_tags_array', []));
                 $tagIds = array_merge($tagIds, $newTagIds);
             }
-            
+
             // Sync all tags
             $product->tags()->sync($tagIds);
 
@@ -445,7 +404,7 @@ class ProductController extends Controller
             // Process additional images (URLs - legacy support)
             if ($additionalImages) {
                 $imageUrls = array_filter(array_map('trim', explode("\n", $additionalImages)));
-                
+
                 foreach ($imageUrls as $imageUrl) {
                     if (filter_var($imageUrl, FILTER_VALIDATE_URL)) {
                         ProductImage::create([
@@ -595,30 +554,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Validate that selected attribute values belong to category attributes
-     */
-    private function validateAttributeValues($categoryId, array $attributeValueIds)
-    {
-        $category = Category::findOrFail($categoryId);
-        
-        // Get all valid attribute value IDs for this category
-        $validAttributeValueIds = AttributeValue::whereHas('attribute', function ($query) use ($category) {
-            $query->whereHas('categories', function ($q) use ($category) {
-                $q->where('categories.id', $category->id);
-            });
-        })->pluck('id')->toArray();
-
-        // Check if all selected values are valid
-        $invalidValues = array_diff($attributeValueIds, $validAttributeValueIds);
-        
-        if (!empty($invalidValues)) {
-            throw ValidationException::withMessages([
-                'attribute_values' => ['Selected attribute values do not belong to the product\'s category attributes.'],
-            ]);
-        }
-    }
-
-    /**
      * Generate a unique slug, appending -2, -3, etc. if the base slug already exists.
      *
      * @param string $name
@@ -698,16 +633,16 @@ class ProductController extends Controller
     private function createNewTagsFromArray(array $tagNames): array
     {
         $tagIds = [];
-        
+
         foreach ($tagNames as $tagName) {
             $tagName = trim($tagName);
             if (empty($tagName)) continue;
-            
+
             // Check if tag already exists
             $existingTag = \App\Models\Tag::where('name_en', $tagName)
                 ->orWhere('name_ar', $tagName)
                 ->first();
-            
+
             if ($existingTag) {
                 $tagIds[] = $existingTag->id;
             } else {
@@ -722,7 +657,7 @@ class ProductController extends Controller
                 $tagIds[] = $newTag->id;
             }
         }
-        
+
         return $tagIds;
     }
 
@@ -734,15 +669,15 @@ class ProductController extends Controller
     {
         $tagIds = [];
         $tagNames = array_filter(array_map('trim', explode(',', $tagsString)));
-        
+
         foreach ($tagNames as $tagName) {
             if (empty($tagName)) continue;
-            
+
             // Check if tag already exists
             $existingTag = \App\Models\Tag::where('name_en', $tagName)
                 ->orWhere('name_ar', $tagName)
                 ->first();
-            
+
             if ($existingTag) {
                 $tagIds[] = $existingTag->id;
             } else {
@@ -757,7 +692,7 @@ class ProductController extends Controller
                 $tagIds[] = $newTag->id;
             }
         }
-        
+
         return $tagIds;
     }
 
@@ -773,5 +708,32 @@ class ProductController extends Controller
             '#ec4899', '#f43f5e'
         ];
         return $colors[array_rand($colors)];
+    }
+
+    /**
+     * Sync product filter option values and numeric filter values.
+     */
+    private function syncProductFilterValues(Product $product, array $filterOptions, array $filterNumericValues): void
+    {
+        // Flatten all option IDs from filter_options[filterId][] groups
+        $allOptionIds = [];
+        foreach ($filterOptions as $filterId => $optionIds) {
+            if (is_array($optionIds)) {
+                $allOptionIds = array_merge($allOptionIds, $optionIds);
+            }
+        }
+        $product->filterOptions()->sync(array_filter(array_unique($allOptionIds)));
+
+        // Delete existing numeric values and re-insert
+        $product->filterNumericValues()->delete();
+        foreach ($filterNumericValues as $filterId => $value) {
+            if ($value !== null && $value !== '') {
+                ProductFilterNumericValue::create([
+                    'product_id' => $product->id,
+                    'filter_id' => (int) $filterId,
+                    'numeric_value' => (float) $value,
+                ]);
+            }
+        }
     }
 }

@@ -3,9 +3,12 @@
 namespace App\Services;
 
 use App\Models\Category;
+use App\Models\Filter;
+use App\Models\FilterSectionSetting;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductFilterService
 {
@@ -23,7 +26,7 @@ class ProductFilterService
         if ($category !== null) {
             $query = $this->applyCategoryFilter($query, $category);
         }
-        
+
         // Apply categories filter from request (supports both 'category' and 'categories[]' parameters)
         $categoryFilters = [];
         if ($request->has('categories') && !empty($request->categories)) {
@@ -45,7 +48,7 @@ class ProductFilterService
         if ($request->has('tag') && !empty($request->tag)) {
             $query = $this->applyTagFilter($query, $request->tag);
         }
-        
+
         // Apply multiple tags filter (AND logic)
         if ($request->has('tags') && !empty($request->tags)) {
             $query = $this->applyMultipleTagsFilter($query, $request->tags);
@@ -74,14 +77,14 @@ class ProductFilterService
             $query = $this->applyPriceFilter($query, $request->min_price, $request->max_price);
         }
 
-        // Apply attribute filters
-        if ($request->has('attr')) {
-            $query = $this->applyAttributeFilters($query, $request->attr);
+        // Apply dynamic filters (new system: f[slug][]=value)
+        if ($request->has('f')) {
+            $query = $this->applyDynamicFilters($query, $request->input('f', []));
         }
 
         return $query;
     }
-    
+
     /**
      * Apply single tag filter to query
      *
@@ -95,7 +98,7 @@ class ProductFilterService
             $q->where('slug', $tagSlug)->where('is_active', true);
         });
     }
-    
+
     /**
      * Apply multiple tags filter with AND logic
      *
@@ -107,13 +110,13 @@ class ProductFilterService
     {
         $tags = is_array($tags) ? $tags : [$tags];
         $tags = array_filter($tags);
-        
+
         foreach ($tags as $tagSlug) {
             $query->whereHas('tags', function ($q) use ($tagSlug) {
                 $q->where('slug', $tagSlug)->where('is_active', true);
             });
         }
-        
+
         return $query;
     }
 
@@ -130,7 +133,7 @@ class ProductFilterService
         if ($category instanceof Category) {
             return $query->where('category_id', $category->id);
         }
-        
+
         // Array of category IDs - use whereIn for multi-category filtering
         return $query->whereIn('category_id', $category);
     }
@@ -174,7 +177,7 @@ class ProductFilterService
     protected function applyBrandFilter(Builder $query, $brands): Builder
     {
         $brands = is_array($brands) ? $brands : [$brands];
-        
+
         if (!empty($brands)) {
             $query->whereHas('brand', function ($q) use ($brands) {
                 $q->whereIn('slug', $brands);
@@ -206,28 +209,83 @@ class ProductFilterService
     }
 
     /**
-     * Apply attribute filters to query with AND logic
+     * Apply dynamic filters from the new filter system.
+     * Expects format: f[filter_slug][] = option_value_slug (checkbox/radio/boolean)
+     *                  f[filter_slug][min] = X, f[filter_slug][max] = Y (range/min_max)
+     *
+     * AND logic across different filters, OR logic within the same filter.
      *
      * @param Builder $query
-     * @param array $attributes
+     * @param array $filterParams
      * @return Builder
      */
-    protected function applyAttributeFilters(Builder $query, array $attributes): Builder
+    protected function applyDynamicFilters(Builder $query, array $filterParams): Builder
     {
-        foreach ($attributes as $attributeSlug => $valueSlugs) {
-            if (empty($valueSlugs)) {
-                continue;
+        if (empty($filterParams)) {
+            return $query;
+        }
+
+        // Preload all referenced filter slugs in one query
+        $filterSlugs = array_keys($filterParams);
+        $filters = Filter::active()
+            ->whereIn('slug', $filterSlugs)
+            ->with('activeOptions')
+            ->get()
+            ->keyBy('slug');
+
+        foreach ($filterParams as $filterSlug => $values) {
+            $filter = $filters->get($filterSlug);
+            if (!$filter) {
+                continue; // Skip invalid/unknown filter slugs
             }
 
-            // Ensure valueSlugs is an array
-            $valueSlugs = is_array($valueSlugs) ? $valueSlugs : [$valueSlugs];
+            if ($filter->isOptionBased()) {
+                // checkbox / radio / boolean
+                $optionSlugs = is_array($values) ? array_values(array_filter($values)) : [$values];
+                if (empty($optionSlugs)) {
+                    continue;
+                }
 
-            // Apply AND logic: product must have at least one of the selected values for this attribute
-            $query->whereHas('attributeValues', function ($q) use ($attributeSlug, $valueSlugs) {
-                $q->whereHas('attribute', function ($attrQuery) use ($attributeSlug) {
-                    $attrQuery->where('slug', $attributeSlug);
-                })->whereIn('slug', $valueSlugs);
-            });
+                // Validate option slugs against active options
+                $validSlugs = $filter->activeOptions->pluck('value_slug')->toArray();
+                $optionSlugs = array_intersect($optionSlugs, $validSlugs);
+                if (empty($optionSlugs)) {
+                    continue;
+                }
+
+                // Get option IDs for these slugs
+                $optionIds = $filter->activeOptions
+                    ->whereIn('value_slug', $optionSlugs)
+                    ->pluck('id')
+                    ->toArray();
+
+                // OR within same filter: product must have at least one of the selected options
+                $query->whereHas('filterOptions', function ($q) use ($optionIds) {
+                    $q->whereIn('filter_options.id', $optionIds);
+                });
+            } elseif ($filter->isNumeric()) {
+                // range / min_max — expects ['min' => X, 'max' => Y]
+                if (!is_array($values)) {
+                    continue;
+                }
+                $min = isset($values['min']) && is_numeric($values['min']) ? (float) $values['min'] : null;
+                $max = isset($values['max']) && is_numeric($values['max']) ? (float) $values['max'] : null;
+
+                if ($min === null && $max === null) {
+                    continue;
+                }
+
+                $filterId = $filter->id;
+                $query->whereHas('filterNumericValues', function ($q) use ($filterId, $min, $max) {
+                    $q->where('filter_id', $filterId);
+                    if ($min !== null) {
+                        $q->where('numeric_value', '>=', $min);
+                    }
+                    if ($max !== null) {
+                        $q->where('numeric_value', '<=', $max);
+                    }
+                });
+            }
         }
 
         return $query;
@@ -236,15 +294,18 @@ class ProductFilterService
     /**
      * Get available filters for a category with counts
      *
-     * @param Category|array<int>|null $category Category object or array of category IDs
+     * @param Category|array<int>|null $category Category object or array of category IDs (for filter counts)
+     * @param Category|null $currentCategory The actual current category for tree highlighting
      * @return array
      */
-    public function getAvailableFilters(Category|array|null $category = null): array
+    public function getAvailableFilters(Category|array|null $category = null, ?Category $currentCategory = null): array
     {
         $filters = [];
 
-        // Get categories with product counts
-        $filters['categories'] = $this->getCategoryFilters();
+        // Get hierarchical category tree for sidebar navigation
+        // Use the specific Category object for highlighting if provided, otherwise fall back to $category
+        $treeContext = $currentCategory ?? $category;
+        $filters['category_tree'] = $this->getHierarchicalCategories($treeContext);
 
         // Get tags with product counts
         $filters['tags'] = $this->getTagFilters($category);
@@ -255,21 +316,113 @@ class ProductFilterService
         // Get stock options with counts
         $filters['stock'] = $this->getStockFilters($category);
 
-        // Get attribute filters with counts (category-specific)
-        // Only available when a single Category object is provided
-        if ($category instanceof Category) {
-            $filters['attributes'] = $this->getAttributeFilters($category);
-        }
+        // Get dynamic filters with counts (unified system)
+        $filterResolution = app(FilterResolutionService::class);
+        $filters['dynamic_filters'] = $filterResolution->getFiltersWithCounts($category);
 
-        // Get price range
+        // Get price range from actual DB values
         $filters['price_range'] = $this->getPriceRange($category);
 
-        // Add strong offers flag
-        $filters['strong_offers'] = true;
+        // Add strong offers flag (respects admin setting)
+        $filters['strong_offers'] = FilterSectionSetting::isEnabled('strong_offers');
+
+        // Section display settings (admin-controllable visibility & order)
+        $filters['section_settings'] = $this->getSectionSettings();
 
         return $filters;
     }
-    
+
+    /**
+     * Get hierarchical category tree for sidebar navigation.
+     * Returns parent categories with nested children/grandchildren,
+     * each with product counts (including descendant products).
+     *
+     * @param Category|array<int>|null $currentCategory Current category context for highlighting
+     * @return array
+     */
+    public function getHierarchicalCategories(Category|array|null $currentCategory = null): array
+    {
+        // Resolve current category IDs for highlighting
+        $currentCategoryIds = [];
+        if ($currentCategory instanceof Category) {
+            $currentCategoryIds = [$currentCategory->id];
+            // Also include ancestor IDs so parent gets highlighted/expanded
+            foreach ($currentCategory->ancestors() as $ancestor) {
+                $currentCategoryIds[] = $ancestor->id;
+            }
+        } elseif (is_array($currentCategory)) {
+            $currentCategoryIds = $currentCategory;
+        }
+
+        // Load all active categories with counts in a single query
+        $allCategories = Category::active()
+            ->withCount(['products' => function ($query) {
+                $query->active();
+            }])
+            ->orderBy('position')
+            ->orderBy('order')
+            ->orderBy('name_en')
+            ->get();
+
+        // Build lookup maps
+        $byParent = $allCategories->groupBy('parent_id');
+        $parents = $byParent->get('', collect())->merge($byParent->get(null, collect()));
+
+        $tree = [];
+        foreach ($parents as $parent) {
+            $children = $byParent->get($parent->id, collect());
+            $childrenData = [];
+            $parentTotalCount = $parent->products_count;
+
+            foreach ($children as $child) {
+                $grandChildren = $byParent->get($child->id, collect());
+                $grandChildrenData = [];
+                $childTotalCount = $child->products_count;
+
+                foreach ($grandChildren as $grandChild) {
+                    $childTotalCount += $grandChild->products_count;
+                    $parentTotalCount += $grandChild->products_count;
+                    $grandChildrenData[] = [
+                        'id' => $grandChild->id,
+                        'slug' => $grandChild->slug,
+                        'name' => $grandChild->name,
+                        'icon' => $grandChild->icon,
+                        'url' => $grandChild->url,
+                        'count' => $grandChild->products_count,
+                        'is_current' => in_array($grandChild->id, $currentCategoryIds),
+                    ];
+                }
+
+                $parentTotalCount += $child->products_count;
+                $childrenData[] = [
+                    'id' => $child->id,
+                    'slug' => $child->slug,
+                    'name' => $child->name,
+                    'icon' => $child->icon,
+                    'url' => $child->url,
+                    'count' => $child->products_count,
+                    'total_count' => $childTotalCount,
+                    'is_current' => in_array($child->id, $currentCategoryIds),
+                    'children' => $grandChildrenData,
+                ];
+            }
+
+            $tree[] = [
+                'id' => $parent->id,
+                'slug' => $parent->slug,
+                'name' => $parent->name,
+                'icon' => $parent->icon,
+                'url' => $parent->url,
+                'count' => $parent->products_count,
+                'total_count' => $parentTotalCount,
+                'is_current' => in_array($parent->id, $currentCategoryIds),
+                'children' => $childrenData,
+            ];
+        }
+
+        return $tree;
+    }
+
     /**
      * Get tag filters with product counts
      *
@@ -279,12 +432,12 @@ class ProductFilterService
     protected function getTagFilters(Category|array|null $category = null): array
     {
         $query = \App\Models\Tag::active()->ordered();
-        
+
         return $query->get()->map(function ($tag) use ($category) {
             $productQuery = Product::active()->whereHas('tags', function ($q) use ($tag) {
                 $q->where('tags.id', $tag->id);
             });
-            
+
             if ($category !== null) {
                 if ($category instanceof Category) {
                     $productQuery->where('category_id', $category->id);
@@ -293,9 +446,9 @@ class ProductFilterService
                     $productQuery->whereIn('category_id', $category);
                 }
             }
-            
+
             $count = $productQuery->count();
-            
+
             return [
                 'id' => $tag->id,
                 'slug' => $tag->slug,
@@ -320,7 +473,7 @@ class ProductFilterService
     protected function getCategoryFilters(): array
     {
         $locale = app()->getLocale();
-        
+
         // Get ALL active categories (both parent and child) with product counts
         $categories = Category::active()
             ->withCount(['products' => function ($query) {
@@ -337,7 +490,7 @@ class ProductFilterService
                 'count' => $category->products_count,
             ];
         });
-        
+
         // Sort: categories with products first (by count desc), then categories without products (alphabetically)
         return $categoriesWithCounts->sortBy([
             ['count', 'desc'],  // First by count descending (categories with products first)
@@ -356,16 +509,16 @@ class ProductFilterService
     protected function getBrandFilters(Category|array|null $category = null): array
     {
         $locale = app()->getLocale();
-        
+
         // Get ALL active brands
         $brands = \App\Models\Brand::active()
             ->orderBy('name_' . $locale)
             ->get();
-        
+
         $brandsWithCounts = $brands->map(function ($brand) use ($category) {
             // Count products for this brand
             $productQuery = Product::active()->where('brand_id', $brand->id);
-            
+
             if ($category !== null) {
                 if ($category instanceof Category) {
                     $productQuery->where('category_id', $category->id);
@@ -374,9 +527,9 @@ class ProductFilterService
                     $productQuery->whereIn('category_id', $category);
                 }
             }
-            
+
             $count = $productQuery->count();
-            
+
             return [
                 'id' => $brand->id,
                 'slug' => $brand->slug,
@@ -384,7 +537,7 @@ class ProductFilterService
                 'count' => $count,
             ];
         });
-        
+
         // Sort: brands with products first (by count desc), then brands without products (alphabetically)
         return $brandsWithCounts->sortBy([
             ['count', 'desc'],  // First by count descending (brands with products first)
@@ -429,58 +582,23 @@ class ProductFilterService
     }
 
     /**
-     * Get attribute filters for category with product counts
+     * Get section settings for filter sidebar (admin-controllable).
      *
-     * @param Category $category
-     * @return array
+     * @return array [['key' => 'status', 'enabled' => true, 'sort_order' => 0], ...]
      */
-    protected function getAttributeFilters(Category $category): array
+    protected function getSectionSettings(): array
     {
-        $attributeFilters = [];
-
-        // Get attributes assigned to this category
-        $attributes = $category->attributes()
-            ->where('is_filterable', true)
-            ->with(['values' => function ($query) {
-                $query->where('is_active', true)->orderBy('order');
-            }])
-            ->get();
-
-        foreach ($attributes as $attribute) {
-            $values = [];
-            
-            foreach ($attribute->values as $value) {
-                // Count products with this attribute value in this category
-                $count = Product::active()
-                    ->where('category_id', $category->id)
-                    ->whereHas('attributeValues', function ($q) use ($value) {
-                        $q->where('attribute_value_id', $value->id);
-                    })
-                    ->count();
-
-                if ($count > 0) {
-                    $values[] = [
-                        'id' => $value->id,
-                        'slug' => $value->slug,
-                        'value' => $value->value,
-                        'count' => $count,
-                    ];
-                }
-            }
-
-            if (!empty($values)) {
-                $attributeFilters[] = [
-                    'id' => $attribute->id,
-                    'slug' => $attribute->slug,
-                    'name' => $attribute->name,
-                    'type' => $attribute->type,
-                    'unit' => $attribute->unit,
-                    'values' => $values,
-                ];
-            }
+        $raw = FilterSectionSetting::getOrderedSettings();
+        $result = [];
+        foreach ($raw as $key => $data) {
+            $result[] = [
+                'key' => $key,
+                'enabled' => (bool) ($data['is_enabled'] ?? true),
+                'sort_order' => (int) ($data['sort_order'] ?? 0),
+            ];
         }
-
-        return $attributeFilters;
+        usort($result, fn ($a, $b) => $a['sort_order'] <=> $b['sort_order']);
+        return $result;
     }
 
     /**

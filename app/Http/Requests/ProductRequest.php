@@ -68,10 +68,6 @@ class ProductRequest extends FormRequest
             'search_keywords' => 'nullable|string|max:' . self::SEARCH_KEYWORDS_MAX_LENGTH,
             'discount_percentage' => 'nullable|numeric|min:0|max:100',
             
-            // Attributes
-            'attribute_values' => 'nullable|array',
-            'attribute_values.*' => 'exists:attribute_values,id',
-            
             // Specification values (dynamic, validated separately)
             'spec_values' => 'nullable|array',
             'spec_values.*' => 'nullable|string|max:500',

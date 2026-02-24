@@ -88,29 +88,26 @@ class Handler extends ExceptionHandler
      */
     protected function isDatabaseConnectionError(Throwable $e): bool
     {
-        // Check for PDO connection errors
-        if ($e instanceof PDOException) {
-            return true;
-        }
+        $connectionPatterns = [
+            'SQLSTATE[HY000] [2002]',  // Connection refused
+            'SQLSTATE[HY000] [1045]',  // Access denied
+            'SQLSTATE[HY000] [2006]',  // Server has gone away
+            'SQLSTATE[08006]',         // Connection failure
+            'SQLSTATE[08S01]',         // Communication link failure
+            'Connection refused',
+            'No connection could be made',
+            'actively refused it',
+            'Can\'t connect to',
+            'Access denied for user',
+            'server has gone away',
+            'could not find driver',
+        ];
 
-        // Check for Laravel Query Exception with connection errors
-        if ($e instanceof QueryException) {
-            $message = $e->getMessage();
-            
-            // Common database connection error patterns
-            $connectionErrors = [
-                'SQLSTATE[HY000] [2002]', // Connection refused
-                'SQLSTATE[HY000] [1045]', // Access denied
-                'SQLSTATE[08006]',        // Connection failure
-                'Connection refused',
-                'No connection could be made',
-                'actively refused it',
-                'Can\'t connect to',
-                'Access denied for user',
-            ];
+        $message = $e->getMessage();
 
-            foreach ($connectionErrors as $error) {
-                if (str_contains($message, $error)) {
+        if ($e instanceof PDOException || $e instanceof QueryException) {
+            foreach ($connectionPatterns as $pattern) {
+                if (str_contains($message, $pattern)) {
                     return true;
                 }
             }

@@ -69,33 +69,33 @@ return Application::configure(basePath: dirname(__DIR__))
             $isDbMissing = false;
 
             // Detect PDO/Query exceptions that indicate DB connectivity issues
-            if ($e instanceof \PDOException) {
-                $message = $e->getMessage();
-                // Check for "Unknown database" (1049) - this is STATE_B, enable bootstrap mode
-                if (str_contains($message, '1049') || str_contains($message, 'Unknown database')) {
-                    $isDbMissing = true;
-                } else {
-                    $isDbDown = true;
-                }
-            }
+            $dbMissingPatterns = ['1049', 'Unknown database'];
+            $dbDownPatterns = [
+                'SQLSTATE[HY000] [2002]',  // Connection refused / host unreachable
+                'SQLSTATE[HY000] [1045]',  // Access denied
+                'SQLSTATE[HY000] [2006]',  // Server has gone away
+                'SQLSTATE[08006]',         // Connection failure
+                'SQLSTATE[08S01]',         // Communication link failure
+                'No connection could be made',
+                'Connection refused',
+                'Can\'t connect to',
+                'Access denied for user',
+                'server has gone away',
+                'could not find driver',
+            ];
 
-            if (!$isDbDown && !$isDbMissing && $e instanceof QueryException) {
+            if ($e instanceof \PDOException || $e instanceof QueryException) {
                 $message = $e->getMessage();
-                // Check for "Unknown database" (1049) - this is STATE_B
-                if (str_contains($message, '1049') || str_contains($message, 'Unknown database')) {
-                    $isDbMissing = true;
-                } else {
-                    $patterns = [
-                        'SQLSTATE[HY000] [2002]', // Connection refused / host unreachable
-                        'SQLSTATE[HY000] [1045]', // Access denied
-                        'SQLSTATE[08006]',        // Connection failure
-                        'No connection could be made',
-                        'Connection refused',
-                        'Can\'t connect to',
-                        'Access denied for user',
-                        'server has gone away',
-                    ];
-                    foreach ($patterns as $p) {
+
+                foreach ($dbMissingPatterns as $p) {
+                    if (str_contains($message, $p)) {
+                        $isDbMissing = true;
+                        break;
+                    }
+                }
+
+                if (!$isDbMissing) {
+                    foreach ($dbDownPatterns as $p) {
                         if (str_contains($message, $p)) {
                             $isDbDown = true;
                             break;

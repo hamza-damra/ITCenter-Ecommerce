@@ -2623,11 +2623,12 @@
                                 class="fas fa-tag"></i> {{ __('messages.brands') }}</a></li>
                 @endif
 
-                {{-- Attributes --}}
-                @if ($authUser->hasAnyPermissionInGroup('attributes'))
-                    <li><a href="{{ route('admin.attributes.index') }}"
-                            class="{{ request()->routeIs('admin.attributes.*') ? 'active' : '' }}"><i
-                                class="fas fa-sliders-h"></i> {{ __('messages.attributes') }}</a></li>
+
+                {{-- Filters --}}
+                @if ($authUser->hasAnyPermissionInGroup('filters'))
+                    <li><a href="{{ route('admin.filters.index') }}"
+                            class="{{ request()->routeIs('admin.filters.*') ? 'active' : '' }}"><i
+                                class="fas fa-filter"></i> {{ __('messages.filters_management') }}</a></li>
                 @endif
 
                 {{-- Tags --}}

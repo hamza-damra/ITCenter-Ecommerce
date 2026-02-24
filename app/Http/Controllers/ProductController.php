@@ -29,7 +29,7 @@ class ProductController extends Controller
         $query = Product::with(['category', 'brand', 'images'])
             ->active();
 
-        // Apply all filters via ProductFilterService (categories, brands, tags, price, etc.)
+        // Apply all filters via ProductFilterService (categories, brands, tags, price, stock, dynamic, etc.)
         $query = $this->filterService->applyFilters($query, $request);
 
         // Filter by features
@@ -48,16 +48,10 @@ class ProductController extends Controller
             $query->where('is_special_offer', true);
         }
 
-        // Filter by tag
-        if ($request->has('tag') && !empty($request->tag)) {
-            $query->withTag($request->tag);
-        }
-
         // Handle filter parameter (for banner clicks)
         if ($request->has('filter')) {
             switch ($request->filter) {
                 case 'gifts':
-                    // Show featured products as gifts
                     $query->featured();
                     break;
                 case 'special_offer':
@@ -108,7 +102,8 @@ class ProductController extends Controller
         $sortOrder = $request->get('order') === 'asc' ? 'asc' : 'desc';
         $query->orderBy($sortBy, $sortOrder);
 
-        $products = $query->paginate($request->get('per_page', 12));
+        $perPage = in_array((int) $request->get('per_page'), [12, 24, 36, 48]) ? (int) $request->get('per_page') : 12;
+        $products = $query->paginate($perPage);
 
         // Preserve filter parameters in pagination links
         $products->appends($request->except('page'));
@@ -116,44 +111,8 @@ class ProductController extends Controller
         // Get cart product IDs for current user/session
         $cartProductIds = $this->getCartProductIds();
 
-        // Determine current category context for filter counts
-        $filterCategory = null;
-        $categoryFilters = [];
-        if ($request->has('categories') && !empty($request->categories)) {
-            $categoryFilters = is_array($request->categories) ? $request->categories : [$request->categories];
-        }
-        if ($request->has('category') && !empty($request->category) && empty($categoryFilters)) {
-            $categoryFilters = [$request->category];
-        }
-        if (!empty($categoryFilters)) {
-            // Get category IDs from slugs for filter counting
-            $filterCategoryIds = Category::whereIn('slug', $categoryFilters)->pluck('id')->toArray();
-            if (!empty($filterCategoryIds)) {
-                $filterCategory = $filterCategoryIds;
-            }
-        }
-
-        // Get available filters with counts from service (pass category context for accurate counts)
-        $availableFilters = $this->filterService->getAvailableFilters($filterCategory);
-
-        // Get all active categories for filter sidebar (legacy)
-        $locale = app()->getLocale();
-        $nameColumn = "name_{$locale}";
-        $categories = Category::active()
-            ->whereNull('parent_id') // Only parent categories
-            ->orderBy('order')
-            ->get();
-
-        // Get price range for slider (from service)
-        $priceRange = $availableFilters['price_range'] ?? [
-            'min' => 0,
-            'max' => 10000,
-        ];
-
-        // Get all active brands with product counts (from service)
-        $brands = collect($availableFilters['brands'] ?? [])->map(function ($brand) {
-            return (object) $brand;
-        });
+        // Get available filters with counts from service
+        $availableFilters = $this->filterService->getAvailableFilters();
 
         // Get active tags for filter carousel
         $tags = collect($availableFilters['tags'] ?? [])->map(function ($tag) {
@@ -166,7 +125,7 @@ class ProductController extends Controller
             $activeTag = \App\Models\Tag::where('slug', $request->tag)->first();
         }
 
-        return view('products', compact('products', 'cartProductIds', 'categories', 'priceRange', 'brands', 'availableFilters', 'tags', 'activeTag'));
+        return view('products', compact('products', 'cartProductIds', 'availableFilters', 'tags', 'activeTag'));
     }
 
     public function show(Product $product)
@@ -180,7 +139,6 @@ class ProductController extends Controller
             'brand',
             'images',
             'reviews.user',
-            'attributes',
             'specValues.field'
         ]);
 

@@ -66,22 +66,22 @@ class Category extends Model
         if (empty($value)) {
             return \App\Helpers\ImageHelper::assetUrl('images/products/default.png');
         }
-        
+
         // If it's already a full URL, return it as is
         if (str_starts_with($value, 'http')) {
             return $value;
         }
-        
+
         // If path starts with 'storage/', strip it (normalize)
         if (str_starts_with($value, 'storage/')) {
             $value = substr($value, 8);
         }
-        
+
         // If path starts with 'images/', it's in the public folder
         if (str_starts_with($value, 'images/')) {
             return asset($value);
         }
-        
+
         // All other paths are in storage/app/public, served via /media/ route
         return asset('media/' . $value);
     }
@@ -97,22 +97,22 @@ class Category extends Model
 
     /**
      * Get the full URL path for this category based on its position in hierarchy.
-     * 
+     *
      * @return string
      */
     public function getUrlAttribute(): string
     {
         $ancestors = $this->ancestors();
-        
+
         if ($ancestors->isEmpty()) {
             // This is a parent category
             return route('category.show', $this->slug);
         }
-        
+
         // Build the slug path from ancestors
         $slugs = $ancestors->pluck('slug')->toArray();
         $slugs[] = $this->slug;
-        
+
         return route('category.show', $slugs);
     }
 
@@ -165,48 +165,38 @@ class Category extends Model
 
     /**
      * Get all descendant categories (children and sub-children) recursively.
-     * 
+     *
      * @return \Illuminate\Support\Collection<Category>
      */
     public function descendants(): \Illuminate\Support\Collection
     {
         $descendants = collect();
-        
+
         foreach ($this->children as $child) {
             $descendants->push($child);
             $descendants = $descendants->merge($child->descendants());
         }
-        
+
         return $descendants;
     }
 
     /**
      * Get all ancestor categories (parent chain) up to root.
      * Returns collection ordered from root to immediate parent.
-     * 
+     *
      * @return \Illuminate\Support\Collection<Category>
      */
     public function ancestors(): \Illuminate\Support\Collection
     {
         $ancestors = collect();
         $current = $this->parent;
-        
+
         while ($current !== null) {
             $ancestors->prepend($current);
             $current = $current->parent;
         }
-        
-        return $ancestors;
-    }
 
-    /**
-     * Get the attributes assigned to this category (for filtering).
-     */
-    public function attributes()
-    {
-        return $this->belongsToMany(Attribute::class, 'attribute_category')
-            ->withTimestamps()
-            ->orderBy('order');
+        return $ancestors;
     }
 
     /**
@@ -281,6 +271,26 @@ class Category extends Model
             return '<span class="status-badge" style="background: #dbeafe; color: #1e40af;"><i class="fas fa-bars"></i> ' . __('messages.nav_bar') . '</span>';
         }
         return '<span class="status-badge" style="background: #fef3c7; color: #92400e;"><i class="fas fa-images"></i> ' . __('messages.carousel') . '</span>';
+    }
+
+    // ── Dynamic Filter Relationships ──────────────────────────
+
+    /**
+     * Get filter assignments for this category.
+     */
+    public function filterAssignments()
+    {
+        return $this->hasMany(FilterAssignment::class);
+    }
+
+    /**
+     * Get filters directly assigned to this category.
+     */
+    public function filters()
+    {
+        return $this->belongsToMany(Filter::class, 'filter_assignments')
+            ->withPivot('inherit_to_children')
+            ->withTimestamps();
     }
 
     /**

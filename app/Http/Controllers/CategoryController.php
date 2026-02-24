@@ -60,12 +60,13 @@ class CategoryController extends Controller
         $sortOrder = $request->get('order') === 'asc' ? 'asc' : 'desc';
         $query->orderBy($sortBy, $sortOrder);
 
-        // Paginate
-        $products = $query->paginate($request->get('per_page', 12));
+        // Paginate (whitelist per_page values)
+        $perPage = in_array((int) $request->get('per_page'), [12, 24, 36, 48]) ? (int) $request->get('per_page') : 12;
+        $products = $query->paginate($perPage);
         $products->appends($request->except('page'));
 
-        // Get available filters for this category (pass category IDs for accurate counts)
-        $availableFilters = $this->filterService->getAvailableFilters($categoryIds);
+        // Get available filters (pass Category object for proper tree highlighting + descendant IDs for counts)
+        $availableFilters = $this->filterService->getAvailableFilters($categoryIds, $category);
 
         // Build breadcrumb data
         $breadcrumbs = $this->buildBreadcrumbs($category);

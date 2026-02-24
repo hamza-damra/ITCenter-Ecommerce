@@ -506,9 +506,6 @@
                         <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-edit"></i> {{ __('messages.edit') }}
                         </a>
-                        <a href="{{ route('admin.categories.attributes.edit', $category) }}" class="btn btn-info btn-sm">
-                            <i class="fas fa-filter"></i> {{ __('messages.attributes') }}
-                        </a>
                         <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" style="display: inline;" 
                               onsubmit="handleFormConfirm(event, {
                                   message: '{{ __('messages.delete_category_confirm') }}',

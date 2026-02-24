@@ -71,18 +71,7 @@
         }
 
         .hero-slide::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg,
-                    rgba(15, 23, 42, 0.85) 0%,
-                    rgba(30, 41, 59, 0.6) 40%,
-                    rgba(51, 65, 85, 0.3) 70%,
-                    rgba(71, 85, 105, 0.1) 100%);
-            z-index: 1;
+            display: none;
         }
 
         .hero-slide::after {

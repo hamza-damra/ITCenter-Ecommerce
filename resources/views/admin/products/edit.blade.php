@@ -17,20 +17,20 @@
         color: #64748b;
         margin-top: 4px;
     }
-    
+
     .char-counter.warning {
         color: #f59e0b;
     }
-    
+
     .char-counter.danger {
         color: #ef4444;
         font-weight: 600;
     }
-    
+
     .char-counter-input.near-limit {
         border-color: #f59e0b !important;
     }
-    
+
     .char-counter-input.at-limit {
         border-color: #ef4444 !important;
         background-color: #fef2f2 !important;
@@ -165,12 +165,12 @@
                             {{ __('messages.product_name_english') }}
                             <span class="required">*</span>
                         </label>
-                        <input 
-                            type="text" 
-                            id="name_en" 
-                            name="name_en" 
-                            class="form-control char-counter-input @error('name_en') is-invalid @enderror" 
-                            value="{{ old('name_en', $product->name_en) }}" 
+                        <input
+                            type="text"
+                            id="name_en"
+                            name="name_en"
+                            class="form-control char-counter-input @error('name_en') is-invalid @enderror"
+                            value="{{ old('name_en', $product->name_en) }}"
                             placeholder="Enter product name in English"
                             maxlength="{{ $inputLimits['name'] ?? 120 }}"
                             data-max-length="{{ $inputLimits['name'] ?? 120 }}"
@@ -188,16 +188,16 @@
                             اسم المنتج (عربي)
                             <span class="required">*</span>
                         </label>
-                        <input 
-                            type="text" 
-                            id="name_ar" 
-                            name="name_ar" 
-                            class="form-control char-counter-input @error('name_ar') is-invalid @enderror" 
-                            value="{{ old('name_ar', $product->name_ar) }}" 
+                        <input
+                            type="text"
+                            id="name_ar"
+                            name="name_ar"
+                            class="form-control char-counter-input @error('name_ar') is-invalid @enderror"
+                            value="{{ old('name_ar', $product->name_ar) }}"
                             placeholder="أدخل اسم المنتج بالعربية"
                             maxlength="{{ $inputLimits['name'] ?? 120 }}"
                             data-max-length="{{ $inputLimits['name'] ?? 120 }}"
-                            required 
+                            required
                             dir="rtl">
                         <div class="char-counter">
                             <span class="char-count">0</span> / <span class="char-max">{{ $inputLimits['name'] ?? 120 }}</span>
@@ -285,13 +285,13 @@
                         </label>
                         <div style="position: relative;">
                             <span style="position: absolute; left: 12px; top: 12px; color: var(--secondary); font-weight: 600;">$</span>
-                            <input 
-                                type="number" 
-                                id="price" 
-                                name="price" 
-                                class="form-control @error('price') is-invalid @enderror" 
-                                step="0.01" 
-                                value="{{ old('price', $product->price) }}" 
+                            <input
+                                type="number"
+                                id="price"
+                                name="price"
+                                class="form-control @error('price') is-invalid @enderror"
+                                step="0.01"
+                                value="{{ old('price', $product->price) }}"
                                 placeholder="0.00"
                                 style="padding-left: 28px;"
                                 required>
@@ -308,12 +308,12 @@
                         </label>
                         <div style="position: relative;">
                             <span style="position: absolute; left: 12px; top: 12px; color: var(--secondary); font-weight: 600;">$</span>
-                            <input 
-                                type="number" 
-                                id="sale_price" 
-                                name="sale_price" 
-                                class="form-control @error('sale_price') is-invalid @enderror" 
-                                step="0.01" 
+                            <input
+                                type="number"
+                                id="sale_price"
+                                name="sale_price"
+                                class="form-control @error('sale_price') is-invalid @enderror"
+                                step="0.01"
                                 value="{{ old('sale_price', $product->sale_price) }}"
                                 placeholder="0.00"
                                 style="padding-left: 28px;">
@@ -329,15 +329,15 @@
                             <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
                         </label>
                         <div style="position: relative;">
-                            <input 
-                                type="number" 
-                                id="discount_percentage" 
-                                name="discount_percentage" 
-                                class="form-control @error('discount_percentage') is-invalid @enderror" 
-                                step="0.01" 
+                            <input
+                                type="number"
+                                id="discount_percentage"
+                                name="discount_percentage"
+                                class="form-control @error('discount_percentage') is-invalid @enderror"
+                                step="0.01"
                                 min="0"
                                 max="100"
-                                value="{{ old('discount_percentage', $product->discount_percentage) }}" 
+                                value="{{ old('discount_percentage', $product->discount_percentage) }}"
                                 placeholder="0.00"
                                 style="padding-right: 32px;">
                             <span style="position: absolute; right: 12px; top: 12px; color: var(--secondary); font-weight: 600;">%</span>
@@ -354,12 +354,12 @@
                             {{ __('messages.stock_quantity') }}
                             <span class="required">*</span>
                         </label>
-                        <input 
-                            type="number" 
-                            id="stock_quantity" 
-                            name="stock_quantity" 
-                            class="form-control @error('stock_quantity') is-invalid @enderror" 
-                            value="{{ old('stock_quantity', $product->stock_quantity) }}" 
+                        <input
+                            type="number"
+                            id="stock_quantity"
+                            name="stock_quantity"
+                            class="form-control @error('stock_quantity') is-invalid @enderror"
+                            value="{{ old('stock_quantity', $product->stock_quantity) }}"
                             placeholder="0"
                             required>
                         @error('stock_quantity')
@@ -477,12 +477,12 @@
                             {{ __('messages.main_product_image') }}
                             <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_on_edit') ?? 'Optional - leave empty to keep current' }})</span>
                         </label>
-                        <input 
-                            type="url" 
-                            id="main_image" 
-                            name="main_image" 
-                            class="form-control @error('main_image') is-invalid @enderror" 
-                            value="{{ old('main_image') }}" 
+                        <input
+                            type="url"
+                            id="main_image"
+                            name="main_image"
+                            class="form-control @error('main_image') is-invalid @enderror"
+                            value="{{ old('main_image') }}"
                             placeholder="https://example.com/image.jpg">
                         <p class="form-text">
                             <i class="fas fa-lightbulb"></i> {{ __('messages.image_services_recommendation') }}
@@ -497,11 +497,11 @@
                             {{ __('messages.additional_images') }}
                             <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional_one_url_per_line') ?? 'Optional - one URL per line' }})</span>
                         </label>
-                        <textarea 
-                            id="additional_images" 
-                            name="additional_images" 
-                            class="form-control @error('additional_images') is-invalid @enderror" 
-                            rows="5" 
+                        <textarea
+                            id="additional_images"
+                            name="additional_images"
+                            class="form-control @error('additional_images') is-invalid @enderror"
+                            rows="5"
                             placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg">{{ old('additional_images', $product->images->where('is_primary', false)->pluck('image_path')->implode("\n")) }}</textarea>
                         <p class="form-text">
                             <i class="fas fa-info-circle"></i> {{ __('messages.enter_image_url_per_line') ?? 'Enter each image URL on a separate line' }}
@@ -766,9 +766,9 @@
                             {{ __('messages.short_description_english') }}
                             <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }})</span>
                         </label>
-                        <textarea 
-                            id="short_description_en" 
-                            name="short_description_en" 
+                        <textarea
+                            id="short_description_en"
+                            name="short_description_en"
                             class="form-control @error('short_description_en') is-invalid @enderror"
                             placeholder="Brief description for product listings"
                             style="min-height: 80px;">{{ old('short_description_en', $product->short_description_en) }}</textarea>
@@ -782,9 +782,9 @@
                             وصف قصير (عربي)
                             <span style="color: #64748b; font-size: 12px;">(اختياري)</span>
                         </label>
-                        <textarea 
-                            id="short_description_ar" 
-                            name="short_description_ar" 
+                        <textarea
+                            id="short_description_ar"
+                            name="short_description_ar"
                             class="form-control @error('short_description_ar') is-invalid @enderror"
                             dir="rtl"
                             placeholder="وصف قصير للمنتج"
@@ -818,9 +818,9 @@
                             {{ __('messages.full_description_english') }}
                             <span style="color: #64748b; font-size: 12px;">({{ __('messages.optional') }} - {{ $inputLimits['description'] ?? 3000 }})</span>
                         </label>
-                        <textarea 
-                            id="description_en" 
-                            name="description_en" 
+                        <textarea
+                            id="description_en"
+                            name="description_en"
                             class="form-control char-counter-input @error('description_en') is-invalid @enderror"
                             placeholder="Complete product description with details"
                             maxlength="{{ $inputLimits['description'] ?? 3000 }}"
@@ -839,9 +839,9 @@
                             وصف كامل (عربي)
                             <span style="color: #64748b; font-size: 12px;">(اختياري - {{ $inputLimits['description'] ?? 3000 }} حرف)</span>
                         </label>
-                        <textarea 
-                            id="description_ar" 
-                            name="description_ar" 
+                        <textarea
+                            id="description_ar"
+                            name="description_ar"
                             class="form-control char-counter-input @error('description_ar') is-invalid @enderror"
                             dir="rtl"
                             placeholder="وصف المنتج الكامل بالتفاصيل"
@@ -889,32 +889,32 @@
             <div class="card-body">
                 <div class="form-group">
                     <label class="form-label">{{ __('messages.select_tags') }}</label>
-                    
+
                     <!-- Tag Input with Autocomplete -->
                     <div class="tag-input-wrapper">
                         <div class="selected-tags" id="selectedTags">
                             <!-- Pre-populated tags will appear here -->
                         </div>
                         <div class="tag-input-container">
-                            <input type="text" 
-                                   id="tagSearchInput" 
-                                   class="tag-search-input" 
+                            <input type="text"
+                                   id="tagSearchInput"
+                                   class="tag-search-input"
                                    placeholder="{{ __('messages.type_to_search_or_add_tag') }}"
                                    autocomplete="off">
                             <div class="tag-suggestions" id="tagSuggestions"></div>
                         </div>
                     </div>
-                    
+
                     <!-- Hidden inputs container -->
                     <div id="tagHiddenInputs"></div>
-                    
+
                     <p class="form-text">
                         <i class="fas fa-info-circle"></i> {{ __('messages.tag_input_help') }}
                     </p>
                 </div>
             </div>
         </div>
-        
+
         <style>
         .tag-input-wrapper {
             border: 1px solid #e5e7eb;
@@ -1027,7 +1027,7 @@
             color: #3b82f6;
         }
         </style>
-        
+
         @php
             $existingTags = $product->tags->map(function($tag) {
                 return [
@@ -1044,36 +1044,36 @@
             const availableTags = @json($tags ?? []);
             // Pre-populate with existing product tags
             let selectedTags = @json($existingTags);
-            
+
             const searchInput = document.getElementById('tagSearchInput');
             const suggestionsDiv = document.getElementById('tagSuggestions');
             const selectedTagsDiv = document.getElementById('selectedTags');
             const hiddenInputsDiv = document.getElementById('tagHiddenInputs');
-            
+
             // Initial render
             renderSelectedTags();
-            
+
             // Search input handler
             searchInput.addEventListener('input', function() {
                 const query = this.value.toLowerCase().trim();
-                
+
                 if (query.length === 0) {
                     suggestionsDiv.style.display = 'none';
                     return;
                 }
-                
+
                 // Filter available tags
-                const filtered = availableTags.filter(tag => 
+                const filtered = availableTags.filter(tag =>
                     !selectedTags.some(s => s.id === tag.id) &&
-                    (tag.name_en.toLowerCase().includes(query) || 
+                    (tag.name_en.toLowerCase().includes(query) ||
                      tag.name_ar.toLowerCase().includes(query))
                 );
-                
+
                 let html = '';
-                
+
                 // Show matching tags
                 filtered.slice(0, 8).forEach(tag => {
-                    const icon = tag.icon 
+                    const icon = tag.icon
                         ? `<i class="${tag.icon}" style="color: ${tag.color}"></i>`
                         : `<span class="tag-color" style="background: ${tag.color}"></span>`;
                     html += `<div class="tag-suggestion" data-id="${tag.id}" data-name="${tag.name_en}" data-color="${tag.color}" data-icon="${tag.icon || ''}">
@@ -1082,23 +1082,23 @@
                         <span style="color: #9ca3af; font-size: 12px;">(${tag.name_ar})</span>
                     </div>`;
                 });
-                
+
                 // Show "Create new tag" option
-                const exactMatch = availableTags.some(tag => 
+                const exactMatch = availableTags.some(tag =>
                     tag.name_en.toLowerCase() === query || tag.name_ar.toLowerCase() === query
                 );
-                
+
                 if (!exactMatch && query.length >= 2) {
                     html += `<div class="tag-suggestion create-new" data-new="true" data-name="${this.value.trim()}">
                         <i class="fas fa-plus"></i>
                         <span>{{ __('messages.create_tag') }}: "${this.value.trim()}"</span>
                     </div>`;
                 }
-                
+
                 if (html) {
                     suggestionsDiv.innerHTML = html;
                     suggestionsDiv.style.display = 'block';
-                    
+
                     // Add click handlers
                     suggestionsDiv.querySelectorAll('.tag-suggestion').forEach(el => {
                         el.addEventListener('click', function() {
@@ -1115,7 +1115,7 @@
                     suggestionsDiv.style.display = 'none';
                 }
             });
-            
+
             // Handle Enter key
             searchInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
@@ -1123,11 +1123,11 @@
                     const query = this.value.trim();
                     if (query.length >= 2) {
                         // Check if exact match exists
-                        const exactMatch = availableTags.find(tag => 
-                            tag.name_en.toLowerCase() === query.toLowerCase() || 
+                        const exactMatch = availableTags.find(tag =>
+                            tag.name_en.toLowerCase() === query.toLowerCase() ||
                             tag.name_ar.toLowerCase() === query.toLowerCase()
                         );
-                        
+
                         if (exactMatch && !selectedTags.some(s => s.id === exactMatch.id)) {
                             addExistingTag(exactMatch.id, exactMatch.name_en, exactMatch.color, exactMatch.icon);
                         } else if (!exactMatch) {
@@ -1138,38 +1138,38 @@
                     }
                 }
             });
-            
+
             // Hide suggestions on click outside
             document.addEventListener('click', function(e) {
                 if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
                     suggestionsDiv.style.display = 'none';
                 }
             });
-            
+
             function addExistingTag(id, name, color, icon) {
                 if (selectedTags.some(t => t.id === id)) return;
-                
+
                 selectedTags.push({ id, name, color, icon, isNew: false });
                 renderSelectedTags();
             }
-            
+
             function addNewTag(name) {
                 if (selectedTags.some(t => t.name.toLowerCase() === name.toLowerCase())) return;
-                
+
                 const tempId = 'new_' + Date.now();
                 selectedTags.push({ id: tempId, name, color: '#3b82f6', icon: '', isNew: true });
                 renderSelectedTags();
             }
-            
+
             function removeTag(id) {
                 selectedTags = selectedTags.filter(t => t.id !== id);
                 renderSelectedTags();
             }
-            
+
             function renderSelectedTags() {
                 // Render visual tags
                 selectedTagsDiv.innerHTML = selectedTags.map(tag => {
-                    const icon = tag.icon 
+                    const icon = tag.icon
                         ? `<i class="${tag.icon}" style="color: ${tag.color}"></i>`
                         : `<span class="tag-color" style="background: ${tag.color}"></span>`;
                     return `<span class="selected-tag ${tag.isNew ? 'new-tag' : ''}" data-id="${tag.id}">
@@ -1178,7 +1178,7 @@
                         <button type="button" class="remove-tag" onclick="window.removeTagById('${tag.id}')">&times;</button>
                     </span>`;
                 }).join('');
-                
+
                 // Render hidden inputs
                 let hiddenHtml = '';
                 selectedTags.forEach(tag => {
@@ -1190,7 +1190,7 @@
                 });
                 hiddenInputsDiv.innerHTML = hiddenHtml;
             }
-            
+
             // Global function for remove button
             window.removeTagById = function(id) {
                 if (typeof id === 'string' && id.startsWith('new_')) {
@@ -1217,13 +1217,13 @@
                     <input type="hidden" name="is_bestseller" value="0">
                     <input type="hidden" name="is_special_offer" value="0">
                     <input type="hidden" name="is_strong_offer" value="0">
-                    
+
                     <label class="checkbox-group">
-                        <input 
-                            type="checkbox" 
-                            id="is_active" 
-                            name="is_active" 
-                            value="1" 
+                        <input
+                            type="checkbox"
+                            id="is_active"
+                            name="is_active"
+                            value="1"
                             {{ old('is_active', $product->is_active) ? 'checked' : '' }}>
                         <span>
                             <strong><i class="fas fa-eye"></i> {{ __('messages.active') }}</strong>
@@ -1232,11 +1232,11 @@
                     </label>
 
                     <label class="checkbox-group">
-                        <input 
-                            type="checkbox" 
-                            id="is_featured" 
-                            name="is_featured" 
-                            value="1" 
+                        <input
+                            type="checkbox"
+                            id="is_featured"
+                            name="is_featured"
+                            value="1"
                             {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
                         <span>
                             <strong><i class="fas fa-star"></i> {{ __('messages.featured') }}</strong>
@@ -1245,11 +1245,11 @@
                     </label>
 
                     <label class="checkbox-group">
-                        <input 
-                            type="checkbox" 
-                            id="is_new" 
-                            name="is_new" 
-                            value="1" 
+                        <input
+                            type="checkbox"
+                            id="is_new"
+                            name="is_new"
+                            value="1"
                             {{ old('is_new', $product->is_new) ? 'checked' : '' }}>
                         <span>
                             <strong><i class="fas fa-badge"></i> {{ __('messages.new_product') }}</strong>
@@ -1258,11 +1258,11 @@
                     </label>
 
                     <label class="checkbox-group">
-                        <input 
-                            type="checkbox" 
-                            id="is_bestseller" 
-                            name="is_bestseller" 
-                            value="1" 
+                        <input
+                            type="checkbox"
+                            id="is_bestseller"
+                            name="is_bestseller"
+                            value="1"
                             {{ old('is_bestseller', $product->is_bestseller) ? 'checked' : '' }}>
                         <span>
                             <strong><i class="fas fa-fire"></i> {{ __('messages.bestseller') }}</strong>
@@ -1271,11 +1271,11 @@
                     </label>
 
                     <label class="checkbox-group">
-                        <input 
-                            type="checkbox" 
-                            id="is_special_offer" 
-                            name="is_special_offer" 
-                            value="1" 
+                        <input
+                            type="checkbox"
+                            id="is_special_offer"
+                            name="is_special_offer"
+                            value="1"
                             {{ old('is_special_offer', $product->is_special_offer ?? false) ? 'checked' : '' }}>
                         <span>
                             <strong><i class="fas fa-gift"></i> {{ __('messages.special_offer') }}</strong>
@@ -1284,11 +1284,11 @@
                     </label>
 
                     <label class="checkbox-group">
-                        <input 
-                            type="checkbox" 
-                            id="is_strong_offer" 
-                            name="is_strong_offer" 
-                            value="1" 
+                        <input
+                            type="checkbox"
+                            id="is_strong_offer"
+                            name="is_strong_offer"
+                            value="1"
                             {{ old('is_strong_offer', $product->is_strong_offer ?? false) ? 'checked' : '' }}>
                         <span>
                             <strong><i class="fas fa-bolt"></i> {{ __('messages.strong_offer') ?? 'Strong Offer' }}</strong>
@@ -1300,10 +1300,10 @@
                     @if(isset($customSections) && $customSections->count() > 0)
                         @foreach($customSections as $cs)
                         <label class="checkbox-group">
-                            <input 
-                                type="checkbox" 
-                                name="home_sections[]" 
-                                value="{{ $cs->id }}" 
+                            <input
+                                type="checkbox"
+                                name="home_sections[]"
+                                value="{{ $cs->id }}"
                                 {{ in_array($cs->id, old('home_sections', $selectedHomeSections ?? [])) ? 'checked' : '' }}>
                             <span>
                                 <strong><i class="fas fa-th-list"></i> {{ $cs->title }}</strong>
@@ -1318,48 +1318,52 @@
             </div>
         </div>
 
-        <!-- Product Attributes Card -->
-        <div class="card" id="attributes-card" style="{{ !empty($categoryAttributes) && $categoryAttributes->count() > 0 ? '' : 'display: none;' }}">
+        <!-- Product Filters Card -->
+        <div class="card" id="filters-card" style="{{ !empty($categoryFilters) && count($categoryFilters) > 0 ? '' : 'display: none;' }}">
             <div class="card-header">
-                <h2><i class="fas fa-tags"></i> {{ __('messages.product_attributes') }}</h2>
-                <p style="color: #64748b; font-size: 13px; margin-top: 4px;">{{ __('messages.select_attributes_for_category') }}</p>
+                <h2><i class="fas fa-filter"></i> {{ __('messages.product_filters') }}</h2>
+                <p style="color: #64748b; font-size: 13px; margin-top: 4px;">{{ __('messages.select_filter_values') }}</p>
             </div>
             <div class="card-body">
-                <div id="attributes-container">
-                    @if(!empty($categoryAttributes) && $categoryAttributes->count() > 0)
+                <div id="filters-container">
+                    @if(!empty($categoryFilters) && count($categoryFilters) > 0)
                         <div style="display: flex; flex-direction: column; gap: 24px;">
-                            @foreach($categoryAttributes as $attribute)
+                            @foreach($categoryFilters as $filter)
                                 <div class="form-group">
-                                    <label class="form-label">
-                                        <strong>{{ $attribute->name }}</strong>
-                                        @if($attribute->unit)
-                                            <span style="color: #64748b; font-size: 12px;">({{ $attribute->unit }})</span>
-                                        @endif
+                                    <label class="form-label"><strong>{{ $filter['title'] }}</strong>
+                                        <span style="color:#94a3b8;font-size:11px;margin-inline-start:6px;">({{ $filter['type'] }})</span>
                                     </label>
-                                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 8px;">
-                                        @foreach($attribute->values as $value)
-                                            <label class="checkbox-group" style="margin: 0;">
-                                                <input 
-                                                    type="checkbox" 
-                                                    id="attr_{{ $attribute->id }}_{{ $value->id }}" 
-                                                    name="attribute_values[]" 
-                                                    value="{{ $value->id }}"
-                                                    {{ in_array($value->id, old('attribute_values', $selectedAttributeValues)) ? 'checked' : '' }}>
-                                                <span>
-                                                    @if($value->color_code)
-                                                        <span style="display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: {{ $value->color_code }}; border: 1px solid #ddd; margin-right: 6px; vertical-align: middle;"></span>
-                                                    @endif
-                                                    {{ $value->value }}
-                                                </span>
-                                            </label>
-                                        @endforeach
-                                    </div>
+                                    @if(in_array($filter['type'], ['checkbox', 'radio', 'boolean']))
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 8px;">
+                                            @foreach($filter['options'] as $option)
+                                                <label class="checkbox-group" style="margin: 0;">
+                                                    <input type="{{ $filter['type'] === 'radio' ? 'radio' : 'checkbox' }}"
+                                                           name="filter_options[{{ $filter['id'] }}][]"
+                                                           value="{{ $option['id'] }}"
+                                                           {{ in_array($option['id'], $selectedFilterOptions ?? []) ? 'checked' : '' }}>
+                                                    <span>
+                                                        @if($option['color_code'])
+                                                            <span style="display:inline-block;width:16px;height:16px;border-radius:3px;background:{{ $option['color_code'] }};border:1px solid #ddd;margin-right:6px;vertical-align:middle;"></span>
+                                                        @endif
+                                                        {{ $option['label'] }}
+                                                    </span>
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                    @elseif(in_array($filter['type'], ['range', 'min_max']))
+                                        <div style="margin-top: 8px;">
+                                            <input type="number" name="filter_numeric_values[{{ $filter['id'] }}]"
+                                                   class="form-control" step="any"
+                                                   value="{{ $selectedFilterNumericValues[$filter['id']] ?? '' }}"
+                                                   placeholder="{{ __('messages.enter_numeric_value') }}">
+                                        </div>
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
                     @else
                         <p style="color: #64748b; text-align: center; padding: 20px;">
-                            <i class="fas fa-info-circle"></i> {{ __('messages.no_attributes_for_category') }}
+                            <i class="fas fa-info-circle"></i> {{ __('messages.no_filters_for_category') }}
                         </p>
                     @endif
                 </div>
@@ -1387,30 +1391,30 @@
                                             <span style="color: #64748b; font-size: 12px;">({{ $field->unit }})</span>
                                         @endif
                                     </label>
-                                    
+
                                     @if($field->type === 'text')
-                                        <input 
-                                            type="text" 
-                                            id="spec_{{ $field->id }}" 
-                                            name="spec_values[{{ $field->id }}]" 
+                                        <input
+                                            type="text"
+                                            id="spec_{{ $field->id }}"
+                                            name="spec_values[{{ $field->id }}]"
                                             class="form-control @error('spec_values.'.$field->id) is-invalid @enderror"
                                             value="{{ old('spec_values.'.$field->id, $specValues[$field->id] ?? '') }}"
                                             placeholder="{{ $field->label }}"
                                             {{ $field->is_required ? 'required' : '' }}>
                                     @elseif($field->type === 'number')
-                                        <input 
-                                            type="number" 
-                                            id="spec_{{ $field->id }}" 
-                                            name="spec_values[{{ $field->id }}]" 
+                                        <input
+                                            type="number"
+                                            id="spec_{{ $field->id }}"
+                                            name="spec_values[{{ $field->id }}]"
                                             class="form-control @error('spec_values.'.$field->id) is-invalid @enderror"
                                             value="{{ old('spec_values.'.$field->id, $specValues[$field->id] ?? '') }}"
                                             placeholder="{{ $field->label }}"
                                             step="any"
                                             {{ $field->is_required ? 'required' : '' }}>
                                     @elseif($field->type === 'boolean')
-                                        <select 
-                                            id="spec_{{ $field->id }}" 
-                                            name="spec_values[{{ $field->id }}]" 
+                                        <select
+                                            id="spec_{{ $field->id }}"
+                                            name="spec_values[{{ $field->id }}]"
                                             class="form-control @error('spec_values.'.$field->id) is-invalid @enderror"
                                             {{ $field->is_required ? 'required' : '' }}>
                                             <option value="">-- {{ __('messages.select') ?? 'Select' }} --</option>
@@ -1418,9 +1422,9 @@
                                             <option value="0" {{ old('spec_values.'.$field->id, $specValues[$field->id] ?? '') === '0' ? 'selected' : '' }}>{{ __('messages.no') }}</option>
                                         </select>
                                     @elseif($field->type === 'select')
-                                        <select 
-                                            id="spec_{{ $field->id }}" 
-                                            name="spec_values[{{ $field->id }}]" 
+                                        <select
+                                            id="spec_{{ $field->id }}"
+                                            name="spec_values[{{ $field->id }}]"
                                             class="form-control @error('spec_values.'.$field->id) is-invalid @enderror"
                                             {{ $field->is_required ? 'required' : '' }}>
                                             <option value="">-- {{ __('messages.select') ?? 'Select' }} --</option>
@@ -1431,7 +1435,7 @@
                                             @endforeach
                                         </select>
                                     @endif
-                                    
+
                                     @error('spec_values.'.$field->id)
                                         <span class="error-message">{{ $message }}</span>
                                     @enderror
@@ -1491,20 +1495,20 @@
         document.querySelectorAll('.char-counter-input').forEach(input => {
             const counter = input.parentElement.querySelector('.char-counter');
             if (!counter) return;
-            
+
             const countSpan = counter.querySelector('.char-count');
             const maxLength = parseInt(input.dataset.maxLength) || parseInt(input.maxLength) || 120;
-            
+
             function updateCounter() {
                 const length = input.value.length;
                 countSpan.textContent = length;
-                
+
                 // Update styling based on usage
                 const percentage = (length / maxLength) * 100;
-                
+
                 counter.classList.remove('warning', 'danger');
                 input.classList.remove('near-limit', 'at-limit');
-                
+
                 if (percentage >= 100) {
                     counter.classList.add('danger');
                     input.classList.add('at-limit');
@@ -1513,27 +1517,27 @@
                     input.classList.add('near-limit');
                 }
             }
-            
+
             // Initial update
             updateCounter();
-            
+
             // Update on input
             input.addEventListener('input', updateCounter);
         });
     }
-    
+
     // Initialize on DOM ready
     document.addEventListener('DOMContentLoaded', initCharCounters);
 
-    // Dynamic attribute and specification loading on category change
+    // Dynamic specification and filter loading on category change
     document.addEventListener('DOMContentLoaded', function() {
         const categorySelect = document.getElementById('category_id');
-        const attributesCard = document.getElementById('attributes-card');
-        const attributesContainer = document.getElementById('attributes-container');
         const specificationsCard = document.getElementById('specifications-card');
         const specificationsContainer = document.getElementById('specifications-container');
+        const filtersCard = document.getElementById('filters-card');
+        const filtersContainer = document.getElementById('filters-container');
         const currentCategoryId = '{{ $product->category_id }}';
-        
+
         // Pricing auto-calculation: price, sale_price, discount_percentage
         const priceInput = document.getElementById('price');
         const salePriceInput = document.getElementById('sale_price');
@@ -1574,50 +1578,24 @@
                 }
             });
         }
-        
-        // Store currently selected attribute values
-        let selectedValues = [];
-        
-        function getSelectedValues() {
-            const checkboxes = document.querySelectorAll('input[name="attribute_values[]"]:checked');
-            return Array.from(checkboxes).map(cb => cb.value);
-        }
 
-        // Load attributes and specifications when category changes
+        // Load specifications and filters when category changes
         categorySelect.addEventListener('change', function() {
             const categoryId = this.value;
-            
-            // Store selected values before reload
-            selectedValues = getSelectedValues();
-            
+
             if (!categoryId) {
-                attributesCard.style.display = 'none';
                 specificationsCard.style.display = 'none';
+                filtersCard.style.display = 'none';
                 return;
             }
-
-            // Show loading state for attributes
-            attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> {{ __('messages.loading') }}...</p>';
-            attributesCard.style.display = 'block';
 
             // Show loading state for specifications
             specificationsContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> {{ __('messages.loading') }}...</p>';
             specificationsCard.style.display = 'block';
 
-            // Fetch attributes for this category
-            fetch(`/admin/products/category-attributes/${categoryId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.attributes && data.attributes.length > 0) {
-                        renderAttributes(data.attributes, categoryId === currentCategoryId);
-                    } else {
-                        attributesContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> {{ __('messages.no_attributes_for_category') }}</p>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading attributes:', error);
-                    attributesContainer.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i> {{ __('messages.error') }}</p>';
-                });
+            // Show loading state for filters
+            filtersContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> {{ __('messages.loading') }}...</p>';
+            filtersCard.style.display = 'block';
 
             // Fetch specification fields for this category
             fetch(`/admin/spec-templates/category-fields/${categoryId}`)
@@ -1635,26 +1613,43 @@
                     console.error('Error loading specifications:', error);
                     specificationsContainer.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i> {{ __('messages.error') }}</p>';
                 });
+
+            // Fetch filters for this category
+            fetch(`/admin/filters/category-filters/${categoryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.filters && data.filters.length > 0) {
+                        renderFilters(data.filters);
+                        filtersCard.style.display = 'block';
+                    } else {
+                        filtersContainer.innerHTML = '<p style="color: #64748b; text-align: center; padding: 20px;"><i class="fas fa-info-circle"></i> {{ __("messages.no_filters_for_category") }}</p>';
+                        filtersCard.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading filters:', error);
+                    filtersContainer.innerHTML = '<p style="color: #dc2626; text-align: center; padding: 20px;"><i class="fas fa-exclamation-triangle"></i> {{ __('messages.error') }}</p>';
+                });
         });
 
         function renderSpecifications(fields) {
             let html = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">';
-            
+
             fields.forEach(field => {
                 const required = field.is_required ? 'required' : '';
                 const requiredStar = field.is_required ? '<span class="required">*</span>' : '';
                 const unit = field.unit ? `<span style="color: #64748b; font-size: 12px;">(${escapeHtml(field.unit)})</span>` : '';
-                
+
                 html += `<div class="form-group">
                     <label for="spec_${field.id}" class="form-label">
                         ${escapeHtml(field.label)} ${requiredStar} ${unit}
                     </label>`;
-                
+
                 if (field.type === 'text') {
-                    html += `<input type="text" id="spec_${field.id}" name="spec_values[${field.id}]" 
+                    html += `<input type="text" id="spec_${field.id}" name="spec_values[${field.id}]"
                              class="form-control" placeholder="${escapeHtml(field.label)}" ${required}>`;
                 } else if (field.type === 'number') {
-                    html += `<input type="number" id="spec_${field.id}" name="spec_values[${field.id}]" 
+                    html += `<input type="number" id="spec_${field.id}" name="spec_values[${field.id}]"
                              class="form-control" placeholder="${escapeHtml(field.label)}" step="any" ${required}>`;
                 } else if (field.type === 'boolean') {
                     html += `<select id="spec_${field.id}" name="spec_values[${field.id}]" class="form-control" ${required}>
@@ -1670,54 +1665,48 @@
                     });
                     html += '</select>';
                 }
-                
+
                 html += '</div>';
             });
-            
+
             html += '</div>';
             specificationsContainer.innerHTML = html;
         }
 
-        function renderAttributes(attributes, keepSelection) {
+        function renderFilters(filters) {
             let html = '<div style="display: flex; flex-direction: column; gap: 24px;">';
 
-            attributes.forEach(attribute => {
-                html += `
-                    <div class="form-group">
-                        <label class="form-label">
-                            <strong>${escapeHtml(attribute.name)}</strong>
-                            ${attribute.unit ? `<span style="color: #64748b; font-size: 12px;">(${escapeHtml(attribute.unit)})</span>` : ''}
-                        </label>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 8px;">
-                `;
+            filters.forEach(filter => {
+                const typeBadge = `<span style="color:#94a3b8;font-size:11px;margin-inline-start:6px;">(${escapeHtml(filter.type)})</span>`;
+                html += `<div class="form-group">
+                    <label class="form-label"><strong>${escapeHtml(filter.title)}</strong>${typeBadge}</label>`;
 
-                attribute.values.forEach(value => {
-                    const inputId = `attr_${attribute.id}_${value.id}`;
-                    const isChecked = keepSelection && selectedValues.includes(value.id.toString());
-                    html += `
-                        <label class="checkbox-group" style="margin: 0;">
-                            <input 
-                                type="checkbox" 
-                                id="${inputId}" 
-                                name="attribute_values[]" 
-                                value="${value.id}"
-                                ${isChecked ? 'checked' : ''}>
-                            <span>
-                                ${value.color_code ? `<span style="display: inline-block; width: 16px; height: 16px; border-radius: 3px; background: ${escapeHtml(value.color_code)}; border: 1px solid #ddd; margin-right: 6px; vertical-align: middle;"></span>` : ''}
-                                ${escapeHtml(value.value)}
-                            </span>
-                        </label>
-                    `;
-                });
+                if (['checkbox', 'radio', 'boolean'].includes(filter.type)) {
+                    html += '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 8px;">';
+                    if (filter.options) {
+                        filter.options.forEach(option => {
+                            const inputType = filter.type === 'radio' ? 'radio' : 'checkbox';
+                            const colorSwatch = option.color_code
+                                ? `<span style="display:inline-block;width:16px;height:16px;border-radius:3px;background:${escapeHtml(option.color_code)};border:1px solid #ddd;margin-right:6px;vertical-align:middle;"></span>`
+                                : '';
+                            html += `<label class="checkbox-group" style="margin: 0;">
+                                <input type="${inputType}" name="filter_options[${filter.id}][]" value="${option.id}">
+                                <span>${colorSwatch}${escapeHtml(option.label)}</span>
+                            </label>`;
+                        });
+                    }
+                    html += '</div>';
+                } else if (['range', 'min_max'].includes(filter.type)) {
+                    html += `<div style="margin-top: 8px;">
+                        <input type="number" name="filter_numeric_values[${filter.id}]" class="form-control" step="any" placeholder="{{ __('messages.enter_numeric_value') }}">
+                    </div>`;
+                }
 
-                html += `
-                        </div>
-                    </div>
-                `;
+                html += '</div>';
             });
 
             html += '</div>';
-            attributesContainer.innerHTML = html;
+            filtersContainer.innerHTML = html;
         }
 
         function escapeHtml(text) {

@@ -11,7 +11,11 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Banner;
+use App\Models\Filter;
+use App\Models\FilterOption;
+use App\Models\FilterAssignment;
 use App\Observers\HomeCacheObserver;
+use App\Observers\FilterCacheObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +37,11 @@ class AppServiceProvider extends ServiceProvider
         Category::observe(HomeCacheObserver::class);
         Brand::observe(HomeCacheObserver::class);
         Banner::observe(HomeCacheObserver::class);
+
+        // Register filter cache observers for filter resolution cache invalidation
+        Filter::observe(FilterCacheObserver::class);
+        FilterOption::observe(FilterCacheObserver::class);
+        FilterAssignment::observe(FilterCacheObserver::class);
 
         // Register bootstrap user provider
         Auth::provider('bootstrap', function ($app, array $config) {
@@ -65,13 +74,13 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function ($view) {
             // Skip for error views and bootstrap views to avoid cascading DB errors
             $viewName = $view->getName();
-            if (str_starts_with($viewName, 'errors.') || 
+            if (str_starts_with($viewName, 'errors.') ||
                 str_starts_with($viewName, 'errors/') ||
                 str_starts_with($viewName, 'admin.bootstrap.')) {
                 $view->with('navigationCategories', collect([]));
                 return;
             }
-            
+
             // Check if database is available before trying to query
             try {
                 if (!\App\Services\DatabaseStateService::isDatabaseAvailable()) {
@@ -82,7 +91,7 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('navigationCategories', collect([]));
                 return;
             }
-            
+
             try {
                 $navigationCategories = \App\Models\Category::with(['children' => function ($query) {
                     $query->where('is_active', true)->orderBy('position');
@@ -96,7 +105,7 @@ class AppServiceProvider extends ServiceProvider
                 // If database fails, provide empty collection to prevent view errors
                 $navigationCategories = collect([]);
             }
-            
+
             $view->with('navigationCategories', $navigationCategories);
         });
 

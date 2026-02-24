@@ -12,12 +12,12 @@ return [
     'contact' => 'اتصل بنا',
     'search' => 'بحث',
     'clear' => 'مسح',
-    
+
     // Hero Section
     'hero_title' => 'اكتشف أحدث التقنيات',
     'hero_subtitle' => 'احصل على أفضل منتجات تكنولوجيا المعلومات وأجهزة الكمبيوتر المحمولة والإكسسوارات بأسعار تنافسية',
     'shop_now' => 'تسوق الآن',
-    
+
     // Categories Section
     'shop_by_category' => 'التسوق حسب الفئة',
     'explore_our_products' => 'اكتشف منتجاتنا',
@@ -25,12 +25,12 @@ return [
     'view_more' => 'عرض المزيد',
     'no_categories' => 'لا توجد فئات متاحة',
     'explore_products' => 'استكشف :count منتج',
-    
+
     // Brands Section
     'top_brands' => 'أفضل العلامات التجارية',
     'trusted_brands' => 'علامات تجارية موثوقة',
     'no_brands' => 'لا توجد علامات تجارية متاحة',
-    
+
     // Products Section
     'featured_products' => 'منتجات مميزة',
     'new_arrivals' => 'وصل حديثاً',
@@ -48,7 +48,7 @@ return [
     'out_of_stock' => 'غير متوفر',
     'in_stock' => 'متوفر',
     'product' => 'منتج',
-    
+
     // Gift Ideas Section
     'gift_ideas' => [
         'title' => 'أفكار هدايا',
@@ -66,7 +66,7 @@ return [
         'code' => 'استخدم الكود: IT20',
         'cta' => 'تسوق الآن',
     ],
-    
+
     // Special Offer Section
     'special_offer' => 'عرض خاص',
     'strong_offer' => 'عرض قوي',
@@ -87,12 +87,12 @@ return [
     'free_shipping' => 'شحن مجاني',
     'warranty_included' => 'ضمان شامل',
     'limited_stock' => 'كمية محدودة',
-    
+
     // Product Badges
     'new' => 'جديد',
     'sale' => 'تخفيض',
     'hot' => 'عرض ساخن',
-    
+
     // Offers Section
     'special_offers' => 'عروض خاصة',
     'hot_deals' => 'عروض ساخنة',
@@ -103,7 +103,7 @@ return [
     'hours' => 'ساعات',
     'minutes' => 'دقائق',
     'seconds' => 'ثواني',
-    
+
     // Product Details
     'product_details' => 'تفاصيل المنتج',
     'description' => 'الوصف',
@@ -118,7 +118,7 @@ return [
     'tags' => 'الوسوم',
     'tags_list' => 'قائمة الوسوم',
     'share' => 'شارك',
-    
+
     // Reviews
     'customer_reviews' => 'تقييمات العملاء',
     'share_your_experience' => 'امتلكت هذا المنتج؟ شارك تجربتك مع باقي العملاء.',
@@ -357,7 +357,7 @@ return [
     'email' => 'البريد الإلكتروني',
     'address' => 'العنوان',
     'location' => 'فلسطين، الخليل',
-    
+
     // Common
     'learn_more' => 'اعرف المزيد',
     'read_more' => 'اقرأ المزيد',
@@ -385,7 +385,7 @@ return [
     'showing' => 'عرض',
     'of' => 'من',
     'language' => 'اللغة',
-    
+
     // Product Detail Page
     'IT Center' => 'مركز تكنولوجيا المعلومات',
     'Uncategorized' => 'غير مصنف',
@@ -414,7 +414,7 @@ return [
     'cm' => 'سم',
     'Product Description' => 'وصف المنتج',
     'Related Products' => 'منتجات ذات صلة',
-    
+
     // Favorites
     'my_favorites' => 'مفضلاتي',
     'no_favorites' => 'قائمة المفضلة فارغة',
@@ -422,7 +422,7 @@ return [
     'start_shopping' => 'ابدأ التسوق',
     'item' => 'عنصر',
     'items' => 'عناصر',
-    
+
     // Product Detail Translations
     'free_shipping' => 'شحن مجاني للطلبات أكثر من 50 دولار',
     'return_policy' => 'سياسة إرجاع لمدة 30 يوم',
@@ -438,7 +438,7 @@ return [
     'dimensions' => 'الأبعاد',
     'click_to_zoom' => 'انقر للتكبير',
     'click_to_zoom_out' => 'انقر لإلغاء التكبير',
-    
+
     // About Us Page
     'about_us_title' => 'من نحن - مركز تكنولوجيا المعلومات',
     'about_us_subtitle' => 'تعرف على المزيد عن شركتنا ورسالتنا',
@@ -460,7 +460,7 @@ return [
     'happy_customers' => 'عميل سعيد',
     'support_24_7' => '24/7',
     'support' => 'دعم',
-    
+
     // Admin Panel
     'admin_panel' => 'لوحة الإدارة',
     'admin_login_required' => 'يرجى تسجيل الدخول للوصول إلى لوحة الإدارة.',
@@ -475,7 +475,7 @@ return [
     'brands_management' => 'إدارة العلامات التجارية',
     'promotional_management' => 'إدارة الإعلانات',
     'banner_management' => 'إدارة البانرات',
-    
+
     // Promotional Offers
     'promotional_offers_title' => 'إدارة الإعلانات الترويجية',
     'promotional_offers_subtitle' => 'إدارة العروض والإعلانات التي تظهر في الصفحة الرئيسية',
@@ -484,46 +484,46 @@ return [
     'create_promotional_subtitle' => 'قم بإنشاء عرض ترويجي جديد لعرضه في الصفحة الرئيسية',
     'back_to_list' => 'رجوع للقائمة',
     'please_correct_errors' => 'يرجى تصحيح الأخطاء التالية:',
-    
+
     // Form Sections
     'product_selection' => 'اختيار المنتج',
     'select_product_desc' => 'حدد المنتج الذي تريد إنشاء عرض ترويجي له',
     'product' => 'المنتج',
     'select_product_placeholder' => '-- اختر منتج من القائمة --',
-    
+
     'offer_title_section' => 'عنوان العرض',
     'offer_title_desc' => 'أدخل عنوان العرض بجميع اللغات المدعومة',
     'title_arabic' => 'العنوان بالعربية',
     'title_english' => 'العنوان بالإنجليزية',
     'title_hebrew' => 'العنوان بالعبرية',
-    
+
     'pricing' => 'التسعير',
     'pricing_desc' => 'حدد السعر الأصلي وسعر العرض الخاص',
     'calculated_discount' => 'الخصم المحسوب',
     'enter_prices_to_calculate' => 'أدخل الأسعار لحساب الخصم',
-    
+
     'offer_features' => 'مميزات العرض',
     'offer_features_desc' => 'أضف المميزات التي تريد إبرازها (كل ميزة في سطر منفصل)',
     'features_arabic' => 'الميزات بالعربية',
     'features_english' => 'الميزات بالإنجليزية',
     'features_hebrew' => 'الميزات بالعبرية',
-    
+
     'offer_duration' => 'مدة العرض',
     'offer_duration_desc' => 'حدد تاريخ بداية ونهاية العرض الترويجي',
     'start_date_label' => 'تاريخ البداية',
     'end_date_label' => 'تاريخ النهاية',
-    
+
     'settings' => 'الإعدادات',
     'additional_settings' => 'إعدادات إضافية للعرض',
     'display_order' => 'ترتيب العرض',
     'display_order_hint' => 'رقم أقل = يظهر أولاً في القائمة',
     'activate_offer_immediately' => 'تفعيل العرض فوراً',
     'will_appear_on_homepage' => 'سيظهر العرض مباشرة في الصفحة الرئيسية',
-    
+
     'save_promotional_offer' => 'حفظ العرض الترويجي',
     'cancel' => 'إلغاء',
     'required' => 'مطلوب',
-    
+
     // New UI translations
     'new_offer' => 'عرض جديد',
     'selected_product' => 'المنتج المحدد',
@@ -541,13 +541,13 @@ return [
     'offer_lasts' => 'مدة العرض',
     'sale_price_must_be_less' => 'سعر البيع يجب أن يكون أقل من السعر الأصلي!',
     'end_date_must_be_after_start' => 'تاريخ الانتهاء يجب أن يكون بعد تاريخ البداية!',
-    
+
     'edit_promotional_offer' => 'تعديل العرض الترويجي',
     'update_promotional_subtitle' => 'قم بتحديث معلومات العرض الترويجي',
     'back' => 'رجوع',
     'product_information' => 'معلومات المنتج',
     'update_offer' => 'تحديث العرض',
-    
+
     'image' => 'صورة',
     'title' => 'العنوان',
     'original_price' => 'السعر الأصلي',
@@ -559,7 +559,7 @@ return [
     'confirm_delete_offer' => 'هل أنت متأكد من الحذف؟',
     'confirm_toggle_status' => 'هل تريد تغيير حالة العرض؟',
     'inactive' => 'غير نشط',
-    
+
     'all_products' => 'جميع المنتجات',
     'filter_by_tags' => 'تصفية حسب الوسوم',
     'clear_filter' => 'مسح الفلتر',
@@ -606,7 +606,7 @@ return [
     'no_products_yet' => 'لا توجد منتجات بعد',
     'active' => 'نشط',
     'inactive' => 'غير نشط',
-    
+
     // Products Management
     'manage_product_catalog' => 'إدارة كتالوج المنتجات بسهولة',
     'search_by_name_sku' => 'البحث بالاسم أو رمز المنتج...',
@@ -626,7 +626,7 @@ return [
     'start_adding_products' => 'ابدأ بإضافة منتجك الأول!',
     'create_product' => 'إنشاء منتج',
     'product_list' => 'قائمة المنتجات',
-    
+
     // Categories Management
     'categories_management_title' => 'إدارة الفئات',
     'organize_categories_subtitle' => 'نظم منتجاتك بالفئات والفئات الفرعية',
@@ -647,7 +647,7 @@ return [
     'no_categories_found' => 'لا توجد فئات',
     'no_categories_description' => 'لم تقم بإنشاء أي فئة بعد. ابدأ بإنشاء أول فئة لك!',
     'create_first_category' => 'إنشاء أول فئة',
-    
+
     // Create Category
     'create_new_category' => 'إنشاء فئة جديدة',
     'add_category_subtitle' => 'أضف فئة منتج جديدة لتنظيم كتالوجك',
@@ -701,7 +701,7 @@ return [
     'optimized_file_size' => 'حجم ملف محسن',
     'getting_started' => 'البدء',
     'categories_organize_help' => 'الفئات تنظم منتجاتك. أنشئ الفئات الرئيسية أولاً، ثم أضف الفئات الفرعية حسب الحاجة.',
-    
+
     // Edit Category
     'edit_category' => 'تعديل الفئة',
     'edit_category_title' => 'تعديل الفئة: :name',
@@ -709,7 +709,7 @@ return [
     'image_url_label' => 'رابط الصورة',
     'current_image' => 'الصورة الحالية',
     'update_category' => 'تحديث الفئة',
-    
+
     // Brands Management
     'brands_management_title' => 'إدارة العلامات التجارية',
     'manage_brands_subtitle' => 'إدارة العلامات التجارية للمنتجات والحفاظ على تنظيم الكتالوج',
@@ -727,7 +727,7 @@ return [
     'no_logo' => 'لا توجد شعار',
     'regular' => 'عادية',
     'featured' => 'مميزة',
-    
+
     // Create/Edit Brand
     'create_new_brand' => 'إنشاء علامة تجارية جديدة',
     'add_brand_subtitle' => 'أضف علامة تجارية جديدة إلى كتالوج المنتجات',
@@ -818,9 +818,6 @@ return [
     'full_description_english' => 'وصف كامل (إنجليزي)',
     'full_description_arabic' => 'وصف كامل (عربي)',
     'complete_description_details' => 'وصف كامل للمنتج مع التفاصيل',
-    'product_attributes' => 'خصائص المنتج',
-    'select_attributes_for_category' => 'اختر الخصائص الخاصة بفئة هذا المنتج',
-    'no_attributes_for_category' => 'لا توجد خصائص مكونة لهذه الفئة',
     'confirm_delete_product_message' => 'هل أنت متأكد أنك تريد حذف هذا المنتج؟ لا يمكن التراجع عن هذا الإجراء وسيتم إزالة المنتج نهائياً من متجرك.',
     'confirm_delete_image' => 'هل أنت متأكد أنك تريد حذف هذه الصورة؟ لا يمكن التراجع عن هذا الإجراء.',
     'main_image_deleted_successfully' => 'تم حذف الصورة الرئيسية بنجاح.',
@@ -841,7 +838,7 @@ return [
     'inventory_value' => 'قيمة المخزون',
     'total_favorites' => 'إجمالي المفضلة',
     'customer_wishlists' => 'قوائم رغبات العملاء',
-    
+
     // User Statistics
     'user_statistics' => 'إحصائيات المستخدمين',
     'total_users' => 'إجمالي المستخدمين',
@@ -866,7 +863,7 @@ return [
     'users_with_wishlist' => 'مستخدمين لديهم قائمة رغبات',
     'with_reviews' => 'لديهم مراجعات',
     'active_reviewers' => 'مراجعين نشطين',
-    
+
     // Dashboard new keys
     'store_overview' => 'نظرة عامة على المتجر',
     'online_now' => 'متصل الآن',
@@ -914,7 +911,7 @@ return [
     'invalid_credentials' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.',
     'register_failed' => 'فشل التسجيل. يرجى المحاولة مرة أخرى.',
     'reset_link_sent' => 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.',
-    
+
     // Orders
     'order_details' => 'تفاصيل الطلب',
     'order_status_pending' => 'قيد الانتظار',
@@ -1019,7 +1016,7 @@ return [
     'name' => 'الاسم',
     'login' => 'تسجيل الدخول',
     'back_to_site' => 'العودة إلى الموقع',
-    
+
     // Contact Page
     'get_in_touch' => 'تواصل مع فريقنا',
     'send_us_message' => 'أرسل لنا رسالة',
@@ -1037,7 +1034,7 @@ return [
     'saturday_hours' => 'السبت: 10:00 صباحاً - 4:00 مساءً',
     'sunday_closed' => 'الأحد: مغلق',
     'error_occurred' => 'حدث خطأ. يرجى المحاولة مرة أخرى.',
-    
+
     // Contact Management (Admin)
     'contact_messages_management' => 'إدارة رسائل التواصل',
     'contact_messages' => 'رسائل التواصل',
@@ -1053,7 +1050,7 @@ return [
     'search_name_email_subject' => 'الاسم، البريد الإلكتروني، الموضوع...',
     'no_messages_found' => 'لا توجد رسائل',
     'no_contact_messages_to_display' => 'لا توجد رسائل تواصل للعرض',
-    
+
     // Contact Message Details
     'view_contact_message' => 'عرض رسالة التواصل',
     'back_to_messages' => 'العودة إلى الرسائل',
@@ -1070,7 +1067,7 @@ return [
     'received_date' => 'تاريخ الاستلام',
     'received_time' => 'وقت الاستلام',
     'last_updated' => 'آخر تحديث',
-    
+
     // Bulk operations messages
     'messages_deleted_successfully' => 'تم حذف :count رسالة بنجاح',
     'messages_status_updated_successfully' => 'تم تحديث حالة :count رسالة بنجاح',
@@ -1127,7 +1124,7 @@ return [
     'delete_user_confirm' => 'هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء.',
     'no_users_found' => 'لا يوجد مستخدمون',
     'add_first_user' => 'أضف أول مستخدم',
-    
+
     // User Details
     'user_details' => 'تفاصيل المستخدم',
     'view_complete_user_information' => 'عرض معلومات المستخدم الكاملة',
@@ -1143,7 +1140,7 @@ return [
     'user_favorites' => 'مفضلات المستخدم',
     'and_more_favorites' => 'و :count مفضلات أخرى',
     'last_order_date' => 'تاريخ آخر طلب',
-    
+
     // Create User
     'create_new_user' => 'إنشاء مستخدم جديد',
     'add_new_user_subtitle' => 'إضافة مستخدم جديد إلى النظام',
@@ -1159,7 +1156,7 @@ return [
     'user_create_note_2' => 'المدراء لديهم صلاحيات كاملة للوصول إلى لوحة التحكم',
     'user_create_note_3' => 'كلمة المرور يجب أن تكون قوية وآمنة (8 أحرف على الأقل)',
     'user_create_note_4' => 'يمكن تعديل معلومات المستخدم لاحقاً من صفحة التعديل',
-    
+
     // Edit User
     'edit_user_subtitle' => 'تعديل معلومات المستخدم: :name',
     'change_password' => 'تغيير كلمة المرور',
@@ -1170,7 +1167,7 @@ return [
     'user_info' => 'معلومات المستخدم',
     'registered_on' => 'مسجل في',
     'system_id' => 'معرف النظام',
-    
+
     // Messages
     'user_created_successfully' => 'تم إنشاء المستخدم بنجاح!',
     'user_updated_successfully' => 'تم تحديث المستخدم بنجاح!',
@@ -1178,12 +1175,12 @@ return [
     'users_deleted_successfully' => 'تم حذف :count مستخدم بنجاح!',
     'cannot_delete_own_account' => 'لا يمكنك حذف حسابك الخاص!',
     'product_deleted' => 'المنتج محذوف',
-    
+
     // Account Status Messages (for suspended/banned users)
     'account_suspended' => 'تم إيقاف حسابك. يرجى الاتصال بالدعم للحصول على المساعدة.',
     'account_banned' => 'تم حظر حسابك بشكل دائم. يرجى الاتصال بالدعم إذا كنت تعتقد أن هذا خطأ.',
     'reason' => 'السبب',
-    
+
     // Database Backup Management
     'Database Backup Management' => 'إدارة النسخ الاحتياطي لقاعدة البيانات',
     'Create, restore, and manage database backups' => 'إنشاء واستعادة وإدارة النسخ الاحتياطية لقاعدة البيانات',
@@ -1227,7 +1224,7 @@ return [
     'Backup File:' => 'ملف النسخة الاحتياطية:',
     'I understand that this will replace all current data' => 'أفهم أن هذا سيستبدل جميع البيانات الحالية',
     'Cancel' => 'إلغاء',
-    
+
     // Advanced Backup System
     'Create Backup Now' => 'إنشاء نسخة احتياطية الآن',
     'Import Backup' => 'استيراد نسخة احتياطية',
@@ -1268,7 +1265,7 @@ return [
     'Selective module backup' => 'نسخة احتياطية للوحدات المحددة',
     'clear_frontend_cache' => 'تنظيف ذاكرة الواجهة',
     'clear_frontend_cache_description' => 'تنظيف ذاكرة التخزين المؤقت للواجهة لتحديث بيانات الصفحة الرئيسية',
-    
+
     // Confirmation Modal
     'confirm_action' => 'تأكيد الإجراء',
     'are_you_sure' => 'هل أنت متأكد؟',
@@ -1283,7 +1280,7 @@ return [
     'Backup deleted successfully' => 'تم حذف النسخة الاحتياطية بنجاح',
     'Failed to delete backup' => 'فشل حذف النسخة الاحتياطية',
     'Failed to delete backup. Please try again.' => 'فشل حذف النسخة الاحتياطية. يرجى المحاولة مرة أخرى.',
-    
+
     // Delete All Feature
     'delete_all' => 'حذف الكل',
     'confirm_delete_all' => 'هل أنت متأكد أنك تريد حذف جميع السجلات في هذه الصفحة؟',
@@ -1301,7 +1298,7 @@ return [
     'confirm_delete_selected' => 'هل أنت متأكد أنك تريد حذف العناصر المحددة؟ هذا الإجراء لا يمكن التراجع عنه.',
     'please_select_items' => 'يرجى تحديد عنصر واحد على الأقل للحذف.',
     'selected_records_deleted_successfully' => 'تم حذف :count عنصر بنجاح!',
-    
+
     // إعدادات النسخ الاحتياطي
     'Backup Settings' => 'إعدادات النسخ الاحتياطي',
     'Configure automatic backup retention and cleanup policies' => 'تكوين سياسات الاحتفاظ بالنسخ الاحتياطي والتنظيف التلقائي',
@@ -1329,7 +1326,7 @@ return [
     'Failed to load backup settings' => 'فشل تحميل إعدادات النسخ الاحتياطي',
     'Failed to update backup settings' => 'فشل تحديث إعدادات النسخ الاحتياطي',
     'Settings' => 'الإعدادات',
-    
+
     // جدول النسخ الاحتياطي التلقائي
     'Auto Backup Schedule' => 'جدول النسخ الاحتياطي التلقائي',
     'Auto Backup Interval' => 'فترة النسخ الاحتياطي التلقائي',
@@ -1369,7 +1366,7 @@ return [
     'Expired' => 'منتهي الصلاحية',
     'Expires in' => 'ينتهي خلال',
     'Expires at' => 'ينتهي في',
-    
+
     // رسائل حد النسخ الاحتياطي
     'Cannot create a new backup. You have reached the maximum allowed backups.' => 'لا يمكن إنشاء نسخة احتياطية جديدة. وصلت للحد الأقصى للنسخ الاحتياطية المسموح بها.',
     'Backup created successfully!' => 'تم إنشاء النسخة الاحتياطية بنجاح!',
@@ -1443,7 +1440,6 @@ return [
     'price_max' => 'الحد الأقصى',
     'minimum_price' => 'السعر الأدنى',
     'maximum_price' => 'السعر الأقصى',
-    'attributes_filter' => 'الخصائص',
     'no_results_found' => 'لم يتم العثور على نتائج',
     'no_products_match_filters' => 'لا توجد منتجات تطابق الفلاتر الحالية. حاول تعديل اختيارك.',
     'no_products_found' => 'لم يتم العثور على منتجات',
@@ -1464,18 +1460,6 @@ return [
     'use_arrow_keys_price' => 'استخدم مفاتيح الأسهم لتعديل نطاق السعر. اضغط Shift مع السهم للتحرك بشكل أسرع.',
     'please_wait' => 'يرجى الانتظار',
     'back_to_home' => 'العودة للرئيسية',
-    
-    // Category Attributes
-    'manage_category_attributes' => 'إدارة سمات الفئة',
-    'assign_attributes_to_category_subtitle' => 'تعيين السمات القابلة للتصفية لهذه الفئة',
-    'back_to_categories' => 'العودة إلى الفئات',
-    'attributes' => 'السمات',
-    'available_attributes' => 'السمات المتاحة',
-    'attributes_selected' => 'سمات محددة',
-    'no_filterable_attributes_available' => 'لا توجد سمات قابلة للتصفية متاحة',
-    'create_attribute' => 'إنشاء سمة',
-    'save_assignments' => 'حفظ التعيينات',
-    'category_attributes_updated_successfully' => 'تم تحديث سمات الفئة بنجاح',
 
     // Category icon and position fields
     'category_icon' => 'أيقونة الفئة',
@@ -1538,7 +1522,7 @@ return [
     'banner_settings' => 'إعدادات البانر',
     'multilingual_content' => 'المحتوى متعدد اللغات',
     'at_least_one_title_required' => 'مطلوب حقل عنوان واحد على الأقل',
-    
+
     // Banner Color Customization - تخصيص ألوان البانر
     'color_customization' => 'تخصيص الألوان',
     'color_customization_help' => 'خصص ألوان نص البانر والزر. اتركه فارغاً لاستخدام الألوان الافتراضية.',
@@ -1546,7 +1530,7 @@ return [
     'subtitle_color' => 'لون العنوان الفرعي',
     'button_bg_color' => 'لون خلفية الزر',
     'button_text_color' => 'لون نص الزر',
-    
+
     // Banner Image Source Options - خيارات مصدر صورة البانر
     'image_source' => 'مصدر الصورة',
     'banner_upload_from_device' => 'رفع من الجهاز',
@@ -1604,13 +1588,13 @@ return [
     'promotional_ad_created_successfully' => 'تم إنشاء الإعلان الترويجي بنجاح!',
     'promotional_ad_updated_successfully' => 'تم تحديث الإعلان الترويجي بنجاح!',
     'promotional_ad_deleted_successfully' => 'تم حذف الإعلان الترويجي بنجاح!',
-    
+
     // Promotional Ad Stats - إحصائيات الإعلانات
     'total_ads' => 'إجمالي الإعلانات',
     'active_ads' => 'الإعلانات النشطة',
     'left_position' => 'الموقع الأيسر',
     'right_position' => 'الموقع الأيمن',
-    
+
     // Promotional Ad Form - نموذج الإعلان
     'ad_image' => 'صورة الإعلان',
     'promotional_ad_image' => 'صورة الإعلان الترويجي',
@@ -1633,7 +1617,7 @@ return [
     'ad_active' => 'نشط',
     'ad_active_help' => 'عرض هذا الإعلان في الصفحة الرئيسية',
     'updated_at' => 'آخر تحديث',
-    
+
     // Promotional Ad Title, Subtitle, Button
     'ad_title' => 'عنوان الإعلان',
     'ad_subtitle' => 'العنوان الفرعي للإعلان',
@@ -1667,7 +1651,7 @@ return [
     'medium' => 'متوسط',
     'large' => 'كبير',
     'extra_large' => 'كبير جداً',
-    
+
     // Category Display Mode
     'display_mode' => 'وضع العرض',
     'carousel' => 'كاروسيل',
@@ -1677,7 +1661,7 @@ return [
     'display_mode_help' => 'اختر كيف تظهر هذه الفئة في الصفحة الرئيسية',
     'all_display_modes' => 'جميع أوضاع العرض',
     'inherits_parent' => 'يرث من الأب',
-    
+
     // Nav Type (Parent/Child)
     'nav_type' => 'نوع التنقل',
     'nav_parent' => 'عنصر رئيسي',
@@ -1688,7 +1672,7 @@ return [
     'select_nav_parent' => 'اختر العنصر الرئيسي',
     'choose_parent_category' => 'اختر الفئة الرئيسية',
     'nav_parent_select_help' => 'اختر الفئة الرئيسية التي سيظهر تحتها هذا العنصر',
-    
+
     // Empty States
     'no_data_title' => 'قريباً',
     'no_data_subtitle' => 'نعمل على تقديم منتجات وفئات رائعة لكم. تابعونا قريباً!',
@@ -1708,7 +1692,7 @@ return [
     'offers_list' => 'قائمة العروض',
     'start_creating_offers' => 'ابدأ بإنشاء عروض ترويجية لجذب العملاء',
     'duration' => 'المدة',
-    
+
     // Reviews Page
     'manage_product_reviews' => 'إدارة مراجعات وتقييمات العملاء',
     'five_star_reviews' => 'تقييمات 5 نجوم',
@@ -1716,7 +1700,7 @@ return [
     'reviews_list' => 'قائمة المراجعات',
     'no_reviews_found' => 'لا توجد مراجعات',
     'no_reviews_description' => 'لم يتم تقديم أي مراجعات من العملاء حتى الآن',
-    
+
     // Tags Management
     'tags_management' => 'إدارة الوسوم',
     'manage_product_tags' => 'إدارة وسوم المنتجات لتصنيف أفضل',
@@ -1857,7 +1841,7 @@ return [
     'options_required_for_select' => 'الخيارات مطلوبة لحقول القائمة المنسدلة.',
     'yes' => 'نعم',
     'no' => 'لا',
-    
+
     // Product Specifications
     'product_specifications' => 'مواصفات المنتج',
     'no_specs_for_category' => 'لم يتم تحديد مواصفات لهذه الفئة.',
@@ -1866,20 +1850,20 @@ return [
     'invalid_spec_field_for_category' => 'حقل المواصفات هذا لا ينتمي إلى الفئة المحددة.',
     'invalid_spec_value_type' => 'قيمة غير صالحة لحقل :field.',
     'technical_specifications' => 'المواصفات الفنية',
-    
+
     // Input Limits
     'product_name_too_long' => 'لا يمكن أن يتجاوز اسم المنتج :max حرفاً.',
     'description_too_long' => 'لا يمكن أن يتجاوز الوصف :max حرفاً.',
     'sale_price_must_be_less_than_price' => 'يجب أن يكون سعر التخفيض أقل من السعر العادي.',
     'characters_remaining' => 'الأحرف المتبقية: :count',
     'character_limit_warning' => 'اقتربت من الحد الأقصى للأحرف',
-    
+
     // Custom Specification Validation
     'spec_label_required_with_value' => 'تسمية المواصفة مطلوبة عند تقديم قيمة.',
     'spec_label_too_long' => 'لا يمكن أن تتجاوز تسمية المواصفة :max حرفاً.',
     'spec_value_required_with_label' => 'قيمة المواصفة مطلوبة عند تقديم تسمية.',
     'spec_value_too_long' => 'لا يمكن أن تتجاوز قيمة المواصفة :max حرفاً.',
-    
+
     // Banner Form
     'click_to_upload' => 'انقر للرفع',
     'at_least_one_required' => '(واحد على الأقل مطلوب)',
@@ -1989,7 +1973,6 @@ return [
     // Backup Management label (unified)
     'backup_management' => 'النسخ الاحتياطي',
 
-    // Attributes label
     'attributes' => 'الخصائص',
 
     // Admin Notifications
@@ -2026,18 +2009,6 @@ return [
     // Contact flash messages
     'message_status_updated' => 'تم تحديث حالة الرسالة.',
     'message_deleted_successfully' => 'تم حذف الرسالة.',
-
-    // Attribute flash messages
-    'attribute_created_successfully' => 'تم إنشاء الخاصية.',
-    'attribute_updated_successfully' => 'تم تحديث الخاصية.',
-    'attribute_deleted_successfully' => 'تم حذف الخاصية.',
-    'error_deleting_attribute' => 'فشل حذف الخاصية: :error',
-
-    // Attribute Value flash messages
-    'attribute_value_created_successfully' => 'تم إنشاء قيمة الخاصية.',
-    'attribute_value_updated_successfully' => 'تم تحديث قيمة الخاصية.',
-    'attribute_value_deleted_successfully' => 'تم حذف قيمة الخاصية.',
-    'error_deleting_attribute_value' => 'فشل حذف قيمة الخاصية: :error',
 
     // Promotional Offer flash messages
     'offer_created_successfully' => 'تم إنشاء العرض الترويجي.',
@@ -2190,63 +2161,6 @@ return [
     'password_mixed_case' => 'تحتوي على أحرف كبيرة وصغيرة',
     'password_numbers' => 'تحتوي على رقم واحد على الأقل',
 
-    // إدارة الخصائص
-    'attributes_management' => 'إدارة الخصائص',
-    'manage_attributes_subtitle' => 'إدارة خصائص المنتجات وقيمها للتصفية',
-    'add_new_attribute' => 'إضافة خاصية جديدة',
-    'attribute_name' => 'اسم الخاصية',
-    'attribute_slug' => 'المعرّف',
-    'attribute_type' => 'النوع',
-    'attribute_unit' => 'الوحدة',
-    'attribute_values' => 'القيم',
-    'attribute_filterable' => 'قابل للتصفية',
-    'attribute_order' => 'ترتيب العرض',
-    'total_attributes' => 'إجمالي الخصائص',
-    'active_attributes' => 'الخصائص النشطة',
-    'filterable_attributes' => 'الخصائص القابلة للتصفية',
-    'attribute_list' => 'قائمة الخصائص',
-    'values_count' => ':count قيم',
-    'no_attributes_found' => 'لم يتم العثور على خصائص',
-    'no_attributes_description' => 'ابدأ بإنشاء أول خاصية منتج للتصفية',
-    'create_first_attribute' => 'إنشاء أول خاصية',
-    'delete_all_attributes' => 'حذف جميع الخصائص',
-    'confirm_delete_all_attributes' => 'هل أنت متأكد من حذف جميع الخصائص؟ لا يمكن التراجع عن هذا الإجراء وسيتم إزالة جميع القيم والارتباطات.',
-    'delete_attribute_confirm' => 'هل أنت متأكد من حذف هذه الخاصية؟ سيتم حذف جميع قيمها وارتباطاتها.',
-
-    // إنشاء/تعديل الخصائص
-    'create_new_attribute' => 'إنشاء خاصية جديدة',
-    'edit_attribute' => 'تعديل الخاصية',
-    'attribute_information' => 'معلومات الخاصية',
-    'attribute_names_multilang' => 'أسماء الخاصية (متعدد اللغات)',
-    'name_english' => 'الاسم (إنجليزي)',
-    'name_arabic' => 'الاسم (عربي)',
-    'name_hebrew' => 'الاسم (عبري)',
-    'slug_field' => 'المعرّف',
-    'slug_auto_generate' => 'اتركه فارغاً للتوليد التلقائي من الاسم الإنجليزي',
-    'slug_placeholder' => 'يتم توليده تلقائياً من الاسم الإنجليزي',
-    'attribute_configuration' => 'إعدادات الخاصية',
-    'type_field' => 'النوع',
-    'select_type' => 'اختر النوع',
-    'type_select' => 'اختيار (خيار واحد)',
-    'type_multi_select' => 'اختيار متعدد (عدة خيارات)',
-    'type_range' => 'نطاق (أدنى-أقصى)',
-    'type_color' => 'لون',
-    'unit_field' => 'الوحدة',
-    'unit_placeholder' => 'مثال: هرتز، جيجابايت، بوصة',
-    'unit_help' => 'وحدة قياس اختيارية (مثال: هرتز، جيجابايت، بوصة)',
-    'display_order' => 'ترتيب العرض',
-    'order_help' => 'الأرقام الأصغر تظهر أولاً',
-    'settings' => 'الإعدادات',
-    'filterable_label' => 'قابل للتصفية',
-    'filterable_help' => 'إظهار هذه الخاصية في أشرطة التصفية الجانبية',
-    'active_label' => 'نشط',
-    'active_help' => 'جعل هذه الخاصية متاحة للاستخدام',
-    'create_attribute_btn' => 'إنشاء الخاصية',
-    'update_attribute_btn' => 'تحديث الخاصية',
-    'back_to_attributes' => 'العودة إلى الخصائص',
-    'attribute_values_count' => 'قيم الخاصية (:count)',
-    'attribute_values_info' => 'هذه الخاصية تحتوي على :count قيمة. يمكنك إدارة القيم بشكل منفصل.',
-
     // Privacy Policy & Refund Policy
     'privacy_policy_page_title' => 'سياسة الخصوصية',
     'privacy_policy_subtitle' => 'تعرف على كيفية جمع واستخدام وحماية معلوماتك الشخصية',
@@ -2280,4 +2194,89 @@ return [
     'confirm_delete_social' => 'هل أنت متأكد من حذف هذا الرابط؟',
     'hide' => 'إخفاء',
     'show' => 'إظهار',
+
+    // ── Dynamic Filters ──────────────────────────────────────
+    'filters_management' => 'الفلاتر',
+    'filters' => 'الفلاتر',
+    'filter' => 'فلتر',
+    'all_filters' => 'جميع الفلاتر',
+    'create_filter' => 'إنشاء فلتر',
+    'edit_filter' => 'تعديل الفلتر',
+    'filter_title' => 'عنوان الفلتر',
+    'filter_description' => 'وصف الفلتر',
+    'filter_type' => 'نوع الفلتر',
+    'filter_slug' => 'الاسم اللطيف للفلتر',
+    'filter_sort_order' => 'ترتيب العرض',
+    'filter_status' => 'الحالة',
+    'filter_options' => 'خيارات الفلتر',
+    'filter_option' => 'خيار الفلتر',
+    'filter_assignments' => 'تعيينات الفئات',
+    'filter_created' => 'تم إنشاء الفلتر بنجاح.',
+    'filter_updated' => 'تم تحديث الفلتر بنجاح.',
+    'filter_deleted' => 'تم حذف الفلتر بنجاح.',
+    'filter_section_settings_updated' => 'تم تحديث إعدادات أقسام الفلتر بنجاح.',
+    'filter_display_settings' => 'إعدادات عرض الفلاتر',
+    'filter_display_settings_help' => 'التحكم في الأقسام المدمجة التي تظهر في صفحة المنتجات وترتيبها.',
+    'section_status' => 'الحالة',
+    'section_status_help' => 'فلتر متوفر / غير متوفر',
+    'section_brand' => 'العلامة التجارية',
+    'section_brand_help' => 'قائمة العلامات التجارية',
+    'section_strong_offers' => 'العروض القوية فقط',
+    'section_strong_offers_help' => 'عرض المنتجات ذات العروض الترويجية القوية',
+    'section_price' => 'نطاق السعر',
+    'section_price_help' => 'شريط الحد الأدنى/الأقصى للسعر',
+    'filter_option_label' => 'عنوان الخيار',
+    'filter_option_value' => 'قيمة/اسم الخيار',
+    'filter_option_color' => 'رمز اللون',
+    'filter_option_icon' => 'كلاس الأيقونة',
+    'add_option' => 'إضافة خيار',
+    'remove_option' => 'إزالة',
+    'no_filters' => 'لا توجد فلاتر.',
+    'create_first_filter' => 'إنشاء أول فلتر',
+    'total_filters' => 'إجمالي الفلاتر',
+    'active_filters' => 'الفلاتر النشطة',
+    'inactive_filters' => 'الفلاتر غير النشطة',
+    'confirm_delete_filter' => 'هل أنت متأكد من حذف هذا الفلتر؟ سيتم أيضاً حذف جميع خياراته وتعييناته.',
+    'filter_information' => 'معلومات الفلتر',
+    'filter_titles_multilang' => 'عناوين الفلتر (متعددة اللغات)',
+    'filter_descriptions_multilang' => 'أوصاف الفلتر (متعددة اللغات)',
+    'filter_configuration' => 'إعدادات الفلتر',
+    'type_checkbox' => 'مربعات اختيار (خيارات متعددة)',
+    'type_radio' => 'اختيار فردي (خيار واحد)',
+    'type_range_slider' => 'شريط النطاق',
+    'type_min_max' => 'حقول الحد الأدنى/الأقصى',
+    'type_boolean' => 'تبديل منطقي',
+    'inherit_to_children' => 'وراثة للفئات الفرعية',
+    'inherit_help' => 'إذا تم التفعيل، سيظهر هذا الفلتر أيضاً في جميع الفئات الفرعية.',
+    'select_categories' => 'اختر الفئات',
+    'assigned_categories' => 'الفئات المعينة',
+    'no_category_assigned' => 'لا توجد فئة معينة.',
+    'option_labels_multilang' => 'عناوين الخيارات (متعددة اللغات)',
+    'manage_options' => 'إدارة الخيارات',
+    'options_count' => ':count خيار(ات)',
+    'assignments_count' => ':count تعيين(ات)',
+    'back_to_filters' => 'العودة للفلاتر',
+    'create_filter_btn' => 'إنشاء الفلتر',
+    'update_filter_btn' => 'تحديث الفلتر',
+    'filter_options_info' => 'حدد الخيارات القابلة للتحديد لهذا الفلتر. ينطبق فقط على أنواع مربعات الاختيار والاختيار الفردي والمنطقي.',
+    'no_options_for_type' => 'الخيارات غير قابلة للتطبيق لأنواع فلاتر النطاق/الحد الأدنى-الأقصى.',
+    'product_filters' => 'فلاتر المنتج',
+    'product_filters_description' => 'اختر قيم الفلاتر لهذا المنتج بناءً على فلاتر الفئة المعينة.',
+    'select_filter_values' => 'اختر قيم الفلاتر للمنتجات في هذه الفئة',
+    'no_filters_for_category' => 'لا توجد فلاتر ديناميكية معينة لفئة هذا المنتج.',
+    'enter_numeric_value' => 'أدخل القيمة',
+    'numeric_value' => 'القيمة الرقمية',
+    'bulk_assign_filters' => 'تعيين فلاتر جماعي',
+    'select_filter' => 'اختر الفلتر',
+    'filter_value_saved' => 'تم حفظ قيم الفلتر بنجاح.',
+    'title_english' => 'العنوان (إنجليزي)',
+    'title_arabic' => 'العنوان (عربي)',
+    'title_hebrew' => 'العنوان (عبري)',
+    'description_english' => 'الوصف (إنجليزي)',
+    'description_arabic' => 'الوصف (عربي)',
+    'description_hebrew' => 'الوصف (عبري)',
+    'label_english' => 'العنوان (إنجليزي)',
+    'label_arabic' => 'العنوان (عربي)',
+    'label_hebrew' => 'العنوان (عبري)',
+    'clear_filters' => 'مسح الفلاتر',
 ];

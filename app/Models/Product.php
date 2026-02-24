@@ -107,22 +107,22 @@ class Product extends Model
         if (empty($value)) {
             return \App\Helpers\ImageHelper::assetUrl('images/products/default.png');
         }
-        
+
         // If it's already a full URL, return it as is
         if (str_starts_with($value, 'http')) {
             return $value;
         }
-        
+
         // If path starts with 'storage/', strip it (normalize)
         if (str_starts_with($value, 'storage/')) {
             $value = substr($value, 8);
         }
-        
+
         // If path starts with 'images/', it's in the public folder
         if (str_starts_with($value, 'images/')) {
             return asset($value);
         }
-        
+
         // All other paths are in storage/app/public, served via /media/ route
         // Using /media/ instead of /storage/ because public/storage/.htaccess on cPanel
         // has RewriteEngine Off which blocks the parent rewrite rules
@@ -171,7 +171,7 @@ class Product extends Model
 
             if ($product->track_stock) {
                 $oldStatus = $product->getOriginal('stock_status');
-                
+
                 if ($product->stock_quantity <= 0 && $oldStatus !== 'out_of_stock') {
                     $product->stock_status = 'out_of_stock';
                 } elseif ($product->stock_quantity > 0 && $oldStatus === 'out_of_stock') {
@@ -213,25 +213,6 @@ class Product extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
-    }
-
-    /**
-     * Get all attributes for the product.
-     */
-    public function attributes()
-    {
-        return $this->belongsToMany(AttributeValue::class, 'product_attributes')
-            ->withPivot('price_adjustment', 'stock_quantity')
-            ->withTimestamps();
-    }
-
-    /**
-     * Get all attribute values for the product (for filtering).
-     */
-    public function attributeValues()
-    {
-        return $this->belongsToMany(AttributeValue::class, 'product_attribute_values')
-            ->withTimestamps();
     }
 
     /**
@@ -493,7 +474,7 @@ class Product extends Model
      * Sync custom specifications for this product.
      * Handles create, update, and delete operations.
      * Filters out empty specifications and preserves sort order.
-     * 
+     *
      * @param array $specs Array of specification data from form submission
      * @return void
      */
@@ -513,7 +494,7 @@ class Product extends Model
         // Process each valid specification
         foreach (array_values($validSpecs) as $index => $specData) {
             $specId = $specData['id'] ?? null;
-            
+
             $data = [
                 'label_en' => trim($specData['label_en'] ?? ''),
                 'label_ar' => trim($specData['label_ar'] ?? '') ?: null,
@@ -564,7 +545,7 @@ class Product extends Model
 
     /**
      * Sync specification values for this product.
-     * 
+     *
      * @param array $values Array of [spec_field_id => value]
      * @return void
      */
@@ -572,7 +553,7 @@ class Product extends Model
     {
         // Refresh the category relationship to ensure we have the current category
         $this->load('category.specTemplate.activeFields');
-        
+
         // Get valid field IDs for this product's category
         $validFieldIds = $this->category?->specTemplate?->activeFields?->pluck('id')->toArray() ?? [];
 
@@ -627,7 +608,7 @@ class Product extends Model
 
         // First, add template-based specifications
         // Safety check: if tables don't exist, skip template specs
-        if (\Illuminate\Support\Facades\Schema::hasTable('product_spec_values') && 
+        if (\Illuminate\Support\Facades\Schema::hasTable('product_spec_values') &&
             \Illuminate\Support\Facades\Schema::hasTable('spec_fields')) {
             try {
                 foreach ($this->orderedSpecValues as $specValue) {
@@ -681,5 +662,23 @@ class Product extends Model
         return $query->whereHas('tags', function ($q) use ($tagSlug) {
             $q->where('slug', $tagSlug)->where('is_active', true);
         });
+    }
+
+    // ── Dynamic Filter Relationships ──────────────────────────
+
+    /**
+     * Get the dynamic filter options assigned to this product.
+     */
+    public function filterOptions()
+    {
+        return $this->belongsToMany(FilterOption::class, 'product_filter_option');
+    }
+
+    /**
+     * Get the numeric filter values for this product.
+     */
+    public function filterNumericValues()
+    {
+        return $this->hasMany(ProductFilterNumericValue::class);
     }
 }

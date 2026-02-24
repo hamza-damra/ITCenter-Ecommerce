@@ -121,10 +121,6 @@ return [
             'name' => 'Contact Messages',
             'tables' => ['contact_messages'],
         ],
-        'attributes' => [
-            'name' => 'Product Attributes',
-            'tables' => ['attributes', 'attribute_values'],
-        ],
     ],
 
     /**

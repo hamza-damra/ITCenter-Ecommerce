@@ -12,12 +12,12 @@ return [
     'contact' => 'Contact',
     'search' => 'Search...',
     'clear' => 'Clear',
-    
+
     // Hero Section
     'hero_title' => 'Discover the Latest Technology',
     'hero_subtitle' => 'Find the best IT products, laptops, and accessories at competitive prices',
     'shop_now' => 'Shop Now',
-    
+
     // Categories Section
     'shop_by_category' => 'Shop by Category',
     'explore_our_products' => 'Discover Our Products',
@@ -25,12 +25,12 @@ return [
     'view_more' => 'View More',
     'no_categories' => 'No categories available',
     'explore_products' => 'Explore :count products',
-    
+
     // Brands Section
     'top_brands' => 'Top Brands',
     'trusted_brands' => 'Trusted Brands',
     'no_brands' => 'No brands available',
-    
+
     // Products Section
     'featured_products' => 'Featured Products',
     'new_arrivals' => 'New Arrivals',
@@ -48,7 +48,7 @@ return [
     'in_stock' => 'In Stock',
     'request_product' => 'Request Product',
     'product' => 'product',
-    
+
     // Gift Ideas Section
     'gift_ideas' => [
         'title' => 'Gift Ideas',
@@ -66,7 +66,7 @@ return [
         'code' => 'Use Code: IT20',
         'cta' => 'Shop Now',
     ],
-    
+
     // Special Offer Section
     'special_offer' => 'Special Offer',
     'strong_offer' => 'Strong Offer',
@@ -87,12 +87,12 @@ return [
     'free_shipping' => 'Free Shipping',
     'warranty_included' => 'Warranty Included',
     'limited_stock' => 'Limited Stock',
-    
+
     // Product Badges
     'new' => 'NEW',
     'sale' => 'SALE',
     'hot' => 'HOT',
-    
+
     // Offers Section
     'special_offers' => 'Special Offers',
     'hot_deals' => 'Hot Deals',
@@ -103,7 +103,7 @@ return [
     'hours' => 'Hours',
     'minutes' => 'Minutes',
     'seconds' => 'Seconds',
-    
+
     // Product Details
     'product_details' => 'Product Details',
     'description' => 'Description',
@@ -118,7 +118,7 @@ return [
     'tags' => 'Tags',
     'tags_list' => 'Tags List',
     'share' => 'Share',
-    
+
     // Reviews
     'customer_reviews' => 'Customer Reviews',
     'share_your_experience' => 'Have this product? Share your experience with other customers.',
@@ -240,8 +240,8 @@ return [
     'processing_order' => 'Processing',
     'order_error' => 'An error occurred while processing your order. Please try again.',
     'order_placed_successfully' => 'Your order has been placed successfully!',
-    
-    
+
+
     // Checkout Page
     'confirmation' => 'Confirmation',
     'contact_information' => 'Contact Information',
@@ -389,7 +389,7 @@ return [
     'email' => 'Email',
     'address' => 'Address',
     'location' => 'Palestine, Hebron',
-    
+
     // Common
     'learn_more' => 'Learn More',
     'read_more' => 'Read More',
@@ -417,7 +417,7 @@ return [
     'showing' => 'Showing',
     'of' => 'of',
     'language' => 'Language',
-    
+
     // Product Detail Page
     'IT Center' => 'IT Center',
     'Uncategorized' => 'Uncategorized',
@@ -446,7 +446,7 @@ return [
     'cm' => 'cm',
     'Product Description' => 'Product Description',
     'Related Products' => 'Related Products',
-    
+
     // Favorites
     'my_favorites' => 'My Favorites',
     'no_favorites' => 'Your favorites list is empty',
@@ -454,7 +454,7 @@ return [
     'start_shopping' => 'Start Shopping',
     'item' => 'item',
     'items' => 'items',
-    
+
     // Product Detail Translations
     'free_shipping' => 'Free shipping on orders over $50',
     'return_policy' => '30-day return policy',
@@ -470,7 +470,7 @@ return [
     'dimensions' => 'Dimensions',
     'click_to_zoom' => 'Click to zoom',
     'click_to_zoom_out' => 'Click to zoom out',
-    
+
     // About Us Page
     'about_us_title' => 'About IT Center',
     'about_us_subtitle' => 'Learn more about our company and mission',
@@ -492,7 +492,7 @@ return [
     'happy_customers' => 'Happy Customers',
     'support_24_7' => '24/7',
     'support' => 'Support',
-    
+
     // Admin Panel
     'admin_panel' => 'Admin Panel',
     'admin_login_required' => 'Please login to access the admin panel.',
@@ -507,7 +507,7 @@ return [
     'brands_management' => 'Brands Management',
     'promotional_management' => 'Promotional Management',
     'banner_management' => 'Banner Management',
-    
+
     // Promotional Offers
     'promotional_offers_title' => 'Promotional Offers Management',
     'promotional_offers_subtitle' => 'Manage offers and promotions displayed on the homepage',
@@ -516,46 +516,46 @@ return [
     'create_promotional_subtitle' => 'Create a new promotional offer to display on the homepage',
     'back_to_list' => 'Back to List',
     'please_correct_errors' => 'Please correct the following errors:',
-    
+
     // Form Sections
     'product_selection' => 'Product Selection',
     'select_product_desc' => 'Choose the product for which you want to create a promotional offer',
     'product' => 'Product',
     'select_product_placeholder' => '-- Select a product from the list --',
-    
+
     'offer_title_section' => 'Offer Title',
     'offer_title_desc' => 'Enter the offer title in all supported languages',
     'title_arabic' => 'Title in Arabic',
     'title_english' => 'Title in English',
     'title_hebrew' => 'Title in Hebrew',
-    
+
     'pricing' => 'Pricing',
     'pricing_desc' => 'Set the original price and special offer price',
     'calculated_discount' => 'Calculated Discount',
     'enter_prices_to_calculate' => 'Enter prices to calculate discount',
-    
+
     'offer_features' => 'Offer Features',
     'offer_features_desc' => 'Add features you want to highlight (each feature on a separate line)',
     'features_arabic' => 'Features in Arabic',
     'features_english' => 'Features in English',
     'features_hebrew' => 'Features in Hebrew',
-    
+
     'offer_duration' => 'Offer Duration',
     'offer_duration_desc' => 'Set the start and end date of the promotional offer',
     'start_date_label' => 'Start Date',
     'end_date_label' => 'End Date',
-    
+
     'settings' => 'Settings',
     'additional_settings' => 'Additional settings for the offer',
     'display_order' => 'Display Order',
     'display_order_hint' => 'Lower number = appears first in the list',
     'activate_offer_immediately' => 'Activate offer immediately',
     'will_appear_on_homepage' => 'The offer will appear directly on the homepage',
-    
+
     'save_promotional_offer' => 'Save Promotional Offer',
     'cancel' => 'Cancel',
     'required' => 'Required',
-    
+
     // New UI translations
     'new_offer' => 'New Offer',
     'selected_product' => 'Selected Product',
@@ -573,13 +573,13 @@ return [
     'offer_lasts' => 'Offer Duration',
     'sale_price_must_be_less' => 'Sale price must be less than the original price!',
     'end_date_must_be_after_start' => 'End date must be after the start date!',
-    
+
     'edit_promotional_offer' => 'Edit Promotional Offer',
     'update_promotional_subtitle' => 'Update the promotional offer information',
     'back' => 'Back',
     'product_information' => 'Product Information',
     'update_offer' => 'Update Offer',
-    
+
     'image' => 'Image',
     'title' => 'Title',
     'original_price' => 'Original Price',
@@ -591,7 +591,7 @@ return [
     'confirm_delete_offer' => 'Are you sure you want to delete this?',
     'confirm_toggle_status' => 'Do you want to change the offer status?',
     'inactive' => 'Inactive',
-    
+
     'all_products' => 'All Products',
     'filter_by_tags' => 'Filter by Tags',
     'clear_filter' => 'Clear Filter',
@@ -638,7 +638,7 @@ return [
     'no_products_yet' => 'No products yet',
     'active' => 'Active',
     'inactive' => 'Inactive',
-    
+
     // Products Management
     'manage_product_catalog' => 'Manage your product catalog with ease',
     'search_by_name_sku' => 'Search by name or SKU...',
@@ -658,7 +658,7 @@ return [
     'start_adding_products' => 'Start by adding your first product!',
     'create_product' => 'Create Product',
     'product_list' => 'Product List',
-    
+
     // Categories Management
     'categories_management_title' => 'Categories Management',
     'organize_categories_subtitle' => 'Organize your products with categories and subcategories',
@@ -679,7 +679,7 @@ return [
     'no_categories_found' => 'No Categories Found',
     'no_categories_description' => 'You haven\'t created any categories yet. Start by creating your first category!',
     'create_first_category' => 'Create First Category',
-    
+
     // Create Category
     'create_new_category' => 'Create New Category',
     'add_category_subtitle' => 'Add a new product category to organize your catalog',
@@ -733,7 +733,7 @@ return [
     'optimized_file_size' => 'Optimized file size',
     'getting_started' => 'Getting Started',
     'categories_organize_help' => 'Categories organize your products. Create main categories first, then add subcategories as needed.',
-    
+
     // Edit Category
     'edit_category' => 'Edit Category',
     'edit_category_title' => 'Edit Category: :name',
@@ -741,7 +741,7 @@ return [
     'image_url_label' => 'Image URL',
     'current_image' => 'Current Image',
     'update_category' => 'Update Category',
-    
+
     // Brands Management
     'brands_management_title' => 'Brands Management',
     'manage_brands_subtitle' => 'Manage your product brands and keep your catalog organized',
@@ -759,7 +759,7 @@ return [
     'no_logo' => 'No Logo',
     'regular' => 'Regular',
     'featured' => 'Featured',
-    
+
     // Create/Edit Brand
     'create_new_brand' => 'Create New Brand',
     'add_brand_subtitle' => 'Add a new brand to your product catalog',
@@ -851,9 +851,6 @@ return [
     'full_description_english' => 'Full Description (English)',
     'full_description_arabic' => 'Full Description (Arabic)',
     'complete_description_details' => 'Complete product description with details',
-    'product_attributes' => 'Product Attributes',
-    'select_attributes_for_category' => 'Select attributes specific to this product\'s category',
-    'no_attributes_for_category' => 'No attributes configured for this category',
     'confirm_delete_product_message' => 'Are you sure you want to delete this product? This action cannot be undone and will permanently remove this product from your store.',
     'confirm_delete_image' => 'Are you sure you want to delete this image? This action cannot be undone.',
     'main_image_deleted_successfully' => 'Main image deleted successfully.',
@@ -874,7 +871,7 @@ return [
     'inventory_value' => 'Inventory Value',
     'total_favorites' => 'Total Favorites',
     'customer_wishlists' => 'Customer Wishlists',
-    
+
     // User Statistics
     'user_statistics' => 'User Statistics',
     'total_users' => 'Total Users',
@@ -899,7 +896,7 @@ return [
     'users_with_wishlist' => 'Users with wishlist',
     'with_reviews' => 'With Reviews',
     'active_reviewers' => 'Active reviewers',
-    
+
     // Dashboard new keys
     'store_overview' => 'Store Overview',
     'online_now' => 'online now',
@@ -1023,7 +1020,7 @@ return [
     'shipped_at' => 'Shipped',
     'delivered_at' => 'Delivered',
     'cancelled_at' => 'Cancelled',
-    
+
     // Order Status Labels
     'order_status_pending' => 'Pending',
     'order_status_processing' => 'Processing',
@@ -1061,7 +1058,7 @@ return [
     'browse_products' => 'Browse Products',
     'cancel_within' => 'You can cancel within',
     'please_select_cancel_reason' => 'Please select a cancellation reason',
-    
+
     // Contact Page
     'get_in_touch' => 'Get in touch with our team',
     'send_us_message' => 'Send Us a Message',
@@ -1080,7 +1077,7 @@ return [
     'saturday_hours' => 'Saturday: 10:00 AM - 4:00 PM',
     'sunday_closed' => 'Sunday: Closed',
     'error_occurred' => 'An error occurred. Please try again.',
-    
+
     // Contact Management (Admin)
     'contact_messages_management' => 'Contact Messages Management',
     'contact_messages' => 'Contact Messages',
@@ -1110,7 +1107,7 @@ return [
     'are_you_sure' => 'Are you sure?',
     'no_messages_found' => 'No Messages Found',
     'no_contact_messages_to_display' => 'No contact messages to display',
-    
+
     // Contact Message Details
     'view_contact_message' => 'View Contact Message',
     'back_to_messages' => 'Back to Messages',
@@ -1127,7 +1124,7 @@ return [
     'received_date' => 'Received Date',
     'received_time' => 'Received Time',
     'last_updated' => 'Last Updated',
-    
+
     // Bulk operations messages
     'messages_deleted_successfully' => ':count message(s) deleted successfully',
     'messages_status_updated_successfully' => ':count message(s) status updated successfully',
@@ -1182,7 +1179,7 @@ return [
     'delete_user_confirm' => 'Are you sure you want to delete this user? This action cannot be undone.',
     'no_users_found' => 'No Users Found',
     'add_first_user' => 'Add First User',
-    
+
     // User Details
     'user_details' => 'User Details',
     'view_complete_user_information' => 'View complete user information',
@@ -1198,7 +1195,7 @@ return [
     'user_favorites' => 'User Favorites',
     'and_more_favorites' => 'and :count more favorites',
     'last_order_date' => 'Last Order Date',
-    
+
     // Create User
     'create_new_user' => 'Create New User',
     'add_new_user_subtitle' => 'Add a new user to the system',
@@ -1214,7 +1211,7 @@ return [
     'user_create_note_2' => 'Admins have full permissions to access the control panel',
     'user_create_note_3' => 'Password must be strong and secure (at least 8 characters)',
     'user_create_note_4' => 'User information can be edited later from the edit page',
-    
+
     // Edit User
     'edit_user_subtitle' => 'Edit user information: :name',
     'change_password' => 'Change Password',
@@ -1225,7 +1222,7 @@ return [
     'user_info' => 'User Info',
     'registered_on' => 'Registered On',
     'system_id' => 'System ID',
-    
+
     // Messages
     'user_created_successfully' => 'User created successfully!',
     'user_updated_successfully' => 'User updated successfully!',
@@ -1233,7 +1230,7 @@ return [
     'users_deleted_successfully' => ':count user(s) deleted successfully!',
     'cannot_delete_own_account' => 'You cannot delete your own account!',
     'product_deleted' => 'Product Deleted',
-    
+
     // Account Control
     'account_control' => 'Account Control',
     'suspend_account' => 'Suspend Account',
@@ -1264,12 +1261,12 @@ return [
     'banned_at' => 'Banned At',
     'account_actions' => 'Account Actions',
     'quick_actions' => 'Quick Actions',
-    
+
     // Account Status Messages (for suspended/banned users)
     'account_suspended' => 'Your account has been suspended. Please contact support for assistance.',
     'account_banned' => 'Your account has been permanently banned. Please contact support if you believe this is an error.',
     'reason' => 'Reason',
-    
+
     // Database Backup Management
     'Database Backup Management' => 'Database Backup Management',
     'Create, restore, and manage database backups' => 'Create, restore, and manage database backups',
@@ -1313,7 +1310,7 @@ return [
     'Backup File:' => 'Backup File:',
     'I understand that this will replace all current data' => 'I understand that this will replace all current data',
     'Cancel' => 'Cancel',
-    
+
     // Advanced Backup System
     'Create Backup Now' => 'Create Backup Now',
     'Import Backup' => 'Import Backup',
@@ -1354,7 +1351,7 @@ return [
     'Selective module backup' => 'Selective module backup',
     'clear_frontend_cache' => 'Clear Frontend Cache',
     'clear_frontend_cache_description' => 'Clear frontend cache to refresh home page data',
-    
+
     // Confirmation Modal
     'confirm_action' => 'Confirm Action',
     'are_you_sure' => 'Are you sure?',
@@ -1369,7 +1366,7 @@ return [
     'Backup deleted successfully' => 'Backup deleted successfully',
     'Failed to delete backup' => 'Failed to delete backup',
     'Failed to delete backup. Please try again.' => 'Failed to delete backup. Please try again.',
-    
+
     // Delete All Feature
     'delete_all' => 'Delete All',
     'confirm_delete_all' => 'Are you sure you want to delete all records on this page?',
@@ -1387,7 +1384,7 @@ return [
     'confirm_delete_selected' => 'Are you sure you want to delete the selected items? This action cannot be undone.',
     'please_select_items' => 'Please select at least one item to delete.',
     'selected_records_deleted_successfully' => ':count item(s) deleted successfully!',
-    
+
     // Backup Settings
     'Backup Settings' => 'Backup Settings',
     'Configure automatic backup retention and cleanup policies' => 'Configure automatic backup retention and cleanup policies',
@@ -1415,7 +1412,7 @@ return [
     'Failed to load backup settings' => 'Failed to load backup settings',
     'Failed to update backup settings' => 'Failed to update backup settings',
     'Settings' => 'Settings',
-    
+
     // Auto Backup Schedule
     'Auto Backup Schedule' => 'Auto Backup Schedule',
     'Auto Backup Interval' => 'Auto Backup Interval',
@@ -1455,7 +1452,7 @@ return [
     'Expired' => 'Expired',
     'Expires in' => 'Expires in',
     'Expires at' => 'Expires at',
-    
+
     // Backup Limit Messages
     'Cannot create a new backup. You have reached the maximum allowed backups.' => 'Cannot create a new backup. You have reached the maximum allowed backups.',
     'Backup created successfully!' => 'Backup created successfully!',
@@ -1532,7 +1529,6 @@ return [
     'price_max' => 'Max',
     'minimum_price' => 'Minimum price',
     'maximum_price' => 'Maximum price',
-    'attributes_filter' => 'Attributes',
     'no_results_found' => 'No Results Found',
     'no_products_match_filters' => 'No products match your current filters. Try adjusting your selection.',
     'no_products_found' => 'No Products Found',
@@ -1553,18 +1549,6 @@ return [
     'use_arrow_keys_price' => 'Use arrow keys to adjust price range. Hold Shift with arrow keys for faster movement.',
     'please_wait' => 'Please wait',
     'back_to_home' => 'Back to Home',
-    
-    // Category Attributes
-    'manage_category_attributes' => 'Manage Category Attributes',
-    'assign_attributes_to_category_subtitle' => 'Assign filterable attributes to this category',
-    'back_to_categories' => 'Back to Categories',
-    'attributes' => 'Attributes',
-    'available_attributes' => 'Available Attributes',
-    'attributes_selected' => 'attributes selected',
-    'no_filterable_attributes_available' => 'No filterable attributes available',
-    'create_attribute' => 'Create Attribute',
-    'save_assignments' => 'Save Assignments',
-    'category_attributes_updated_successfully' => 'Category attributes updated successfully',
 
     // Category icon and position fields
     'category_icon' => 'Category Icon',
@@ -1627,7 +1611,7 @@ return [
     'banner_settings' => 'Banner Settings',
     'multilingual_content' => 'Multilingual Content',
     'at_least_one_title_required' => 'At least one title field is required',
-    
+
     // Banner Color Customization
     'color_customization' => 'Color Customization',
     'color_customization_help' => 'Customize the colors of the banner text and button. Leave empty to use default colors.',
@@ -1635,7 +1619,7 @@ return [
     'subtitle_color' => 'Subtitle Color',
     'button_bg_color' => 'Button Background Color',
     'button_text_color' => 'Button Text Color',
-    
+
     // Banner Image Source Options
     'image_source' => 'Image Source',
     'banner_upload_from_device' => 'Upload from Device',
@@ -1693,13 +1677,13 @@ return [
     'promotional_ad_created_successfully' => 'Promotional ad created successfully!',
     'promotional_ad_updated_successfully' => 'Promotional ad updated successfully!',
     'promotional_ad_deleted_successfully' => 'Promotional ad deleted successfully!',
-    
+
     // Promotional Ad Stats
     'total_ads' => 'Total Ads',
     'active_ads' => 'Active Ads',
     'left_position' => 'Left Position',
     'right_position' => 'Right Position',
-    
+
     // Promotional Ad Form
     'ad_image' => 'Ad Image',
     'promotional_ad_image' => 'Promotional Ad Image',
@@ -1722,7 +1706,7 @@ return [
     'ad_active' => 'Active',
     'ad_active_help' => 'Display this ad on the home page',
     'updated_at' => 'Updated At',
-    
+
     // Promotional Ad Title, Subtitle, Button
     'ad_title' => 'Ad Title',
     'ad_subtitle' => 'Ad Subtitle',
@@ -1756,7 +1740,7 @@ return [
     'medium' => 'Medium',
     'large' => 'Large',
     'extra_large' => 'Extra Large',
-    
+
     // Category Display Mode
     'display_mode' => 'Display Mode',
     'carousel' => 'Carousel',
@@ -1766,7 +1750,7 @@ return [
     'display_mode_help' => 'Choose how this category appears on the homepage',
     'all_display_modes' => 'All Display Modes',
     'inherits_parent' => 'Inherits Parent',
-    
+
     // Nav Type (Parent/Child)
     'nav_type' => 'Navigation Type',
     'nav_parent' => 'Parent Item',
@@ -1777,7 +1761,7 @@ return [
     'select_nav_parent' => 'Select Parent Item',
     'choose_parent_category' => 'Choose parent category',
     'nav_parent_select_help' => 'Select the parent category under which this item will appear',
-    
+
     // Empty States
     'no_data_title' => 'Coming Soon',
     'no_data_subtitle' => 'We\'re working on bringing you amazing products and categories. Check back soon!',
@@ -1797,7 +1781,7 @@ return [
     'offers_list' => 'Offers List',
     'start_creating_offers' => 'Start creating promotional offers to attract customers',
     'duration' => 'Duration',
-    
+
     // Reviews Page
     'manage_product_reviews' => 'Manage customer reviews and ratings',
     'five_star_reviews' => '5-Star Reviews',
@@ -1805,7 +1789,7 @@ return [
     'reviews_list' => 'Reviews List',
     'no_reviews_found' => 'No Reviews Found',
     'no_reviews_description' => 'No customer reviews have been submitted yet',
-    
+
     // Tags Management
     'tags_management' => 'Tags Management',
     'manage_product_tags' => 'Manage product tags for better categorization',
@@ -1946,7 +1930,7 @@ return [
     'options_required_for_select' => 'Options are required for Select type fields.',
     'yes' => 'Yes',
     'no' => 'No',
-    
+
     // Product Specifications
     'product_specifications' => 'Product Specifications',
     'no_specs_for_category' => 'No specifications defined for this category.',
@@ -1955,20 +1939,20 @@ return [
     'invalid_spec_field_for_category' => 'This specification field does not belong to the selected category.',
     'invalid_spec_value_type' => 'Invalid value for :field field.',
     'technical_specifications' => 'Technical Specifications',
-    
+
     // Input Limits
     'product_name_too_long' => 'Product name cannot exceed :max characters.',
     'description_too_long' => 'Description cannot exceed :max characters.',
     'sale_price_must_be_less_than_price' => 'Sale price must be less than regular price.',
     'characters_remaining' => ':count characters remaining',
     'character_limit_warning' => 'Approaching character limit',
-    
+
     // Custom Specification Validation
     'spec_label_required_with_value' => 'Specification label is required when a value is provided.',
     'spec_label_too_long' => 'Specification label cannot exceed :max characters.',
     'spec_value_required_with_label' => 'Specification value is required when a label is provided.',
     'spec_value_too_long' => 'Specification value cannot exceed :max characters.',
-    
+
     // Banner Form
     'click_to_upload' => 'Click to upload',
     'at_least_one_required' => '(at least one required)',
@@ -2078,7 +2062,6 @@ return [
     // Backup Management label (unified)
     'backup_management' => 'Database Backup',
 
-    // Attributes label
     'attributes' => 'Attributes',
 
     // Admin Notifications
@@ -2115,18 +2098,6 @@ return [
     // Contact flash messages
     'message_status_updated' => 'Message status has been updated.',
     'message_deleted_successfully' => 'Message has been deleted.',
-
-    // Attribute flash messages
-    'attribute_created_successfully' => 'Attribute has been created.',
-    'attribute_updated_successfully' => 'Attribute has been updated.',
-    'attribute_deleted_successfully' => 'Attribute has been deleted.',
-    'error_deleting_attribute' => 'Failed to delete attribute: :error',
-
-    // Attribute Value flash messages
-    'attribute_value_created_successfully' => 'Attribute value has been created.',
-    'attribute_value_updated_successfully' => 'Attribute value has been updated.',
-    'attribute_value_deleted_successfully' => 'Attribute value has been deleted.',
-    'error_deleting_attribute_value' => 'Failed to delete attribute value: :error',
 
     // Promotional Offer flash messages
     'offer_created_successfully' => 'Promotional offer has been created.',
@@ -2279,63 +2250,6 @@ return [
     'password_mixed_case' => 'Contains uppercase and lowercase letters',
     'password_numbers' => 'Contains at least one number',
 
-    // Attributes Management Page
-    'attributes_management' => 'Attributes Management',
-    'manage_attributes_subtitle' => 'Manage product attributes and their values for filtering',
-    'add_new_attribute' => 'Add New Attribute',
-    'attribute_name' => 'Attribute Name',
-    'attribute_slug' => 'Slug',
-    'attribute_type' => 'Type',
-    'attribute_unit' => 'Unit',
-    'attribute_values' => 'Values',
-    'attribute_filterable' => 'Filterable',
-    'attribute_order' => 'Display Order',
-    'total_attributes' => 'Total Attributes',
-    'active_attributes' => 'Active Attributes',
-    'filterable_attributes' => 'Filterable Attributes',
-    'attribute_list' => 'Attribute List',
-    'values_count' => ':count values',
-    'no_attributes_found' => 'No Attributes Found',
-    'no_attributes_description' => 'Start by creating your first product attribute for filtering',
-    'create_first_attribute' => 'Create First Attribute',
-    'delete_all_attributes' => 'Delete All Attributes',
-    'confirm_delete_all_attributes' => 'Are you sure you want to delete all attributes? This action cannot be undone and will remove all attribute values and associations.',
-    'delete_attribute_confirm' => 'Are you sure you want to delete this attribute? This will also delete all its values and associations.',
-
-    // Attributes Create/Edit Page
-    'create_new_attribute' => 'Create New Attribute',
-    'edit_attribute' => 'Edit Attribute',
-    'attribute_information' => 'Attribute Information',
-    'attribute_names_multilang' => 'Attribute Names (Multi-language)',
-    'name_english' => 'Name (English)',
-    'name_arabic' => 'Name (Arabic)',
-    'name_hebrew' => 'Name (Hebrew)',
-    'slug_field' => 'Slug',
-    'slug_auto_generate' => 'Leave empty to auto-generate from English name',
-    'slug_placeholder' => 'Auto-generated from English name',
-    'attribute_configuration' => 'Attribute Configuration',
-    'type_field' => 'Type',
-    'select_type' => 'Select Type',
-    'type_select' => 'Select (Single Choice)',
-    'type_multi_select' => 'Multi-Select (Multiple Choices)',
-    'type_range' => 'Range (Min-Max)',
-    'type_color' => 'Color',
-    'unit_field' => 'Unit',
-    'unit_placeholder' => 'e.g., Hz, GB, inches',
-    'unit_help' => 'Optional unit of measurement (e.g., Hz, GB, inches)',
-    'display_order' => 'Display Order',
-    'order_help' => 'Lower numbers appear first',
-    'settings' => 'Settings',
-    'filterable_label' => 'Filterable',
-    'filterable_help' => 'Show this attribute in filter sidebars',
-    'active_label' => 'Active',
-    'active_help' => 'Make this attribute available for use',
-    'create_attribute_btn' => 'Create Attribute',
-    'update_attribute_btn' => 'Update Attribute',
-    'back_to_attributes' => 'Back to Attributes',
-    'attribute_values_count' => 'Attribute Values (:count)',
-    'attribute_values_info' => 'This attribute has :count value(s). Manage values separately.',
-
     // Privacy Policy & Refund Policy
     'privacy_policy_page_title' => 'Privacy Policy',
     'privacy_policy_subtitle' => 'Learn how we collect, use, and protect your personal information',
@@ -2369,4 +2283,90 @@ return [
     'confirm_delete_social' => 'Are you sure you want to delete this social media link?',
     'hide' => 'Hide',
     'show' => 'Show',
+
+    // ── Dynamic Filters ──────────────────────────────────────
+    'filters_management' => 'Filters',
+    'filters' => 'Filters',
+    'filter' => 'Filter',
+    'all_filters' => 'All Filters',
+    'create_filter' => 'Create Filter',
+    'edit_filter' => 'Edit Filter',
+    'filter_title' => 'Filter Title',
+    'filter_description' => 'Filter Description',
+    'filter_type' => 'Filter Type',
+    'filter_slug' => 'Filter Slug',
+    'filter_sort_order' => 'Sort Order',
+    'filter_status' => 'Status',
+    'filter_options' => 'Filter Options',
+    'filter_option' => 'Filter Option',
+    'filter_assignments' => 'Category Assignments',
+    'filter_created' => 'Filter created successfully.',
+    'filter_updated' => 'Filter updated successfully.',
+    'filter_deleted' => 'Filter deleted successfully.',
+    'filter_section_settings_updated' => 'Filter section settings updated successfully.',
+    'filter_display_settings' => 'Filter Display Settings',
+    'filter_display_settings_help' => 'Control which built-in filter sections appear on the products page and their order.',
+    'section_status' => 'Status',
+    'section_status_help' => 'In Stock / Out of Stock filter',
+    'section_brand' => 'Brand',
+    'section_brand_help' => 'Brand list filter',
+    'section_strong_offers' => 'Strong Offers Only',
+    'section_strong_offers_help' => 'Filter products with strong promotional offers',
+    'section_price' => 'Price Range',
+    'section_price_help' => 'Min/Max price slider',
+    'reserved_slugs_hint' => 'Avoid using: brand, status, price (reserved for built-in filters).',
+    'filter_option_label' => 'Option Label',
+    'filter_option_value' => 'Option Value/Slug',
+    'filter_option_color' => 'Color Code',
+    'filter_option_icon' => 'Icon Class',
+    'add_option' => 'Add Option',
+    'remove_option' => 'Remove',
+    'no_filters' => 'No filters found.',
+    'create_first_filter' => 'Create First Filter',
+    'total_filters' => 'Total Filters',
+    'active_filters' => 'Active Filters',
+    'inactive_filters' => 'Inactive Filters',
+    'confirm_delete_filter' => 'Are you sure you want to delete this filter? This will also delete all its options and assignments.',
+    'filter_information' => 'Filter Information',
+    'filter_titles_multilang' => 'Filter Titles (Multi-language)',
+    'filter_descriptions_multilang' => 'Filter Descriptions (Multi-language)',
+    'filter_configuration' => 'Filter Configuration',
+    'type_checkbox' => 'Checkbox (Multiple Choice)',
+    'type_radio' => 'Radio (Single Choice)',
+    'type_range_slider' => 'Range Slider',
+    'type_min_max' => 'Min/Max Inputs',
+    'type_boolean' => 'Boolean Toggle',
+    'inherit_to_children' => 'Inherit to Children',
+    'inherit_help' => 'If enabled, this filter will also appear in all subcategories.',
+    'select_categories' => 'Select Categories',
+    'assigned_categories' => 'Assigned Categories',
+    'no_category_assigned' => 'No category assigned.',
+    'option_labels_multilang' => 'Option Labels (Multi-language)',
+    'manage_options' => 'Manage Options',
+    'options_count' => ':count option(s)',
+    'assignments_count' => ':count assignment(s)',
+    'back_to_filters' => 'Back to Filters',
+    'create_filter_btn' => 'Create Filter',
+    'update_filter_btn' => 'Update Filter',
+    'filter_options_info' => 'Define the selectable options for this filter. Only applicable for Checkbox, Radio, and Boolean types.',
+    'no_options_for_type' => 'Options are not applicable for range/min-max filter types.',
+    'product_filters' => 'Product Filters',
+    'product_filters_description' => 'Select filter values for this product based on assigned category filters.',
+    'select_filter_values' => 'Select filter values for products in this category',
+    'no_filters_for_category' => 'No dynamic filters are assigned to this product\'s category.',
+    'enter_numeric_value' => 'Enter value',
+    'numeric_value' => 'Numeric Value',
+    'bulk_assign_filters' => 'Bulk Assign Filters',
+    'select_filter' => 'Select Filter',
+    'filter_value_saved' => 'Filter values saved successfully.',
+    'title_english' => 'Title (English)',
+    'title_arabic' => 'Title (Arabic)',
+    'title_hebrew' => 'Title (Hebrew)',
+    'description_english' => 'Description (English)',
+    'description_arabic' => 'Description (Arabic)',
+    'description_hebrew' => 'Description (Hebrew)',
+    'label_english' => 'Label (English)',
+    'label_arabic' => 'Label (Arabic)',
+    'label_hebrew' => 'Label (Hebrew)',
+    'clear_filters' => 'Clear Filters',
 ];

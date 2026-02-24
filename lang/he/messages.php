@@ -12,12 +12,12 @@ return [
     'contact' => 'צור קשר',
     'search' => 'חיפוש...',
     'clear' => 'נקה',
-    
+
     // Hero Section
     'hero_title' => 'גלה את הטכנולוגיה העדכנית ביותר',
     'hero_subtitle' => 'מצא את מוצרי הטכנולוגיה הטובים ביותר, מחשבים ניידים ואביזרים במחירים תחרותיים',
     'shop_now' => 'קנה עכשיו',
-    
+
     // Categories Section
     'shop_by_category' => 'קנה לפי קטגוריה',
     'explore_our_products' => 'גלה את המוצרים שלנו',
@@ -25,12 +25,12 @@ return [
     'view_more' => 'צפה בעוד',
     'no_categories' => 'אין קטגוריות זמינות',
     'explore_products' => 'גלה :count מוצרים',
-    
+
     // Brands Section
     'top_brands' => 'מותגים מובילים',
     'trusted_brands' => 'מותגים אמינים',
     'no_brands' => 'אין מותגים זמינים',
-    
+
     // Products Section
     'featured_products' => 'מוצרים מומלצים',
     'new_arrivals' => 'חדש הגיע',
@@ -48,7 +48,7 @@ return [
     'out_of_stock' => 'אזל מהמלאי',
     'in_stock' => 'במלאי',
     'product' => 'מוצר',
-    
+
     // Gift Ideas Section
     'gift_ideas' => [
         'title' => 'רעיונות למתנות',
@@ -66,7 +66,7 @@ return [
         'code' => 'השתמשו בקוד: IT20',
         'cta' => 'קנו עכשיו',
     ],
-    
+
     // Special Offer Section
     'special_offer' => 'הצעה מיוחדת',
     'strong_offer' => 'הצעה חזקה',
@@ -87,12 +87,12 @@ return [
     'free_shipping' => 'משלוח חינם',
     'warranty_included' => 'אחריות כלולה',
     'limited_stock' => 'מלאי מוגבל',
-    
+
     // Product Badges
     'new' => 'חדש',
     'sale' => 'הנחה',
     'hot' => 'מבצע חם',
-    
+
     // Offers Section
     'special_offers' => 'מבצעים מיוחדים',
     'hot_deals' => 'עסקאות חמות',
@@ -103,7 +103,7 @@ return [
     'hours' => 'שעות',
     'minutes' => 'דקות',
     'seconds' => 'שניות',
-    
+
     // Product Details
     'product_details' => 'פרטי מוצר',
     'description' => 'תיאור',
@@ -118,7 +118,7 @@ return [
     'tags' => 'תגיות',
     'tags_list' => 'רשימת תגיות',
     'share' => 'שתף',
-    
+
     // Reviews
     'customer_reviews' => 'ביקורות לקוחות',
     'share_your_experience' => 'יש לך את המוצר הזה? שתף את החוויה שלך עם לקוחות אחרים.',
@@ -376,7 +376,7 @@ return [
 
     'error_removing_cart' => 'שגיאה בהסרת פריט מהעגלה',
     'checkout_coming_soon' => 'תכונת תשלום בקרוב!',
-    
+
     // Footer
     'footer_about' => 'אודות מרכז IT',
     'footer_description' => 'השותף המהימן שלך לכל צרכי הטכנולוגיה. מוצרים איכותיים במחירים תחרותיים.',
@@ -398,7 +398,7 @@ return [
     'email' => 'דוא"ל',
     'address' => 'כתובת',
     'location' => 'פלסטין, חברון',
-    
+
     // Common
     'learn_more' => 'למד עוד',
     'read_more' => 'קרא עוד',
@@ -426,7 +426,7 @@ return [
     'showing' => 'מציג',
     'of' => 'מתוך',
     'language' => 'שפה',
-    
+
     // Product Detail Page
     'IT Center' => 'מרכז IT',
     'Uncategorized' => 'ללא קטגוריה',
@@ -455,7 +455,7 @@ return [
     'cm' => 'ס"מ',
     'Product Description' => 'תיאור מוצר',
     'Related Products' => 'מוצרים קשורים',
-    
+
     // Favorites
     'my_favorites' => 'המועדפים שלי',
     'no_favorites' => 'רשימת המועדפים שלך ריקה',
@@ -463,7 +463,7 @@ return [
     'start_shopping' => 'התחל לקנות',
     'item' => 'פריט',
     'items' => 'פריטים',
-    
+
     // Product Detail Translations
     'free_shipping' => 'משלוח חינם בהזמנות מעל $50',
     'return_policy' => 'מדיניות החזרה של 30 יום',
@@ -479,7 +479,7 @@ return [
     'dimensions' => 'מידות',
     'click_to_zoom' => 'לחץ להגדלה',
     'click_to_zoom_out' => 'לחץ לביטול הגדלה',
-    
+
     // About Us Page
     'about_us_title' => 'אודות מרכז IT',
     'about_us_subtitle' => 'למד עוד על החברה והמשימה שלנו',
@@ -501,7 +501,7 @@ return [
     'happy_customers' => 'לקוחות מרוצים',
     'support_24_7' => '24/7',
     'support' => 'תמיכה',
-    
+
     // Admin Panel
     'admin_panel' => 'לוחת ניהול',
     'dashboard' => 'לוח בקרה',
@@ -510,7 +510,7 @@ return [
     'brands_management' => 'ניהול מותגים',
     'promotional_management' => 'ניהול מבצעים',
     'banner_management' => 'ניהול באנרים',
-    
+
     // Promotional Offers
     'promotional_offers_title' => 'ניהול מבצעים פרסומיים',
     'promotional_offers_subtitle' => 'נהל את המבצעים והפרסומים המוצגים בדף הבית',
@@ -519,46 +519,46 @@ return [
     'create_promotional_subtitle' => 'צור מבצע פרסומי חדש להצגה בדף הבית',
     'back_to_list' => 'חזרה לרשימה',
     'please_correct_errors' => 'אנא תקן את השגיאות הבאות:',
-    
+
     // Form Sections
     'product_selection' => 'בחירת מוצר',
     'select_product_desc' => 'בחר את המוצר עבורו ברצונך ליצור מבצע פרסומי',
     'product' => 'מוצר',
     'select_product_placeholder' => '-- בחר מוצר מהרשימה --',
-    
+
     'offer_title_section' => 'כותרת המבצע',
     'offer_title_desc' => 'הזן את כותרת המבצע בכל השפות הנתמכות',
     'title_arabic' => 'כותרת בערבית',
     'title_english' => 'כותרת באנגלית',
     'title_hebrew' => 'כותרת בעברית',
-    
+
     'pricing' => 'תמחור',
     'pricing_desc' => 'הגדר את המחיר המקורי ואת מחיר המבצע המיוחד',
     'calculated_discount' => 'הנחה מחושבת',
     'enter_prices_to_calculate' => 'הזן מחירים כדי לחשב את ההנחה',
-    
+
     'offer_features' => 'תכונות המבצע',
     'offer_features_desc' => 'הוסף תכונות שברצונך להדגיש (כל תכונה בשורה נפרדת)',
     'features_arabic' => 'תכונות בערבית',
     'features_english' => 'תכונות באנגלית',
     'features_hebrew' => 'תכונות בעברית',
-    
+
     'offer_duration' => 'משך המבצע',
     'offer_duration_desc' => 'הגדר את תאריך ההתחלה והסיום של המבצע הפרסומי',
     'start_date_label' => 'תאריך התחלה',
     'end_date_label' => 'תאריך סיום',
-    
+
     'settings' => 'הגדרות',
     'additional_settings' => 'הגדרות נוספות למבצע',
     'display_order' => 'סדר תצוגה',
     'display_order_hint' => 'מספר נמוך יותר = מופיע ראשון ברשימה',
     'activate_offer_immediately' => 'הפעל מבצע מיד',
     'will_appear_on_homepage' => 'המבצע יופיע ישירות בדף הבית',
-    
+
     'save_promotional_offer' => 'שמור מבצע פרסומי',
     'cancel' => 'בטל',
     'required' => 'נדרש',
-    
+
     // New UI translations
     'new_offer' => 'מבצע חדש',
     'selected_product' => 'מוצר נבחר',
@@ -576,13 +576,13 @@ return [
     'offer_lasts' => 'משך המבצע',
     'sale_price_must_be_less' => 'מחיר המבצע חייב להיות נמוך מהמחיר המקורי!',
     'end_date_must_be_after_start' => 'תאריך הסיום חייב להיות אחרי תאריך ההתחלה!',
-    
+
     'edit_promotional_offer' => 'ערוך מבצע פרסומי',
     'update_promotional_subtitle' => 'עדכן את פרטי המבצע הפרסומי',
     'back' => 'חזרה',
     'product_information' => 'מידע על המוצר',
     'update_offer' => 'עדכן מבצע',
-    
+
     'image' => 'תמונה',
     'title' => 'כותרת',
     'original_price' => 'מחיר מקורי',
@@ -594,7 +594,7 @@ return [
     'confirm_delete_offer' => 'האם אתה בטוח שברצונך למחוק?',
     'confirm_toggle_status' => 'האם ברצונך לשנות את מצב המבצע?',
     'inactive' => 'לא פעיל',
-    
+
     'all_products' => 'כל המוצרים',
     'add_product' => 'הוסף מוצר',
     'all_categories' => 'כל הקטגוריות',
@@ -619,7 +619,7 @@ return [
     'status' => 'סטטוס',
     'actions' => 'פעולות',
     'view_all_products' => 'צפה בכל המוצרים',
-    
+
     // Products Management
     'manage_product_catalog' => 'נהל את קטלוג המוצרים שלך בקלות',
     'search_by_name_sku' => 'חיפוש לפי שם או מק"ט...',
@@ -639,7 +639,7 @@ return [
     'start_adding_products' => 'התחל בהוספת המוצר הראשון שלך!',
     'create_product' => 'צור מוצר',
     'product_list' => 'רשימת מוצרים',
-    
+
     // Categories Management
     'categories_management_title' => 'ניהול קטגוריות',
     'organize_categories_subtitle' => 'ארגן את המוצרים שלך עם קטגוריות ותתי-קטגוריות',
@@ -660,7 +660,7 @@ return [
     'no_categories_found' => 'לא נמצאו קטגוריות',
     'no_categories_description' => 'עדיין לא יצרת קטגוריות. התחל ביצירת הקטגוריה הראשונה שלך!',
     'create_first_category' => 'צור קטגוריה ראשונה',
-    
+
     // Create Category
     'create_new_category' => 'צור קטגוריה חדשה',
     'add_category_subtitle' => 'הוסף קטגוריית מוצר חדשה לארגון הקטלוג שלך',
@@ -714,7 +714,7 @@ return [
     'optimized_file_size' => 'גודל קובץ מותאם',
     'getting_started' => 'התחלה',
     'categories_organize_help' => 'קטגוריות מארגנות את המוצרים שלך. צור קטגוריות ראשיות תחילה, ואז הוסף תתי-קטגוריות לפי הצורך.',
-    
+
     // Edit Category
     'edit_category' => 'ערוך קטגוריה',
     'edit_category_title' => 'ערוך קטגוריה: :name',
@@ -722,7 +722,7 @@ return [
     'image_url_label' => 'כתובת URL של תמונה',
     'current_image' => 'תמונה נוכחית',
     'update_category' => 'עדכן קטגוריה',
-    
+
     'quick_actions' => 'פעולות מהירות',
     'add_new_product' => 'הוסף מוצר חדש',
     'create_category' => 'צור קטגוריה',
@@ -742,7 +742,7 @@ return [
     'active' => 'פעיל',
     'inactive' => 'לא פעיל',
     'catalog_overview' => 'הנה סקירת הקטלוג שלך',
-    
+
     // Brands Management
     'brands_management_title' => 'ניהול מותגים',
     'manage_brands_subtitle' => 'נהל את מותגי המוצרים שלך ושמור על קטלוג מאורגן',
@@ -850,9 +850,6 @@ return [
     'full_description_english' => 'תיאור מלא (אנגלית)',
     'full_description_arabic' => 'תיאור מלא (ערבית)',
     'complete_description_details' => 'תיאור מלא של המוצר עם פרטים',
-    'product_attributes' => 'מאפייני מוצר',
-    'select_attributes_for_category' => 'בחר מאפיינים ספציפיים לקטגוריית המוצר',
-    'no_attributes_for_category' => 'אין מאפיינים מוגדרים לקטגוריה זו',
     'confirm_delete_product_message' => 'האם אתה בטוח שברצונך למחוק מוצר זה? לא ניתן לבטל פעולה זו והמוצר יוסר לצמיתות מהחנות שלך.',
     'confirm_delete_image' => 'האם אתה בטוח שברצונך למחוק תמונה זו? לא ניתן לבטל פעולה זו.',
     'main_image_deleted_successfully' => 'התמונה הראשית נמחקה בהצלחה.',
@@ -904,7 +901,7 @@ return [
     'date_from' => 'מתאריך',
     'date_to' => 'עד תאריך',
     'all' => 'הכל',
-    
+
     // Contact Page
     'get_in_touch' => 'צור קשר עם הצוות שלנו',
     'send_us_message' => 'שלח לנו הודעה',
@@ -922,7 +919,7 @@ return [
     'saturday_hours' => 'שבת: 10:00 - 16:00',
     'sunday_closed' => 'ראשון: סגור',
     'error_occurred' => 'אירעה שגיאה. אנא נסה שוב.',
-    
+
     // Contact Management (Admin)
     'contact_messages_management' => 'ניהול הודעות יצירת קשר',
     'contact_messages' => 'הודעות יצירת קשר',
@@ -938,7 +935,7 @@ return [
     'search_name_email_subject' => 'שם, דוא"ל, נושא...',
     'no_messages_found' => 'לא נמצאו הודעות',
     'no_contact_messages_to_display' => 'אין הודעות יצירת קשר להצגה',
-    
+
     // Contact Message Details
     'view_contact_message' => 'צפה בהודעת יצירת קשר',
     'back_to_messages' => 'חזרה להודעות',
@@ -955,7 +952,7 @@ return [
     'received_date' => 'תאריך קבלה',
     'received_time' => 'זמן קבלה',
     'last_updated' => 'עודכן לאחרונה',
-    
+
     // Bulk operations messages
     'messages_deleted_successfully' => ':count הודעות נמחקו בהצלחה',
     'messages_status_updated_successfully' => 'סטטוס של :count הודעות עודכן בהצלחה',
@@ -1012,7 +1009,7 @@ return [
     'delete_user_confirm' => 'האם אתה בטוח שברצונך למחוק משתמש זה? פעולה זו אינה ניתנת לביטול.',
     'no_users_found' => 'לא נמצאו משתמשים',
     'add_first_user' => 'הוסף משתמש ראשון',
-    
+
     // User Details
     'user_details' => 'פרטי משתמש',
     'view_complete_user_information' => 'צפה במידע מלא על המשתמש',
@@ -1028,7 +1025,7 @@ return [
     'user_favorites' => 'מועדפי המשתמש',
     'and_more_favorites' => 'ועוד :count מועדפים',
     'last_order_date' => 'תאריך הזמנה אחרון',
-    
+
     // Create User
     'create_new_user' => 'צור משתמש חדש',
     'add_new_user_subtitle' => 'הוסף משתמש חדש למערכת',
@@ -1044,7 +1041,7 @@ return [
     'user_create_note_2' => 'למנהלים יש הרשאות מלאות לגשת ללוח הבקרה',
     'user_create_note_3' => 'הסיסמה חייבת להיות חזקה ובטוחה (לפחות 8 תווים)',
     'user_create_note_4' => 'ניתן לערוך את מידע המשתמש מאוחר יותר מדף העריכה',
-    
+
     // Edit User
     'edit_user_subtitle' => 'ערוך מידע משתמש: :name',
     'change_password' => 'שנה סיסמה',
@@ -1055,7 +1052,7 @@ return [
     'user_info' => 'מידע משתמש',
     'registered_on' => 'נרשם ב',
     'system_id' => 'מזהה מערכת',
-    
+
     // Messages
     'user_created_successfully' => 'המשתמש נוצר בהצלחה!',
     'user_updated_successfully' => 'המשתמש עודכן בהצלחה!',
@@ -1063,12 +1060,12 @@ return [
     'users_deleted_successfully' => ':count משתמשים נמחקו בהצלחה!',
     'cannot_delete_own_account' => 'אינך יכול למחוק את החשבון שלך!',
     'product_deleted' => 'המוצר נמחק',
-    
+
     // Account Status Messages (for suspended/banned users)
     'account_suspended' => 'החשבון שלך הושעה. אנא צור קשר עם התמיכה לקבלת סיוע.',
     'account_banned' => 'החשבון שלך נחסם לצמיתות. אנא צור קשר עם התמיכה אם אתה מאמין שזו טעות.',
     'reason' => 'סיבה',
-    
+
     // Dashboard Analytics Cards
     'total_cart_value' => 'סך ערך עגלות',
     'active_carts' => 'עגלות פעילות',
@@ -1078,7 +1075,7 @@ return [
     'inventory_value' => 'ערך מלאי',
     'total_favorites' => 'סך מועדפים',
     'customer_wishlists' => 'רשימות משאלות לקוחות',
-    
+
     // User Statistics
     'user_statistics' => 'סטטיסטיקות משתמשים',
     'total_users' => 'סך משתמשים',
@@ -1103,7 +1100,7 @@ return [
     'users_with_wishlist' => 'משתמשים עם רשימת משאלות',
     'with_reviews' => 'עם ביקורות',
     'active_reviewers' => 'מבקרים פעילים',
-    
+
     // Dashboard new keys
     'store_overview' => 'סקירת החנות',
     'online_now' => 'מחוברים כרגע',
@@ -1115,7 +1112,7 @@ return [
     'good_afternoon' => 'צהריים טובים',
     'good_evening' => 'ערב טוב',
     'in_stock' => 'במלאי',
-    
+
     // Database Backup Management
     'Database Backup Management' => 'ניהול גיבויי מסד נתונים',
     'Create, restore, and manage database backups' => 'צור, שחזר ונהל גיבויי מסד נתונים',
@@ -1159,7 +1156,7 @@ return [
     'Backup File:' => 'קובץ גיבוי:',
     'I understand that this will replace all current data' => 'אני מבין שזה יחליף את כל הנתונים הנוכחיים',
     'Cancel' => 'ביטול',
-    
+
     // Advanced Backup System
     'Create Backup Now' => 'צור גיבוי עכשיו',
     'Import Backup' => 'ייבא גיבוי',
@@ -1200,7 +1197,7 @@ return [
     'Selective module backup' => 'גיבוי מודולים סלקטיבי',
     'clear_frontend_cache' => 'ניקוי מטמון הממשק',
     'clear_frontend_cache_description' => 'ניקוי מטמון הממשק לרענון נתוני דף הבית',
-    
+
     // Confirmation Modal
     'confirm_action' => 'אישור פעולה',
     'are_you_sure' => 'האם אתה בטוח?',
@@ -1215,7 +1212,7 @@ return [
     'Backup deleted successfully' => 'הגיבוי נמחק בהצלחה',
     'Failed to delete backup' => 'מחיקת הגיבוי נכשלה',
     'Failed to delete backup. Please try again.' => 'מחיקת הגיבוי נכשלה. אנא נסה שוב.',
-    
+
     // Delete All Feature
     'delete_all' => 'מחק הכל',
     'confirm_delete_all' => 'האם אתה בטוח שברצונך למחוק את כל הרשומות בדף זה?',
@@ -1233,7 +1230,7 @@ return [
     'confirm_delete_selected' => 'האם אתה בטוח שברצונך למחוק את הפריטים הנבחרים? לא ניתן לבטל פעולה זו.',
     'please_select_items' => 'אנא בחר לפחות פריט אחד למחיקה.',
     'selected_records_deleted_successfully' => ':count פריטים נמחקו בהצלחה!',
-    
+
     // הגדרות גיבוי
     'Backup Settings' => 'הגדרות גיבוי',
     'Configure automatic backup retention and cleanup policies' => 'הגדר מדיניות שמירה וניקוי אוטומטיים של גיבויים',
@@ -1261,7 +1258,7 @@ return [
     'Failed to load backup settings' => 'טעינת הגדרות הגיבוי נכשלה',
     'Failed to update backup settings' => 'עדכון הגדרות הגיבוי נכשל',
     'Settings' => 'הגדרות',
-    
+
     // לוח זמנים לגיבוי אוטומטי
     'Auto Backup Schedule' => 'לוח זמנים לגיבוי אוטומטי',
     'Auto Backup Interval' => 'תדירות גיבוי אוטומטי',
@@ -1301,7 +1298,7 @@ return [
     'Expired' => 'פג תוקף',
     'Expires in' => 'פג תוקף ב',
     'Expires at' => 'פג תוקף ב',
-    
+
     // Backup Limit Messages
     'Cannot create a new backup. You have reached the maximum allowed backups.' => 'לא ניתן ליצור גיבוי חדש. הגעת למספר המקסימלי של גיבויים המותרים.',
     'Backup created successfully!' => 'הגיבוי נוצר בהצלחה!',
@@ -1333,7 +1330,6 @@ return [
     'price_max' => 'מקסימום',
     'minimum_price' => 'מחיר מינימלי',
     'maximum_price' => 'מחיר מקסימלי',
-    'attributes_filter' => 'מאפיינים',
     'no_results_found' => 'לא נמצאו תוצאות',
     'no_products_match_filters' => 'אין מוצרים התואמים את המסננים הנוכחיים. נסה לשנות את הבחירה שלך.',
     'no_products_found' => 'לא נמצאו מוצרים',
@@ -1354,18 +1350,6 @@ return [
     'use_arrow_keys_price' => 'השתמש במקשי החצים כדי להתאים את טווח המחירים. החזק Shift עם מקשי החצים לתנועה מהירה יותר.',
     'please_wait' => 'אנא המתן',
     'back_to_home' => 'חזרה לדף הבית',
-    
-    // Category Attributes
-    'manage_category_attributes' => 'ניהול תכונות קטגוריה',
-    'assign_attributes_to_category_subtitle' => 'הקצה תכונות ניתנות לסינון לקטגוריה זו',
-    'back_to_categories' => 'חזרה לקטגוריות',
-    'attributes' => 'תכונות',
-    'available_attributes' => 'תכונות זמינות',
-    'attributes_selected' => 'תכונות נבחרו',
-    'no_filterable_attributes_available' => 'אין תכונות ניתנות לסינון זמינות',
-    'create_attribute' => 'צור תכונה',
-    'save_assignments' => 'שמור הקצאות',
-    'category_attributes_updated_successfully' => 'תכונות הקטגוריה עודכנו בהצלחה',
 
     // Category icon and position fields
     'category_icon' => 'סמל קטגוריה',
@@ -1428,7 +1412,7 @@ return [
     'banner_settings' => 'הגדרות באנר',
     'multilingual_content' => 'תוכן רב-לשוני',
     'at_least_one_title_required' => 'נדרש לפחות שדה כותרת אחד',
-    
+
     // Banner Color Customization - התאמה אישית של צבעי באנר
     'color_customization' => 'התאמה אישית של צבעים',
     'color_customization_help' => 'התאם אישית את צבעי הטקסט והכפתור של הבאנר. השאר ריק כדי להשתמש בצבעי ברירת המחדל.',
@@ -1436,7 +1420,7 @@ return [
     'subtitle_color' => 'צבע כותרת משנה',
     'button_bg_color' => 'צבע רקע הכפתור',
     'button_text_color' => 'צבע טקסט הכפתור',
-    
+
     // Banner Image Source Options - אפשרויות מקור תמונת באנר
     'image_source' => 'מקור התמונה',
     'banner_upload_from_device' => 'העלאה מהמכשיר',
@@ -1494,13 +1478,13 @@ return [
     'promotional_ad_created_successfully' => 'הפרסומת נוצרה בהצלחה!',
     'promotional_ad_updated_successfully' => 'הפרסומת עודכנה בהצלחה!',
     'promotional_ad_deleted_successfully' => 'הפרסומת נמחקה בהצלחה!',
-    
+
     // Promotional Ad Stats - סטטיסטיקות פרסומות
     'total_ads' => 'סה"כ פרסומות',
     'active_ads' => 'פרסומות פעילות',
     'left_position' => 'מיקום שמאל',
     'right_position' => 'מיקום ימין',
-    
+
     // Promotional Ad Form - טופס פרסומת
     'ad_image' => 'תמונת פרסומת',
     'promotional_ad_image' => 'תמונת פרסומת',
@@ -1523,7 +1507,7 @@ return [
     'ad_active' => 'פעיל',
     'ad_active_help' => 'הצג פרסומת זו בדף הבית',
     'updated_at' => 'עודכן ב',
-    
+
     // Promotional Ad Title, Subtitle, Button
     'ad_title' => 'כותרת הפרסומת',
     'ad_subtitle' => 'כותרת משנה לפרסומת',
@@ -1557,7 +1541,7 @@ return [
     'medium' => 'בינוני',
     'large' => 'גדול',
     'extra_large' => 'גדול מאוד',
-    
+
     // Category Display Mode
     'display_mode' => 'מצב תצוגה',
     'carousel' => 'קרוסלה',
@@ -1567,7 +1551,7 @@ return [
     'display_mode_help' => 'בחר כיצד קטגוריה זו תופיע בדף הבית',
     'all_display_modes' => 'כל מצבי התצוגה',
     'inherits_parent' => 'יורש מהאב',
-    
+
     // Nav Type (Parent/Child)
     'nav_type' => 'סוג ניווט',
     'nav_parent' => 'פריט ראשי',
@@ -1586,7 +1570,7 @@ return [
     'offers_list' => 'רשימת מבצעים',
     'start_creating_offers' => 'התחל ליצור מבצעים למשיכת לקוחות',
     'duration' => 'משך',
-    
+
     // Reviews Page
     'manage_product_reviews' => 'ניהול ביקורות ודירוגי לקוחות',
     'five_star_reviews' => 'ביקורות 5 כוכבים',
@@ -1594,7 +1578,7 @@ return [
     'reviews_list' => 'רשימת ביקורות',
     'no_reviews_found' => 'לא נמצאו ביקורות',
     'no_reviews_description' => 'טרם נשלחו ביקורות מלקוחות',
-    
+
     // Empty States
     'no_data_title' => 'בקרוב',
     'no_data_subtitle' => 'אנחנו עובדים על להביא לכם מוצרים וקטגוריות מדהימים. בדקו שוב בקרוב!',
@@ -1763,14 +1747,14 @@ return [
     'tag_created_successfully' => 'התגית נוצרה בהצלחה!',
     'tag_updated_successfully' => 'התגית עודכנה בהצלחה!',
     'tag_deleted_successfully' => 'התגית נמחקה בהצלחה!',
-    
+
     // Input Limits
     'product_name_too_long' => 'שם המוצר לא יכול לעלות על :max תווים.',
     'description_too_long' => 'התיאור לא יכול לעלות על :max תווים.',
     'sale_price_must_be_less_than_price' => 'מחיר המבצע חייב להיות נמוך מהמחיר הרגיל.',
     'characters_remaining' => ':count תווים נותרו',
     'character_limit_warning' => 'מתקרב למגבלת התווים',
-    
+
     // Product Specifications
     'no_specifications_available' => 'אין מפרטים זמינים למוצר זה.',
 
@@ -1779,7 +1763,7 @@ return [
     'spec_label_too_long' => 'תווית המפרט לא יכולה לעלות על :max תווים.',
     'spec_value_required_with_label' => 'ערך המפרט נדרש כאשר מסופקת תווית.',
     'spec_value_too_long' => 'ערך המפרט לא יכול לעלות על :max תווים.',
-    
+
     // Banner Form
     'click_to_upload' => 'לחץ להעלאה',
     'at_least_one_required' => '(נדרש לפחות אחד)',
@@ -1889,7 +1873,6 @@ return [
     // Backup Management label (unified)
     'backup_management' => 'גיבוי מסד נתונים',
 
-    // Attributes label
     'attributes' => 'תכונות',
 
     // Admin Notifications
@@ -1926,18 +1909,6 @@ return [
     // Contact flash messages
     'message_status_updated' => 'סטטוס ההודעה עודכן.',
     'message_deleted_successfully' => 'ההודעה נמחקה בהצלחה.',
-
-    // Attribute flash messages
-    'attribute_created_successfully' => 'התכונה נוצרה בהצלחה.',
-    'attribute_updated_successfully' => 'התכונה עודכנה בהצלחה.',
-    'attribute_deleted_successfully' => 'התכונה נמחקה בהצלחה.',
-    'error_deleting_attribute' => 'מחיקת התכונה נכשלה: :error',
-
-    // Attribute Value flash messages
-    'attribute_value_created_successfully' => 'ערך התכונה נוצר בהצלחה.',
-    'attribute_value_updated_successfully' => 'ערך התכונה עודכן בהצלחה.',
-    'attribute_value_deleted_successfully' => 'ערך התכונה נמחק בהצלחה.',
-    'error_deleting_attribute_value' => 'מחיקת ערך התכונה נכשלה: :error',
 
     // Promotional Offer flash messages
     'offer_created_successfully' => 'המבצע נוצר בהצלחה.',
@@ -2090,63 +2061,6 @@ return [
     'password_mixed_case' => 'מכיל אותיות גדולות וקטנות',
     'password_numbers' => 'מכיל לפחות מספר אחד',
 
-    // ניהול תכונות
-    'attributes_management' => 'ניהול תכונות',
-    'manage_attributes_subtitle' => 'ניהול תכונות מוצרים והערכים שלהם לסינון',
-    'add_new_attribute' => 'הוסף תכונה חדשה',
-    'attribute_name' => 'שם התכונה',
-    'attribute_slug' => 'מזהה',
-    'attribute_type' => 'סוג',
-    'attribute_unit' => 'יחידה',
-    'attribute_values' => 'ערכים',
-    'attribute_filterable' => 'ניתן לסינון',
-    'attribute_order' => 'סדר תצוגה',
-    'total_attributes' => 'סה"כ תכונות',
-    'active_attributes' => 'תכונות פעילות',
-    'filterable_attributes' => 'תכונות ניתנות לסינון',
-    'attribute_list' => 'רשימת תכונות',
-    'values_count' => ':count ערכים',
-    'no_attributes_found' => 'לא נמצאו תכונות',
-    'no_attributes_description' => 'התחל ביצירת תכונת מוצר ראשונה לסינון',
-    'create_first_attribute' => 'צור תכונה ראשונה',
-    'delete_all_attributes' => 'מחק את כל התכונות',
-    'confirm_delete_all_attributes' => 'האם אתה בטוח שברצונך למחוק את כל התכונות? לא ניתן לבטל פעולה זו וכל הערכים והקישורים יוסרו.',
-    'delete_attribute_confirm' => 'האם אתה בטוח שברצונך למחוק תכונה זו? כל הערכים והקישורים שלה יימחקו.',
-
-    // יצירה/עריכת תכונות
-    'create_new_attribute' => 'צור תכונה חדשה',
-    'edit_attribute' => 'ערוך תכונה',
-    'attribute_information' => 'מידע על התכונה',
-    'attribute_names_multilang' => 'שמות תכונה (רב-שפתי)',
-    'name_english' => 'שם (אנגלית)',
-    'name_arabic' => 'שם (ערבית)',
-    'name_hebrew' => 'שם (עברית)',
-    'slug_field' => 'מזהה',
-    'slug_auto_generate' => 'השאר ריק ליצירה אוטומטית מהשם האנגלי',
-    'slug_placeholder' => 'נוצר אוטומטית מהשם האנגלי',
-    'attribute_configuration' => 'הגדרות תכונה',
-    'type_field' => 'סוג',
-    'select_type' => 'בחר סוג',
-    'type_select' => 'בחירה (אפשרות אחת)',
-    'type_multi_select' => 'בחירה מרובה (מספר אפשרויות)',
-    'type_range' => 'טווח (מינימום-מקסימום)',
-    'type_color' => 'צבע',
-    'unit_field' => 'יחידה',
-    'unit_placeholder' => 'לדוגמה: הרץ, ג\'יגהבייט, אינצ\'',
-    'unit_help' => 'יחידת מידה אופציונלית (לדוגמה: הרץ, ג\'יגהבייט, אינצ\')',
-    'display_order' => 'סדר תצוגה',
-    'order_help' => 'מספרים נמוכים מופיעים ראשונים',
-    'settings' => 'הגדרות',
-    'filterable_label' => 'ניתן לסינון',
-    'filterable_help' => 'הצג תכונה זו בסרגלי הסינון',
-    'active_label' => 'פעיל',
-    'active_help' => 'הפוך תכונה זו לזמינה לשימוש',
-    'create_attribute_btn' => 'צור תכונה',
-    'update_attribute_btn' => 'עדכן תכונה',
-    'back_to_attributes' => 'חזרה לתכונות',
-    'attribute_values_count' => 'ערכי תכונה (:count)',
-    'attribute_values_info' => 'לתכונה זו יש :count ערך/ים. נהל ערכים בנפרד.',
-
     // Privacy Policy & Refund Policy
     'privacy_policy_page_title' => 'מדיניות פרטיות',
     'privacy_policy_subtitle' => 'למד כיצד אנו אוספים, משתמשים ומגנים על המידע האישי שלך',
@@ -2180,4 +2094,89 @@ return [
     'confirm_delete_social' => 'האם אתה בטוח שברצונך למחוק קישור זה?',
     'hide' => 'הסתר',
     'show' => 'הצג',
+
+    // ── Dynamic Filters ──────────────────────────────────────
+    'filters_management' => 'מסננים',
+    'filters' => 'מסננים',
+    'filter' => 'מסנן',
+    'all_filters' => 'כל המסננים',
+    'create_filter' => 'צור מסנן',
+    'edit_filter' => 'ערוך מסנן',
+    'filter_title' => 'כותרת המסנן',
+    'filter_description' => 'תיאור המסנן',
+    'filter_type' => 'סוג המסנן',
+    'filter_slug' => 'כינוי המסנן',
+    'filter_sort_order' => 'סדר מיון',
+    'filter_status' => 'סטטוס',
+    'filter_options' => 'אפשרויות מסנן',
+    'filter_option' => 'אפשרות מסנן',
+    'filter_assignments' => 'הקצאות קטגוריה',
+    'filter_created' => 'המסנן נוצר בהצלחה.',
+    'filter_updated' => 'המסנן עודכן בהצלחה.',
+    'filter_deleted' => 'המסנן נמחק בהצלחה.',
+    'filter_section_settings_updated' => 'הגדרות קטעי המסנן עודכנו בהצלחה.',
+    'filter_display_settings' => 'הגדרות תצוגת מסננים',
+    'filter_display_settings_help' => 'שלוט באילו קטעי מסנן מובנים יופיעו בדף המוצרים ובסדרם.',
+    'section_status' => 'מצב מלאי',
+    'section_status_help' => 'מסנן במלאי / לא במלאי',
+    'section_brand' => 'מותג',
+    'section_brand_help' => 'רשימת מותגים',
+    'section_strong_offers' => 'מבצעים חזקים בלבד',
+    'section_strong_offers_help' => 'הצג מוצרים עם מבצעים פרסומיים חזקים',
+    'section_price' => 'טווח מחירים',
+    'section_price_help' => 'מחוון מינימום/מקסימום מחיר',
+    'filter_option_label' => 'תווית האפשרות',
+    'filter_option_value' => 'ערך/כינוי האפשרות',
+    'filter_option_color' => 'קוד צבע',
+    'filter_option_icon' => 'מחלקת אייקון',
+    'add_option' => 'הוסף אפשרות',
+    'remove_option' => 'הסר',
+    'no_filters' => 'לא נמצאו מסננים.',
+    'create_first_filter' => 'צור מסנן ראשון',
+    'total_filters' => 'סך המסננים',
+    'active_filters' => 'מסננים פעילים',
+    'inactive_filters' => 'מסננים לא פעילים',
+    'confirm_delete_filter' => 'האם אתה בטוח שברצונך למחוק מסנן זה? פעולה זו תמחק גם את כל האפשרויות וההקצאות שלו.',
+    'filter_information' => 'פרטי מסנן',
+    'filter_titles_multilang' => 'כותרות מסנן (רב-שפתי)',
+    'filter_descriptions_multilang' => 'תיאורי מסנן (רב-שפתי)',
+    'filter_configuration' => 'הגדרת מסנן',
+    'type_checkbox' => 'תיבות סימון (בחירה מרובה)',
+    'type_radio' => 'בחירה בודדת (אפשרות אחת)',
+    'type_range_slider' => 'מחוון טווח',
+    'type_min_max' => 'שדות מינימום/מקסימום',
+    'type_boolean' => 'מתג בוליאני',
+    'inherit_to_children' => 'הורש לילדים',
+    'inherit_help' => 'אם מופעל, מסנן זה יופיע גם בכל תת-הקטגוריות.',
+    'select_categories' => 'בחר קטגוריות',
+    'assigned_categories' => 'קטגוריות מוקצות',
+    'no_category_assigned' => 'לא הוקצתה קטגוריה.',
+    'option_labels_multilang' => 'תוויות אפשרויות (רב-שפתי)',
+    'manage_options' => 'נהל אפשרויות',
+    'options_count' => ':count אפשרות/יות',
+    'assignments_count' => ':count הקצאה/ות',
+    'back_to_filters' => 'חזרה למסננים',
+    'create_filter_btn' => 'צור מסנן',
+    'update_filter_btn' => 'עדכן מסנן',
+    'filter_options_info' => 'הגדר את האפשרויות הניתנות לבחירה עבור מסנן זה. רלוונטי רק לסוגי תיבות סימון, בחירה בודדת ובוליאני.',
+    'no_options_for_type' => 'אפשרויות אינן ישימות עבור סוגי מסנן טווח/מינימום-מקסימום.',
+    'product_filters' => 'מסנני מוצר',
+    'product_filters_description' => 'בחר ערכי מסנן עבור מוצר זה בהתבסס על מסנני הקטגוריה המוקצים.',
+    'select_filter_values' => 'בחר ערכי מסנן עבור מוצרים בקטגוריה זו',
+    'no_filters_for_category' => 'אין מסננים דינמיים מוקצים לקטגוריה של מוצר זה.',
+    'enter_numeric_value' => 'הזן ערך',
+    'numeric_value' => 'ערך מספרי',
+    'bulk_assign_filters' => 'הקצאת מסננים בכמויות',
+    'select_filter' => 'בחר מסנן',
+    'filter_value_saved' => 'ערכי המסנן נשמרו בהצלחה.',
+    'title_english' => 'כותרת (אנגלית)',
+    'title_arabic' => 'כותרת (ערבית)',
+    'title_hebrew' => 'כותרת (עברית)',
+    'description_english' => 'תיאור (אנגלית)',
+    'description_arabic' => 'תיאור (ערבית)',
+    'description_hebrew' => 'תיאור (עברית)',
+    'label_english' => 'תווית (אנגלית)',
+    'label_arabic' => 'תווית (ערבית)',
+    'label_hebrew' => 'תווית (עברית)',
+    'clear_filters' => 'נקה מסננים',
 ];

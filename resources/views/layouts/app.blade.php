@@ -417,6 +417,9 @@
             <x-category-nav :categories="$navigationCategories" />
         @endif
 
+        {{-- Category Browser - Fixed button + slide-out panel on all pages --}}
+        <x-category-browser />
+
         @php
             $socialLinksRaw = \App\Models\SiteSetting::getValue('social_links', null);
             if (!is_array($socialLinksRaw)) {

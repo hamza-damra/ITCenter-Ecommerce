@@ -245,7 +245,6 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     });
     Route::middleware('permission:products.view')->group(function () {
         Route::get('/products', [App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
-        Route::get('/products/category-attributes/{categoryId}', [App\Http\Controllers\Admin\ProductController::class, 'getCategoryAttributes'])->name('products.category-attributes');
         Route::get('/products/{product}', [App\Http\Controllers\Admin\ProductController::class, 'show'])->name('products.show');
     });
     Route::middleware('permission:products.edit')->group(function () {
@@ -268,13 +267,11 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::middleware('permission:categories.view')->group(function () {
         Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('categories.index');
         Route::get('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'show'])->name('categories.show');
-        Route::get('/categories/{category}/attributes', [App\Http\Controllers\Admin\CategoryAttributeController::class, 'edit'])->name('categories.attributes.edit');
     });
     Route::middleware('permission:categories.edit')->group(function () {
         Route::get('/categories/{category}/edit', [App\Http\Controllers\Admin\CategoryController::class, 'edit'])->name('categories.edit');
         Route::put('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{category}/delete-image', [App\Http\Controllers\Admin\CategoryController::class, 'deleteImage'])->name('categories.delete-image');
-        Route::put('/categories/{category}/attributes', [App\Http\Controllers\Admin\CategoryAttributeController::class, 'update'])->name('categories.attributes.update');
     });
     Route::delete('/categories/{category}', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])
         ->middleware('permission:categories.delete')->name('categories.destroy');
@@ -298,34 +295,23 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::delete('/brands/{brand}', [App\Http\Controllers\Admin\BrandController::class, 'destroy'])
         ->middleware('permission:brands.delete')->name('brands.destroy');
 
-    // Attributes (literal paths before wildcards)
-    Route::middleware('permission:attributes.create')->group(function () {
-        Route::get('/attributes/create', [App\Http\Controllers\Admin\AttributeController::class, 'create'])->name('attributes.create');
-        Route::post('/attributes', [App\Http\Controllers\Admin\AttributeController::class, 'store'])->name('attributes.store');
+    // Filters (literal paths before wildcards)
+    Route::middleware('permission:filters.create')->group(function () {
+        Route::get('/filters/create', [App\Http\Controllers\Admin\FilterController::class, 'create'])->name('filters.create');
+        Route::post('/filters', [App\Http\Controllers\Admin\FilterController::class, 'store'])->name('filters.store');
     });
-    Route::delete('/attributes/delete-all', [App\Http\Controllers\Admin\AttributeController::class, 'deleteAll'])
-        ->middleware('permission:attributes.delete')->name('attributes.delete-all');
-    Route::middleware('permission:attributes.view')->group(function () {
-        Route::get('/attributes', [App\Http\Controllers\Admin\AttributeController::class, 'index'])->name('attributes.index');
-        Route::get('/attributes/{attribute}', [App\Http\Controllers\Admin\AttributeController::class, 'show'])->name('attributes.show');
-        Route::get('/attributes/{attribute}/attribute-values', [App\Http\Controllers\Admin\AttributeValueController::class, 'index'])->name('attributes.attribute-values.index');
+    Route::middleware('permission:filters.view')->group(function () {
+        Route::get('/filters', [App\Http\Controllers\Admin\FilterController::class, 'index'])->name('filters.index');
+        Route::get('/filters/category-filters/{categoryId}', [App\Http\Controllers\Admin\FilterController::class, 'getCategoryFilters'])->name('filters.category-filters');
     });
-    Route::middleware('permission:attributes.edit')->group(function () {
-        Route::get('/attributes/{attribute}/edit', [App\Http\Controllers\Admin\AttributeController::class, 'edit'])->name('attributes.edit');
-        Route::put('/attributes/{attribute}', [App\Http\Controllers\Admin\AttributeController::class, 'update'])->name('attributes.update');
+    Route::middleware('permission:filters.edit')->group(function () {
+        Route::get('/filters/{filter}/edit', [App\Http\Controllers\Admin\FilterController::class, 'edit'])->name('filters.edit');
+        Route::put('/filters/{filter}', [App\Http\Controllers\Admin\FilterController::class, 'update'])->name('filters.update');
+        Route::post('/filters/{filter}/toggle-status', [App\Http\Controllers\Admin\FilterController::class, 'toggleStatus'])->name('filters.toggle-status');
+        Route::post('/filters/section-settings', [App\Http\Controllers\Admin\FilterController::class, 'updateSectionSettings'])->name('filters.section-settings');
     });
-    Route::middleware('permission:attributes.create')->group(function () {
-        Route::get('/attributes/{attribute}/attribute-values/create', [App\Http\Controllers\Admin\AttributeValueController::class, 'create'])->name('attributes.attribute-values.create');
-        Route::post('/attributes/{attribute}/attribute-values', [App\Http\Controllers\Admin\AttributeValueController::class, 'store'])->name('attributes.attribute-values.store');
-    });
-    Route::middleware('permission:attributes.edit')->group(function () {
-        Route::get('/attributes/{attribute}/attribute-values/{attribute_value}/edit', [App\Http\Controllers\Admin\AttributeValueController::class, 'edit'])->name('attributes.attribute-values.edit');
-        Route::put('/attributes/{attribute}/attribute-values/{attribute_value}', [App\Http\Controllers\Admin\AttributeValueController::class, 'update'])->name('attributes.attribute-values.update');
-    });
-    Route::middleware('permission:attributes.delete')->group(function () {
-        Route::delete('/attributes/{attribute}', [App\Http\Controllers\Admin\AttributeController::class, 'destroy'])->name('attributes.destroy');
-        Route::delete('/attributes/{attribute}/attribute-values/{attribute_value}', [App\Http\Controllers\Admin\AttributeValueController::class, 'destroy'])->name('attributes.attribute-values.destroy');
-    });
+    Route::delete('/filters/{filter}', [App\Http\Controllers\Admin\FilterController::class, 'destroy'])
+        ->middleware('permission:filters.delete')->name('filters.destroy');
 
     // Tags (literal paths before wildcards)
     Route::middleware('permission:tags.create')->group(function () {
