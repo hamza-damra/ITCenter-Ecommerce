@@ -334,16 +334,32 @@
             const update = () => {
                 blocks.forEach(block => {
                     const end = new Date(block.getAttribute('data-end')).getTime();
-                    if (!end) return;
+                    if (!end || isNaN(end)) return;
                     const now = Date.now();
                     let diff = Math.max(0, end - now);
+
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    diff -= days * (1000 * 60 * 60 * 24);
+
                     const hours = Math.floor(diff / 3_600_000);
                     diff %= 3_600_000;
+
                     const mins = Math.floor(diff / 60_000);
                     const secs = Math.floor((diff % 60_000) / 1000);
+
+                    const dEl = block.querySelector('.cd-days');
                     const hEl = block.querySelector('.cd-hours');
                     const mEl = block.querySelector('.cd-mins');
                     const sEl = block.querySelector('.cd-secs');
+
+                    if (dEl) {
+                        dEl.textContent = String(days).padStart(2, '0');
+                        // Hide days box if 0 days
+                        const daysBox = dEl.closest('.box');
+                        if (daysBox) {
+                            daysBox.style.display = days > 0 ? 'block' : 'none';
+                        }
+                    }
                     if (hEl) hEl.textContent = String(hours).padStart(2, '0');
                     if (mEl) mEl.textContent = String(mins).padStart(2, '0');
                     if (sEl) sEl.textContent = String(secs).padStart(2, '0');

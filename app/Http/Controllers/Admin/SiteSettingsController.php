@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
+use App\Services\FaviconService;
+use App\Services\ImageUploadService;
+use App\Http\Requests\Admin\UpdateFaviconRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -12,6 +15,14 @@ use Illuminate\Validation\Rules\Password;
 
 class SiteSettingsController extends Controller
 {
+    protected FaviconService $faviconService;
+    protected ImageUploadService $imageUploadService;
+
+    public function __construct(FaviconService $faviconService, ImageUploadService $imageUploadService)
+    {
+        $this->faviconService = $faviconService;
+        $this->imageUploadService = $imageUploadService;
+    }
     /**
      * Display the site settings page.
      */
@@ -51,7 +62,16 @@ class SiteSettingsController extends Controller
             $socialLinks = $defaultSocialLinks;
         }
 
-        return view('admin.site-settings.index', compact('imageSettings', 'privacyPolicy', 'refundPolicy', 'socialLinks'));
+        $faviconUrl = SiteSetting::getFaviconPreviewUrl();
+        $hasFavicon = !empty(SiteSetting::getValue('site_favicon'));
+
+        $logoUrl = SiteSetting::getSiteLogoPreviewUrl();
+        $hasLogo = !empty(SiteSetting::getValue('site_logo'));
+
+        return view('admin.site-settings.index', compact(
+            'imageSettings', 'privacyPolicy', 'refundPolicy', 'socialLinks',
+            'faviconUrl', 'hasFavicon', 'logoUrl', 'hasLogo'
+        ));
     }
 
     /**
@@ -186,5 +206,95 @@ class SiteSettingsController extends Controller
 
         return redirect()->route('admin.site-settings.index', ['tab' => 'refund-policy'])
             ->with('success', __('messages.refund_policy_updated'));
+    }
+
+    /**
+     * Upload or replace the site favicon.
+     */
+    public function updateFavicon(UpdateFaviconRequest $request)
+    {
+        try {
+            $this->faviconService->upload($request->file('favicon'));
+
+            return redirect()->route('admin.site-settings.index', ['tab' => 'site-icon'])
+                ->with('success', __('messages.favicon_updated'));
+        } catch (\Exception $e) {
+            return back()->withErrors(['favicon' => $e->getMessage()])
+                ->with('tab', 'site-icon');
+        }
+    }
+
+    /**
+     * Delete the site favicon and revert to default.
+     */
+    public function deleteFavicon()
+    {
+        try {
+            $this->faviconService->delete();
+
+            return redirect()->route('admin.site-settings.index', ['tab' => 'site-icon'])
+                ->with('success', __('messages.favicon_deleted'));
+        } catch (\Exception $e) {
+            return back()->withErrors(['favicon' => $e->getMessage()])
+                ->with('tab', 'site-icon');
+        }
+    }
+
+    /**
+     * Upload or replace the site logo.
+     */
+    public function updateLogo(Request $request)
+    {
+        $request->validate([
+            'logo' => 'required|file|mimes:jpg,jpeg,png,webp,svg|max:2048',
+        ]);
+
+        try {
+            // Delete old logo if exists
+            $currentPath = SiteSetting::getValue('site_logo');
+            if (!empty($currentPath)) {
+                $this->imageUploadService->delete($currentPath);
+            }
+
+            // Upload new logo
+            $relativePath = $this->imageUploadService->upload($request->file('logo'), 'logos', [
+                'organize_by_date' => false,
+                'optimize' => true,
+                'max_width' => 500,
+                'max_height' => 200,
+                'quality' => 90,
+                'convert_to_webp' => false,
+            ]);
+
+            SiteSetting::setValue('site_logo', $relativePath, 'string', 'branding');
+            SiteSetting::setValue('site_logo_version', (string) time(), 'string', 'branding');
+
+            return redirect()->route('admin.site-settings.index', ['tab' => 'site-logo'])
+                ->with('success', __('messages.logo_updated'));
+        } catch (\Exception $e) {
+            return back()->withErrors(['logo' => $e->getMessage()])
+                ->with('tab', 'site-logo');
+        }
+    }
+
+    /**
+     * Delete the site logo and revert to default.
+     */
+    public function deleteLogo()
+    {
+        try {
+            $currentPath = SiteSetting::getValue('site_logo');
+            if (!empty($currentPath)) {
+                $this->imageUploadService->delete($currentPath);
+            }
+
+            SiteSetting::setValue('site_logo', '', 'string', 'branding');
+
+            return redirect()->route('admin.site-settings.index', ['tab' => 'site-logo'])
+                ->with('success', __('messages.logo_deleted'));
+        } catch (\Exception $e) {
+            return back()->withErrors(['logo' => $e->getMessage()])
+                ->with('tab', 'site-logo');
+        }
     }
 }

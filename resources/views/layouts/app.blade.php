@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'IT Center')</title>
+    @php
+        $faviconUrl = \App\Models\SiteSetting::getFaviconUrl();
+        $faviconMime = \App\Models\SiteSetting::getFaviconMime();
+    @endphp
+    <link rel="icon" type="{{ $faviconMime }}" href="{{ $faviconUrl }}">
+    <link rel="shortcut icon" type="{{ $faviconMime }}" href="{{ $faviconUrl }}">
+    <link rel="apple-touch-icon" href="{{ $faviconUrl }}">
     <meta name="description" content="@yield('meta_description', 'IT Center - Your trusted source for the latest technology, electronics, laptops, desktops, and accessories at competitive prices.')">
     @yield('meta')
 
@@ -104,7 +111,7 @@
         <!-- Mobile Navigation Menu - OUTSIDE header for proper z-index -->
         <nav class="nav-menu" id="navMenu" style="display: none;">
             <div class="nav-menu-header">
-                <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo">
+                <img src="{{ \App\Models\SiteSetting::getSiteLogoUrl() }}" alt="IT Center Logo">
             </div>
             <ul class="nav-menu-list">
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}"><i
@@ -262,7 +269,7 @@
 
                 <div class="logo">
                     <a href="{{ route('home') }}">
-                        <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo" width="125"
+                        <img src="{{ \App\Models\SiteSetting::getSiteLogoUrl() }}" alt="IT Center Logo" width="125"
                             height="35">
                     </a>
                 </div>
@@ -417,9 +424,6 @@
             <x-category-nav :categories="$navigationCategories" />
         @endif
 
-        {{-- Category Browser - Fixed button + slide-out panel on all pages --}}
-        <x-category-browser />
-
         @php
             $socialLinksRaw = \App\Models\SiteSetting::getValue('social_links', null);
             if (!is_array($socialLinksRaw)) {
@@ -466,7 +470,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
-                        <img src="{{ asset('images/assets/logo.png') }}" alt="IT Center Logo" width="161"
+                        <img src="{{ \App\Models\SiteSetting::getSiteLogoUrl() }}" alt="IT Center Logo" width="161"
                             height="45">
                     </div>
                     <p>{{ __('messages.footer_description') }}</p>

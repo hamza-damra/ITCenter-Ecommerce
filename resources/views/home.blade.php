@@ -2627,7 +2627,7 @@
         .promo-countdown .boxes .box:not(:last-child)::after {
             content: ':';
             position: absolute;
-            right: -0.5rem;
+            {{ is_rtl() ? 'left' : 'right' }}: -0.5rem;
             top: 50%;
             transform: translateY(-50%);
             font-size: 1.3rem;
@@ -2776,7 +2776,25 @@
                 grid-column: 1 / -1;
                 grid-row: auto;
                 margin-left: 0;
+                margin-right: 0;
                 margin-bottom: 1rem;
+            }
+
+            .promo-countdown .boxes {
+                gap: 0.25rem;
+            }
+
+            .promo-countdown .box {
+                min-width: 45px;
+                padding: 0.4rem;
+            }
+
+            .promo-countdown .num {
+                font-size: 1.1rem;
+            }
+
+            .promo-countdown .unit {
+                font-size: 0.55rem;
             }
         }
 
@@ -4226,7 +4244,7 @@
                                                                 </div>
                                                             @endif
                                                             <div class="promo-media">
-                                                                <img src="{{ $offerProduct->main_image }}" 
+                                                                <img src="{{ $offerProduct->main_image }}"
                                                                      alt="{{ $offerProduct->name }}"
                                                                      onerror="this.onerror=null; this.src='{{ \App\Helpers\ImageHelper::assetUrl('images/products/default.png') }}';">
                                                             </div>
@@ -5075,5 +5093,7 @@
     @endif {{-- End of hasNeitherCategoriesNorProducts else block --}}
 
     @endif {{-- End of homeSections dynamic/fallback block --}}
+
+
 
 @endsection

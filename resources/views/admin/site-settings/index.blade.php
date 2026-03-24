@@ -454,6 +454,107 @@
         .policy-lang-tab { flex: 1; text-align: center; padding: 10px 12px; }
         .social-link-name { min-width: 80px; }
     }
+
+    /* Favicon / Site Icon Tab */
+    .favicon-preview-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 24px;
+        background: #f8fafc;
+        border: 2px dashed var(--border);
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+
+    .favicon-preview-container.has-favicon {
+        border-style: solid;
+        border-color: var(--primary);
+        background: #eff6ff;
+    }
+
+    .favicon-preview-sizes {
+        display: flex;
+        gap: 20px;
+        align-items: flex-end;
+    }
+
+    .favicon-preview-sizes .size-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .favicon-preview-sizes .size-item img {
+        object-fit: contain;
+        background: white;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        padding: 2px;
+    }
+
+    .favicon-preview-sizes .size-label {
+        font-size: 11px;
+        color: var(--secondary);
+        font-weight: 600;
+    }
+
+    .favicon-status {
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .favicon-status.custom { color: var(--success, #16a34a); }
+    .favicon-status.default { color: var(--secondary); }
+
+    .favicon-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .favicon-upload-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: var(--primary);
+        color: white;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .favicon-upload-label:hover { opacity: 0.9; }
+
+    .favicon-delete-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        background: white;
+        color: var(--danger, #dc2626);
+        border: 2px solid var(--danger, #dc2626);
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+    }
+
+    .favicon-delete-btn:hover {
+        background: var(--danger, #dc2626);
+        color: white;
+    }
 </style>
 
 <div class="page-header">
@@ -468,6 +569,12 @@
     <div class="settings-tabs">
         <button class="settings-tab {{ request('tab', 'images') === 'images' ? 'active' : '' }}" onclick="switchTab('images')" type="button">
             <i class="fas fa-image"></i> {{ __('messages.image_settings') }}
+        </button>
+        <button class="settings-tab {{ request('tab') === 'site-icon' ? 'active' : '' }}" onclick="switchTab('site-icon')" type="button">
+            <i class="fas fa-globe"></i> {{ __('messages.site_icon') }}
+        </button>
+        <button class="settings-tab {{ request('tab') === 'site-logo' ? 'active' : '' }}" onclick="switchTab('site-logo')" type="button">
+            <i class="fas fa-pen-nib"></i> {{ __('messages.site_logo_tab') }}
         </button>
         <button class="settings-tab {{ request('tab') === 'password' || session('tab') === 'password' ? 'active' : '' }}" onclick="switchTab('password')" type="button">
             <i class="fas fa-lock"></i> {{ __('messages.change_password') }}
@@ -635,6 +742,205 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Site Icon Tab -->
+    <div class="tab-content {{ request('tab') === 'site-icon' ? 'active' : '' }}" id="tab-site-icon">
+        <div class="card-body">
+            <div class="settings-info-box">
+                <i class="fas fa-info-circle"></i>
+                <p>{{ __('messages.site_icon_description') }}</p>
+            </div>
+
+            <!-- Current Favicon Preview -->
+            <div class="favicon-preview-container {{ $hasFavicon ? 'has-favicon' : '' }}">
+                <div class="favicon-preview-sizes">
+                    <div class="size-item">
+                        <img src="{{ $faviconUrl }}" alt="Favicon 16x16" width="16" height="16">
+                        <span class="size-label">16×16</span>
+                    </div>
+                    <div class="size-item">
+                        <img src="{{ $faviconUrl }}" alt="Favicon 32x32" width="32" height="32">
+                        <span class="size-label">32×32</span>
+                    </div>
+                    <div class="size-item">
+                        <img src="{{ $faviconUrl }}" alt="Favicon 48x48" width="48" height="48">
+                        <span class="size-label">48×48</span>
+                    </div>
+                    <div class="size-item">
+                        <img src="{{ $faviconUrl }}" alt="Favicon 64x64" width="64" height="64">
+                        <span class="size-label">64×64</span>
+                    </div>
+                </div>
+
+                @if($hasFavicon)
+                    <span class="favicon-status custom">
+                        <i class="fas fa-check-circle"></i> {{ __('messages.favicon_custom_active') }}
+                    </span>
+                @else
+                    <span class="favicon-status default">
+                        <i class="fas fa-info-circle"></i> {{ __('messages.favicon_using_default') }}
+                    </span>
+                @endif
+            </div>
+
+            <!-- Upload Form -->
+            <form action="{{ route('admin.site-settings.update-favicon') }}" method="POST" enctype="multipart/form-data" id="favicon-upload-form">
+                @csrf
+                @method('PUT')
+
+                <div class="favicon-actions">
+                    <label class="favicon-upload-label" for="favicon-input">
+                        <i class="fas fa-upload"></i>
+                        {{ $hasFavicon ? __('messages.favicon_change') : __('messages.favicon_upload') }}
+                    </label>
+                    <input type="file"
+                           id="favicon-input"
+                           name="favicon"
+                           accept=".jpg,.jpeg,.png,.webp,.ico"
+                           style="display: none;"
+                           onchange="previewFavicon(this)">
+
+                    <span style="font-size: 13px; color: var(--secondary);">
+                        {{ __('messages.favicon_allowed_formats') }}
+                    </span>
+                </div>
+
+                @error('favicon')
+                    <div style="margin-top: 12px; padding: 10px 14px; background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; color: #dc2626; font-size: 13px;">
+                        <i class="fas fa-exclamation-circle"></i> {{ $message }}
+                    </div>
+                @enderror
+
+                <!-- Confirmation area (shown after file selection) -->
+                <div id="favicon-confirm-area" style="display: none; margin-top: 16px; padding: 16px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <img id="favicon-new-preview" src="" alt="New favicon preview" width="48" height="48" style="object-fit: contain; border-radius: 6px; border: 1px solid var(--border);">
+                        <div>
+                            <span id="favicon-filename" style="font-weight: 600; font-size: 14px; color: var(--dark);"></span>
+                            <span id="favicon-filesize" style="display: block; font-size: 12px; color: var(--secondary);"></span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" class="btn btn-primary" style="padding: 8px 20px; font-size: 13px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit;">
+                            <i class="fas fa-save"></i> {{ __('messages.favicon_save') }}
+                        </button>
+                        <button type="button" style="padding: 8px 20px; font-size: 13px; background: #f1f5f9; color: var(--secondary); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-family: inherit;" onclick="cancelFaviconUpload()">
+                            {{ __('messages.cancel') }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Delete Form (only visible when custom favicon exists) -->
+            @if($hasFavicon)
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+                    <form action="{{ route('admin.site-settings.delete-favicon') }}" method="POST"
+                          onsubmit="return confirm('{{ __('messages.favicon_delete_confirm') }}')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="favicon-delete-btn">
+                            <i class="fas fa-trash"></i> {{ __('messages.favicon_delete') }}
+                        </button>
+                        <span style="font-size: 13px; color: var(--secondary); margin-inline-start: 12px;">
+                            {{ __('messages.favicon_delete_hint') }}
+                        </span>
+                    </form>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <!-- Site Logo Tab -->
+    <div class="tab-content {{ request('tab') === 'site-logo' ? 'active' : '' }}" id="tab-site-logo">
+        <div class="card-body">
+            <div class="settings-info-box">
+                <i class="fas fa-info-circle"></i>
+                <p>{{ __('messages.site_logo_description') }}</p>
+            </div>
+
+            <!-- Current Logo Preview -->
+            <div class="favicon-preview-container {{ $hasLogo ? 'has-favicon' : '' }}">
+                <div style="display: flex; align-items: center; justify-content: center; padding: 20px; background: #f8fafc; border-radius: 12px; border: 1px dashed var(--border); min-height: 80px;">
+                    <img src="{{ $logoUrl }}" alt="Current Logo" style="max-height: 60px; max-width: 300px; object-fit: contain;">
+                </div>
+
+                @if($hasLogo)
+                    <span class="favicon-status custom" style="margin-top: 12px;">
+                        <i class="fas fa-check-circle"></i> {{ __('messages.logo_custom_active') }}
+                    </span>
+                @else
+                    <span class="favicon-status default" style="margin-top: 12px;">
+                        <i class="fas fa-info-circle"></i> {{ __('messages.logo_using_default') }}
+                    </span>
+                @endif
+            </div>
+
+            <!-- Upload Form -->
+            <form action="{{ route('admin.site-settings.update-logo') }}" method="POST" enctype="multipart/form-data" id="logo-upload-form">
+                @csrf
+                @method('PUT')
+
+                <div class="favicon-actions">
+                    <label class="favicon-upload-label" for="logo-input">
+                        <i class="fas fa-upload"></i>
+                        {{ $hasLogo ? __('messages.logo_change') : __('messages.logo_upload') }}
+                    </label>
+                    <input type="file"
+                           id="logo-input"
+                           name="logo"
+                           accept=".jpg,.jpeg,.png,.webp,.svg"
+                           style="display: none;"
+                           onchange="previewLogo(this)">
+
+                    <span style="font-size: 13px; color: var(--secondary);">
+                        {{ __('messages.logo_allowed_formats') }}
+                    </span>
+                </div>
+
+                @error('logo')
+                    <div style="margin-top: 12px; padding: 10px 14px; background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; color: #dc2626; font-size: 13px;">
+                        <i class="fas fa-exclamation-circle"></i> {{ $message }}
+                    </div>
+                @enderror
+
+                <!-- Confirmation area (shown after file selection) -->
+                <div id="logo-confirm-area" style="display: none; margin-top: 16px; padding: 16px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <img id="logo-new-preview" src="" alt="New logo preview" style="max-height: 50px; max-width: 200px; object-fit: contain; border-radius: 6px; border: 1px solid var(--border);">
+                        <div>
+                            <span id="logo-filename" style="font-weight: 600; font-size: 14px; color: var(--dark);"></span>
+                            <span id="logo-filesize" style="display: block; font-size: 12px; color: var(--secondary);"></span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" class="btn btn-primary" style="padding: 8px 20px; font-size: 13px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit;">
+                            <i class="fas fa-save"></i> {{ __('messages.logo_save') }}
+                        </button>
+                        <button type="button" style="padding: 8px 20px; font-size: 13px; background: #f1f5f9; color: var(--secondary); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-family: inherit;" onclick="cancelLogoUpload()">
+                            {{ __('messages.cancel') }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Delete Form (only visible when custom logo exists) -->
+            @if($hasLogo)
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+                    <form action="{{ route('admin.site-settings.delete-logo') }}" method="POST"
+                          onsubmit="return confirm('{{ __('messages.logo_delete_confirm') }}')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="favicon-delete-btn">
+                            <i class="fas fa-trash"></i> {{ __('messages.logo_delete') }}
+                        </button>
+                        <span style="font-size: 13px; color: var(--secondary); margin-inline-start: 12px;">
+                            {{ __('messages.logo_delete_hint') }}
+                        </span>
+                    </form>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -932,6 +1238,62 @@ function togglePasswordVisibility(inputId, btn) {
     }
 }
 
+function previewFavicon(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const confirmArea = document.getElementById('favicon-confirm-area');
+        const preview = document.getElementById('favicon-new-preview');
+        const filename = document.getElementById('favicon-filename');
+        const filesize = document.getElementById('favicon-filesize');
+
+        filename.textContent = file.name;
+        filesize.textContent = (file.size / 1024).toFixed(1) + ' KB';
+
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) { preview.src = e.target.result; };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '';
+        }
+
+        confirmArea.style.display = 'block';
+    }
+}
+
+function cancelFaviconUpload() {
+    document.getElementById('favicon-input').value = '';
+    document.getElementById('favicon-confirm-area').style.display = 'none';
+}
+
+function previewLogo(input) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const confirmArea = document.getElementById('logo-confirm-area');
+        const preview = document.getElementById('logo-new-preview');
+        const filename = document.getElementById('logo-filename');
+        const filesize = document.getElementById('logo-filesize');
+
+        filename.textContent = file.name;
+        filesize.textContent = (file.size / 1024).toFixed(1) + ' KB';
+
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) { preview.src = e.target.result; };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '';
+        }
+
+        confirmArea.style.display = 'block';
+    }
+}
+
+function cancelLogoUpload() {
+    document.getElementById('logo-input').value = '';
+    document.getElementById('logo-confirm-area').style.display = 'none';
+}
+
 let socialLinkCounter = {{ count($socialLinks) }};
 const SOCIAL_PLATFORMS = [
     { platform: 'facebook',  label: 'Facebook',    icon: 'fab fa-facebook-f',  color: '#1877F2' },
@@ -1028,7 +1390,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get('tab') || '{{ session("tab", "images") }}';
     if (tab && tab !== 'images') {
-        const tabNames = ['images', 'password', 'privacy-policy', 'refund-policy', 'social-links'];
+        const tabNames = ['images', 'site-icon', 'site-logo', 'password', 'privacy-policy', 'refund-policy', 'social-links'];
         const idx = tabNames.indexOf(tab);
         if (idx > 0) {
             const tabBtn = document.querySelector(`.settings-tab:nth-child(${idx + 1})`);

@@ -333,7 +333,7 @@ class ProductController extends Controller
             $specValues = $validated['spec_values'] ?? [];
             $filterOptions = $request->input('filter_options', []);
             $filterNumericValues = $request->input('filter_numeric_values', []);
-            unset($validated['additional_images'], $validated['spec_values']);
+            unset($validated['additional_images'], $validated['spec_values'], $validated['main_image']);
 
             $product->update($validated);
 

@@ -3,56 +3,7 @@
     <div class="featured-section">
         <div class="container">
             <div class="product-grid" id="featuredProducts">
-                @if(isset($specialOfferProducts) && $specialOfferProducts->count() > 0)
-                    <div class="promo-featured-card special-offer-swapper" id="specialOfferSwapper">
-                        <div class="special-offer-header">{{ __t('messages.special_offer') }}</div>
-
-                        {{-- Products Slides --}}
-                        <div class="special-offer-slides">
-                            @foreach($specialOfferProducts as $index => $offerProduct)
-                                <div class="special-offer-slide {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
-                                    @if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price)
-                                        <div class="badge-save">
-                                            <span class="save-label">{{ __t('messages.save_label') }}</span>
-                                            <span
-                                                class="save-amount">&#8362;{{ number_format($offerProduct->price - $offerProduct->sale_price, 0) }}</span>
-                                        </div>
-                                    @endif
-                                    <div class="promo-media">
-                                        <img src="{{ $offerProduct->main_image }}" 
-                                             alt="{{ $offerProduct->name }}"
-                                             onerror="this.onerror=null; this.src='{{ \App\Helpers\ImageHelper::assetUrl('images/products/default.png') }}';">
-                                    </div>
-                                    <div class="promo-body">
-                                        <div class="promo-product-name">{{ $offerProduct->name }}</div>
-                                        <div class="promo-prices">
-                                            @if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price)
-                                                <span class="orig">&#8362;{{ number_format($offerProduct->price, 0) }}</span>
-                                                <span class="sale">&#8362;{{ number_format($offerProduct->sale_price, 0) }}</span>
-                                            @else
-                                                <span class="sale">&#8362;{{ number_format($offerProduct->price, 0) }}</span>
-                                            @endif
-                                        </div>
-                                        <div class="promo-cta">
-                                            <a
-                                                href="{{ route('product.detail', $offerProduct) }}">{{ __t('messages.shop_now') }}</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-
-                        {{-- Navigation Dots --}}
-                        @if($specialOfferProducts->count() > 1)
-                            <div class="special-offer-dots">
-                                @foreach($specialOfferProducts as $index => $offerProduct)
-                                    <button class="special-offer-dot {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}"
-                                        aria-label="Go to product {{ $index + 1 }}"></button>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-                @elseif(isset($promotionalOffers) && $promotionalOffers->count() > 0)
+                @if(isset($promotionalOffers) && $promotionalOffers->count() > 0)
                     @php $promo = $promotionalOffers->first(); @endphp
                     <div class="promo-featured-card">
                         <div class="special-offer-header">{{ __t('messages.special_offer') }}</div>
@@ -90,6 +41,8 @@
                                 <div class="promo-countdown" data-end="{{ optional($promo->end_date)->format('c') }}">
                                     <div class="label">{{ __t('messages.hurry_up_offer_ends') }}</div>
                                     <div class="boxes">
+                                        <div class="box"><span class="num cd-days">00</span><span
+                                                  class="unit">{{ __t('messages.days') }}</span></div>
                                         <div class="box"><span class="num cd-hours">00</span><span
                                                 class="unit">{{ __t('messages.hours') }}</span></div>
                                         <div class="box"><span class="num cd-mins">00</span><span
@@ -111,6 +64,55 @@
                                 </div>
                             @endif
                         </div>
+                    </div>
+                @elseif(isset($specialOfferProducts) && $specialOfferProducts->count() > 0)
+                    <div class="promo-featured-card special-offer-swapper" id="specialOfferSwapper">
+                        <div class="special-offer-header">{{ __t('messages.special_offer') }}</div>
+
+                        {{-- Products Slides --}}
+                        <div class="special-offer-slides">
+                            @foreach($specialOfferProducts as $index => $offerProduct)
+                                <div class="special-offer-slide {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
+                                    @if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price)
+                                        <div class="badge-save">
+                                            <span class="save-label">{{ __t('messages.save_label') }}</span>
+                                            <span
+                                                class="save-amount">&#8362;{{ number_format($offerProduct->price - $offerProduct->sale_price, 0) }}</span>
+                                        </div>
+                                    @endif
+                                    <div class="promo-media">
+                                        <img src="{{ $offerProduct->main_image }}"
+                                             alt="{{ $offerProduct->name }}"
+                                             onerror="this.onerror=null; this.src='{{ \App\Helpers\ImageHelper::assetUrl('images/products/default.png') }}';">
+                                    </div>
+                                    <div class="promo-body">
+                                        <div class="promo-product-name">{{ $offerProduct->name }}</div>
+                                        <div class="promo-prices">
+                                            @if($offerProduct->sale_price && $offerProduct->sale_price < $offerProduct->price)
+                                                <span class="orig">&#8362;{{ number_format($offerProduct->price, 0) }}</span>
+                                                <span class="sale">&#8362;{{ number_format($offerProduct->sale_price, 0) }}</span>
+                                            @else
+                                                <span class="sale">&#8362;{{ number_format($offerProduct->price, 0) }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="promo-cta">
+                                            <a
+                                                href="{{ route('product.detail', $offerProduct) }}">{{ __t('messages.shop_now') }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        {{-- Navigation Dots --}}
+                        @if($specialOfferProducts->count() > 1)
+                            <div class="special-offer-dots">
+                                @foreach($specialOfferProducts as $index => $offerProduct)
+                                    <button class="special-offer-dot {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}"
+                                        aria-label="Go to product {{ $index + 1 }}"></button>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 @endif
 

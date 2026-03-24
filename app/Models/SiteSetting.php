@@ -62,6 +62,7 @@ class SiteSetting extends Model
 
         Cache::forget("site_setting.{$key}");
         Cache::forget('site_settings.images');
+        Cache::forget('site_settings.branding');
 
         return $setting;
     }
@@ -98,8 +99,84 @@ class SiteSetting extends Model
             Cache::forget('site_settings.security');
             Cache::forget('site_settings.policies');
             Cache::forget('site_settings.social');
+            Cache::forget('site_settings.branding');
         } catch (\Exception $e) {
             // Silently fail if DB not available
         }
+    }
+
+    /**
+     * Get the current site logo URL with fallback to default.
+     */
+    public static function getSiteLogoUrl(): string
+    {
+        $path = static::getValue('site_logo');
+
+        if (!empty($path)) {
+            $version = static::getValue('site_logo_version') ?: '1';
+            return asset('media/' . $path) . '?v=' . $version;
+        }
+
+        return asset('images/assets/logo.png');
+    }
+
+    /**
+     * Get the raw media URL for logo preview (admin panel).
+     */
+    public static function getSiteLogoPreviewUrl(): string
+    {
+        $path = static::getValue('site_logo');
+
+        if (!empty($path)) {
+            return asset('media/' . $path);
+        }
+
+        return asset('images/assets/logo.png');
+    }
+
+    /**
+     * Get the current favicon URL with fallback to default.
+     */
+    public static function getFaviconUrl(): string
+    {
+        $path = static::getValue('site_favicon');
+
+        if (!empty($path)) {
+            $version = static::getValue('site_favicon_version') ?: '1';
+            return url('/site-favicon') . '?v=' . $version;
+        }
+
+        return asset('favicon.ico');
+    }
+
+    /**
+     * Get the raw media URL for favicon preview (admin panel).
+     */
+    public static function getFaviconPreviewUrl(): string
+    {
+        $path = static::getValue('site_favicon');
+
+        if (!empty($path)) {
+            return asset('media/' . $path);
+        }
+
+        return asset('favicon.ico');
+    }
+
+    /**
+     * Get the MIME type for the current favicon based on its file extension.
+     */
+    public static function getFaviconMime(): string
+    {
+        $path = static::getValue('site_favicon');
+
+        if (!empty($path)) {
+            $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+            // ICO files are served as-is; all other formats are converted to PNG
+            // by the /site-favicon route, so report image/png for those.
+            return $ext === 'ico' ? 'image/x-icon' : 'image/png';
+        }
+
+        return 'image/x-icon';
     }
 }

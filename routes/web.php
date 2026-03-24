@@ -93,6 +93,68 @@ Route::get('/media/{path}', function (string $path) {
     }
 })->where('path', '.*')->name('media.serve');
 
+// Favicon route - serves the current favicon as a 48x48 PNG for browser compatibility
+Route::get('/site-favicon', function () {
+    $faviconSize = 48;
+    $path = \App\Models\SiteSetting::getValue('site_favicon');
+
+    if (empty($path)) {
+        $defaultFavicon = public_path('favicon.ico');
+        if (file_exists($defaultFavicon)) {
+            return response()->file($defaultFavicon, ['Content-Type' => 'image/x-icon', 'Cache-Control' => 'public, max-age=86400']);
+        }
+        abort(404);
+    }
+
+    $fullPath = storage_path('app/public/' . $path);
+    if (!file_exists($fullPath) || !is_file($fullPath)) {
+        abort(404);
+    }
+
+    $ext = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+
+    // ICO files served as-is (already proper favicon format)
+    if ($ext === 'ico') {
+        return response()->file($fullPath, ['Content-Type' => 'image/x-icon', 'Cache-Control' => 'public, max-age=86400']);
+    }
+
+    // All other formats: load, crop to square, resize to 48x48, output as PNG
+    $image = @imagecreatefromstring(file_get_contents($fullPath));
+    if (!$image) {
+        abort(404);
+    }
+
+    $srcW = imagesx($image);
+    $srcH = imagesy($image);
+
+    // Crop source to a square from the left-center (preserves logo icon on the left)
+    $squareSize = min($srcW, $srcH);
+    $cropX = 0; // Start from left side to preserve logo/icon portion
+    $cropY = (int) round(($srcH - $squareSize) / 2);
+
+    // Create 48x48 true-color image with alpha support
+    $favicon = imagecreatetruecolor($faviconSize, $faviconSize);
+    imagealphablending($favicon, false);
+    imagesavealpha($favicon, true);
+    $transparent = imagecolorallocatealpha($favicon, 0, 0, 0, 127);
+    imagefill($favicon, 0, 0, $transparent);
+
+    // Resize the square-cropped source into 48x48
+    imagecopyresampled($favicon, $image, 0, 0, $cropX, $cropY, $faviconSize, $faviconSize, $squareSize, $squareSize);
+    imagedestroy($image);
+
+    ob_start();
+    imagepng($favicon, null, 9);
+    $pngData = ob_get_clean();
+    imagedestroy($favicon);
+
+    return response($pngData, 200, [
+        'Content-Type' => 'image/png',
+        'Content-Length' => strlen($pngData),
+        'Cache-Control' => 'public, max-age=86400',
+    ]);
+})->name('site-favicon');
+
 // Language Routes
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, config('app.available_locales', ['en', 'ar', 'he']))) {
@@ -524,6 +586,10 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/site-settings/privacy-policy', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updatePrivacyPolicy'])->name('site-settings.update-privacy-policy');
     Route::put('/site-settings/refund-policy', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updateRefundPolicy'])->name('site-settings.update-refund-policy');
     Route::put('/site-settings/social-links', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updateSocialLinks'])->name('site-settings.update-social-links');
+    Route::put('/site-settings/favicon', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updateFavicon'])->name('site-settings.update-favicon');
+    Route::delete('/site-settings/favicon', [App\Http\Controllers\Admin\SiteSettingsController::class, 'deleteFavicon'])->name('site-settings.delete-favicon');
+    Route::put('/site-settings/logo', [App\Http\Controllers\Admin\SiteSettingsController::class, 'updateLogo'])->name('site-settings.update-logo');
+    Route::delete('/site-settings/logo', [App\Http\Controllers\Admin\SiteSettingsController::class, 'deleteLogo'])->name('site-settings.delete-logo');
 
     // Employee Roles Management (Admin Only)
     Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
