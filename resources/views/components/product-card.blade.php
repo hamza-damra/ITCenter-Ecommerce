@@ -69,9 +69,6 @@
                     @if($product->is_on_sale)
                         <span class="product-price-original">&#8362;{{ number_format($product->price, 2) }}</span>
                         <span class="current-price">&#8362;{{ number_format($product->sale_price, 2) }}</span>
-                        @if($product->discount_percentage > 0)
-                            <span class="discount-percentage">{{ $product->discount_percentage }}% {{ __('messages.off') }}</span>
-                        @endif
                     @else
                         <span class="current-price">&#8362;{{ number_format($product->price, 2) }}</span>
                     @endif
